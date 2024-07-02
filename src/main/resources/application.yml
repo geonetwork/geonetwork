@@ -1,0 +1,19 @@
+geonetwork:
+  openapi:
+    url: http://localhost:8080
+
+server:
+  port: 7979
+
+spring:
+  application:
+    name: GeoNetwork
+  datasource:
+    url: jdbc:h2:mem:gn5
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+debug: false
