@@ -1,6 +1,6 @@
 geonetwork:
   openapi:
-    url: http://localhost:8080
+    url: http://localhost:7979
 
 server:
   port: 7979
@@ -15,5 +15,18 @@ spring:
     password: password
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: geonetwork_route
+            uri: http://localhost:8080/geonetwork
+            predicates:
+              - Path=/geonetwork/**
+
+springdoc:
+  swagger-ui:
+    path: /doc/api/
+
 
 debug: false
