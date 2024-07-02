@@ -23,6 +23,14 @@ spring:
             uri: http://localhost:8080/geonetwork
             predicates:
               - Path=/geonetwork/**
+management:
+  endpoint:
+    info:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 springdoc:
   swagger-ui:
