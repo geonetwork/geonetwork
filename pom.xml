@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -12,16 +19,29 @@
   <groupId>org.geonetwork</groupId>
   <artifactId>geonetwork</artifactId>
   <version>5.0.0-SNAPSHOT</version>
-  <name>geonetwork</name>
-  <description>geonetwork</description>
 
-  <url>http://geonetwork-opensource.org</url>
+  <name>GeoNetwork opensource</name>
+  <description>GeoNetwork opensource is a standards based, Free and
+    Open Source catalog application to manage spatially referenced
+    resources through the web.
+  </description>
+  <url>https://geonetwork-opensource.org</url>
+  <organization>
+    <name>Open Source Geospatial Foundation</name>
+    <url>https://www.osgeo.org/</url>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/geonetwork/geonetwork/issues</url>
+  </issueManagement>
   <licenses>
     <license>
       <name>General Public License (GPL)</name>
-      <url>http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt</url>
+      <url>https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt</url>
     </license>
   </licenses>
+
   <properties>
     <java.version>21</java.version>
     <spring-cloud.version>2023.0.2</spring-cloud.version>
@@ -101,6 +121,28 @@
               <artifactId>lombok</artifactId>
             </exclude>
           </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <!--
+        https://oss.carbou.me/license-maven-plugin/
+        Use mvn license:check to check the license headers
+        Use mvn license:format to format the license headers
+        Use mvn license:remove to remove the license headers
+        -->
+        <version>4.5</version>
+        <configuration>
+          <header>${maven.multiModuleProjectDirectory}/src/license/header.txt</header>
+          <includes>
+            <include>**/*.java</include>
+            <include>**/*.xsd</include>
+            <include>**/*.xml</include>
+            <include>**/*.xsl</include>
+            <include>**/*.html</include>
+            <include>pom.xml</include>
+          </includes>
         </configuration>
       </plugin>
     </plugins>
