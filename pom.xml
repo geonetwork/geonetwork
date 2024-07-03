@@ -46,6 +46,7 @@
     <java.version>21</java.version>
     <spring-cloud.version>2023.0.2</spring-cloud.version>
     <es.version>8.14.1</es.version>
+    <jackson.version>2.17.0</jackson.version>
   </properties>
 
   <dependencies>
@@ -85,6 +86,16 @@
       <groupId>co.elastic.clients</groupId>
       <artifactId>elasticsearch-java</artifactId>
       <version>${es.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
+      <version>0.2.6</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -151,6 +162,48 @@
           </includes>
         </configuration>
       </plugin>
+      <!--
+        See https://openapi-generator.tech/docs/generators/spring
+          for more information on the configuration options
+
+          Generated code is copy/pasted in source root because of error
+          CollectionsApiController.java:[9,60] cannot find symbol
+          symbol:   class GetRecordsBboxDtoDto
+          location: package org.geonetwork.search.ogcapi.records.generated.model
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>7.6.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>
+                ${project.basedir}/src/test/resources/ogcapirecords_openapi_spec/ogcapi-records-1-example-ref-schema-repo.yaml
+              </inputSpec>
+              <generatorName>spring</generatorName>
+              <generateAliasAsModel>true</generateAliasAsModel>
+              <modelNameSuffix>Dto</modelNameSuffix>
+              <modelNameMappings>getRecords_bbox_parameter=GetRecordsBboxDto</modelNameMappings>
+              <configOptions>
+                <sourceFolder>src/gen/java/main</sourceFolder>
+                <useSpringBoot3>true</useSpringBoot3>
+                <generateBuilders>true</generateBuilders>
+                <annotationLibrary>swagger2</annotationLibrary>
+                <withXml>true</withXml>
+                <useOptional>false</useOptional>
+                <apiPackage>org.geonetwork.search.ogcapi.records.generated</apiPackage>
+                <modelPackage>org.geonetwork.search.ogcapi.records.generated.model</modelPackage>
+              </configOptions>
+              <additionalProperties>
+              </additionalProperties>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      -->
     </plugins>
   </build>
 </project>
