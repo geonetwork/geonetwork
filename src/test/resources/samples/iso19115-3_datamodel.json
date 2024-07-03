@@ -1,0 +1,1013 @@
+{
+  "docType": "metadata",
+  "document": "",
+  "metadataIdentifier": "389f7595-e1ff-4be6-8af2-57455a2cbf1a",
+  "standardNameObject": {
+    "default": "ISO 19115-3 / ISO 19110",
+    "lang": "ISO 19115-3 / ISO 19110"
+  },
+  "indexingDate": "2024-06-28T17:11:09+02:00",
+  "dateStamp": "2024-06-28T15:11:09.673684Z",
+  "mainLanguage": "",
+  "resourceType": [
+    "featureCatalog",
+    "dataset",
+    "featureCatalog"
+  ],
+  "cl_function": [
+    {
+      "key": "completeMetadata",
+      "default": "completeMetadata",
+      "lang": "completeMetadata",
+      "link": "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_OnLineFunctionCode"
+    }
+  ],
+  "resourceTitleObject": {
+    "default": "Objectencatalogus Meetnet Vlaamse banken",
+    "lang": "Objectencatalogus Meetnet Vlaamse banken"
+  },
+  "resourceEdition": "1",
+  "resourceAbstractObject": {
+    "default": "oceans",
+    "lang": "oceans"
+  },
+  "featureTypes": [
+    {
+      "typeName": "Neerslag",
+      "definition": "",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "Textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": "",
+          "values": [
+            {
+              "label": "Eau",
+              "code": "2",
+              "definition": "Definition"
+            },
+            {
+              "label": "1",
+              "code": "Forêt",
+              "definition": ""
+            }
+          ]
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in mm",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "Kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "Tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Neerslag",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Relatieve Vochtigheid",
+      "definition": "Lucht kan een beperkte hoeveelheid vocht bevatten die afhangt van de temperatuur. De relatieve vochtigheid is de verhouding tussen de in de lucht aanwezige hoeveelheid waterdamp en de, bij de heersende temperatuur maximaal mogelijke hoeveelheid waterdamp",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in %",
+          "code": "",
+          "link": "",
+          "type": "Getal(5,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "Kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Relatieve Vochtigheid",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Luchtdruk",
+      "definition": "De luchtdruk op gemiddeld zeeniveau.",
+      "code": "QNH",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "waarde uitgedrukt in hPa",
+          "code": "",
+          "link": "",
+          "type": "Getal(6,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "Tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Luchtdruk",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Zonnestraling",
+      "definition": "De intensiteit van de zonnestraling verandert met het uur van de dag, de tijd van het jaar en de weersomstandigheden. Om toch gemakkelijk te kunnen rekenen met gegevens over de instraling, kan de totale hoeveelheid zonne-energie worden uitgedrukt in uren volle zon per m². Als standaard wordt aangenomen dat bij 'volle zon' een vermogen van 1000W/m² gerealiseerd is.",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in Watt/m²",
+          "code": "",
+          "link": "",
+          "type": "Getal(5,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "Datum",
+          "definition": "Kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "Tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Zonnestraling",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Getij TAW",
+      "definition": "Getijden noemt men het verschijnsel dat door de aantrekking van de zwaartekracht van vooral de maan de watermassa's op aarde een dagelijks variërende hoogte vertonen. De zon levert slechts een kleine bijdrage aan deze bewegingen.De periode van het stijgen van het water heet vloed, die van het zakken eb. De maximale waterhoogte heet hoogwater, de minimum hoogte laagwater.",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "Textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de meting",
+          "definition": "De hoogte (uitgedrukt in cm) wordt gerefereerd naar het referentieniveau TAW (Tweede Algemene Waterpassing).",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "Kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Getij TAW",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Stroomsnelheid",
+      "definition": "10 minuut-vectorieel gemiddelde stroomsnelheid",
+      "code": "SS10",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in m/s",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "Kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Stroomsnelheid",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Stroomrichting",
+      "definition": "10-minuuts vectorieel gemiddelde stroomrichting",
+      "code": "SR10",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in graden °",
+          "code": "",
+          "link": "",
+          "type": "Getal(5,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Stroomrichting",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Windsnelheid",
+      "definition": "10 minuuts scalair gemiddelde windsnelheid",
+      "code": "WS10",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in m/s",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Windsnelheid",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Windrichting",
+      "definition": "10-minuuts gemiddelde windrichting",
+      "code": "WR10",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de meting",
+          "definition": "uitgedrukt in graden °",
+          "code": "",
+          "link": "",
+          "type": "Getal(5,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Windrichting",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Maximale windstoot",
+      "definition": "Maximale 3 seconden-windstoot in een 10-minuutsperiode",
+      "code": "WSmx",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de meting",
+          "definition": "uitgedrukt in m/s",
+          "code": "",
+          "link": "",
+          "type": "Getal(3,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Maximale windstoot",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Natteboltemperatuur",
+      "definition": "De `natteboltemperatuur` is de laagste temperatuur die lucht krijgt door er zoveel water in te laten verdampen dat de lucht verzadigd wordt. Dit moet adiabatisch plaatsvinden, dat wil zeggen zo snel dat er geen sprake is van warmte-uitwisseling met de omgeving. Door deze temperatuur te vergelijken met de gewone temperatuur kan de luchtvochtigheid berekend worden.",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in °C",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Natteboltemperatuur",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Grondtemperatuur",
+      "definition": "Temperatuur in de grond. Deze wordt op diepten van 5, 10,20, 50 en 100 cm gemeten. De grondtemperatuur is een grootheid van niet te onderschatten betekenis. Wanneer bijvoorbeeld na een langdurige vorstperiode de temperatuur aan de grond tijdens de nacht net boven het vriespunt blijft, maar in de grond de temperatuur een paar onder nul is, kunnen de wegen alsnog bevriezen.",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de meting",
+          "definition": "uitgedrukt in °C",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Grondtemperatuur",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Luchttemperatuur",
+      "definition": "Algemene benaming voor de droge-boltemperatuur. Het is de temperatuur van de lucht op een bepaalde plaats op een bepaald moment. Op meteorologische stations wordt de temperatuur van de lucht volgens internationale afspraak van de Wereld Meteorologische Organisatie (WMO) gemeten in graden Celsius op een hoogte van anderhalve meter boven een open grasvlakte. De thermometer of de sensor, waarmee de temperatuur wordt waargenomen, staat in een wit kastje (sensorkastje).",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de meting",
+          "definition": "",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de getijmeting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Luchttemperatuur",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Zeewatertemperatuur",
+      "definition": "Temperatuur van het oppervlaktewater in de zee.",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van de parameter",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in °C",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Zeewatertemperatuur",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Gemiddelde golfperiode",
+      "definition": "De golfperiode is de tijd die verstrijkt tussen het voorkomen van twee opeenvolgende golven op dezelfde plaats.",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in seconde",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Gemiddelde golfperiode",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "1% hoogste golven",
+      "definition": "99ste percentiel van de golfhoogte",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam van het meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in cm",
+          "code": "",
+          "link": "",
+          "type": "Getal(5,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van 1% hoogste golven",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Significante golfhoogte",
+      "definition": "Significante golfhoogte berekend uit het totale energiespectrum",
+      "code": "GPs",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam van het meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de parameter",
+          "definition": "uitgedrukt in cm",
+          "code": "",
+          "link": "",
+          "type": "Getal(5,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Significante golfhoogte",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "Hoogte deining",
+      "definition": "Significante golfhoogte van de golven met een periode langer dan 10 sec, berekend uit het energiespectrum.",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam van het meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van het meetpunt",
+          "definition": "uitgedrukt in cm",
+          "code": "",
+          "link": "",
+          "type": "Getal(5,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van Hoogte deining",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    },
+    {
+      "typeName": "10% hoogste golven",
+      "definition": "90ste percentiel van de hoogste golven",
+      "code": "",
+      "isAbstract": "false",
+      "aliases": "",
+      "attributeTable": [
+        {
+          "name": "naam meetpunt",
+          "definition": "textuele identificator van het meetpunt",
+          "code": "",
+          "link": "",
+          "type": "Tekst(50)",
+          "cardinality": ""
+        },
+        {
+          "name": "numerieke waarde van de meting",
+          "definition": "uitgedrukt in cm",
+          "code": "",
+          "link": "",
+          "type": "Getal(5,1)",
+          "cardinality": ""
+        },
+        {
+          "name": "datum",
+          "definition": "kalenderdatum",
+          "code": "",
+          "link": "",
+          "type": "Datum",
+          "cardinality": ""
+        },
+        {
+          "name": "tijdstip",
+          "definition": "exact tijdstip van de meting",
+          "code": "",
+          "link": "",
+          "type": "Getal(4,0)",
+          "cardinality": ""
+        },
+        {
+          "name": "Geometrie",
+          "definition": "Geometrie van 10% hoogste golven",
+          "code": "Geometrie",
+          "link": "",
+          "type": "GM_Point",
+          "cardinality": ""
+        }
+      ]
+    }
+  ],
+  "recordGroup": "389f7595-e1ff-4be6-8af2-57455a2cbf1a",
+  "recordOwner": "admin admin",
+  "uuid": "389f7595-e1ff-4be6-8af2-57455a2cbf1a",
+  "displayOrder": "0",
+  "groupPublishedId": "2",
+  "popularity": "2",
+  "userinfo": "admin|admin|admin|Administrator",
+  "groupPublished": "sample",
+  "isPublishedToAll": "false",
+  "record": "record",
+  "draft": "n",
+  "changeDate": "2024-06-28T15:11:09.673664Z",
+  "id": "136",
+  "createDate": "2024-06-28T15:05:33.418227Z",
+  "isPublishedToIntranet": "false",
+  "owner": "1",
+  "groupOwner": "2",
+  "logo": "/images/logos/84b8b1f1-6ad5-4c0b-95bd-abf2aa100969.png",
+  "hasxlinks": "false",
+  "op0": "2",
+  "featureOfRecord": "record",
+  "op1": "2",
+  "isPublishedToGuest": "false",
+  "extra": "null",
+  "documentStandard": "iso19115-3.2018",
+  "op3": "2",
+  "op5": "2",
+  "valid": "-1",
+  "isTemplate": "n",
+  "feedbackCount": "0",
+  "rating": "0",
+  "isHarvested": "false",
+  "userSavedCount": "0",
+  "sourceCatalogue": "84b8b1f1-6ad5-4c0b-95bd-abf2aa100969"
+}

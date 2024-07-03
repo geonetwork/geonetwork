@@ -4,7 +4,7 @@
  * available at the root application directory.
  */
 
-package org.geonetwork.geonetwork;
+package org.geonetwork;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
