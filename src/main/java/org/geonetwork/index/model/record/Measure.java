@@ -6,6 +6,7 @@
 package org.geonetwork.index.model.record;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -20,8 +21,12 @@ import lombok.Data;
  * </pre>
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Measure {
     private String name;
+    private String description;
+    private String date;
     private String value;
     private String type;
+    private String unit;
 }

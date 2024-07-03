@@ -1,4 +1,10 @@
 geonetwork:
+  core:
+    url: http://localhost:8080/geonetwork
+  index:
+    url: http://localhost:9200
+    indexPrefix: gn-
+    indexRecordName: sextant-records
   openapi:
     url: http://localhost:7979
 

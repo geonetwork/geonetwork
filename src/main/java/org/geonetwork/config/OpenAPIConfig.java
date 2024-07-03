@@ -18,7 +18,7 @@ import java.util.List;
 
 @Configuration
 public class OpenAPIConfig {
-    @Value("${geonetwork.openapi.url}")
+    @Value("${geonetwork.openapi.url:'http://localhost:7979'}")
     private String serverUrl;
 
     @Bean

@@ -112,43 +112,43 @@ public class IndexRecord {
      * </pre>
      */
     @JsonProperty(IndexRecordFieldNames.RESOURCE_TITLE)
-    Map<String, String> resourceTitle = new HashMap<>();
+    Map<String, String> resourceTitle;
 
     @JsonProperty(IndexRecordFieldNames.RESOURCE_ALT_TITLE)
-    List<HashMap<String, String>> resourceAltTitle = new ArrayList<>();
+    List<HashMap<String, String>> resourceAltTitle;
 
     @JsonProperty(IndexRecordFieldNames.ORDERING_INSTRUCTIONS)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    List<HashMap<String, String>> orderingInstructions = new ArrayList<>();
+    List<HashMap<String, String>> orderingInstructions;
 
     @JsonProperty(IndexRecordFieldNames.RESOURCE_LINEAGE)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    List<HashMap<String, String>> resourceLineage = new ArrayList<>();
+    List<HashMap<String, String>> resourceLineage;
 
     @JsonProperty(IndexRecordFieldNames.SOURCE_DESCRIPTION)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    List<HashMap<String, String>> sourceDescription = new ArrayList<>();
+    List<HashMap<String, String>> sourceDescription;
 
     @JsonProperty(IndexRecordFieldNames.PROCESS_STEPS)
-    List<ProcessStep> processSteps = new ArrayList<>();
+    List<ProcessStep> processSteps;
 
     @JsonProperty(IndexRecordFieldNames.RESOURCE_ABSTRACT)
-    Map<String, String> resourceAbstract = new HashMap<>();
+    Map<String, String> resourceAbstract;
 
     @JsonProperty(IndexRecordFieldNames.RESOURCE_CREDIT)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    List<HashMap<String, String>> resourceCredit = new ArrayList<>();
+    List<HashMap<String, String>> resourceCredit;
 
     @JsonProperty(IndexRecordFieldNames.SUPPLEMENTAL_INFORMATION)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    List<HashMap<String, String>> supplementalInformation = new ArrayList<>();
+    List<HashMap<String, String>> supplementalInformation;
 
     @JsonProperty(IndexRecordFieldNames.PURPOSE)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    List<HashMap<String, String>> purpose = new ArrayList<>();
+    List<HashMap<String, String>> purpose;
 
     @JsonProperty(IndexRecordFieldNames.TAG)
-    ArrayList<HashMap<String, String>> tag = new ArrayList<>();
+    ArrayList<HashMap<String, String>> tag;
 
     @JsonProperty(IndexRecordFieldNames.TAG_NUMBER)
     int tagNumber;
@@ -162,17 +162,18 @@ public class IndexRecord {
      */
     @JsonIgnore
     @Singular("constraints")
-    Map<String, List<HashMap<String, String>>> constraints = new HashMap<>();
+    final Map<String, List<HashMap<String, String>>> constraints = new HashMap<>();
 
     @JsonIgnore
     @Singular("useLimitations")
-    Map<String, List<HashMap<String, String>>> useLimitations = new HashMap<>();
+    final Map<String, List<HashMap<String, String>>> useLimitations = new HashMap<>();
 
-    Map<String, String> conformsTo = new HashMap<>();
+    @JsonIgnore
+    final Map<String, String> conformsTo = new HashMap<>();
 
     @JsonProperty(IndexRecordFieldNames.LICENSE)
     @Singular
-    List<HashMap<String, String>> licenses = new ArrayList<>();
+    final List<HashMap<String, String>> licenses = new ArrayList<>();
 
     @JsonProperty(IndexRecordFieldNames.ID)
     private Integer id;
@@ -186,17 +187,17 @@ public class IndexRecord {
     private IndexDocumentType docType;
 
     // Unused for now. Was used to store XML document.
-    private String document = "";
+    private String document;
 
     // eg. iso19139
     private String documentStandard;
 
     // eg. ISO 19119/2005
     @JsonProperty(IndexRecordFieldNames.STANDARD_NAME)
-    private Map<String, String> standardName = new HashMap<>();
+    private Map<String, String> standardName;
 
     @JsonProperty(IndexRecordFieldNames.STANDARD_VERSION)
-    private Map<String, String> standardVersion = new HashMap<>();
+    private Map<String, String> standardVersion;
 
     @JsonProperty(IndexRecordFieldNames.DRAFT)
     private String draft;
@@ -208,7 +209,7 @@ public class IndexRecord {
 
     private String indexingDate;
 
-    private List<indexingErrorMsg> indexingErrorMsg = new ArrayList<>();
+    private List<indexingErrorMsg> indexingErrorMsg;
 
     private String dateStamp;
 
@@ -219,10 +220,10 @@ public class IndexRecord {
     private String createDate;
 
     @JsonProperty(IndexRecordFieldNames.RESOURCE_DATE)
-    private List<ResourceDate> resourceDate = new ArrayList<>();
+    private List<ResourceDate> resourceDate;
 
     @JsonIgnore
-    private Map<String, ArrayList<String>> resourceDateDetails = new HashMap<>();
+    private final Map<String, ArrayList<String>> resourceDateDetails = new HashMap<>();
 
     private Integer owner;
 
@@ -246,21 +247,23 @@ public class IndexRecord {
 
     @JsonProperty(IndexRecordFieldNames.GROUP_PUBLISHED)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> groupPublished = new ArrayList<>();
+    private List<String> groupPublished;
 
     @JsonProperty(IndexRecordFieldNames.GROUP_PUBLISHED_ID)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> groupPublishedId = new ArrayList<>();
+    private List<String> groupPublishedId;
 
     @JsonProperty(IndexRecordFieldNames.POPULARITY)
     private int popularity;
 
+    @JsonProperty(IndexRecordFieldNames.MAIN_LANGUAGE)
     private String mainLanguage;
 
-    private List<String> resourceType = new ArrayList<>();
+    @JsonProperty(IndexRecordFieldNames.RESOURCE_TYPE)
+    private List<String> resourceType;
 
     @JsonProperty(IndexRecordFieldNames.RESOURCE_TYPE_NAME)
-    private Map<String, String> resourceTypeName = new HashMap<>();
+    private Map<String, String> resourceTypeName;
 
     @JsonProperty(IndexRecordFieldNames.VALID)
     private Integer valid;
@@ -290,16 +293,18 @@ public class IndexRecord {
     private Boolean isOpenData;
 
     @JsonProperty(IndexRecordFieldNames.INSPIRE_CONFORM_RESOURCE)
+    @JsonDeserialize(using = NumericOrStringBooleanSerializer.class)
     private Boolean inspireConformResource;
 
-    private List<String> otherLanguage = new ArrayList<>();
+    private List<String> otherLanguage;
 
-    private List<String> otherLanguageId = new ArrayList<>();
+    private List<String> otherLanguageId;
 
-    private List<String> resourceLanguage = new ArrayList<>();
+    @JsonProperty(IndexRecordFieldNames.RESOURCE_LANGUAGE)
+    private List<String> resourceLanguage;
 
     @JsonProperty(IndexRecordFieldNames.RESOURCE_IDENTIFIER)
-    private ArrayList<ResourceIdentifier> resourceIdentifier = new ArrayList<>();
+    private ArrayList<ResourceIdentifier> resourceIdentifier;
 
     private String resourceEdition;
 
@@ -310,36 +315,36 @@ public class IndexRecord {
 
     @JsonProperty(IndexRecordFieldNames.ORG)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Map<String, String>> org = new ArrayList<>();
+    private List<Map<String, String>> org;
 
     @JsonProperty(IndexRecordFieldNames.ORG_FOR_RESOURCE)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Map<String, String>> orgForResource = new ArrayList<>();
+    private List<Map<String, String>> orgForResource;
 
     @JsonIgnore
-    private Map<String, List<Map<String, String>>> orgForResourceByRole = new HashMap<>();
+    private final Map<String, List<Map<String, String>>> orgForResourceByRole = new HashMap<>();
 
     // others eg. pointOfContactOrgForResource are in other properties
     // ForResource
     // ForProcessing
     // ForDistribution
     @JsonIgnore
-    private Map<String, List<Contact>> contactByRole = new HashMap<>();
+    private final Map<String, List<Contact>> contactByRole = new HashMap<>();
 
     @JsonProperty(IndexRecordFieldNames.FORMAT)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> formats = new ArrayList<>();
+    private List<String> formats;
 
     @JsonProperty(IndexRecordFieldNames.COORDINATE_SYSTEM)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> coordinateSystem = new ArrayList<>();
+    private List<String> coordinateSystem;
 
     @JsonProperty(IndexRecordFieldNames.CRS_DETAILS)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<CrsDetails> coordinateSystemDetails = new ArrayList<>();
+    private List<CrsDetails> coordinateSystemDetails;
 
     @JsonProperty(IndexRecordFieldNames.OVERVIEW)
-    private List<Overview> overview = new ArrayList<>();
+    private List<Overview> overview;
 
     @JsonProperty(IndexRecordFieldNames.RECORD_LINK)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -347,39 +352,39 @@ public class IndexRecord {
 
     @JsonProperty(IndexRecordFieldNames.RECORD_OPERATE_ON)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> recordOperateOn = new ArrayList<>();
+    private List<String> recordOperateOn;
 
     @JsonProperty(IndexRecordFieldNames.AGG_ASSOCIATED)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> associatedUuids = new ArrayList<>();
+    private List<String> associatedUuids;
 
     @JsonIgnore
     @Singular("associatedUuidsByType")
-    private Map<String, ArrayList<String>> associatedUuidsByType = new HashMap<>();
+    private final Map<String, ArrayList<String>> associatedUuidsByType = new HashMap<>();
 
     @JsonProperty(IndexRecordFieldNames.CHILD_UUID)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> childUuid = new ArrayList<>();
+    private List<String> childUuid;
 
     @JsonProperty(IndexRecordFieldNames.PARENT_UUID)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> parentUuid = new ArrayList<>();
+    private List<String> parentUuid;
 
     /**
      * Same as parent
      */
     @JsonProperty(IndexRecordFieldNames.RECORD_GROUP)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> recordGroup = new ArrayList<>();
+    private List<String> recordGroup;
 
     @JsonProperty(IndexRecordFieldNames.MEASURE)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Measure> measures = new ArrayList<>();
+    private List<Measure> measures;
 
     // "measure_Exactitudeglobale": "83.80 %",
     @JsonIgnore
     @Singular
-    private Map<String, ArrayList<String>> measureFields = new HashMap<>();
+    private final Map<String, ArrayList<String>> measureFields = new HashMap<>();
 
     //  "recordLink_sources": [
     //          "Orthophotos 2020",
@@ -392,31 +397,31 @@ public class IndexRecord {
     //  "recordLink_sources_url": [
     @JsonIgnore
     @Singular
-    private Map<String, ArrayList<String>> associatedResourceFields = new HashMap<>();
+    private final Map<String, ArrayList<String>> associatedResourceFields = new HashMap<>();
 
     @JsonProperty(IndexRecordFieldNames.LINK)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Link> links = new ArrayList<>();
+    private List<Link> links;
 
     @JsonProperty(IndexRecordFieldNames.LINK_URL)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> linkUrls = new ArrayList<>();
+    private List<String> linkUrls;
 
     @JsonProperty(IndexRecordFieldNames.LINK_PROTOCOL)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> linkProtocols = new ArrayList<>();
+    private List<String> linkProtocols;
 
     @JsonIgnore
     @Singular
-    private Map<String, List<String>> linkByProtocols = new HashMap<>();
+    private final Map<String, List<String>> linkByProtocols = new HashMap<>();
 
     @JsonProperty(IndexRecordFieldNames.RESOLUTION_SCALE_DENOMINATOR)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<Integer> resolutionScaleDenominator = new ArrayList<>();
+    private List<Float> resolutionScaleDenominator;
 
     @JsonProperty(IndexRecordFieldNames.RESOLUTION_DISTANCE)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> resolutionDistance = new ArrayList<>();
+    private List<String> resolutionDistance;
 
     /**
      * <pre>
@@ -425,47 +430,47 @@ public class IndexRecord {
      *         lte: "2017-02-03T14:00:00"
      * </pre>
      */
-    private List<DateRange> resourceTemporalDateRange = new ArrayList<>();
-    private List<DateRange> resourceTemporalExtentDateRange = new ArrayList<>();
+    private List<DateRange> resourceTemporalDateRange;
+    private List<DateRange> resourceTemporalExtentDateRange;
 
     @JsonProperty(IndexRecordFieldNames.RESOURCE_TEMPORAL_EXTENT_DATE_RANGE_DETAILS)
-    private List<DateRangeDetails> resourceTemporalExtentDetails = new ArrayList<>();
-    private List<VerticalRange> resourceVerticalRange = new ArrayList<>();
+    private List<DateRangeDetails> resourceTemporalExtentDetails;
+    private List<VerticalRange> resourceVerticalRange;
 
     @JsonProperty(IndexRecordFieldNames.LOCATION)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> locations = new ArrayList<>();
+    private List<String> locations;
 
     @JsonProperty(IndexRecordFieldNames.HAS_BOUNDING_POLYGON)
     private boolean hasBoundingPolygon;
 
     @JsonProperty(IndexRecordFieldNames.EXTENT_IDENTIFIER)
-    private List<Map<String, String>> extentIdentifier = new ArrayList<>();
+    private List<Map<String, String>> extentIdentifier;
 
     @JsonProperty(IndexRecordFieldNames.EXTENT_DESCRIPTION)
-    private List<Map<String, String>> extentDescription = new ArrayList<>();
+    private List<Map<String, String>> extentDescription;
 
     @JsonProperty(IndexRecordFieldNames.SHAPE_PARSING_ERROR)
-    private List<String> shapeParsingError = new ArrayList<>();
+    private List<String> shapeParsingError;
 
     @JsonProperty(IndexRecordFieldNames.SHAPE)
     @JsonDeserialize(using = NodeTreeAsStringDeserializer.class)
-    private List<String> shapes = new ArrayList<>();
+    private List<String> shapes;
 
     @JsonProperty(IndexRecordFieldNames.GEOM)
     @JsonDeserialize(using = NodeTreeAsStringDeserializer.class)
-    private List<String> geometries = new ArrayList<>();
+    private List<String> geometries;
 
     @JsonProperty(IndexRecordFieldNames.SERVICE_TYPE)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> serviceType = new ArrayList<>();
+    private List<String> serviceType;
 
     @JsonProperty(IndexRecordFieldNames.SERVICE_TYPE_VERSION)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> serviceTypeVersion = new ArrayList<>();
+    private List<String> serviceTypeVersion;
 
     @JsonIgnore
-    @Singular
+    @Singular("codelist")
     private Map<String, ArrayList<Codelist>> codelists = new HashMap<>();
 
     /**
@@ -493,11 +498,11 @@ public class IndexRecord {
      */
     @JsonIgnore
     @Singular("keywordByThesaurus")
-    private Map<String, ArrayList<Keyword>> keywordByThesaurus = new HashMap<>();
+    private final Map<String, ArrayList<Keyword>> keywordByThesaurus = new HashMap<>();
 
     @JsonIgnore
     @Singular("numberOfKeywordByThesaurus")
-    private Map<String, Integer> numberOfKeywordByThesaurus = new HashMap<>();
+    private final Map<String, Integer> numberOfKeywordByThesaurus = new HashMap<>();
 
     /**
      * <pre>
@@ -513,7 +518,7 @@ public class IndexRecord {
      *         }
      * </pre>
      */
-    private Map<String, Thesaurus> allKeywords = new HashMap<>();
+    private final Map<String, Thesaurus> allKeywords = new HashMap<>();
 
     /**
      * <pre>
@@ -535,22 +540,22 @@ public class IndexRecord {
      */
     @JsonIgnore
     @Singular("keywordHierarchyByThesaurus")
-    private Map<String, KeywordHierarchy> keywordHierarchyByThesaurus = new HashMap<>();
+    private final Map<String, KeywordHierarchy> keywordHierarchyByThesaurus = new HashMap<>();
 
     @JsonProperty(IndexRecordFieldNames.SPECIFICATION_CONFORMANCE)
     @Singular("specificationConformance")
-    private List<SpecificationConformance> specificationConformance = new ArrayList<>();
+    private List<SpecificationConformance> specificationConformance;
 
     @JsonProperty(IndexRecordFieldNames.FEATURE_TYPES)
-    private List<FeatureType> featureTypes = new ArrayList<>();
+    private List<FeatureType> featureTypes;
 
     @JsonProperty(IndexRecordFieldNames.HASFEATURECAT)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> hasfeaturecat = new ArrayList<>();
+    private List<String> hasfeaturecat;
 
     @JsonProperty(IndexRecordFieldNames.HASSOURCE)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-    private List<String> hassource = new ArrayList<>();
+    private List<String> hassource;
 
     /**
      * Record to be loaded in the index.
@@ -590,10 +595,10 @@ public class IndexRecord {
 
     @JsonIgnore
     @Singular("operation")
-    private Map<String, ArrayList<Integer>> operations = new HashMap<>();
+    private final Map<String, ArrayList<Integer>> operations = new HashMap<>();
 
     @Singular
-    private Map<String, ArrayList<String>> otherProperties = new HashMap<>();
+    private final Map<String, ArrayList<String>> otherProperties = new HashMap<>();
 
     private static boolean isDateField(String name) {
         return name.endsWith("Date" + IndexRecordFieldNames.FOR_RESOURCE_SUFFIX)
@@ -645,44 +650,52 @@ public class IndexRecord {
         try {
             IndexRecord.class.getDeclaredField(name);
         } catch (NoSuchFieldException e) {
-            if (name.startsWith(IndexRecordFieldNames.OP_PREFIX)) {
-                handleOperationsProperties(name, value);
-            } else if (name.endsWith(IndexRecordFieldNames.ORG_FOR_RESOURCE_SUFFIX)) {
-                handleOrgForResourceProperties(orgForResourceByRole, name, value);
-            } else if (name.endsWith(IndexRecordFieldNames.ORG_SUFFIX)) {
-                handleOrgForResourceProperties(orgForResourceByRole, name, value);
-            } else if (name.contains(IndexRecordFieldNames.ORG_FOR_PREFIX)) {
-                handleOrgForResourceProperties(orgForResourceByRole, name, value);
-            } else if (name.contains(IndexRecordFieldNames.CONTACT_FOR_PREFIX) || name.equals(IndexRecordFieldNames.CONTACT)) {
-                handleContactByRoleProperties(contactByRole, name, value);
-            } else if (name.startsWith(IndexRecordFieldNames.Codelists.PREFIX)) {
-                handleCodelistProperties(name, value);
-            } else if (name.startsWith(IndexRecordFieldNames.CONFORMS_TO_PREFIX)) {
-                handleConformProperties(name, (String) value);
-            } else if (name.startsWith(IndexRecordFieldNames.RECORD_LINK_PREFIX)) {
-                handleRecordLinkProperties(name, value);
-            } else if (name.startsWith(IndexRecordFieldNames.AGG_ASSOCIATED_PREFIX)) {
-                handleListOfUuidProperties(associatedUuidsByType, name, value);
-            } else if (name.startsWith(IndexRecordFieldNames.MEASURE_PREFIX)) {
-                handleListOfUuidProperties(measureFields, name, value);
-            } else if (name.startsWith(IndexRecordFieldNames.LINK_URL_PROTOCOL_PREFIX)) {
-                handleLinkUrlProperties(name, value);
-            } else if (name.startsWith(IndexRecordFieldNames.KEYWORD_BY_TYPE_PREFIX)) {
-                handleKeywordByTypeProperties(keywordByType, name, value);
-            } else if (isKeywordNumberField(name)) {
-                handleKeywordNumberProperties(name, (String) value);
-            } else if (isKeywordHierarchyField(name)) {
-                handleKeywordHierarchyProperties(name, (Map<String, ArrayList<String>>) value);
-            } else if (name.startsWith(IndexRecordFieldNames.KEYWORD_BY_THESAURUS_PREFIX)) {
-                handleKeywordByTypeProperties(keywordByThesaurus, name, value);
-            } else if (name.endsWith(IndexRecordFieldNames.CONSTRAINT_SUFFIX)) {
-                handleConstraintProperties(constraints, name, value);
-            } else if (name.endsWith(IndexRecordFieldNames.USE_LIMITATION_SUFFIX)) {
-                handleConstraintProperties(useLimitations, name, value);
-            } else if (isDateField(name)) {
-                handleDateProperties(name, value);
-            } else {
-                handleOtherProperties(name, value);
+            try {
+                if (name.startsWith(IndexRecordFieldNames.OP_PREFIX)) {
+                    handleOperationsProperties(name, value);
+                } else if (name.endsWith(IndexRecordFieldNames.ORG_FOR_RESOURCE_SUFFIX)) {
+                    handleOrgForResourceProperties(orgForResourceByRole, name, value);
+                } else if (name.endsWith(IndexRecordFieldNames.ORG_SUFFIX)) {
+                    handleOrgForResourceProperties(orgForResourceByRole, name, value);
+                } else if (name.contains(IndexRecordFieldNames.ORG_FOR_PREFIX)) {
+                    handleOrgForResourceProperties(orgForResourceByRole, name, value);
+                } else if (name.contains(IndexRecordFieldNames.CONTACT_FOR_PREFIX) || name.equals(IndexRecordFieldNames.CONTACT)) {
+                    handleContactByRoleProperties(contactByRole, name, value);
+                } else if (name.startsWith(IndexRecordFieldNames.Codelists.PREFIX)) {
+                    handleCodelistProperties(name, value);
+                } else if (name.startsWith(IndexRecordFieldNames.CONFORMS_TO_PREFIX)) {
+                    handleConformProperties(name, value);
+                } else if (name.startsWith(IndexRecordFieldNames.RECORD_LINK_PREFIX)) {
+                    handleRecordLinkProperties(name, value);
+                } else if (name.startsWith(IndexRecordFieldNames.AGG_ASSOCIATED_PREFIX)) {
+                    handleListOfUuidProperties(associatedUuidsByType, name, value);
+                } else if (name.startsWith(IndexRecordFieldNames.MEASURE_PREFIX)) {
+                    handleListOfUuidProperties(measureFields, name, value);
+                } else if (name.startsWith(IndexRecordFieldNames.LINK_URL_PROTOCOL_PREFIX)) {
+                    handleLinkUrlProperties(name, value);
+                } else if (name.startsWith(IndexRecordFieldNames.KEYWORD_BY_TYPE_PREFIX)) {
+                    handleKeywordByTypeProperties(keywordByType, name, value);
+                } else if (isKeywordNumberField(name)) {
+                    handleKeywordNumberProperties(name, value);
+                } else if (isKeywordHierarchyField(name)) {
+                    handleKeywordHierarchyProperties(name, (Map<String, ArrayList<String>>) value);
+                } else if (name.startsWith(IndexRecordFieldNames.KEYWORD_BY_THESAURUS_PREFIX)) {
+                    handleKeywordByTypeProperties(keywordByThesaurus, name, value);
+                } else if (name.endsWith(IndexRecordFieldNames.CONSTRAINT_SUFFIX)) {
+                    handleConstraintProperties(constraints, name, value);
+                } else if (name.endsWith(IndexRecordFieldNames.USE_LIMITATION_SUFFIX)) {
+                    handleConstraintProperties(useLimitations, name, value);
+                } else if (isDateField(name)) {
+                    handleDateProperties(name, value);
+                } else {
+                    handleOtherProperties(name, value);
+                }
+            } catch (Exception fieldException) {
+                // TODO: Ignore ? and return incomplete document
+                System.out.println(String.format(
+                    "Error while handling field %s with value %s for record %s. %s",
+                    name, value, this.getMetadataIdentifier(), e.getMessage()));
+//                throw fieldException;
             }
         }
     }
@@ -745,14 +758,18 @@ public class IndexRecord {
         keywordHierarchyByThesaurus.put(name, new KeywordHierarchy(value.get("default"), value.get("key")));
     }
 
-    private void handleKeywordNumberProperties(String name, String value) {
-        numberOfKeywordByThesaurus.put(name, Integer.parseInt(value));
+    private void handleKeywordNumberProperties(String name, Object value) {
+        if (value instanceof List) {
+            numberOfKeywordByThesaurus.put(name, ((List<Integer>) value).size());   // This should not happen or indicate that a thesaurus is used 2 times in the same record.
+        } else {
+            numberOfKeywordByThesaurus.put(name, Integer.parseInt(value.toString()));
+        }
     }
 
-    private void handleKeywordByTypeProperties(Map<String, ArrayList<Keyword>> keywordByType, String name, Object value) {
-        ArrayList<Keyword> keywordForType = keywordByType.computeIfAbsent(name, k -> new ArrayList<Keyword>());
+    private void handleKeywordByTypeProperties(Map<String, ArrayList<Keyword>> keywordField, String name, Object value) {
+        ArrayList<Keyword> keywordForType = keywordField.computeIfAbsent(name, k -> new ArrayList<Keyword>());
         if (value instanceof List) {
-            keywordForType.addAll(((List<HashMap<String, String>>) value).stream().map(Keyword::new).toList());
+            ((List<HashMap<String, String>>) value).stream().map(Keyword::new).forEach(keywordForType::add);
         }
     }
 
@@ -781,8 +798,8 @@ public class IndexRecord {
         }
     }
 
-    private void handleConformProperties(String name, String value) {
-        conformsTo.put(name, value);
+    private void handleConformProperties(String name, Object value) {
+        conformsTo.put(name, value instanceof Boolean ? ((Boolean) value).toString() : (String) value);
     }
 
     private void handleCodelistProperties(String name, Object value) {

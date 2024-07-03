@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -25,7 +24,7 @@ import java.util.Map;
 public class Overview {
 
     @JsonProperty("nameObject")
-    Map<String, String> name = new HashMap<>();
+    Map<String, String> name;
     private String url;
     private String data;
 }

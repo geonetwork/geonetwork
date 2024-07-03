@@ -246,7 +246,7 @@ class IndexRecordTest {
             assertEquals("2009-10-19", indexRecord.getSpecificationConformance().getFirst().getDate());
             assertEquals("true", indexRecord.getSpecificationConformance().getFirst().getPass());
 
-            assertEquals(true, indexRecord.getConformsTo().get("conformTo_ReglementCEno9762009delaCommissiondu19octobre2009portantmodalitesdapplicationdeladirective20072CEduParlementeuropeenetduConseilencequiconcernelesservicesenreseau"));
+            assertEquals("true", indexRecord.getConformsTo().get("conformTo_ReglementCEno9762009delaCommissiondu19octobre2009portantmodalitesdapplicationdeladirective20072CEduParlementeuropeenetduConseilencequiconcernelesservicesenreseau"));
 
             assertEquals(20, indexRecord.getRecordOperateOn().size());
             assertEquals("ad3eab81-e5de-43fd-b892-91189fdde604", indexRecord.getRecordOperateOn().getFirst());
