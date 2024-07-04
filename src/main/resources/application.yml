@@ -25,8 +25,14 @@ spring:
     gateway:
       mvc:
         routes:
+          - id: geonetwork_proxy_redirect
+            uri: ${geonetwork.openapi.url}
+            predicates:
+              - Path=/geonetwork/proxy
+            filters:
+              - RewritePath=/geonetwork/(?<url>.*), /api/$\{url}
           - id: geonetwork_route
-            uri: http://localhost:8080/geonetwork
+            uri: ${geonetwork.core.url}
             predicates:
               - Path=/geonetwork/**
 management:
