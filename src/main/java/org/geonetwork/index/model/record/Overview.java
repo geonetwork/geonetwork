@@ -4,18 +4,17 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
-
+/** Overview. */
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,8 +22,9 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Overview {
 
-    @JsonProperty("nameObject")
-    Map<String, String> name;
-    private String url;
-    private String data;
+  @JsonProperty("nameObject")
+  Map<String, String> name;
+
+  private String url;
+  private String data;
 }

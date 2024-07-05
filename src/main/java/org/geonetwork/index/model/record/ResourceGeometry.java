@@ -4,16 +4,15 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
+import java.util.List;
 import lombok.Data;
 
-import java.util.List;
-
+/** Resource geometry. */
 @Data
 public class ResourceGeometry {
 
-    private String type;
-    private List<List<Double[]>> coordinates;
+  private String type;
+  private List<List<Double[]>> coordinates;
 }

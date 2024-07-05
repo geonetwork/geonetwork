@@ -4,22 +4,21 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 import lombok.Data;
 
-import java.util.List;
-
+/** Index records. */
 @Data
 @XmlRootElement(name = "indexRecords")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IndexRecords {
 
-    @XmlElement(name = "indexRecord")
-    private List<IndexRecord> indexRecord;
+  @XmlElement(name = "indexRecord")
+  private List<IndexRecord> indexRecord;
 }

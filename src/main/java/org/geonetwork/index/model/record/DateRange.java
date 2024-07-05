@@ -4,14 +4,14 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import lombok.Data;
 
+/** Date range. */
 @Data
 public class DateRange {
 
-    private String gte;
-    private String lte;
+  private String gte;
+  private String lte;
 }

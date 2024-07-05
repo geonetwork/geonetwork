@@ -4,13 +4,14 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
+ * Record online resource link.
+ *
  * <pre>
  *     "recordLink": [
  *     {
@@ -26,15 +27,18 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RecordLink {
 
-    private String type;
-    private Origin origin;
-    private String to;
-    // TODO: Multilingual
-    private String title;
-    private String url;
-    private String associationType;
-    private String initiativeType;
-    public enum Origin {
-        remote, catalog
-    }
+  private String type;
+  private Origin origin;
+  private String to;
+  // TODO: Multilingual
+  private String title;
+  private String url;
+  private String associationType;
+  private String initiativeType;
+
+  /** Origin of the link. */
+  public enum Origin {
+    remote,
+    catalog
+  }
 }

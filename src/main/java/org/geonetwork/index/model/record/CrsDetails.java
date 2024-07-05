@@ -4,15 +4,15 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import lombok.Data;
 
+/** Coordinate reference system. */
 @Data
 public class CrsDetails {
-    private String code;
-    private String codeSpace;
-    private String name;
-    private String url;
+  private String code;
+  private String codeSpace;
+  private String name;
+  private String url;
 }

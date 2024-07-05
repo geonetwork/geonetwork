@@ -1,8 +1,16 @@
 package org.geonetwork.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
@@ -12,12 +20,14 @@ import lombok.*;
 @Entity
 @Table(name = "metadatarating")
 public class Metadatarating {
-    @SequenceGenerator(name = "metadatarating_id_gen", sequenceName = "mapserver_id_seq", allocationSize = 1)
-    @EmbeddedId
-    private MetadataratingId id;
+  @SequenceGenerator(
+      name = "metadatarating_id_gen",
+      sequenceName = "mapserver_id_seq",
+      allocationSize = 1)
+  @EmbeddedId
+  private MetadataratingId id;
 
-    @NotNull
-    @Column(name = "rating", nullable = false)
-    private Integer rating;
-
+  @NotNull
+  @Column(name = "rating", nullable = false)
+  private Integer rating;
 }

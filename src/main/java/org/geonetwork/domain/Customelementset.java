@@ -6,7 +6,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
@@ -16,13 +20,12 @@ import lombok.*;
 @Entity
 @Table(name = "customelementset")
 public class Customelementset {
-    @Id
-    @Column(name = "xpathhashcode", nullable = false)
-    private Integer id;
+  @Id
+  @Column(name = "xpathhashcode", nullable = false)
+  private Integer id;
 
-    @Size(max = 1000)
-    @NotNull
-    @Column(name = "xpath", nullable = false, length = 1000)
-    private String xpath;
-
+  @Size(max = 1000)
+  @NotNull
+  @Column(name = "xpath", nullable = false, length = 1000)
+  private String xpath;
 }

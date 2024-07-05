@@ -3,8 +3,21 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.proxy;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
+import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
+import static org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions.http;
+import static org.springframework.cloud.gateway.server.mvc.predicate.GatewayRequestPredicates.path;
+
+import java.net.URI;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import org.springframework.cloud.gateway.server.mvc.common.MvcUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,70 +28,73 @@ import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 
-import java.net.URI;
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
-
-import static java.util.stream.Collectors.*;
-import static org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions.route;
-import static org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions.http;
-import static org.springframework.cloud.gateway.server.mvc.predicate.GatewayRequestPredicates.path;
-
+/** Configuration for the HTTP proxy. */
 @Configuration
 public class HttpProxyConfiguration {
-    private static final String X_METHOD = "X-METHOD";
+  private static final String X_METHOD = "X-METHOD";
 
-    private final Set<HttpMethod> allowedHttpMethods =
-        Set.of(HttpMethod.GET, HttpMethod.POST);
+  private final Set<HttpMethod> allowedHttpMethods = Set.of(HttpMethod.GET, HttpMethod.POST);
 
-    private final Set<Integer> allowedHttpPorts =
-        Set.of(-1, 80, 443);
+  private final Set<Integer> allowedHttpPorts = Set.of(-1, 80, 443);
 
+  @Bean
+  RouterFunction<ServerResponse> universalProxy() {
+    return route("geonetwork_proxy")
+        .route(path("/api/proxy"), http())
+        .before(
+            (ServerRequest serverRequest) -> {
+              String method = serverRequest.headers().firstHeader(X_METHOD);
+              if (method == null) {
+                method = serverRequest.method().name();
+              }
 
-    @Bean
-    RouterFunction<ServerResponse> universalProxy() {
-        return route("geonetwork_proxy")
-            .route(path("/api/proxy"), http())
-            .before((ServerRequest serverRequest) -> {
-                String method = serverRequest.headers().firstHeader(X_METHOD);
-                if (method == null) {
-                    method = serverRequest.method().name();
-                }
+              HttpMethod httpMethod = HttpMethod.valueOf(method.toUpperCase());
+              if (!allowedHttpMethods.contains(httpMethod)) {
+                throw new HttpClientErrorException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid method value: " + method + " in " + X_METHOD + " header.");
+              }
 
-                HttpMethod httpMethod = HttpMethod.valueOf(method.toUpperCase());
-                if (!allowedHttpMethods.contains(httpMethod)) {
-                    throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Invalid method value: " + method + " in " + X_METHOD + " header.");
-                }
+              String uriString =
+                  serverRequest
+                      .param("url")
+                      .orElseThrow(
+                          () ->
+                              new HttpClientErrorException(
+                                  HttpStatus.BAD_REQUEST, "Missing url parameter"));
+              URI uri = URI.create(uriString);
 
-                String uriString = serverRequest.param("url")
-                    .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing url parameter"));
-                URI uri = URI.create(uriString);
+              if (!allowedHttpPorts.contains(uri.getPort())) {
+                throw new HttpClientErrorException(
+                    HttpStatus.BAD_REQUEST, "Invalid port value: " + uri.getPort());
+              }
 
-                if (!allowedHttpPorts.contains(uri.getPort())) {
-                    throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Invalid port value: " + uri.getPort());
-                }
-
-                ServerRequest request = ServerRequest
-                    .from(serverRequest)
-                    .params(stringStringMultiValueMap -> {
-                        stringStringMultiValueMap.remove("url");
-                        if (uri.getQuery() != null) {
-                            stringStringMultiValueMap.putAll(Arrays.stream(uri.getQuery().split("&"))
-                                .map(param -> {
-                                    String[] parts = param.split("=");
-                                    return new AbstractMap.SimpleEntry<>(parts[0], parts[1]);
-                                })
-                                .collect(groupingBy(Map.Entry::getKey, mapping(Map.Entry::getValue, toList()))));
-                        }
-                    })
-                    .method(httpMethod)
-                    .uri(uri)
-                    .build();
-                MvcUtils.setRequestUrl(request, uri);
-                return request;
+              ServerRequest request =
+                  ServerRequest.from(serverRequest)
+                      .params(
+                          stringStringMultiValueMap -> {
+                            stringStringMultiValueMap.remove("url");
+                            if (uri.getQuery() != null) {
+                              stringStringMultiValueMap.putAll(
+                                  Arrays.stream(uri.getQuery().split("&"))
+                                      .map(
+                                          param -> {
+                                            String[] parts = param.split("=");
+                                            return new AbstractMap.SimpleEntry<>(
+                                                parts[0], parts[1]);
+                                          })
+                                      .collect(
+                                          groupingBy(
+                                              Map.Entry::getKey,
+                                              mapping(Map.Entry::getValue, toList()))));
+                            }
+                          })
+                      .method(httpMethod)
+                      .uri(uri)
+                      .build();
+              MvcUtils.setRequestUrl(request, uri);
+              return request;
             })
-            .build();
-    }
+        .build();
+  }
 }

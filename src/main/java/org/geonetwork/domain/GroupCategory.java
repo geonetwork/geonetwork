@@ -4,7 +4,11 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
@@ -14,8 +18,10 @@ import lombok.*;
 @Entity
 @Table(name = "group_category")
 public class GroupCategory {
-    @SequenceGenerator(name = "group_category_id_gen", sequenceName = "address_id_seq", allocationSize = 1)
-    @EmbeddedId
-    private GroupCategoryId id;
-
+  @SequenceGenerator(
+      name = "group_category_id_gen",
+      sequenceName = "address_id_seq",
+      allocationSize = 1)
+  @EmbeddedId
+  private GroupCategoryId id;
 }

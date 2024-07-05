@@ -4,7 +4,6 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import lombok.AllArgsConstructor;
@@ -12,12 +11,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/** Code list value. */
 @Data
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class CodeListValue {
-    String label;
-    String definition;
-    String code;
+  String label;
+  String definition;
+  String code;
 }

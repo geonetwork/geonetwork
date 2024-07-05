@@ -3,11 +3,14 @@ package org.geonetwork.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.hibernate.Hibernate;
-
 import java.io.Serializable;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
 
 @Builder
 @AllArgsConstructor
@@ -16,27 +19,27 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class UsersearchGroupId implements Serializable {
-    private static final long serialVersionUID = -8651910760872647896L;
-    @NotNull
-    @Column(name = "usersearch_id", nullable = false)
-    private Integer usersearchId;
+  private static final long serialVersionUID = -8651910760872647896L;
 
-    @NotNull
-    @Column(name = "group_id", nullable = false)
-    private Integer groupId;
+  @NotNull
+  @Column(name = "usersearch_id", nullable = false)
+  private Integer usersearchId;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        UsersearchGroupId entity = (UsersearchGroupId) o;
-        return Objects.equals(this.groupId, entity.groupId) &&
-            Objects.equals(this.usersearchId, entity.usersearchId);
-    }
+  @NotNull
+  @Column(name = "group_id", nullable = false)
+  private Integer groupId;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(groupId, usersearchId);
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    UsersearchGroupId entity = (UsersearchGroupId) o;
+    return Objects.equals(this.groupId, entity.groupId)
+        && Objects.equals(this.usersearchId, entity.usersearchId);
+  }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(groupId, usersearchId);
+  }
 }

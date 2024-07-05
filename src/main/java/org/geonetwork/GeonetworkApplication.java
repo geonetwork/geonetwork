@@ -9,11 +9,11 @@ package org.geonetwork;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/** The main class of the application. */
 @SpringBootApplication
 public class GeonetworkApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(GeonetworkApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(GeonetworkApplication.class, args);
+  }
 }

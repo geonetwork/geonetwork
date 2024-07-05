@@ -4,19 +4,19 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.Map;
-
 /**
+ * Process step.
+ *
  * <pre>
  *     "processSteps": [
  *     {
@@ -42,15 +42,15 @@ import java.util.Map;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProcessStep {
-    @JsonProperty(IndexRecordFieldNames.ProcessStepField.DESCRIPTION)
-    Map<String, String> description;
+  @JsonProperty(IndexRecordFieldNames.ProcessStepField.DESCRIPTION)
+  Map<String, String> description;
 
-    @JsonProperty(IndexRecordFieldNames.ProcessStepField.DATE)
-    String date;
+  @JsonProperty(IndexRecordFieldNames.ProcessStepField.DATE)
+  String date;
 
-    @JsonProperty(IndexRecordFieldNames.ProcessStepField.SOURCE)
-    List<ProcessStepSource> source;
+  @JsonProperty(IndexRecordFieldNames.ProcessStepField.SOURCE)
+  List<ProcessStepSource> source;
 
-    @JsonProperty(IndexRecordFieldNames.ProcessStepField.PROCESSOR)
-    List<Contact> processor;
+  @JsonProperty(IndexRecordFieldNames.ProcessStepField.PROCESSOR)
+  List<Contact> processor;
 }

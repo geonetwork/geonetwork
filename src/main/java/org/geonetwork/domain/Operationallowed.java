@@ -3,7 +3,11 @@ package org.geonetwork.domain;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
@@ -13,6 +17,5 @@ import lombok.*;
 @Entity
 @Table(name = "operationallowed")
 public class Operationallowed {
-    @EmbeddedId
-    private OperationallowedId id;
+  @EmbeddedId private OperationallowedId id;
 }

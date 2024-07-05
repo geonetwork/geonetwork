@@ -3,13 +3,15 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.index.model.record;
 
+package org.geonetwork.index.model.record;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
+ *
+ *
  * <pre>
  *     "measure": [
  *     {
@@ -23,10 +25,10 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Measure {
-    private String name;
-    private String description;
-    private String date;
-    private String value;
-    private String type;
-    private String unit;
+  private String name;
+  private String description;
+  private String date;
+  private String value;
+  private String type;
+  private String unit;
 }

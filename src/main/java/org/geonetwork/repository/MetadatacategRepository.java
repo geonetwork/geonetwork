@@ -4,5 +4,4 @@ import org.geonetwork.domain.Metadatacateg;
 import org.geonetwork.domain.MetadatacategId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MetadatacategRepository extends JpaRepository<Metadatacateg, MetadatacategId> {
-}
+public interface MetadatacategRepository extends JpaRepository<Metadatacateg, MetadatacategId> {}

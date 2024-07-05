@@ -4,34 +4,33 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
+
+import static org.geonetwork.index.model.record.IndexRecordFieldNames.ORGANISATION_NAME;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
 
-import static org.geonetwork.index.model.record.IndexRecordFieldNames.ORGANISATION_NAME;
-
-
+/** Contact. */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Contact {
 
-    private String role;
-    private String individual;
+  private String role;
+  private String individual;
 
-    @JsonProperty(ORGANISATION_NAME)
-    private Map<String, String> organisation = new HashMap<>();
-    private String email;
-    private String logo;
-    private String phone;
-    private String address;
-    private String website;
-    private String position;
+  @JsonProperty(ORGANISATION_NAME)
+  private Map<String, String> organisation = new HashMap<>();
+
+  private String email;
+  private String logo;
+  private String phone;
+  private String address;
+  private String website;
+  private String position;
 }

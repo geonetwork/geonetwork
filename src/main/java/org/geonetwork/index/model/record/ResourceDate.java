@@ -4,16 +4,16 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+/** Resource date. */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResourceDate {
 
-    private String type;
-    private String date;
+  private String type;
+  private String date;
 }

@@ -11,11 +11,11 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-
 @JacksonXmlRootElement(localName = "Catalog1AllOfItemTypeDto")
 @XmlRootElement(name = "Catalog1AllOfItemTypeDto")
 @XmlAccessorType(XmlAccessType.FIELD)
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-07-03T16:51:11.791047085+02:00[Europe/Paris]", comments = "Generator version: 7.6.0")
-public interface Catalog1AllOfItemTypeDto {
-}
+@Generated(
+    value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2024-07-03T16:51:11.791047085+02:00[Europe/Paris]",
+    comments = "Generator version: 7.6.0")
+public interface Catalog1AllOfItemTypeDto {}

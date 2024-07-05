@@ -4,18 +4,17 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
-
+import lombok.Data;
 
 /**
+ *
+ *
  * <pre>
  *     {
  *       "protocol": "WWW:LINK",
@@ -40,20 +39,22 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Link {
 
-    private String protocol;
-    @JsonProperty(IndexRecordFieldNames.LinkField.URL)
-    private Map<String, String> url = new HashMap<>();
+  private String protocol;
 
-    @JsonProperty(IndexRecordFieldNames.LinkField.NAME)
-    private Map<String, String> name = new HashMap<>();
+  @JsonProperty(IndexRecordFieldNames.LinkField.URL)
+  private Map<String, String> url = new HashMap<>();
 
-    @JsonProperty(IndexRecordFieldNames.LinkField.DESCRIPTION)
-    private Map<String, String> description = new HashMap<>();
-    private String function;
-    private String applicationProfile;
-    private String group;
-    private String mimeType;
-    private String nilReason;
-    private String hash;
-    private String idx;
+  @JsonProperty(IndexRecordFieldNames.LinkField.NAME)
+  private Map<String, String> name = new HashMap<>();
+
+  @JsonProperty(IndexRecordFieldNames.LinkField.DESCRIPTION)
+  private Map<String, String> description = new HashMap<>();
+
+  private String function;
+  private String applicationProfile;
+  private String group;
+  private String mimeType;
+  private String nilReason;
+  private String hash;
+  private String idx;
 }

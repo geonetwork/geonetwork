@@ -5,7 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
@@ -15,12 +19,11 @@ import lombok.*;
 @Entity
 @Table(name = "settings_ui")
 public class SettingsUi {
-    @Id
-    @Size(max = 255)
-    @Column(name = "id", nullable = false)
-    private String id;
+  @Id
+  @Size(max = 255)
+  @Column(name = "id", nullable = false)
+  private String id;
 
-    @Column(name = "configuration", length = Integer.MAX_VALUE)
-    private String configuration;
-
+  @Column(name = "configuration", length = Integer.MAX_VALUE)
+  private String configuration;
 }

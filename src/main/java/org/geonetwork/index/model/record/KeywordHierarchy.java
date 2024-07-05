@@ -4,24 +4,24 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-
+/** Keyword hierarchy. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KeywordHierarchy {
-    @JsonProperty("default")
-    ArrayList<String> defaultTexts;
-    @JsonProperty("key")
-    ArrayList<String> keys;
+  @JsonProperty("default")
+  ArrayList<String> defaultTexts;
+
+  @JsonProperty("key")
+  ArrayList<String> keys;
 }

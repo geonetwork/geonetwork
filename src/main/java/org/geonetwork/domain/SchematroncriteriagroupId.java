@@ -4,11 +4,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import org.hibernate.Hibernate;
-
 import java.io.Serializable;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
 
 @Builder
 @AllArgsConstructor
@@ -17,28 +20,28 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class SchematroncriteriagroupId implements Serializable {
-    private static final long serialVersionUID = 7178671096237241606L;
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "name", nullable = false)
-    private String name;
+  private static final long serialVersionUID = 7178671096237241606L;
 
-    @NotNull
-    @Column(name = "schematronid", nullable = false)
-    private Integer schematronid;
+  @Size(max = 255)
+  @NotNull
+  @Column(name = "name", nullable = false)
+  private String name;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        SchematroncriteriagroupId entity = (SchematroncriteriagroupId) o;
-        return Objects.equals(this.schematronid, entity.schematronid) &&
-            Objects.equals(this.name, entity.name);
-    }
+  @NotNull
+  @Column(name = "schematronid", nullable = false)
+  private Integer schematronid;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(schematronid, name);
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    SchematroncriteriagroupId entity = (SchematroncriteriagroupId) o;
+    return Objects.equals(this.schematronid, entity.schematronid)
+        && Objects.equals(this.name, entity.name);
+  }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(schematronid, name);
+  }
 }

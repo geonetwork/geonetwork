@@ -4,9 +4,10 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
+/** Index document type. */
 public enum IndexDocumentType {
-    metadata, features
+  metadata,
+  features
 }

@@ -4,14 +4,14 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import lombok.Data;
 
+/** Vertical range. */
 @Data
 public class VerticalRange {
-    private Integer gte;
-    private Integer lte;
-    private String unit;
+  private Integer gte;
+  private Integer lte;
+  private String unit;
 }

@@ -3,11 +3,14 @@ package org.geonetwork.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.hibernate.Hibernate;
-
 import java.io.Serializable;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
 
 @Builder
 @AllArgsConstructor
@@ -16,32 +19,32 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class UsergroupId implements Serializable {
-    private static final long serialVersionUID = 539309035788142295L;
-    @NotNull
-    @Column(name = "groupid", nullable = false)
-    private Integer groupid;
+  private static final long serialVersionUID = 539309035788142295L;
 
-    @NotNull
-    @Column(name = "profile", nullable = false)
-    private Integer profile;
+  @NotNull
+  @Column(name = "groupid", nullable = false)
+  private Integer groupid;
 
-    @NotNull
-    @Column(name = "userid", nullable = false)
-    private Integer userid;
+  @NotNull
+  @Column(name = "profile", nullable = false)
+  private Integer profile;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        UsergroupId entity = (UsergroupId) o;
-        return Objects.equals(this.groupid, entity.groupid) &&
-            Objects.equals(this.profile, entity.profile) &&
-            Objects.equals(this.userid, entity.userid);
-    }
+  @NotNull
+  @Column(name = "userid", nullable = false)
+  private Integer userid;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(groupid, profile, userid);
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    UsergroupId entity = (UsergroupId) o;
+    return Objects.equals(this.groupid, entity.groupid)
+        && Objects.equals(this.profile, entity.profile)
+        && Objects.equals(this.userid, entity.userid);
+  }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(groupid, profile, userid);
+  }
 }

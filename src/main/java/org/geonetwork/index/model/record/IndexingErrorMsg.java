@@ -4,37 +4,26 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Map;
-
-
 /**
- * "indexingErrorMsg": [
- * {
- * "string": "indexingErrorMsg-keywordNotFoundInThesaurus",
- * "type": "warning",
- * "values": {
- * "keyword": "Open Data",
- * "thesaurus": "geonetwork.thesaurus.external.theme.infraSIG"
- * }
- * }
- * ],
+ * "indexingErrorMsg": [ { "string": "indexingErrorMsg-keywordNotFoundInThesaurus", "type":
+ * "warning", "values": { "keyword": "Open Data", "thesaurus":
+ * "geonetwork.thesaurus.external.theme.infraSIG" } } ],
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class indexingErrorMsg {
-    String string;
-    String type;
-    @JsonAnySetter
-    Map<String, String> values;
+public class IndexingErrorMsg {
+  String string;
+  String type;
+  @JsonAnySetter Map<String, String> values;
 }

@@ -4,24 +4,23 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
+import java.nio.file.Path;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.nio.file.Path;
-
+/** Index. */
 @Getter
 @Setter
 @ToString
 public class Index {
 
-    private String name;
-    private IndexType type;
+  private String name;
+  private IndexType type;
 
-    Path getConfigFile() {
-        return null;
-    }
+  Path getConfigFile() {
+    return null;
+  }
 }

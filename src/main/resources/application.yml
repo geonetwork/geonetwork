@@ -15,12 +15,17 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:h2:mem:gn5
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
+#    url: jdbc:postgresql://localhost:5432/gn
+#    driverClassName: org.postgresql.Driver
+#    username: www-data
+#    password: www-data
+      url: jdbc:h2:mem:gn5
+      driverClassName: org.h2.Driver
+      username: sa
+      password: password
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+      database-platform: org.hibernate.dialect.H2Dialect
   cloud:
     gateway:
       mvc:

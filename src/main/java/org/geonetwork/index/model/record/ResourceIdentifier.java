@@ -4,17 +4,17 @@
  * available at the root application directory.
  */
 
-
 package org.geonetwork.index.model.record;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+/** Resource identifier. */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResourceIdentifier {
 
-    String code;
-    String codeSpace;
-    String link;
+  String code;
+  String codeSpace;
+  String link;
 }
