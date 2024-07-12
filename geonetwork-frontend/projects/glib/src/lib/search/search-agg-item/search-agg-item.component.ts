@@ -42,7 +42,6 @@ export class SearchAggItemComponent implements OnInit {
   layout = input.required<SearchAggLayout>();
   aggregationConfig = input.required<AggregationsAggregationContainer>();
 
-  checked = signal(false);
   icon = computed(() => {
     const decorator = this.aggregationConfig().meta?.['decorator'];
     if (decorator && decorator.type === 'icon') {
@@ -50,6 +49,7 @@ export class SearchAggItemComponent implements OnInit {
     }
     return '';
   });
+
   image = computed(() => {
     const decorator = this.aggregationConfig().meta?.['decorator'];
     if (decorator && decorator.type === 'img') {
@@ -57,27 +57,27 @@ export class SearchAggItemComponent implements OnInit {
     }
     return '';
   });
+
   onAggItemChange = output<SearchFilterValue>();
   searchService = inject(SearchService);
   search: SearchStoreType;
-  isActive = computed(
-    () =>
-      this.search.isFilterActive(this.field(), this.bucket().key) ===
-      SearchFilterValueState.ON
-  );
+
+  checked = false;
+  isActive = computed(() => {
+    const status = this.search.isFilterActive(this.field(), this.bucket().key) ===
+    SearchFilterValueState.ON
+    this.checked = status;
+    return status;
+  });
   protected readonly SearchAggLayout = SearchAggLayout;
 
   ngOnInit() {
     this.search = this.searchService.getSearch(this.scope());
-    this.checked.set(
-      this.search.isFilterActive(this.field(), this.bucket().key) ===
-        SearchFilterValueState.ON
-    );
   }
 
   handleCheck(event: any) {
     this.onAggItemChange.emit({
-      [this.bucket().key]: this.checked()
+      [this.bucket().key]: this.checked
         ? SearchFilterValueState.ON
         : SearchFilterValueState.OFF,
     });
