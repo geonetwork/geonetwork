@@ -436,39 +436,29 @@
           </execution>
         </executions>
       </plugin>
-  -->
-
-      <!--      <plugin>
-        <groupId>org.openapitools</groupId>
-        <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>7.7.0</version>
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
+            <id>copy-frontend</id>
+            <phase>process-resources</phase>
             <goals>
-              <goal>generate</goal>
+              <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/src/test/resources/ogcprocesses_openapi_spec/ogcapi-processes-1.yaml</inputSpec>
-              <generatorName>spring</generatorName>
-              <generateAliasAsModel>true</generateAliasAsModel>
-              <modelNamePrefix>OgcApiProcesses</modelNamePrefix>
-              <modelNameSuffix>Dto</modelNameSuffix>
-              <skipValidateSpec>true</skipValidateSpec>
-              <configOptions>
-                <sourceFolder>src/gen/java/main</sourceFolder>
-                <useSpringBoot3>true</useSpringBoot3>
-                <generateBuilders>true</generateBuilders>
-                <annotationLibrary>swagger2</annotationLibrary>
-                <withXml>true</withXml>
-                <useOptional>false</useOptional>
-                <apiPackage>org.geonetwork.ogcapi.processes.generated</apiPackage>
-                <modelPackage>org.geonetwork.ogcapi.processes.generated.model</modelPackage>
-              </configOptions>
-              <additionalProperties></additionalProperties>
+              <outputDirectory>${project.build.outputDirectory}/public</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/geonetwork-frontend/dist/gapp/browser</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
             </configuration>
           </execution>
         </executions>
-      </plugin>-->
+      </plugin>
     </plugins>
   </build>
 
