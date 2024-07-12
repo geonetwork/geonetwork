@@ -3,7 +3,6 @@
     <p-chip
       (click)="switchValue()"
       class="cursor-pointer flex items-center pl-0 pr-2 m-2"
-      [removable]="isActive()"
     >
         <span
           [class]="{'ml-2': true, 'font-bold': isActive()}">
@@ -38,8 +37,9 @@
     <div>
       <p-checkbox
         [(ngModel)]="checked"
+        [value]="isActive()"
         [binary]="true"
-        (onChange)="handleCheck($event)"
+        (ngModelChange)="handleCheck($event)"
         [label]="bucket().key + ' (' + bucket().doc_count + ')'"/>
     </div>
   }

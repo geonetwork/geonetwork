@@ -115,7 +115,6 @@ export const SearchStore = signalStore(
                       SearchAggRefreshPolicy.NO_REFRESH
                   )
                 );
-                console.log(aggregationToKeep);
                 const aggregation = {
                   ...response.aggregations,
                   ...aggregationToKeep,
