@@ -1,0 +1,74 @@
+<div [aggregations]="aggregationConfig"
+     class="p-4"
+     gSearchContext="main">
+  <header>
+    <div class="text-4xl">My GeoNetwork</div>
+  </header>
+
+  <div class="relative">
+    <div class="sticky top-0 z-20">
+      <div class="py-6 px-10 bg-slate-50/30 backdrop-blur-sm">
+        <p-inputGroup styleClass="pb-6">
+          <input
+            gSearchQuerySetter="main"
+            pInputText
+            placeholder="Search ..."/>
+          <button icon="fa fa-search" pButton></button>
+        </p-inputGroup>
+
+        <div class="flex">
+          <div class="basis-3/4">
+            <g-search-agg [layout]="SearchAggLayout.CHIP"
+                          aggregation="resourceType"
+                          scope="main"/>
+          </div>
+          <div class="basis-1/4">
+
+            <button class="float-end"
+                    gSearchQueryReset="main"
+                    icon="fa fa-times"
+                    label="Clear" pButton></button>
+
+            <p-button
+              (onClick)="themeSidebarSelector.set(!themeSidebarSelector())"
+              class="mr-2 float-end"
+              icon="fa fa-filter"
+              label="Focus"
+              type="button"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <p-sidebar [(visible)]="themeSidebarSelector" position="right">
+      <h3>Focus</h3>
+
+      <g-search-agg aggregation="topic"
+                    scope="main"/>
+    </p-sidebar>
+
+
+    <div class="flex flex-row">
+      <div class="basis-1/4">
+        <g-search-agg aggregation="cl_maintenanceAndUpdateFrequency.key" scope="main"/>
+        <!--        <g-search-agg scope="main" aggregation="resolutionScaleDenominator"/>-->
+        <g-search-agg aggregation="tag" scope="main"/>
+      </div>
+      <div class="basis-3/4">
+        <g-search-paging scope='main'/>
+        <g-search-results scope="main"/>
+        <g-search-paging-more-button scope="main"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-4xl border-t-4 mt-10 py-5">Another search</div>
+
+  <ng-container gSearchContext="dada">
+    <g-search-input scope="dada"/>
+    <g-search-results scope="dada"/>
+  </ng-container>
+
+  <p-scrollTop/>
+</div>

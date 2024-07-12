@@ -1,0 +1,46 @@
+@switch (layout()) {
+  @case (SearchAggLayout.CHIP) {
+    <p-chip
+      (click)="switchValue()"
+      class="cursor-pointer flex items-center pl-0 pr-2 m-2"
+      [removable]="isActive()"
+    >
+        <span
+          [class]="{'ml-2': true, 'font-bold': isActive()}">
+          <i class="{{ icon() }}"></i>
+          {{ bucket().key + ' (' + bucket().doc_count + ')' }}
+        </span>
+    </p-chip>
+  }
+  @case (SearchAggLayout.CARD) {
+    <p-card [header]="bucket().key"
+            [subheader]="bucket().doc_count + ' resources'"
+            class="cursor-pointer w-full m-2"
+            (click)="switchValue()"
+            [styleClass]="isActive() ? 'border-4 border-blue-500': ''"
+    >
+      <ng-template pTemplate="header">
+        @if (icon()) {
+          <i class="{{ icon() }}"></i>
+        }
+        @if (image()) {
+          <div class="w-ful">
+            <img alt=""
+                 class="w-full h-40 rounded-t-md"
+                 [class.saturate-200]="isActive()"
+                 [src]="image()"/>
+          </div>
+        }
+      </ng-template>
+    </p-card>
+  }
+  @default {
+    <div>
+      <p-checkbox
+        [(ngModel)]="checked"
+        [binary]="true"
+        (onChange)="handleCheck($event)"
+        [label]="bucket().key + ' (' + bucket().doc_count + ')'"/>
+    </div>
+  }
+}

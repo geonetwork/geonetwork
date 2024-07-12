@@ -1,0 +1,19 @@
+@import '@fortawesome/fontawesome-free/css/all.css' layer(fontawesome);
+
+@import 'tailwindcss/base.css' layer(tw-base);
+@import 'tailwindcss/components.css' layer(tw-components);
+@import 'tailwindcss/utilities.css' layer(tw-utilities);
+
+@import 'primeng/resources/primeng.css' layer(primeng);
+@import 'primeng/resources/themes/aura-light-blue/theme.css' layer(primeng-theme);
+//@import "primeng/resources/themes/aura-dark-cyan/theme.css" layer(primeng-theme);
+//@import "primeng/resources/themes/bootstrap4-light-purple/theme.css" layer(primeng-theme);
+
+//@layer reset {
+//  button,
+//  input {
+//    /* CSS to Reset */
+//  }
+//}
+
+@layer reset, fontawesome, tw-base, primeng-theme, primeng, tw-utilities, tw-components;

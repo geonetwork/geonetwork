@@ -1,0 +1,14 @@
+@if (agg()) {
+  <div class="font-bold mb-2 border-b-2">{{ aggregation() }}</div>
+
+  <div [ngClass]="cssClass()">
+    @for (bucket of agg().buckets; track bucket.key) {
+      <g-search-agg-item [scope]="scope"
+                         [bucket]="bucket"
+                         [field]="searchField"
+                         [layout]="currentLayout()"
+                         [aggregationConfig]="aggregationConfig"
+                         (onAggItemChange)="filter($event)"/>
+    }
+  </div>
+}
