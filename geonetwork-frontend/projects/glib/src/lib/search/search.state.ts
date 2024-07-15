@@ -158,7 +158,16 @@ export const SearchStore = signalStore(
         filters: { ...filters },
       }));
     },
-    removeFilter(field: string, value: string) {
+    removeFilter(field: string) {
+      const filters = store.filters();
+      delete filters[field];
+      patchState(store, state => ({
+        from: 0,
+        size: store.pageSize(),
+        filters: { ...filters },
+      }));
+    },
+    removeFilterValue(field: string, value: string) {
       const filters = store.filters();
       const existingFilter = filters[field];
       if (existingFilter) {

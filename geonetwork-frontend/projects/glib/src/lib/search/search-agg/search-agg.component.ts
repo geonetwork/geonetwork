@@ -19,12 +19,16 @@ import {
   SearchFilterValue,
   SearchFilterValueState,
 } from '../search.state.model';
+import { ChipModule } from 'primeng/chip';
+import { SearchModule } from '../search.module';
+import {SearchAggMultiselectComponent} from "../search-agg-multiselect/search-agg-multiselect.component";
 
 export enum SearchAggLayout {
   CHECKBOX = 'checkbox',
   TRISTATE = 'tristate',
   CHIP = 'chip',
   CARD = 'card',
+  MULTISELECT = 'multiselect',
 }
 
 type SearchAggLayoutValues = keyof typeof SearchAggLayout;
@@ -40,14 +44,18 @@ type SearchAggLayoutValues = keyof typeof SearchAggLayout;
     TriStateCheckboxModule,
     SearchAggItemComponent,
     NgClass,
+    ChipModule,
+    SearchModule,
+    SearchModule,
+    SearchAggMultiselectComponent,
   ],
   templateUrl: './search-agg.component.html',
   styleUrl: './search-agg.component.css',
 })
 export class SearchAggComponent implements OnInit {
   scope = inject(new HostAttributeToken('scope'));
-  searchService = inject(SearchService);
-  search: SearchStoreType;
+  #searchService = inject(SearchService);
+  #search: SearchStoreType;
 
   aggregation = input.required<string>();
   layout = input<SearchAggLayout>();
@@ -60,8 +68,11 @@ export class SearchAggComponent implements OnInit {
         return 'mb-6';
     }
   });
+
   searchField: string = '';
+
   aggregationConfig: AggregationsAggregationContainer;
+
   currentLayout = computed(() => {
     return (
       this.layout() ||
@@ -69,22 +80,24 @@ export class SearchAggComponent implements OnInit {
       SearchAggLayout.CHECKBOX
     );
   });
+
   agg = computed(() => {
-    const aggregationResponse = this.search.aggregation()?.[this.aggregation()];
+    const aggregationResponse =
+      this.#search.aggregation()?.[this.aggregation()];
     if (aggregationResponse === undefined) {
       console.warn(
-        `${this.aggregation()} not found in search aggregations. Add this field to the search aggregation configuration for context ${this.search.id()}.`
+        `${this.aggregation()} not found in search aggregations. Add this field to the search aggregation configuration for context ${this.#search.id()}.`
       );
     }
     return aggregationResponse;
   });
 
   ngOnInit() {
-    this.search = this.searchService.getSearch(this.scope);
-    this.aggregationConfig = this.search.getAggregationConfig(
+    this.#search = this.#searchService.getSearch(this.scope);
+    this.aggregationConfig = this.#search.getAggregationConfig(
       this.aggregation()
     );
-    this.searchField = this.search.getAggregationSearchField(
+    this.searchField = this.#search.getAggregationSearchField(
       this.aggregation()
     );
   }
@@ -94,9 +107,9 @@ export class SearchAggComponent implements OnInit {
     const state = filterValue[value];
     // TODO: NOT and tri-state checkbox?
     if (state == SearchFilterValueState.OFF || state === null)
-      this.search.removeFilter(this.searchField, value);
+      this.#search.removeFilterValue(this.searchField, value);
     else
-      this.search.addFilter({
+      this.#search.addFilter({
         field: this.searchField,
         values: {
           [value]: state,
@@ -104,4 +117,6 @@ export class SearchAggComponent implements OnInit {
         operator: SearchFilterOperator.OR,
       });
   }
+
+  protected readonly SearchAggLayout = SearchAggLayout;
 }
