@@ -115,6 +115,18 @@ export class AppComponent {
         orderByTranslation: true,
       },
     },
+    organisationForResource: {
+      terms: {
+        field: "OrgForResourceObject.default",
+        include: ".*",
+        size: 50,
+        order: { _key: 'asc' }
+      },
+      meta: {
+        layout: SearchAggLayout.MULTISELECT,
+        refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
+      }
+    },
     resolutionScaleDenominator: {
       histogram: {
         field: 'resolutionScaleDenominator',

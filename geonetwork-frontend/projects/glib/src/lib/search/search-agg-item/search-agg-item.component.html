@@ -2,11 +2,14 @@
   @case (SearchAggLayout.CHIP) {
     <p-chip
       (click)="switchValue()"
+      (keydown)="switchValue()"
       class="cursor-pointer flex items-center pl-0 pr-2 m-2"
     >
         <span
           [class]="{'ml-2': true, 'font-bold': isActive()}">
-          <i class="{{ icon() }}"></i>
+          <g-search-agg-item-decorator [bucket]="bucket()"
+                             [aggregationConfig]="aggregationConfig()"
+                             [isActive]="isActive()"/>
           {{ bucket().key + ' (' + bucket().doc_count + ')' }}
         </span>
     </p-chip>
@@ -16,20 +19,13 @@
             [subheader]="bucket().doc_count + ' resources'"
             class="cursor-pointer w-full m-2"
             (click)="switchValue()"
+            (keydown)="switchValue()"
             [styleClass]="isActive() ? 'border-4 border-blue-500': ''"
     >
       <ng-template pTemplate="header">
-        @if (icon()) {
-          <i class="{{ icon() }}"></i>
-        }
-        @if (image()) {
-          <div class="w-ful">
-            <img alt=""
-                 class="w-full h-40 rounded-t-md"
-                 [class.saturate-200]="isActive()"
-                 [src]="image()"/>
-          </div>
-        }
+        <g-search-agg-item-decorator [bucket]="bucket()"
+                                     [aggregationConfig]="aggregationConfig()"
+                                     [isActive]="isActive()"/>
       </ng-template>
     </p-card>
   }

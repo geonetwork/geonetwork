@@ -5,7 +5,6 @@ import {
   input,
   OnInit,
   output,
-  signal,
 } from '@angular/core';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +19,7 @@ import {
   SearchFilterValueState,
 } from '../search.state.model';
 import { CardModule } from 'primeng/card';
+import {SearchAggItemDecoratorComponent} from "../search-agg-item-decorator/search-agg-item-decorator.component";
 
 @Component({
   selector: 'g-search-agg-item',
@@ -31,6 +31,7 @@ import { CardModule } from 'primeng/card';
     NgClass,
     CardModule,
     NgOptimizedImage,
+    SearchAggItemDecoratorComponent,
   ],
   templateUrl: './search-agg-item.component.html',
   styleUrl: './search-agg-item.component.css',
@@ -42,37 +43,22 @@ export class SearchAggItemComponent implements OnInit {
   layout = input.required<SearchAggLayout>();
   aggregationConfig = input.required<AggregationsAggregationContainer>();
 
-  icon = computed(() => {
-    const decorator = this.aggregationConfig().meta?.['decorator'];
-    if (decorator && decorator.type === 'icon') {
-      return decorator.prefix + decorator.map?.[this.bucket().key];
-    }
-    return '';
-  });
-
-  image = computed(() => {
-    const decorator = this.aggregationConfig().meta?.['decorator'];
-    if (decorator && decorator.type === 'img') {
-      return decorator.map?.[this.bucket().key];
-    }
-    return '';
-  });
-
   onAggItemChange = output<SearchFilterValue>();
-  searchService = inject(SearchService);
+  #searchService = inject(SearchService);
   search: SearchStoreType;
 
   checked = false;
   isActive = computed(() => {
-    const status = this.search.isFilterActive(this.field(), this.bucket().key) ===
-    SearchFilterValueState.ON
+    const status =
+      this.search.isFilterActive(this.field(), this.bucket().key) ===
+      SearchFilterValueState.ON;
     this.checked = status;
     return status;
   });
   protected readonly SearchAggLayout = SearchAggLayout;
 
   ngOnInit() {
-    this.search = this.searchService.getSearch(this.scope());
+    this.search = this.#searchService.getSearch(this.scope());
   }
 
   handleCheck(event: any) {
