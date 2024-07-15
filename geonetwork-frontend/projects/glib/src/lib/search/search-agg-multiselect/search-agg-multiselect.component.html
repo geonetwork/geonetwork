@@ -1,0 +1,20 @@
+<p-multiSelect
+  [options]="buckets()"
+  [filter]="true"
+  [showClear]="true"
+  (onChange)="handleMutliSelectChange($event)"
+  (onClear)="handleMutliSelectClear()"
+  styleClass="w-80"
+  panelStyleClass="w-80"
+  scrollHeight="400px"
+  placeholder="">
+  <ng-template let-bucket pTemplate="item">
+    <div class="flex align-items-center gap-2">
+      <g-search-agg-item-decorator [bucket]="bucket"
+                                   [aggregationConfig]="aggregationConfig()"/>
+      <div>
+        {{bucket.key}} ({{bucket.doc_count}})
+      </div>
+    </div>
+  </ng-template>
+</p-multiSelect>
