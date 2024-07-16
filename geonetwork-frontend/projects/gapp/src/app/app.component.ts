@@ -117,15 +117,15 @@ export class AppComponent {
     },
     organisationForResource: {
       terms: {
-        field: "OrgForResourceObject.default",
-        include: ".*",
+        field: 'OrgForResourceObject.default',
+        include: '.*',
         size: 50,
-        order: { _key: 'asc' }
+        order: { _key: 'asc' },
       },
       meta: {
         layout: SearchAggLayout.MULTISELECT,
         refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
-      }
+      },
     },
     resolutionScaleDenominator: {
       histogram: {
@@ -139,5 +139,8 @@ export class AppComponent {
       },
     },
   };
+
+  constructor() {}
+
   protected readonly SearchAggLayout = SearchAggLayout;
 }
