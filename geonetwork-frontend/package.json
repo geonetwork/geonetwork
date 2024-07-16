@@ -4,12 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --project=gapp",
+    "start-webcomponents": "ng serve --project=gwebcomponents",
     "watch-lib": "ng build glib --watch",
     "prettier:check": "prettier --check \"**\"",
     "prettier": "prettier --write \"**\"",
     "build": "ng build gapp",
     "build-lib-gapi": "ng build gapi",
     "build-lib-glib": "ng build glib",
+    "build-lib-gwebcomponents": "ng build gwebcomponents --output-hashing none",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "openapi-ts": "openapi-ts -i ./projects/gapi/src/libgapi.json -o ./projects/gapi/src/lib",
@@ -24,6 +26,7 @@
     "@angular/common": "^18.0.6",
     "@angular/compiler": "^18.0.6",
     "@angular/core": "^18.0.6",
+    "@angular/elements": "^18.0.6",
     "@angular/forms": "^18.0.6",
     "@angular/platform-browser": "^18.0.6",
     "@angular/platform-browser-dynamic": "^18.0.6",
@@ -33,6 +36,7 @@
     "@hey-api/client-fetch": "^0.1.7",
     "@ngrx/operators": "^18.0.0-rc.1",
     "@ngrx/signals": "^18.0.0-rc.2",
+    "papaparse": "^5.4.1",
     "primeng": "^17.18.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -46,8 +50,10 @@
     "@eslint/js": "^9.6.0",
     "@hey-api/openapi-ts": "^0.48.2",
     "@types/jasmine": "~5.1.0",
+    "@types/papaparse": "^5.3.14",
     "angular-eslint": "18.1.0",
     "autoprefixer": "^10.4.19",
+    "cypress": "latest",
     "globals": "^15.8.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
@@ -60,7 +66,6 @@
     "prettier": "^3.3.2",
     "tailwindcss": "^3.4.4",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "~5.4.2",
-    "cypress": "latest"
+    "typescript": "~5.4.2"
   }
 }
