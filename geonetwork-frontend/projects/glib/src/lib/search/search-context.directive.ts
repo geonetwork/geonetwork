@@ -14,7 +14,7 @@ import { SearchService } from './search.service';
   providers: [SearchStore],
 })
 export class SearchContextDirective implements OnInit {
-  searchId = inject(new HostAttributeToken('gSearchContext'));
+  scope = input<string>('', {alias: 'gSearchContext'});
   searchStore = inject(SearchStore);
 
   aggregations = input<any>({});
@@ -22,7 +22,7 @@ export class SearchContextDirective implements OnInit {
   private searchService = inject(SearchService);
 
   ngOnInit(): void {
-    this.searchStore.init(this.searchId, this.aggregations());
-    this.searchService.register(this.searchId, this.searchStore);
+    this.searchStore.init(this.scope(), this.aggregations());
+    this.searchService.register(this.scope(), this.searchStore);
   }
 }

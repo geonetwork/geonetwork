@@ -1,6 +1,19 @@
-<h2 class="text-3xl">Search</h2>
+<h2 class="text-3xl">Searching with webcomponents</h2>
 
-<h2 class="text-3xl">Data</h2>
+<div class="m-4">
+  <p-dropdown
+    styleClass="w-full mb-4"
+    [options]="apiUrlList"
+    optionValue="url"
+    optionLabel="url"
+    [(ngModel)]="apiUrl"
+    placeholder="Choose a catalogue" />
+
+  <g-search [apiUrl]="apiUrl"/>
+</div>
+
+
+<h2 class="text-3xl">Data preview with webcomponents</h2>
 
 <div class="m-4">
   <div class="text-2x font-bold">Browse CSV file</div>
