@@ -8,8 +8,8 @@
         <span
           [class]="{'ml-2': true, 'font-bold': isActive()}">
           <g-search-agg-item-decorator [bucket]="bucket()"
-                             [aggregationConfig]="aggregationConfig()"
-                             [isActive]="isActive()"/>
+                                       [aggregationConfig]="aggregationConfig()"
+                                       [isActive]="isActive()"/>
           {{ bucket().key + ' (' + bucket().doc_count + ')' }}
         </span>
     </p-chip>

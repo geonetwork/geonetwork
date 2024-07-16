@@ -1,14 +1,6 @@
-import {
-  Component,
-  computed,
-  HostAttributeToken,
-  inject,
-  input,
-  OnInit,
-} from '@angular/core';
-import { SearchService } from '../search.service';
-import { SearchStoreType } from '../search.state';
+import { Component, computed, input } from '@angular/core';
 import { Button } from 'primeng/button';
+import { SearchBaseComponent } from '../search-base/search-base.component';
 
 @Component({
   selector: 'g-search-paging-more-button',
@@ -17,11 +9,8 @@ import { Button } from 'primeng/button';
   templateUrl: './search-paging-more-button.component.html',
   styleUrl: './search-paging-more-button.component.css',
 })
-export class SearchPagingMoreButtonComponent implements OnInit {
-  scope = inject(new HostAttributeToken('scope'));
+export class SearchPagingMoreButtonComponent extends SearchBaseComponent {
   size = input<number>();
-  searchService = inject(SearchService);
-  search: SearchStoreType;
 
   pageSize = computed(() => this.search.pageSize());
 
@@ -31,8 +20,8 @@ export class SearchPagingMoreButtonComponent implements OnInit {
       : 'No more results'
   );
 
-  ngOnInit() {
-    this.search = this.searchService.getSearch(this.scope);
+  override ngOnInit() {
+    super.ngOnInit();
     this.size() && this.search.setPageSize(this.size() as number);
   }
 

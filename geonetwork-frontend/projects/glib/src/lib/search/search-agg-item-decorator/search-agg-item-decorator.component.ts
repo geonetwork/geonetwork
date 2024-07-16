@@ -1,5 +1,5 @@
-import {Component, computed, input} from '@angular/core';
-import {AggregationsAggregationContainer} from "@elastic/elasticsearch/lib/api/types";
+import { Component, computed, input } from '@angular/core';
+import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
 
 @Component({
   selector: 'g-search-agg-item-decorator',
@@ -27,5 +27,4 @@ export class SearchAggItemDecoratorComponent {
     }
     return '';
   });
-
 }

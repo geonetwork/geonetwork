@@ -16,11 +16,6 @@ export class SearchQuerySetterDirective implements OnInit {
   scope = inject(new HostAttributeToken('gSearchQuerySetter'));
   searchService = inject(SearchService);
   search: SearchStoreType;
-  // freeTextInput: ElementRef<HTMLInputElement>;
-  //
-  // constructor(private el: ElementRef) {
-  //   this.freeTextInput = el;
-  // }
 
   ngOnInit() {
     this.search = this.searchService.getSearch(this.scope);
