@@ -1,13 +1,12 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
-import { SearchService } from '../search.service';
-import { SearchStoreType } from '../search.state';
-import {MultiSelectChangeEvent, MultiSelectModule} from 'primeng/multiselect';
+import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
 import {
   SearchFilterOperator,
   SearchFilterValueState,
 } from '../search.state.model';
-import {SearchAggItemDecoratorComponent} from "../search-agg-item-decorator/search-agg-item-decorator.component";
+import { SearchAggItemDecoratorComponent } from '../search-agg-item-decorator/search-agg-item-decorator.component';
+import { SearchBaseComponent } from '../search-base/search-base.component';
 
 @Component({
   selector: 'g-search-agg-multiselect',
@@ -16,18 +15,10 @@ import {SearchAggItemDecoratorComponent} from "../search-agg-item-decorator/sear
   styleUrl: './search-agg-multiselect.component.css',
   imports: [MultiSelectModule, SearchAggItemDecoratorComponent],
 })
-export class SearchAggMultiselectComponent implements OnInit {
-  scope = input.required<string>();
+export class SearchAggMultiselectComponent extends SearchBaseComponent {
   buckets = input.required<any>();
   field = input.required<string>();
   aggregationConfig = input.required<AggregationsAggregationContainer>();
-
-  #searchService = inject(SearchService);
-  #search: SearchStoreType;
-
-  ngOnInit() {
-    this.#search = this.#searchService.getSearch(this.scope());
-  }
 
   handleMutliSelectChange(event: MultiSelectChangeEvent) {
     const isSelected =
@@ -35,7 +26,7 @@ export class SearchAggMultiselectComponent implements OnInit {
         return item.key === event.itemValue.key;
       }) !== undefined;
 
-    this.#search.addFilter({
+    this.search.addFilter({
       field: this.field(),
       values: {
         [event.itemValue.key]: isSelected
@@ -47,6 +38,6 @@ export class SearchAggMultiselectComponent implements OnInit {
   }
 
   handleMutliSelectClear() {
-    this.#search.removeFilter(this.field());
+    this.search.removeFilter(this.field());
   }
 }

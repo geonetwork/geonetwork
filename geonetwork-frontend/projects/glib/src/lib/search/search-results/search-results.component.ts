@@ -1,6 +1,5 @@
-import { Component, HostAttributeToken, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SearchContextDirective } from '../search-context.directive';
-import { SearchService } from '../search.service';
 import { ButtonDirective } from 'primeng/button';
 import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -10,7 +9,7 @@ import { ChipModule } from 'primeng/chip';
 import { ImageModule } from 'primeng/image';
 import { DataViewModule } from 'primeng/dataview';
 import { PrimeTemplate } from 'primeng/api';
-import { SearchStoreType } from '../search.state';
+import { SearchBaseComponent } from '../search-base/search-base.component';
 
 @Component({
   selector: 'g-search-results',
@@ -33,12 +32,4 @@ import { SearchStoreType } from '../search.state';
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css',
 })
-export class SearchResultsComponent implements OnInit {
-  scope = inject(new HostAttributeToken('scope'));
-  searchService = inject(SearchService);
-  search: SearchStoreType;
-
-  ngOnInit() {
-    this.search = this.searchService.getSearch(this.scope);
-  }
-}
+export class SearchResultsComponent extends SearchBaseComponent {}

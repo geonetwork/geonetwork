@@ -1,5 +1,5 @@
-import { SearchAggItemDecoratorComponent } from './search-agg-item-decorator.component';
-import { signal } from '@angular/core';
+import {SearchAggItemDecoratorComponent} from './search-agg-item-decorator.component';
+import {signal} from '@angular/core';
 
 describe('SearchAggItemDecoratorComponent', () => {
 
