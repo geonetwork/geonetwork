@@ -1,19 +1,20 @@
 <p-multiSelect
-  [options]="buckets()"
-  [filter]="true"
-  [showClear]="true"
   (onChange)="handleMutliSelectChange($event)"
   (onClear)="handleMutliSelectClear()"
-  styleClass="w-80"
+  [filter]="true"
+  filterBy="key"
+  [options]="buckets()"
+  [showClear]="true"
   panelStyleClass="w-80"
+  placeholder=""
   scrollHeight="400px"
-  placeholder="">
+  styleClass="w-80">
   <ng-template let-bucket pTemplate="item">
     <div class="flex align-items-center gap-2">
-      <g-search-agg-item-decorator [bucket]="bucket"
-                                   [aggregationConfig]="aggregationConfig()"/>
+      <g-search-agg-item-decorator [aggregationConfig]="aggregationConfig()"
+                                   [bucket]="bucket"/>
       <div>
-        {{bucket.key}} ({{bucket.doc_count}})
+        {{ bucket.key }} ({{ bucket.doc_count }})
       </div>
     </div>
   </ng-template>

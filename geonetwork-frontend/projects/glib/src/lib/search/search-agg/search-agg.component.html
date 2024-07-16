@@ -5,14 +5,14 @@
     @switch (currentLayout()) {
       @case (SearchAggLayout.MULTISELECT) {
         <g-search-agg-multiselect
-          [scope]="scope"
+          [scope]="scope()"
           [buckets]="agg().buckets"
           [field]="searchField"
           [aggregationConfig]="aggregationConfig"/>
       }
       @default {
         @for (bucket of agg().buckets; track bucket.key) {
-          <g-search-agg-item [scope]="scope"
+          <g-search-agg-item [scope]="scope()"
                              [bucket]="bucket"
                              [field]="searchField"
                              [layout]="currentLayout()"
