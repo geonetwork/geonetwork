@@ -3,29 +3,29 @@
     <p-chip
       (click)="switchValue()"
       (keydown)="switchValue()"
-      class="cursor-pointer flex items-center pl-0 pr-2 m-2"
-    >
-        <span
-          [class]="{'ml-2': true, 'font-bold': isActive()}">
-          <g-search-agg-item-decorator [bucket]="bucket()"
-                                       [aggregationConfig]="aggregationConfig()"
-                                       [isActive]="isActive()"/>
-          {{ bucket().key + ' (' + bucket().doc_count + ')' }}
-        </span>
+      class="cursor-pointer flex items-center pl-0 pr-2 m-2">
+      <span [class]="{ 'ml-2': true, 'font-bold': isActive() }">
+        <g-search-agg-item-decorator
+          [bucket]="bucket()"
+          [aggregationConfig]="aggregationConfig()"
+          [isActive]="isActive()" />
+        {{ bucket().key + ' (' + bucket().doc_count + ')' }}
+      </span>
     </p-chip>
   }
   @case (SearchAggLayout.CARD) {
-    <p-card [header]="bucket().key"
-            [subheader]="bucket().doc_count + ' resources'"
-            class="cursor-pointer w-full m-2"
-            (click)="switchValue()"
-            (keydown)="switchValue()"
-            [styleClass]="isActive() ? 'border-4 border-blue-500': ''"
-    >
+    <p-card
+      [header]="bucket().key"
+      [subheader]="bucket().doc_count + ' resources'"
+      class="cursor-pointer w-full m-2"
+      (click)="switchValue()"
+      (keydown)="switchValue()"
+      [styleClass]="isActive() ? 'border-4 border-blue-500' : ''">
       <ng-template pTemplate="header">
-        <g-search-agg-item-decorator [bucket]="bucket()"
-                                     [aggregationConfig]="aggregationConfig()"
-                                     [isActive]="isActive()"/>
+        <g-search-agg-item-decorator
+          [bucket]="bucket()"
+          [aggregationConfig]="aggregationConfig()"
+          [isActive]="isActive()" />
       </ng-template>
     </p-card>
   }
@@ -36,7 +36,7 @@
         [value]="isActive()"
         [binary]="true"
         (ngModelChange)="handleCheck($event)"
-        [label]="bucket().key + ' (' + bucket().doc_count + ')'"/>
+        [label]="bucket().key + ' (' + bucket().doc_count + ')'" />
     </div>
   }
 }

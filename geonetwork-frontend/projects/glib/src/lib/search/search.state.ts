@@ -33,7 +33,7 @@ import {
   SearchRequestParameters,
 } from './search.state.model';
 
-const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_SIZE = 10;
 
 const initialSearchState: Search = {
   id: '',

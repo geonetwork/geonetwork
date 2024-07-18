@@ -14,7 +14,7 @@ import { SearchService } from './search.service';
   providers: [SearchStore],
 })
 export class SearchContextDirective implements OnInit {
-  scope = input<string>('', {alias: 'gSearchContext'});
+  scope = input<string>('', { alias: 'gSearchContext' });
   searchStore = inject(SearchStore);
 
   aggregations = input<any>({});

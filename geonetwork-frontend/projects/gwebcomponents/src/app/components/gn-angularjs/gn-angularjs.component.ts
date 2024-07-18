@@ -34,7 +34,7 @@ export class GnAngularjsComponent implements AfterViewInit {
     var s = document.createElement('script');
     s.type = 'text/javascript';
     s.src =
-      'https://apps.titellus.net/geonetwork/catalog/webcomponents/webcomponents.js';
+      'http://localhost:8080/geonetwork/catalog/webcomponents/webcomponents.js';
     this.el.nativeElement.appendChild(s);
   }
 }
