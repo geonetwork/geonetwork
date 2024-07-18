@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { search } from 'gapi';
+import { SearchApi } from 'gapi';
 import { SearchStoreType } from './search.state';
 import {
   QueryDslTermsQueryField,
@@ -19,6 +19,7 @@ export interface SearchRegistry {
 })
 export class SearchService {
   store: SearchRegistry = {};
+  searchApi: SearchApi = new SearchApi();
 
   getSearch(searchId: string): SearchStoreType {
     if (this.store[searchId]) {
@@ -40,33 +41,36 @@ export class SearchService {
   }
 
   search(searchRequestParameters: SearchRequestParameters) {
-    return search({
-      requestBody: this.buildQuery(searchRequestParameters),
+    console.log('searchRequestParameters', searchRequestParameters);
+    return this.searchApi.search({
+      body: this.buildQuery(searchRequestParameters),
     });
   }
 
   page(searchRequestParameters: SearchRequestParameters) {
-    return search({
-      requestBody: this.buildPageQuery(searchRequestParameters),
+    return this.searchApi.search({
+      body: this.buildPageQuery(searchRequestParameters),
     });
   }
 
-  buildPageQuery(parameters: any) {
+  buildPageQuery(parameters: SearchRequestParameters) {
     let query = this.buildQuery(parameters);
     delete query.aggregations;
     return query;
   }
 
-  buildQuery(parameters: any) {
+  buildQuery(parameters: SearchRequestParameters) {
     let filters: SearchFilterList = parameters.filters;
-    const clauses: QueryDslTermsQueryField = Object.entries(filters)
-      .map(([field, { values }]) => {
-        const terms = Object.entries(values)
-          .filter(([, value]) => value === 'ON')
-          .map(([key]) => key);
-        return terms.length > 0 ? { terms: { [field]: terms } } : null;
-      })
-      .filter(clause => clause !== null);
+    const clauses: QueryDslTermsQueryField =
+      filters &&
+      Object.entries(filters)
+        .map(([field, { values }]) => {
+          const terms = Object.entries(values)
+            .filter(([, value]) => value === 'ON')
+            .map(([key]) => key);
+          return terms.length > 0 ? { terms: { [field]: terms } } : null;
+        })
+        .filter(clause => clause !== null);
 
     let query: SearchRequest = {
       query: {
@@ -77,7 +81,7 @@ export class SearchService {
                 query: parameters.fullTextQuery || '*',
               },
             },
-            ...Object.values(clauses),
+            ...((clauses && Object.values(clauses)) || []),
           ],
         },
       },

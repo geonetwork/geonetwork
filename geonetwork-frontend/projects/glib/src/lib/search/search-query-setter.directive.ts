@@ -2,7 +2,8 @@ import {
   Directive,
   HostAttributeToken,
   HostListener,
-  inject, input,
+  inject,
+  input,
   OnInit,
 } from '@angular/core';
 import { SearchService } from './search.service';
@@ -13,7 +14,7 @@ import { SearchStoreType } from './search.state';
   standalone: true,
 })
 export class SearchQuerySetterDirective implements OnInit {
-  scope = input<string>('', {alias: 'gSearchQuerySetter'});
+  scope = input<string>('', { alias: 'gSearchQuerySetter' });
   searchService = inject(SearchService);
   search: SearchStoreType;
 

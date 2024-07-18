@@ -1,10 +1,4 @@
-import {
-  Directive,
-  HostAttributeToken,
-  HostListener,
-  inject, input,
-  OnInit,
-} from '@angular/core';
+import { Directive, HostListener, inject, input, OnInit } from '@angular/core';
 import { SearchService } from './search.service';
 import { SearchStoreType } from './search.state';
 
@@ -13,7 +7,7 @@ import { SearchStoreType } from './search.state';
   standalone: true,
 })
 export class SearchQueryResetDirective implements OnInit {
-  scope = input<string>('', {alias: 'gSearchQueryReset'});
+  scope = input<string>('', { alias: 'gSearchQueryReset' });
   searchService = inject(SearchService);
   search: SearchStoreType;
 
