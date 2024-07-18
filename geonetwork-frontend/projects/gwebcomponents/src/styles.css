@@ -5,6 +5,7 @@
 @import 'tailwindcss/utilities.css' layer(tw-utilities);
 
 @import 'primeng/resources/primeng.css' layer(primeng);
-@import 'primeng/resources/themes/aura-light-blue/theme.css' layer(primeng-theme);
+@import 'primeng/resources/themes/aura-light-blue/theme.css'
+  layer(primeng-theme);
 
 @layer reset, fontawesome, tw-base, primeng-theme, primeng, tw-utilities, tw-components;

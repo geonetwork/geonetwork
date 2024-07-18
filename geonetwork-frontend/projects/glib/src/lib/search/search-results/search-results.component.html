@@ -2,30 +2,33 @@
   @if (search.response(); as response) {
     <p>Found {{ response.hits.total.value }} results</p>
 
-    <p-dataView #dv
-                [value]="response.hits.hits"
-                emptyMessage=" ">
+    <p-dataView #dv [value]="response.hits.hits" emptyMessage=" ">
       <ng-template pTemplate="list" let-hits>
         @for (hit of hits; track hit._id) {
           <div class="grid gap-4 mb-2">
-            <a class="flex flex-row gap-4"
-               routerLink="/metadata/{{hit._id}}"
-               title="{{hit._source.resourceAbstractObject?.default}}">
-              <div class="flex-none w-48 h-48 relative rounded-lg border border-gray-300">
-                <p-image class="max-h-48"
-                         preview="false"
-                         imageClass="object-cover w-full h-full"
-                         *ngIf="hit._source.overview?.length > 0"
-                         [src]="hit._source.overview[0]?.url"
-                         [alt]="hit._source.overview[0]?.name"></p-image>
+            <a
+              class="flex flex-row gap-4"
+              routerLink="/metadata/{{ hit._id }}"
+              title="{{ hit._source.resourceAbstractObject?.default }}">
+              <div
+                class="flex-none w-48 h-48 relative rounded-lg border border-gray-300">
+                <p-image
+                  class="max-h-48"
+                  preview="false"
+                  imageClass="object-cover w-full h-full"
+                  *ngIf="hit._source.overview?.length > 0"
+                  [src]="hit._source.overview[0]?.url"
+                  [alt]="hit._source.overview[0]?.name"></p-image>
 
-                <p-badge class="absolute bottom-0 left-0 m-2"
-                         *ngIf="hit._source.resourceType"
-                         [value]="hit._source.resourceType[0]"></p-badge>
+                <p-badge
+                  class="absolute bottom-0 left-0 m-2"
+                  *ngIf="hit._source.resourceType"
+                  [value]="hit._source.resourceType[0]"></p-badge>
               </div>
               <div class="flex-grow">
-                <div class="text-2xl font-semibold line-clamp-1"
-                     title="{{hit._source.resourceTitleObject.default}}">
+                <div
+                  class="text-2xl font-semibold line-clamp-1"
+                  title="{{ hit._source.resourceTitleObject.default }}">
                   {{ hit._source.resourceTitleObject.default }}
                 </div>
                 <div class="w-full">
@@ -47,11 +50,13 @@
       @for (i of [].constructor(search.pageSize()); track $index) {
         <div class="grid gap-4 mb-2">
           <div class="flex flex-row gap-4">
-            <p-skeleton size="10rem" styleClass="flex-none w-48 h-48 relative rounded-lg border border-gray-300"/>
+            <p-skeleton
+              size="10rem"
+              styleClass="flex-none w-48 h-48 relative rounded-lg border border-gray-300" />
             <div>
-              <p-skeleton styleClass="mb-2"/>
-              <p-skeleton width="10rem" styleClass="mb-2"/>
-              <p-skeleton width="5rem" styleClass="mb-2"/>
+              <p-skeleton styleClass="mb-2" />
+              <p-skeleton width="10rem" styleClass="mb-2" />
+              <p-skeleton width="5rem" styleClass="mb-2" />
             </div>
           </div>
         </div>

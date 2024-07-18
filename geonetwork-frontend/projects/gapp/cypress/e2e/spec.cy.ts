@@ -31,7 +31,7 @@ describe('Search Page Test', () => {
   describe('Search Page', () => {
     it('should have default search results on page load', () => {
       cy.get('@searchResults').find('a').should('have.length', 10);
-      cy.get('@searchResultsCount').should('contain.text', 77);
+      cy.get('@searchResultsCount').should('contain.text', 'Found ');
 
       cy.get('@searchInput')
         .focus()

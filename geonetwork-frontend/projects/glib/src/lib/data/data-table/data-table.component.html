@@ -7,15 +7,13 @@
     [rows]="10"
     [rowsPerPageOptions]="[10, 25, 50]"
     [loading]="isLoading"
-    [paginator]="true"
-  >
+    [paginator]="true">
     <ng-template pTemplate="header" let-columns>
       <tr>
         @for (column of columns; track $index) {
-          <th style=""
-              [pSortableColumn]="column">
+          <th style="" [pSortableColumn]="column">
             {{ column }}
-            <p-sortIcon [field]="column"/>
+            <p-sortIcon [field]="column" />
           </th>
         }
       </tr>
@@ -24,9 +22,9 @@
           <th>
             <p-columnFilter
               type="text"
-              field="{{column}}"
-              placeholder="Search by {{column}}"
-              ariaLabel="Filter {{ column }}"/>
+              field="{{ column }}"
+              placeholder="Search by {{ column }}"
+              ariaLabel="Filter {{ column }}" />
           </th>
         }
       </tr>
@@ -42,7 +40,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="{{data[0]?.length}}">No data found.</td>
+        <td colspan="{{ data[0]?.length }}">No data found.</td>
       </tr>
     </ng-template>
   </p-table>

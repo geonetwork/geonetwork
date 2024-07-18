@@ -1,7 +1,12 @@
 import { GDataResultsTableComponent } from './components/g-data-results-table/g-data-results-table.component';
 import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
-import {DataTableComponent, SearchContextDirective, SearchInputComponent, SearchResultsComponent} from 'glib';
+import {
+  DataTableComponent,
+  SearchContextDirective,
+  SearchInputComponent,
+  SearchResultsComponent,
+} from 'glib';
 import { CommonModule } from '@angular/common';
 import { GnAngularjsComponent } from './components/gn-angularjs/gn-angularjs.component';
 import { GWebcomponentsDocComponent } from './components/g-webcomponents-doc/g-webcomponents-doc.component';

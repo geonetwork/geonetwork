@@ -8,16 +8,17 @@
           [scope]="scope()"
           [buckets]="agg().buckets"
           [field]="searchField"
-          [aggregationConfig]="aggregationConfig"/>
+          [aggregationConfig]="aggregationConfig" />
       }
       @default {
         @for (bucket of agg().buckets; track bucket.key) {
-          <g-search-agg-item [scope]="scope()"
-                             [bucket]="bucket"
-                             [field]="searchField"
-                             [layout]="currentLayout()"
-                             [aggregationConfig]="aggregationConfig"
-                             (onAggItemChange)="filter($event)"/>
+          <g-search-agg-item
+            [scope]="scope()"
+            [bucket]="bucket"
+            [field]="searchField"
+            [layout]="currentLayout()"
+            [aggregationConfig]="aggregationConfig"
+            (onAggItemChange)="filter($event)" />
         }
       }
     }

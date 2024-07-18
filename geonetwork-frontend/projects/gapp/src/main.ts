@@ -1,22 +1,23 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import {
-  ApplicationConfig, enableProdMode,
+  ApplicationConfig,
+  enableProdMode,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { APP_CONFIG, loadAppConfig } from 'glib';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app/app.routes';
-import {OpenAPI} from "gapi";
-import {environment} from "./environments/environment";
+import { environment } from './environments/environment';
+import { Configuration } from '../../gapi/src/lib';
 
 if (environment.production) {
-  enableProdMode()
+  enableProdMode();
 }
 
 if (environment.baseUrl) {
-  OpenAPI.BASE = environment.baseUrl;
+  new Configuration({ basePath: environment.baseUrl });
 }
 
 loadAppConfig().then((config: any) => {

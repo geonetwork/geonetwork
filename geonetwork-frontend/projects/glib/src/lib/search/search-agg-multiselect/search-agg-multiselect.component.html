@@ -11,11 +11,10 @@
   styleClass="w-80">
   <ng-template let-bucket pTemplate="item">
     <div class="flex align-items-center gap-2">
-      <g-search-agg-item-decorator [aggregationConfig]="aggregationConfig()"
-                                   [bucket]="bucket"/>
-      <div>
-        {{ bucket.key }} ({{ bucket.doc_count }})
-      </div>
+      <g-search-agg-item-decorator
+        [aggregationConfig]="aggregationConfig()"
+        [bucket]="bucket" />
+      <div>{{ bucket.key }} ({{ bucket.doc_count }})</div>
     </div>
   </ng-template>
 </p-multiSelect>

@@ -6,7 +6,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { OpenAPI } from 'gapi';
+import { Configuration } from 'gapi';
 
 @Component({
   selector: 'g-search',
@@ -21,10 +21,10 @@ export class GSearchComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    OpenAPI.BASE = changes['apiUrl'].currentValue;
+    new Configuration({ basePath: changes['apiUrl'].currentValue });
   }
 
   ngOnInit() {
-    OpenAPI.BASE = this.apiUrl;
+    new Configuration({ basePath: this.apiUrl });
   }
 }

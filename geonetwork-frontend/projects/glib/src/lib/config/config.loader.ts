@@ -1,6 +1,6 @@
+import { AppConfig, UiApi, UiSetting } from 'gapi';
 import { DEFAULT_APP_CONFIG, MISSING_CONFIG_ERROR } from './constants';
 import { InjectionToken } from '@angular/core';
-import { AppConfig, getUiConfiguration, UiSetting } from 'gapi';
 
 export const APP_CONFIG_TOKEN = new InjectionToken<AppConfig>('APP_CONFIG');
 
@@ -13,7 +13,7 @@ export function getAppConfig(): UiSetting {
 }
 
 export function loadAppConfig() {
-  return getUiConfiguration({ uiIdentifier: 'srv' }).then(
+  return new UiApi().getUiConfiguration({ uiIdentifier: 'srv' }).then(
     (response: any) => {
       appConfigLoading = false;
       console.log(response);

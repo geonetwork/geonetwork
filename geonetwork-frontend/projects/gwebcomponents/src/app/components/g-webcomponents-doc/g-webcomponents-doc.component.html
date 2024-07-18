@@ -9,17 +9,18 @@
     [(ngModel)]="apiUrl"
     placeholder="Choose a catalogue" />
 
-  <g-search [apiUrl]="apiUrl"/>
+  <g-search [apiUrl]="apiUrl" />
 </div>
-
 
 <h2 class="text-3xl">Data preview with webcomponents</h2>
 
 <div class="m-4">
   <div class="text-2x font-bold">Browse CSV file</div>
-  <p-dropdown [(ngModel)]="selectedSourceFile" [options]="csvSourceFiles"/>
-  <br/>
-  <g-data-results-table [source]="selectedSourceFile()" class="w-full"></g-data-results-table>
+  <p-dropdown [(ngModel)]="selectedSourceFile" [options]="csvSourceFiles" />
+  <br />
+  <g-data-results-table
+    [source]="selectedSourceFile()"
+    class="w-full"></g-data-results-table>
 
   To embed the component in your application, use the following code snippet:
   <pre>
