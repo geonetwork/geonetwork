@@ -230,8 +230,22 @@ export const SearchStore = signalStore(
         )
       )
     ),
+    buildDefaultAggregationConfig(key: string) {
+      return {
+        terms: {
+          field: key
+        },
+      }
+    },
     getAggregationConfig(key: string): AggregationsAggregationContainer {
-      return store.aggregationConfig()[key];
+      let configuration = store.aggregationConfig()[key];
+      if (configuration) {
+        return configuration
+      } else {
+        let newConfiguration = this.buildDefaultAggregationConfig(key);
+        store.aggregationConfig()[key] = newConfiguration;
+        return newConfiguration;
+      }
     },
     getAggregationSearchField(key: string): string {
       const aggregationConfig = store.aggregationConfig()[key];
