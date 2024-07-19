@@ -1,31 +1,59 @@
-import { AppConfig, UiApi, UiSetting } from 'gapi';
-import { DEFAULT_APP_CONFIG, MISSING_CONFIG_ERROR } from './constants';
-import { InjectionToken } from '@angular/core';
+import { Configuration, DefaultConfig, UiApi, UiConfiguration } from 'gapi';
+import { DEFAULT_UI_CONFIGURATION, MISSING_CONFIG_ERROR } from './constants';
+import { InjectionToken, signal, WritableSignal } from '@angular/core';
 
-export const APP_CONFIG_TOKEN = new InjectionToken<AppConfig>('APP_CONFIG');
+export interface ApplicationConfiguration {
+  ui: UiConfiguration | undefined;
+  apiConfig: Configuration | undefined;
+  space: string;
+}
 
-let appConfig: UiSetting | null = null;
+export const DEFAULT_SPACE = 'srv';
+
+export const API_CONFIGURATION = new InjectionToken<
+  WritableSignal<Configuration>
+>('api.baseUrl');
+
+export const APPLICATION_CONFIGURATION =
+  new InjectionToken<ApplicationConfiguration>('app.config');
+
+let appConfig: ApplicationConfiguration = {
+  ui: undefined,
+  apiConfig: undefined,
+  space: DEFAULT_SPACE,
+};
+
 let appConfigLoading = true;
 
-export function getAppConfig(): UiSetting {
+export function getAppConfig(): ApplicationConfiguration {
   if (appConfig === null) throw new Error(MISSING_CONFIG_ERROR);
   return appConfig;
 }
 
-export function loadAppConfig() {
-  return new UiApi().getUiConfiguration({ uiIdentifier: 'srv' }).then(
-    (response: any) => {
-      appConfigLoading = false;
-      console.log(response);
-      return response.configuration
-        ? (JSON.parse(response.configuration) as AppConfig)
-        : {};
-    },
-    (error: any) => {
-      console.warn(
-        'Invalid or empty configuration returned by the API. Using the default configuration.'
-      );
-      return DEFAULT_APP_CONFIG;
-    }
-  );
+export function loadAppConfig(environment: any) {
+  if (environment.baseUrl) {
+    appConfig.apiConfig = new Configuration({ basePath: environment.baseUrl });
+  } else {
+    appConfig.apiConfig = DefaultConfig;
+  }
+
+  return new UiApi(appConfig.apiConfig)
+    .getUiConfiguration({ uiIdentifier: appConfig.space })
+    .then(
+      (response: any) => {
+        appConfigLoading = false;
+        console.log(response);
+        appConfig.ui = response.configuration
+          ? (JSON.parse(response.configuration) as UiConfiguration)
+          : DEFAULT_UI_CONFIGURATION;
+        return appConfig;
+      },
+      (error: any) => {
+        console.warn(
+          'Invalid or empty configuration returned by the API. Using the default configuration.'
+        );
+        appConfig.ui = DEFAULT_UI_CONFIGURATION;
+        return appConfig;
+      }
+    );
 }

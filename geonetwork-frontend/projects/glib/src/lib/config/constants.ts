@@ -1,8 +1,10 @@
+import { UiConfiguration } from 'gapi';
+
 export const MISSING_CONFIG_ERROR = 'Configuration not yet loaded.';
 
 export const APP_CONFIG = 'app.config';
 
-export const DEFAULT_APP_CONFIG = {
+export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
   langDetector: {
     fromHtmlTag: false,
     regexp: '^(?:/.+)?/.+/([a-z]{2,3})/.+',

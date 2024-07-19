@@ -1,30 +1,39 @@
 import {
   Component,
+  inject,
   Input,
   OnChanges,
   OnInit,
+  signal,
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { Configuration } from 'gapi';
+import { Configuration, DefaultConfig } from 'gapi';
+import { API_CONFIGURATION, SearchService } from 'glib';
 
 @Component({
   selector: 'g-search',
   templateUrl: './g-search.component.html',
   styleUrl: './g-search.component.css',
   encapsulation: ViewEncapsulation.ShadowDom,
+  providers: [
+    { provide: API_CONFIGURATION, useValue: signal(DefaultConfig) },
+    SearchService,
+  ],
 })
 export class GSearchComponent implements OnInit, OnChanges {
   @Input() apiUrl: string;
   @Input() searchId = Math.random().toString().slice(2, 5);
 
-  constructor() {}
+  apiConfiguration = inject(API_CONFIGURATION);
 
   ngOnChanges(changes: SimpleChanges): void {
-    new Configuration({ basePath: changes['apiUrl'].currentValue });
+    this.apiConfiguration.set(
+      new Configuration({ basePath: changes['apiUrl'].currentValue })
+    );
   }
 
   ngOnInit() {
-    new Configuration({ basePath: this.apiUrl });
+    this.apiConfiguration.set(new Configuration({ basePath: this.apiUrl }));
   }
 }

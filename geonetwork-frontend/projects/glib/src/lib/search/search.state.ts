@@ -103,7 +103,6 @@ export const SearchStore = signalStore(
               size: store.size(),
             } as SearchRequestParameters)
           ).pipe(
-            tap(console.log),
             tapResponse({
               next: response => {
                 let aggregationConfig = store.aggregationConfig();
@@ -119,7 +118,6 @@ export const SearchStore = signalStore(
                   ...response.aggregations,
                   ...aggregationToKeep,
                 };
-                console.log(aggregation);
                 patchState(store, { response, aggregation });
               },
               error: console.log,

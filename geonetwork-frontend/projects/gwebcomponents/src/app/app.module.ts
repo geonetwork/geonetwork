@@ -1,8 +1,15 @@
 import { GDataResultsTableComponent } from './components/g-data-results-table/g-data-results-table.component';
-import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  InjectionToken,
+  Injector,
+  NgModule,
+} from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import {
+  ApplicationConfiguration,
   DataTableComponent,
+  DEFAULT_SPACE,
   SearchContextDirective,
   SearchInputComponent,
   SearchResultsComponent,
@@ -14,6 +21,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { GSearchComponent } from './components/g-search-results/g-search.component';
+import { DefaultConfig } from 'gapi';
 
 @NgModule({
   declarations: [
@@ -32,7 +40,6 @@ import { GSearchComponent } from './components/g-search-results/g-search.compone
     SearchInputComponent,
     SearchResultsComponent,
   ],
-  providers: [],
   bootstrap: [GDataResultsTableComponent, GSearchComponent],
   exports: [GDataResultsTableComponent, GSearchComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

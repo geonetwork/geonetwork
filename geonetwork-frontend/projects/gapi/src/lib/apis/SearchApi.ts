@@ -147,7 +147,6 @@ export class SearchApi extends runtime.BaseAPI {
     requestParameters: SearchRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<estypes.SearchResponse> {
-    console.log('SearhcAPI call');
     const response = await this.searchRaw(requestParameters, initOverrides);
     return await response.value();
   }

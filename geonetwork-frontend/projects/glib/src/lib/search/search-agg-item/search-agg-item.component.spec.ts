@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchAggItemComponent } from './search-agg-item.component';
-import { SearchAggComponent, SearchAggLayout } from '../search-agg/search-agg.component';
+import {
+  SearchAggComponent,
+  SearchAggLayout,
+} from '../search-agg/search-agg.component';
 import { SearchBaseComponent } from '../search-base/search-base.component';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
