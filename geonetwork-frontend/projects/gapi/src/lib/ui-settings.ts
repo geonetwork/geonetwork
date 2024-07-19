@@ -1,10 +1,9 @@
-export interface AppConfig {
+export interface UiConfiguration {
   langDetector: LangDetector;
   nodeDetector: NodeDetector;
   serviceDetector: ServiceDetector;
   baseURLDetector: BaseUrldetector;
   mods: Mods;
-  sextant: Sextant;
 }
 
 export interface LangDetector {
@@ -79,8 +78,7 @@ export interface Header {
 }
 
 export interface Languages {
-  eng: string;
-  fre: string;
+  [key: string]: string;
 }
 
 export interface CookieWarning {
@@ -421,5 +419,3 @@ export interface WorkflowAssistApp {
   appUrl: string;
   appLabelKey: string;
 }
-
-export interface Sextant {}
