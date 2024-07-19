@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { SearchApi } from 'gapi';
 import { SearchStoreType } from './search.state';
 import {
@@ -9,6 +9,7 @@ import {
   SearchFilterList,
   SearchRequestParameters,
 } from './search.state.model';
+import { API_CONFIGURATION } from '../config/config.loader';
 
 export interface SearchRegistry {
   [searchId: string]: SearchStoreType;
@@ -19,7 +20,12 @@ export interface SearchRegistry {
 })
 export class SearchService {
   store: SearchRegistry = {};
-  searchApi: SearchApi = new SearchApi();
+
+  apiConfiguration = inject(API_CONFIGURATION);
+
+  searchApi = computed(() => {
+    return new SearchApi(this.apiConfiguration());
+  });
 
   getSearch(searchId: string): SearchStoreType {
     if (this.store[searchId]) {
@@ -41,14 +47,13 @@ export class SearchService {
   }
 
   search(searchRequestParameters: SearchRequestParameters) {
-    console.log('searchRequestParameters', searchRequestParameters);
-    return this.searchApi.search({
+    return this.searchApi().search({
       body: this.buildQuery(searchRequestParameters),
     });
   }
 
   page(searchRequestParameters: SearchRequestParameters) {
-    return this.searchApi.search({
+    return this.searchApi().search({
       body: this.buildPageQuery(searchRequestParameters),
     });
   }
