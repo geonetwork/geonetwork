@@ -5,4 +5,6 @@ import org.geonetwork.domain.UsersavedselectionId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsersavedselectionRepository
-    extends JpaRepository<Usersavedselection, UsersavedselectionId> {}
+    extends JpaRepository<Usersavedselection, UsersavedselectionId> {
+  Integer countByIdMetadatauuidAndIdSelectionid(String metadataUuid, int selectionId);
+}

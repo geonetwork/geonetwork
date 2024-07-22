@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -33,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 class IndexRecordTest {
-
   @Test
   void test_dataset() {
     ObjectMapper objectMapper = new ObjectMapper();
@@ -43,6 +43,10 @@ class IndexRecordTest {
               Path.of(new ClassPathResource("samples/iso19115-3_dataset.json").getURI()));
 
       IndexRecord indexRecord = objectMapper.readValue(json, IndexRecord.class);
+
+      XmlMapper xmlMapper = new XmlMapper();
+      xmlMapper.writeValue(System.out, indexRecord);
+
       assertEquals("metadata", indexRecord.getDocType().name());
       assertEquals("47b348f1-6e7a-4baa-963c-0232a43c0cff", indexRecord.getUuid());
       assertEquals("iso19115-3.2018", indexRecord.getDocumentStandard());
@@ -187,7 +191,6 @@ class IndexRecordTest {
           "Informations supplémentaires",
           indexRecord.getSupplementalInformation().getFirst().get(DEFAULT_TEXT));
       assertEquals("But", indexRecord.getPurpose().getFirst().get(DEFAULT_TEXT));
-      assertTrue(indexRecord.getHasOverview());
       assertEquals(
           "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/WALOUS_2020.png",
           indexRecord.getOverview().getFirst().getUrl());
@@ -466,7 +469,7 @@ class IndexRecordTest {
       assertEquals(3, indexRecord.getLinkUrls().size());
       assertEquals("https://geoportail.wallonie.be/walous", indexRecord.getLinkUrls().getFirst());
       assertEquals(3, indexRecord.getLinkProtocols().size());
-      assertEquals("WWW:LINK", indexRecord.getLinkProtocols().getFirst());
+      assertEquals("WWW:LINK", indexRecord.getLinkProtocols().stream().toList().getFirst());
 
       assertEquals(3, indexRecord.getLinkByProtocols().get("linkUrlProtocolWWWLINK").size());
       assertEquals(

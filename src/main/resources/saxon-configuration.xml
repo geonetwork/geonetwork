@@ -1,0 +1,11 @@
+<configuration xmlns="http://saxon.sf.net/ns/configuration"
+               edition="HE">
+  <global lineNumbering="true"
+          preEvaluateDoc="false"/>
+  <resources>
+    <extensionFunction>org.geonetwork.utility.xml.xslt.ConvertToIsoZuluDateTimeFn</extensionFunction>
+    <extensionFunction>org.geonetwork.utility.xml.xslt.GmlToGeoJsonFn</extensionFunction>
+    <extensionFunction>org.geonetwork.utility.xml.xslt.Md5HexFn</extensionFunction>
+    <extensionFunction>org.geonetwork.utility.xml.xslt.GetCodeListTranslationFn</extensionFunction>
+  </resources>
+</configuration>

@@ -27,10 +27,10 @@ public class NodeTreeAsStringDeserializer extends JsonDeserializer<List<String>>
       node.elements()
           .forEachRemaining(
               c -> {
-                geometries.add(c.toString());
+                geometries.add(c.textValue());
               });
     } else {
-      geometries.add(node.toString());
+      geometries.add(node.textValue());
     }
     return geometries;
   }

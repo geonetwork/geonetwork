@@ -6,6 +6,9 @@
 
 package org.geonetwork.index.model.record;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,12 +21,18 @@ import lombok.Singular;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AttributeTable {
   String name;
   String definition;
   String code;
   String link;
   String type;
+
   String cardinality;
-  @Singular List<CodeListValue> values;
+
+  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+  @JacksonXmlElementWrapper(useWrapping = false)
+  @Singular
+  List<CodeListValue> values;
 }
