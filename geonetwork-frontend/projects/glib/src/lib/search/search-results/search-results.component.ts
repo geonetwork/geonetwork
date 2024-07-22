@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { SearchContextDirective } from '../search-context.directive';
 import { ButtonDirective } from 'primeng/button';
 import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';

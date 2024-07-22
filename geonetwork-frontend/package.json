@@ -36,6 +36,7 @@
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@ngrx/operators": "^18.0.0-rc.1",
     "@ngrx/signals": "^18.0.0-rc.2",
+    "jsonpath-plus": "^9.0.0",
     "papaparse": "^5.4.1",
     "primeng": "^17.18.3",
     "rxjs": "~7.8.0",

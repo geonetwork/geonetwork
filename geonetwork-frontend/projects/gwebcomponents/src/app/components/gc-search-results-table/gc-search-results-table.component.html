@@ -1,0 +1,13 @@
+<ng-container gSearchContext="{{ searchId }}">
+  @if (filters()) {
+    <p-toolbar>
+      @for (filter of filters(); track filter) {
+        <g-search-agg
+          [layout]="SearchAggLayout.MULTISELECT"
+          [aggregation]="filter"
+          [scope]="searchId" />
+      }
+    </p-toolbar>
+  }
+  <g-search-results-table [scope]="searchId" [fields]="fields()" [selectionMode]="selectionMode" />
+</ng-container>
