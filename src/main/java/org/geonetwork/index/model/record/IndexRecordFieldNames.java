@@ -19,8 +19,14 @@ public class IndexRecordFieldNames {
   public static final String OWNER = "owner";
   public static final String GROUP_OWNER = "groupOwner";
   public static final String OP_PREFIX = "op";
+  public static final String CATEGORY = "cat";
+
+  /** The standard name of the record eg. ISO 19115. */
   public static final String STANDARD_NAME = "standardNameObject";
+
+  /** The standard version of the record eg. 19115-1. */
   public static final String STANDARD_VERSION = "standardVersionObject";
+
   public static final String IS_HARVESTED = "isHarvested";
   public static final String SOURCE_CATALOGUE = "sourceCatalogue";
   public static final String HARVESTER_UUID = "harvesterUuid";
@@ -28,6 +34,9 @@ public class IndexRecordFieldNames {
   public static final String OVERVIEW = "overview";
   public static final String IS_OPEN_DATA = "isOpenData";
   public static final String INSPIRE_CONFORM_RESOURCE = "inspireConformResource";
+  public static final String INSPIRE_REPORT_URL = "inspireReportUrl";
+  public static final String INSPIRE_VALIDATION_DATE = "inspireValidationDate";
+  public static final String INSPIRE_VALID = "valid_inspire";
   public static final String GROUP_PUBLISHED_ID = "groupPublishedId";
   public static final String GROUP_PUBLISHED = "groupPublished";
   public static final String POPULARITY = "popularity";
@@ -41,13 +50,37 @@ public class IndexRecordFieldNames {
   public static final String IS_TEMPLATE = "isTemplate";
   public static final String IS_PUBLISHED_TO_ALL = "isPublishedToAll";
   public static final String IS_PUBLISHED_TO_INTRANET = "isPublishedToIntranet";
+  public static final String IS_PUBLISHED_TO_GUEST = "isPublishedToGuest";
+
+  /** Record title. */
   public static final String RESOURCE_TITLE = "resourceTitleObject";
+
+  /** Alternate title. */
   public static final String RESOURCE_ALT_TITLE = "resourceAltTitleObject";
+
+  /**
+   * Resource abstract.
+   *
+   * <p>Keep the abstract short and use purpose and supplemental information for more detailed
+   * information.
+   */
   public static final String RESOURCE_ABSTRACT = "resourceAbstractObject";
+
+  /**
+   * Resource credit. Sometimes used to credit the source of the data.
+   *
+   * <p>Alternative is to use contact with proper role (which will be used to compute the citation).
+   */
   public static final String RESOURCE_CREDIT = "resourceCreditObject";
+
   public static final String ORDERING_INSTRUCTIONS = "orderingInstructionsObject";
+
+  /** Supplemental information. */
   public static final String SUPPLEMENTAL_INFORMATION = "supplementalInformationObject";
+
+  /** Purpose. */
   public static final String PURPOSE = "purposeObject";
+
   public static final String RESOURCE_IDENTIFIER = "resourceIdentifier";
   public static final String RESOURCE_LANGUAGE = "resourceLanguage";
   public static final String MAIN_LANGUAGE = "mainLanguage";
@@ -64,6 +97,7 @@ public class IndexRecordFieldNames {
   public static final String CONTACT_FOR_PREFIX = "contactFor";
   public static final String ORG_FOR_PREFIX = "OrgFor";
   public static final String ORGANISATION_NAME = "organisationObject";
+  public static final String CONTACT_IDENTIFIERS = "identifiers";
   public static final String MEASURE = "measure";
   public static final String MEASURE_PREFIX = "measure_";
   public static final String RECORD_GROUP = "recordGroup";
@@ -111,7 +145,12 @@ public class IndexRecordFieldNames {
   public static final String RESOLUTION_SCALE_DENOMINATOR = "resolutionScaleDenominator";
   public static final String RESOLUTION_DISTANCE = "resolutionDistance";
   public static final String RESOURCE_TYPE = "resourceType";
+
+  /** The resource type name. Complementary information to the resource type. */
   public static final String RESOURCE_TYPE_NAME = "resourceTypeNameObject";
+  public static final String STATUS_CHANGE_DATE = "mdStatusChangeDate";
+  public static final String LAST_WORKFLOW_STATUS = "mdStatus";
+
   public static final String HASSOURCE = "hassource";
   public static final String HASFEATURECAT = "hasfeaturecat";
   public static final String KEYWORD_BY_TYPE_PREFIX = "keywordType-";
@@ -122,6 +161,7 @@ public class IndexRecordFieldNames {
   public static final String USE_LIMITATION_SUFFIX = "UseLimitationObject";
   public static final String LICENSE = "licenseObject";
   public static final String CONFORMS_TO_PREFIX = "conformTo_";
+  public static final String INSPIRE = "inspire";
 
   /** Private constructor to prevent instantiation. */
   private IndexRecordFieldNames() {}

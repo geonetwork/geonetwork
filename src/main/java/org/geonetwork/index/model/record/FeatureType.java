@@ -6,6 +6,8 @@
 
 package org.geonetwork.index.model.record;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +27,8 @@ public class FeatureType {
   String isAbstract;
   String aliases;
 
+  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+  @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("attributeTable")
   List<AttributeTable> attributeTable;
 }
