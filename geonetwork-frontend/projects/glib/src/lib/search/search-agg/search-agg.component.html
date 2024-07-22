@@ -10,6 +10,13 @@
           [field]="searchField"
           [aggregationConfig]="aggregationConfig" />
       }
+      @case (SearchAggLayout.SELECT_BUTTON) {
+        <g-search-agg-select-button
+          [scope]="scope()"
+          [buckets]="agg().buckets"
+          [field]="searchField"
+          [aggregationConfig]="aggregationConfig" />
+      }
       @default {
         @for (bucket of agg().buckets; track bucket.key) {
           <g-search-agg-item

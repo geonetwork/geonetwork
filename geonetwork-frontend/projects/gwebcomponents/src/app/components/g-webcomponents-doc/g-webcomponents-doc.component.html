@@ -1,4 +1,32 @@
-<h2 class="text-3xl">Searching with webcomponents</h2>
+<h2 class="mt-10 text-3xl">Searching with webcomponents</h2>
+
+<h2 class="mt-2 text-2xl">Table of records</h2>
+
+<div class="m-4">
+  <p-dropdown
+    styleClass="w-full mb-4"
+    [options]="apiUrlList"
+    optionValue="url"
+    optionLabel="url"
+    [(ngModel)]="apiUrl"
+    tooltip="Choose a catalogue" />
+
+  <p-dropdown
+    styleClass="w-full mb-4"
+    [options]="selectionModeList"
+    optionValue="type"
+    optionLabel="type"
+    [(ngModel)]="selectionMode"
+    tooltip="Choose a selection mode" />
+
+  <gc-search-results-table
+    [apiUrl]="apiUrl"
+    listOfFields="resourceTitleObject.default,tag[*].default,overview[*],cl_status[0].default"
+    listOfFilter="OrgForResourceObject.default,cl_status.default,th_gemet.default"
+    [selectionMode]="selectionMode"/>
+</div>
+
+<h2 class="mt-2 text-2xl">Search box and results</h2>
 
 <div class="m-4">
   <p-dropdown
@@ -9,23 +37,23 @@
     [(ngModel)]="apiUrl"
     placeholder="Choose a catalogue" />
 
-  <g-search [apiUrl]="apiUrl" />
+  <gc-search [apiUrl]="apiUrl" />
 </div>
 
-<h2 class="text-3xl">Data preview with webcomponents</h2>
+<h2 class="mt-20 text-3xl">Data preview with webcomponents</h2>
 
 <div class="m-4">
   <div class="text-2x font-bold">Browse CSV file</div>
   <p-dropdown [(ngModel)]="selectedSourceFile" [options]="csvSourceFiles" />
   <br />
-  <g-data-results-table
+  <gc-data-results-table
     [source]="selectedSourceFile()"
-    class="w-full"></g-data-results-table>
+    class="w-full"></gc-data-results-table>
 
   To embed the component in your application, use the following code snippet:
   <pre>
     <![CDATA[
-    <g-data-results-table [source]="csvfileUrl" class="w-full"></g-data-results-table>
+    <gc-data-results-table [source]="csvfileUrl" class="w-full"></gc-data-results-table>
     ]]>
   </pre>
 </div>

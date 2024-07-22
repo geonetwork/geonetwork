@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'g-webcomponents-doc',
@@ -22,4 +22,11 @@ export class GWebcomponentsDocComponent {
   ];
 
   selectedSourceFile = signal(this.csvSourceFiles[0]);
+
+  selectionMode = undefined;
+  selectionModeList = [
+    { type: undefined },
+    { type: 'single' },
+    { type: 'multiple' },
+  ];
 }

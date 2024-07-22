@@ -9,19 +9,19 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Configuration, DefaultConfig } from 'gapi';
-import { API_CONFIGURATION, SearchService } from 'glib';
+import { API_CONFIGURATION, SearchService, SearchAggLayout } from 'glib';
 
 @Component({
-  selector: 'g-search',
-  templateUrl: './g-search.component.html',
-  styleUrl: './g-search.component.css',
+  selector: 'gc-search',
+  templateUrl: './gc-search.component.html',
+  styleUrl: './gc-search.component.css',
   encapsulation: ViewEncapsulation.ShadowDom,
   providers: [
     { provide: API_CONFIGURATION, useValue: signal(DefaultConfig) },
     SearchService,
   ],
 })
-export class GSearchComponent implements OnInit, OnChanges {
+export class GcSearchComponent implements OnInit, OnChanges {
   @Input() apiUrl: string;
   @Input() searchId = Math.random().toString().slice(2, 5);
 
@@ -36,4 +36,6 @@ export class GSearchComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.apiConfiguration.set(new Configuration({ basePath: this.apiUrl }));
   }
+
+  protected readonly SearchAggLayout = SearchAggLayout;
 }
