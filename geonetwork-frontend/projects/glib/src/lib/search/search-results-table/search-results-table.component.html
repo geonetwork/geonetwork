@@ -1,0 +1,65 @@
+@if (search) {
+  @if (search.response(); as response) {
+    <p-table [lazy]="true"
+             [value]="response.hits.hits"
+             [columns]="fields()"
+             [paginator]="true"
+             [rows]="search.pageSize()"
+             [first]="search.from()"
+             [totalRecords]="search.response().hits.total.value"
+             [showCurrentPageReport]="true"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             (onPage)="pageChange($event)"
+             [rowsPerPageOptions]="[10, 25, 50]"
+             [selectionMode]="selectionMode()"
+             [(selection)]="selectedRecords"
+             metaKeySelection="true"
+             [tableStyle]="{'min-width': '60rem'}">
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          {{ response.hits.total.value }}  records found
+
+          @if (selectionMode() === 'multiple') {
+            ({{ selectedRecords.length }} selected)
+          }
+        </div>
+      </ng-template>
+      <!--
+      rowGroupMode="subheader"
+                   groupRowsBy="_source.cl_status.default"
+      <ng-template pTemplate="groupheader" let-hit>
+              <tr pRowGroupHeader>
+                <td colspan="field().length">
+                  <span class="font-bold ml-2">{{hit._source.cl_status ? hit._source.cl_status[0].default : 'unknown'}}</span>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="groupfooter" let-hit>
+              <tr>
+                <td colspan="field().length" class="text-right font-bold pr-6">
+                  Total
+                </td>
+              </tr>
+            </ng-template>-->
+      <ng-template pTemplate="header">
+        <tr>
+          @for (field of fields(); track $index) {
+            <th>{{ field }}</th>
+          }
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body"
+                   let-hit
+                   let-rowIndex="rowIndex">
+        <tr [pSelectableRow]="hit" [pSelectableRowIndex]="rowIndex">
+          @for (field of fields(); track $index) {
+            <td>
+              {{ hit._source | gJsonpath:field }}
+            </td>
+          }
+        </tr>
+      </ng-template>
+    </p-table>
+    {{selectedRecords | json}}
+  }
+}

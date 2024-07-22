@@ -1,18 +1,13 @@
-import { GDataResultsTableComponent } from './components/g-data-results-table/g-data-results-table.component';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  InjectionToken,
-  Injector,
-  NgModule,
-} from '@angular/core';
+import { GcDataResultsTableComponent } from './components/gc-data-results-table/gc-data-results-table.component';
+import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import {
-  ApplicationConfiguration,
   DataTableComponent,
-  DEFAULT_SPACE,
+  SearchAggComponent,
   SearchContextDirective,
   SearchInputComponent,
   SearchResultsComponent,
+  SearchResultsTableComponent,
 } from 'glib';
 import { CommonModule } from '@angular/common';
 import { GnAngularjsComponent } from './components/gn-angularjs/gn-angularjs.component';
@@ -20,15 +15,32 @@ import { GWebcomponentsDocComponent } from './components/g-webcomponents-doc/g-w
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
-import { GSearchComponent } from './components/g-search-results/g-search.component';
-import { DefaultConfig } from 'gapi';
+import { GcSearchComponent } from './components/gc-search-results/gc-search.component';
+import { GcSearchResultsTableComponent } from './components/gc-search-results-table/gc-search-results-table.component';
+import { ToolbarModule } from 'primeng/toolbar';
+
+const CUSTOM_ELEMENTS = [
+  {
+    component: GcDataResultsTableComponent,
+    selector: 'gc-data-results-table-component',
+  },
+  {
+    component: GcSearchComponent,
+    selector: 'gc-search-component',
+  },
+  {
+    component: GcSearchResultsTableComponent,
+    selector: 'gc-search-results-table-component',
+  },
+];
 
 @NgModule({
   declarations: [
-    GDataResultsTableComponent,
+    GcDataResultsTableComponent,
     GnAngularjsComponent,
     GWebcomponentsDocComponent,
-    GSearchComponent,
+    GcSearchComponent,
+    GcSearchResultsTableComponent,
   ],
   imports: [
     CommonModule,
@@ -37,21 +49,22 @@ import { DefaultConfig } from 'gapi';
     FormsModule,
     Button,
     SearchContextDirective,
+    SearchAggComponent,
     SearchInputComponent,
     SearchResultsComponent,
+    SearchResultsTableComponent,
+    ToolbarModule,
   ],
-  bootstrap: [GDataResultsTableComponent, GSearchComponent],
-  exports: [GDataResultsTableComponent, GSearchComponent],
+  bootstrap: [GcDataResultsTableComponent, GcSearchComponent],
+  exports: [GcDataResultsTableComponent, GcSearchComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {
   constructor(private injector: Injector) {
-    const elData = createCustomElement(GDataResultsTableComponent, {
-      injector,
+    CUSTOM_ELEMENTS.forEach(({ component, selector }) => {
+      const el = createCustomElement(component, { injector });
+      customElements.define(selector, el);
     });
-    customElements.define('g-data-results-table-component', elData);
-    const el = createCustomElement(GSearchComponent, { injector });
-    customElements.define('g-search-component', el);
   }
 
   ngDoBootstrap() {}

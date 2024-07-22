@@ -3,12 +3,24 @@
   (onClear)="handleMutliSelectClear()"
   [filter]="true"
   filterBy="key"
+  display="chip"
+  optionLabel="key"
   [options]="buckets()"
   [showClear]="true"
   panelStyleClass="w-80"
   placeholder=""
   scrollHeight="400px"
   styleClass="w-80">
+  <!--<ng-template let-value pTemplate="selectedItems">
+    <div class="inline-flex align-items-center gap-2 px-1">
+      @for(option of value; track option.key) {
+        <div>{{ option.key }},</div>
+      }
+      @if (!value || value.length === 0) {
+        <div>Select ...</div>
+      }
+    </div>
+  </ng-template>-->
   <ng-template let-bucket pTemplate="item">
     <div class="flex align-items-center gap-2">
       <g-search-agg-item-decorator

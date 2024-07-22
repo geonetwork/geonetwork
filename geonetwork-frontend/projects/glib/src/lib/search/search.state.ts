@@ -233,14 +233,18 @@ export const SearchStore = signalStore(
     buildDefaultAggregationConfig(key: string) {
       return {
         terms: {
-          field: key
+          field: key,
+          size: 50
         },
-      }
+        meta: {
+          refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
+        }
+      };
     },
     getAggregationConfig(key: string): AggregationsAggregationContainer {
       let configuration = store.aggregationConfig()[key];
       if (configuration) {
-        return configuration
+        return configuration;
       } else {
         let newConfiguration = this.buildDefaultAggregationConfig(key);
         store.aggregationConfig()[key] = newConfiguration;

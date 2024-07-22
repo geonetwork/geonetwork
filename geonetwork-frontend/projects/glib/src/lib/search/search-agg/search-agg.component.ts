@@ -14,12 +14,14 @@ import { ChipModule } from 'primeng/chip';
 import { SearchModule } from '../search.module';
 import { SearchAggMultiselectComponent } from '../search-agg-multiselect/search-agg-multiselect.component';
 import { SearchBaseComponent } from '../search-base/search-base.component';
+import { SearchAggSelectButtonComponent } from '../search-agg-selectbutton/search-agg-select-button.component';
 
 export enum SearchAggLayout {
   CHECKBOX = 'checkbox',
   TRISTATE = 'tristate',
   CHIP = 'chip',
   CARD = 'card',
+  SELECT_BUTTON = 'selectbutton',
   MULTISELECT = 'multiselect',
 }
 
@@ -40,6 +42,7 @@ type SearchAggLayoutValues = keyof typeof SearchAggLayout;
     SearchModule,
     SearchModule,
     SearchAggMultiselectComponent,
+    SearchAggSelectButtonComponent,
   ],
   templateUrl: './search-agg.component.html',
   styleUrl: './search-agg.component.css',
