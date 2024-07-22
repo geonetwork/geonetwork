@@ -3,29 +3,32 @@ geonetwork:
     url: http://localhost:8080/geonetwork
   index:
     url: http://localhost:9200
-    indexPrefix: gn-
-    indexRecordName: gn-records
+    indexPrefix: gn5-
+    indexRecordName: gn5-records
   openapi:
     url: http://localhost:7979
 
 server:
   port: 7979
+  servlet:
+    context-path: /
+  forward-headers-strategy: framework
 
 spring:
   application:
     name: GeoNetwork
   datasource:
-#    url: jdbc:postgresql://localhost:5432/gn
-#    driverClassName: org.postgresql.Driver
-#    username: www-data
-#    password: www-data
-      url: jdbc:h2:mem:gn5
-      driverClassName: org.h2.Driver
-      username: sa
-      password: password
+    url: jdbc:postgresql://localhost:5432/gn
+    driverClassName: org.postgresql.Driver
+    username: www-data
+    password: www-data
+  #      url: jdbc:h2:mem:gn5
+  #      driverClassName: org.h2.Driver
+  #      username: sa
+  #      password: password
   jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-      database-platform: org.hibernate.dialect.H2Dialect
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    database-platform: org.hibernate.dialect.H2Dialect
   cloud:
     gateway:
       mvc:

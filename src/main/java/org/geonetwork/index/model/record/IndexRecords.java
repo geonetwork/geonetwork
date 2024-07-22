@@ -6,19 +6,28 @@
 
 package org.geonetwork.index.model.record;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.Singular;
 
 /** Index records. */
 @Data
-@XmlRootElement(name = "indexRecords")
-@XmlAccessorType(XmlAccessType.FIELD)
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
+@JacksonXmlRootElement(localName = "indexRecords")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class IndexRecords {
 
-  @XmlElement(name = "indexRecord")
+  @JsonProperty(value = "indexRecord")
+  @JacksonXmlElementWrapper(useWrapping = false)
+  @Singular("indexRecord")
   private List<IndexRecord> indexRecord;
 }
