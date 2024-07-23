@@ -581,7 +581,6 @@ class IndexRecordTest {
           objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(indexDocument);
 
       assertEquals(
-          document,
           """
 {
   "metadataIdentifier" : "12345",
@@ -599,7 +598,9 @@ class IndexRecordTest {
     "langfre" : "Occupation du sol"
   } ]
 }
-                """);
+"""
+              .trim(),
+          document.trim());
     } catch (JsonProcessingException e) {
       fail("Serialization failed: " + e.getMessage());
     }
