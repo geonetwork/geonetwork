@@ -94,7 +94,7 @@
               </execution>
             </executions>
             <configuration>
-              <ratchetFrom>origin/main</ratchetFrom>
+              <!--ratchetFrom>origin/main</ratchetFrom-->
               <java>
                 <googleJavaFormat>
                   <style>GOOGLE</style>
