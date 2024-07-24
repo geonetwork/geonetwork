@@ -5,8 +5,16 @@ geonetwork:
     url: http://localhost:9200
     indexPrefix: gn5-
     indexRecordName: gn5-records
+  indexing:
+    asynchronous: true
+    chunksize: 1000
+    poolsize: 10
   openapi:
     url: http://localhost:7979
+  settings:
+    system:
+      metadata:
+        prefergrouplogo: true
 
 server:
   port: 7979

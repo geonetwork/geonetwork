@@ -1,19 +1,17 @@
 package org.geonetwork.indexing;
 
-import co.elastic.clients.elasticsearch._helpers.bulk.BulkIngester;
-import co.elastic.clients.elasticsearch._helpers.bulk.BulkListener;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import static java.util.stream.Collectors.groupingBy;
-import org.elasticsearch.client.RequestOptions;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.OP_PREFIX;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.VALID;
 
-import co.elastic.clients.elasticsearch._types.ElasticsearchException;
+import co.elastic.clients.elasticsearch._helpers.bulk.BulkIngester;
+import co.elastic.clients.elasticsearch._helpers.bulk.BulkListener;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.util.VisibleForTesting;
+import jakarta.persistence.EntityManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,10 +74,20 @@ public class IndexingService {
 
   private final IndexClient indexClient;
   private final boolean isPreferringGroupLogo;
+  private final boolean isAsynchronousIndexing;
+  private final int indexingChunkSize;
+
+  ExecutorService executor;
 
   public IndexingService(
       @Value("${geonetwork.settings.system.metadata.prefergrouplogo:'true'}")
           boolean isPreferringGroupLogo,
+      @Value("${geonetwork.indexing.asynchronous:'true'}")
+          boolean isAsynchronousIndexing,
+      @Value("${geonetwork.indexing.chunksize:'1000'}")
+      int indexingChunkSize,
+      @Value("${geonetwork.indexing.poolsize:'2'}")
+      int poolSize,
       MetadataRepository metadataRepository,
       MetadataDraftRepository metadataDraftRepository,
       UserRepository userRepository,
@@ -93,6 +101,11 @@ public class IndexingService {
       EntityManager entityManager,
       IndexClient indexClient) {
     this.isPreferringGroupLogo = isPreferringGroupLogo;
+    this.isAsynchronousIndexing = isAsynchronousIndexing;
+    this.indexingChunkSize = indexingChunkSize;
+
+    this.executor = Executors.newFixedThreadPool(poolSize);
+
     this.metadataRepository = metadataRepository;
     this.metadataDraftRepository = metadataDraftRepository;
     this.userRepository = userRepository;
@@ -116,77 +129,85 @@ public class IndexingService {
     AtomicInteger counter = new AtomicInteger();
     int chunksize = 1000;
 
-    Sort sortBy = Sort.by(Sort.Direction.ASC, "schemaid").and(Sort.by(Sort.Direction.DESC, "changedate"));
-    try( Stream<Metadata> metadataStream = uuids == null
-        ? metadataRepository.streamAllBy(sortBy)
-        : metadataRepository.streamAllByUuidIn(uuids, sortBy)) {
+    Sort sortBy =
+        Sort.by(Sort.Direction.ASC, "schemaid").and(Sort.by(Sort.Direction.DESC, "changedate"));
+    try (Stream<Metadata> metadataStream =
+        uuids == null
+            ? metadataRepository.streamAllBy(sortBy)
+            : metadataRepository.streamAllByUuidIn(uuids, sortBy)) {
 
-      metadataStream.collect(groupingBy(x ->
-        counter.getAndIncrement() / chunksize
-        )).forEach(
-        (k, m) -> {
-            log.info(String.format("Indexing chunk %s %s ", k, counter.get()));
-            IndexRecords indexRecords = collectProperties(m.getFirst().getSchemaid(),m);
-            if (indexRecords != null
-                && indexRecords.getIndexRecord() != null
-                && indexRecords.getIndexRecord().size() > 0) {
+      metadataStream
+          .collect(groupingBy(x -> counter.getAndIncrement() / chunksize))
+          .forEach(
+              (k, m) -> {
+                executor.submit(() -> {
+                  log.info(String.format("Indexing chunk %s %s ", k, counter.get()));
+                  IndexRecords indexRecords = collectProperties(m.getFirst().getSchemaid(), m);
+                  if (indexRecords != null
+                    && indexRecords.getIndexRecord() != null
+                    && indexRecords.getIndexRecord().size() > 0) {
 
-              ObjectMapper objectMapper = new ObjectMapper();
-              try {
-                String jsonFromSerialization =
-                    objectMapper
-                        .writerWithDefaultPrettyPrinter()
-                        .writeValueAsString(indexRecords.getIndexRecord().getFirst());
-                log.info(jsonFromSerialization);
-              } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-              }
-              sendToIndex(indexRecords);
-            }
-          });
+                    //              ObjectMapper objectMapper = new ObjectMapper();
+                    //              try {
+                    //                String jsonFromSerialization =
+                    //                    objectMapper
+                    //                        .writerWithDefaultPrettyPrinter()
+                    //
+                    // .writeValueAsString(indexRecords.getIndexRecord().getFirst());
+                    //                log.info(jsonFromSerialization);
+                    //              } catch (JsonProcessingException e) {
+                    //                throw new RuntimeException(e);
+                    //              }
+                    sendToIndex(indexRecords);
+                    m.forEach(entityManager::detach);
+                  }
+                });
+              });
     }
 
-//    log.info(String.format("Indexing %d records in batch", records.size()));
-//
-//    if (uuids != null && uuids.size() != records.size()) {
-//      List<String> listOfUuids = records.stream().map(Metadata::getUuid).toList();
-//      List<String> ghost = new ArrayList<>(uuids);
-//      ghost.removeAll(listOfUuids);
-//      log.warn(
-//          String.format(
-//              "Error while retrieving records from database. "
-//                  + "%d record(s) missing. Records are %s."
-//                  + "Records may have been deleted since we started this indexing task.",
-//              ghost.size(), ghost.toString()));
-//      //      report.setNumberOfGhostRecords(ghost.size());
-//      //      e.getIn().setHeader("NUMBER_OF_GHOST", report.getNumberOfGhostRecords());
-//    }
-//
-//    Map<String, List<Metadata>> recordsBySchema =
-//        records.stream().collect(Collectors.groupingBy(record -> record.getSchemaid()));
-//
-//    recordsBySchema.forEach(
-//        (schema, schemaRecords) -> {
-//          log.info(String.format("Indexing %d records in schema %s", schemaRecords.size(), schema));
-//          IndexRecords indexRecords = collectProperties(schema, schemaRecords);
-//          if (indexRecords != null
-//              && indexRecords.getIndexRecord() != null
-//              && indexRecords.getIndexRecord().size() > 0) {
-//            sendToIndex(indexRecords);
-//            //            log.info(indexRecords.toString());
-//
-//            //            ObjectMapper objectMapper = new ObjectMapper();
-//            //            try {
-//            //              String jsonFromSerialization =
-//            //                  objectMapper
-//            //                      .writerWithDefaultPrettyPrinter()
-//            //                      .writeValueAsString(indexRecords.getIndexRecord().getFirst());
-//            //              log.info(jsonFromSerialization);
-//            //            } catch (JsonProcessingException e) {
-//            //              throw new RuntimeException(e);
-//            //            }
-//          }
-//        });
+    //    log.info(String.format("Indexing %d records in batch", records.size()));
+    //
+    //    if (uuids != null && uuids.size() != records.size()) {
+    //      List<String> listOfUuids = records.stream().map(Metadata::getUuid).toList();
+    //      List<String> ghost = new ArrayList<>(uuids);
+    //      ghost.removeAll(listOfUuids);
+    //      log.warn(
+    //          String.format(
+    //              "Error while retrieving records from database. "
+    //                  + "%d record(s) missing. Records are %s."
+    //                  + "Records may have been deleted since we started this indexing task.",
+    //              ghost.size(), ghost.toString()));
+    //      //      report.setNumberOfGhostRecords(ghost.size());
+    //      //      e.getIn().setHeader("NUMBER_OF_GHOST", report.getNumberOfGhostRecords());
+    //    }
+    //
+    //    Map<String, List<Metadata>> recordsBySchema =
+    //        records.stream().collect(Collectors.groupingBy(record -> record.getSchemaid()));
+    //
+    //    recordsBySchema.forEach(
+    //        (schema, schemaRecords) -> {
+    //          log.info(String.format("Indexing %d records in schema %s", schemaRecords.size(),
+    // schema));
+    //          IndexRecords indexRecords = collectProperties(schema, schemaRecords);
+    //          if (indexRecords != null
+    //              && indexRecords.getIndexRecord() != null
+    //              && indexRecords.getIndexRecord().size() > 0) {
+    //            sendToIndex(indexRecords);
+    //            //            log.info(indexRecords.toString());
+    //
+    //            //            ObjectMapper objectMapper = new ObjectMapper();
+    //            //            try {
+    //            //              String jsonFromSerialization =
+    //            //                  objectMapper
+    //            //                      .writerWithDefaultPrettyPrinter()
+    //            //
+    // .writeValueAsString(indexRecords.getIndexRecord().getFirst());
+    //            //              log.info(jsonFromSerialization);
+    //            //            } catch (JsonProcessingException e) {
+    //            //              throw new RuntimeException(e);
+    //            //            }
+    //          }
+    //        });
   }
 
   @VisibleForTesting
@@ -202,9 +223,9 @@ public class IndexingService {
           .forEach(indexRecordsBuilder::indexRecord);
       IndexRecords records = indexRecordsBuilder.build();
 
-//      System.out.println(
-//          XsltUtil.transformObjectToString(
-//              records, indexingXsltFile, IndexRecords.class, new HashMap<>()));
+      //      System.out.println(
+      //          XsltUtil.transformObjectToString(
+      //              records, indexingXsltFile, IndexRecords.class, new HashMap<>()));
 
       return XsltUtil.transformObjectToObject(
           records, indexingXsltFile, IndexRecords.class, new HashMap<>());
@@ -308,7 +329,10 @@ public class IndexingService {
     Map<String, String> validationStatus = new HashMap<>();
     validationInfo.stream()
         .filter(v -> !v.getId().getValtype().equalsIgnoreCase(IndexRecordFieldNames.INSPIRE))
-        .forEach(vi -> validationStatus.put(VALID + "_" + vi.getId().getValtype(), String.valueOf(vi.getStatus())));
+        .forEach(
+            vi ->
+                validationStatus.put(
+                    VALID + "_" + vi.getId().getValtype(), String.valueOf(vi.getStatus())));
     indexRecord.validationByType(validationStatus);
 
     boolean hasInspireValidation = processInspireValidation(validationInfo, indexRecord);
@@ -418,61 +442,65 @@ public class IndexingService {
     try {
       boolean isAsync = true;
       if (isAsync) {
-        BulkListener<Object> bulkListener = new BulkListener<>() {
-          @Override
-          public void beforeBulk(long executionId, BulkRequest request, List<Object> objects) {
+        BulkListener<Object> bulkListener =
+            new BulkListener<>() {
+              @Override
+              public void beforeBulk(long executionId, BulkRequest request, List<Object> objects) {}
 
-          }
+              @Override
+              public void afterBulk(
+                  long executionId,
+                  BulkRequest request,
+                  List<Object> objects,
+                  BulkResponse response) {
+                log.info(String.format("Indexing operation took %d.", response.took()));
+              }
 
-          @Override
-          public void afterBulk(long executionId, BulkRequest request, List<Object> objects, BulkResponse response) {
-            log.info(String.format("Indexing operation took %d.", response.took()));
-          }
-
-          @Override
-          public void afterBulk(long executionId, BulkRequest request, List<Object> objects, Throwable failure) {
-            log.info(String.format("Indexing operation took %d.", failure.getMessage()));
-          }
-        };
-        BulkIngester<Object> bulkIngester = BulkIngester.of(b -> b.client(indexClient.getEsAsynchClient())
-          .listener(bulkListener)
-          // .maxConcurrentRequests(1)
-          // .flushInterval(10, TimeUnit.SECONDS)
-          .maxOperations(1000));
-
+              @Override
+              public void afterBulk(
+                  long executionId, BulkRequest request, List<Object> objects, Throwable failure) {
+                log.info(String.format("Indexing operation took %d.", failure.getMessage()));
+              }
+            };
+        BulkIngester<Object> bulkIngester =
+            BulkIngester.of(
+                b ->
+                    b.client(indexClient.getEsAsynchClient())
+                        .listener(bulkListener)
+                        // .maxConcurrentRequests(1)
+                        // .flushInterval(10, TimeUnit.SECONDS)
+                        .maxOperations(1000));
 
         for (IndexRecord indexRecord : indexRecords.getIndexRecord()) {
           bulkIngester.add(
-            op ->
-              op.delete(
-                idx ->
-                  idx.index(indexClient.getIndexRecordName())
-                    .id(indexRecord.getUuid())));
+              op ->
+                  op.delete(
+                      idx ->
+                          idx.index(indexClient.getIndexRecordName()).id(indexRecord.getUuid())));
           bulkIngester.add(
-            op ->
-              op.index(
-                idx ->
-                  idx.index(indexClient.getIndexRecordName())
-                    .id(indexRecord.getUuid())
-                    .document(indexRecord)));
+              op ->
+                  op.index(
+                      idx ->
+                          idx.index(indexClient.getIndexRecordName())
+                              .id(indexRecord.getUuid())
+                              .document(indexRecord)));
         }
       } else {
         BulkRequest.Builder br = new BulkRequest.Builder();
 
         for (IndexRecord indexRecord : indexRecords.getIndexRecord()) {
           br.operations(
-            op ->
-              op.delete(
-                idx ->
-                  idx.index(indexClient.getIndexRecordName())
-                    .id(indexRecord.getUuid())));
+              op ->
+                  op.delete(
+                      idx ->
+                          idx.index(indexClient.getIndexRecordName()).id(indexRecord.getUuid())));
           br.operations(
-            op ->
-              op.index(
-                idx ->
-                  idx.index(indexClient.getIndexRecordName())
-                    .id(indexRecord.getUuid())
-                    .document(indexRecord)));
+              op ->
+                  op.index(
+                      idx ->
+                          idx.index(indexClient.getIndexRecordName())
+                              .id(indexRecord.getUuid())
+                              .document(indexRecord)));
         }
 
         BulkResponse bulkItemResponses = indexClient.getEsClient().bulk(br.build());
