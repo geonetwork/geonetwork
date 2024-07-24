@@ -150,7 +150,7 @@ public class IndexingService {
             b ->
                 b.client(indexClient.getEsAsynchClient())
                     .listener(bulkListener)
-                     .flushInterval(10, TimeUnit.SECONDS)
+                    .flushInterval(10, TimeUnit.SECONDS)
                     .maxOperations(indexingChunkSize));
   }
 
@@ -158,41 +158,57 @@ public class IndexingService {
   @Transactional(readOnly = true)
   public void index(List<String> uuids) {
 
-    AtomicInteger counter = new AtomicInteger();
+    AtomicInteger counter = new AtomicInteger(0);
 
     Sort sortBy =
         Sort.by(Sort.Direction.ASC, "schemaid").and(Sort.by(Sort.Direction.DESC, "changedate"));
+
+    long nbRecords = uuids == null ? metadataRepository.count() : uuids.size();
+
     try (Stream<Metadata> metadataStream =
         uuids == null
             ? metadataRepository.streamAllBy(sortBy)
             : metadataRepository.streamAllByUuidIn(uuids, sortBy)) {
 
       metadataStream
-          .collect(groupingBy(x -> counter.getAndIncrement() / indexingChunkSize))
+          .collect(
+              groupingBy(
+                  x ->
+                      nbRecords < indexingChunkSize
+                          ? 0L
+                          : counter.getAndIncrement() / indexingChunkSize))
           .forEach(
               (k, m) -> {
                 executor.submit(
                     () -> {
-                      log.info(String.format("Indexing chunk %s %s ", k, counter.get()));
-                      IndexRecords indexRecords = collectProperties(m.getFirst().getSchemaid(), m);
-                      if (indexRecords != null
-                          && indexRecords.getIndexRecord() != null
-                          && indexRecords.getIndexRecord().size() > 0) {
+                      log.info(
+                          String.format(
+                              "Indexing chunk #%s of %d over %d records",
+                              k, indexingChunkSize, nbRecords));
+                      m.stream()
+                          .collect(groupingBy(Metadata::getSchemaid))
+                          .forEach(
+                              (schema, records) -> {
+                                IndexRecords indexRecords = collectProperties(schema, m);
+                                if (indexRecords != null
+                                    && indexRecords.getIndexRecord() != null
+                                    && !indexRecords.getIndexRecord().isEmpty()) {
 
-                        //              ObjectMapper objectMapper = new ObjectMapper();
-                        //              try {
-                        //                String jsonFromSerialization =
-                        //                    objectMapper
-                        //                        .writerWithDefaultPrettyPrinter()
-                        //
-                        // .writeValueAsString(indexRecords.getIndexRecord().getFirst());
-                        //                log.info(jsonFromSerialization);
-                        //              } catch (JsonProcessingException e) {
-                        //                throw new RuntimeException(e);
-                        //              }
-                        sendToIndex(indexRecords);
-                        m.forEach(entityManager::detach);
-                      }
+                                  //              ObjectMapper objectMapper = new ObjectMapper();
+                                  //              try {
+                                  //                String jsonFromSerialization =
+                                  //                    objectMapper
+                                  //                        .writerWithDefaultPrettyPrinter()
+                                  //
+                                  // .writeValueAsString(indexRecords.getIndexRecord().getFirst());
+                                  //                log.info(jsonFromSerialization);
+                                  //              } catch (JsonProcessingException e) {
+                                  //                throw new RuntimeException(e);
+                                  //              }
+                                  sendToIndex(indexRecords);
+                                  m.forEach(entityManager::detach);
+                                }
+                              });
                     });
               });
     }
@@ -245,23 +261,17 @@ public class IndexingService {
   @VisibleForTesting
   protected IndexRecords collectProperties(String schema, List<Metadata> schemaRecords) {
     String indexingXsltFileName = String.format("xslt/indexing/%s.xsl", schema);
+    File indexingXsltFile = null;
     try {
-      File indexingXsltFile = new ClassPathResource(indexingXsltFileName).getFile();
-
-      IndexRecords.IndexRecordsBuilder indexRecordsBuilder = IndexRecords.builder();
-
-      schemaRecords.stream()
-          .map(this::collectDbProperties)
-          .forEach(indexRecordsBuilder::indexRecord);
-      IndexRecords records = indexRecordsBuilder.build();
-
-      //      System.out.println(
-      //          XsltUtil.transformObjectToString(
-      //              records, indexingXsltFile, IndexRecords.class, new HashMap<>()));
-
-      return XsltUtil.transformObjectToObject(
-          records, indexingXsltFile, IndexRecords.class, new HashMap<>());
-    } catch (IOException ioException) {
+      indexingXsltFile = new ClassPathResource(indexingXsltFileName).getFile();
+    } catch (IOException ioSchemaFileException) {
+      if (schema.startsWith("iso19")) {
+        try {
+          indexingXsltFile = new ClassPathResource("xslt/indexing/iso.xsl").getFile();
+        } catch (IOException isoFileException) {
+          // Should not happen
+        }
+      }
       //      report.setNumberOfRecordsWithUnsupportedSchema(schemaRecords.size());
       log.error(
           String.format(
@@ -286,6 +296,22 @@ public class IndexingService {
       // those records. Record is indexed indexing error flag.",
       //          metadataId, schema));
       //      }
+    }
+
+    if (indexingXsltFile != null) {
+      IndexRecords.IndexRecordsBuilder indexRecordsBuilder = IndexRecords.builder();
+
+      schemaRecords.stream()
+          .map(this::collectDbProperties)
+          .forEach(indexRecordsBuilder::indexRecord);
+      IndexRecords records = indexRecordsBuilder.build();
+
+      //      System.out.println(
+      //          XsltUtil.transformObjectToString(
+      //              records, indexingXsltFile, IndexRecords.class, new HashMap<>()));
+
+      return XsltUtil.transformObjectToObject(
+          records, indexingXsltFile, IndexRecords.class, new HashMap<>());
     }
     return null;
   }
