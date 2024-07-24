@@ -9,33 +9,21 @@ import java.util.Map;
 import java.util.Optional;
 import org.geonetwork.schemas.model.Codelists;
 import org.geonetwork.schemas.model.Entry;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 /**
  * Schema codelist translator.
  *
  * <p>Load translations from codelists.xml and provide a method to get the translation of a code.
  */
+@Component
 public class CodeListTranslator {
   private final Map<String, Codelists> codelists = new HashMap<>();
 
-  private static volatile CodeListTranslator instance = null;
-
-  private CodeListTranslator() {}
-
-  /** Get the singleton instance of the CodeListTranslator. */
-  public static CodeListTranslator getInstance() {
-    if (instance == null) {
-      synchronized (CodeListTranslator.class) {
-        if (instance == null) {
-          instance = new CodeListTranslator();
-        }
-      }
-    }
-    return instance;
-  }
-
   /** Get the translation of a code. */
+  @Cacheable(cacheNames = "schema-codelists")
   public String getTranslation(String codeListNameOrAlias, String code, String language) {
     loadTranslations("iso19115-3.2018", language);
 

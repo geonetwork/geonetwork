@@ -160,6 +160,10 @@
       <artifactId>spotless-maven-plugin</artifactId>
       <version>${spotless.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-cache</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

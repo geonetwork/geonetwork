@@ -157,7 +157,6 @@ public class IndexingService {
   /** Index a list of records. */
   @Transactional(readOnly = true)
   public void index(List<String> uuids) {
-
     AtomicInteger counter = new AtomicInteger(0);
 
     Sort sortBy =

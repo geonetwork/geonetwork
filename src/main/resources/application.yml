@@ -67,3 +67,7 @@ springdoc:
 
 
 debug: false
+
+#logging:
+#  level:
+#    org.springframework.cache: TRACE
