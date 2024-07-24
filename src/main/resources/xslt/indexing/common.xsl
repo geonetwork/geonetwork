@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:err="http://www.w3.org/2005/xqt-errors"
                 version="3.0"
                 exclude-result-prefixes="#all">
 
@@ -21,10 +22,30 @@
         <xsl:value-of select="format-dateTime(current-dateTime(), $dateTimeFormat)"/>
       </indexingDate>
 
-      <xsl:variable name="xml"
-                    select="parse-xml(document)"/>
-      <xsl:apply-templates mode="index"
-                           select="$xml"/>
+      <xsl:try>
+        <xsl:variable name="xml"
+                      select="parse-xml(document)"/>
+        <xsl:apply-templates mode="index"
+                             select="$xml"/>
+        <xsl:catch>
+          <!-- TODO: send to logger -->
+          <xsl:message>XSLT error
+            <xsl:value-of select="$err:description"/>
+          </xsl:message>
+          <indexingErrorMsg>
+            <string>indexingErrorMsg-xslt-error</string>
+            <type>error</type>
+            <values>
+              <code>
+                <xsl:value-of select="$err:code"/>
+              </code>
+              <description>
+                <xsl:value-of select="$err:description"/>
+              </description>
+            </values>
+          </indexingErrorMsg>
+        </xsl:catch>
+      </xsl:try>
     </xsl:copy>
   </xsl:template>
 
