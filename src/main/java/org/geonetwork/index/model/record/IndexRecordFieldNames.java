@@ -148,6 +148,7 @@ public class IndexRecordFieldNames {
 
   /** The resource type name. Complementary information to the resource type. */
   public static final String RESOURCE_TYPE_NAME = "resourceTypeNameObject";
+
   public static final String STATUS_CHANGE_DATE = "mdStatusChangeDate";
   public static final String LAST_WORKFLOW_STATUS = "mdStatus";
 
