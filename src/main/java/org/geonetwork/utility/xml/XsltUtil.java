@@ -41,6 +41,7 @@ public class XsltUtil {
     }
   }
 
+  /** Transform Object to String. */
   public static <T> String transformObjectToString(
       Object inputObject,
       File xsltFile,
@@ -48,7 +49,8 @@ public class XsltUtil {
       Map<QName, net.sf.saxon.s9api.XdmValue> xslParameters) {
     XmlMapper xmlMapper = new XmlMapper();
     try {
-      return transformXmlAsString(xmlMapper.writeValueAsString(inputObject), xsltFile, xslParameters);
+      return transformXmlAsString(
+          xmlMapper.writeValueAsString(inputObject), xsltFile, xslParameters);
 
     } catch (Exception e) {
       throw new RuntimeException(e);
