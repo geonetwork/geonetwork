@@ -1,7 +1,5 @@
 package org.geonetwork.indexing;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import static java.util.stream.Collectors.groupingBy;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.OP_PREFIX;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.VALID;
@@ -20,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -79,15 +79,13 @@ public class IndexingService {
 
   ExecutorService executor;
 
+  /** Constructor. */
   public IndexingService(
       @Value("${geonetwork.settings.system.metadata.prefergrouplogo:'true'}")
           boolean isPreferringGroupLogo,
-      @Value("${geonetwork.indexing.asynchronous:'true'}")
-          boolean isAsynchronousIndexing,
-      @Value("${geonetwork.indexing.chunksize:'1000'}")
-      int indexingChunkSize,
-      @Value("${geonetwork.indexing.poolsize:'2'}")
-      int poolSize,
+      @Value("${geonetwork.indexing.asynchronous:'true'}") boolean isAsynchronousIndexing,
+      @Value("${geonetwork.indexing.chunksize:'1000'}") int indexingChunkSize,
+      @Value("${geonetwork.indexing.poolsize:'2'}") int poolSize,
       MetadataRepository metadataRepository,
       MetadataDraftRepository metadataDraftRepository,
       UserRepository userRepository,
@@ -140,28 +138,29 @@ public class IndexingService {
           .collect(groupingBy(x -> counter.getAndIncrement() / chunksize))
           .forEach(
               (k, m) -> {
-                executor.submit(() -> {
-                  log.info(String.format("Indexing chunk %s %s ", k, counter.get()));
-                  IndexRecords indexRecords = collectProperties(m.getFirst().getSchemaid(), m);
-                  if (indexRecords != null
-                    && indexRecords.getIndexRecord() != null
-                    && indexRecords.getIndexRecord().size() > 0) {
+                executor.submit(
+                    () -> {
+                      log.info(String.format("Indexing chunk %s %s ", k, counter.get()));
+                      IndexRecords indexRecords = collectProperties(m.getFirst().getSchemaid(), m);
+                      if (indexRecords != null
+                          && indexRecords.getIndexRecord() != null
+                          && indexRecords.getIndexRecord().size() > 0) {
 
-                    //              ObjectMapper objectMapper = new ObjectMapper();
-                    //              try {
-                    //                String jsonFromSerialization =
-                    //                    objectMapper
-                    //                        .writerWithDefaultPrettyPrinter()
-                    //
-                    // .writeValueAsString(indexRecords.getIndexRecord().getFirst());
-                    //                log.info(jsonFromSerialization);
-                    //              } catch (JsonProcessingException e) {
-                    //                throw new RuntimeException(e);
-                    //              }
-                    sendToIndex(indexRecords);
-                    m.forEach(entityManager::detach);
-                  }
-                });
+                        //              ObjectMapper objectMapper = new ObjectMapper();
+                        //              try {
+                        //                String jsonFromSerialization =
+                        //                    objectMapper
+                        //                        .writerWithDefaultPrettyPrinter()
+                        //
+                        // .writeValueAsString(indexRecords.getIndexRecord().getFirst());
+                        //                log.info(jsonFromSerialization);
+                        //              } catch (JsonProcessingException e) {
+                        //                throw new RuntimeException(e);
+                        //              }
+                        sendToIndex(indexRecords);
+                        m.forEach(entityManager::detach);
+                      }
+                    });
               });
     }
 
@@ -315,7 +314,7 @@ public class IndexingService {
             indexRecord.lastWorkflowStatus(String.valueOf(metadatastatus.getStatusid().getId())));
   }
 
-  /** Validation status -1 : not evaluated 0 : invalid 1 : valid */
+  /** Validation status -1 : not evaluated 0 : invalid 1 : valid. */
   private void processValidationInfo(
       List<Validation> validationInfo, IndexRecord.IndexRecordBuilder indexRecord) {
     if (validationInfo.isEmpty()) {

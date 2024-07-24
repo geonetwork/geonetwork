@@ -6,6 +6,7 @@
 
 package org.geonetwork.index.model.record;
 
+import static org.geonetwork.index.model.record.IndexRecordFieldNames.CommonField.DEFAULT_TEXT;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.HIERARCHY_SUFFIX;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.NUMBER_SUFFIX;
 
@@ -36,6 +37,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Singular;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Metadata record to be indexed.
@@ -923,21 +925,25 @@ public class IndexRecord {
     ArrayList<Keyword> keywordForType =
         keywordField.computeIfAbsent(name, k -> new ArrayList<Keyword>());
 
-//    if (value instanceof Map) {
-//      Object listOfKeywords = ((Map) value).get("keywords"); // XML
-//      if (listOfKeywords instanceof List) {
-//        ((List<?>) listOfKeywords).forEach(k -> {
-//          if (k instanceof String && StringUtils.isNotEmpty(k.toString())) {
-//            keywordForType.add(Keyword.builder().property(DEFAULT_TEXT, k.toString()).build());
-//          } else if (k instanceof Map) {
-//            keywordForType.add(Keyword.builder().properties((Map<String, String>) k).build());
-//            }
-//        });
-//      }
-//    } else if (value instanceof List) {
-//      ((List<HashMap<String, String>>) value)
-//          .stream().map(Keyword::new).forEach(keywordForType::add);
-//    }
+    if (value instanceof Map) {
+      Object listOfKeywords = ((Map) value).get("keywords"); // XML
+      if (listOfKeywords instanceof List) {
+        ((List<?>) listOfKeywords)
+            .forEach(
+                k -> {
+                  if (k instanceof String && StringUtils.isNotEmpty(k.toString())) {
+                    keywordForType.add(
+                        Keyword.builder().property(DEFAULT_TEXT, k.toString()).build());
+                  } else if (k instanceof Map) {
+                    keywordForType.add(
+                        Keyword.builder().properties((Map<String, String>) k).build());
+                  }
+                });
+      }
+    } else if (value instanceof List) {
+      ((List<HashMap<String, String>>) value)
+          .stream().map(Keyword::new).forEach(keywordForType::add);
+    }
   }
 
   private void handleLinkUrlProperties(String name, Object value) {
@@ -964,13 +970,13 @@ public class IndexRecord {
         associatedResourceFields.computeIfAbsent(name, k -> new ArrayList<String>());
     if (value instanceof List) {
       recordLinkForField.addAll((List<String>) value);
-    } else if (value instanceof  String) {
+    } else if (value instanceof String) {
       recordLinkForField.add((String) value);
     }
   }
 
   private void handleConformProperties(String name, Object value) {
-// TODO   conformsTo.put(name, value instanceof Boolean ? ((Boolean) value).toString() : (String) value);
+    conformsTo.put(name, value instanceof Boolean ? ((Boolean) value).toString() : (String) value);
   }
 
   private void handleCodelistProperties(String name, Object value) {

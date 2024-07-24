@@ -3,7 +3,6 @@ package org.geonetwork.indexing;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.util.List;
-import java.util.Optional;
 import org.geonetwork.index.IndexClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -45,9 +44,7 @@ public class IndexingController {
 
   /** Index all records. */
   @GetMapping(path = "/indexAll", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String indexRecords(
-      @RequestParam(defaultValue = "", required = false) String[] uuid
-  ) {
+  public String indexRecords(@RequestParam(defaultValue = "", required = false) String[] uuid) {
 
     indexingService.index(uuid.length > 0 ? List.of(uuid) : null);
     return "Indexing";
