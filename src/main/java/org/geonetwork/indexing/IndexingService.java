@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -77,13 +78,14 @@ public class IndexingService {
   private final boolean isAsynchronousIndexing;
   private final int indexingChunkSize;
 
-  ExecutorService executor;
+  private ExecutorService executor;
+  private BulkIngester<Object> bulkIngester;
 
   /** Constructor. */
   public IndexingService(
       @Value("${geonetwork.settings.system.metadata.prefergrouplogo:'true'}")
           boolean isPreferringGroupLogo,
-      @Value("${geonetwork.indexing.asynchronous:'true'}") boolean isAsynchronousIndexing,
+      @Value("${geonetwork.indexing.asynchronous:'false'}") boolean isAsynchronousIndexing,
       @Value("${geonetwork.indexing.chunksize:'1000'}") int indexingChunkSize,
       @Value("${geonetwork.indexing.poolsize:'2'}") int poolSize,
       MetadataRepository metadataRepository,
@@ -118,6 +120,38 @@ public class IndexingService {
     this.entityManager = entityManager;
 
     this.indexClient = indexClient;
+
+    setupBulkIngester();
+  }
+
+  private void setupBulkIngester() {
+    if (!this.isAsynchronousIndexing) {
+      return;
+    }
+    BulkListener<Object> bulkListener =
+        new BulkListener<>() {
+          @Override
+          public void beforeBulk(long executionId, BulkRequest request, List<Object> objects) {}
+
+          @Override
+          public void afterBulk(
+              long executionId, BulkRequest request, List<Object> objects, BulkResponse response) {
+            log.info(String.format("Indexing operation took %d.", response.took()));
+          }
+
+          @Override
+          public void afterBulk(
+              long executionId, BulkRequest request, List<Object> objects, Throwable failure) {
+            log.info(String.format("Indexing operation took %d.", failure.getMessage()));
+          }
+        };
+    this.bulkIngester =
+        BulkIngester.of(
+            b ->
+                b.client(indexClient.getEsAsynchClient())
+                    .listener(bulkListener)
+                     .flushInterval(10, TimeUnit.SECONDS)
+                    .maxOperations(indexingChunkSize));
   }
 
   /** Index a list of records. */
@@ -125,7 +159,6 @@ public class IndexingService {
   public void index(List<String> uuids) {
 
     AtomicInteger counter = new AtomicInteger();
-    int chunksize = 1000;
 
     Sort sortBy =
         Sort.by(Sort.Direction.ASC, "schemaid").and(Sort.by(Sort.Direction.DESC, "changedate"));
@@ -135,7 +168,7 @@ public class IndexingService {
             : metadataRepository.streamAllByUuidIn(uuids, sortBy)) {
 
       metadataStream
-          .collect(groupingBy(x -> counter.getAndIncrement() / chunksize))
+          .collect(groupingBy(x -> counter.getAndIncrement() / indexingChunkSize))
           .forEach(
               (k, m) -> {
                 executor.submit(
@@ -439,37 +472,7 @@ public class IndexingService {
 
   private void sendToIndex(IndexRecords indexRecords) {
     try {
-      boolean isAsync = true;
-      if (isAsync) {
-        BulkListener<Object> bulkListener =
-            new BulkListener<>() {
-              @Override
-              public void beforeBulk(long executionId, BulkRequest request, List<Object> objects) {}
-
-              @Override
-              public void afterBulk(
-                  long executionId,
-                  BulkRequest request,
-                  List<Object> objects,
-                  BulkResponse response) {
-                log.info(String.format("Indexing operation took %d.", response.took()));
-              }
-
-              @Override
-              public void afterBulk(
-                  long executionId, BulkRequest request, List<Object> objects, Throwable failure) {
-                log.info(String.format("Indexing operation took %d.", failure.getMessage()));
-              }
-            };
-        BulkIngester<Object> bulkIngester =
-            BulkIngester.of(
-                b ->
-                    b.client(indexClient.getEsAsynchClient())
-                        .listener(bulkListener)
-                        // .maxConcurrentRequests(1)
-                        // .flushInterval(10, TimeUnit.SECONDS)
-                        .maxOperations(1000));
-
+      if (isAsynchronousIndexing) {
         for (IndexRecord indexRecord : indexRecords.getIndexRecord()) {
           bulkIngester.add(
               op ->
