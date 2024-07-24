@@ -8,9 +8,11 @@ package org.geonetwork;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 /** The main class of the application. */
 @SpringBootApplication
+@EnableCaching
 public class GeonetworkApplication {
 
   public static void main(String[] args) {

@@ -8,6 +8,7 @@ import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
+import org.geonetwork.ApplicationContextProvider;
 import org.geonetwork.schemas.CodeListTranslator;
 
 /** Extension function to get the translation of a code from a codelist. */
@@ -36,9 +37,12 @@ public class GetCodeListTranslationFn extends ExtensionFunctionDefinition {
       public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
         String codelist = arguments[0].head().getStringValue();
         String value = arguments[1].head().getStringValue();
-        String lang = arguments[2].head().getStringValue();
+        String language = arguments[2].head().getStringValue();
+
         return StringValue.makeStringValue(
-            CodeListTranslator.getInstance().getTranslation(codelist, value, lang));
+            ApplicationContextProvider.getApplicationContext()
+                .getBean(CodeListTranslator.class)
+                .getTranslation(codelist, value, language));
       }
     };
   }
