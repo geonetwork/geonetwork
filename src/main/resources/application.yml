@@ -6,9 +6,10 @@ geonetwork:
     indexPrefix: gn5-
     indexRecordName: gn5-records
   indexing:
-    asynchronous: true
     chunksize: 1000
     poolsize: 10
+    # Elasticsearch Bulk Async API
+    asynchronous: false
   openapi:
     url: http://localhost:7979
   settings:
