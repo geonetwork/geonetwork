@@ -7,7 +7,7 @@
                 exclude-result-prefixes="#all">
 
 
-  <xsl:output indent="yes" method="xml"/>
+  <xsl:output indent="no" method="xml"/>
 
   <xsl:include href="iso-utility.xsl"/>
   <xsl:include href="common.xsl"/>
@@ -43,120 +43,115 @@
 
   <xsl:template mode="index"
                 match="*:MD_Metadata">
-    <xsl:variable name="properties" as="node()*">
-      <docType>metadata</docType>
 
-      <xsl:variable name="identifier"
-                    as="xs:string?"
-                    select="*:metadataIdentifier/*/*:code/*:CharacterString[. != '']
-                                |*:fileIdentifier/*:CharacterString[. != '']"/>
-      <metadataIdentifier>
-        <xsl:value-of select="$identifier"/>
-      </metadataIdentifier>
+    <docType>metadata</docType>
 
-      <xsl:for-each select="(*:dateInfo/*[*:dateType/*/@codeListValue = 'revision']/*:date/*[gn-fn-index:is-isoDate(.)])[1]
-                                          |(*:dateStamp/*[gn-fn-index:is-isoDate(.)])[1]">
-        <dateStamp>
-          <xsl:value-of select="util:convertToISOZuluDateTime(normalize-space(.))"/>
-        </dateStamp>
+    <xsl:variable name="identifier"
+                  as="xs:string?"
+                  select="*:metadataIdentifier/*/*:code/*:CharacterString[. != '']
+                              |*:fileIdentifier/*:CharacterString[. != '']"/>
+    <metadataIdentifier>
+      <xsl:value-of select="$identifier"/>
+    </metadataIdentifier>
+
+
+    <xsl:for-each select="(*:dateInfo/*[*:dateType/*/@codeListValue = 'revision']/*:date/*[gn-fn-index:is-isoDate(.)])[1]
+                                        |(*:dateStamp/*[gn-fn-index:is-isoDate(.)])[1]">
+      <dateStamp>
+        <xsl:value-of select="util:convertToISOZuluDateTime(normalize-space(.))"/>
+      </dateStamp>
+    </xsl:for-each>
+
+
+    <xsl:variable name="languages" as="node()*">
+      <xsl:variable name="mainLanguageCode" as="xs:string?"
+                    select="*:defaultLocale/*/*:language/*/@codeListValue[normalize-space(.) != '']
+                                |*:language[1]/*/@codeListValue[normalize-space(.) != '']"/>
+
+      <xsl:variable name="mainLanguage" as="xs:string?"
+                    select="if ($mainLanguageCode)
+                            then $mainLanguageCode
+                            else *:language[1]/*:CharacterString[normalize-space(.) != '']"/>
+
+      <xsl:variable name="otherLanguages" as="attribute()*"
+                    select="*:otherLocale/*/*:language/*/@codeListValue[normalize-space(.) != '']
+                              |*:locale/*/*:languageCode/*/@codeListValue[normalize-space(.) != '']"/>
+
+      <lang default=""
+            id="{$otherLanguages/*:PT_Locale[*:language/*/@codeListValue = $mainLanguage]/@id}"
+            code="{$mainLanguage}"/>
+      <xsl:for-each select="$otherLanguages[*/*:language/*/@codeListValue != $mainLanguage]">
+        <lang id="{ancestor::*:PT_Locale/@id}" code="{.}"/>
       </xsl:for-each>
-
-
-      <xsl:variable name="languages" as="node()*">
-        <xsl:variable name="mainLanguageCode" as="xs:string?"
-                      select="*:defaultLocale/*/*:language/*/@codeListValue[normalize-space(.) != '']
-                                  |*:language[1]/*/@codeListValue[normalize-space(.) != '']"/>
-
-        <xsl:variable name="mainLanguage" as="xs:string?"
-                      select="if ($mainLanguageCode)
-                              then $mainLanguageCode
-                              else *:language[1]/*:CharacterString[normalize-space(.) != '']"/>
-
-        <xsl:variable name="otherLanguages" as="attribute()*"
-                      select="*:otherLocale/*/*:language/*/@codeListValue[normalize-space(.) != '']
-                                |*:locale/*/*:languageCode/*/@codeListValue[normalize-space(.) != '']"/>
-
-        <lang default=""
-              id="{$otherLanguages/*:PT_Locale[*:language/*/@codeListValue = $mainLanguage]/@id}"
-              code="{$mainLanguage}"/>
-        <xsl:for-each select="$otherLanguages[*/*:language/*/@codeListValue != $mainLanguage]">
-          <lang id="{ancestor::*:PT_Locale/@id}" code="{.}"/>
-        </xsl:for-each>
-      </xsl:variable>
-
-      <xsl:for-each select="$languages[@default]">
-        <mainLanguage>
-          <xsl:value-of select="@code"/>
-        </mainLanguage>
-      </xsl:for-each>
-      <xsl:for-each select="$languages[not(@default)]">
-        <otherLanguage>
-          <xsl:value-of select="@code"/>
-        </otherLanguage>
-        <otherLanguageId>
-          <xsl:value-of select="@id"/>
-        </otherLanguageId>
-      </xsl:for-each>
-
-      <xsl:for-each select="*:identificationInfo/*/*:defaultLocale/*/*:language/*/@codeListValue[. != '']
-                                        |*:identificationInfo/*/*:language/(*:CharacterString|*:LanguageCode/@codeListValue)">
-        <resourceLanguage>
-          <xsl:value-of select="."/>
-        </resourceLanguage>
-      </xsl:for-each>
-      <xsl:for-each select="*:identificationInfo/*/(*:defaultLocale/*/*:characterEncoding|*:characterSet)/*/@codeListValue[. != '']">
-        <cl_resourceCharacterSet>
-          <key>
-            <xsl:value-of select="."/>
-          </key>
-          <default>
-            <xsl:value-of select="."/><!-- TODO: translation-->
-          </default>
-          <link>
-            <xsl:value-of select="@codeList"/>
-          </link>
-          <xsl:if test="text() != ''">
-            <text>
-              <xsl:value-of select="normalize-space(text())"/>
-            </text>
-          </xsl:if>
-        </cl_resourceCharacterSet>>
-      </xsl:for-each>
-
-
-      <xsl:call-template name="has-xlinks"/>
-
-      <xsl:call-template name="index-resourceType"/>
-
-      <xsl:call-template name="index-codelists">
-        <xsl:with-param name="languages" select="$languages"/>
-      </xsl:call-template>
-
-      <xsl:call-template name="index-constraints">
-        <xsl:with-param name="languages" select="$languages"/>
-      </xsl:call-template>
-
-      <xsl:call-template name="index-keywords">
-        <xsl:with-param name="languages" select="$languages"/>
-      </xsl:call-template>
-
-      <xsl:call-template name="index-additional-documents">
-        <xsl:with-param name="languages" select="$languages"/>
-      </xsl:call-template>
-
-      <xsl:call-template name="index-contact">
-        <xsl:with-param name="languages" select="$languages"/>
-      </xsl:call-template>
-
-      <xsl:apply-templates mode="index" select="*">
-        <xsl:with-param name="languages" select="$languages"/>
-      </xsl:apply-templates>
     </xsl:variable>
 
-    <xsl:for-each select="$properties">
-      <xsl:sort select="name()"/>
-      <xsl:copy-of select="."/>
+    <xsl:for-each select="$languages[@default]">
+      <mainLanguage>
+        <xsl:value-of select="@code"/>
+      </mainLanguage>
     </xsl:for-each>
+    <xsl:for-each select="$languages[not(@default)]">
+      <otherLanguage>
+        <xsl:value-of select="@code"/>
+      </otherLanguage>
+      <otherLanguageId>
+        <xsl:value-of select="@id"/>
+      </otherLanguageId>
+    </xsl:for-each>
+
+    <xsl:for-each select="*:identificationInfo/*/*:defaultLocale/*/*:language/*/@codeListValue[. != '']
+                                      |*:identificationInfo/*/*:language/(*:CharacterString|*:LanguageCode/@codeListValue)">
+      <resourceLanguage>
+        <xsl:value-of select="."/>
+      </resourceLanguage>
+    </xsl:for-each>
+    <xsl:for-each select="*:identificationInfo/*/(*:defaultLocale/*/*:characterEncoding|*:characterSet)/*/@codeListValue[. != '']">
+      <cl_resourceCharacterSet>
+        <key>
+          <xsl:value-of select="."/>
+        </key>
+        <default>
+          <xsl:value-of select="."/><!-- TODO: translation-->
+        </default>
+        <link>
+          <xsl:value-of select="@codeList"/>
+        </link>
+        <xsl:if test="text() != ''">
+          <text>
+            <xsl:value-of select="normalize-space(text())"/>
+          </text>
+        </xsl:if>
+      </cl_resourceCharacterSet>
+    </xsl:for-each>
+
+
+    <xsl:call-template name="has-xlinks"/>
+
+    <xsl:call-template name="index-resourceType"/>
+
+    <xsl:call-template name="index-codelists">
+      <xsl:with-param name="languages" select="$languages"/>
+    </xsl:call-template>
+
+    <xsl:call-template name="index-constraints">
+      <xsl:with-param name="languages" select="$languages"/>
+    </xsl:call-template>
+
+    <xsl:call-template name="index-keywords">
+      <xsl:with-param name="languages" select="$languages"/>
+    </xsl:call-template>
+
+    <xsl:call-template name="index-additional-documents">
+      <xsl:with-param name="languages" select="$languages"/>
+    </xsl:call-template>
+
+    <xsl:call-template name="index-contact">
+      <xsl:with-param name="languages" select="$languages"/>
+    </xsl:call-template>
+
+    <xsl:apply-templates mode="index" select="*">
+      <xsl:with-param name="languages" select="$languages"/>
+    </xsl:apply-templates>
   </xsl:template>
 
 
@@ -208,14 +203,6 @@
 
   <xsl:template mode="index" match="*:identificationInfo/*/*:citation/*/*:edition/*/text()[. != '']">
     <resourceEdition><xsl:value-of select="."/></resourceEdition>
-  </xsl:template>
-
-
-  <xsl:template mode="index" match="@*|node()">
-    <xsl:param name="languages" as="node()*"/>
-    <xsl:apply-templates mode="index" select="@*|node()">
-      <xsl:with-param name="languages" select="$languages"/>
-    </xsl:apply-templates>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -37,6 +37,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Singular;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -78,7 +79,6 @@ import org.apache.commons.lang3.StringUtils;
   IndexRecordFieldNames.ALL_KEYWORDS,
   IndexRecordFieldNames.RESOLUTION_DISTANCE,
   IndexRecordFieldNames.RESOLUTION_SCALE_DENOMINATOR,
-  IndexRecordFieldNames.HAS_BOUNDING_POLYGON,
   IndexRecordFieldNames.EXTENT_IDENTIFIER,
   IndexRecordFieldNames.EXTENT_DESCRIPTION,
   IndexRecordFieldNames.SHAPE,
@@ -125,6 +125,7 @@ import org.apache.commons.lang3.StringUtils;
   IndexRecordFieldNames.OVERVIEW,
   IndexRecordFieldNames.UUID
 })
+@Slf4j(topic = "org.geonetwork.index.model")
 public class IndexRecord {
 
   /**
@@ -492,7 +493,7 @@ public class IndexRecord {
   @JsonProperty(IndexRecordFieldNames.ORG)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  private List<HashMap<String, String>> org = new ArrayList<>();
+  private List<HashMap<String, String>> organizations = new ArrayList<>();
 
   @JsonProperty(IndexRecordFieldNames.FORMAT)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -605,9 +606,6 @@ public class IndexRecord {
   @JacksonXmlElementWrapper(useWrapping = false)
   private List<String> locations;
 
-  @JsonProperty(IndexRecordFieldNames.HAS_BOUNDING_POLYGON)
-  private boolean hasBoundingPolygon;
-
   @JsonProperty(IndexRecordFieldNames.EXTENT_IDENTIFIER)
   @JacksonXmlElementWrapper(useWrapping = false)
   private List<HashMap<String, String>> extentIdentifier;
@@ -681,14 +679,6 @@ public class IndexRecord {
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("hassource")
   private List<String> hassource = new ArrayList<>();
-
-  // https://github.com/FasterXML/jackson-dataformat-xml/issues/275
-  //  public void setHassource(List<String> value){
-  //    if (hassource == null){
-  //      hassource = new ArrayList<String>(value.size());
-  //    }
-  //    hassource.addAll(value);
-  //  }
 
   private static boolean isDateField(String name) {
     return name.endsWith("Date" + IndexRecordFieldNames.FOR_RESOURCE_SUFFIX)
@@ -782,17 +772,23 @@ public class IndexRecord {
         } else if (isDateField(name)) {
           handleDateProperties(name, value);
         } else if (name.isEmpty()) {
-          System.out.println("Empty name for value " + value);
+          log.atWarn()
+              .log(
+                  "Deserializing index object warning. No field name for value {}. "
+                      + "This property is ignored. Check the input document for {}",
+                  value,
+                  this.uuid);
         } else {
           handleOtherProperties(name, value);
         }
       } catch (Exception fieldException) {
-        // TODO: Ignore ? and return incomplete document
-        System.out.printf(
-            "Error while handling field %s with value %s for record %s. %s%n",
-            name, value, this.getMetadataIdentifier(), e.getMessage());
-        fieldException.printStackTrace();
-        //                throw fieldException;
+        log.atWarn()
+            .log(
+                "Error while handling field {} with value {} for record {}. {}",
+                name,
+                value,
+                this.uuid,
+                fieldException.getMessage());
       }
     }
   }

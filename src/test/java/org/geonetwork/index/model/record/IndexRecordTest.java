@@ -15,7 +15,6 @@ import static org.geonetwork.index.model.record.IndexRecordFieldNames.CommonFiel
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.LINK;
 import static org.geonetwork.index.model.record.RecordLink.Origin.remote;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -303,7 +302,6 @@ class IndexRecordTest {
           "No limitations to public access",
           indexRecord.getLicenses().getFirst().get(DEFAULT_TEXT));
 
-      assertFalse(indexRecord.isHasBoundingPolygon());
       assertEquals(
           "Région wallonne", indexRecord.getExtentDescription().getFirst().get(DEFAULT_TEXT));
 
@@ -587,7 +585,6 @@ class IndexRecordTest {
           """
 {
   "metadataIdentifier" : "12345",
-  "hasBoundingPolygon" : false,
   "popularity" : 0,
   "isPublishedToAll" : false,
   "isPublishedToIntranet" : false,

@@ -57,9 +57,11 @@
           <default>
             <xsl:value-of select="$defaultLangValue"/>
           </default>
-          <xsl:element name="{concat('lang', @code)}">
-            <xsl:value-of select="$defaultLangValue"/>
-          </xsl:element>
+          <xsl:if test="@code">
+            <xsl:element name="{concat('lang', @code)}">
+              <xsl:value-of select="$defaultLangValue"/>
+            </xsl:element>
+          </xsl:if>
         </xsl:if>
 
         <xsl:variable name="translation"
