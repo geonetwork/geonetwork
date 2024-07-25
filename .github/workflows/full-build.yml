@@ -1,4 +1,4 @@
-name: build
+name: QA build
 
 on: [pull_request]
 
@@ -20,9 +20,9 @@ jobs:
         distribution: 'temurin'
         java-version: 21
         cache: 'maven'
-    - name: Default Build
+    - name: Full build with quality assurance testing
       run: |
-        mvn -B -fae clean install -Drelax
+        mvn -B -fae clean install
     - name: Remove SNAPSHOT jars for lighter cache
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

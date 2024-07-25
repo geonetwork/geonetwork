@@ -6,14 +6,14 @@
     available at the root application directory.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.3.1</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <relativePath></relativePath>
+    <!-- lookup parent from repository -->
   </parent>
 
   <groupId>org.geonetwork</groupId>
@@ -23,25 +23,23 @@
   <name>GeoNetwork opensource</name>
   <description>GeoNetwork opensource is a standards based, Free and
     Open Source catalog application to manage spatially referenced
-    resources through the web.
-  </description>
+    resources through the web.</description>
   <url>https://geonetwork-opensource.org</url>
+  <inceptionYear>2003</inceptionYear>
   <organization>
     <name>Open Source Geospatial Foundation</name>
     <url>https://www.osgeo.org/</url>
   </organization>
-  <inceptionYear>2003</inceptionYear>
-  <issueManagement>
-    <system>GitHub Issues</system>
-    <url>https://github.com/geonetwork/geonetwork/issues</url>
-  </issueManagement>
   <licenses>
     <license>
       <name>General Public License (GPL)</name>
       <url>https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt</url>
     </license>
   </licenses>
-
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/geonetwork/geonetwork/issues</url>
+  </issueManagement>
 
   <properties>
     <java.version>21</java.version>
@@ -53,182 +51,35 @@
     <errorProne.version>2.18.0</errorProne.version>
     <pmd.version>6.42.0</pmd.version>
     <errorProne.version>2.29.0</errorProne.version>
+
     <!-- build -->
     <fork.javac>false</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
-    <!-- quality assurance -->
-    <lint>deprecation,unchecked</lint>
-    <qa>false</qa>
-    <checkstyle.skip>false</checkstyle.skip>
-    <errorProneFlags></errorProneFlags>
-    <!--errorProneFlags>-XepDisableWarningsInGeneratedCode</errorProneFlags-->
+
     <!-- formatting -->
-    <spotless.action>apply</spotless.action>
-    <spotless.apply.skip>false</spotless.apply.skip>
-    <pom.fmt.action>sort</pom.fmt.action>
-    <pom.fmt.skip>${spotless.apply.skip}</pom.fmt.skip>
+    <format.skip>false</format.skip>
+    <spotless.check.skip>${format.skip}</spotless.check.skip>
+
+    <!-- quality assurance and testing -->
+    <lint>deprecation,unchecked</lint>
+    <errorProneFlags></errorProneFlags>
+    <qa>false</qa>
+    <checkstyle.skip>true</checkstyle.skip>
+    <license.skipCheckLicense>true</license.skipCheckLicense>
+
   </properties>
 
-  <profiles>
-    <!-- Use -Drelax property to avoid:
-        * findbug
-        * checkstyle
-        * and tests. -->
-    <profile>
-      <id>relax-build</id>
-      <activation>
-        <property>
-          <name>relax</name>
-        </property>
-      </activation>
-      <properties>
-        <qa>false</qa>
-        <maven.test.skip>true</maven.test.skip>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>full-build</id>
-      <activation>
-        <property>
-          <name>!relax</name>
-        </property>
-      </activation>
-      <properties>
-        <qa>true</qa>
-        <maven.test.skip>false</maven.test.skip>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>spotless</id>
-      <activation>
-        <property>
-          <name>!relax</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <!--
-          See https://github.com/diffplug/spotless/tree/main/plugin-maven#java
-
-          ./mvnw spotless:apply
-          -->
-          <plugin>
-            <groupId>com.diffplug.spotless</groupId>
-            <artifactId>spotless-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <!--ratchetFrom>origin/main</ratchetFrom-->
-              <java>
-                <googleJavaFormat>
-                  <style>GOOGLE</style>
-                  <reflowLongStrings>true</reflowLongStrings>
-                  <formatJavadoc>true</formatJavadoc>
-                </googleJavaFormat>
-                <removeUnusedImports/>
-                <replaceRegex>
-                  <name>Remove wildcard imports</name>
-                  <searchRegex>import\s+[^\*\s]+\*;(\r\n|\r|\n)</searchRegex>
-                  <replacement>$1</replacement>
-                </replaceRegex>
-              </java>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>checkstyle</id>
-      <activation>
-        <property>
-          <name>!relax</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>check</id>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-                <phase>test</phase>
-              </execution>
-            </executions>
-            <configuration>
-              <configLocation>google_checks.xml</configLocation>
-              <logViolationsToConsole>true</logViolationsToConsole>
-              <maxAllowedViolations>0</maxAllowedViolations>
-              <violationSeverity>warning</violationSeverity>
-              <suppressionsLocation>build/checkstyle_suppressions.xml</suppressionsLocation>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>errorprone</id>
-      <activation>
-        <property>
-          <name>qa</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <fork>true</fork>
-              <showWarnings>true</showWarnings>
-              <compilerArgs>
-                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
-                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
-                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
-                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
-                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
-                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
-                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
-                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
-                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
-                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
-                <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -XepExcludedPaths:\Q${project.build.directory}\E.* ${errorProneFlags}</arg>
-                <arg>-Xlint:${lint}</arg>
-                <arg>-Werror</arg>
-                <arg>-Xmaxwarns</arg>
-                <arg>1000</arg>
-              </compilerArgs>
-              <annotationProcessorPaths>
-                <path>
-                  <groupId>org.projectlombok</groupId>
-                  <artifactId>lombok</artifactId>
-                  <version>${lombok.version}</version>
-                </path>
-                <path>
-                  <groupId>com.google.errorprone</groupId>
-                  <artifactId>error_prone_core</artifactId>
-                  <version>${errorProne.version}</version>
-                </path>
-              </annotationProcessorPaths>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-  </profiles>
-
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -301,18 +152,6 @@
     </dependency>
   </dependencies>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -333,6 +172,16 @@
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
           <version>4.5</version>
+        </plugin>
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>4.8.6.2</version>
+        </plugin>
+        <plugin>
+          <groupId>com.github.ekryd.sortpom</groupId>
+          <artifactId>sortpom-maven-plugin</artifactId>
+          <version>2.15.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -363,28 +212,91 @@
           </excludes>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <!--
         https://oss.carbou.me/license-maven-plugin/
-        Use mvn license:check to check the license headers
-        Use mvn license:format to format the license headers
-        Use mvn license:remove to remove the license headers
+
+        license:format bound to process source stage
+        license:check bound to verify stage
         -->
-        <version>4.5</version>
         <configuration>
-          <header>${maven.multiModuleProjectDirectory}/src/license/header.txt</header>
-          <includes>
-            <include>**/*.java</include>
-            <include>**/*.xsd</include>
-            <include>**/*.xml</include>
-            <include>**/*.xsl</include>
-            <include>**/*.html</include>
-            <include>pom.xml</include>
-          </includes>
+          <skip>${format.skip}</skip>
+          <licenseSets>
+            <licenseSet>
+              <header>${maven.multiModuleProjectDirectory}/src/license/header.txt</header>
+              <useDefaultExcludes>true</useDefaultExcludes>
+              <includes>
+                <include>**/*.java</include>
+                <include>**/*.xsd</include>
+                <include>**/*.xml</include>
+                <include>**/*.xsl</include>
+                <include>**/*.html</include>
+                <include>pom.xml</include>
+              </includes>
+              <excludes>
+                <exclude>target/**.*</exclude>
+              </excludes>
+            </licenseSet>
+          </licenseSets>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <!--
+        https://github.com/diffplug/spotless/tree/main/plugin-maven#java
+
+        spotless:apply bound to process source stage
+        spotless:check bound to verify stage
+        -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!--ratchetFrom>origin/main</ratchetFrom-->
+          <java>
+            <googleJavaFormat>
+              <style>GOOGLE</style>
+              <reflowLongStrings>true</reflowLongStrings>
+              <formatJavadoc>true</formatJavadoc>
+            </googleJavaFormat>
+            <removeUnusedImports></removeUnusedImports>
+            <replaceRegex>
+              <name>Remove wildcard imports</name>
+              <searchRegex>import\s+[^\*\s]+\*;(\r\n|\r|\n)</searchRegex>
+              <replacement>$1</replacement>
+            </replaceRegex>
+          </java>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.ekryd.sortpom</groupId>
+        <artifactId>sortpom-maven-plugin</artifactId>
+        <!--
+        https://github.com/Ekryd/sortpom
+
+        sortpom:sort bound to process source stage
+        sortpom:verify bound to verify stage
+        -->
+        <configuration>
+          <skip>${format.skip}</skip>
+          <keepBlankLines>true</keepBlankLines>
+          <spaceBeforeCloseEmptyElement>false</spaceBeforeCloseEmptyElement>
+          <createBackupFile>false</createBackupFile>
+          <verifyFail>stop</verifyFail>
+          <verifyFailOn>strict</verifyFailOn>
+        </configuration>
+      </plugin>
+
       <!--
         See https://openapi-generator.tech/docs/generators/spring
           for more information on the configuration options
@@ -429,4 +341,348 @@
       -->
     </plugins>
   </build>
+
+  <profiles>
+    <!-- Use -Drelax property to avoid:
+        * findbug
+        * checkstyle
+        * and tests. -->
+    <profile>
+      <id>relax-build</id>
+      <activation>
+        <property>
+          <name>relax</name>
+        </property>
+      </activation>
+      <properties>
+        <maven.test.skip>true</maven.test.skip>
+
+        <!-- formatting properties need to be skipped -->
+        <format.skip>true</format.skip>
+        <spotless.check.skip>true</spotless.check.skip>
+
+      </properties>
+    </profile>
+
+    <!--                                            -->
+    <!-- DEFAULT BUILD: Testing and formatting      -->
+    <!--                                            -->
+    <profile>
+      <id>default-build</id>
+      <activation>
+        <property>
+          <name>!relax</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+
+          <plugin>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>spotless-apply</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>apply</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <!-- docs indicate check is bound to verify but I needed to add this -->
+                <id>update-headers</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>format</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>com.github.ekryd.sortpom</groupId>
+            <artifactId>sortpom-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sort</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>sort</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+        </plugins>
+      </build>
+      <properties>
+        <qa>false</qa>
+        <maven.test.skip>false</maven.test.skip>
+        <license.skipCheckLicense>true</license.skipCheckLicense>
+      </properties>
+    </profile>
+
+    <!--                                            -->
+    <!-- FULL BUILD: Testing and Quality Assurance  -->
+    <!--                                            -->
+    <profile>
+      <id>full-build</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <properties>
+        <qa>true</qa>
+        <maven.test.skip>false</maven.test.skip>
+        <format.skip>true</format.skip>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>headers-check</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <!-- docs indicate check is bound to verify but I needed to add this -->
+                <id>header-license-check</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>spotless-check</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>spotless-check</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sortpom-check</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.ekryd.sortpom</groupId>
+            <artifactId>sortpom-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sortpom-check</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>checkstyle</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <!-- https://maven.apache.org/plugins/maven-checkstyle-plugin/ -->
+            <executions>
+              <execution>
+                <id>check</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <configLocation>google_checks.xml</configLocation>
+              <logViolationsToConsole>true</logViolationsToConsole>
+              <maxAllowedViolations>0</maxAllowedViolations>
+              <violationSeverity>warning</violationSeverity>
+              <suppressionsLocation>build/checkstyle_suppressions.xml</suppressionsLocation>
+              <skip>${checkstyle.skip}</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>spotbugs</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>check</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <effort>More</effort>
+                  <!--threshold>High</threshold-->
+                  <xmlOutput>true</xmlOutput>
+                  <maxRank>15</maxRank>
+                  <excludeFilterFile>build/spotbugs-exclude.xml</excludeFilterFile>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>spotbugs-security</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>security</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <effort>Max</effort>
+                  <threshold>medium</threshold>
+                  <failOnError>true</failOnError>
+                  <includeFilterFile>${session.executionRootDirectory}/spotbugs-security-include.xml</includeFilterFile>
+                  <excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>
+                  <plugins>
+                    <plugin>
+                      <groupId>com.h3xstream.findsecbugs</groupId>
+                      <artifactId>findsecbugs-plugin</artifactId>
+                      <version>1.12.0</version>
+                    </plugin>
+                  </plugins>
+                  <xmlOutput>true</xmlOutput>
+                  <maxRank>15</maxRank>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>errorprone</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <showWarnings>true</showWarnings>
+              <compilerArgs>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+                <arg>-XDcompilePolicy=simple</arg>
+                <arg>-Xplugin:ErrorProne -XepExcludedPaths:\Q${project.build.directory}\E.* ${errorProneFlags}</arg>
+                <arg>-Xlint:${lint}</arg>
+                <arg>-Werror</arg>
+                <arg>-Xmaxwarns</arg>
+                <arg>1000</arg>
+              </compilerArgs>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>org.projectlombok</groupId>
+                  <artifactId>lombok</artifactId>
+                  <version>${lombok.version}</version>
+                </path>
+                <path>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>${errorProne.version}</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
 </project>

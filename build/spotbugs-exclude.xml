@@ -1,0 +1,26 @@
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
+<!-- This file specifies a spotbugs filter for excluding reports that
+     should not be considered errors.
+
+     The format of this file is documented at:
+
+       https://spotbugs.readthedocs.io/en/latest/filter.html
+
+     When possible, please specify the full names of the bug codes,
+     using the pattern attribute, to make it clearer what reports are
+     being suppressed.  You can find a listing of codes at:
+
+       https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html
+  -->
+<FindBugsFilter>
+    <Match>
+       <!-- Annoying but not actually a bug per se, might want to revisit later -->
+       <Bug pattern="MF_CLASS_MASKS_FIELD"/>
+    </Match>
+</FindBugsFilter>
