@@ -619,6 +619,7 @@ public class IndexRecord {
 
   @JsonProperty(IndexRecordFieldNames.SHAPE)
   @JsonDeserialize(using = NodeTreeAsStringDeserializer.class)
+  @JsonSerialize(using = StringAsNodeTreeSerializer.class)
   private List<String> shapes;
 
   @JsonProperty(IndexRecordFieldNames.GEOM)

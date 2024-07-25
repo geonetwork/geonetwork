@@ -1,3 +1,8 @@
+/*
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
 package org.geonetwork.indexing;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -123,12 +128,12 @@ public class IndexingRecordService {
       log.atError()
           .log(
               "Schema {} used by records {} does not exist or does not provide indexing file {}",
-                  schema,
-                  schemaRecords.stream()
-                      .map(Metadata::getUuid)
-                      .map(Objects::toString)
-                      .collect(Collectors.joining(",")),
-                  indexingXsltFileName);
+              schema,
+              schemaRecords.stream()
+                  .map(Metadata::getUuid)
+                  .map(Objects::toString)
+                  .collect(Collectors.joining(",")),
+              indexingXsltFileName);
 
       //      if (!schemaManager.existsSchema(schema)) {
       //        fields.put(IndexFields.DRAFT, "n");

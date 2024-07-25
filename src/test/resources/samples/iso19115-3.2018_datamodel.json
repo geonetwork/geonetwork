@@ -1,0 +1,1426 @@
+{
+  "docType" : "metadata",
+  "metadataIdentifier" : "47b348f1-6e7a-4baa-963c-0232a43c0cff",
+  "standardNameObject" : {
+    "default" : "ISO 19115-3",
+    "langfre" : "ISO 19115-3"
+  },
+  "standardVersionObject" : {
+    "default" : "2018",
+    "langfre" : "2018"
+  },
+  "dateStamp" : "2024-06-03T14:04:06.161Z",
+  "mainLanguage" : "fre",
+  "resourceType" : [ "dataset", "featureCatalog" ],
+  "resourceTitleObject" : {
+    "default" : "Occupation du sol en Wallonie - WALOUS 2020",
+    "langfre" : "Occupation du sol en Wallonie - WALOUS 2020"
+  },
+  "resourceAltTitleObject" : [ {
+    "default" : "WAL_OCS__2020",
+    "langfre" : "WAL_OCS__2020"
+  }, {
+    "default" : "WAL_OCS_IA__2020",
+    "langfre" : "WAL_OCS_IA__2020"
+  } ],
+  "resourceDate" : [ {
+    "type" : "creation",
+    "date" : "2020-09-09T22:00:00.000Z"
+  }, {
+    "type" : "publication",
+    "date" : "2022-01-30T23:00:00.000Z"
+  } ],
+  "resourceTemporalDateRange" : [ {
+    "gte" : "2020-09-09T22:00:00.000Z",
+    "lte" : "2020-09-09T22:00:00.000Z"
+  }, {
+    "gte" : "2022-01-30T23:00:00.000Z",
+    "lte" : "2022-01-30T23:00:00.000Z"
+  }, {
+    "gte" : "2020-03-31T22:00:00.000Z",
+    "lte" : "2020-04-23T22:00:00.000Z"
+  } ],
+  "resourceIdentifier" : [ {
+    "code" : "47b348f1-6e7a-4baa-963c-0232a43c0cff",
+    "codeSpace" : "http://geodata.wallonie.be/id/",
+    "link" : ""
+  }, {
+    "code" : "WAL_OCS_IA__2020",
+    "codeSpace" : "BE.SPW.INFRASIG.ENTREPOT",
+    "link" : ""
+  } ],
+  "resourceAbstractObject" : {
+    "default" : "Cette couche de données reprend la cartographie de l’occupation du sol de l’ensemble du territoire wallon pour l’année 2020. Ce jeu de données raster reprend la cartographie de l’occupation du sol de l’ensemble du territoire wallon pour l’année 2020 (WAL_OCS_IA__2020). Si sa création diffère de la carte d’occupation 2018 (WAL_OCS__2018), la plupart de ses caractéristiques sont similaires. Elle permet donc d’observer l’évolution du territoire wallon sous le prisme de son occupation du sol. L’occupation du sol se définit comme la « couverture physique et biologique de la surface terrestre, y compris les surfaces artificielles, les zones agricoles, les forêts, les zones (semi-)naturelles, les zones humides et les masses d'eau » (directive européenne INSPIRE 2007/2/CE, 2007). WAL_OCS_IA__2020 est issue des prédictions de segmentation d’un modèle d’apprentissage profond entrainé sur les données de 2018 en utilisant comme réalité-terrain WAL_OCS__2018 et une version affinée de cette donnée. Le modèle se base sur les 4 bandes spectrales des orthophotos de 2020 et le MNH (dérivé de la soustraction entre le MNS photogrammétrique 2020 et le MNT issu de l’acquisition LiDAR 2013-2014). Le modèle est le résultat d’une approche agile et itérative avec le comité de suivi du projet. La donnée a été validée à l’aide d’un échantillon aléatoire de 1710 points photointerprétés indépendamment du processus de classification, contre-validés, et analysés selon les règles de l’art. Son exactitude globale est de 92.29% [86.77%]. L’information sur l’occupation du sol est fournie dans le système de projection Lambert Belge 2008 (EPSG :3812 – Pour usage en LB72, voir information sur la grille NTV2 -http://geoportail.wallonie.be/home/ressources/outils/Lambert-belge-2008-LB08.html). Les spécifications techniques de la WAL_OCS_IA__2020 sont similaires à celles de la carte d’occupation du sol 2018 (WAL_OCS__2018), à savoir - une résolution spatiale de 1m/pixel (calé sur la grille INSPIRE de la Région Wallonne) - une unité minimale de cartographie de 15m² - 11 classes principales. La définition et la symbologie de chacune de ces classes est disponible dans les documents associés Par contre, contrairement à WAL_OCS__2018, il n’y a pas dans cette version d’étagement de classes (appelé double label) pour un seul pixel car considéré comme trop sujet à confusion. Cette carte d’occupation du sol présente uniquement la situation vue du ciel. La mise en œuvre de la donnée WAL_OCS_IA__2020, produite en 2021, s’inscrit dans le cadre d’un marché public visant à mettre à jour la carte d’occupation des sols de Wallonie de 2018 (WAL_OCS__2018). C’est la société belge Aerospacelab SA qui a été responsable du développement et de l'implémentation de la solution. L’un des objectifs majeurs de ce marché était l’accessibilité de la solution. Ainsi son code source, les logiciels utilisées, et les données sur lesquelles elle se base suivent la même philosophie de libre accès. Cette donnée est complétée, d’une part, par une donnée raster indiquant les changements et les transitions de classes (pour les classes principales) survenus entre 2018 et 2020, et d’autre part, par une donnée vectorielle directement dérivée de la donnée raster. Source à mentionner lors de l'utilisation de cette donnée : SPW - Aerospacelab SA",
+    "langfre" : "Cette couche de données reprend la cartographie de l’occupation du sol de l’ensemble du territoire wallon pour l’année 2020. Ce jeu de données raster reprend la cartographie de l’occupation du sol de l’ensemble du territoire wallon pour l’année 2020 (WAL_OCS_IA__2020). Si sa création diffère de la carte d’occupation 2018 (WAL_OCS__2018), la plupart de ses caractéristiques sont similaires. Elle permet donc d’observer l’évolution du territoire wallon sous le prisme de son occupation du sol. L’occupation du sol se définit comme la « couverture physique et biologique de la surface terrestre, y compris les surfaces artificielles, les zones agricoles, les forêts, les zones (semi-)naturelles, les zones humides et les masses d'eau » (directive européenne INSPIRE 2007/2/CE, 2007). WAL_OCS_IA__2020 est issue des prédictions de segmentation d’un modèle d’apprentissage profond entrainé sur les données de 2018 en utilisant comme réalité-terrain WAL_OCS__2018 et une version affinée de cette donnée. Le modèle se base sur les 4 bandes spectrales des orthophotos de 2020 et le MNH (dérivé de la soustraction entre le MNS photogrammétrique 2020 et le MNT issu de l’acquisition LiDAR 2013-2014). Le modèle est le résultat d’une approche agile et itérative avec le comité de suivi du projet. La donnée a été validée à l’aide d’un échantillon aléatoire de 1710 points photointerprétés indépendamment du processus de classification, contre-validés, et analysés selon les règles de l’art. Son exactitude globale est de 92.29% [86.77%]. L’information sur l’occupation du sol est fournie dans le système de projection Lambert Belge 2008 (EPSG :3812 – Pour usage en LB72, voir information sur la grille NTV2 -http://geoportail.wallonie.be/home/ressources/outils/Lambert-belge-2008-LB08.html). Les spécifications techniques de la WAL_OCS_IA__2020 sont similaires à celles de la carte d’occupation du sol 2018 (WAL_OCS__2018), à savoir - une résolution spatiale de 1m/pixel (calé sur la grille INSPIRE de la Région Wallonne) - une unité minimale de cartographie de 15m² - 11 classes principales. La définition et la symbologie de chacune de ces classes est disponible dans les documents associés Par contre, contrairement à WAL_OCS__2018, il n’y a pas dans cette version d’étagement de classes (appelé double label) pour un seul pixel car considéré comme trop sujet à confusion. Cette carte d’occupation du sol présente uniquement la situation vue du ciel. La mise en œuvre de la donnée WAL_OCS_IA__2020, produite en 2021, s’inscrit dans le cadre d’un marché public visant à mettre à jour la carte d’occupation des sols de Wallonie de 2018 (WAL_OCS__2018). C’est la société belge Aerospacelab SA qui a été responsable du développement et de l'implémentation de la solution. L’un des objectifs majeurs de ce marché était l’accessibilité de la solution. Ainsi son code source, les logiciels utilisées, et les données sur lesquelles elle se base suivent la même philosophie de libre accès. Cette donnée est complétée, d’une part, par une donnée raster indiquant les changements et les transitions de classes (pour les classes principales) survenus entre 2018 et 2020, et d’autre part, par une donnée vectorielle directement dérivée de la donnée raster. Source à mentionner lors de l'utilisation de cette donnée : SPW - Aerospacelab SA"
+  },
+  "tag" : [ {
+    "default" : "Occupation du sol",
+    "langfre" : "Occupation du sol"
+  }, {
+    "default" : "WALOUS",
+    "langfre" : "WALOUS"
+  }, {
+    "default" : "Télédétection",
+    "langfre" : "Télédétection"
+  }, {
+    "default" : "COSW",
+    "langfre" : "COSW"
+  }, {
+    "default" : "apprentissage profond",
+    "langfre" : "apprentissage profond"
+  }, {
+    "default" : "intelligence artificielle",
+    "langfre" : "intelligence artificielle"
+  }, {
+    "default" : "IA",
+    "langfre" : "IA"
+  }, {
+    "default" : "classification d'image",
+    "langfre" : "classification d'image"
+  }, {
+    "default" : "traitement de l'image",
+    "langfre" : "traitement de l'image"
+  }, {
+    "default" : "WalOnMapNO",
+    "langfre" : "WalOnMapNO"
+  }, {
+    "default" : "Open Data",
+    "langfre" : "Open Data"
+  }, {
+    "default" : "PanierTelechargementGeoportail",
+    "langfre" : "PanierTelechargementGeoportail"
+  }, {
+    "default" : "Sol et sous-sol",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030",
+    "langfre" : "Sol et sous-sol",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030"
+  }, {
+    "default" : "Nature et environnement",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10",
+    "langfre" : "Nature et environnement",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10"
+  }, {
+    "default" : "Aménagement du territoire",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20",
+    "langfre" : "Aménagement du territoire",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20"
+  }, {
+    "default" : "Données de base",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50",
+    "langfre" : "Données de base",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50"
+  }, {
+    "default" : "Région wallonne",
+    "langfre" : "Région wallonne"
+  } ],
+  "isOpenData" : false,
+  "allKeywords" : {
+    "th_otherKeywords-" : {
+      "title" : "otherKeywords-",
+      "keywords" : [ {
+        "default" : "Occupation du sol",
+        "langfre" : "Occupation du sol"
+      }, {
+        "default" : "WALOUS",
+        "langfre" : "WALOUS"
+      }, {
+        "default" : "Télédétection",
+        "langfre" : "Télédétection"
+      }, {
+        "default" : "COSW",
+        "langfre" : "COSW"
+      }, {
+        "default" : "apprentissage profond",
+        "langfre" : "apprentissage profond"
+      }, {
+        "default" : "intelligence artificielle",
+        "langfre" : "intelligence artificielle"
+      }, {
+        "default" : "IA",
+        "langfre" : "IA"
+      } ]
+    },
+    "th_gemet" : {
+      "id" : "geonetwork.thesaurus.external.theme.gemet",
+      "multilingualTitle" : {
+        "default" : "GEMET",
+        "langfre" : "GEMET",
+        "link" : "http://geonetwork-opensource.org/gemet"
+      },
+      "theme" : "theme",
+      "link" : "https://metawal.wallonie.be/geonetwork/srv/api/registries/vocabularies/external.theme.gemet",
+      "keywords" : [ {
+        "default" : "classification d'image",
+        "langfre" : "classification d'image"
+      }, {
+        "default" : "traitement de l'image",
+        "langfre" : "traitement de l'image"
+      } ]
+    },
+    "th_infraSIG" : {
+      "id" : "geonetwork.thesaurus.external.theme.infraSIG",
+      "multilingualTitle" : {
+        "default" : "Mots-clés InfraSIG",
+        "langfre" : "Mots-clés InfraSIG",
+        "link" : "https://metawal.wallonie.be/thesaurus/infrasig"
+      },
+      "theme" : "theme",
+      "link" : "https://metawal.wallonie.be/geonetwork/srv/api/registries/vocabularies/external.theme.infraSIG",
+      "keywords" : [ {
+        "default" : "WalOnMapNO",
+        "langfre" : "WalOnMapNO"
+      }, {
+        "default" : "Open Data",
+        "langfre" : "Open Data"
+      }, {
+        "default" : "PanierTelechargementGeoportail",
+        "langfre" : "PanierTelechargementGeoportail"
+      } ]
+    },
+    "th_Themes_geoportail_wallon_hierarchy" : {
+      "id" : "geonetwork.thesaurus.external.theme.Themes_geoportail_wallon_hierarchy",
+      "multilingualTitle" : {
+        "default" : "Thèmes du géoportail wallon",
+        "langfre" : "Thèmes du géoportail wallon",
+        "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon"
+      },
+      "theme" : "theme",
+      "link" : "https://metawal.wallonie.be/geonetwork/srv/api/registries/vocabularies/external.theme.Themes_geoportail_wallon_hierarchy",
+      "keywords" : [ {
+        "default" : "Sol et sous-sol",
+        "langfre" : "Sol et sous-sol",
+        "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030"
+      }, {
+        "default" : "Nature et environnement",
+        "langfre" : "Nature et environnement",
+        "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10"
+      }, {
+        "default" : "Aménagement du territoire",
+        "langfre" : "Aménagement du territoire",
+        "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20"
+      }, {
+        "default" : "Données de base",
+        "langfre" : "Données de base",
+        "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50"
+      } ]
+    }
+  },
+  "extentDescriptionObject" : [ {
+    "default" : "Région wallonne",
+    "langfre" : "Région wallonne"
+  } ],
+  "geom" : [ "{\"type\": \"Polygon\",\"coordinates\": [[[2.750000,49.450000],[6.500000,49.450000],[6.500000,50.850000],[2.750000,50.850000],[2.750000,49.450000]]]}" ],
+  "location" : [ "50.150000000000006,4.625" ],
+  "resourceTemporalExtentDateRange" : [ {
+    "gte" : "2020-03-31T22:00:00.000Z",
+    "lte" : "2020-04-23T22:00:00.000Z"
+  } ],
+  "resourceTemporalExtentDetails" : [ {
+    "start" : {
+      "date" : "2020-04-01"
+    },
+    "end" : {
+      "date" : "2020-04-24"
+    }
+  } ],
+  "resourceVerticalRange" : [ {
+    "gte" : 81.0,
+    "lte" : 950.2,
+    "unit" : "m"
+  } ],
+  "coordinateSystem" : [ "EPSG:3812" ],
+  "crsDetails" : [ {
+    "code" : "EPSG:3812",
+    "codeSpace" : "",
+    "name" : "ETRS89 / Belgian Lambert 2008 (EPSG:3812)",
+    "url" : "http://www.opengis.net/def/crs/EPSG/0/3812"
+  } ],
+  "featureTypes" : [ {
+    "typeName" : "Attributs pour PARCELLE URBAINE STATISTIQUE",
+    "definition" : "",
+    "code" : "",
+    "isAbstract" : "false",
+    "aliases" : "\"\n      ",
+    "attributeTable" : [ {
+      "name" : "n_sq_pu",
+      "definition" : "Identifiant séquentiel de la parcelle urbaine",
+      "type" : "integer"
+    }, {
+      "name" : "m2_pu",
+      "definition" : "Surface de l'emprise de la parcelle urbaine",
+      "type" : "double precision"
+    }, {
+      "name" : "n_sq_co",
+      "definition" : "Identifiant séquentiel de la commune",
+      "type" : "integer"
+    }, {
+      "name" : "c_cainsee",
+      "definition" : "Code INSEE de la commune ou de l'arrondissement",
+      "type" : "integer"
+    }, {
+      "name" : "c_niv1",
+      "definition" : "Nomenclature de l’équipement de niveau 1",
+      "type" : "smallint"
+    }, {
+      "name" : "c_niv2",
+      "definition" : "Nomenclature de l’équipement de niveau 2",
+      "type" : "smallint"
+    }, {
+      "name" : "c_niv3",
+      "definition" : "Nomenclature de l’équipement de niveau 3",
+      "type" : "integer"
+    }, {
+      "name" : "max_m2_sol_pc",
+      "definition" : "Surface de la plus grande parcelle cadastrale",
+      "type" : "double precision"
+    }, {
+      "name" : "n_sq_ee",
+      "definition" : "Identifiant séquentiel de l'équipement",
+      "type" : "integer"
+    }, {
+      "name" : "pc_vue_objectid",
+      "definition" : "Identifiant ESRI de pc_vue ayant la superficie la plus grande\n                    ",
+      "type" : "integer"
+    }, {
+      "name" : "c_csp",
+      "definition" : "Code CSP complet de la parcelle ayant la plus grande surface\n                    ",
+      "type" : "character varying(13)"
+    }, {
+      "name" : "n_sq_pd",
+      "definition" : "Identifiant séquentiel du propriétaire",
+      "type" : "integer"
+    }, {
+      "name" : "c_pdniv0",
+      "definition" : "Libellé de la catégorie de propriétaire niveau 0 (APUR)",
+      "type" : "integer",
+      "values" : [ {
+        "label" : "Personne morale",
+        "definition" : "",
+        "code" : "3"
+      }, {
+        "label" : "Multi-propriétaire",
+        "definition" : "",
+        "code" : "2"
+      }, {
+        "label" : "Personne physique",
+        "definition" : "",
+        "code" : "1"
+      }, {
+        "label" : "Inconnu",
+        "definition" : "",
+        "code" : "0"
+      } ]
+    }, {
+      "name" : "c_pdniv1",
+      "definition" : "Libellé de la catégorie de propriétaire niveau 1 (APUR)",
+      "type" : "integer",
+      "values" : [ {
+        "label" : "Personne physique",
+        "definition" : "",
+        "code" : "1"
+      }, {
+        "label" : "Multi-propriétaire",
+        "definition" : "",
+        "code" : "2"
+      }, {
+        "label" : "Inconnu",
+        "definition" : "",
+        "code" : "0"
+      }, {
+        "label" : "Etat, Organisme Public",
+        "definition" : "",
+        "code" : "3"
+      }, {
+        "label" : "Région et Département",
+        "definition" : "",
+        "code" : "4"
+      }, {
+        "label" : "Commune et EPCI",
+        "definition" : "",
+        "code" : "5"
+      }, {
+        "label" : "Ville de Paris",
+        "definition" : "",
+        "code" : "6"
+      }, {
+        "label" : "Organisme HLM et social",
+        "definition" : "",
+        "code" : "7"
+      }, {
+        "label" : "Banque et assurance",
+        "definition" : "",
+        "code" : "8"
+      }, {
+        "label" : "Société Civil de l'immobilier",
+        "definition" : "",
+        "code" : "9"
+      }, {
+        "label" : "Autre professionnel de l'immobilier",
+        "definition" : "",
+        "code" : "10"
+      }, {
+        "label" : "Société industrielle et commerciale",
+        "definition" : "",
+        "code" : "11"
+      }, {
+        "label" : "Association et fondation",
+        "definition" : "",
+        "code" : "12"
+      }, {
+        "label" : "Diocésaine et autre congrégation religieuse",
+        "definition" : "",
+        "code" : "13"
+      }, {
+        "label" : "Ambassade, Etat étranger",
+        "definition" : "",
+        "code" : "14"
+      } ]
+    }, {
+      "name" : "c_pdniv2",
+      "definition" : "Libellé de la catégorie de propriétaire niveau 2 (APUR)",
+      "type" : "integer",
+      "values" : [ {
+        "label" : "Personne Morale non déterminée",
+        "definition" : "Organisme non public",
+        "code" : "0"
+      }, {
+        "label" : "Ambassade, état étranger, institution internationale",
+        "definition" : "Organisme public",
+        "code" : "10"
+      }, {
+        "label" : "Etat, Collectivité Publique liée à l'Etat, Enseignement\n                        ",
+        "definition" : "Organisme public",
+        "code" : "20"
+      }, {
+        "label" : "EDF, SNCF, RFF, RATP, STIF, PAP",
+        "definition" : "Organisme public",
+        "code" : "21"
+      }, {
+        "label" : "Chambre de Commerce, des Métiers, d'Agriculture, des Notaires\n                        ",
+        "definition" : "Organisme public",
+        "code" : "22"
+      }, {
+        "label" : "Caisse des Dépôts",
+        "definition" : "Organisme public",
+        "code" : "23"
+      }, {
+        "label" : "Etablissement Public Foncier",
+        "definition" : "Organisme public",
+        "code" : "24"
+      }, {
+        "label" : "Organisme social (SECU, ASSEDIC, URSAFF, etc.)",
+        "definition" : "Organisme public",
+        "code" : "40"
+      }, {
+        "label" : "Région",
+        "definition" : "Organisme public",
+        "code" : "25"
+      }, {
+        "label" : "Département (Hors Paris)",
+        "definition" : "Organisme public",
+        "code" : "26"
+      }, {
+        "label" : "Syndicat régional ou interdépartemental",
+        "definition" : "Organisme public",
+        "code" : "27"
+      }, {
+        "label" : "Commune (Hors Paris)",
+        "definition" : "Organisme public",
+        "code" : "28"
+      }, {
+        "label" : "Société d'aménagement liée à la Commune (Hors Paris)",
+        "definition" : "Organisme public",
+        "code" : "29"
+      }, {
+        "label" : "EPCI (Établissements publics de coopération intercommunale)\n                        ",
+        "definition" : "Organisme public",
+        "code" : "30"
+      }, {
+        "label" : "Syndicat intercommunal",
+        "definition" : "Organisme public",
+        "code" : "31"
+      }, {
+        "label" : "Ville et Département de Paris",
+        "definition" : "Organisme public",
+        "code" : "32"
+      }, {
+        "label" : "Société d'aménagement lié à la Ville de Paris",
+        "definition" : "Organisme public",
+        "code" : "33"
+      }, {
+        "label" : "syndicat de la commune de paris",
+        "definition" : "Organisme public",
+        "code" : "34"
+      }, {
+        "label" : "Organisme HLM, Hébergement social",
+        "definition" : "Organisme public",
+        "code" : "35"
+      }, {
+        "label" : "Banque",
+        "definition" : "Organisme non public",
+        "code" : "50"
+      }, {
+        "label" : "Assurance",
+        "definition" : "Organisme non public",
+        "code" : "51"
+      }, {
+        "label" : "Mutuelle",
+        "definition" : "Organisme non public",
+        "code" : "52"
+      }, {
+        "label" : "Caisse de retraite, assurance vieillesse, de prévoyance\n                        ",
+        "definition" : "Organisme non public",
+        "code" : "53"
+      }, {
+        "label" : "Autre organisme financier",
+        "definition" : "Organisme non public",
+        "code" : "54"
+      }, {
+        "label" : "Organisme de promotion immobilière et placement immobilier (sauf SCI)\n                        ",
+        "definition" : "Organisme non public",
+        "code" : "61"
+      }, {
+        "label" : "Gestionnaire de foyer et de résidence privé",
+        "definition" : "Organisme non public",
+        "code" : "62"
+      }, {
+        "label" : "Société Civile Immobilière (SCI)",
+        "definition" : "Organisme non public",
+        "code" : "70"
+      }, {
+        "label" : "Association, organisme caritatif, fondation (non religieux)\n                        ",
+        "definition" : "Organisme non public",
+        "code" : "81"
+      }, {
+        "label" : "Diocésaine et autre congrégation religieuse, Association religieuse\n                        ",
+        "definition" : "Organisme non public",
+        "code" : "82"
+      }, {
+        "label" : "Société industrielle ou commerciale",
+        "definition" : "Organisme non public",
+        "code" : "90"
+      }, {
+        "label" : "Entrepôt, garage, hôtel",
+        "definition" : "Organisme non public",
+        "code" : "91"
+      }, {
+        "label" : "Coopérative, Syndicat professionnel, Comité Social et Economique (CSE),\n                          Ordre professionnel, parti politique\n                        ",
+        "definition" : "Organisme non public",
+        "code" : "92"
+      }, {
+        "label" : "entreprise privé proposant un service public",
+        "definition" : "Organisme non public",
+        "code" : "93"
+      }, {
+        "label" : "Personne physique",
+        "definition" : "Organisme non public",
+        "code" : "95"
+      }, {
+        "label" : "Copropriété",
+        "definition" : "Organisme non public",
+        "code" : "96"
+      } ]
+    }, {
+      "name" : "l_pd",
+      "definition" : "Nom du propriétaire du foncier",
+      "type" : "character varying(60)"
+    }, {
+      "name" : "b_public",
+      "definition" : "Indicateur de catégorie propriétaire PUBLIC ou PRIVE du propriétaire du\n                      foncier\n                    ",
+      "type" : "character varying(2)"
+    }, {
+      "name" : "nb_pro",
+      "definition" : "Nombre de propriétaires différents présents sur la parcelle en prenant en\n                      compte les propriétaires de locaux sur la parcelle (dépendances, logements, locaux d’activité).\n                    ",
+      "type" : "integer"
+    }, {
+      "name" : "nb_eb",
+      "definition" : "Nombre d'emprise bâtie",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_eb",
+      "definition" : "Somme des emprises bâties",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_plch_eb",
+      "definition" : "Surface de plancher estimée à partir des emprises bâties",
+      "type" : "numeric"
+    }, {
+      "name" : "den_bat_eb",
+      "definition" : "Densité bâtie à partir de la surface de plancher des emprises bâties\n                    ",
+      "type" : "numeric"
+    }, {
+      "name" : "nb_pc",
+      "definition" : "Nombre de parcelle cadastrale impactant la parcelle urbaine\n                    ",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_dgfip_sum",
+      "definition" : "Somme des emprises des parcelles cadastrales",
+      "type" : "numeric"
+    }, {
+      "name" : "den_bat_di",
+      "definition" : "Densité bâtie DGFiP (Correspond à la surface de plancher (M2_PLANCH) divisée\n                      par la surface de la parcelle urbaine\n                    ",
+      "type" : "numeric"
+    }, {
+      "name" : "l_type_pd",
+      "definition" : "Type de propriétaire foncier (PUBLIC / PRIVE / MIXTE) présent dans la\n                      parcelle\n                    ",
+      "type" : "character varying(100)"
+    }, {
+      "name" : "l_adrdgfip_pc",
+      "definition" : "Adresse de la parcelle urbaine",
+      "type" : "character varying(100)"
+    }, {
+      "name" : "nb_lg_sum",
+      "definition" : "Nombre de Logements",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_shablg_sum",
+      "definition" : "Surface habitable des logements (Surface habitable des logements de la\n                      parcelle, incluant les logements et les dépendances suivantes : Buanderie, Chambre de domestique,\n                      Dépendance de local commun, Jardin d'hiver, Pièce indépendante, Remise, Serre.)\n                    ",
+      "type" : "numeric"
+    }, {
+      "name" : "nb_locact_sum",
+      "definition" : "Nombre de locaux d’activité",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_locact_sum",
+      "definition" : "Surface exploitable des locaux d’activité (A partir de la version 2017, cette\n                      donnée n’est plus fournie nativement dans les fichiers source MAJIC3. Sa valeur est désormais\n                      calculée à partir de la somme des trois composantes : surface des parties principales, des parties\n                      secondaires couvertes et des parties non couvertes). Les données pour les années antérieure à 2017\n                      correspondent bien toutefois à la surface réelle telle que fournie à la source. Ce calcul permet\n                      de se rapprocher de la valeur M2_REELLE de l’année précédente (pour un local n’ayant pas été\n                      modifié). Cependant, il est impossible de retrouver la valeur exacte. La valeur de M2_REELLE pour\n                      les années antérieures à 2017 correspond à la surface telle que fournie à la source.)\n                    ",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_la_pp_sum",
+      "definition" : "Surface des parties principales",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_la_psc_sum",
+      "definition" : "Surfaces des parties secondaires couvertes",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_la_psnc_sum",
+      "definition" : "Surfaces des parties secondaires non couvertes",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_la_pkc_sum",
+      "definition" : "Surfaces des espaces de stationnement couverts",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_la_pknc_sum",
+      "definition" : "Surfaces des espaces de stationnement non couverts",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_lg_boxpga_sum",
+      "definition" : "Surface des espaces de stationnement (logement+dépendance)\n                    ",
+      "type" : "numeric"
+    }, {
+      "name" : "m2_shab_sum",
+      "definition" : "Surface habitable des locaux DGFiP (Correspond à la somme des surfaces\n                      habitables des logements (M2_SHABLG) et des surfaces exploitables des locaux d’activité M2_LOCACT)\n                    ",
+      "type" : "integer"
+    }, {
+      "name" : "m2_planch_sum",
+      "definition" : "Surface de plancher des locaux DGFiP (Correspond à la formule suivante, qui\n                      permet de prendre en compte le nu intérieur et les espaces circulables : M2_SHAB *1.25)\n                    ",
+      "type" : "numeric"
+    }, {
+      "name" : "nb_rpls",
+      "definition" : "Nombre de logement social recensé à partir du Répertoire des logements locatifs\n                      des bailleurs sociaux (RPLS)\n                    ",
+      "type" : "integer"
+    }, {
+      "name" : "m2_rpls",
+      "definition" : "Surface totale habitable recensée à partir du Répertoire des logements locatifs\n                      des bailleurs sociaux (RPLS)\n                    ",
+      "type" : "Numeric"
+    }, {
+      "name" : "an_min",
+      "definition" : "Année de construction la plus récente des bâtiments (DGFiP)\n                    ",
+      "type" : "integer"
+    }, {
+      "name" : "an_max",
+      "definition" : "Année de construction la plus récente des bâtiments (DGFiP)\n                    ",
+      "type" : "integer"
+    }, {
+      "name" : "an_batlg",
+      "definition" : "Année de construction du bâtiment ayant le plus de logements (DGFiP)\n                    ",
+      "type" : "integer"
+    }, {
+      "name" : "an_batloa",
+      "definition" : "Année de construction du bâtiment ayant le plus de logements et de locaux\n                      d’activité (DGFiP)\n                    ",
+      "type" : "integer"
+    }, {
+      "name" : "an_batsur",
+      "definition" : "Année de construction du bâtiment ayant le plus de surface de logement et de\n                      local d’activité (DGFiP)\n                    ",
+      "type" : "integer"
+    }, {
+      "name" : "c_periode",
+      "definition" : "Période de construction DGFiP (définie par la période de construction du\n                      bâtiment ayant le plus de logements et de locaux d’activité ou si cette valeur est nulle, récupère\n                      la période de construction la plus ancienne)\n                    ",
+      "type" : "smallint",
+      "values" : [ {
+        "label" : "Avant 1800",
+        "definition" : "",
+        "code" : "1"
+      }, {
+        "label" : "1801 - 1850",
+        "definition" : "",
+        "code" : "2"
+      }, {
+        "label" : "1851 - 1914",
+        "definition" : "",
+        "code" : "3"
+      }, {
+        "label" : "1915 - 1939",
+        "definition" : "",
+        "code" : "5"
+      }, {
+        "label" : "1940 - 1967",
+        "definition" : "",
+        "code" : "6"
+      }, {
+        "label" : "1968 - 1975",
+        "definition" : "",
+        "code" : "7"
+      }, {
+        "label" : "1976 - 1981",
+        "definition" : "",
+        "code" : "8"
+      }, {
+        "label" : "1982 - 1989",
+        "definition" : "",
+        "code" : "9"
+      }, {
+        "label" : "1990 - 1999",
+        "definition" : "",
+        "code" : "10"
+      }, {
+        "label" : "2000 - 2007",
+        "definition" : "",
+        "code" : "11"
+      }, {
+        "label" : "2008 et plus",
+        "definition" : "",
+        "code" : "12"
+      }, {
+        "label" : "Non-daté",
+        "definition" : "",
+        "code" : "99"
+      } ]
+    }, {
+      "name" : "c_perconst",
+      "definition" : "Période de construction la plus récente d'après la donnée emprise bâtie\n                      (Apur)\n                    ",
+      "type" : "smallint",
+      "values" : [ {
+        "label" : "Avant 1800",
+        "definition" : "",
+        "code" : "1"
+      }, {
+        "label" : "1801 - 1850",
+        "definition" : "",
+        "code" : "2"
+      }, {
+        "label" : "1851 - 1914",
+        "definition" : "",
+        "code" : "3"
+      }, {
+        "label" : "1915 - 1939",
+        "definition" : "",
+        "code" : "5"
+      }, {
+        "label" : "1940 - 1967",
+        "definition" : "",
+        "code" : "6"
+      }, {
+        "label" : "1968 - 1975",
+        "definition" : "",
+        "code" : "7"
+      }, {
+        "label" : "1976 - 1981",
+        "definition" : "",
+        "code" : "8"
+      }, {
+        "label" : "1982 - 1989",
+        "definition" : "",
+        "code" : "9"
+      }, {
+        "label" : "1990 - 1999",
+        "definition" : "",
+        "code" : "10"
+      }, {
+        "label" : "2000 - 2007",
+        "definition" : "",
+        "code" : "11"
+      }, {
+        "label" : "2008 et plus",
+        "definition" : "",
+        "code" : "12"
+      }, {
+        "label" : "Non-daté",
+        "definition" : "",
+        "code" : "99"
+      } ]
+    }, {
+      "name" : "l_mixte",
+      "definition" : "Occupation principale de la parcelle entre logement (>70% de l’occupation),\n                      l’activité (>70% de l’occupation ou mixte (>0% et <70% de logement et activité) grâce aux\n                      surfaces\n                    ",
+      "type" : "character varying(50)"
+    }, {
+      "name" : "l_typo",
+      "definition" : "Typologie principale de la parcelle DGFIP Logement individuel --> Si mixité =\n                      logement ou mixte ET nombre de logement à la parcelle <=2 / Logement collectif --> Si mixité =\n                      logement ou mixte ET nombre de logement à la parcelle >2 / Bâtiment tertiaire ou industriel -->\n                      Si\n                      mixité= activité / Non détermine --> Si mixité= non détermine\n                    ",
+      "type" : "character varying(50)"
+    }, {
+      "name" : "nb_lg_boxpga_sum",
+      "definition" : "Nombre d'espaces de stationnement (logement+dépendance)",
+      "type" : "integer"
+    }, {
+      "name" : "nb_bat_sum",
+      "definition" : "Nombre de bâtiments. En cas de relation 1,1 ou 1,n avec les parcelles\n                      cadastrales : somme des bâtiments DGFiP. En cas de relation n,1 avec les parcelles cadastrales :\n                      croisement avec les emprises bâties Apur).\n                    ",
+      "type" : "integer"
+    } ]
+  } ],
+  "link" : [ {
+    "protocol" : "WWW:LINK",
+    "function" : "legend",
+    "urlObject" : {
+      "default" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/WAL_OCS_IA__2020.lyr",
+      "langfre" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/WAL_OCS_IA__2020.lyr"
+    },
+    "nameObject" : {
+      "default" : "Légende pour ArcGIS",
+      "langfre" : "Légende pour ArcGIS"
+    },
+    "descriptionObject" : {
+      "default" : "Fichier de style lyr pour ArcGIS",
+      "langfre" : "Fichier de style lyr pour ArcGIS"
+    }
+  }, {
+    "protocol" : "WWW:LINK",
+    "function" : "legend",
+    "urlObject" : {
+      "default" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/WAL_OCS_IA__2020.qml",
+      "langfre" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/WAL_OCS_IA__2020.qml"
+    },
+    "nameObject" : {
+      "default" : "Légende pour QGIS",
+      "langfre" : "Légende pour QGIS"
+    },
+    "descriptionObject" : {
+      "default" : "Fichier de style qml pour QGIS",
+      "langfre" : "Fichier de style qml pour QGIS"
+    }
+  }, {
+    "protocol" : "WWW:LINK",
+    "function" : "legend",
+    "urlObject" : {
+      "default" : "https://metawal.wallonie.be/geonetwork/srv/api/records/86462606-4a21-49c8-ab9e-564ccba681b7/attachments/WALOUS_Legende.png",
+      "langfre" : "https://metawal.wallonie.be/geonetwork/srv/api/records/86462606-4a21-49c8-ab9e-564ccba681b7/attachments/WALOUS_Legende.png"
+    },
+    "nameObject" : {
+      "default" : "Symbologie WALOUS",
+      "langfre" : "Symbologie WALOUS"
+    },
+    "descriptionObject" : {
+      "default" : "Symbologie WALOUS",
+      "langfre" : "Symbologie WALOUS"
+    }
+  }, {
+    "protocol" : "WWW:LINK",
+    "function" : "legend",
+    "urlObject" : {
+      "default" : "https://metawal.wallonie.be/geonetwork/srv/api/records/86462606-4a21-49c8-ab9e-564ccba681b7/attachments/DescriptionLegende_WALOUS_OCS.pdf",
+      "langfre" : "https://metawal.wallonie.be/geonetwork/srv/api/records/86462606-4a21-49c8-ab9e-564ccba681b7/attachments/DescriptionLegende_WALOUS_OCS.pdf"
+    },
+    "nameObject" : {
+      "default" : "Description de la légende",
+      "langfre" : "Description de la légende"
+    },
+    "descriptionObject" : {
+      "default" : "La légende 2018 reste valide pour la donnée 2020.",
+      "langfre" : "La légende 2018 reste valide pour la donnée 2020."
+    }
+  }, {
+    "protocol" : "WWW:LINK",
+    "function" : "featureCatalogue",
+    "urlObject" : {
+      "default" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/Modele_WALOUS_WAL_OCS_IA_2020.pdf",
+      "langfre" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/Modele_WALOUS_WAL_OCS_IA_2020.pdf"
+    },
+    "nameObject" : {
+      "default" : "Modèle de la donnée WALOUS 2020 - Occupation du sol en Wallonie",
+      "langfre" : "Modèle de la donnée WALOUS 2020 - Occupation du sol en Wallonie"
+    },
+    "descriptionObject" : {
+      "default" : "Structure du raster et de la couche vectorielle WALOUS 2020 - Occupation du sol en Wallonie",
+      "langfre" : "Structure du raster et de la couche vectorielle WALOUS 2020 - Occupation du sol en Wallonie"
+    }
+  }, {
+    "protocol" : "WWW:LINK",
+    "function" : "dataQualityReport",
+    "urlObject" : {
+      "default" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/Rapport_Solution.pdf",
+      "langfre" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/Rapport_Solution.pdf"
+    },
+    "nameObject" : {
+      "default" : "Rapport de production",
+      "langfre" : "Rapport de production"
+    },
+    "descriptionObject" : {
+      "default" : "Rapport de production",
+      "langfre" : "Rapport de production"
+    }
+  }, {
+    "protocol" : "WWW:LINK",
+    "function" : "information",
+    "group" : "0",
+    "hash" : "52a7d662f6996e7eb644fe56af9dd788",
+    "idx" : "2",
+    "urlObject" : {
+      "default" : "https://geoportail.wallonie.be/walous",
+      "langfre" : "https://geoportail.wallonie.be/walous"
+    },
+    "nameObject" : {
+      "default" : "Walous sur le Géoportail",
+      "langfre" : "Walous sur le Géoportail"
+    },
+    "descriptionObject" : {
+      "default" : "Page du Géoportail présentant WALOUS",
+      "langfre" : "Page du Géoportail présentant WALOUS"
+    }
+  }, {
+    "protocol" : "WWW:LINK",
+    "function" : "download",
+    "group" : "0",
+    "hash" : "7eb229b502b259bada5b95de14412506",
+    "idx" : "2",
+    "urlObject" : {
+      "default" : "https://geoservices.wallonie.be/geotraitement/spwdatadownload/get/47b348f1-6e7a-4baa-963c-0232a43c0cff/WAL_OCS_IA__2020_GEOTIFF_3812.zip",
+      "langfre" : "https://geoservices.wallonie.be/geotraitement/spwdatadownload/get/47b348f1-6e7a-4baa-963c-0232a43c0cff/WAL_OCS_IA__2020_GEOTIFF_3812.zip"
+    },
+    "nameObject" : {
+      "default" : "Télécharger au format TIFF (.tif, .tiff)",
+      "langfre" : "Télécharger au format TIFF (.tif, .tiff)"
+    },
+    "descriptionObject" : {
+      "default" : "Lien de téléchargement direct de la donnée.",
+      "langfre" : "Lien de téléchargement direct de la donnée."
+    }
+  }, {
+    "protocol" : "WWW:LINK",
+    "function" : "information",
+    "group" : "0",
+    "hash" : "27a428b4d0e5a616ec28eb8ea2dbbd2e",
+    "idx" : "2",
+    "urlObject" : {
+      "default" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/Rapport_Analyse_Changements.pdf",
+      "langfre" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/Rapport_Analyse_Changements.pdf"
+    },
+    "nameObject" : {
+      "default" : "Rapport de compatibilité entre WALOUS 2018 et WALOUS 2020",
+      "langfre" : "Rapport de compatibilité entre WALOUS 2018 et WALOUS 2020"
+    },
+    "descriptionObject" : {
+      "default" : "Ce rapport a pour but de détailler les différentes versions de la carte d’occupation du sol sur le plan de leur compatibilité et comparabilité.",
+      "langfre" : "Ce rapport a pour but de détailler les différentes versions de la carte d’occupation du sol sur le plan de leur compatibilité et comparabilité."
+    }
+  } ],
+  "lineageObject" : [ {
+    "default" : "Les principales étapes de production de la donnée WAL_OCS_IA__2020 sont les suivantes : 1. Acquisition des données sources: orthophotos 2020 (missions aériennes) et modèle numérique de terrain (obtenu par photogrammétrie) ; 2. Classification des pixels par un modèle d’apprentissage profond de segmentation sur bases des données sources ; 3. Validation. Plus d’informations peuvent être trouvées dans les délivrables du projet disponibles via les ressources associées.",
+    "langfre" : "Les principales étapes de production de la donnée WAL_OCS_IA__2020 sont les suivantes : 1. Acquisition des données sources: orthophotos 2020 (missions aériennes) et modèle numérique de terrain (obtenu par photogrammétrie) ; 2. Classification des pixels par un modèle d’apprentissage profond de segmentation sur bases des données sources ; 3. Validation. Plus d’informations peuvent être trouvées dans les délivrables du projet disponibles via les ressources associées."
+  } ],
+  "hassource" : [ "7369222c-5241-452a-af07-4929506212f9", "6029e738-f828-438b-b10a-85e67f77af92" ],
+  "recordLink" : [ {
+    "type" : "parent",
+    "origin" : "catalog",
+    "to" : "e69b5aea-b174-47a7-b92f-3b782230ee9b",
+    "url" : "https://metawal.wallonie.be/geonetwork/srv/api/records/e69b5aea-b174-47a7-b92f-3b782230ee9b"
+  }, {
+    "type" : "siblings",
+    "origin" : "catalog",
+    "to" : "e69b5aea-b174-47a7-b92f-3b782230ee9b",
+    "url" : "https://metawal.wallonie.be/geonetwork/srv/api/records/e69b5aea-b174-47a7-b92f-3b782230ee9b",
+    "associationType" : "partOfSeamlessDatabase",
+    "initiativeType" : "collection"
+  }, {
+    "type" : "sources",
+    "origin" : "catalog",
+    "to" : "7369222c-5241-452a-af07-4929506212f9",
+    "title" : "Orthophotos 2020",
+    "url" : "https://metawal.wallonie.be/geonetwork/srv/api/records/7369222c-5241-452a-af07-4929506212f9"
+  }, {
+    "type" : "sources",
+    "origin" : "catalog",
+    "to" : "6029e738-f828-438b-b10a-85e67f77af92",
+    "title" : "Relief de la Wallonie - Modèle Numérique de Terrain (MNT) 2013-2014",
+    "url" : "https://metawal.wallonie.be/geonetwork/srv/api/records/6029e738-f828-438b-b10a-85e67f77af92"
+  } ],
+  "sourceDescriptionObject" : [ {
+    "default" : "Verschillende partners, zie https://www.eurisportal.eu/partners",
+    "langfre" : "Verschillende partners, zie https://www.eurisportal.eu/partners"
+  } ],
+  "processSteps" : [ {
+    "descriptionObject" : {
+      "default" : "Verschillende partners, zie https://www.eurisportal.eu/partners",
+      "langfre" : "Verschillende partners, zie https://www.eurisportal.eu/partners"
+    },
+    "processor" : [ {
+      "individual" : "België is vertegenwoordigd in EuRIS door De Vlaamse Waterweg nv (de Vlaamse\n                          Waterweg NV)\n                        ",
+      "organisationObject" : {
+        "default" : "de Vlaamse Waterweg NV",
+        "langfre" : "de Vlaamse Waterweg NV"
+      }
+    } ]
+  } ],
+  "measure" : [ {
+    "name" : "Number of items not compliant with the rules of the conceptual schema\n                ",
+    "description" : "Count of all items in the dataset that are not compliant with the rules of the\n                  conceptual schema\n                ",
+    "value" : "Unknown",
+    "type" : "DQ_QuantitativeResult",
+    "unit" : "%"
+  }, {
+    "name" : "Number of items not in conformance with their value domain",
+    "description" : "Count of all items in the dataset that are not in conformance with their value\n                  domain\n                ",
+    "value" : "Unknown",
+    "type" : "DQ_QuantitativeResult",
+    "unit" : "%"
+  } ],
+  "format" : [ "TIFF (.tif, .tiff)" ],
+  "orderingInstructionsObject" : [ {
+    "default" : "Cette donnée n'est accessible qu'en téléchargement direct ou via le panier de téléchargement du géoportail. Les instructions pour obtenir une copie physique d’une donnée sont détaillées sur https://geoportail.wallonie.be/telecharger. Sources à mentionner : SPW - Aerospacelab SA",
+    "langfre" : "Cette donnée n'est accessible qu'en téléchargement direct ou via le panier de téléchargement du géoportail. Les instructions pour obtenir une copie physique d’une donnée sont détaillées sur https://geoportail.wallonie.be/telecharger. Sources à mentionner : SPW - Aerospacelab SA"
+  } ],
+  "parentUuid" : [ "e69b5aea-b174-47a7-b92f-3b782230ee9b" ],
+  "uuid" : "samples/iso19115-3.2018_datamodel",
+  "popularity" : 0,
+  "isPublishedToAll" : false,
+  "draft" : "n",
+  "changeDate" : "2020-01-01T00:00:00Z",
+  "createDate" : "2020-01-01T00:00:00Z",
+  "isPublishedToIntranet" : false,
+  "valid" : -1,
+  "isTemplate" : "n",
+  "feedbackCount" : 0,
+  "rating" : 0,
+  "isHarvested" : false,
+  "userSavedCount" : 0,
+  "sourceCatalogue" : "null",
+  "overview" : [ {
+    "url" : "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/WALOUS_2020.png",
+    "nameObject" : {
+      "default" : "WALOUS_2020.png",
+      "langfre" : "WALOUS_2020.png"
+    }
+  } ],
+  "documentStandard" : "iso19115-3.2018",
+  "indexingErrorMsg" : [ {
+    "string" : "indexingErrorMsg-keywordNotFoundInThesaurus",
+    "type" : "warning",
+    "values" : {
+      "keyword" : "classification d'image",
+      "thesaurus" : "geonetwork.thesaurus.external.theme.gemet"
+    }
+  }, {
+    "string" : "indexingErrorMsg-keywordNotFoundInThesaurus",
+    "type" : "warning",
+    "values" : {
+      "keyword" : "traitement de l'image",
+      "thesaurus" : "geonetwork.thesaurus.external.theme.gemet"
+    }
+  }, {
+    "string" : "indexingErrorMsg-keywordNotFoundInThesaurus",
+    "type" : "warning",
+    "values" : {
+      "keyword" : "WalOnMapNO",
+      "thesaurus" : "geonetwork.thesaurus.external.theme.infraSIG"
+    }
+  }, {
+    "string" : "indexingErrorMsg-keywordNotFoundInThesaurus",
+    "type" : "warning",
+    "values" : {
+      "keyword" : "Open Data",
+      "thesaurus" : "geonetwork.thesaurus.external.theme.infraSIG"
+    }
+  }, {
+    "string" : "indexingErrorMsg-keywordNotFoundInThesaurus",
+    "type" : "warning",
+    "values" : {
+      "keyword" : "PanierTelechargementGeoportail",
+      "thesaurus" : "geonetwork.thesaurus.external.theme.infraSIG"
+    }
+  } ],
+  "licenseObject" : [ {
+    "default" : "No limitations to public access",
+    "link" : "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations",
+    "langfre" : "No limitations to public access"
+  }, {
+    "default" : "Ces données sont disponibles sous licence CC-BY 4.0. Un résumé de cette licence est disponible à l'adresse https://creativecommons.org/licenses/by/4.0/deed.fr . Ce résumé ne se substitue pas à la licence complète. Crédits : Service public de Wallonie",
+    "link" : "https://creativecommons.org/licenses/by/4.0/legalcode.fr",
+    "langfre" : "Ces données sont disponibles sous licence CC-BY 4.0. Un résumé de cette licence est disponible à l'adresse https://creativecommons.org/licenses/by/4.0/deed.fr . Ce résumé ne se substitue pas à la licence complète. Crédits : Service public de Wallonie"
+  } ],
+  "resourceCreditObject" : [ {
+    "default" : "SPW - Aerospacelab SA",
+    "langfre" : "SPW - Aerospacelab SA"
+  }, {
+    "default" : "© SPW 2020",
+    "langfre" : "© SPW 2020"
+  } ],
+  "tagNumber" : 17,
+  "isPublishedToGuest" : false,
+  "hasxlinks" : false,
+  "valid_inspire" : 0,
+  "resourceLanguage" : [ "fre" ],
+  "OrgObject" : [ {
+    "default" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)",
+    "langfre" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)"
+  } ],
+  "agg_associated" : [ "e69b5aea-b174-47a7-b92f-3b782230ee9b" ],
+  "linkUrl" : [ "https://geoportail.wallonie.be/walous", "https://geoservices.wallonie.be/geotraitement/spwdatadownload/get/47b348f1-6e7a-4baa-963c-0232a43c0cff/WAL_OCS_IA__2020_GEOTIFF_3812.zip", "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/Rapport_Analyse_Changements.pdf" ],
+  "linkProtocol" : [ "WWW:LINK" ],
+  "specificationConformance" : [ {
+    "link" : "http://data.europa.eu/eli/reg/2010/1089",
+    "title" : "RÈGLEMENT (UE) N o 1089/2010 DE LA\n                      COMMISSION du 23 novembre 2010 portant modalités d'application de la directive 2007/2/CE du\n                      Parlement européen et du Conseil en ce qui concerne l'interopérabilité des séries et des services\n                      de données géographiques\n                    ",
+    "explanation" : "Voir la spécification référencée",
+    "date" : "2010-12-08",
+    "pass" : "true"
+  }, {
+    "link" : null,
+    "title" : "INSPIRE Data Specification on Environmental Monitoring Facilities - Guidelines\n                      v 3.0.0\n                    ",
+    "explanation" : "Voir la spécification référencée",
+    "date" : "2013-12-10",
+    "pass" : "true"
+  } ],
+  "conformTo_REGLEMENTUENo10892010DELACOMMISSIONdu23novembre2010portantmodalitesdapplicationdeladirective20072CEduParlementeuropeenetduConseilencequiconcernelinteroperabilitedesseriesetdesservicesdedonneesgeographiques" : "true",
+  "publicationMonthForResource" : [ "2022-01" ],
+  "linkUrlProtocolWWWLINK" : [ "https://geoportail.wallonie.be/walous", "https://geoservices.wallonie.be/geotraitement/spwdatadownload/get/47b348f1-6e7a-4baa-963c-0232a43c0cff/WAL_OCS_IA__2020_GEOTIFF_3812.zip", "https://metawal.wallonie.be/geonetwork/srv/api/records/47b348f1-6e7a-4baa-963c-0232a43c0cff/attachments/Rapport_Analyse_Changements.pdf" ],
+  "contactForResource" : [ {
+    "role" : "pointOfContact",
+    "email" : "helpdesk.carto@spw.wallonie.be",
+    "organisationObject" : {
+      "default" : "Helpdesk carto du SPW (SPW - Secrétariat général - SPW Digital - Département Données transversales - Gestion et valorisation de la donnée)",
+      "langfre" : "Helpdesk carto du SPW (SPW - Secrétariat général - SPW Digital - Département Données transversales - Gestion et valorisation de la donnée)"
+    },
+    "identifiers" : [ {
+      "code" : "https://orcid.org/1",
+      "codeSpace" : "ORCID",
+      "link" : ""
+    }, {
+      "code" : "https://myorg/cv/2",
+      "codeSpace" : "MYORG",
+      "link" : ""
+    } ]
+  }, {
+    "role" : "owner",
+    "email" : "helpdesk.carto@spw.wallonie.be",
+    "website" : "https://geoportail.wallonie.be",
+    "organisationObject" : {
+      "default" : "Service public de Wallonie (SPW)",
+      "langfre" : "Service public de Wallonie (SPW)"
+    }
+  }, {
+    "role" : "custodian",
+    "email" : "geometrologie@spw.wallonie.be",
+    "organisationObject" : {
+      "default" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)",
+      "langfre" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)"
+    }
+  }, {
+    "role" : "processor",
+    "email" : "damien.draime@aerospacelab.be",
+    "organisationObject" : {
+      "default" : "Aerospacelab S.A.",
+      "langfre" : "Aerospacelab S.A."
+    }
+  }, {
+    "role" : "processor",
+    "email" : "jonathan.denies@aerospacelab.be",
+    "organisationObject" : {
+      "default" : "Aerospacelab S.A.",
+      "langfre" : "Aerospacelab S.A."
+    }
+  } ],
+  "measure_Numberofitemsnotcompliantwiththerulesoftheconceptualschema" : [ "Unknown" ],
+  "conformTo_INSPIREDataSpecificationonEnvironmentalMonitoringFacilities-Guidelinesv3-0-0" : "true",
+  "cl_type" : [ {
+    "key" : "theme",
+    "default" : "Thème",
+    "langfre" : "Thème",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_KeywordTypeCode"
+  } ],
+  "contactForProcessing" : [ {
+    "role" : "processor",
+    "individual" : "België is vertegenwoordigd in EuRIS door De Vlaamse Waterweg nv\n                            ",
+    "email" : "info@vlaamsewaterweg.be",
+    "website" : "https://vlaamsewaterweg.be/",
+    "organisationObject" : {
+      "default" : "de Vlaamse Waterweg NV",
+      "langfre" : "de Vlaamse Waterweg NV"
+    }
+  }, {
+    "role" : "processor",
+    "individual" : "België is vertegenwoordigd in EuRIS door De Vlaamse Waterweg nv (de Vlaamse\n                          Waterweg NV)\n                        ",
+    "email" : "info@vlaamsewaterweg.be",
+    "website" : "https://vlaamsewaterweg.be/",
+    "organisationObject" : {
+      "default" : "de Vlaamse Waterweg NV",
+      "langfre" : "de Vlaamse Waterweg NV"
+    }
+  } ],
+  "processorOrgForResourceObject" : [ {
+    "default" : "Aerospacelab S.A.",
+    "langfre" : "Aerospacelab S.A."
+  } ],
+  "contact" : [ {
+    "role" : "pointOfContact",
+    "email" : "geometrologie@spw.wallonie.be",
+    "organisationObject" : {
+      "default" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)",
+      "langfre" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)"
+    },
+    "identifiers" : [ {
+      "code" : "https://orcid.org/001100-0002-5111150-2276",
+      "codeSpace" : "ORCID",
+      "link" : ""
+    } ]
+  } ],
+  "publicationDateForResource" : [ "2022-01-30T23:00:00.000Z" ],
+  "cl_numberType" : [ {
+    "key" : "voice",
+    "default" : "Vocal",
+    "langfre" : "Vocal",
+    "link" : "https://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_TelephoneTypeCode",
+    "text" : "voice"
+  }, {
+    "key" : "facsimile",
+    "default" : "",
+    "langfre" : "",
+    "link" : "https://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_TelephoneTypeCode",
+    "text" : "facsimile"
+  } ],
+  "recordLink_parent_uuid" : [ "e69b5aea-b174-47a7-b92f-3b782230ee9b" ],
+  "cl_topic" : [ {
+    "key" : "imageryBaseMapsEarthCover",
+    "default" : "Carte de référence de la couverture terrestre",
+    "langfre" : "Carte de référence de la couverture terrestre",
+    "link" : ""
+  } ],
+  "th_Themes_geoportail_wallon_hierarchyNumber" : 4,
+  "custodianOrgForResourceObject" : [ {
+    "default" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)",
+    "langfre" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)"
+  } ],
+  "th_gemet" : [ {
+    "default" : "classification d'image",
+    "langfre" : "classification d'image"
+  }, {
+    "default" : "traitement de l'image",
+    "langfre" : "traitement de l'image"
+  } ],
+  "creationYearForResource" : [ "2020" ],
+  "ownerOrgForResourceObject" : [ {
+    "default" : "Service public de Wallonie (SPW)",
+    "langfre" : "Service public de Wallonie (SPW)"
+  } ],
+  "recordLink_siblingsassociationTypepartOfSeamlessDatabase_initiativeTypecollection_uuid" : [ "e69b5aea-b174-47a7-b92f-3b782230ee9b" ],
+  "measure_Numberofitemsnotinconformancewiththeirvaluedomain" : [ "Unknown" ],
+  "cl_status" : [ {
+    "key" : "completed",
+    "default" : "Finalisé",
+    "langfre" : "Finalisé",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_ProgressCode"
+  } ],
+  "creationMonthForResource" : [ "2020-09" ],
+  "OrgForResourceObject" : [ {
+    "default" : "Helpdesk carto du SPW (SPW - Secrétariat général - SPW Digital - Département Données transversales - Gestion et valorisation de la donnée)",
+    "langfre" : "Helpdesk carto du SPW (SPW - Secrétariat général - SPW Digital - Département Données transversales - Gestion et valorisation de la donnée)"
+  }, {
+    "default" : "Service public de Wallonie (SPW)",
+    "langfre" : "Service public de Wallonie (SPW)"
+  }, {
+    "default" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)",
+    "langfre" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)"
+  }, {
+    "default" : "Aerospacelab S.A.",
+    "langfre" : "Aerospacelab S.A."
+  } ],
+  "processorOrgForProcessingObject" : [ {
+    "default" : "de Vlaamse Waterweg NV",
+    "langfre" : "de Vlaamse Waterweg NV"
+  }, {
+    "default" : "de Vlaamse Waterweg NV",
+    "langfre" : "de Vlaamse Waterweg NV"
+  } ],
+  "th_otherKeywords-Number" : 7,
+  "recordLink_sources_uuid" : [ "7369222c-5241-452a-af07-4929506212f9", "6029e738-f828-438b-b10a-85e67f77af92" ],
+  "cl_resourceCharacterSet" : [ {
+    "key" : "utf8",
+    "default" : "utf8",
+    "link" : ""
+  } ],
+  "cl_function" : [ {
+    "key" : "completeMetadata",
+    "default" : "Métadonnées intégrales",
+    "langfre" : "Métadonnées intégrales",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_OnLineFunctionCode"
+  }, {
+    "key" : "information",
+    "default" : "Information",
+    "langfre" : "Information",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_OnLineFunctionCode"
+  }, {
+    "key" : "download",
+    "default" : "Téléchargement",
+    "langfre" : "Téléchargement",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_OnLineFunctionCode"
+  } ],
+  "cl_accessConstraints" : [ {
+    "key" : "otherRestrictions",
+    "default" : "Autres restrictions",
+    "langfre" : "Autres restrictions",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_RestrictionCode"
+  }, {
+    "key" : "unrestricted",
+    "default" : "Non restreint",
+    "langfre" : "Non restreint",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_RestrictionCode"
+  } ],
+  "pointOfContactOrgForResourceObject" : [ {
+    "default" : "Helpdesk carto du SPW (SPW - Secrétariat général - SPW Digital - Département Données transversales - Gestion et valorisation de la donnée)",
+    "langfre" : "Helpdesk carto du SPW (SPW - Secrétariat général - SPW Digital - Département Données transversales - Gestion et valorisation de la donnée)"
+  } ],
+  "cl_referenceSystemType" : [ {
+    "key" : "projected",
+    "default" : "Projeté",
+    "langfre" : "Projeté",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_ReferenceSystemTypeCode"
+  } ],
+  "agg_associated_partOfSeamlessDatabase" : [ "e69b5aea-b174-47a7-b92f-3b782230ee9b" ],
+  "cl_spatialRepresentationType" : [ {
+    "key" : "grid",
+    "default" : "Raster",
+    "langfre" : "Raster",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_SpatialRepresentationTypeCode"
+  } ],
+  "th_otherKeywords-" : [ {
+    "default" : "Occupation du sol",
+    "langfre" : "Occupation du sol"
+  }, {
+    "default" : "WALOUS",
+    "langfre" : "WALOUS"
+  }, {
+    "default" : "Télédétection",
+    "langfre" : "Télédétection"
+  }, {
+    "default" : "COSW",
+    "langfre" : "COSW"
+  }, {
+    "default" : "apprentissage profond",
+    "langfre" : "apprentissage profond"
+  }, {
+    "default" : "intelligence artificielle",
+    "langfre" : "intelligence artificielle"
+  }, {
+    "default" : "IA",
+    "langfre" : "IA"
+  } ],
+  "recordLink_sources" : [ "Orthophotos 2020", "Relief de la Wallonie - Modèle Numérique de Terrain (MNT) 2013-2014" ],
+  "th_Themes_geoportail_wallon_hierarchy" : [ {
+    "default" : "Sol et sous-sol",
+    "langfre" : "Sol et sous-sol",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030"
+  }, {
+    "default" : "Nature et environnement",
+    "langfre" : "Nature et environnement",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10"
+  }, {
+    "default" : "Aménagement du territoire",
+    "langfre" : "Aménagement du territoire",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20"
+  }, {
+    "default" : "Données de base",
+    "langfre" : "Données de base",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50"
+  } ],
+  "MD_LegalConstraintsOtherConstraintsObject" : [ {
+    "default" : "No limitations to public access",
+    "langfre" : "No limitations to public access",
+    "link" : "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations"
+  }, {
+    "default" : "Ces données sont disponibles sous licence CC-BY 4.0. Un résumé de cette licence est disponible à l'adresse https://creativecommons.org/licenses/by/4.0/deed.fr . Ce résumé ne se substitue pas à la licence complète. Crédits : Service public de Wallonie",
+    "langfre" : "Ces données sont disponibles sous licence CC-BY 4.0. Un résumé de cette licence est disponible à l'adresse https://creativecommons.org/licenses/by/4.0/deed.fr . Ce résumé ne se substitue pas à la licence complète. Crédits : Service public de Wallonie",
+    "link" : "https://creativecommons.org/licenses/by/4.0/legalcode.fr"
+  } ],
+  "pointOfContactOrgObject" : [ {
+    "default" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)",
+    "langfre" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)"
+  } ],
+  "publicationYearForResource" : [ "2022" ],
+  "creationDateForResource" : [ "2020-09-09T22:00:00.000Z" ],
+  "th_infraSIGNumber" : 3,
+  "cl_resourceScope" : [ {
+    "key" : "dataset",
+    "default" : "Jeu de données",
+    "langfre" : "Jeu de données",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_ScopeCode"
+  } ],
+  "th_infraSIG" : [ {
+    "default" : "WalOnMapNO",
+    "langfre" : "WalOnMapNO"
+  }, {
+    "default" : "Open Data",
+    "langfre" : "Open Data"
+  }, {
+    "default" : "PanierTelechargementGeoportail",
+    "langfre" : "PanierTelechargementGeoportail"
+  } ],
+  "recordLink_sources_url" : [ "https://metawal.wallonie.be/geonetwork/srv/api/records/7369222c-5241-452a-af07-4929506212f9", "https://metawal.wallonie.be/geonetwork/srv/api/records/6029e738-f828-438b-b10a-85e67f77af92" ],
+  "keywordType-place" : [ ],
+  "OrgForProcessingObject" : [ {
+    "default" : "de Vlaamse Waterweg NV",
+    "langfre" : "de Vlaamse Waterweg NV"
+  }, {
+    "default" : "de Vlaamse Waterweg NV",
+    "langfre" : "de Vlaamse Waterweg NV"
+  } ],
+  "th_gemetNumber" : 2,
+  "cl_associationType" : [ {
+    "key" : "partOfSeamlessDatabase",
+    "default" : "Partie d'une même base de données",
+    "langfre" : "Partie d'une même base de données",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#DS_AssociationTypeCode"
+  } ],
+  "cl_initiativeType" : [ {
+    "key" : "collection",
+    "default" : "Collection",
+    "langfre" : "Collection",
+    "link" : "http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#DS_InitiativeTypeCode"
+  } ],
+  "keywordType-theme" : [ {
+    "default" : "classification d'image",
+    "langfre" : "classification d'image"
+  }, {
+    "default" : "traitement de l'image",
+    "langfre" : "traitement de l'image"
+  }, {
+    "default" : "WalOnMapNO",
+    "langfre" : "WalOnMapNO"
+  }, {
+    "default" : "Open Data",
+    "langfre" : "Open Data"
+  }, {
+    "default" : "PanierTelechargementGeoportail",
+    "langfre" : "PanierTelechargementGeoportail"
+  }, {
+    "default" : "Sol et sous-sol",
+    "langfre" : "Sol et sous-sol",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030"
+  }, {
+    "default" : "Nature et environnement",
+    "langfre" : "Nature et environnement",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10"
+  }, {
+    "default" : "Aménagement du territoire",
+    "langfre" : "Aménagement du territoire",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20"
+  }, {
+    "default" : "Données de base",
+    "langfre" : "Données de base",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50",
+    "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50"
+  } ]
+}
