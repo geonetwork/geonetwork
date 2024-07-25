@@ -1,3 +1,8 @@
+/*
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
 package org.geonetwork.indexing;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -250,9 +255,9 @@ public class IndexingService {
     } catch (Exception esException) {
       log.atError()
           .log(
-              "Error while sending records to index. Error is: {}. If error is of type "
-                  + "\"30,000 milliseconds timeout on connection\" then reduce chunk size or increase timeout. "
-                  + "Records are: {}",
+              "Error while sending records to index. Error is: {}. If error is of type \"30,000"
+                  + " milliseconds timeout on connection\" then reduce chunk size or increase"
+                  + " timeout. Records are: {}",
               esException.getMessage(),
               indexRecords.getIndexRecord().stream()
                   .map(IndexRecord::getUuid)

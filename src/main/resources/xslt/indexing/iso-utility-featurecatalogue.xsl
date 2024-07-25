@@ -1,3 +1,10 @@
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -7,7 +14,6 @@
 
   <xsl:template mode="index"
                 match="*:contentInfo/*/*:featureCatalogue/*">
-    <!--                match="*:contentInfo/*/*:featureCatalogue/*/*:featureType/*">-->
     <xsl:param name="languages" as="node()*"/>
 
     <xsl:variable name="isOnlyFeatureCatalog"
@@ -31,6 +37,8 @@
         <xsl:copy-of select="gn-fn-index:add-multilingual-field('resourceAbstract', ., $languages)"/>
       </xsl:for-each>
     </xsl:if>
+
+    <xsl:apply-templates mode="index" select="*:featureType/*"/>
   </xsl:template>
 
   <xsl:template mode="index"

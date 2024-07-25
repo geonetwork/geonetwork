@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
+<!--
+
  * Hide in edit mode : If some codelist needs to be hidden
  in edit mode, the hideInEditMode attribute could be added
  to any entries.

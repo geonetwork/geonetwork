@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,12 +26,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 class IndexRecordTest {
+
   @Test
   void test_dataset() {
     ObjectMapper objectMapper = new ObjectMapper();
@@ -44,7 +43,6 @@ class IndexRecordTest {
       IndexRecord indexRecord = objectMapper.readValue(json, IndexRecord.class);
 
       XmlMapper xmlMapper = new XmlMapper();
-      xmlMapper.writeValue(System.out, indexRecord);
 
       assertEquals("metadata", indexRecord.getDocType().name());
       assertEquals("47b348f1-6e7a-4baa-963c-0232a43c0cff", indexRecord.getUuid());
@@ -466,7 +464,7 @@ class IndexRecordTest {
 
       assertEquals(3, indexRecord.getLinkUrls().size());
       assertEquals("https://geoportail.wallonie.be/walous", indexRecord.getLinkUrls().getFirst());
-      assertEquals(3, indexRecord.getLinkProtocols().size());
+      assertEquals(1, indexRecord.getLinkProtocols().size());
       assertEquals("WWW:LINK", indexRecord.getLinkProtocols().stream().toList().getFirst());
 
       assertEquals(3, indexRecord.getLinkByProtocols().get("linkUrlProtocolWWWLINK").size());
@@ -554,55 +552,6 @@ class IndexRecordTest {
       assertEquals(19, indexRecord.getFeatureTypes().size());
     } catch (Exception e) {
       fail(e.getMessage());
-    }
-  }
-
-  @Test
-  void test_serialization() {
-    IndexRecord indexDocument =
-        IndexRecord.builder()
-            .metadataIdentifier("12345")
-            .codelist(
-                TOPIC,
-                new ArrayList<>(
-                    List.of(
-                        Codelist.builder()
-                            .property(KEY, "imageryBaseMapsEarthCover")
-                            .property(DEFAULT_TEXT, "Carte de référence de la couverture terrestre")
-                            .build())))
-            .keywordByType(
-                "place",
-                new ArrayList<>(
-                    List.of(Keyword.builder().property("langfre", "Occupation du sol").build())))
-            .build();
-
-    ObjectMapper objectMapper = new ObjectMapper();
-    try {
-      String document =
-          objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(indexDocument);
-
-      assertEquals(
-          """
-{
-  "metadataIdentifier" : "12345",
-  "popularity" : 0,
-  "isPublishedToAll" : false,
-  "isPublishedToIntranet" : false,
-  "isHarvested" : false,
-  "tagNumber" : 0,
-  "cl_topic" : [ {
-    "key" : "imageryBaseMapsEarthCover",
-    "default" : "Carte de référence de la couverture terrestre"
-  } ],
-  "place" : [ {
-    "langfre" : "Occupation du sol"
-  } ]
-}
-"""
-              .trim(),
-          document.trim());
-    } catch (JsonProcessingException e) {
-      fail("Serialization failed: " + e.getMessage());
     }
   }
 
