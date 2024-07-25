@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.domain;
 
 import jakarta.annotation.Nullable;
@@ -27,8 +28,7 @@ public enum ReservedOperation {
   /** Operation that allows the metadata to be one of the featured metadata. */
   featured(6);
 
-  // Not final so Tests can change id
-  private int _id;
+  private final int _id;
 
   private ReservedOperation(int id) {
     this._id = id;

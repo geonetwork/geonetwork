@@ -80,11 +80,14 @@ public class Group {
       name = "group_category",
       joinColumns = @JoinColumn(name = "group_id"),
       inverseJoinColumns = @JoinColumn(name = "category_id"))
+  @Builder.Default
   private Set<Category> categories = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "iddes")
+  @Builder.Default
   private Set<Groupsde> groupsdes = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "groupid")
+  @Builder.Default
   private Set<Usergroup> usergroups = new LinkedHashSet<>();
 }

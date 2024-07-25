@@ -19,9 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -41,8 +39,6 @@ class IndexRecordTest {
               Path.of(new ClassPathResource("samples/iso19115-3_dataset.json").getURI()));
 
       IndexRecord indexRecord = objectMapper.readValue(json, IndexRecord.class);
-
-      XmlMapper xmlMapper = new XmlMapper();
 
       assertEquals("metadata", indexRecord.getDocType().name());
       assertEquals("47b348f1-6e7a-4baa-963c-0232a43c0cff", indexRecord.getUuid());
@@ -573,17 +569,14 @@ class IndexRecordTest {
           objectMapper.readValue(jsonFromSerialization, type);
 
       ArrayList<String> indexFieldList = new ArrayList<>(mapOfFieldFromIndex.keySet());
-      ArrayList<String> serializationFieldList =
-          new ArrayList<>(mapOfFieldFromSerialization.keySet());
       indexFieldList.removeAll(mapOfFieldFromSerialization.keySet());
-      serializationFieldList.removeAll(mapOfFieldFromIndex.keySet());
       assertEquals(
           0,
           indexFieldList.size(),
           "The fields are not identical. Missing fields from serialization: " + indexFieldList);
 
-      JsonNode tree1 = objectMapper.readTree(jsonFromIndex);
-      JsonNode tree2 = objectMapper.readTree(jsonFromSerialization);
+      //      JsonNode tree1 = objectMapper.readTree(jsonFromIndex);
+      //      JsonNode tree2 = objectMapper.readTree(jsonFromSerialization);
 
       // TODO assertEquals(tree1, tree2, "The JSON structures are not identical.");
     } catch (Exception e) {

@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +35,7 @@ public class Contact {
   private String individual;
 
   @JsonProperty(ORGANISATION_NAME)
+  @Builder.Default
   private Map<String, String> organisation = new HashMap<>();
 
   private String email;
@@ -49,5 +49,5 @@ public class Contact {
   @JsonProperty(CONTACT_IDENTIFIERS)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  private List<PartyIdentifier> identifier = new ArrayList<>();
+  private List<PartyIdentifier> identifier;
 }

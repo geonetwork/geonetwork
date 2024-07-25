@@ -19,8 +19,8 @@
        https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html
   -->
 <FindBugsFilter>
-    <Match>
-       <!-- Annoying but not actually a bug per se, might want to revisit later -->
-       <Bug pattern="MF_CLASS_MASKS_FIELD"/>
-    </Match>
+  <Match>
+    <!-- Annoying but not actually a bug per se, might want to revisit later -->
+    <Bug pattern="MF_CLASS_MASKS_FIELD"/>
+  </Match>
 </FindBugsFilter>

@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.domain;
 
 import jakarta.persistence.Cacheable;
@@ -56,6 +57,7 @@ public class User {
 
   @NotNull
   @Column(name = "profile", nullable = false)
+  @Builder.Default
   private Profile profile = Profile.RegisteredUser;
 
   @Size(max = 32)
@@ -85,5 +87,6 @@ public class User {
   private String username;
 
   @OneToMany(mappedBy = "userid")
+  @Builder.Default
   private Set<Usergroup> usergroups = new LinkedHashSet<>();
 }

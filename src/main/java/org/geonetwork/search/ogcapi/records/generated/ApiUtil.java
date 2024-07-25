@@ -12,6 +12,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 /** Utility class for API documentation. */
 public class ApiUtil {
+  /** Set the example response for an API operation. */
   public static void setExampleResponse(NativeWebRequest req, String contentType, String example) {
     try {
       HttpServletResponse res = req.getNativeResponse(HttpServletResponse.class);

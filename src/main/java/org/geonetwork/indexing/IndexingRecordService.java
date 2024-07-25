@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.indexing;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -41,7 +42,6 @@ import org.geonetwork.repository.UserRepository;
 import org.geonetwork.repository.UsersavedselectionRepository;
 import org.geonetwork.repository.ValidationRepository;
 import org.geonetwork.utility.xml.XsltUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -60,8 +60,6 @@ public class IndexingRecordService {
   private final ValidationRepository validationRepository;
   private final UsersavedselectionRepository usersavedselectionRepository;
 
-  private final boolean isPreferringGroupLogo;
-
   /**
    * Create index document from the database entity.
    *
@@ -70,8 +68,6 @@ public class IndexingRecordService {
    * with iso19 then a default iso.xsl conversion is applied.
    */
   public IndexingRecordService(
-      @Value("${geonetwork.settings.system.metadata.prefergrouplogo:'true'}")
-          boolean isPreferringGroupLogo,
       MetadataDraftRepository metadataDraftRepository,
       UserRepository userRepository,
       GroupRepository groupRepository,
@@ -81,7 +77,6 @@ public class IndexingRecordService {
       ValidationRepository validationRepository,
       MetadatastatusRepository metadatastatusRepository,
       UsersavedselectionRepository usersavedselectionRepository) {
-    this.isPreferringGroupLogo = isPreferringGroupLogo;
 
     this.metadataDraftRepository = metadataDraftRepository;
     this.userRepository = userRepository;

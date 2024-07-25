@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.domain;
 
 import java.util.Arrays;
@@ -20,10 +21,11 @@ public enum Profile {
   Guest(RegisteredUser),
   Monitor(Administrator);
 
+  @SuppressWarnings("ImmutableEnumChecker")
   private final Set<Profile> parents;
 
   Profile(Profile... parents) {
-    this.parents = new HashSet<>(Arrays.asList(parents));
+    this.parents = Set.of(parents);
   }
 
   /**

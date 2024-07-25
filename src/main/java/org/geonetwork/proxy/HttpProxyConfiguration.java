@@ -15,9 +15,11 @@ import static org.springframework.cloud.gateway.server.mvc.predicate.GatewayRequ
 
 import java.net.URI;
 import java.util.AbstractMap;
-import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.gateway.server.mvc.common.MvcUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,7 +50,7 @@ public class HttpProxyConfiguration {
                 method = serverRequest.method().name();
               }
 
-              HttpMethod httpMethod = HttpMethod.valueOf(method.toUpperCase());
+              HttpMethod httpMethod = HttpMethod.valueOf(method.toUpperCase(Locale.getDefault()));
               if (!allowedHttpMethods.contains(httpMethod)) {
                 throw new HttpClientErrorException(
                     HttpStatus.BAD_REQUEST,
@@ -76,10 +78,10 @@ public class HttpProxyConfiguration {
                             stringStringMultiValueMap.remove("url");
                             if (uri.getQuery() != null) {
                               stringStringMultiValueMap.putAll(
-                                  Arrays.stream(uri.getQuery().split("&"))
+                                  Stream.of(StringUtils.split(uri.getQuery(), "&"))
                                       .map(
                                           param -> {
-                                            String[] parts = param.split("=");
+                                            String[] parts = StringUtils.split(param, "=");
                                             return new AbstractMap.SimpleEntry<>(
                                                 parts[0], parts[1]);
                                           })

@@ -67,8 +67,8 @@ public class Usersearch {
       name = "usersearch_group",
       joinColumns = @JoinColumn(name = "usersearch_id"),
       inverseJoinColumns = @JoinColumn(name = "group_id"))
-  private Set<Group> groups = new LinkedHashSet<>();
+  private final Set<Group> groups = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "iddes")
-  private Set<Usersearchde> usersearchdes = new LinkedHashSet<>();
+  private final Set<Usersearchde> usersearchdes = new LinkedHashSet<>();
 }

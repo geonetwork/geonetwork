@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.utility.xml.xslt;
 
 import net.sf.saxon.expr.XPathContext;
@@ -38,9 +39,9 @@ public class GmlToGeoJsonFn extends ExtensionFunctionDefinition {
     return new ExtensionFunctionCall() {
       @Override
       public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
-        String gml = arguments[0].head().getStringValue();
-        Boolean applyPrecisionModel = arguments[1].head().effectiveBooleanValue();
-        Integer numberOfDecimals = Integer.valueOf(arguments[2].head().getStringValue());
+        //        String gml = arguments[0].head().getStringValue();
+        //        Boolean applyPrecisionModel = arguments[1].head().effectiveBooleanValue();
+        //        Integer numberOfDecimals = Integer.valueOf(arguments[2].head().getStringValue());
         return StringValue.makeStringValue("");
         //        return StringValue.makeStringValue(XslUtil.gmlToGeoJson(gml,applyPrecisionModel,
         // numberOfDecimals));
