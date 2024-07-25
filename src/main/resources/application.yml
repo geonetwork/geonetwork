@@ -14,6 +14,7 @@ geonetwork:
     chunksize: 500
     poolsize: 10
     bulktimeout: 45s
+    requestimeout: 45000
     # Elasticsearch Bulk Async API
     asynchronous: false
   openapi:
