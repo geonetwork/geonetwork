@@ -15,6 +15,7 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
 /** Index client. */
 @Data
 @Component
+@Slf4j(topic = "org.geonetwork.tasks.index")
 public class IndexClient {
   private final ElasticsearchClient esClient;
   private final ElasticsearchAsyncClient esAsynchClient;
@@ -31,15 +33,23 @@ public class IndexClient {
   private String serverUrl;
   private String defaultIndexPrefix;
   private String indexRecordName;
+  private Integer maxResultWindow;
+  private Long totalFieldsLimit;
 
   /** Constructor. */
   public IndexClient(
       @Value("${geonetwork.index.url:'http://localhost:9200'}") String serverUrl,
       @Value("${geonetwork.index.indexPrefix:'gn-'}") String defaultIndexPrefix,
-      @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName) {
+      @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
+      @Value("${geonetwork.index.elasticsearch.settings.maxResultWindow:'50000'}")
+          Integer maxResultWindow,
+      @Value("${geonetwork.index.elasticsearch.settings.mapping.totalFields:'10000'}")
+          Long totalFieldsLimit) {
     this.serverUrl = serverUrl;
     this.defaultIndexPrefix = defaultIndexPrefix;
     this.indexRecordName = indexRecordName;
+    this.maxResultWindow = maxResultWindow;
+    this.totalFieldsLimit = totalFieldsLimit;
 
     RestClient restClient = RestClient.builder(HttpHost.create(serverUrl)).build();
 
@@ -52,7 +62,7 @@ public class IndexClient {
   }
 
   /** Create index. */
-  public void createIndex(boolean dropIfExists) {
+  public void setupIndex(boolean dropIfExists) {
     InputStream jsonAnalysis;
     InputStream jsonMapping;
     try {
@@ -68,10 +78,11 @@ public class IndexClient {
           DeleteIndexResponse delete =
               esClient.indices().delete(deleteBuilder -> deleteBuilder.index(indexRecordName));
           if (delete.acknowledged()) {
-            System.out.println("Index deleted");
+            log.atDebug().log("Index {} deleted", indexRecordName);
           }
         } catch (Exception e) {
-          System.out.println("Failed to delete index");
+          log.atError()
+              .log("Errors while deleting index {}. Error is: {}", indexRecordName, e.getMessage());
         }
       }
       esClient
@@ -83,14 +94,16 @@ public class IndexClient {
                       .settings(
                           settingsBuilder ->
                               settingsBuilder
-                                  .maxResultWindow(20000)
-                                  .maxInnerResultWindow(200)
+                                  .maxResultWindow(maxResultWindow)
                                   .mapping(
                                       mappingBuilder ->
-                                          mappingBuilder.totalFields(b -> b.limit(6000L)))
+                                          mappingBuilder.totalFields(
+                                              b -> b.limit(totalFieldsLimit)))
                                   .analysis(a -> a.withJson(jsonAnalysis)))
                       .mappings(m -> m.withJson(jsonMapping)));
     } catch (IOException e) {
+      log.atError()
+          .log("Errors while creating index {}. Error is: {}", indexRecordName, e.getMessage());
       throw new RuntimeException(e);
     }
   }

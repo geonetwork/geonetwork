@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/indexing")
 public class IndexingController {
 
-  private final IndexClient client;
   private final Counter indexingCounter;
   private final IndexingService indexingService;
   private final IndexClient indexClient;
@@ -24,29 +23,24 @@ public class IndexingController {
   /** Constructor. */
   @Autowired
   public IndexingController(
-      IndexClient client,
-      IndexingService indexingService,
-      MeterRegistry meterRegistry,
-      IndexClient indexClient) {
-    this.client = client;
+      IndexingService indexingService, MeterRegistry meterRegistry, IndexClient indexClient) {
     this.indexingService = indexingService;
     indexingCounter = meterRegistry.counter("gn.indexing.count");
     this.indexClient = indexClient;
   }
 
   /** Create index. */
-  @GetMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String createIndex() {
-
-    indexClient.createIndex(true);
-    return "Indexing";
+  @GetMapping(path = "/setup", produces = MediaType.APPLICATION_JSON_VALUE)
+  public String setupIndex(@RequestParam(defaultValue = "true") boolean dropIfExists) {
+    indexClient.setupIndex(dropIfExists);
+    return "Index created.";
   }
 
   /** Index all records. */
-  @GetMapping(path = "/indexAll", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(path = "/index", produces = MediaType.APPLICATION_JSON_VALUE)
   public String indexRecords(@RequestParam(defaultValue = "", required = false) String[] uuid) {
 
     indexingService.index(uuid.length > 0 ? List.of(uuid) : null);
-    return "Indexing";
+    return "Indexing task started.";
   }
 }
