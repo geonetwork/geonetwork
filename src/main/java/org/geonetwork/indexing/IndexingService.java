@@ -10,10 +10,12 @@ import co.elastic.clients.elasticsearch.core.BulkResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Metadata;
@@ -26,12 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Indexing service.
- *
- * <p>If observing "Error while sending records to index. Error is: 30,000 milliseconds timeout on
- * connection http-outgoing-2 [ACTIVE]." then reduce chunk size.
- */
+/** Indexing service. */
 @Component
 @Slf4j(topic = "org.geonetwork.tasks.indexing")
 public class IndexingService {
@@ -120,6 +117,7 @@ public class IndexingService {
         Sort.by(Sort.Direction.ASC, "schemaid").and(Sort.by(Sort.Direction.DESC, "changedate"));
 
     long nbRecords = uuids == null ? metadataRepository.count() : uuids.size();
+    long nbOfChunck = nbRecords / indexingChunkSize;
 
     try (Stream<Metadata> metadataStream =
         uuids == null
@@ -138,8 +136,9 @@ public class IndexingService {
                 executor.submit(
                     () -> {
                       log.atInfo().log(
-                          "Indexing chunk #{} of {} over {} records",
+                          "Indexing chunk #{}/{} of size {} over {} records",
                           k,
+                          nbOfChunck,
                           indexingChunkSize,
                           nbRecords);
                       m.stream()
@@ -238,13 +237,27 @@ public class IndexingService {
                     }
                   });
           //        report.setNumberOfRecordsWithIndexingErrors(failureCount.intValue());
-          log.atInfo().log("Indexing operation has failures {}.", failureCount);
+          log.atError()
+              .log(
+                  "Indexing operation has failures {}. Records are {}",
+                  failureCount,
+                  indexRecords.getIndexRecord().stream()
+                      .map(IndexRecord::getUuid)
+                      .map(Objects::toString)
+                      .collect(Collectors.joining(",")));
         }
       }
     } catch (Exception esException) {
       log.atError()
-          .log("Error while sending records to index. Error is: {}.", esException.getMessage());
-      esException.printStackTrace();
+          .log(
+              "Error while sending records to index. Error is: {}. If error is of type "
+                  + "\"30,000 milliseconds timeout on connection\" then reduce chunk size or increase timeout. "
+                  + "Records are: {}",
+              esException.getMessage(),
+              indexRecords.getIndexRecord().stream()
+                  .map(IndexRecord::getUuid)
+                  .map(Objects::toString)
+                  .collect(Collectors.joining(",")));
     }
   }
 }

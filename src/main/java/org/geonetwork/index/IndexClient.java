@@ -17,7 +17,9 @@ import java.io.InputStream;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -44,14 +46,19 @@ public class IndexClient {
       @Value("${geonetwork.index.elasticsearch.settings.maxResultWindow:'50000'}")
           Integer maxResultWindow,
       @Value("${geonetwork.index.elasticsearch.settings.mapping.totalFields:'10000'}")
-          Long totalFieldsLimit) {
+          Long totalFieldsLimit,
+      @Value("${geonetwork.indexing.requestimeout:'45000'}") int requestTimeout) {
     this.serverUrl = serverUrl;
     this.defaultIndexPrefix = defaultIndexPrefix;
     this.indexRecordName = indexRecordName;
     this.maxResultWindow = maxResultWindow;
     this.totalFieldsLimit = totalFieldsLimit;
 
-    RestClient restClient = RestClient.builder(HttpHost.create(serverUrl)).build();
+    RestClient restClient =
+        RestClient.builder(HttpHost.create(serverUrl))
+            .setRequestConfigCallback(
+                requestConfigBuilder -> requestConfigBuilder.setSocketTimeout(requestTimeout))
+            .build();
 
     JacksonJsonpMapper jacksonJsonpMapper = new JacksonJsonpMapper();
 

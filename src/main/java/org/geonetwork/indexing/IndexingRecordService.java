@@ -122,15 +122,13 @@ public class IndexingRecordService {
       //      report.setNumberOfRecordsWithUnsupportedSchema(schemaRecords.size());
       log.atError()
           .log(
-              String.format(
-                  "Schema %s used by records %s does not exist or does not provide indexing file"
-                      + " %s.",
+              "Schema {} used by records {} does not exist or does not provide indexing file {}",
                   schema,
                   schemaRecords.stream()
-                      .map(Metadata::getId)
+                      .map(Metadata::getUuid)
                       .map(Objects::toString)
                       .collect(Collectors.joining(",")),
-                  indexingXsltFileName));
+                  indexingXsltFileName);
 
       //      if (!schemaManager.existsSchema(schema)) {
       //        fields.put(IndexFields.DRAFT, "n");
