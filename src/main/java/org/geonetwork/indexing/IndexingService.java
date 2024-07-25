@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.indexing;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -12,7 +13,6 @@ import co.elastic.clients.elasticsearch._helpers.bulk.BulkListener;
 import co.elastic.clients.elasticsearch._types.Time;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Objects;
@@ -51,8 +51,6 @@ public class IndexingService {
   private final String bulktimeout;
 
   private BulkIngester<Object> bulkIngester;
-
-  private ObjectMapper objectMapper = new ObjectMapper();
 
   /** Constructor. */
   public IndexingService(
@@ -138,38 +136,40 @@ public class IndexingService {
                           : counter.getAndIncrement() / indexingChunkSize))
           .forEach(
               (k, m) -> {
-                executor.submit(
-                    () -> {
-                      log.atInfo().log(
-                          "Indexing chunk #{}/{} of size {} over {} records",
-                          k,
-                          nbOfChunck,
-                          indexingChunkSize,
-                          nbRecords);
-                      m.stream()
-                          .collect(groupingBy(Metadata::getSchemaid))
-                          .forEach(
-                              (schema, records) -> {
-                                IndexRecords indexRecords =
-                                    indexingRecordService.collectProperties(schema, m);
-                                if (indexRecords != null
-                                    && indexRecords.getIndexRecord() != null
-                                    && !indexRecords.getIndexRecord().isEmpty()) {
+                var submission =
+                    executor.submit(
+                        () -> {
+                          log.atInfo().log(
+                              "Indexing chunk #{}/{} of size {} over {} records",
+                              k,
+                              nbOfChunck,
+                              indexingChunkSize,
+                              nbRecords);
+                          m.stream()
+                              .collect(groupingBy(Metadata::getSchemaid))
+                              .forEach(
+                                  (schema, records) -> {
+                                    IndexRecords indexRecords =
+                                        indexingRecordService.collectProperties(schema, m);
+                                    if (indexRecords != null
+                                        && indexRecords.getIndexRecord() != null
+                                        && !indexRecords.getIndexRecord().isEmpty()) {
 
-                                  log.atDebug().log(
-                                      "Indexing {} records for schema {}",
-                                      indexRecords.getIndexRecord().size(),
-                                      schema);
-                                  // log.atDebug().log(
-                                  //   objectMapper
-                                  //     .writerWithDefaultPrettyPrinter()
-                                  //     .writeValueAsString(indexRecords.getIndexRecord())
-                                  // );
-                                  sendToIndex(indexRecords);
-                                  m.forEach(entityManager::detach);
-                                }
-                              });
-                    });
+                                      log.atDebug().log(
+                                          "Indexing {} records for schema {}",
+                                          indexRecords.getIndexRecord().size(),
+                                          schema);
+                                      // log.atDebug().log(
+                                      //   objectMapper
+                                      //     .writerWithDefaultPrettyPrinter()
+                                      //     .writeValueAsString(indexRecords.getIndexRecord())
+                                      // );
+                                      sendToIndex(indexRecords);
+                                      m.forEach(entityManager::detach);
+                                    }
+                                  });
+                        });
+                submission.isDone();
               });
     }
 

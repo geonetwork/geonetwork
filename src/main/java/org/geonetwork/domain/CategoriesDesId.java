@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.domain;
 
 import jakarta.persistence.Column;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
+/** Category description. */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

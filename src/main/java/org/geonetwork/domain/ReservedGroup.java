@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.domain;
 
 /**
@@ -21,8 +22,7 @@ public enum ReservedGroup {
   /** The "Guest" group. IE the group representing all users not signed in. */
   guest(-1);
 
-  // Not final so Tests can change id
-  private int _id;
+  private final int _id;
 
   private ReservedGroup(int id) {
     _id = id;

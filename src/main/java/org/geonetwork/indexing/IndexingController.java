@@ -3,10 +3,9 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.indexing;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import java.util.List;
 import org.geonetwork.index.IndexClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/indexing")
 public class IndexingController {
 
-  private final Counter indexingCounter;
   private final IndexingService indexingService;
   private final IndexClient indexClient;
 
   /** Constructor. */
   @Autowired
-  public IndexingController(
-      IndexingService indexingService, MeterRegistry meterRegistry, IndexClient indexClient) {
+  public IndexingController(IndexingService indexingService, IndexClient indexClient) {
     this.indexingService = indexingService;
-    indexingCounter = meterRegistry.counter("gn.indexing.count");
     this.indexClient = indexClient;
   }
 

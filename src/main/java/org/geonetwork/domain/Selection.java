@@ -50,8 +50,8 @@ public class Selection {
   private String iswatchable;
 
   @OneToMany(mappedBy = "iddes")
-  private Set<Selectionsde> selectionsdes = new LinkedHashSet<>();
+  private final Set<Selectionsde> selectionsdes = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "selectionid")
-  private Set<Usersavedselection> usersavedselections = new LinkedHashSet<>();
+  private final Set<Usersavedselection> usersavedselections = new LinkedHashSet<>();
 }

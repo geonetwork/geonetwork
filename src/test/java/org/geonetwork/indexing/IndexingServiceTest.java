@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.index.model.record.IndexRecords;
@@ -47,9 +48,8 @@ class IndexingServiceTest {
         "iso19110_datamodel"
       })
   void test_indexing_dataset(String file) {
-    ObjectMapper objectMapper = new ObjectMapper();
     try {
-      String schema = file.split("_")[0];
+      String schema = StringUtils.split(file, "_")[0];
       String fileBaseName = String.format("samples/%s", file);
       String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName + ".xml").getURI()));
       String expectedIndexDocument =

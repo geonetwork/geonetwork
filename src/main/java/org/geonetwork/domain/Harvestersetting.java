@@ -60,5 +60,5 @@ public class Harvestersetting {
   private String encrypted;
 
   @OneToMany(mappedBy = "parentid")
-  private Set<Harvestersetting> harvestersettings = new LinkedHashSet<>();
+  private final Set<Harvestersetting> harvestersettings = new LinkedHashSet<>();
 }

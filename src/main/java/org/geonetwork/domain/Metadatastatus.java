@@ -96,5 +96,5 @@ public class Metadatastatus {
   private String uuid;
 
   @OneToMany(mappedBy = "relatedmetadatastatusid")
-  private Set<Metadatastatus> metadatastatuses = new LinkedHashSet<>();
+  private final Set<Metadatastatus> metadatastatuses = new LinkedHashSet<>();
 }

@@ -57,8 +57,10 @@ public class Link {
   private String dateandtime;
 
   @OneToMany(mappedBy = "link")
+  @Builder.Default
   private Set<Linkstatus> linkstatuses = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "linkid")
+  @Builder.Default
   private Set<Metadatalink> metadatalinks = new LinkedHashSet<>();
 }

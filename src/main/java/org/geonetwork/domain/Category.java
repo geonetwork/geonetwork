@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.domain;
 
 import jakarta.persistence.Column;
@@ -46,5 +47,6 @@ public class Category {
   private String name;
 
   @OneToMany(mappedBy = "iddes")
+  @Builder.Default
   private Set<org.geonetwork.domain.CategoriesDes> categoriesdes = new LinkedHashSet<>();
 }

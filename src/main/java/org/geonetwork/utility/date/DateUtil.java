@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.utility.date;
 
 import static java.time.temporal.ChronoField.HOUR_OF_DAY;
@@ -167,7 +168,7 @@ public class DateUtil {
       }
 
       if (durationOrDateTimeString.startsWith("P")) {
-        String[] periodAndDurationArray = durationOrDateTimeString.split("T");
+        String[] periodAndDurationArray = StringUtils.split(durationOrDateTimeString, "T");
         String periodString = periodAndDurationArray[0];
         String durationString = "PT" + periodAndDurationArray[1];
 
@@ -328,8 +329,7 @@ public class DateUtil {
                 stringToParse, ZonedDateTime::from, LocalDateTime::from);
         if (dt instanceof ZonedDateTime) {
           result = (ZonedDateTime) dt;
-        } else if (dt instanceof LocalDateTime) {
-          LocalDateTime ldt = (LocalDateTime) dt;
+        } else if (dt instanceof LocalDateTime ldt) {
           result = ldt.atZone(TimeZone.getDefault().toZoneId());
         } else {
           result = null;
@@ -343,10 +343,10 @@ public class DateUtil {
   }
 
   /**
-   * Parses a time an return current date at that time. Both local and offset formats are supported,
-   * such as '10:15', '10:15:30' or '10:15:30+01:00' starting by 'T' or not. If offset is present
-   * then it is used set the date in UTC zone. If the time doesn't have an offset it is interpreted
-   * as a time in local time and converted to UTC.
+   * Parses a time and return current date at that time. Both local and offset formats are
+   * supported, such as '10:15', '10:15:30' or '10:15:30+01:00' starting by 'T' or not. If offset is
+   * present then it is used set the date in UTC zone. If the time doesn't have an offset it is
+   * interpreted as a time in local time and converted to UTC.
    *
    * @param time the string to parse
    * @return a date and time in UTC zone with date the being the current day.
@@ -358,11 +358,14 @@ public class DateUtil {
         DateTimeFormatter.ISO_TIME.parseBest(
             StringUtils.removeStartIgnoreCase(time, "T"), OffsetTime::from, LocalTime::from);
     if (ta instanceof OffsetTime) {
-      result = ((OffsetTime) ta).atDate(LocalDate.now()).atZoneSameInstant(ZoneOffset.UTC);
+      result =
+          ((OffsetTime) ta)
+              .atDate(LocalDate.now(ZoneId.systemDefault()))
+              .atZoneSameInstant(ZoneOffset.UTC);
     } else if (ta instanceof LocalTime) {
       result =
           ((LocalTime) ta)
-              .atDate(LocalDate.now())
+              .atDate(LocalDate.now(ZoneId.systemDefault()))
               .atZone(ZoneId.systemDefault())
               .withZoneSameInstant(ZoneOffset.UTC);
     } else {

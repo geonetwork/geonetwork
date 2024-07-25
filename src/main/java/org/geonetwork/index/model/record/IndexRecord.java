@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -140,11 +141,11 @@ public class IndexRecord {
    */
   @JsonIgnore
   @Singular("constraints")
-  final Map<String, ArrayList<HashMap<String, String>>> constraints = new HashMap<>();
+  final Map<String, List<Map<String, String>>> constraints = new HashMap<>();
 
   @JsonIgnore
   @Singular("useLimitations")
-  final Map<String, ArrayList<HashMap<String, String>>> useLimitations = new HashMap<>();
+  final Map<String, List<Map<String, String>>> useLimitations = new HashMap<>();
 
   @JsonIgnore final Map<String, String> conformsTo = new HashMap<>();
 
@@ -152,26 +153,25 @@ public class IndexRecord {
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular
-  final List<HashMap<String, String>> licenses = new ArrayList<>();
+  final List<Map<String, String>> licenses = new ArrayList<>();
 
   @JsonIgnore private final Map<String, ArrayList<String>> resourceDateDetails = new HashMap<>();
 
   @JsonIgnore
-  private final Map<String, ArrayList<Map<String, String>>> orgForResourceByRole = new HashMap<>();
+  private final Map<String, List<Map<String, String>>> orgForResourceByRole = new HashMap<>();
 
   // others eg. pointOfContactOrgForResource are in other properties
   // ForResource
   // ForProcessing
   // ForDistribution
-  @JsonIgnore private final Map<String, ArrayList<Contact>> contactByRole = new HashMap<>();
+  @JsonIgnore private final Map<String, List<Contact>> contactByRole = new HashMap<>();
 
   @JsonIgnore
   @Singular("associatedUuidsByType")
-  private final Map<String, ArrayList<String>> associatedUuidsByType = new HashMap<>();
+  private final Map<String, List<String>> associatedUuidsByType = new HashMap<>();
 
   // "measure_Exactitudeglobale": "83.80 %",
-  @JsonIgnore @Singular
-  private final Map<String, ArrayList<String>> measureFields = new HashMap<>();
+  @JsonIgnore @Singular private final Map<String, List<String>> measureFields = new HashMap<>();
 
   //  "recordLink_sources": [
   //          "Orthophotos 2020",
@@ -202,7 +202,7 @@ public class IndexRecord {
    */
   @JsonIgnore
   @Singular("keywordByThesaurus")
-  private final Map<String, ArrayList<Keyword>> keywordByThesaurus = new HashMap<>();
+  private final Map<String, List<Keyword>> keywordByThesaurus = new HashMap<>();
 
   @JsonIgnore
   @Singular("numberOfKeywordByThesaurus")
@@ -317,7 +317,7 @@ public class IndexRecord {
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("category")
-  private List<String> category;
+  private List<String> category = new ArrayList<>();
 
   @JsonProperty(IndexRecordFieldNames.TAG)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -404,13 +404,13 @@ public class IndexRecord {
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("groupPublished")
-  private List<String> groupPublished;
+  private List<String> groupPublished = new ArrayList<>();
 
   @JsonProperty(IndexRecordFieldNames.GROUP_PUBLISHED_ID)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("groupPublishedId")
-  private List<Integer> groupPublishedId;
+  private List<Integer> groupPublishedId = new ArrayList<>();
 
   @JsonProperty(IndexRecordFieldNames.POPULARITY)
   private int popularity;
@@ -431,7 +431,7 @@ public class IndexRecord {
 
   @JsonIgnore
   @Singular("validation")
-  private Map<String, String> validationByType;
+  private Map<String, String> validationByType = new HashMap<>();
 
   @JsonProperty(IndexRecordFieldNames.FEEDBACK_COUNT)
   private long feedbackCount;
@@ -493,7 +493,7 @@ public class IndexRecord {
   @JsonProperty(IndexRecordFieldNames.ORG)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  private List<HashMap<String, String>> organizations = new ArrayList<>();
+  private List<HashMap<String, String>> organizations;
 
   @JsonProperty(IndexRecordFieldNames.FORMAT)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -656,13 +656,13 @@ public class IndexRecord {
   @Singular("keywordByType")
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(localName = "keywords")
-  private Map<String, ArrayList<Keyword>> keywordByType = new HashMap<>();
+  private Map<String, List<Keyword>> keywordByType = new HashMap<>();
 
   @JsonProperty(IndexRecordFieldNames.SPECIFICATION_CONFORMANCE)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("specificationConformance")
-  private List<SpecificationConformance> specificationConformance;
+  private List<SpecificationConformance> specificationConformance = new ArrayList<>();
 
   @JsonProperty(IndexRecordFieldNames.FEATURE_TYPES)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -672,7 +672,7 @@ public class IndexRecord {
   @JsonProperty(IndexRecordFieldNames.HASFEATURECAT)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  private List<String> hasfeaturecat = new ArrayList<>();
+  private List<String> hasfeaturecat;
 
   @JsonProperty(IndexRecordFieldNames.HASSOURCE)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -732,7 +732,8 @@ public class IndexRecord {
   @JsonAnySetter
   public void handleUnrecognizedField(String name, Object value) {
     try {
-      IndexRecord.class.getDeclaredField(name);
+      @SuppressWarnings({"ReturnValueIgnored", "UnusedVariable"})
+      Field declaredField = IndexRecord.class.getDeclaredField(name);
     } catch (NoSuchFieldException e) {
       try {
         if (name.startsWith(IndexRecordFieldNames.OP_PREFIX)) {
@@ -763,7 +764,7 @@ public class IndexRecord {
         } else if (isKeywordNumberField(name)) {
           handleKeywordNumberProperties(name, value);
         } else if (isKeywordHierarchyField(name)) {
-          handleKeywordHierarchyProperties(name, (Map<String, ArrayList<String>>) value);
+          handleKeywordHierarchyProperties(name, value);
         } else if (name.startsWith(IndexRecordFieldNames.KEYWORD_BY_THESAURUS_PREFIX)) {
           handleKeywordByTypeProperties(keywordByThesaurus, name, value);
         } else if (name.endsWith(IndexRecordFieldNames.CONSTRAINT_SUFFIX)) {
@@ -798,7 +799,9 @@ public class IndexRecord {
     ArrayList<Integer> operationField =
         operations.computeIfAbsent(name, k -> new ArrayList<Integer>());
     if (value instanceof List) {
-      operationField.addAll((Collection) value);
+      @SuppressWarnings("unchecked")
+      Collection<? extends Integer> collection = (Collection<? extends Integer>) value;
+      operationField.addAll(collection);
     }
     if (value instanceof String) {
       operationField.add(Integer.parseInt(value.toString()));
@@ -820,7 +823,9 @@ public class IndexRecord {
     List<String> resourceDateForField =
         resourceDateDetails.computeIfAbsent(name, k -> new ArrayList<String>());
     if (value instanceof List) {
-      resourceDateForField.addAll((Collection) value);
+      @SuppressWarnings("unchecked")
+      Collection<? extends String> collection = (Collection<? extends String>) value;
+      resourceDateForField.addAll(collection);
     }
     if (value instanceof String) {
       resourceDateForField.add(value.toString());
@@ -828,32 +833,41 @@ public class IndexRecord {
   }
 
   private void handleConstraintProperties(
-      Map<String, ArrayList<HashMap<String, String>>> constraints, String name, Object value) {
-    List<HashMap<String, String>> constraintByType =
+      Map<String, List<Map<String, String>>> constraints, String name, Object value) {
+    List<Map<String, String>> constraintByType =
         constraints.computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof Map) {
-      constraintByType.add((HashMap<String, String>) value);
+      @SuppressWarnings("unchecked")
+      HashMap<String, String> map = (HashMap<String, String>) value;
+      constraintByType.add(map);
     } else if (value instanceof List) {
-      constraintByType.addAll((List<HashMap<String, String>>) value);
+      @SuppressWarnings("unchecked")
+      List<HashMap<String, String>> list = (List<HashMap<String, String>>) value;
+      constraintByType.addAll(list);
     }
   }
 
   private void handleOrgForResourceProperties(
-      Map<String, ArrayList<Map<String, String>>> orgForResourceByRole, String name, Object value) {
+      Map<String, List<Map<String, String>>> orgForResourceByRole, String name, Object value) {
     List<Map<String, String>> resourceByRole =
         orgForResourceByRole.computeIfAbsent(name, k -> new ArrayList<>());
 
     if (value instanceof Map) {
-      resourceByRole.add((Map<String, String>) value);
+      @SuppressWarnings("unchecked")
+      Map<String, String> map = (Map<String, String>) value;
+      resourceByRole.add(map);
     }
   }
 
   private void handleContactByRoleProperties(
-      Map<String, ArrayList<Contact>> contactByRoleList, String name, Object value) {
+      Map<String, List<Contact>> contactByRoleList, String name, Object value) {
     List<Contact> resourceByRole = contactByRoleList.computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof List) {
-      resourceByRole.addAll((List<Contact>) value);
+      @SuppressWarnings("unchecked")
+      List<Contact> list = (List<Contact>) value;
+      resourceByRole.addAll(list);
     } else if (value instanceof Map) {
+      @SuppressWarnings("unchecked")
       Map<String, Object> contactInfo = (Map<String, Object>) value;
 
       Contact.ContactBuilder c =
@@ -868,7 +882,9 @@ public class IndexRecord {
               .address(contactInfo.get("address").toString());
 
       if (contactInfo.get("organisationObject") instanceof Map) {
-        c.organisation((Map<String, String>) contactInfo.get("organisationObject"));
+        @SuppressWarnings("unchecked")
+        Map<String, String> map = (Map<String, String>) contactInfo.get("organisationObject");
+        c.organisation(map);
       }
       if (contactInfo.get("nilReason") != null) {
         c.nilReason(contactInfo.get("nilReason").toString());
@@ -877,9 +893,14 @@ public class IndexRecord {
       Object identifiers = contactInfo.get("identifiers");
       List<Map<String, String>> listOfPartyIdentifier = new ArrayList<>();
       if (identifiers instanceof Map) {
-        listOfPartyIdentifier = List.of((Map<String, String>) identifiers);
+        @SuppressWarnings("unchecked")
+        Map<String, String> map = (Map<String, String>) identifiers;
+        listOfPartyIdentifier = List.of(map);
       } else if (identifiers instanceof List) {
-        listOfPartyIdentifier = (List<Map<String, String>>) identifiers;
+        @SuppressWarnings("unchecked")
+        List<Map<String, String>> list = (List<Map<String, String>>) identifiers;
+
+        listOfPartyIdentifier = list;
       }
       if (!listOfPartyIdentifier.isEmpty()) {
         c.identifier(
@@ -900,17 +921,23 @@ public class IndexRecord {
     }
   }
 
-  private void handleKeywordHierarchyProperties(String name, Map<String, ArrayList<String>> value) {
-    keywordHierarchyByThesaurus.put(
-        name, new KeywordHierarchy(value.get("default"), value.get("key")));
+  private void handleKeywordHierarchyProperties(String name, Object value) {
+    if (value instanceof Map) {
+      @SuppressWarnings("unchecked")
+      Map<String, ArrayList<String>> map = (Map<String, ArrayList<String>>) value;
+      keywordHierarchyByThesaurus.put(
+          name, new KeywordHierarchy(map.get("default"), map.get("key")));
+    }
   }
 
   private void handleKeywordNumberProperties(String name, Object value) {
     if (value instanceof List) {
+      @SuppressWarnings("unchecked")
+      List<Integer> list = (List<Integer>) value;
+
       numberOfKeywordByThesaurus.put(
           name,
-          ((List<Integer>) value)
-              .size()); // This should not happen or indicate that a thesaurus is used 2 times in
+          list.size()); // This should not happen or indicate that a thesaurus is used 2 times in
       // the same record.
     } else {
       numberOfKeywordByThesaurus.put(name, Integer.parseInt(value.toString()));
@@ -918,8 +945,8 @@ public class IndexRecord {
   }
 
   private void handleKeywordByTypeProperties(
-      Map<String, ArrayList<Keyword>> keywordField, String name, Object value) {
-    ArrayList<Keyword> keywordForType =
+      Map<String, List<Keyword>> keywordField, String name, Object value) {
+    List<Keyword> keywordForType =
         keywordField.computeIfAbsent(name, k -> new ArrayList<Keyword>());
 
     if (value instanceof Map) {
@@ -932,31 +959,37 @@ public class IndexRecord {
                     keywordForType.add(
                         Keyword.builder().property(DEFAULT_TEXT, k.toString()).build());
                   } else if (k instanceof Map) {
-                    keywordForType.add(
-                        Keyword.builder().properties((Map<String, String>) k).build());
+                    @SuppressWarnings("unchecked")
+                    Map<String, String> map = (Map<String, String>) k;
+                    keywordForType.add(Keyword.builder().properties(map).build());
                   }
                 });
       }
     } else if (value instanceof List) {
-      ((List<HashMap<String, String>>) value)
-          .stream().map(Keyword::new).forEach(keywordForType::add);
+      @SuppressWarnings("unchecked")
+      List<HashMap<String, String>> list = (List<HashMap<String, String>>) value;
+      list.stream().map(Keyword::new).forEach(keywordForType::add);
     }
   }
 
   private void handleLinkUrlProperties(String name, Object value) {
-    List<String> linkList = linkByProtocols.computeIfAbsent(name, k -> new ArrayList<String>());
+    List<String> linkList = linkByProtocols.computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof List) {
-      linkList.addAll((List<String>) value);
+      @SuppressWarnings("unchecked")
+      List<String> list = (List<String>) value;
+      linkList.addAll(list);
     } else {
       linkList.add(value.toString());
     }
   }
 
   private void handleListOfUuidProperties(
-      Map<String, ArrayList<String>> field, String name, Object value) {
-    ArrayList<String> listOfUuids = field.computeIfAbsent(name, k -> new ArrayList<String>());
+      Map<String, List<String>> field, String name, Object value) {
+    List<String> listOfUuids = field.computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof List) {
-      listOfUuids.addAll((List<String>) value);
+      @SuppressWarnings("unchecked")
+      List<String> list = (List<String>) value;
+      listOfUuids.addAll(list);
     } else {
       listOfUuids.add(value.toString());
     }
@@ -964,9 +997,11 @@ public class IndexRecord {
 
   private void handleRecordLinkProperties(String name, Object value) {
     ArrayList<String> recordLinkForField =
-        associatedResourceFields.computeIfAbsent(name, k -> new ArrayList<String>());
+        associatedResourceFields.computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof List) {
-      recordLinkForField.addAll((List<String>) value);
+      @SuppressWarnings("unchecked")
+      List<String> list = (List<String>) value;
+      recordLinkForField.addAll(list);
     } else if (value instanceof String) {
       recordLinkForField.add((String) value);
     }
@@ -977,11 +1012,15 @@ public class IndexRecord {
   }
 
   private void handleCodelistProperties(String name, Object value) {
-    ArrayList<Codelist> codelist = codelists.computeIfAbsent(name, k -> new ArrayList<Codelist>());
+    List<Codelist> codelist = codelists.computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof List) {
-      codelist.addAll(((List<HashMap<String, String>>) value).stream().map(Codelist::new).toList());
+      @SuppressWarnings("unchecked")
+      List<HashMap<String, String>> list = (List<HashMap<String, String>>) value;
+      codelist.addAll(list.stream().map(Codelist::new).toList());
     } else if (value instanceof Map) {
-      codelist.add(new Codelist((Map<String, String>) value));
+      @SuppressWarnings("unchecked")
+      Map<String, String> map = (Map<String, String>) value;
+      codelist.add(new Codelist(map));
     }
   }
 }

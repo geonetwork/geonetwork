@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.utility.xml;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -14,6 +15,7 @@ import java.io.StringWriter;
 import java.util.Map;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.stream.StreamSource;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.SaxonApiException;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 /** XSLT utility class. */
 @Component
+@Slf4j(topic = "org.geonetwork.xslt")
 public class XsltUtil {
 
   /**
@@ -120,7 +123,7 @@ public class XsltUtil {
           new StreamSource(new StringReader(inputXmlString)),
           new XmlStreamWriterDestinationInDocument(streamWriter));
     } catch (SaxonApiException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
@@ -142,7 +145,7 @@ public class XsltUtil {
       transformer.transform(
           new StreamSource(new StringReader(inputXmlString)), proc.newSerializer(outputStream));
     } catch (SaxonApiException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
@@ -163,8 +166,7 @@ public class XsltUtil {
           new StreamSource(new StringReader(inputXmlString)), proc.newSerializer(stringWriter));
       return stringWriter.toString();
     } catch (SaxonApiException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
-    return "";
   }
 }
