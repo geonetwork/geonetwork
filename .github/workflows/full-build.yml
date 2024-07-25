@@ -1,4 +1,4 @@
-name: Default Build
+name: Full Build
 
 on: [pull_request]
 
@@ -20,9 +20,9 @@ jobs:
         distribution: 'temurin'
         java-version: 21
         cache: 'maven'
-    - name: Default Build
+    - name: Full build with quality assurance testing
       run: |
-        mvn -B -fae clean install
+        mvn -B -fae install -Dqa
     - name: Check for any unformatted files
       run: |
         if [ -n "$(git status --porcelain)" ]

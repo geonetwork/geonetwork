@@ -1,4 +1,11 @@
 <?xml version="1.0"?>
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
 <!DOCTYPE suppressions PUBLIC
   "-//Checkstyle//DTD SuppressionFilter Configuration 1.0//EN"
   "https://checkstyle.org/dtds/suppressions_1_0.dtd">
