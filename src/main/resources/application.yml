@@ -5,6 +5,11 @@ geonetwork:
     url: http://localhost:9200
     indexPrefix: gn5-
     indexRecordName: gn5-records
+    elasticsearch:
+      settings:
+        maxResultWindow: 50000
+        mapping:
+          totalFields: 10000
   indexing:
     chunksize: 1000
     poolsize: 10

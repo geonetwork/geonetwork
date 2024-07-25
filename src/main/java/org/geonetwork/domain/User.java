@@ -51,7 +51,7 @@ public class User {
 
   @NotNull
   @Column(name = "profile", nullable = false)
-  private Integer profile;
+  private Profile profile = Profile.RegisteredUser;
 
   @Size(max = 32)
   @Column(name = "authtype", length = 32)

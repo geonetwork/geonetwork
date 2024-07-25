@@ -40,6 +40,8 @@ class IndexingServiceTest {
 
   @Autowired IndexingService indexingService;
 
+  @Autowired IndexingRecordService indexingRecordService;
+
   @Autowired MetadataRepository metadataRepository;
 
   @Test
@@ -68,7 +70,7 @@ class IndexingServiceTest {
                   .build());
 
       IndexRecords indexRecords =
-          indexingService.collectProperties("iso19115-3.2018", List.of(dbRecord));
+          indexingRecordService.collectProperties("iso19115-3.2018", List.of(dbRecord));
       IndexRecord indexRecord = indexRecords.getIndexRecord().getFirst();
 
       assertEquals("2020-01-01T00:00:00Z", indexRecord.getChangeDate());
