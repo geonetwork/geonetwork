@@ -7,6 +7,7 @@
 
   <xsl:template name="index-contact">
     <xsl:param name="languages" as="node()*"/>
+
     <xsl:for-each select="*:contact">
       <xsl:apply-templates mode="index-contact" select=".">
         <xsl:with-param name="fieldSuffix" select="''"/>
@@ -145,4 +146,7 @@
       </xsl:if>
     </xsl:element>
   </xsl:template>
+
+  <xsl:template mode="index-contact" match="*"/>
+
 </xsl:stylesheet>

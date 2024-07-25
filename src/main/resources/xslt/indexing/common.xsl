@@ -7,7 +7,7 @@
   <xsl:include href="constant.xsl"/>
   <xsl:include href="utility.xsl"/>
 
-  <xsl:template match="/">
+  <xsl:template match="/indexRecords">
     <indexRecords>
       <xsl:apply-templates mode="index" select="*"/>
     </indexRecords>
@@ -25,8 +25,18 @@
       <xsl:try>
         <xsl:variable name="xml"
                       select="parse-xml(document)"/>
-        <xsl:apply-templates mode="index"
-                             select="$xml"/>
+
+        <xsl:variable name="properties" as="node()*">
+          <xsl:apply-templates mode="index"
+                               select="$xml"/>
+        </xsl:variable>
+
+        <!-- Sort properties for proper deserialization of unwrapped list elements. -->
+        <xsl:for-each select="$properties">
+          <xsl:sort select="name()"/>
+          <xsl:copy-of select="."/>
+        </xsl:for-each>
+
         <xsl:catch>
           <!-- TODO: send to logger -->
           <xsl:message>XSLT error
@@ -47,6 +57,16 @@
         </xsl:catch>
       </xsl:try>
     </xsl:copy>
+  </xsl:template>
+
+
+
+  <xsl:template mode="index" match="@*|node()">
+    <xsl:param name="languages" as="node()*"/>
+
+    <xsl:apply-templates mode="index" select="@*|node()">
+      <xsl:with-param name="languages" select="$languages"/>
+    </xsl:apply-templates>
   </xsl:template>
 
 

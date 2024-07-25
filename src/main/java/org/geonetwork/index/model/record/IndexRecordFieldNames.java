@@ -114,7 +114,6 @@ public class IndexRecordFieldNames {
   public static final String LINK_PROTOCOL = "linkProtocol";
   public static final String LINK_URL = "linkUrl";
   public static final String LOCATION = "location";
-  public static final String HAS_BOUNDING_POLYGON = "hasBoundingPolygon";
   public static final String EXTENT_DESCRIPTION = "extentDescriptionObject";
   public static final String EXTENT_IDENTIFIER = "extentIdentifierObject";
   public static final String SHAPE_PARSING_ERROR = "shapeParsingError";

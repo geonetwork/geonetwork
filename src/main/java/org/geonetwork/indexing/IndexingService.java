@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.groupingBy;
 
 import co.elastic.clients.elasticsearch._helpers.bulk.BulkIngester;
 import co.elastic.clients.elasticsearch._helpers.bulk.BulkListener;
+import co.elastic.clients.elasticsearch._types.Time;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +26,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-/** Indexing service. */
+/**
+ * Indexing service.
+ *
+ * <p>If observing "Error while sending records to index. Error is: 30,000 milliseconds timeout on
+ * connection http-outgoing-2 [ACTIVE]." then reduce chunk size.
+ */
 @Component
 @Slf4j(topic = "org.geonetwork.tasks.indexing")
 public class IndexingService {
@@ -40,6 +46,7 @@ public class IndexingService {
   private final IndexingRecordService indexingRecordService;
 
   private final ExecutorService executor;
+  private final String bulktimeout;
 
   private BulkIngester<Object> bulkIngester;
 
@@ -50,12 +57,14 @@ public class IndexingService {
       @Value("${geonetwork.indexing.asynchronous:'false'}") boolean isAsynchronousIndexing,
       @Value("${geonetwork.indexing.chunksize:'1000'}") int indexingChunkSize,
       @Value("${geonetwork.indexing.poolsize:'2'}") int poolSize,
+      @Value("${geonetwork.indexing.bulktimeout:'45s'}") String bulktimeout,
       IndexingRecordService indexingRecordService,
       MetadataRepository metadataRepository,
       EntityManager entityManager,
       IndexClient indexClient) {
     this.isAsynchronousIndexing = isAsynchronousIndexing;
     this.indexingChunkSize = indexingChunkSize;
+    this.bulktimeout = bulktimeout;
 
     this.indexingRecordService = indexingRecordService;
     this.metadataRepository = metadataRepository;
@@ -96,6 +105,7 @@ public class IndexingService {
         BulkIngester.of(
             b ->
                 b.client(indexClient.getEsAsynchClient())
+                    .globalSettings(s -> s.timeout(Time.of(builder -> builder.time(bulktimeout))))
                     .listener(bulkListener)
                     .flushInterval(10, TimeUnit.SECONDS)
                     .maxOperations(indexingChunkSize));
@@ -211,7 +221,10 @@ public class IndexingService {
                               .document(indexRecord)));
         }
 
-        BulkResponse bulkItemResponses = indexClient.getEsClient().bulk(br.build());
+        BulkResponse bulkItemResponses =
+            indexClient
+                .getEsClient()
+                .bulk(br.timeout(Time.of(builder -> builder.time(bulktimeout))).build());
         log.atInfo().log("Indexing operation took {}.", bulkItemResponses.took());
         if (bulkItemResponses.errors()) {
           AtomicInteger failureCount = new AtomicInteger();
@@ -231,6 +244,7 @@ public class IndexingService {
     } catch (Exception esException) {
       log.atError()
           .log("Error while sending records to index. Error is: {}.", esException.getMessage());
+      esException.printStackTrace();
     }
   }
 }
