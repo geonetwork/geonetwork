@@ -1,4 +1,4 @@
-name: build
+name: Default Build
 
 on: [pull_request]
 
@@ -22,7 +22,17 @@ jobs:
         cache: 'maven'
     - name: Default Build
       run: |
-        mvn -B -fae clean install -Drelax
+        mvn -B -fae clean install
+    - name: Check for any unformatted files
+      run: |
+        if [ -n "$(git status --porcelain)" ]
+        then
+           echo "Build modified or reformatted files"
+           git status -s
+           exit 1
+        else
+           echo "Clean build with no files modifed or reformatted"
+        fi
     - name: Remove SNAPSHOT jars for lighter cache
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}
