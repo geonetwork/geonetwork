@@ -60,6 +60,11 @@ The quality assurance checks have been broken out into different profiles so you
   mvn verify -Pspotbugs
   ```
   
+  It is highly recommended to use the spotbugs-gui to review test results:
+  ```
+  mvn spotbugs:gui
+  ```
+    
 * [Find Security Bugs](https://find-sec-bugs.github.io) SpotBugs plugin for security audits of Java web applications.
 
   ```

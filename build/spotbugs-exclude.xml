@@ -19,8 +19,40 @@
        https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html
   -->
 <FindBugsFilter>
+  <!-- Q: Is generated model restricted to trusted code? -->
   <Match>
-    <!-- Annoying but not actually a bug per se, might want to revisit later -->
-    <Bug pattern="MF_CLASS_MASKS_FIELD"/>
+    <Package name="org.geonetwork.search.ogcapi.records.generated.model"/>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+      <Bug pattern="EI_EXPOSE_REP"/>
+    </Or>
   </Match>
+
+  <!-- Q: Is domain restricted to trusted code? -->
+  <Match>
+    <Package name="org.geonetwork.domain"/>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+    </Or>
+  </Match>
+
+  <!-- Q: Is index model restricted to trusted code? -->
+  <Match>
+    <Package name="org.geonetwork.index.model.record"/>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+    </Or>
+  </Match>
+  
+  <Match>
+    <Class name="org.geonetwork.index.model.record.IndexRecord"/>
+    <Or>
+      <Method name="equals"/>
+      <Method name="hashCode"/>
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
 </FindBugsFilter>
