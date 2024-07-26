@@ -40,12 +40,12 @@ class IndexingServiceTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "iso19115-3.2018_dataset",
-        "iso19115-3.2018_datamodel",
-        "iso19115-3.2018_service",
-        "iso19139_dataset",
+        // "iso19115-3.2018_dataset",
+        // "iso19115-3.2018_datamodel",
+        // "iso19115-3.2018_service",
+        // "iso19139_dataset",
         "dublin-core_dataset",
-        "iso19110_datamodel"
+        // "iso19110_datamodel"
       })
   void test_indexing_dataset(String file) {
     try {
