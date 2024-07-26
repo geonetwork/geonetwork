@@ -587,20 +587,24 @@
             <artifactId>spotbugs-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>check</id>
+                <id>spotbugs-check</id>
                 <phase>verify</phase>
                 <goals>
                   <goal>check</goal>
                 </goals>
-                <configuration>
-                  <effort>More</effort>
-                  <!--threshold>High</threshold-->
-                  <xmlOutput>true</xmlOutput>
-                  <maxRank>15</maxRank>
-                  <excludeFilterFile>build/spotbugs-exclude.xml</excludeFilterFile>
-                </configuration>
               </execution>
             </executions>
+            <configuration>
+              <effort>more</effort>
+              <!--
+              <threshold>High</threshold>
+              -->
+              <xmlOutput>true</xmlOutput>
+              <!-- 1-4: terror, 5-9: scary, 10-14: trouble, 15-20: concern           -->
+              <!-- increase this over time to check for more and more serious issues -->
+              <maxRank>20</maxRank>
+              <excludeFilterFile>${project.basedir}/build/spotbugs-exclude.xml</excludeFilterFile>
+            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -660,7 +664,7 @@
           <plugin>
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
-              <fork>true</fork>
+              <fork>${fork.javac}</fork>
               <showWarnings>true</showWarnings>
               <compilerArgs>
                 <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
