@@ -38,6 +38,7 @@ public class UsersearchGroupId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!UsersearchGroupId.class.isInstance(o)) return false;
     UsersearchGroupId entity = (UsersearchGroupId) o;
     return Objects.equals(this.groupId, entity.groupId)
         && Objects.equals(this.usersearchId, entity.usersearchId);

@@ -41,6 +41,7 @@ public class SourcesdeId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!SourcesdeId.class.isInstance(o)) return false;
     SourcesdeId entity = (SourcesdeId) o;
     return Objects.equals(this.iddes, entity.iddes) && Objects.equals(this.langid, entity.langid);
   }

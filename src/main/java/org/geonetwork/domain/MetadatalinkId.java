@@ -38,6 +38,7 @@ public class MetadatalinkId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!MetadatalinkId.class.isInstance(o)) return false;
     MetadatalinkId entity = (MetadatalinkId) o;
     return Objects.equals(this.metadataid, entity.metadataid)
         && Objects.equals(this.linkid, entity.linkid);

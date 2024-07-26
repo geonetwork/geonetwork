@@ -42,6 +42,7 @@ public class OperationallowedId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!OperationallowedId.class.isInstance(o)) return false;
     OperationallowedId entity = (OperationallowedId) o;
     return Objects.equals(this.metadataid, entity.metadataid)
         && Objects.equals(this.groupid, entity.groupid)

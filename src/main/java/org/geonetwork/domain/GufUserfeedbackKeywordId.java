@@ -40,6 +40,7 @@ public class GufUserfeedbackKeywordId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!GufUserfeedbackKeywordId.class.isInstance(o)) return false;
     GufUserfeedbackKeywordId entity = (GufUserfeedbackKeywordId) o;
     return Objects.equals(this.keywordId, entity.keywordId)
         && Objects.equals(this.userfeedbackUuid, entity.userfeedbackUuid);

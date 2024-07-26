@@ -40,6 +40,7 @@ public class IsolanguagesdeId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!IsolanguagesdeId.class.isInstance(o)) return false;
     IsolanguagesdeId entity = (IsolanguagesdeId) o;
     return Objects.equals(this.iddes, entity.iddes) && Objects.equals(this.langid, entity.langid);
   }

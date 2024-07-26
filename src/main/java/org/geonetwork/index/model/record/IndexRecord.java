@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -816,10 +815,10 @@ public class IndexRecord {
    * all those properties in the JSON.
    */
   @JsonAnySetter
+  @SuppressWarnings({"ReturnValueIgnored"})
   public void handleUnrecognizedField(String name, Object value) {
     try {
-      @SuppressWarnings({"ReturnValueIgnored", "UnusedVariable"})
-      Field declaredField = IndexRecord.class.getDeclaredField(name);
+      IndexRecord.class.getDeclaredField(name);
     } catch (NoSuchFieldException e) {
       try {
         if (name.startsWith(IndexRecordFieldNames.OP_PREFIX)) {

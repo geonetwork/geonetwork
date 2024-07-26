@@ -40,6 +40,7 @@ public class MetadataratingId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!MetadataratingId.class.isInstance(o)) return false;
     MetadataratingId entity = (MetadataratingId) o;
     return Objects.equals(this.ipaddress, entity.ipaddress)
         && Objects.equals(this.metadataid, entity.metadataid);
