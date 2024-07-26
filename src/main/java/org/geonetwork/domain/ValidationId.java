@@ -40,6 +40,7 @@ public class ValidationId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!ValidationId.class.isInstance(o)) return false;
     ValidationId entity = (ValidationId) o;
     return Objects.equals(this.metadataid, entity.metadataid)
         && Objects.equals(this.valtype, entity.valtype);

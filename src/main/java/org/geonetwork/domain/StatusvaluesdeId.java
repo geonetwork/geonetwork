@@ -40,6 +40,7 @@ public class StatusvaluesdeId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!StatusvaluesdeId.class.isInstance(o)) return false;
     StatusvaluesdeId entity = (StatusvaluesdeId) o;
     return Objects.equals(this.iddes, entity.iddes) && Objects.equals(this.langid, entity.langid);
   }

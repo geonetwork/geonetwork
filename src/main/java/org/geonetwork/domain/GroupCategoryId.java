@@ -38,6 +38,7 @@ public class GroupCategoryId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!GroupCategoryId.class.isInstance(o)) return false;
     GroupCategoryId entity = (GroupCategoryId) o;
     return Objects.equals(this.groupId, entity.groupId)
         && Objects.equals(this.categoryId, entity.categoryId);

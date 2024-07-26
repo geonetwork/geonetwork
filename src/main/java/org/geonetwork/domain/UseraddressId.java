@@ -38,6 +38,7 @@ public class UseraddressId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!UseraddressId.class.isInstance(o)) return false;
     UseraddressId entity = (UseraddressId) o;
     return Objects.equals(this.userid, entity.userid)
         && Objects.equals(this.addressid, entity.addressid);

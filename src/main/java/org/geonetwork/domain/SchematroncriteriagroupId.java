@@ -40,6 +40,7 @@ public class SchematroncriteriagroupId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!SchematroncriteriagroupId.class.isInstance(o)) return false;
     SchematroncriteriagroupId entity = (SchematroncriteriagroupId) o;
     return Objects.equals(this.schematronid, entity.schematronid)
         && Objects.equals(this.name, entity.name);

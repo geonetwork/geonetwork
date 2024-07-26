@@ -38,6 +38,7 @@ public class MetadatacategId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!MetadatacategId.class.isInstance(o)) return false;
     MetadatacategId entity = (MetadatacategId) o;
     return Objects.equals(this.metadataid, entity.metadataid)
         && Objects.equals(this.categoryid, entity.categoryid);

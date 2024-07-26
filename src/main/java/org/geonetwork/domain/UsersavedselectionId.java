@@ -44,6 +44,7 @@ public class UsersavedselectionId implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (!UsersavedselectionId.class.isInstance(o)) return false;
     UsersavedselectionId entity = (UsersavedselectionId) o;
     return Objects.equals(this.selectionid, entity.selectionid)
         && Objects.equals(this.userid, entity.userid)
