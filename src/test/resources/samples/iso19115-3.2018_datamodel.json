@@ -91,23 +91,23 @@
     "langfre" : "PanierTelechargementGeoportail"
   }, {
     "default" : "Sol et sous-sol",
-    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030",
     "langfre" : "Sol et sous-sol",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030",
     "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/1030"
   }, {
     "default" : "Nature et environnement",
-    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10",
     "langfre" : "Nature et environnement",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10",
     "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/10"
   }, {
     "default" : "Aménagement du territoire",
-    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20",
     "langfre" : "Aménagement du territoire",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20",
     "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/20"
   }, {
     "default" : "Données de base",
-    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50",
     "langfre" : "Données de base",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50",
     "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50"
   }, {
     "default" : "Région wallonne",
@@ -1039,12 +1039,12 @@
   } ],
   "licenseObject" : [ {
     "default" : "No limitations to public access",
-    "link" : "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations",
-    "langfre" : "No limitations to public access"
+    "langfre" : "No limitations to public access",
+    "link" : "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations"
   }, {
     "default" : "Ces données sont disponibles sous licence CC-BY 4.0. Un résumé de cette licence est disponible à l'adresse https://creativecommons.org/licenses/by/4.0/deed.fr . Ce résumé ne se substitue pas à la licence complète. Crédits : Service public de Wallonie",
-    "link" : "https://creativecommons.org/licenses/by/4.0/legalcode.fr",
-    "langfre" : "Ces données sont disponibles sous licence CC-BY 4.0. Un résumé de cette licence est disponible à l'adresse https://creativecommons.org/licenses/by/4.0/deed.fr . Ce résumé ne se substitue pas à la licence complète. Crédits : Service public de Wallonie"
+    "langfre" : "Ces données sont disponibles sous licence CC-BY 4.0. Un résumé de cette licence est disponible à l'adresse https://creativecommons.org/licenses/by/4.0/deed.fr . Ce résumé ne se substitue pas à la licence complète. Crédits : Service public de Wallonie",
+    "link" : "https://creativecommons.org/licenses/by/4.0/legalcode.fr"
   } ],
   "resourceCreditObject" : [ {
     "default" : "SPW - Aerospacelab SA",

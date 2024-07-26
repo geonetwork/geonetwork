@@ -253,13 +253,16 @@ public class IndexRecord {
   @JsonIgnore
   @Singular("operation")
   @Builder.ObtainVia(method = "copyOperations")
-  private Map<String, ArrayList<Integer>> operations;
+  private Map<String, List<Integer>> operations;
 
-  private Map<String, ArrayList<Integer>> copyOperations() {
-    return operations != null ? operations : new HashMap<>();
+  private Map<String, List<Integer>> copyOperations() {
+    if (operations == null) {
+      operations = new HashMap<>();
+    }
+    return operations;
   }
 
-  @Singular private final Map<String, ArrayList<String>> otherProperties = new HashMap<>();
+  @Singular private final Map<String, List<String>> otherProperties = new HashMap<>();
 
   /**
    * Record title.
@@ -278,17 +281,17 @@ public class IndexRecord {
   @JsonProperty(IndexRecordFieldNames.RESOURCE_ALT_TITLE)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  List<HashMap<String, String>> resourceAltTitle;
+  List<Map<String, String>> resourceAltTitle;
 
   @JsonProperty(IndexRecordFieldNames.RESOURCE_LINEAGE)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  List<HashMap<String, String>> resourceLineage;
+  List<Map<String, String>> resourceLineage;
 
   @JsonProperty(IndexRecordFieldNames.SOURCE_DESCRIPTION)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  List<HashMap<String, String>> sourceDescription;
+  List<Map<String, String>> sourceDescription;
 
   @JsonProperty(IndexRecordFieldNames.PROCESS_STEPS)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -301,25 +304,29 @@ public class IndexRecord {
   @JsonProperty(IndexRecordFieldNames.RESOURCE_CREDIT)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  List<HashMap<String, String>> resourceCredit;
+  List<Map<String, String>> resourceCredit;
 
   @JsonProperty(IndexRecordFieldNames.SUPPLEMENTAL_INFORMATION)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  List<HashMap<String, String>> supplementalInformation;
+  List<Map<String, String>> supplementalInformation;
 
   @JsonProperty(IndexRecordFieldNames.ORDERING_INSTRUCTIONS)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  List<HashMap<String, String>> orderingInstructions;
+  List<Map<String, String>> orderingInstructions;
 
   @JsonProperty(IndexRecordFieldNames.PURPOSE)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  List<HashMap<String, String>> purpose;
+  List<Map<String, String>> purpose;
 
-  private List<HashMap<String, String>> copyPurpose() {
-    return purpose != null ? purpose : new ArrayList<>();
+  @SuppressWarnings("UnusedMethod")
+  private List<Map<String, String>> copyPurpose() {
+    if (purpose == null) {
+      purpose = new ArrayList<>();
+    }
+    return purpose;
   }
 
   @JsonProperty(IndexRecordFieldNames.CATEGORY)
@@ -329,14 +336,18 @@ public class IndexRecord {
   @Builder.ObtainVia(method = "copyCategory")
   private List<String> category;
 
+  @SuppressWarnings("UnusedMethod")
   private List<String> copyCategory() {
-    return category != null ? category : new ArrayList<>();
+    if (category == null) {
+      category = new ArrayList<>();
+    }
+    return category;
   }
 
   @JsonProperty(IndexRecordFieldNames.TAG)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  ArrayList<HashMap<String, String>> tag;
+  List<Map<String, String>> tag;
 
   @JsonProperty(IndexRecordFieldNames.TAG_NUMBER)
   int tagNumber;
@@ -421,8 +432,12 @@ public class IndexRecord {
   @Builder.ObtainVia(method = "copyGroupPublished")
   private List<String> groupPublished;
 
+  @SuppressWarnings("UnusedMethod")
   private List<String> copyGroupPublished() {
-    return groupPublished != null ? groupPublished : new ArrayList<>();
+    if (groupPublished == null) {
+      groupPublished = new ArrayList<>();
+    }
+    return groupPublished;
   }
 
   @JsonProperty(IndexRecordFieldNames.GROUP_PUBLISHED_ID)
@@ -432,8 +447,12 @@ public class IndexRecord {
   @Builder.ObtainVia(method = "copyGroupPublishedId")
   private List<Integer> groupPublishedId;
 
+  @SuppressWarnings("UnusedMethod")
   private List<Integer> copyGroupPublishedId() {
-    return groupPublishedId != null ? groupPublishedId : new ArrayList<>();
+    if (groupPublishedId == null) {
+      groupPublishedId = new ArrayList<>();
+    }
+    return groupPublishedId;
   }
 
   @JsonProperty(IndexRecordFieldNames.POPULARITY)
@@ -458,8 +477,12 @@ public class IndexRecord {
   @Builder.ObtainVia(method = "copyValidationByType")
   private Map<String, String> validationByType;
 
+  @SuppressWarnings("UnusedMethod")
   private Map<String, String> copyValidationByType() {
-    return validationByType != null ? validationByType : new HashMap<>();
+    if (validationByType == null) {
+      validationByType = new HashMap<>();
+    }
+    return validationByType;
   }
 
   @JsonProperty(IndexRecordFieldNames.FEEDBACK_COUNT)
@@ -522,7 +545,7 @@ public class IndexRecord {
   @JsonProperty(IndexRecordFieldNames.ORG)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
-  private List<HashMap<String, String>> organizations;
+  private List<Map<String, String>> organizations;
 
   @JsonProperty(IndexRecordFieldNames.FORMAT)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -637,11 +660,11 @@ public class IndexRecord {
 
   @JsonProperty(IndexRecordFieldNames.EXTENT_IDENTIFIER)
   @JacksonXmlElementWrapper(useWrapping = false)
-  private List<HashMap<String, String>> extentIdentifier;
+  private List<Map<String, String>> extentIdentifier;
 
   @JsonProperty(IndexRecordFieldNames.EXTENT_DESCRIPTION)
   @JacksonXmlElementWrapper(useWrapping = false)
-  private List<HashMap<String, String>> extentDescription;
+  private List<Map<String, String>> extentDescription;
 
   @JsonProperty(IndexRecordFieldNames.SHAPE_PARSING_ERROR)
   private List<String> shapeParsingError;
@@ -669,10 +692,13 @@ public class IndexRecord {
   @JsonIgnore
   @Singular("codelist")
   @Builder.ObtainVia(method = "copyCodelist")
-  private Map<String, ArrayList<Codelist>> codelists;
+  private Map<String, List<Codelist>> codelists;
 
-  private Map<String, ArrayList<Codelist>> copyCodelist() {
-    return codelists != null ? codelists : new HashMap<>();
+  private Map<String, List<Codelist>> copyCodelist() {
+    if (codelists == null) {
+      codelists = new HashMap<>();
+    }
+    return codelists;
   }
 
   /**
@@ -694,7 +720,10 @@ public class IndexRecord {
   private Map<String, List<Keyword>> keywordByType;
 
   private Map<String, List<Keyword>> copyKeywordByType() {
-    return keywordByType != null ? keywordByType : new HashMap<>();
+    if (keywordByType == null) {
+      keywordByType = new HashMap<>();
+    }
+    return keywordByType;
   }
 
   @JsonProperty(IndexRecordFieldNames.SPECIFICATION_CONFORMANCE)
@@ -704,8 +733,12 @@ public class IndexRecord {
   @Builder.ObtainVia(method = "copySpecificationConformance")
   private List<SpecificationConformance> specificationConformance;
 
+  @SuppressWarnings("UnusedMethod")
   private List<SpecificationConformance> copySpecificationConformance() {
-    return specificationConformance != null ? specificationConformance : new ArrayList<>();
+    if (specificationConformance == null) {
+      specificationConformance = new ArrayList<>();
+    }
+    return specificationConformance;
   }
 
   @JsonProperty(IndexRecordFieldNames.FEATURE_TYPES)
@@ -726,8 +759,12 @@ public class IndexRecord {
   @Builder.ObtainVia(method = "copyHasSource")
   private List<String> hassource;
 
+  @SuppressWarnings("UnusedMethod")
   private List<String> copyHasSource() {
-    return hassource != null ? hassource : new ArrayList<>();
+    if (hassource == null) {
+      hassource = new ArrayList<>();
+    }
+    return hassource;
   }
 
   private static boolean isDateField(String name) {
@@ -809,13 +846,13 @@ public class IndexRecord {
         } else if (name.startsWith(IndexRecordFieldNames.LINK_URL_PROTOCOL_PREFIX)) {
           handleLinkUrlProperties(name, value);
         } else if (name.startsWith(IndexRecordFieldNames.KEYWORD_BY_TYPE_PREFIX)) {
-          handleKeywordByTypeProperties(keywordByType, name, value);
+          handleKeywordByTypeProperties(true, name, value);
         } else if (isKeywordNumberField(name)) {
           handleKeywordNumberProperties(name, value);
         } else if (isKeywordHierarchyField(name)) {
           handleKeywordHierarchyProperties(name, value);
         } else if (name.startsWith(IndexRecordFieldNames.KEYWORD_BY_THESAURUS_PREFIX)) {
-          handleKeywordByTypeProperties(keywordByThesaurus, name, value);
+          handleKeywordByTypeProperties(false, name, value);
         } else if (name.endsWith(IndexRecordFieldNames.CONSTRAINT_SUFFIX)) {
           handleConstraintProperties(constraints, name, value);
         } else if (name.endsWith(IndexRecordFieldNames.USE_LIMITATION_SUFFIX)) {
@@ -845,7 +882,7 @@ public class IndexRecord {
   }
 
   private void handleOperationsProperties(String name, Object value) {
-    ArrayList<Integer> operationField =
+    List<Integer> operationField =
         this.copyOperations().computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof List) {
       @SuppressWarnings("unchecked")
@@ -858,7 +895,7 @@ public class IndexRecord {
   }
 
   private void handleOtherProperties(String name, Object value) {
-    ArrayList<String> s = otherProperties.get(name);
+    List<String> s = otherProperties.get(name);
     if (s == null) {
       s = new ArrayList<>(1);
       s.add(value.toString());
@@ -891,7 +928,7 @@ public class IndexRecord {
       constraintByType.add(map);
     } else if (value instanceof List) {
       @SuppressWarnings("unchecked")
-      List<HashMap<String, String>> list = (List<HashMap<String, String>>) value;
+      List<Map<String, String>> list = (List<Map<String, String>>) value;
       constraintByType.addAll(list);
     }
   }
@@ -993,10 +1030,10 @@ public class IndexRecord {
     }
   }
 
-  private void handleKeywordByTypeProperties(
-      Map<String, List<Keyword>> keywordField, String name, Object value) {
+  private void handleKeywordByTypeProperties(boolean byType, String name, Object value) {
     List<Keyword> keywordForType =
-        copyKeywordByType().computeIfAbsent(name, k -> new ArrayList<Keyword>());
+        (byType ? copyKeywordByType() : keywordByThesaurus)
+            .computeIfAbsent(name, k -> new ArrayList<>());
 
     if (value instanceof Map) {
       Object listOfKeywords = ((Map) value).get("keywords"); // XML
@@ -1016,7 +1053,7 @@ public class IndexRecord {
       }
     } else if (value instanceof List) {
       @SuppressWarnings("unchecked")
-      List<HashMap<String, String>> list = (List<HashMap<String, String>>) value;
+      List<Map<String, String>> list = (List<Map<String, String>>) value;
       list.stream().map(Keyword::new).forEach(keywordForType::add);
     }
   }
@@ -1064,7 +1101,7 @@ public class IndexRecord {
     List<Codelist> codelist = copyCodelist().computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof List) {
       @SuppressWarnings("unchecked")
-      List<HashMap<String, String>> list = (List<HashMap<String, String>>) value;
+      List<Map<String, String>> list = (List<Map<String, String>>) value;
       codelist.addAll(list.stream().map(Codelist::new).toList());
     } else if (value instanceof Map) {
       @SuppressWarnings("unchecked")
