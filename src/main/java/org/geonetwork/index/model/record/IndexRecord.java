@@ -252,7 +252,12 @@ public class IndexRecord {
 
   @JsonIgnore
   @Singular("operation")
-  private Map<String, ArrayList<Integer>> operations = new HashMap<>();
+  @Builder.ObtainVia(method = "copyOperations")
+  private Map<String, ArrayList<Integer>> operations;
+
+  private Map<String, ArrayList<Integer>> copyOperations() {
+    return operations != null ? operations : new HashMap<>();
+  }
 
   @Singular private final Map<String, ArrayList<String>> otherProperties = new HashMap<>();
 
@@ -313,11 +318,20 @@ public class IndexRecord {
   @JacksonXmlElementWrapper(useWrapping = false)
   List<HashMap<String, String>> purpose;
 
+  private List<HashMap<String, String>> copyPurpose() {
+    return purpose != null ? purpose : new ArrayList<>();
+  }
+
   @JsonProperty(IndexRecordFieldNames.CATEGORY)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("category")
-  private List<String> category = new ArrayList<>();
+  @Builder.ObtainVia(method = "copyCategory")
+  private List<String> category;
+
+  private List<String> copyCategory() {
+    return category != null ? category : new ArrayList<>();
+  }
 
   @JsonProperty(IndexRecordFieldNames.TAG)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -404,13 +418,23 @@ public class IndexRecord {
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("groupPublished")
-  private List<String> groupPublished = new ArrayList<>();
+  @Builder.ObtainVia(method = "copyGroupPublished")
+  private List<String> groupPublished;
+
+  private List<String> copyGroupPublished() {
+    return groupPublished != null ? groupPublished : new ArrayList<>();
+  }
 
   @JsonProperty(IndexRecordFieldNames.GROUP_PUBLISHED_ID)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("groupPublishedId")
-  private List<Integer> groupPublishedId = new ArrayList<>();
+  @Builder.ObtainVia(method = "copyGroupPublishedId")
+  private List<Integer> groupPublishedId;
+
+  private List<Integer> copyGroupPublishedId() {
+    return groupPublishedId != null ? groupPublishedId : new ArrayList<>();
+  }
 
   @JsonProperty(IndexRecordFieldNames.POPULARITY)
   private int popularity;
@@ -431,7 +455,12 @@ public class IndexRecord {
 
   @JsonIgnore
   @Singular("validation")
-  private Map<String, String> validationByType = new HashMap<>();
+  @Builder.ObtainVia(method = "copyValidationByType")
+  private Map<String, String> validationByType;
+
+  private Map<String, String> copyValidationByType() {
+    return validationByType != null ? validationByType : new HashMap<>();
+  }
 
   @JsonProperty(IndexRecordFieldNames.FEEDBACK_COUNT)
   private long feedbackCount;
@@ -639,7 +668,12 @@ public class IndexRecord {
 
   @JsonIgnore
   @Singular("codelist")
-  private Map<String, ArrayList<Codelist>> codelists = new HashMap<>();
+  @Builder.ObtainVia(method = "copyCodelist")
+  private Map<String, ArrayList<Codelist>> codelists;
+
+  private Map<String, ArrayList<Codelist>> copyCodelist() {
+    return codelists != null ? codelists : new HashMap<>();
+  }
 
   /**
    *
@@ -653,16 +687,26 @@ public class IndexRecord {
    *      </pre>
    */
   @JsonIgnore
-  @Singular("keywordByType")
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(localName = "keywords")
-  private Map<String, List<Keyword>> keywordByType = new HashMap<>();
+  @Singular("keywordByType")
+  @Builder.ObtainVia(method = "copyKeywordByType")
+  private Map<String, List<Keyword>> keywordByType;
+
+  private Map<String, List<Keyword>> copyKeywordByType() {
+    return keywordByType != null ? keywordByType : new HashMap<>();
+  }
 
   @JsonProperty(IndexRecordFieldNames.SPECIFICATION_CONFORMANCE)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("specificationConformance")
-  private List<SpecificationConformance> specificationConformance = new ArrayList<>();
+  @Builder.ObtainVia(method = "copySpecificationConformance")
+  private List<SpecificationConformance> specificationConformance;
+
+  private List<SpecificationConformance> copySpecificationConformance() {
+    return specificationConformance != null ? specificationConformance : new ArrayList<>();
+  }
 
   @JsonProperty(IndexRecordFieldNames.FEATURE_TYPES)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -679,7 +723,12 @@ public class IndexRecord {
   @JacksonXmlProperty(localName = IndexRecordFieldNames.HASSOURCE)
   @JacksonXmlElementWrapper(useWrapping = false)
   @Singular("hassource")
-  private List<String> hassource = new ArrayList<>();
+  @Builder.ObtainVia(method = "copyHasSource")
+  private List<String> hassource;
+
+  private List<String> copyHasSource() {
+    return hassource != null ? hassource : new ArrayList<>();
+  }
 
   private static boolean isDateField(String name) {
     return name.endsWith("Date" + IndexRecordFieldNames.FOR_RESOURCE_SUFFIX)
@@ -797,7 +846,7 @@ public class IndexRecord {
 
   private void handleOperationsProperties(String name, Object value) {
     ArrayList<Integer> operationField =
-        operations.computeIfAbsent(name, k -> new ArrayList<Integer>());
+        this.copyOperations().computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof List) {
       @SuppressWarnings("unchecked")
       Collection<? extends Integer> collection = (Collection<? extends Integer>) value;
@@ -947,7 +996,7 @@ public class IndexRecord {
   private void handleKeywordByTypeProperties(
       Map<String, List<Keyword>> keywordField, String name, Object value) {
     List<Keyword> keywordForType =
-        keywordField.computeIfAbsent(name, k -> new ArrayList<Keyword>());
+        copyKeywordByType().computeIfAbsent(name, k -> new ArrayList<Keyword>());
 
     if (value instanceof Map) {
       Object listOfKeywords = ((Map) value).get("keywords"); // XML
@@ -1012,7 +1061,7 @@ public class IndexRecord {
   }
 
   private void handleCodelistProperties(String name, Object value) {
-    List<Codelist> codelist = codelists.computeIfAbsent(name, k -> new ArrayList<>());
+    List<Codelist> codelist = copyCodelist().computeIfAbsent(name, k -> new ArrayList<>());
     if (value instanceof List) {
       @SuppressWarnings("unchecked")
       List<HashMap<String, String>> list = (List<HashMap<String, String>>) value;
