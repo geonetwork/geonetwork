@@ -14,7 +14,6 @@ import static org.geonetwork.index.model.record.IndexRecordFieldNames.CommonFiel
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.CommonField.KEY;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.LINK;
 import static org.geonetwork.index.model.record.RecordLink.Origin.remote;
-import org.junit.Ignore;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
