@@ -39,8 +39,8 @@
   },
   "tag" : [ {
     "default" : "Service d’accès aux produits",
-    "link" : "http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceCategory/infoProductAccessService",
     "langfre" : "Service d’accès aux produits",
+    "link" : "http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceCategory/infoProductAccessService",
     "key" : "http://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceCategory/infoProductAccessService"
   }, {
     "default" : "image",
@@ -80,13 +80,13 @@
     "langfre" : "IR"
   }, {
     "default" : "Régional",
-    "link" : "http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/regional",
     "langfre" : "Régional",
+    "link" : "http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/regional",
     "key" : "http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/regional"
   }, {
     "default" : "Ortho-imagerie",
-    "link" : "http://inspire.ec.europa.eu/theme/oi",
     "langfre" : "Ortho-imagerie",
+    "link" : "http://inspire.ec.europa.eu/theme/oi",
     "key" : "http://inspire.ec.europa.eu/theme/oi"
   }, {
     "default" : "géographie",
@@ -120,13 +120,13 @@
     "langfre" : "Reporting INSPIRE"
   }, {
     "default" : "Photos et imagerie",
-    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/5030",
     "langfre" : "Photos et imagerie",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/5030",
     "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#SubThemesGeoportailWallon/5030"
   }, {
     "default" : "Données de base",
-    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50",
     "langfre" : "Données de base",
+    "link" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50",
     "key" : "https://metawal.wallonie.be/thesaurus/theme-geoportail-wallon#ThemesGeoportailWallon/50"
   }, {
     "default" : "Région wallonne",
@@ -467,12 +467,12 @@
   } ],
   "licenseObject" : [ {
     "default" : "No limitations to public access",
-    "link" : "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations",
-    "langfre" : "No limitations to public access"
+    "langfre" : "No limitations to public access",
+    "link" : "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations"
   }, {
     "default" : "Les conditions d'utilisation du service sont régies par les conditions d’accès et d’utilisation des services web géographiques de visualisation du Service public de Wallonie.",
-    "link" : "https://geoportail.wallonie.be/files/documents/ConditionsSPW/LicServicesSPW.pdf",
-    "langfre" : "Les conditions d'utilisation du service sont régies par les conditions d’accès et d’utilisation des services web géographiques de visualisation du Service public de Wallonie."
+    "langfre" : "Les conditions d'utilisation du service sont régies par les conditions d’accès et d’utilisation des services web géographiques de visualisation du Service public de Wallonie.",
+    "link" : "https://geoportail.wallonie.be/files/documents/ConditionsSPW/LicServicesSPW.pdf"
   } ],
   "tagNumber" : 28,
   "isPublishedToGuest" : false,
