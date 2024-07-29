@@ -27,25 +27,6 @@
       <Bug pattern="EI_EXPOSE_REP"/>
     </Or>
   </Match>
-
-  <!-- Q: Is domain restricted to trusted code? -->
-  <Match>
-    <Package name="org.geonetwork.domain"/>
-    <Or>
-      <Bug pattern="EI_EXPOSE_REP"/>
-      <Bug pattern="EI_EXPOSE_REP2"/>
-    </Or>
-  </Match>
-
-  <!-- Q: Is index model restricted to trusted code? -->
-  <Match>
-    <Package name="org.geonetwork.index.model.record"/>
-    <Or>
-      <Bug pattern="EI_EXPOSE_REP"/>
-      <Bug pattern="EI_EXPOSE_REP2"/>
-    </Or>
-  </Match>
-
   <Match>
     <Class name="org.geonetwork.index.model.record.IndexRecord"/>
     <Or>
@@ -54,5 +35,16 @@
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
-
+  <!--
+  Spring constructor injection
+  https://stackoverflow.com/questions/72394653/how-to-ignore-ei-expose-rep2-in-case-of-spring-autowired-components
+  -->
+  <Match>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2" />
+  </Match>
+  <Match>
+    <Class name="org.geonetwork.utility.xml.XsltTransformerFactory"/>
+    <Bug pattern="MS_EXPOSE_REP" />
+  </Match>
 </FindBugsFilter>
