@@ -42,6 +42,8 @@ spring:
   #      driverClassName: org.h2.Driver
   #      username: sa
   #      password: password
+  jpa:
+    open-in-view: false
   cloud:
     gateway:
       mvc:
