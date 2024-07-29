@@ -35,12 +35,12 @@ import lombok.NoArgsConstructor;
 public class Codelist {
 
   @JacksonXmlProperty(isAttribute = true)
-  String name;
+  private String name;
 
   @JacksonXmlProperty(isAttribute = true)
-  String alias;
+  private String alias;
 
   @JacksonXmlProperty(localName = "entry")
   @JacksonXmlElementWrapper(useWrapping = false)
-  List<Entry> entry;
+  private List<Entry> entry;
 }

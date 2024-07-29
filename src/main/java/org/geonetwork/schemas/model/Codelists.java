@@ -26,5 +26,5 @@ import lombok.NoArgsConstructor;
 public class Codelists {
   @JacksonXmlProperty(localName = "codelist")
   @JacksonXmlElementWrapper(useWrapping = false)
-  List<Codelist> codelist;
+  private List<Codelist> codelist;
 }
