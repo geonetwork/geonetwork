@@ -44,6 +44,8 @@ spring:
   #      password: password
   jpa:
     open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    database-platform: org.hibernate.dialect.H2Dialect
   cloud:
     gateway:
       mvc:
