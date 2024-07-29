@@ -27,6 +27,17 @@
       <Bug pattern="EI_EXPOSE_REP"/>
     </Or>
   </Match>
+  <!--
+  https://jpa-buddy.com/blog/hopefully-the-final-article-about-equals-and-hashcode-for-jpa-entities-with-db-generated-ids/
+  -->
+  <Match>
+    <Package name="org.geonetwork.domain"/>
+    <Or>
+      <Method name="equals"/>
+      <Method name="hashCode"/>
+    </Or>
+    <Bug pattern="EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS" />
+  </Match>
   <Match>
     <Class name="org.geonetwork.index.model.record.IndexRecord"/>
     <Or>

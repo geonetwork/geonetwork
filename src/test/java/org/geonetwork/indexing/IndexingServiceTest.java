@@ -6,7 +6,6 @@
 
 package org.geonetwork.indexing;
 
-import java.util.TimeZone;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -14,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.TimeZone;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.index.model.record.IndexRecord;
