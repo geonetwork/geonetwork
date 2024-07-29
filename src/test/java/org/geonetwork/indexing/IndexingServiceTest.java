@@ -6,6 +6,7 @@
 
 package org.geonetwork.indexing;
 
+import java.util.TimeZone;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -18,6 +19,7 @@ import org.geonetwork.domain.Metadata;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.index.model.record.IndexRecords;
 import org.geonetwork.repository.MetadataRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,11 @@ class IndexingServiceTest {
   @Autowired IndexingRecordService indexingRecordService;
 
   @Autowired MetadataRepository metadataRepository;
+
+  @BeforeAll
+  static void setup() {
+    TimeZone.setDefault(TimeZone.getTimeZone("CET"));
+  }
 
   @ParameterizedTest
   @ValueSource(
