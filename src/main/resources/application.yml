@@ -76,6 +76,7 @@ springdoc:
 
 debug: false
 
-#logging:
-#  level:
+logging:
+  level:
+    org.geonetwork.tasks.indexing: DEBUG
 #    org.springframework.cache: TRACE

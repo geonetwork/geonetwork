@@ -148,16 +148,17 @@ public class IndexingService {
                           m.stream()
                               .collect(groupingBy(Metadata::getSchemaid))
                               .forEach(
-                                  (schema, records) -> {
+                                  (schema, recordsForSchema) -> {
                                     IndexRecords indexRecords =
-                                        indexingRecordService.collectProperties(schema, m);
+                                        indexingRecordService.collectProperties(
+                                            schema, recordsForSchema);
                                     if (indexRecords != null
                                         && indexRecords.getIndexRecord() != null
                                         && !indexRecords.getIndexRecord().isEmpty()) {
 
                                       log.atDebug().log(
                                           "Indexing {} records for schema {}",
-                                          indexRecords.getIndexRecord().size(),
+                                          recordsForSchema.size(),
                                           schema);
                                       // log.atDebug().log(
                                       //   objectMapper
@@ -229,7 +230,10 @@ public class IndexingService {
             indexClient
                 .getEsClient()
                 .bulk(br.timeout(Time.of(builder -> builder.time(bulktimeout))).build());
-        log.atInfo().log("Indexing operation took {}.", bulkItemResponses.took());
+        log.atDebug().log(
+            "Indexing {} documents in {}ms.",
+            indexRecords.getIndexRecord().size(),
+            bulkItemResponses.took());
         if (bulkItemResponses.errors()) {
           AtomicInteger failureCount = new AtomicInteger();
           bulkItemResponses
@@ -238,6 +242,7 @@ public class IndexingService {
                   item -> {
                     if (item.status() != 200 && item.status() != 201) {
                       failureCount.getAndIncrement();
+                      log.atError().log("{} (status {}). {}", item.id(), item.status(), item.result());
                       // TODO: Index error document
                     }
                   });
