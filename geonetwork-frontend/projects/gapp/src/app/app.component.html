@@ -1,7 +1,17 @@
-<div [aggregations]="aggregationConfig" class="p-4" gSearchContext="main">
-  <header>
-    <div class="text-4xl">My GeoNetwork</div>
+<div [aggregations]="aggregationConfig" gSearchContext="main">
+  <header  class="p-4" >
+    <div class="text-6xl">My GeoNetwork</div>
   </header>
+
+  <div
+    class="relative bg-slate-300 p-4 w-1/2"
+    gSearchContext="highlights"
+    size="5"
+    [sort]="[{ 'changeDate': 'desc' }, '_score']">
+    <h1 class="text-4xl mb-4">Highlights this month</h1>
+
+    <g-search-results-timeline scope="highlights"/>
+  </div>
 
   <div class="relative">
     <div class="sticky top-0 z-20">

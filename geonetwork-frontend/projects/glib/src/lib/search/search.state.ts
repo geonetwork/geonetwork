@@ -2,6 +2,7 @@ import {
   AggregationsAggregationContainer,
   AggregationsTermsAggregation,
   SearchTotalHits,
+  Sort,
 } from '@elastic/elasticsearch/lib/api/types';
 import {
   patchState,
@@ -35,6 +36,8 @@ import {
 
 export const DEFAULT_PAGE_SIZE = 10;
 
+export const DEFAULT_SORT: Sort = ['_score'];
+
 const initialSearchState: Search = {
   id: '',
   aggregationConfig: {},
@@ -44,6 +47,7 @@ const initialSearchState: Search = {
   from: 0,
   size: DEFAULT_PAGE_SIZE,
   pageSize: DEFAULT_PAGE_SIZE,
+  sort: DEFAULT_SORT,
   filters: {},
   response: null,
   aggregation: {},
@@ -82,8 +86,19 @@ export const SearchStore = signalStore(
     };
   }),
   withMethods((store, searchService = inject(SearchService)) => ({
-    init(searchId: string, aggregationConfig: any) {
-      patchState(store, { id: searchId, aggregationConfig });
+    init(
+      searchId: string,
+      aggregationConfig: any,
+      size: number,
+      sort: Sort,
+      filter: string
+    ) {
+      patchState(store, {
+        id: searchId,
+        aggregationConfig,
+        size: size,
+        sort: sort || DEFAULT_SORT,
+      });
     },
     setFullTextQuery(value: string) {
       patchState(store, { fullTextQuery: value });
@@ -101,6 +116,7 @@ export const SearchStore = signalStore(
               ...searchFilterParameters,
               from: 0,
               size: store.size(),
+              sort: store.sort(),
             } as SearchRequestParameters)
           ).pipe(
             tapResponse({
@@ -120,7 +136,14 @@ export const SearchStore = signalStore(
                 };
                 patchState(store, { response, aggregation });
               },
-              error: console.log,
+              error: () => {
+                const error: Error = {
+                  name: 'Search error',
+                  message: `An error occurred while searching in context ${store.id()}. Check the console for more details and the search configuration for this context.`,
+                };
+                console.error(error);
+                patchState(store, { error: error });
+              },
               finalize: () => patchState(store, { isSearching: false }),
             })
           )
@@ -234,11 +257,11 @@ export const SearchStore = signalStore(
       return {
         terms: {
           field: key,
-          size: 50
+          size: 50,
         },
         meta: {
           refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
-        }
+        },
       };
     },
     getAggregationConfig(key: string): AggregationsAggregationContainer {
