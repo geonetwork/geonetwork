@@ -154,9 +154,10 @@ public class IndexingRecordService {
           .forEach(indexRecordsBuilder::indexRecord);
       IndexRecords records = indexRecordsBuilder.build();
 
-      log.atTrace().log(
-          XsltUtil.transformObjectToString(
-              records, indexingXsltFile, IndexRecords.class, new HashMap<>()));
+      log.atTrace()
+          .log(
+              XsltUtil.transformObjectToString(
+                  records, indexingXsltFile, IndexRecords.class, new HashMap<>()));
 
       return XsltUtil.transformObjectToObject(
           records, indexingXsltFile, IndexRecords.class, new HashMap<>());

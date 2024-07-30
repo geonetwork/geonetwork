@@ -41,8 +41,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Link {
 
-  @JsonInclude
-  private String protocol;
+  @JsonInclude private String protocol;
 
   @JsonProperty(IndexRecordFieldNames.LinkField.URL)
   private Map<String, String> url = new HashMap<>();
