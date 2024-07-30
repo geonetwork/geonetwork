@@ -92,6 +92,7 @@ export class SearchService {
       },
       from: parameters.from,
       size: parameters.size,
+      sort: parameters.sort,
     };
 
     if (parameters.aggregationConfig) {

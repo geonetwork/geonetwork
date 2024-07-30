@@ -10,6 +10,11 @@ import { ImageModule } from 'primeng/image';
 import { DataViewModule } from 'primeng/dataview';
 import { PrimeTemplate } from 'primeng/api';
 import { SearchBaseComponent } from '../search-base/search-base.component';
+import { SearchModule } from '../search.module';
+import { SearchResultsErrorComponent } from '../search-results-error/search-results-error.component';
+import {
+  RecordFieldResourceTypeComponent, ResourceTypeLayout,
+} from '../../record/g-record-field-resource-type/record-field-resource-type.component';
 
 @Component({
   selector: 'g-search-results',
@@ -28,8 +33,13 @@ import { SearchBaseComponent } from '../search-base/search-base.component';
     AsyncPipe,
     DataViewModule,
     PrimeTemplate,
+    SearchModule,
+    SearchResultsErrorComponent,
+    RecordFieldResourceTypeComponent,
   ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css',
 })
-export class SearchResultsComponent extends SearchBaseComponent {}
+export class SearchResultsComponent extends SearchBaseComponent {
+  protected readonly ResourceTypeLayout = ResourceTypeLayout;
+}

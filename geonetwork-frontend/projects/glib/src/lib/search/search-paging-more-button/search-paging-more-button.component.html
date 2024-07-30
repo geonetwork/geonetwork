@@ -1,7 +1,6 @@
 @if (search.hasMore()) {
   <p-button
     label="{{ buttonLabel() }}"
-    icon="fa fa-ellipsis-h"
     iconPos="right"
     [disabled]="!search.hasMore()"
     (onClick)="more()" />

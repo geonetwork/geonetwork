@@ -46,6 +46,5 @@ export class GcSearchResultsTableComponent implements OnInit, OnChanges {
     this.listOfFields && this.fields.set(this.listOfFields.split(','));
   }
 
-
   protected readonly SearchAggLayout = SearchAggLayout;
 }

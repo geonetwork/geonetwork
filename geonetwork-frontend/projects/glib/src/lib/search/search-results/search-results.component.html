@@ -1,11 +1,12 @@
 @if (search) {
+  <g-search-results-error [error]="search.error()" />
   @if (search.response(); as response) {
     <p>Found {{ response.hits.total.value }} results</p>
 
     <p-dataView #dv [value]="response.hits.hits" emptyMessage=" ">
       <ng-template pTemplate="list" let-hits>
         @for (hit of hits; track hit._id) {
-          <div class="grid gap-4 mb-2">
+          <div class="grid gap-4 mb-2 rounded-lg border-l-8 -left-8 border-transparent hover:border-indigo-500">
             <a
               class="flex flex-row gap-4"
               routerLink="/metadata/{{ hit._id }}"
@@ -20,10 +21,9 @@
                   [src]="hit._source.overview[0]?.url"
                   [alt]="hit._source.overview[0]?.name"></p-image>
 
-                <p-badge
-                  class="absolute bottom-0 left-0 m-2"
-                  *ngIf="hit._source.resourceType"
-                  [value]="hit._source.resourceType[0]"></p-badge>
+                <g-record-field-resource-type [field]="hit._source.resourceType"
+                                              [layout]="ResourceTypeLayout.ICON_WITH_BADGE"
+                                              class="absolute bottom-0 left-0 m-2" />
               </div>
               <div class="flex-grow">
                 <div
@@ -62,11 +62,4 @@
         </div>
       }
     }
-    @if (search.error(); as error) {
-      <p>
-        <i class="fa fa-sad-tear"></i>
-        {{ error.message }}
-      </p>
-    }
   }
-}

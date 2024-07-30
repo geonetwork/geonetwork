@@ -1,23 +1,24 @@
 @if (search) {
   @if (search.response(); as response) {
-    <p-table [lazy]="true"
-             [value]="response.hits.hits"
-             [columns]="fields()"
-             [paginator]="true"
-             [rows]="search.pageSize()"
-             [first]="search.from()"
-             [totalRecords]="search.response().hits.total.value"
-             [showCurrentPageReport]="true"
-             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             (onPage)="pageChange($event)"
-             [rowsPerPageOptions]="[10, 25, 50]"
-             [selectionMode]="selectionMode()"
-             [(selection)]="selectedRecords"
-             metaKeySelection="true"
-             [tableStyle]="{'min-width': '60rem'}">
+    <p-table
+      [lazy]="true"
+      [value]="response.hits.hits"
+      [columns]="fields()"
+      [paginator]="true"
+      [rows]="search.pageSize()"
+      [first]="search.from()"
+      [totalRecords]="search.response().hits.total.value"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      (onPage)="pageChange($event)"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [selectionMode]="selectionMode()"
+      [(selection)]="selectedRecords"
+      metaKeySelection="true"
+      [tableStyle]="{ 'min-width': '60rem' }">
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-          {{ response.hits.total.value }}  records found
+          {{ response.hits.total.value }} records found
 
           @if (selectionMode() === 'multiple') {
             ({{ selectedRecords.length }} selected)
@@ -48,18 +49,16 @@
           }
         </tr>
       </ng-template>
-      <ng-template pTemplate="body"
-                   let-hit
-                   let-rowIndex="rowIndex">
+      <ng-template pTemplate="body" let-hit let-rowIndex="rowIndex">
         <tr [pSelectableRow]="hit" [pSelectableRowIndex]="rowIndex">
           @for (field of fields(); track $index) {
             <td>
-              {{ hit._source | gJsonpath:field }}
+              {{ hit._source | gJsonpath: field }}
             </td>
           }
         </tr>
       </ng-template>
     </p-table>
-    {{selectedRecords | json}}
+    {{ selectedRecords | json }}
   }
 }

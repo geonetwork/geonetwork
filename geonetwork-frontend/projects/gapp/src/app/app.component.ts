@@ -13,6 +13,7 @@ import {
   SearchQueryResetDirective,
   SearchQuerySetterDirective,
   SearchResultsComponent,
+  SearchResultsTimelineComponent,
   SearchService,
 } from 'glib';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -33,6 +34,7 @@ import { SidebarModule } from 'primeng/sidebar';
     GlibComponent,
     SearchAggComponent,
     SearchResultsComponent,
+    SearchResultsTimelineComponent,
     SearchQuerySetterDirective,
     SearchQueryResetDirective,
     SearchPagingComponent,

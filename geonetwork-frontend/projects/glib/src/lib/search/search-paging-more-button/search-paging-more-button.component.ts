@@ -16,7 +16,7 @@ export class SearchPagingMoreButtonComponent extends SearchBaseComponent {
 
   buttonLabel = computed(() =>
     this.search.hasMore()
-      ? `Load ${this.search.pageSize()} more results`
+      ? `Load ${this.search.pageSize()} more results ...`
       : 'No more results'
   );
 
