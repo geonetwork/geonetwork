@@ -31,5 +31,6 @@ public class Thesaurus {
 
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)
+  @JsonInclude()
   ArrayList<Keyword> keywords = new ArrayList<>();
 }
