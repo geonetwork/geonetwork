@@ -242,7 +242,8 @@ public class IndexingService {
                   item -> {
                     if (item.status() != 200 && item.status() != 201) {
                       failureCount.getAndIncrement();
-                      log.atError().log("{} (status {}). {}", item.id(), item.status(), item.result());
+                      log.atError()
+                          .log("{} (status {}). {}", item.id(), item.status(), item.result());
                       // TODO: Index error document
                     }
                   });
