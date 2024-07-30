@@ -3,6 +3,7 @@ import {
   AggregationsAggregate,
   AggregationsAggregationContainer,
   SearchResponse,
+  Sort,
 } from '@elastic/elasticsearch/lib/api/types';
 
 export enum SearchFilterValueState {
@@ -44,7 +45,7 @@ export interface Search {
   from: number;
   size: number;
   pageSize: number;
-  sort?: string;
+  sort: Sort;
   trackTotalHits?: boolean;
   filters: SearchFilterList;
   response: SearchResponse | null;
@@ -56,6 +57,7 @@ export interface SearchFilterParameters {
   fullTextQuery: string;
   filters: SearchFilterList;
   aggregationConfig: Record<string, AggregationsAggregationContainer>;
+  sort: Sort;
 }
 
 export interface SearchRequestPageParameters {

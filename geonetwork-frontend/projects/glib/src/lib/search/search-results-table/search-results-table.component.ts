@@ -21,7 +21,7 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
     super();
     effect(() => {
       this.selectionMode();
-      this.selectedRecords =  [];
+      this.selectedRecords = [];
     });
   }
 

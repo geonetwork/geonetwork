@@ -16,6 +16,8 @@ export * from './lib/search/search-agg-item/search-agg-item.component';
 export * from './lib/search/search-agg-item-decorator/search-agg-item-decorator.component';
 export * from './lib/search/search-results/search-results.component';
 export * from './lib/search/search-results-table/search-results-table.component';
+export * from './lib/search/search-results-timeline/search-results-timeline.component';
+export * from './lib/search/search-results-error/search-results-error.component';
 export * from './lib/search/search-input/search-input.component';
 export * from './lib/search/search-paging/search-paging.component';
 export * from './lib/search/search-paging-more-button/search-paging-more-button.component';
@@ -24,3 +26,4 @@ export * from './lib/search/search.service';
 export * from './lib/search/search.state.model';
 export * from './lib/search/search.state';
 export * from './lib/data/data-table/data-table.component';
+export * from './lib/record/g-record-field-resource-type/record-field-resource-type.component'
