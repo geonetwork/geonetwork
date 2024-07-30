@@ -45,6 +45,7 @@ public class XsltUtil {
           transformXmlAsString(xmlMapper.writeValueAsString(inputObject), xsltFile, xslParameters);
       return xmlMapper.readValue(xmlAsString, objectClass);
     } catch (Exception e) {
+      log.atError().log(e.getMessage());
       throw new RuntimeException(e);
     }
   }
@@ -61,6 +62,7 @@ public class XsltUtil {
           xmlMapper.writeValueAsString(inputObject), xsltFile, xslParameters);
 
     } catch (Exception e) {
+      log.atError().log(e.getMessage());
       throw new RuntimeException(e);
     }
   }
@@ -76,6 +78,7 @@ public class XsltUtil {
     try {
       return xmlMapper.readValue(xmlAsString, objectClass);
     } catch (Exception e) {
+      log.atError().log(e.getMessage());
       throw new RuntimeException(e);
     }
     //    return null;
@@ -123,6 +126,7 @@ public class XsltUtil {
           new StreamSource(new StringReader(inputXmlString)),
           new XmlStreamWriterDestinationInDocument(streamWriter));
     } catch (SaxonApiException e) {
+      log.atError().log(e.getMessage());
       throw new RuntimeException(e);
     }
   }
@@ -145,6 +149,7 @@ public class XsltUtil {
       transformer.transform(
           new StreamSource(new StringReader(inputXmlString)), proc.newSerializer(outputStream));
     } catch (SaxonApiException e) {
+      log.atError().log(e.getMessage());
       throw new RuntimeException(e);
     }
   }
@@ -166,6 +171,7 @@ public class XsltUtil {
           new StreamSource(new StringReader(inputXmlString)), proc.newSerializer(stringWriter));
       return stringWriter.toString();
     } catch (SaxonApiException e) {
+      log.atError().log(e.getMessage());
       throw new RuntimeException(e);
     }
   }
