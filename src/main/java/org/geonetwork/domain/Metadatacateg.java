@@ -40,7 +40,7 @@ public class Metadatacateg {
   private Metadata metadataid;
 
   @MapsId("categoryid")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "categoryid", nullable = false)
   private Category categoryid;
 }
