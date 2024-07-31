@@ -19,15 +19,22 @@
               <label for="apiUrl">Select a catalogue</label>
             </p-floatLabel>
 
-            <p-floatLabel class="m-2">
-              <p-multiSelect
-                [options]="listOfFields"
-                [(ngModel)]="selectedFields"
-                optionLabel="label"
-                filter="false"
-                inputId="tableColumn" />
-              <label for="tableColumn">Select table columns</label>
-            </p-floatLabel>
+            <p-inputGroup>
+              <p-floatLabel class="m-2">
+                <p-multiSelect
+                  [options]="listOfFields"
+                  [(ngModel)]="selectedFields"
+                  optionLabel="label"
+                  filter="false"
+                  inputId="tableColumn" />
+                <label for="tableColumn">Select table columns</label>
+              </p-floatLabel>
+              <input
+                type="text"
+                pInputText
+                [(ngModel)]="otherFieldsAsText"
+                placeholder="Other fields" />
+            </p-inputGroup>
           </div>
           <div class="w-1/3">
             <p-floatLabel class="m-2">
@@ -58,14 +65,14 @@
     <g-webcomponents-doc-embed>
       <pre>
 <![CDATA[<gc-search-results-table
-  apiUrl="{{ apiUrl }}"
-  listOfLabels="{{ listOfLabelsAsText() }}"
-  listOfFields="{{ listOfFieldsAsText() }}"
-  listOfFilter="OrgForResourceObject.default,cl_status.default,th_gemet.default"
-  landingPage="${apiUrl}/records/${uuid}"
-  landingPageLinkOn="resourceTitleObject.default"
-  scrollHeight="80vh"
-  selectionMode="{{ selectionMode }}" />
+        apiUrl="{{ apiUrl }}"
+        listOfLabels="{{ listOfLabelsAsText() }}"
+        listOfFields="{{ listOfFieldsAsText() }}"
+        listOfFilter="OrgForResourceObject.default,cl_status.default,th_gemet.default"
+        landingPage="${apiUrl}/records/${uuid}"
+        landingPageLinkOn="resourceTitleObject.default"
+        scrollHeight="80vh"
+        selectionMode="{{ selectionMode }}" />
 ]]></pre
       >
     </g-webcomponents-doc-embed>

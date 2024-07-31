@@ -22,6 +22,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FieldsetModule } from 'primeng/fieldset';
 import { GWebcomponentsDocEmbedComponent } from './components/g-webcomponents-doc-embed/g-webcomponents-doc-embed.component';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputTextModule } from 'primeng/inputtext';
 
 const CUSTOM_ELEMENTS = [
   {
@@ -62,6 +64,8 @@ const CUSTOM_ELEMENTS = [
     FloatLabelModule,
     MultiSelectModule,
     FieldsetModule,
+    InputGroupModule,
+    InputTextModule,
   ],
   bootstrap: [GcDataResultsTableComponent, GcSearchComponent],
   exports: [GcDataResultsTableComponent, GcSearchComponent],

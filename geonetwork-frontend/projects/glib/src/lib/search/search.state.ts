@@ -1,6 +1,7 @@
 import {
   AggregationsAggregationContainer,
   AggregationsTermsAggregation,
+  QueryDslFunctionScoreQuery,
   SearchTotalHits,
   Sort,
 } from '@elastic/elasticsearch/lib/api/types';
@@ -36,11 +37,14 @@ import {
 
 export const DEFAULT_PAGE_SIZE = 10;
 
+export const DEFAULT_SCORE = null;
+
 export const DEFAULT_SORT: Sort = ['_score'];
 
 const initialSearchState: Search = {
   id: '',
   aggregationConfig: {},
+  functionScore: DEFAULT_SCORE,
   isSearching: false,
   isReset: false,
   fullTextQuery: '',
@@ -88,7 +92,8 @@ export const SearchStore = signalStore(
   withMethods((store, searchService = inject(SearchService)) => ({
     init(
       searchId: string,
-      aggregationConfig: any,
+      aggregationConfig: Record<string, AggregationsAggregationContainer>,
+      functionScore: QueryDslFunctionScoreQuery | null,
       size: number,
       sort: Sort,
       filter: string
@@ -96,7 +101,9 @@ export const SearchStore = signalStore(
       patchState(store, {
         id: searchId,
         aggregationConfig,
+        functionScore,
         size: size,
+        pageSize: size,
         sort: sort || DEFAULT_SORT,
       });
     },
@@ -117,6 +124,7 @@ export const SearchStore = signalStore(
               from: 0,
               size: store.size(),
               sort: store.sort(),
+              functionScore: store.functionScore(),
             } as SearchRequestParameters)
           ).pipe(
             tapResponse({
@@ -232,6 +240,7 @@ export const SearchStore = signalStore(
             searchService.page({
               ...store.searchFilterParameters(),
               ...searchRequestPageParameters,
+              functionScore: store.functionScore(),
             })
           ).pipe(
             tap(console.log),

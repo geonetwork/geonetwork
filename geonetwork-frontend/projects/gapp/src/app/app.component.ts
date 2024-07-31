@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Button, ButtonDirective } from 'primeng/button';
 import {
@@ -15,6 +15,7 @@ import {
   SearchResultsComponent,
   SearchResultsTimelineComponent,
   SearchService,
+  APPLICATION_CONFIGURATION,
 } from 'glib';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -57,6 +58,11 @@ export class AppComponent {
 
   themeSidebarSelector = signal(false);
 
+  uiConfiguration = inject(APPLICATION_CONFIGURATION).ui;
+
+  scoreConfig = this.uiConfiguration?.mods.search.scoreConfig;
+  pageSize = this.uiConfiguration?.mods.search.paginationInfo.hitsPerPage;
+  // aggregationConfig = this.uiConfiguration.mods.search.facetConfig;
   aggregationConfig: Record<string, AggregationsAggregationContainer> = {
     resourceType: {
       terms: {
