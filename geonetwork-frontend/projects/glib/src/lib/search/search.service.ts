@@ -2,6 +2,7 @@ import { computed, inject, Injectable } from '@angular/core';
 import { SearchApi } from 'gapi';
 import { SearchStoreType } from './search.state';
 import {
+  QueryDslQueryContainer,
   QueryDslTermsQueryField,
   SearchRequest,
 } from '@elastic/elasticsearch/lib/api/types';
@@ -77,19 +78,31 @@ export class SearchService {
         })
         .filter(clause => clause !== null);
 
-    let query: SearchRequest = {
-      query: {
-        bool: {
-          must: [
-            {
-              query_string: {
-                query: parameters.fullTextQuery || '*',
-              },
+    let baseQuery: QueryDslQueryContainer = {
+      bool: {
+        must: [
+          {
+            query_string: {
+              query: parameters.fullTextQuery || '*',
             },
-            ...((clauses && Object.values(clauses)) || []),
-          ],
-        },
+          },
+          ...((clauses && Object.values(clauses)) || []),
+        ],
       },
+    };
+
+    let finalQuery: QueryDslQueryContainer = baseQuery;
+    if (parameters.functionScore) {
+      finalQuery = {
+        function_score: {
+          query: baseQuery,
+          ...parameters.functionScore,
+        },
+      };
+    }
+
+    let query: SearchRequest = {
+      query: finalQuery,
       from: parameters.from,
       size: parameters.size,
       sort: parameters.sort,
@@ -98,6 +111,7 @@ export class SearchService {
     if (parameters.aggregationConfig) {
       query.aggregations = parameters.aggregationConfig;
     }
+
     return query;
   }
 }

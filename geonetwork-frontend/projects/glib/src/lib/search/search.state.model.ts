@@ -2,6 +2,7 @@ import {
   AggregateName,
   AggregationsAggregate,
   AggregationsAggregationContainer,
+  QueryDslFunctionScoreQuery,
   SearchResponse,
   Sort,
 } from '@elastic/elasticsearch/lib/api/types';
@@ -39,6 +40,7 @@ export interface SearchFilterList {
 export interface Search {
   id: string;
   aggregationConfig: Record<string, AggregationsAggregationContainer>;
+  functionScore: QueryDslFunctionScoreQuery | null;
   isSearching?: boolean;
   isReset?: boolean;
   fullTextQuery: string;
@@ -57,6 +59,7 @@ export interface SearchFilterParameters {
   fullTextQuery: string;
   filters: SearchFilterList;
   aggregationConfig: Record<string, AggregationsAggregationContainer>;
+  functionScore: QueryDslFunctionScoreQuery | null;
   sort: Sort;
 }
 

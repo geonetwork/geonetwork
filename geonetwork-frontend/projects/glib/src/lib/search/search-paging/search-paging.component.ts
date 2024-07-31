@@ -10,13 +10,6 @@ import { SearchBaseComponent } from '../search-base/search-base.component';
   styleUrl: './search-paging.component.css',
 })
 export class SearchPagingComponent extends SearchBaseComponent {
-  size = input<number>();
-
-  override ngOnInit() {
-    super.ngOnInit();
-    this.size() && this.search.setPageSize(this.size() as number);
-  }
-
   onPageChange($event: PaginatorState) {
     if (
       $event.first !== undefined &&

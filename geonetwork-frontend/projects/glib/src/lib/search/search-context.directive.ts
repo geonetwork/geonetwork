@@ -1,5 +1,10 @@
 import { Directive, effect, inject, input, OnInit } from '@angular/core';
-import { DEFAULT_PAGE_SIZE, DEFAULT_SORT, SearchStore } from './search.state';
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_SORT,
+  DEFAULT_SCORE,
+  SearchStore,
+} from './search.state';
 import { SearchService } from './search.service';
 import { API_CONFIGURATION } from '../config/config.loader';
 import { Sort } from '@elastic/elasticsearch/lib/api/types';
@@ -12,6 +17,7 @@ import { Sort } from '@elastic/elasticsearch/lib/api/types';
 export class SearchContextDirective implements OnInit {
   scope = input<string>('', { alias: 'gSearchContext' });
   aggregations = input<any>({});
+  score = input<any>(DEFAULT_SCORE);
   size = input<number>(DEFAULT_PAGE_SIZE);
   sort = input<Sort>(DEFAULT_SORT);
   filter = input<string>('');
@@ -34,6 +40,7 @@ export class SearchContextDirective implements OnInit {
     this.#searchStore.init(
       this.scope(),
       this.aggregations(),
+      this.score(),
       this.size(),
       this.sort(),
       this.filter()

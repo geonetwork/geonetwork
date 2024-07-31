@@ -15,6 +15,7 @@ export class DataTableComponent implements OnInit {
   data: Array<any> = [];
   isLoading = false;
   headerData: Array<any> = [];
+  error: string | undefined = undefined;
 
   constructor() {
     effect(() => {
@@ -24,15 +25,19 @@ export class DataTableComponent implements OnInit {
 
   parseCsv(source: string) {
     this.isLoading = true;
+    let that = this;
+    this.headerData = [];
+    this.error = undefined;
+
     Papa.parse<Array<any>>(source, {
       download: true,
       // header: true,
       // dynamicTyping: true,
       complete: (results, file) => {
         let data: any[] = [];
-        this.headerData = [];
         if (results.errors.length) {
           console.error('Errors while parsing:', results.errors);
+          this.error = 'Error while parsing CSV file.';
         } else {
           this.headerData = results.data[0];
           results.data.slice(1).forEach((row, index) => {
@@ -45,6 +50,11 @@ export class DataTableComponent implements OnInit {
           this.data = data;
         }
         this.isLoading = false;
+      },
+      error(error: Error, file: string) {
+        console.error('Error while parsing:', error);
+        that.isLoading = false;
+        that.error = 'Error while downloading or parsing CSV file.';
       },
     });
   }
