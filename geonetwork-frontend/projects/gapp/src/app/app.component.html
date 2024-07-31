@@ -1,4 +1,8 @@
-<div [aggregations]="aggregationConfig" gSearchContext="main">
+<div
+  gSearchContext="main"
+  [size]="pageSize"
+  [score]="scoreConfig"
+  [aggregations]="aggregationConfig">
   <header class="p-4">
     <div class="text-6xl">My GeoNetwork</div>
   </header>
@@ -75,7 +79,7 @@
     </p-sidebar>
 
     <div class="flex flex-row">
-      <div class="basis-1/4">
+      <div class="basis-1/4 px-4">
         <g-search-agg aggregation="publicationYearForResource" scope="main" />
         <g-search-agg aggregation="organisationForResource" scope="main" />
         <g-search-agg

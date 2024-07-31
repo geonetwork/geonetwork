@@ -52,18 +52,21 @@ export class GWebcomponentsDocComponent implements OnInit {
     { label: 'Crédit', path: 'resourceCréditObject.default', order: 9 },
   ];
   selectedFields = signal(this.listOfFields);
+  otherFieldsAsText = signal('');
 
-  listOfFieldsAsText = computed(() =>
-    this.selectedFields()
-      .sort((a, b) => a.order - b.order)
-      .map(field => field.path)
-      .join(',')
+  listOfFieldsAsText = computed(
+    () =>
+      this.selectedFields()
+        .sort((a, b) => a.order - b.order)
+        .map(field => field.path)
+        .join(',') + this.otherFieldsAsText()
   );
-  listOfLabelsAsText = computed(() =>
-    this.selectedFields()
-      .sort((a, b) => a.order - b.order)
-      .map(field => field.label)
-      .join(',')
+  listOfLabelsAsText = computed(
+    () =>
+      this.selectedFields()
+        .sort((a, b) => a.order - b.order)
+        .map(field => field.label)
+        .join(',') + this.otherFieldsAsText()
   );
 
   ngOnInit() {}
