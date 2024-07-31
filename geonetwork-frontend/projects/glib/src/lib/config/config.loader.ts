@@ -42,7 +42,6 @@ export function loadAppConfig(environment: any) {
     .then(
       (response: any) => {
         appConfigLoading = false;
-        console.log(response);
         appConfig.ui = response.configuration
           ? (JSON.parse(response.configuration) as UiConfiguration)
           : DEFAULT_UI_CONFIGURATION;

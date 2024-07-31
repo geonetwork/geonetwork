@@ -154,6 +154,7 @@ export const SearchStore = signalStore(
       patchState(store, {
         isReset: true,
         filters: {},
+        aggregation: {},
         fullTextQuery: '',
         from: 0,
       });

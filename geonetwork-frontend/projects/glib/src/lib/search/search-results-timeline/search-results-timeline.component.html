@@ -5,29 +5,27 @@
       <ng-template pTemplate="marker" let-hit>
         <span
           class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1 bg-colo">
-                 <g-record-field-resource-type [field]="hit._source.resourceType"
-                                               [layout]="ResourceTypeLayout.ICON"
-                                                styleClass="fa-2xl"/>
+          <g-record-field-resource-type
+            [field]="hit._source.resourceType"
+            [layout]="ResourceTypeLayout.ICON"
+            styleClass="fa-2xl" />
         </span>
       </ng-template>
       <ng-template pTemplate="content" let-hit>
         <p-card styleClass="w-full mb-3">
           <ng-template pTemplate="header">
-            <p-image
-              class="max-h-20"
-              preview="false"
-              imageClass="object-cover w-full h-full rounded-lg"
-              *ngIf="hit._source.overview?.length > 0"
-              [src]="hit._source.overview[0]?.url"
-              [alt]="hit._source.overview[0]?.name"></p-image>
+            <g-record-field-overview
+              [field]="hit._source.overview"
+              preview="true" />
           </ng-template>
           <div>
-            <div class="text-2xl font-semibold line-clamp-1"
-                 title="{{ hit._source.resourceTitleObject.default }}">
+            <div
+              class="text-2xl font-semibold line-clamp-1"
+              title="{{ hit._source.resourceTitleObject.default }}">
               {{ hit._source.resourceTitleObject.default }}
             </div>
 
-            {{ hit._source.dateStamp }}
+            {{ hit._source.dateStamp | date }}
           </div>
           <ng-template pTemplate="footer">
             <p-button label="Read more" [text]="true" />
@@ -35,6 +33,5 @@
         </p-card>
       </ng-template>
     </p-timeline>
-
   }
 }
