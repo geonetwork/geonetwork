@@ -1,5 +1,7 @@
 @if (agg()) {
-  <div class="font-bold mb-2 border-b-2">{{ aggregation() }}</div>
+  @if (isLabelDisplayed() === true) {
+    <div class="font-bold mb-2 border-b-2">{{ aggregation() }}</div>
+  }
 
   <div [ngClass]="cssClass()">
     @switch (currentLayout()) {

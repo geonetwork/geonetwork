@@ -15,6 +15,7 @@ import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app/app.routes';
 import { environment } from './environments/environment';
+import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 
 if (environment.production) {
   enableProdMode();
@@ -25,6 +26,12 @@ loadAppConfig(environment).then((config: any) => {
     providers: [
       { provide: APPLICATION_CONFIGURATION, useValue: config },
       { provide: API_CONFIGURATION, useValue: signal(config.apiConfig) },
+      {
+        provide: DATE_PIPE_DEFAULT_OPTIONS,
+        useValue: {
+          dateFormat: config.ui.mods.global.dateFormat || 'dd/MM/yyyy',
+        },
+      },
       provideExperimentalZonelessChangeDetection(),
       provideRouter(routes),
       provideAnimations(),

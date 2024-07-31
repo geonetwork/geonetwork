@@ -1,11 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
+
+interface field {
+  label: string;
+  path: string;
+  order: number;
+}
 
 @Component({
   selector: 'g-webcomponents-doc',
   templateUrl: './g-webcomponents-doc.component.html',
   styleUrl: './g-webcomponents-doc.component.css',
 })
-export class GWebcomponentsDocComponent {
+export class GWebcomponentsDocComponent implements OnInit {
   apiUrlList = [
     { url: 'http://localhost:8080/geonetwork/srv/api' },
     { url: 'https://apps.titellus.net/geonetwork/srv/api' },
@@ -23,10 +29,42 @@ export class GWebcomponentsDocComponent {
 
   selectedSourceFile = signal(this.csvSourceFiles[0]);
 
-  selectionMode = undefined;
   selectionModeList = [
-    { type: undefined },
-    { type: 'single' },
-    { type: 'multiple' },
+    { label: 'none', type: undefined },
+    { label: 'single', type: 'single' },
+    { label: 'multiple', type: 'multiple' },
   ];
+  selectionMode = this.selectionModeList[0].type;
+
+  listOfFields: field[] = [
+    { label: 'Aperçu', path: 'overview[*]', order: 1 },
+    { label: 'Titre', path: 'resourceTitleObject.default', order: 2 },
+    { label: 'Type', path: 'resourceType[0]', order: 3 },
+    { label: 'Mot clé', path: 'th_gemet[*]', order: 4 },
+    { label: 'Status', path: 'cl_status[0].default', order: 5 },
+    { label: 'Légende', path: "link[?(@.function == 'legend')]", order: 6 },
+    { label: 'Visualiser', path: "link[?(@.protocol == 'OGC:WMS')]", order: 7 },
+    {
+      label: 'Gestionnaire',
+      path: 'custodianOrgForResourceObject[*].default',
+      order: 8,
+    },
+    { label: 'Crédit', path: 'resourceCréditObject.default', order: 9 },
+  ];
+  selectedFields = signal(this.listOfFields);
+
+  listOfFieldsAsText = computed(() =>
+    this.selectedFields()
+      .sort((a, b) => a.order - b.order)
+      .map(field => field.path)
+      .join(',')
+  );
+  listOfLabelsAsText = computed(() =>
+    this.selectedFields()
+      .sort((a, b) => a.order - b.order)
+      .map(field => field.label)
+      .join(',')
+  );
+
+  ngOnInit() {}
 }
