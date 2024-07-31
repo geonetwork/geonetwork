@@ -26,12 +26,12 @@ export const ResourceTypeIcons = {
     icon: 'fa-copy',
   },
   service: {
-    icon: 'fa-cog',
+    icon: 'fa-cloud',
   },
   map: {
     icon: 'fa-map',
   },
-  featureCatalogue: {
+  featureCatalog: {
     icon: 'fa-table',
   },
   publication: {
@@ -53,8 +53,8 @@ type ResourceTypeLayoutValues = keyof typeof ResourceTypeLayout;
 })
 export class RecordFieldResourceTypeComponent {
   field = input<string[] | null>();
-  layout = input<ResourceTypeLayout>(ResourceTypeLayout.BADGE);
   styleClass = input<string>('');
+  layout = input<ResourceTypeLayout>(ResourceTypeLayout.BADGE);
   protected readonly resourceTypeLayout = ResourceTypeLayout;
   protected readonly resourceTypeIcons = ResourceTypeIcons;
 }

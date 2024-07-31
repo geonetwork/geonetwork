@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RecordFieldResourceTypeComponent } from './g-record-field-resource-type/record-field-resource-type.component';
+import { CommonModule, DatePipe } from '@angular/common';
+import { ImageModule } from 'primeng/image';
+import { RecordFieldRange } from './record-field-range.pipe';
+import { RecordFieldLinksComponent } from './record-field-links/record-field-links.component';
+import { RecordFieldKeywordsComponent } from './record-field-keywords/record-field-keywords.component';
 
 @NgModule({
-  declarations: [
-    RecordFieldResourceTypeComponent
-  ],
-  imports: [CommonModule],
+  declarations: [RecordFieldLinksComponent, RecordFieldKeywordsComponent],
+  providers: [],
+  imports: [CommonModule, ImageModule],
 })
 export class RecordModule {}

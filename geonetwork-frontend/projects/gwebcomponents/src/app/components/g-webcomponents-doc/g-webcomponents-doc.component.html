@@ -1,59 +1,111 @@
-<h2 class="mt-10 text-3xl">Searching with webcomponents</h2>
+<h2 class="px-4 mt-10 text-3xl">Searching with webcomponents</h2>
 
-<h2 class="mt-2 text-2xl">Table of records</h2>
+<div class="">
+  <h2 class="px-4 mt-2 text-2xl">Table of records</h2>
 
-<div class="m-4">
-  <p-dropdown
-    styleClass="w-full mb-4"
-    [options]="apiUrlList"
-    optionValue="url"
-    optionLabel="url"
-    [(ngModel)]="apiUrl"
-    tooltip="Choose a catalogue" />
+  <div class="mx-4 mb-16">
+    <div class="mb-4">
+      <p-fieldset legend="Configure table" [toggleable]="true" collapsed="true">
+        <div class="flex gap-2">
+          <div class="w-2/3">
+            <p-floatLabel class="m-2">
+              <p-dropdown
+                styleClass="w-full mb-4"
+                [options]="apiUrlList"
+                optionValue="url"
+                optionLabel="url"
+                [(ngModel)]="apiUrl"
+                inputId="apiUrl" />
+              <label for="apiUrl">Select a catalogue</label>
+            </p-floatLabel>
 
-  <p-dropdown
-    styleClass="w-full mb-4"
-    [options]="selectionModeList"
-    optionValue="type"
-    optionLabel="type"
-    [(ngModel)]="selectionMode"
-    tooltip="Choose a selection mode" />
+            <p-floatLabel class="m-2">
+              <p-multiSelect
+                [options]="listOfFields"
+                [(ngModel)]="selectedFields"
+                optionLabel="label"
+                filter="false"
+                inputId="tableColumn" />
+              <label for="tableColumn">Select table columns</label>
+            </p-floatLabel>
+          </div>
+          <div class="w-1/3">
+            <p-floatLabel class="m-2">
+              <p-dropdown
+                styleClass="w-full mb-4"
+                [options]="selectionModeList"
+                optionValue="type"
+                optionLabel="label"
+                [(ngModel)]="selectionMode"
+                inputId="selectionMode" />
+              <label for="selectionMode">Selection mode</label>
+            </p-floatLabel>
+          </div>
+        </div>
+      </p-fieldset>
+    </div>
 
-  <gc-search-results-table
-    [apiUrl]="apiUrl"
-    listOfFields="resourceTitleObject.default,tag[*].default,overview[*],cl_status[0].default"
-    listOfFilter="OrgForResourceObject.default,cl_status.default,th_gemet.default"
-    [selectionMode]="selectionMode" />
-</div>
+    <gc-search-results-table
+      [apiUrl]="apiUrl"
+      [listOfLabels]="listOfLabelsAsText()"
+      [listOfFields]="listOfFieldsAsText()"
+      listOfFilter="OrgForResourceObject.default,cl_status.default,th_gemet.default"
+      landingPage="${apiUrl}/records/${uuid}"
+      landingPageLinkOn="resourceTitleObject.default"
+      scrollHeight="80vh"
+      [selectionMode]="selectionMode" />
 
-<h2 class="mt-2 text-2xl">Search box and results</h2>
+    <g-webcomponents-doc-embed>
+      <pre>
+<![CDATA[<gc-search-results-table
+  apiUrl="{{ apiUrl }}"
+  listOfLabels="{{ listOfLabelsAsText() }}"
+  listOfFields="{{ listOfFieldsAsText() }}"
+  listOfFilter="OrgForResourceObject.default,cl_status.default,th_gemet.default"
+  landingPage="${apiUrl}/records/${uuid}"
+  landingPageLinkOn="resourceTitleObject.default"
+  scrollHeight="80vh"
+  selectionMode="{{ selectionMode }}" />
+]]></pre
+      >
+    </g-webcomponents-doc-embed>
+  </div>
 
-<div class="m-4">
-  <p-dropdown
-    styleClass="w-full mb-4"
-    [options]="apiUrlList"
-    optionValue="url"
-    optionLabel="url"
-    [(ngModel)]="apiUrl"
-    placeholder="Choose a catalogue" />
+  <div class="p-4 bg-amber-300">
+    <h2 class="mt-2 text-2xl">Search box and results</h2>
 
-  <gc-search [apiUrl]="apiUrl" />
-</div>
+    <div class="m-4">
+      <p-dropdown
+        styleClass="w-full mb-4"
+        [options]="apiUrlList"
+        optionValue="url"
+        optionLabel="url"
+        [(ngModel)]="apiUrl"
+        placeholder="Choose a catalogue" />
 
-<h2 class="mt-20 text-3xl">Data preview with webcomponents</h2>
+      <gc-search [apiUrl]="apiUrl" />
+    </div>
+  </div>
 
-<div class="m-4">
-  <div class="text-2x font-bold">Browse CSV file</div>
-  <p-dropdown [(ngModel)]="selectedSourceFile" [options]="csvSourceFiles" />
-  <br />
-  <gc-data-results-table
-    [source]="selectedSourceFile()"
-    class="w-full"></gc-data-results-table>
+  <div class="px-4">
+    <h2 class="mt-20 text-3xl">Data preview with webcomponents</h2>
 
-  To embed the component in your application, use the following code snippet:
-  <pre>
-    <![CDATA[
-    <gc-data-results-table [source]="csvfileUrl" class="w-full"></gc-data-results-table>
-    ]]>
-  </pre>
+    <div class="text-2x font-bold">Browse CSV file</div>
+    <div class="m-4">
+      <p-dropdown [(ngModel)]="selectedSourceFile" [options]="csvSourceFiles" />
+    </div>
+
+    <gc-data-results-table
+      [source]="selectedSourceFile()"
+      class="w-full"></gc-data-results-table>
+
+    <g-webcomponents-doc-embed>
+      <pre>
+<![CDATA[<gc-data-results-table source="{{
+          selectedSourceFile()
+        }}" class="w-full"></gc-data-results-table>
+]]></pre
+      >
+    </g-webcomponents-doc-embed>
+  </div>
 </div>

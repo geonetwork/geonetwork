@@ -26,4 +26,6 @@ export * from './lib/search/search.service';
 export * from './lib/search/search.state.model';
 export * from './lib/search/search.state';
 export * from './lib/data/data-table/data-table.component';
-export * from './lib/record/g-record-field-resource-type/record-field-resource-type.component'
+export * from './lib/record/record-field-resource-type/record-field-resource-type.component';
+export * from './lib/record/record-field-overview/record-field-overview.component';
+export * from './lib/record/record-field-range.pipe';

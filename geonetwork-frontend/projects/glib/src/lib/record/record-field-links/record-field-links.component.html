@@ -1,0 +1,12 @@
+@for (link of field(); track $index) {
+  <div class="mb-2">
+    <a
+      class="text-blue-500 underline"
+      [attr.href]="link.urlObject.default"
+      title="{{ link.descriptionObject?.default }}"
+      target="_blank"
+      rel="noopener noreferrer">
+      {{ link.nameObject?.default }}
+    </a>
+  </div>
+}

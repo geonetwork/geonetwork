@@ -1,7 +1,7 @@
-import { SearchResultsErrorComponent } from './search-results-error.component'
+import { SearchResultsErrorComponent } from './search-results-error.component';
 
 describe('SearchResultsErrorComponent', () => {
   it('should mount', () => {
-    cy.mount(SearchResultsErrorComponent)
-  })
-})
+    cy.mount(SearchResultsErrorComponent);
+  });
+});

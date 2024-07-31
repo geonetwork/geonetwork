@@ -18,6 +18,10 @@ import { Button } from 'primeng/button';
 import { GcSearchComponent } from './components/gc-search-results/gc-search.component';
 import { GcSearchResultsTableComponent } from './components/gc-search-results-table/gc-search-results-table.component';
 import { ToolbarModule } from 'primeng/toolbar';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { FieldsetModule } from 'primeng/fieldset';
+import { GWebcomponentsDocEmbedComponent } from './components/g-webcomponents-doc-embed/g-webcomponents-doc-embed.component';
 
 const CUSTOM_ELEMENTS = [
   {
@@ -41,6 +45,7 @@ const CUSTOM_ELEMENTS = [
     GWebcomponentsDocComponent,
     GcSearchComponent,
     GcSearchResultsTableComponent,
+    GWebcomponentsDocEmbedComponent,
   ],
   imports: [
     CommonModule,
@@ -54,6 +59,9 @@ const CUSTOM_ELEMENTS = [
     SearchResultsComponent,
     SearchResultsTableComponent,
     ToolbarModule,
+    FloatLabelModule,
+    MultiSelectModule,
+    FieldsetModule,
   ],
   bootstrap: [GcDataResultsTableComponent, GcSearchComponent],
   exports: [GcDataResultsTableComponent, GcSearchComponent],
