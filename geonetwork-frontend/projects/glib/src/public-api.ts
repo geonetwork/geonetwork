@@ -14,6 +14,7 @@ export * from './lib/search/search-agg-selectbutton/search-agg-select-button.com
 export * from './lib/search/search-agg-multiselect/search-agg-multiselect.component';
 export * from './lib/search/search-agg-item/search-agg-item.component';
 export * from './lib/search/search-agg-item-decorator/search-agg-item-decorator.component';
+export * from './lib/search/search-aggs-container/search-aggs-container.component';
 export * from './lib/search/search-results/search-results.component';
 export * from './lib/search/search-results-table/search-results-table.component';
 export * from './lib/search/search-results-timeline/search-results-timeline.component';

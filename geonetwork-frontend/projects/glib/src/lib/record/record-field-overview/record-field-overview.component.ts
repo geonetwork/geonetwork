@@ -8,7 +8,7 @@ import { ImageModule } from 'primeng/image';
   standalone: true,
   imports: [ImageModule],
 })
-export class RecordFieldOverviewComponent extends ImageModule {
+export class RecordFieldOverviewComponent {
   field = input<any[] | null>();
   styleClass = input<string>('');
   preview = input<boolean>(false);

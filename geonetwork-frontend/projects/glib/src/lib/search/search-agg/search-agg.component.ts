@@ -63,7 +63,14 @@ export class SearchAggComponent extends SearchBaseComponent {
 
   searchField: string = '';
 
+  isSupported = false;
+
   aggregationConfig: AggregationsAggregationContainer;
+
+  isSupportedAndHasValue = computed(() => {
+    // @ts-ignore
+    return this.isSupported && this.agg() && this.agg()?.buckets.length > 0;
+  });
 
   currentLayout = computed(() => {
     return (
@@ -74,13 +81,17 @@ export class SearchAggComponent extends SearchBaseComponent {
   });
 
   agg = computed(() => {
-    const aggregationResponse = this.search.aggregation()?.[this.aggregation()];
-    if (aggregationResponse === undefined) {
-      console.warn(
-        `${this.aggregation()} not found in search aggregations. Add this field to the search aggregation configuration for context ${this.search.id()}.`
-      );
+    if (Object.keys(this.search.aggregation()).length > 0) {
+      const aggregationResponse = this.search.aggregation()[this.aggregation()];
+      if (aggregationResponse === undefined) {
+        console.warn(
+          `${this.aggregation()} not found in the search response aggregations.
+          Add this field to the search aggregation configuration for the context ${this.search.id()}.`
+        );
+      }
+      return aggregationResponse;
     }
-    return aggregationResponse;
+    return undefined;
   });
   protected readonly SearchAggLayout = SearchAggLayout;
 
@@ -92,6 +103,16 @@ export class SearchAggComponent extends SearchBaseComponent {
     this.searchField = this.search.getAggregationSearchField(
       this.aggregation()
     );
+    this.#checkIfAggregationTypeIsSupported();
+  }
+
+  #checkIfAggregationTypeIsSupported() {
+    this.isSupported = this.aggregationConfig.terms !== undefined;
+    if (!this.isSupported) {
+      console.warn(
+        `${this.aggregation()} aggregation not supported. Only terms aggregations are supported.`
+      );
+    }
   }
 
   filter(filterValue: SearchFilterValue) {

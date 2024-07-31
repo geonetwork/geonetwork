@@ -1,4 +1,6 @@
 import { UiConfiguration } from 'gapi';
+import { SearchAggRefreshPolicy } from '../search/search.state.model';
+import { SearchAggLayout } from '../search/search-agg/search-agg.component';
 
 export const MISSING_CONFIG_ERROR = 'Configuration not yet loaded.';
 
@@ -408,9 +410,9 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
           },
         },
         // GEMET configuration for non multilingual catalog
-        'th_gemet_tree.key': {
+        'th_gemet.default': {
           terms: {
-            field: 'th_gemet_tree.key',
+            field: 'th_gemet.default',
             size: 100,
             order: { _key: 'asc' },
             include: '[^^]+^?[^^]+',
@@ -445,18 +447,18 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
         //   }
         // },
 
-        'th_httpinspireeceuropaeumetadatacodelistPriorityDataset-PriorityDataset_tree.default':
+        'th_httpinspireeceuropaeumetadatacodelistPriorityDataset-PriorityDataset.default':
           {
             terms: {
               field:
-                'th_httpinspireeceuropaeumetadatacodelistPriorityDataset-PriorityDataset_tree.default',
+                'th_httpinspireeceuropaeumetadatacodelistPriorityDataset-PriorityDataset.default',
               size: 100,
               order: { _key: 'asc' },
             },
           },
-        'th_httpinspireeceuropaeutheme-theme_tree.key': {
+        'th_httpinspireeceuropaeutheme-theme.default': {
           terms: {
-            field: 'th_httpinspireeceuropaeutheme-theme_tree.key',
+            field: 'th_httpinspireeceuropaeutheme-theme.default',
             size: 34,
             // "order" : { "_key" : "asc" }
           },
@@ -470,7 +472,8 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
         },
         tag: {
           terms: {
-            field: 'tag.${aggLang}',
+            // field: 'tag.${aggLang}',
+            field: 'tag.default',
             include: '.*',
             size: 10,
           },
@@ -478,9 +481,9 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
             caseInsensitiveInclude: true,
           },
         },
-        'th_regions_tree.default': {
+        'th_regions.default': {
           terms: {
-            field: 'th_regions_tree.default',
+            field: 'th_regions.default',
             size: 100,
             order: { _key: 'asc' },
             //"include": "EEA.*"
@@ -560,6 +563,36 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
             //     'EEA': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/79/EEA_agency_logo.svg/220px-EEA_agency_logo.svg.png'
             //   }
             // }
+          },
+        },
+        cl_topic: {
+          terms: {
+            field: 'cl_topic.key',
+            size: 20,
+          },
+          meta: {
+            refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
+            layout: SearchAggLayout.CARD,
+            decorator: {
+              type: 'img',
+              map: {
+                biota:
+                  'https://live.staticflickr.com/8383/8616798436_4d6c64ef1b_b.jpg',
+                farming:
+                  'https://live.staticflickr.com/8208/8278649915_9288846c34.jpg',
+                boundaries:
+                  'https://live.staticflickr.com/4246/34760368741_e58a034d2c_b.jpg',
+                inlandWaters:
+                  'https://live.staticflickr.com/4870/40440037563_e8839c12f2_b.jpg',
+                environment:
+                  'https://live.staticflickr.com/3905/14744038903_387abf1902_b.jpg',
+                geoscientificInformation:
+                  'https://live.staticflickr.com/5709/23453476815_d861652686_b.jpg',
+                imageryBaseMapsEarthCover:
+                  'https://live.staticflickr.com/1561/24270793842_f32d495613_b.jpg',
+              },
+            },
+            orderByTranslation: true,
           },
         },
         'cl_maintenanceAndUpdateFrequency.key': {
