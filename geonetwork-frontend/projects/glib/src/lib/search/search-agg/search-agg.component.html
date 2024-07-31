@@ -1,4 +1,4 @@
-@if (agg()) {
+@if (isSupportedAndHasValue()) {
   @if (isLabelDisplayed() === true) {
     <div class="font-bold mb-2 border-b-2">{{ aggregation() }}</div>
   }

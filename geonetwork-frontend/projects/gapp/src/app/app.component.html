@@ -21,7 +21,10 @@
     <div class="p-4 w-1/3 border-r-2">
       <h1 class="text-4xl mb-4">Topics</h1>
 
-      <g-search-agg aggregation="topic" isLabelDisplayed="false" scope="main" />
+      <g-search-agg
+        aggregation="cl_topic"
+        isLabelDisplayed="false"
+        scope="main" />
     </div>
 
     <div class="p-4 w-1/3">
@@ -75,18 +78,14 @@
     <p-sidebar [(visible)]="themeSidebarSelector" position="right">
       <h3>Focus</h3>
 
-      <g-search-agg aggregation="topic" scope="main" />
+      <g-search-agg aggregation="cl_topic" scope="main" />
     </p-sidebar>
 
     <div class="flex flex-row">
       <div class="basis-1/4 px-4">
-        <g-search-agg aggregation="publicationYearForResource" scope="main" />
-        <g-search-agg aggregation="organisationForResource" scope="main" />
-        <g-search-agg
-          aggregation="cl_maintenanceAndUpdateFrequency.key"
-          scope="main" />
-        <!--        <g-search-agg scope="main" aggregation="resolutionScaleDenominator"/>-->
-        <g-search-agg aggregation="tag" scope="main" />
+        <g-search-aggs-container
+          scope="main"
+          [exclude]="['cl_topic', 'resourceType']" />
       </div>
       <div class="basis-3/4">
         <g-search-paging scope="main" />
@@ -96,13 +95,26 @@
     </div>
   </div>
 
-  <div class="relative bg-slate-300 p-4 mt-10 border-t-4">
-    <div class="text-4xl mt-10 py-5">Another search</div>
+  <div
+    class="relative bg-slate-300 p-4 mt-10 border-t-4"
+    gSearchContext="dada"
+    [aggregations]="localAggregationConfig">
+    <div class="flex flex-row">
+      <div class="basis-1/4 px-4">
+        <div class="text-4xl mt-10 py-5">Another search</div>
+        <g-search-input scope="dada" />
 
-    <ng-container gSearchContext="dada">
-      <g-search-input scope="dada" />
-      <g-search-results scope="dada" />
-    </ng-container>
+        <g-search-agg aggregation="publicationYearForResource" scope="dada" />
+        <g-search-agg aggregation="organisationForResource" scope="dada" />
+        <g-search-agg
+          aggregation="cl_maintenanceAndUpdateFrequency.key"
+          scope="dada" />
+        <g-search-agg aggregation="tag" scope="dada" />
+      </div>
+      <div class="basis-3/4">
+        <g-search-results scope="dada" />
+      </div>
+    </div>
+    <p-scrollTop />
   </div>
-  <p-scrollTop />
 </div>

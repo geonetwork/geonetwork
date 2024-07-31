@@ -2,7 +2,7 @@
   @if (overviews.length > 0) {
     <p-image
       [preview]="preview"
-      imageClass="object-cover w-full h-full rounded-lg"
+      [imageClass]="'w-full h-full' + styleClass()"
       [src]="overviews[0].url"
       [alt]="overviews[0].name"></p-image>
   }

@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { Button, ButtonDirective } from 'primeng/button';
 import {
   GlibComponent,
+  SearchAggsContainerComponent,
   SearchAggComponent,
   SearchAggLayout,
   SearchAggRefreshPolicy,
@@ -33,6 +34,7 @@ import { SidebarModule } from 'primeng/sidebar';
     RouterOutlet,
     Button,
     GlibComponent,
+    SearchAggsContainerComponent,
     SearchAggComponent,
     SearchResultsComponent,
     SearchResultsTimelineComponent,
@@ -62,8 +64,8 @@ export class AppComponent {
 
   scoreConfig = this.uiConfiguration?.mods.search.scoreConfig;
   pageSize = this.uiConfiguration?.mods.search.paginationInfo.hitsPerPage;
-  // aggregationConfig = this.uiConfiguration.mods.search.facetConfig;
-  aggregationConfig: Record<string, AggregationsAggregationContainer> = {
+  aggregationConfig = this.uiConfiguration?.mods.search.facetConfig;
+  localAggregationConfig: Record<string, AggregationsAggregationContainer> = {
     resourceType: {
       terms: {
         field: 'resourceType',
@@ -93,36 +95,6 @@ export class AppComponent {
       },
     },
     tag: { terms: { field: 'tag.default', size: 20 } },
-    topic: {
-      terms: {
-        field: 'cl_topic.key',
-        size: 20,
-      },
-      meta: {
-        refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
-        layout: SearchAggLayout.CARD,
-        decorator: {
-          type: 'img',
-          map: {
-            biota:
-              'https://live.staticflickr.com/8383/8616798436_4d6c64ef1b_b.jpg',
-            farming:
-              'https://live.staticflickr.com/8208/8278649915_9288846c34.jpg',
-            boundaries:
-              'https://live.staticflickr.com/4246/34760368741_e58a034d2c_b.jpg',
-            inlandWaters:
-              'https://live.staticflickr.com/4870/40440037563_e8839c12f2_b.jpg',
-            environment:
-              'https://live.staticflickr.com/3905/14744038903_387abf1902_b.jpg',
-            geoscientificInformation:
-              'https://live.staticflickr.com/5709/23453476815_d861652686_b.jpg',
-            imageryBaseMapsEarthCover:
-              'https://live.staticflickr.com/1561/24270793842_f32d495613_b.jpg',
-          },
-        },
-        orderByTranslation: true,
-      },
-    },
     organisationForResource: {
       terms: {
         field: 'OrgForResourceObject.default',
@@ -133,17 +105,6 @@ export class AppComponent {
       meta: {
         layout: SearchAggLayout.MULTISELECT,
         refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
-      },
-    },
-    resolutionScaleDenominator: {
-      histogram: {
-        field: 'resolutionScaleDenominator',
-        interval: 10000,
-        keyed: true,
-        min_doc_count: 1,
-      },
-      meta: {
-        collapsed: true,
       },
     },
   };

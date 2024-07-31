@@ -11,8 +11,7 @@
               class="flex flex-row gap-4"
               routerLink="/metadata/{{ hit._id }}"
               title="{{ hit._source.resourceAbstractObject?.default }}">
-              <div
-                class="flex-none w-48 h-48 relative rounded-lg border border-gray-300">
+              <div class="flex-none w-48 h-48 relative border border-gray-300">
                 <g-record-field-overview [field]="hit._source.overview" />
 
                 <g-record-field-resource-type
