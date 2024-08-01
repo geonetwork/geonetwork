@@ -1,4 +1,4 @@
-import { Component, effect, input, OnInit } from '@angular/core';
+import { Component, effect, input, OnInit, signal } from '@angular/core';
 import Papa from 'papaparse';
 import { TableModule } from 'primeng/table';
 
@@ -9,10 +9,10 @@ import { TableModule } from 'primeng/table';
   standalone: true,
   imports: [TableModule],
 })
-export class DataTableComponent implements OnInit {
+export class DataTableComponent {
   source = input.required<string>();
 
-  data: Array<any> = [];
+  data = signal<Array<any>>([]);
   isLoading = false;
   headerData: Array<any> = [];
   error: string | undefined = undefined;
@@ -47,7 +47,7 @@ export class DataTableComponent implements OnInit {
             });
             data.push(object);
           });
-          this.data = data;
+          this.data.set(data);
         }
         this.isLoading = false;
       },
@@ -58,6 +58,4 @@ export class DataTableComponent implements OnInit {
       },
     });
   }
-
-  ngOnInit() {}
 }
