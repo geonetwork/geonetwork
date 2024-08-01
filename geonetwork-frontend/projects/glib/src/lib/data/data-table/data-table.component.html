@@ -1,7 +1,8 @@
-@if (data && error === undefined) {
+
+@if (data() && error === undefined) {
   <p-table
     #dt
-    [value]="data"
+    [value]="data()"
     [columns]="headerData"
     sortMode="multiple"
     [rows]="10"

@@ -1,4 +1,8 @@
-<ng-container gSearchContext="{{ searchId }}">
-  <g-search-input [scope]="searchId" />
-  <g-search-results [scope]="searchId" />
-</ng-container>
+@defer (on viewport) {
+  <ng-container gSearchContext="{{ searchId }}">
+    <g-search-input [scope]="searchId" />
+    <g-search-results [scope]="searchId" />
+  </ng-container>
+} @placeholder () {
+  <p>Loading ...</p>
+}
