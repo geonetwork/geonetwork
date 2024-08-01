@@ -294,7 +294,8 @@
                 <include>pom.xml</include>
               </includes>
               <excludes>
-                <exclude>target/**.*</exclude>
+                <exclude>target/**</exclude>
+                <exclude>geonetwork-frontend/**</exclude>
               </excludes>
             </licenseSet>
           </licenseSets>
