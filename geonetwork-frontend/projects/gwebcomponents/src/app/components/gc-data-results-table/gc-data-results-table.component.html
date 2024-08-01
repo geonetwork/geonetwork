@@ -1,1 +1,5 @@
-<g-data-table [source]="source()"></g-data-table>
+@defer (on viewport) {
+  <g-data-table [source]="source()"></g-data-table>
+} @placeholder () {
+  <p>Loading ...</p>
+}

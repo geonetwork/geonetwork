@@ -1,21 +1,25 @@
-<ng-container gSearchContext="{{ searchId }}">
-  @if (filters()) {
-    <p-toolbar>
-      @for (filter of filters(); track filter) {
-        <g-search-agg
-          [layout]="SearchAggLayout.MULTISELECT"
-          [aggregation]="filter"
-          [scope]="searchId" />
-      }
-    </p-toolbar>
-  }
-  <g-search-results-table
-    [scope]="searchId"
-    [fields]="fields()"
-    [labels]="labels()"
-    [selectionMode]="selectionMode"
-    [scrollHeight]="scrollHeight"
-    [landingPage]="landingPage"
-    [landingPageLinkOn]="landingPageLinkOn"
-    [apiUrl]="apiUrl" />
-</ng-container>
+@defer (on viewport) {
+  <ng-container gSearchContext="{{ searchId }}">
+    @if (filters()) {
+      <p-toolbar>
+        @for (filter of filters(); track filter) {
+          <g-search-agg
+            [layout]="SearchAggLayout.MULTISELECT"
+            [aggregation]="filter"
+            [scope]="searchId" />
+        }
+      </p-toolbar>
+    }
+    <g-search-results-table
+      [scope]="searchId"
+      [fields]="fields()"
+      [labels]="labels()"
+      [selectionMode]="selectionMode"
+      [scrollHeight]="scrollHeight"
+      [landingPage]="landingPage"
+      [landingPageLinkOn]="landingPageLinkOn"
+      [apiUrl]="apiUrl" />
+  </ng-container>
+} @placeholder () {
+  <p>Loading ...</p>
+}
