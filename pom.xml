@@ -305,6 +305,7 @@
                 <exclude>src/*/resources/schemas/iso19139/schema2007/**</exclude>
                 <exclude>src/*/resources/schemas/iso19139/schema/**</exclude>
                 <exclude>src/*/resources/schemas/iso19115-3.2018/schema/**</exclude>
+                <exclude>geonetwork-frontend/**</exclude>
               </excludes>
             </licenseSet>
           </licenseSets>
