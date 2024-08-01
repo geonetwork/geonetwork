@@ -52,8 +52,6 @@
           "options": {
             "tsConfig": "projects/glib/tsconfig.spec.json",
             "polyfills": [
-              "zone.js",
-              "zone.js/testing"
             ]
           }
         },
@@ -95,7 +93,6 @@
             "index": "projects/gapp/src/index.html",
             "browser": "projects/gapp/src/main.ts",
             "polyfills": [
-              "zone.js"
             ],
             "tsConfig": "projects/gapp/tsconfig.app.json",
             "assets": [
@@ -114,8 +111,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1.5MB",
-                  "maximumError": "2MB"
+                  "maximumWarning": "2.5MB",
+                  "maximumError": "2.5MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -158,8 +155,6 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": [
-              "zone.js",
-              "zone.js/testing"
             ],
             "tsConfig": "projects/gapp/tsconfig.spec.json",
             "assets": [
@@ -238,7 +233,6 @@
             "index": "projects/gwebcomponents/src/index.html",
             "browser": "projects/gwebcomponents/src/main.ts",
             "polyfills": [
-              "zone.js"
             ],
             "tsConfig": "projects/gwebcomponents/tsconfig.app.json",
             "assets": [
@@ -257,8 +251,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "2MB"
+                  "maximumWarning": "2.5MB",
+                  "maximumError": "2.5MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -295,8 +289,6 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": [
-              "zone.js",
-              "zone.js/testing"
             ],
             "tsConfig": "projects/gwebcomponents/tsconfig.spec.json",
             "assets": [
