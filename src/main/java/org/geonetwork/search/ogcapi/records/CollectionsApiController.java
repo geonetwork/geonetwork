@@ -22,12 +22,12 @@ import org.geonetwork.index.IndexClient;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.repository.SourceRepository;
 import org.geonetwork.search.ogcapi.records.generated.CollectionsApi;
-import org.geonetwork.search.ogcapi.records.generated.model.CollectionDto;
-import org.geonetwork.search.ogcapi.records.generated.model.GetCollections200ResponseDto;
-import org.geonetwork.search.ogcapi.records.generated.model.GetRecords200ResponseDto;
 import org.geonetwork.search.ogcapi.records.generated.model.GetRecordsBboxDto;
-import org.geonetwork.search.ogcapi.records.generated.model.RecordGeoJSONDto;
-import org.geonetwork.search.ogcapi.records.generated.model.RecordGeoJSONPropertiesDto;
+import org.geonetwork.search.ogcapi.records.generated.model.OgcApiRecordsCollectionDto;
+import org.geonetwork.search.ogcapi.records.generated.model.OgcApiRecordsGetCollections200ResponseDto;
+import org.geonetwork.search.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
+import org.geonetwork.search.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
+import org.geonetwork.search.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONPropertiesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -51,15 +51,15 @@ public class CollectionsApiController implements CollectionsApi {
   }
 
   @Override
-  public ResponseEntity<GetCollections200ResponseDto> getCollections() {
+  public ResponseEntity<OgcApiRecordsGetCollections200ResponseDto> getCollections() {
     List<Source> sourceList = sourceRepository.findAll();
-    GetCollections200ResponseDto collections =
-        GetCollections200ResponseDto.builder()
+    OgcApiRecordsGetCollections200ResponseDto collections =
+        OgcApiRecordsGetCollections200ResponseDto.builder()
             .collections(
                 sourceList.stream()
                     .map(
                         source ->
-                            CollectionDto.builder()
+                            OgcApiRecordsCollectionDto.builder()
                                 .id(source.getUuid())
                                 .title(source.getName())
                                 .build())
@@ -70,7 +70,7 @@ public class CollectionsApiController implements CollectionsApi {
 
   @SneakyThrows
   @Override
-  public ResponseEntity<GetRecords200ResponseDto> getRecords(
+  public ResponseEntity<OgcApiRecordsGetRecords200ResponseDto> getRecords(
       String catalogId,
       GetRecordsBboxDto bbox,
       String datetime,
@@ -98,7 +98,7 @@ public class CollectionsApiController implements CollectionsApi {
                 IndexRecord.class);
 
     return ResponseEntity.ok(
-        GetRecords200ResponseDto.builder()
+        OgcApiRecordsGetRecords200ResponseDto.builder()
             .numberMatched(Math.toIntExact(searchResponse.hits().total().value()))
             .numberReturned(searchResponse.hits().hits().size())
             .features(
@@ -121,10 +121,10 @@ public class CollectionsApiController implements CollectionsApi {
                                   .map(tag -> tag.get(DEFAULT_TEXT))
                                   .toList();
 
-                          return RecordGeoJSONDto.builder()
+                          return OgcApiRecordsRecordGeoJSONDto.builder()
                               .id(h.id())
                               .properties(
-                                  RecordGeoJSONPropertiesDto.builder()
+                                  OgcApiRecordsRecordGeoJSONPropertiesDto.builder()
                                       .title(title)
                                       .description(description)
                                       .keywords(keywords)

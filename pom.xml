@@ -327,18 +327,17 @@
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>7.6.0</version>
+        <version>7.7.0</version>
         <executions>
           <execution>
             <goals>
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>
-                ${project.basedir}/src/test/resources/ogcapirecords_openapi_spec/ogcapi-records-1-example-ref-schema-repo.yaml
-              </inputSpec>
+              <inputSpec>${project.basedir}/src/test/resources/ogcapirecords_openapi_spec/ogcapi-records-1-example-ref-schema-repo.yaml</inputSpec>
               <generatorName>spring</generatorName>
               <generateAliasAsModel>true</generateAliasAsModel>
+              <modelNamePrefix>OgcApiRecords</modelNamePrefix>
               <modelNameSuffix>Dto</modelNameSuffix>
               <modelNameMappings>getRecords_bbox_parameter=GetRecordsBboxDto</modelNameMappings>
               <configOptions>
@@ -351,13 +350,12 @@
                 <apiPackage>org.geonetwork.search.ogcapi.records.generated</apiPackage>
                 <modelPackage>org.geonetwork.search.ogcapi.records.generated.model</modelPackage>
               </configOptions>
-              <additionalProperties>
-              </additionalProperties>
+              <additionalProperties></additionalProperties>
             </configuration>
           </execution>
         </executions>
       </plugin>
-      -->
+  -->
     </plugins>
   </build>
 

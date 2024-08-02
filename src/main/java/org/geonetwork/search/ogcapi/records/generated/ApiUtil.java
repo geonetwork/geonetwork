@@ -3,16 +3,13 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-
 package org.geonetwork.search.ogcapi.records.generated;
 
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.springframework.web.context.request.NativeWebRequest;
 
-/** Utility class for API documentation. */
 public class ApiUtil {
-  /** Set the example response for an API operation. */
   public static void setExampleResponse(NativeWebRequest req, String contentType, String example) {
     try {
       HttpServletResponse res = req.getNativeResponse(HttpServletResponse.class);
