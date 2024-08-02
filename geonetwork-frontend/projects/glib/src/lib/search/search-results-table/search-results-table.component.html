@@ -42,7 +42,8 @@
                 @switch (field) {
                   @case ('overview[*]') {
                     <g-record-field-overview
-                      [field]="hit._source | gJsonpath: field" />
+                      [field]="hit._source | gJsonpath: field"
+                      styleClass="max-w-14"/>
                   }
                   @case ('resourceType[0]') {
                     <g-record-field-resource-type

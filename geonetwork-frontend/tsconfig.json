@@ -33,7 +33,9 @@
       "ES2022",
       "dom"
     ],
-    "types": ["cypress"]
+    "types": [
+      "cypress"
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
