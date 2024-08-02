@@ -3,6 +3,10 @@ import { GnAngularjsComponent } from './components/gn-angularjs/gn-angularjs.com
 import { GWebcomponentsDocComponent } from './components/g-webcomponents-doc/g-webcomponents-doc.component';
 
 export const routes: Routes = [
+  {
+    path: 'webcomponents/:webcomponentId',
+    component: GWebcomponentsDocComponent,
+  },
   { path: 'webcomponents', component: GWebcomponentsDocComponent },
   { path: 'gn', component: GnAngularjsComponent },
   { path: '', redirectTo: '/webcomponents', pathMatch: 'full' },

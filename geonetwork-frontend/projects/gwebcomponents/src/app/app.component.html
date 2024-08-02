@@ -1,3 +1,11 @@
-<p-tabMenu [model]="tabs"></p-tabMenu>
-
-<router-outlet></router-outlet>
+<div class="flex">
+  <div class="w-60">
+    <div class="h-30 p-4">
+      <img alt="logo" src="gn-logo-noname.png" class="w-20 object-center" />
+    </div>
+    <p-panelMenu [model]="items" styleClass="w-full md:w-20rem" />
+  </div>
+  <div class="flex-grow">
+    <router-outlet></router-outlet>
+  </div>
+</div>

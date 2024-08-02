@@ -224,7 +224,7 @@
       "schematics": {},
       "root": "projects/gwebcomponents",
       "sourceRoot": "projects/gwebcomponents/src",
-      "prefix": "app",
+      "prefix": "gc",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
