@@ -10,20 +10,21 @@ import {
   SearchResultsTableComponent,
 } from 'glib';
 import { CommonModule } from '@angular/common';
-import { GnAngularjsComponent } from './components/gn-angularjs/gn-angularjs.component';
-import { GWebcomponentsDocComponent } from './components/g-webcomponents-doc/g-webcomponents-doc.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
-import { Button } from 'primeng/button';
 import { GcSearchComponent } from './components/gc-search-results/gc-search.component';
 import { GcSearchResultsTableComponent } from './components/gc-search-results-table/gc-search-results-table.component';
 import { ToolbarModule } from 'primeng/toolbar';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FieldsetModule } from 'primeng/fieldset';
-import { GWebcomponentsDocEmbedComponent } from './components/g-webcomponents-doc-embed/g-webcomponents-doc-embed.component';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { GnAngularjsComponent } from './components/gn-angularjs/gn-angularjs.component';
+import { GWebcomponentsDocComponent } from './components/g-webcomponents-doc/g-webcomponents-doc.component';
+import { GWebcomponentsDocEmbedComponent } from './components/g-webcomponents-doc-embed/g-webcomponents-doc-embed.component';
+import { Button } from 'primeng/button';
 
 const CUSTOM_ELEMENTS = [
   {
@@ -43,10 +44,10 @@ const CUSTOM_ELEMENTS = [
 @NgModule({
   declarations: [
     GcDataResultsTableComponent,
-    GnAngularjsComponent,
-    GWebcomponentsDocComponent,
     GcSearchComponent,
     GcSearchResultsTableComponent,
+    GnAngularjsComponent,
+    GWebcomponentsDocComponent,
     GWebcomponentsDocEmbedComponent,
   ],
   imports: [
@@ -54,7 +55,6 @@ const CUSTOM_ELEMENTS = [
     DataTableComponent,
     DropdownModule,
     FormsModule,
-    Button,
     SearchContextDirective,
     SearchAggComponent,
     SearchInputComponent,
@@ -66,9 +66,19 @@ const CUSTOM_ELEMENTS = [
     FieldsetModule,
     InputGroupModule,
     InputTextModule,
+    AutoCompleteModule,
+    Button,
   ],
-  bootstrap: [GcDataResultsTableComponent, GcSearchComponent],
-  exports: [GcDataResultsTableComponent, GcSearchComponent],
+  bootstrap: [
+    GcDataResultsTableComponent,
+    GcSearchComponent,
+    GcSearchResultsTableComponent,
+  ],
+  exports: [
+    GcDataResultsTableComponent,
+    GcSearchComponent,
+    GcSearchResultsTableComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {

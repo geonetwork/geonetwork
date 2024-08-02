@@ -16,6 +16,7 @@
     "prettier": "prettier --write \"**\"",
     "test": "ng test glib",
     "openapi-generator": "openapi-generator-cli generate -i projects/gapi/gapi.json  -g typescript-fetch -o  projects/gapi/src/lib  --skip-validate-spec",
+    "openapi-generatortest": "openapi-generator-cli generate -i gn5-openapi.json  -g typescript-fetch -o  projects/test  --skip-validate-spec --additional-properties=modelNamePrefix=Gn",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",

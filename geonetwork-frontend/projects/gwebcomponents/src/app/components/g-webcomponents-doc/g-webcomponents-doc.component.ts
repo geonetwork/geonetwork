@@ -1,4 +1,10 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
+import {
+  AutoCompleteCompleteEvent,
+  AutoCompleteSelectEvent,
+} from 'primeng/autocomplete';
+import { GnIndexRecordToJSON } from 'gapi';
+import { ActivatedRoute } from '@angular/router';
 
 interface field {
   label: string;
@@ -12,12 +18,14 @@ interface field {
   styleUrl: './g-webcomponents-doc.component.css',
 })
 export class GWebcomponentsDocComponent implements OnInit {
+  webcomponentId = input('');
+
   apiUrlList = [
+    { url: 'https://metawal.wallonie.be/geonetwork/srv/api' },
     { url: 'http://localhost:8080/geonetwork/srv/api' },
     { url: 'https://apps.titellus.net/geonetwork/srv/api' },
     { url: 'https://www.nationaalgeoregister.nl/geonetwork/srv/api' },
     { url: 'https://sextant.ifremer.fr/geonetwork/srv/api' },
-    { url: 'https://metawal.wallonie.be/geonetwork/srv/api' },
   ];
 
   apiUrl = this.apiUrlList[0].url;
@@ -36,7 +44,36 @@ export class GWebcomponentsDocComponent implements OnInit {
   ];
   selectionMode = this.selectionModeList[0].type;
 
-  listOfFields: field[] = [
+  indexRecordProperties = Object.keys(GnIndexRecordToJSON({}));
+
+  isArrayProperty(v: string) {
+    const arrayProperties = ['overview'];
+    return (
+      arrayProperties.indexOf(v) !== -1 ||
+      v.startsWith('th_') ||
+      v.startsWith('cl_')
+    );
+  }
+
+  listOfFields = this.indexRecordProperties
+    .map((v, index) => {
+      return {
+        label: v,
+        path: v.endsWith('Object')
+          ? v + '.default'
+          : this.isArrayProperty(v)
+            ? v + '[*]'
+            : v,
+        order: index,
+      };
+    })
+    .sort((a, b) => {
+      return a.label.localeCompare(b.label);
+    });
+
+  filteredFields: field[] = [];
+
+  listOfFieldsSimple: field[] = [
     { label: 'Aperçu', path: 'overview[*]', order: 1 },
     { label: 'Titre', path: 'resourceTitleObject.default', order: 2 },
     { label: 'Type', path: 'resourceType[0]', order: 3 },
@@ -51,23 +88,41 @@ export class GWebcomponentsDocComponent implements OnInit {
     },
     { label: 'Crédit', path: 'resourceCréditObject.default', order: 9 },
   ];
-  selectedFields = signal(this.listOfFields);
-  otherFieldsAsText = signal('');
 
-  listOfFieldsAsText = computed(
-    () =>
-      this.selectedFields()
-        .sort((a, b) => a.order - b.order)
-        .map(field => field.path)
-        .join(',') + this.otherFieldsAsText()
+  listOfFieldsAsText = signal(
+    this.listOfFieldsSimple
+      .map(f => {
+        return f.path;
+      })
+      .join(',')
   );
-  listOfLabelsAsText = computed(
-    () =>
-      this.selectedFields()
-        .sort((a, b) => a.order - b.order)
-        .map(field => field.label)
-        .join(',') + this.otherFieldsAsText()
+  listOfLabelsAsText = signal(
+    this.listOfFieldsSimple
+      .map(f => {
+        return f.label;
+      })
+      .join(',')
   );
+
+  autocompleteField(event: AutoCompleteCompleteEvent) {
+    let query = event.query.split(',').at(-1)?.toLowerCase() || '';
+    this.filteredFields = this.listOfFields.filter(f => {
+      return f.label.toLowerCase().indexOf(query) !== -1;
+    });
+  }
+
+  autocompleteKeyboardEvent(event: KeyboardEvent) {
+    this.listOfFieldsAsText.set((<HTMLInputElement>event.target).value);
+  }
+
+  autocompleteAddValue(event: AutoCompleteSelectEvent) {
+    this.listOfFieldsAsText.set(
+      [this.listOfFieldsAsText(), event.value.path].filter(i => !!i).join(',')
+    );
+    this.listOfLabelsAsText.set(
+      [this.listOfLabelsAsText(), event.value.label].filter(i => !!i).join(',')
+    );
+  }
 
   ngOnInit() {}
 }

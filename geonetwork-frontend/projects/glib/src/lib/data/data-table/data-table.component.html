@@ -1,4 +1,3 @@
-
 @if (data() && error === undefined) {
   <p-table
     #dt
@@ -8,11 +7,12 @@
     [rows]="10"
     [rowsPerPageOptions]="[10, 25, 50]"
     [loading]="isLoading"
+    [scrollable]="true"
     [paginator]="true">
     <ng-template pTemplate="header" let-columns>
       <tr>
         @for (column of columns; track $index) {
-          <th style="" [pSortableColumn]="column">
+          <th style="width:100px" [pSortableColumn]="column">
             {{ column }}
             <p-sortIcon [field]="column" />
           </th>

@@ -6,6 +6,7 @@ import {
   SearchResponse,
   Sort,
 } from '@elastic/elasticsearch/lib/api/types';
+import { GnIndexRecord } from 'gapi';
 
 export enum SearchFilterValueState {
   ON = 'ON',
@@ -50,7 +51,7 @@ export interface Search {
   sort: Sort;
   trackTotalHits?: boolean;
   filters: SearchFilterList;
-  response: SearchResponse | null;
+  response: SearchResponse<GnIndexRecord> | null;
   aggregation: Record<AggregateName, AggregationsAggregate>;
   error: Error | null;
 }

@@ -31,7 +31,9 @@
       Add map
     </p-button>
     <p-button
-      (click)="addMap('http://localhost:8080/geonetwork/map/config-viewer.xml')"
+      (click)="
+        addMap('https://apps.titellus.net/geonetwork/map/config-viewer.xml')
+      "
       class="m-2"
       >Default map
     </p-button>
@@ -47,5 +49,5 @@
                       "header": {"enabled": false}
                       }}'
     portal="srv"
-    url="http://localhost:8080/geonetwork"></gn-app>
+    url="https://apps.titellus.net/geonetwork"></gn-app>
 </div>

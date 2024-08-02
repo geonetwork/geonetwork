@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { Configuration, DefaultConfig } from 'gapi';
 import { API_CONFIGURATION, SearchAggLayout, SearchService } from 'glib';
-import { TablePageEvent } from 'primeng/table';
 
 @Component({
   selector: 'gc-search-results-table',
