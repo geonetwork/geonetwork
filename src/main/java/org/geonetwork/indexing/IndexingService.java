@@ -14,10 +14,12 @@ import co.elastic.clients.elasticsearch._types.Time;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import jakarta.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -113,8 +115,9 @@ public class IndexingService {
 
   /** Index a list of records. */
   @Transactional(readOnly = true)
-  public void index(List<String> uuids) {
+  public List<Future<?>> index(List<String> uuids) {
     AtomicInteger counter = new AtomicInteger(0);
+    List<Future<?>> futures = new ArrayList<>();
 
     Sort sortBy =
         Sort.by(Sort.Direction.ASC, "schemaid").and(Sort.by(Sort.Direction.DESC, "changedate"));
@@ -170,7 +173,7 @@ public class IndexingService {
                                     }
                                   });
                         });
-                submission.isDone();
+                futures.add(submission);
               });
     }
 
@@ -188,6 +191,7 @@ public class IndexingService {
     //      //      report.setNumberOfGhostRecords(ghost.size());
     //      //      e.getIn().setHeader("NUMBER_OF_GHOST", report.getNumberOfGhostRecords());
     //    }
+    return futures;
   }
 
   /** 2 operations per record: delete and then index. */
