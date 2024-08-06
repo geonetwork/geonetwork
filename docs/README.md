@@ -77,3 +77,7 @@ The quality assurance checks have been broken out into different profiles so you
   mvn verify -Pcheck-headers
   ```
   
+### Integration tests
+
+If the test requires GeoNetwork 4, a Postgres database and Elasticsearch extends `GeoNetwork4BasedIntegrationTest`.
+If the test only requires Elasticsearch extends `ElasticsearchBasedIntegrationTest`.
