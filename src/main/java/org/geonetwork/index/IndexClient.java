@@ -63,25 +63,24 @@ public class IndexClient {
     this.totalFieldsLimit = totalFieldsLimit;
 
     if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
-      credentialsProvider =
-        new BasicCredentialsProvider();
-      credentialsProvider.setCredentials(AuthScope.ANY,
-        new UsernamePasswordCredentials(username, password));
+      credentialsProvider = new BasicCredentialsProvider();
+      credentialsProvider.setCredentials(
+          AuthScope.ANY, new UsernamePasswordCredentials(username, password));
     }
 
-
-    RestClientBuilder builder = RestClient.builder(HttpHost.create(serverUrl))
+    RestClientBuilder builder =
+        RestClient.builder(HttpHost.create(serverUrl))
             .setRequestConfigCallback(
                 requestConfigBuilder -> requestConfigBuilder.setSocketTimeout(requestTimeout))
-      .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-        @Override
-        public HttpAsyncClientBuilder customizeHttpClient(
-          HttpAsyncClientBuilder httpClientBuilder) {
-          httpClientBuilder.disableAuthCaching();
-          return httpClientBuilder
-            .setDefaultCredentialsProvider(credentialsProvider);
-        }
-      });
+            .setHttpClientConfigCallback(
+                new RestClientBuilder.HttpClientConfigCallback() {
+                  @Override
+                  public HttpAsyncClientBuilder customizeHttpClient(
+                      HttpAsyncClientBuilder httpClientBuilder) {
+                    httpClientBuilder.disableAuthCaching();
+                    return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+                  }
+                });
 
     RestClient restClient = builder.build();
 
