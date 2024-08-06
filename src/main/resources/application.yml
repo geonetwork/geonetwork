@@ -5,6 +5,8 @@ geonetwork:
     url: http://localhost:9200
     indexPrefix: gn5-
     indexRecordName: gn5-records
+    username: elastic
+    password: changeme
     elasticsearch:
       settings:
         maxResultWindow: 50000
@@ -23,6 +25,11 @@ geonetwork:
     system:
       metadata:
         prefergrouplogo: true
+  security:
+    provider: database
+    passwordSalt: secret-hash-salt=
+    checkUsernameOrEmail: true
+
 
 server:
   port: 7979
@@ -43,11 +50,12 @@ spring:
     password: www-data
   jpa:
     open-in-view: false
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    database-platform: org.hibernate.dialect.H2Dialect
+    #    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.H2Dialect
   cloud:
     gateway:
       mvc:
+
         routes:
           - id: geonetwork_proxy_redirect
             uri: ${geonetwork.openapi.url}
@@ -57,6 +65,8 @@ spring:
               - RewritePath=/geonetwork/(?<url>.*), /api/$\{url}
           - id: geonetwork_route
             uri: ${geonetwork.core.url}
+#            filters:
+#              -
             predicates:
               - Path=/geonetwork/**
 management:
@@ -78,4 +88,7 @@ debug: false
 logging:
   level:
     org.geonetwork.tasks.indexing: DEBUG
+    org.elasticsearch.client.RestClient: TRACE
+    org.apache.http.impl.client and org.apache.http.wire: TRACE
+    org.apache.http.headers: TRACE
 #    org.springframework.cache: TRACE

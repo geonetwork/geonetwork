@@ -16,8 +16,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -35,10 +42,13 @@ public class IndexClient {
   private String indexRecordName;
   private Integer maxResultWindow;
   private Long totalFieldsLimit;
+  private CredentialsProvider credentialsProvider;
 
   /** Constructor. */
   public IndexClient(
       @Value("${geonetwork.index.url:'http://localhost:9200'}") String serverUrl,
+      @Value("${geonetwork.index.username}") String username,
+      @Value("${geonetwork.index.password}") String password,
       @Value("${geonetwork.index.indexPrefix:'gn-'}") String defaultIndexPrefix,
       @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
       @Value("${geonetwork.index.elasticsearch.settings.maxResultWindow:'50000'}")
@@ -52,11 +62,28 @@ public class IndexClient {
     this.maxResultWindow = maxResultWindow;
     this.totalFieldsLimit = totalFieldsLimit;
 
-    RestClient restClient =
-        RestClient.builder(HttpHost.create(serverUrl))
+    if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+      credentialsProvider =
+        new BasicCredentialsProvider();
+      credentialsProvider.setCredentials(AuthScope.ANY,
+        new UsernamePasswordCredentials(username, password));
+    }
+
+
+    RestClientBuilder builder = RestClient.builder(HttpHost.create(serverUrl))
             .setRequestConfigCallback(
                 requestConfigBuilder -> requestConfigBuilder.setSocketTimeout(requestTimeout))
-            .build();
+      .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+        @Override
+        public HttpAsyncClientBuilder customizeHttpClient(
+          HttpAsyncClientBuilder httpClientBuilder) {
+          httpClientBuilder.disableAuthCaching();
+          return httpClientBuilder
+            .setDefaultCredentialsProvider(credentialsProvider);
+        }
+      });
+
+    RestClient restClient = builder.build();
 
     JacksonJsonpMapper jacksonJsonpMapper = new JacksonJsonpMapper();
 
