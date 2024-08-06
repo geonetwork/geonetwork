@@ -25,26 +25,27 @@ public class WebSecurityConfiguration {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-      .authorizeHttpRequests((requests) -> requests
-        .requestMatchers("/").permitAll()
-        .anyRequest().authenticated()
-      ).httpBasic(Customizer.withDefaults());
-
+    http.authorizeHttpRequests(
+            (requests) -> requests.requestMatchers("/").permitAll().anyRequest().authenticated())
+        .httpBasic(Customizer.withDefaults());
 
     return http.build();
   }
 
-
   @Bean
-  public PasswordEncoder passwordEncoder(@Value("${geonetwork.security.passwordSalt}") String salt) {
+  @SuppressWarnings("deprecation")
+  public PasswordEncoder passwordEncoder(
+      @Value("${geonetwork.security.passwordSalt}") String salt) {
     return new StandardPasswordEncoder(salt);
   }
 
   @Bean
   public UserDetailsService userDetailsService(
-    @Value("${geonetwork.security.checkUsernameOrEmail}") Boolean checkUsernameOrEmail,
-    PasswordEncoder passwordEncoder, UserRepository userRepository, UsergroupRepository userGroupRepository) {
-    return new DatabaseUserDetailsService(checkUsernameOrEmail, passwordEncoder, userRepository, userGroupRepository);
+      @Value("${geonetwork.security.checkUsernameOrEmail}") Boolean checkUsernameOrEmail,
+      PasswordEncoder passwordEncoder,
+      UserRepository userRepository,
+      UsergroupRepository userGroupRepository) {
+    return new DatabaseUserDetailsService(
+        checkUsernameOrEmail, passwordEncoder, userRepository, userGroupRepository);
   }
 }
