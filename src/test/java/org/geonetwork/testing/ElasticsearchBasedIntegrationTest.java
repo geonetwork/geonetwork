@@ -14,7 +14,7 @@ import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-/** Integration test running with GeoNetwork 4 */
+/** Integration test running with Elasticsearch */
 @Testcontainers
 public class ElasticsearchBasedIntegrationTest {
   @Container
