@@ -142,4 +142,28 @@
     </processSteps>
   </xsl:template>
 
+
+  <xsl:template mode="index"
+                match="*:resourceMaintenance/*">
+    <xsl:param name="languages" as="node()*"/>
+    <maintenance>
+      <frequency>
+        <xsl:value-of select="*:maintenanceAndUpdateFrequency/*/@codeListValue"/>
+      </frequency>
+      <xsl:for-each select="*:dateOfNextUpdate[*/text() != '']">
+        <nextUpdateDate><xsl:value-of select="*/text()"/></nextUpdateDate>
+      </xsl:for-each>
+      <xsl:for-each select="(*:userDefinedMaintenanceFrequency[*/text() != ''])[1]">
+        <userDefinedFrequency><xsl:value-of select="*/text()"/></userDefinedFrequency>
+      </xsl:for-each>
+      <xsl:for-each select="(*:maintenanceNote[*/text() != ''])[1]">
+        <noteObject>
+          <xsl:copy-of
+            select="gn-fn-index:add-multilingual-field(
+                                          'maintenanceNote', .,
+                                           $languages)/*"/>
+        </noteObject>
+      </xsl:for-each>
+      </maintenance>
+  </xsl:template>
 </xsl:stylesheet>

@@ -287,6 +287,11 @@ public class IndexRecord {
   @JacksonXmlElementWrapper(useWrapping = false)
   List<Map<String, String>> resourceLineage;
 
+  @JsonProperty(IndexRecordFieldNames.RESOURCE_MAINTENANCE)
+  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+  @JacksonXmlElementWrapper(useWrapping = false)
+  List<Maintenance> maintenance;
+
   @JsonProperty(IndexRecordFieldNames.SOURCE_DESCRIPTION)
   @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
   @JacksonXmlElementWrapper(useWrapping = false)

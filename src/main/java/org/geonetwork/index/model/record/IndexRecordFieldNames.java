@@ -137,6 +137,8 @@ public class IndexRecordFieldNames {
   public static final String REVISION_MONTH_FOR_RESOURCE = "revisionMonthForResource";
   public static final String DATE_STAMP = "dateStamp";
   public static final String RESOURCE_LINEAGE = "lineageObject";
+  public static final String RESOURCE_MAINTENANCE = "maintenance";
+  public static final String NOTE = "noteObject";
   public static final String SOURCE_DESCRIPTION = "sourceDescriptionObject";
   public static final String PROCESS_STEPS = "processSteps";
   public static final String SPECIFICATION_CONFORMANCE = "specificationConformance";
