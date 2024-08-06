@@ -5,7 +5,7 @@
     available at the root application directory.
 
 -->
-<gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd">
+<gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gts="http://www.isotc211.org/2005/gts">
   <gmd:fileIdentifier xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gco="http://www.isotc211.org/2005/gco"
                       xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:gml="http://www.opengis.net/gml/3.2"
                       xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -463,10 +463,32 @@
       <gmd:resourceMaintenance>
         <gmd:MD_MaintenanceInformation>
           <gmd:maintenanceAndUpdateFrequency>
-            <gmd:MD_MaintenanceFrequencyCode
-              codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_MaintenanceFrequencyCode"
-              codeListValue="asNeeded"/>
+            <gmd:MD_MaintenanceFrequencyCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_MaintenanceFrequencyCode"
+                                             codeListValue="annually"/>
           </gmd:maintenanceAndUpdateFrequency>
+          <gmd:dateOfNextUpdate>
+            <gco:Date>2025-01-05</gco:Date>
+          </gmd:dateOfNextUpdate>
+          <gmd:userDefinedMaintenanceFrequency>
+            <gts:TM_PeriodDuration>P12Y0M1DT0H0M0S</gts:TM_PeriodDuration>
+          </gmd:userDefinedMaintenanceFrequency>
+          <gmd:maintenanceNote>
+            <gco:CharacterString>In general, in the first 2 weeks of January</gco:CharacterString>
+          </gmd:maintenanceNote>
+          <gmd:maintenanceNote gco:nilReason="missing">
+            <gco:CharacterString/>
+          </gmd:maintenanceNote>
+        </gmd:MD_MaintenanceInformation>
+      </gmd:resourceMaintenance>
+      <gmd:resourceMaintenance>
+        <gmd:MD_MaintenanceInformation>
+          <gmd:maintenanceAndUpdateFrequency>
+            <gmd:MD_MaintenanceFrequencyCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_MaintenanceFrequencyCode"
+                                             codeListValue="asNeeded"/>
+          </gmd:maintenanceAndUpdateFrequency>
+          <gmd:maintenanceNote>
+            <gco:CharacterString>Extra update may be produced on specific events</gco:CharacterString>
+          </gmd:maintenanceNote>
         </gmd:MD_MaintenanceInformation>
       </gmd:resourceMaintenance>
       <gmd:descriptiveKeywords

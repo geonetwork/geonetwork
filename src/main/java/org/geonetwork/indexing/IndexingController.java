@@ -7,8 +7,8 @@
 package org.geonetwork.indexing;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.geonetwork.index.IndexClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,17 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 /** Indexing controller. */
 @RestController
 @RequestMapping("/api/indexing")
+@RequiredArgsConstructor
 public class IndexingController {
 
   private final IndexingService indexingService;
   private final IndexClient indexClient;
-
-  /** Constructor. */
-  @Autowired
-  public IndexingController(IndexingService indexingService, IndexClient indexClient) {
-    this.indexingService = indexingService;
-    this.indexClient = indexClient;
-  }
 
   /** Create index. */
   @GetMapping(path = "/setup", produces = MediaType.APPLICATION_JSON_VALUE)

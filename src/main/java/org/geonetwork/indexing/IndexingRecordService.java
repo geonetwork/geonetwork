@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Group;
 import org.geonetwork.domain.Metadata;
@@ -45,9 +46,17 @@ import org.geonetwork.utility.xml.XsltUtil;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-/** Indexing service. */
+/**
+ * Indexing service.
+ *
+ * <p>Create index document from the database entity. The index document is created by collecting
+ * all properties from the database entity. Then XSLT transformation is applied to the index
+ * document (grouped by schema). If the schema starts with iso19 then a default iso.xsl conversion
+ * is applied.
+ */
 @Component
 @Slf4j(topic = "org.geonetwork.tasks.indexing")
+@RequiredArgsConstructor
 public class IndexingRecordService {
 
   private final MetadataDraftRepository metadataDraftRepository;
@@ -59,35 +68,6 @@ public class IndexingRecordService {
   private final MetadatacategRepository metadatacategRepository;
   private final ValidationRepository validationRepository;
   private final UsersavedselectionRepository usersavedselectionRepository;
-
-  /**
-   * Create index document from the database entity.
-   *
-   * <p>The index document is created by collecting all properties from the database entity. Then
-   * XSLT transformation is applied to the index document (grouped by schema). If the schema starts
-   * with iso19 then a default iso.xsl conversion is applied.
-   */
-  public IndexingRecordService(
-      MetadataDraftRepository metadataDraftRepository,
-      UserRepository userRepository,
-      GroupRepository groupRepository,
-      OperationallowedRepository operationallowedRepository,
-      MetadatacategRepository metadatacategRepository,
-      GufUserfeedbackRepository userfeedbackRepository,
-      ValidationRepository validationRepository,
-      MetadatastatusRepository metadatastatusRepository,
-      UsersavedselectionRepository usersavedselectionRepository) {
-
-    this.metadataDraftRepository = metadataDraftRepository;
-    this.userRepository = userRepository;
-    this.groupRepository = groupRepository;
-    this.operationallowedRepository = operationallowedRepository;
-    this.metadatacategRepository = metadatacategRepository;
-    this.userfeedbackRepository = userfeedbackRepository;
-    this.validationRepository = validationRepository;
-    this.metadatastatusRepository = metadatastatusRepository;
-    this.usersavedselectionRepository = usersavedselectionRepository;
-  }
 
   /** Build index documents from the database metadata. */
   public IndexRecords buildIndexDocuments(List<Metadata> databaseMetadata) {
