@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    p {
+      color: #666;
+    }
+  </style>
+  <script
+    src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+    integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+    crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    fetch('/api/me')
+      .then((response) => response.json())
+      .then((data) => {
+      $('#user').html(data.name);
+      $('.unauthenticated').hide();
+      $('.authenticated').show();
+    });
+  </script>
+
+</head>
+<body>
+<div class="container">
+  <h1>Welcome to GeoNetwork</h1>
+  <p>Your gateway to all your data, maps, services and more!</p>
+
+  <div>
+    <!--
+    Test for OAuth2 login
+    <div class="container unauthenticated">
+      <div>
+        With GitHub: <a href="/oauth2/authorization/github">click here</a>
+      </div>
+      <div>
+        With Custom: <a href="/oauth2/authorization/custom">click here</a>
+      </div>
+    </div>-->
+    <div class="container authenticated" style="display:none">
+      Logged in as: <span id="user"></span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
