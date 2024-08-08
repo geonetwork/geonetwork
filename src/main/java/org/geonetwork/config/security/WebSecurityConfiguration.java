@@ -5,6 +5,7 @@
  */
 package org.geonetwork.config.security;
 
+import org.geonetwork.proxy.HttpProxyPolicyAgentAuthorizationManager;
 import org.geonetwork.repository.UserRepository;
 import org.geonetwork.repository.UsergroupRepository;
 import org.geonetwork.security.DatabaseUserAuthProperties;
@@ -25,9 +26,21 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfiguration {
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain securityFilterChain(
+      HttpSecurity http,
+      HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager)
+      throws Exception {
     http.authorizeHttpRequests(
-            (requests) -> requests.requestMatchers("/").permitAll().anyRequest().authenticated())
+            (requests) ->
+                requests
+                    .requestMatchers("/")
+                    .permitAll()
+                    .requestMatchers("/geonetwork/**")
+                    .permitAll()
+                    .requestMatchers("/api/proxy")
+                    .access(proxyPolicyAgentAuthorizationManager)
+                    .anyRequest()
+                    .authenticated())
         .httpBasic(Customizer.withDefaults());
 
     return http.build();
