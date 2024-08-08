@@ -1,3 +1,8 @@
+geonetwork:
+  index:
+    url: http://localhost:9211
+    indexPrefix: gn5test-
+    indexRecordName: gn5test-records
 spring:
   datasource:
     url: jdbc:h2:mem:gn5
