@@ -7,13 +7,20 @@
 package org.geonetwork.domain;
 
 import jakarta.persistence.Cacheable;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -89,4 +96,20 @@ public class User {
   @OneToMany(mappedBy = "userid")
   @Builder.Default
   private Set<Usergroup> usergroups = new LinkedHashSet<>();
+
+  @ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
+  @CollectionTable(name = "email")
+  @Column(name = "email")
+  @Builder.Default
+  private Set<String> email = new HashSet<>();
+
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinTable(
+      name = "UserAddress",
+      joinColumns = @JoinColumn(name = "userid"),
+      inverseJoinColumns = {
+        @JoinColumn(name = "addressid", referencedColumnName = "ID", unique = true)
+      })
+  @Builder.Default
+  private Set<Address> addresses = new LinkedHashSet<>();
 }

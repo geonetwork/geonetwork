@@ -6,11 +6,11 @@
 
 package org.geonetwork.security;
 
-import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +20,7 @@ import org.geonetwork.domain.Profile;
 import org.geonetwork.domain.Usergroup;
 import org.geonetwork.repository.UserRepository;
 import org.geonetwork.repository.UsergroupRepository;
-import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -40,13 +40,14 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
   public static final String USER_ID = "user_id";
   public static final String GN_AUTHORITY = "gn";
 
-  @Setter @Getter private boolean checkUsernameOrEmail = false;
+  @Setter @Getter private DatabaseUserAuthProperties checkUsernameOrEmail;
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final UsergroupRepository userGroupRepository;
 
   public DatabaseUserDetailsService(
-      Boolean checkUsernameOrEmail,
+      @Value("${geonetwork.security.databaseUserAuthProperty: 'USERNAME_OR_EMAIL'}")
+          DatabaseUserAuthProperties checkUsernameOrEmail,
       PasswordEncoder passwordEncoder,
       UserRepository userRepository,
       UsergroupRepository userGroupRepository) {
@@ -81,45 +82,45 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
   protected UserDetails retrieveUser(
       String username, UsernamePasswordAuthenticationToken authentication)
       throws AuthenticationException {
-    try {
+    Optional<org.geonetwork.domain.User> user =
+        switch (checkUsernameOrEmail) {
+          case USERNAME -> userRepository.findOptionalByUsernameAndAuthtypeIsNull(username);
+          case EMAIL -> userRepository.findOptionalByEmailAndAuthtypeIsNull(username);
+          default ->
+              userRepository.findOptionalByUsernameOrEmailAndAuthtypeIsNull(username, username);
+        };
 
-      org.geonetwork.domain.User user = userRepository.findOneByUsername(username);
-      if (user == null) {
-        throw new UsernameNotFoundException(username + " is not a valid username");
-      }
-
-      List<Usergroup> userGroups = userGroupRepository.findAllByUserid_Id(user.getId());
-
-      Map<String, List<Integer>> attributesToCast =
-          userGroups.stream()
-              .map(
-                  userGroup ->
-                      new AbstractMap.SimpleEntry<>(
-                          Profile.values()[userGroup.getId().getProfile()].name(),
-                          userGroup.getGroupid().getId()))
-              .collect(
-                  Collectors.groupingBy(
-                      AbstractMap.SimpleEntry::getKey,
-                      Collectors.mapping(AbstractMap.SimpleEntry::getValue, Collectors.toList())));
-
-      Map<String, Object> attributes = new HashMap<>(attributesToCast);
-
-      attributes.put(USER_ID, user.getId());
-      attributes.put(HIGHEST_PROFILE, user.getProfile().name());
-      attributes.putIfAbsent(Profile.UserAdmin.name(), Collections.emptyList());
-      attributes.putIfAbsent(Profile.Reviewer.name(), Collections.emptyList());
-      attributes.putIfAbsent(Profile.RegisteredUser.name(), Collections.emptyList());
-      attributes.putIfAbsent(Profile.Editor.name(), Collections.emptyList());
-      OAuth2UserAuthority authority = new OAuth2UserAuthority(GN_AUTHORITY, attributes);
-
-      return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
-          .password(user.getPassword())
-          .authorities(Collections.singletonList(authority))
-          .build();
-    } catch (Exception e) {
-      log.atError().log("Unexpected error while loading user", e);
-      throw new AuthenticationServiceException("Unexpected error while loading user", e);
+    if (user.isEmpty()) {
+      throw new UsernameNotFoundException(username + " is not a valid username");
     }
+
+    if ("n".equals(user.get().getIsenabled())) {
+      throw new UsernameNotFoundException(username + " account is disabled");
+    }
+
+    List<Usergroup> userGroups = userGroupRepository.findAllByUserid_Id(user.get().getId());
+
+    Map<String, List<Integer>> attributesToCast =
+        userGroups.stream()
+            .collect(
+                Collectors.groupingBy(
+                    ug -> Profile.values()[ug.getId().getProfile()].name(),
+                    Collectors.mapping(ug -> ug.getGroupid().getId(), Collectors.toList())));
+
+    Map<String, Object> attributes = new HashMap<>(attributesToCast);
+    attributes.put(USER_ID, user.get().getId());
+    attributes.put(HIGHEST_PROFILE, user.get().getProfile().name());
+    attributes.putIfAbsent(Profile.UserAdmin.name(), Collections.emptyList());
+    attributes.putIfAbsent(Profile.Reviewer.name(), Collections.emptyList());
+    attributes.putIfAbsent(Profile.RegisteredUser.name(), Collections.emptyList());
+    attributes.putIfAbsent(Profile.Editor.name(), Collections.emptyList());
+
+    OAuth2UserAuthority authority = new OAuth2UserAuthority(GN_AUTHORITY, attributes);
+
+    return org.springframework.security.core.userdetails.User.withUsername(user.get().getUsername())
+        .password(user.get().getPassword())
+        .authorities(Collections.singletonList(authority))
+        .build();
   }
 
   @Override
