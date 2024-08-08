@@ -45,7 +45,6 @@ class HttpProxyConfigurationTest {
 
     mockMvc
         .perform(get("/api/proxy?url=https://geonetwork-opensource.org/"))
-        // TODO: .andExpect(status().isOk());
-        .andExpect(status().is4xxClientError());
+        .andExpect(status().isOk());
   }
 }
