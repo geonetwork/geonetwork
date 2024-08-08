@@ -28,7 +28,7 @@ geonetwork:
   security:
     provider: database
     passwordSalt: secret-hash-salt=
-    checkUsernameOrEmail: true
+    databaseUserAuthProperty: USERNAME_OR_EMAIL
 
 
 server:

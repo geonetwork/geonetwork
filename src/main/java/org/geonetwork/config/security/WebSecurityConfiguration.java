@@ -7,6 +7,7 @@ package org.geonetwork.config.security;
 
 import org.geonetwork.repository.UserRepository;
 import org.geonetwork.repository.UsergroupRepository;
+import org.geonetwork.security.DatabaseUserAuthProperties;
 import org.geonetwork.security.DatabaseUserDetailsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +42,8 @@ public class WebSecurityConfiguration {
 
   @Bean
   public UserDetailsService userDetailsService(
-      @Value("${geonetwork.security.checkUsernameOrEmail}") Boolean checkUsernameOrEmail,
+      @Value("${geonetwork.security.checkUsernameOrEmail: 'USERNAME_OR_EMAIL'}")
+          DatabaseUserAuthProperties checkUsernameOrEmail,
       PasswordEncoder passwordEncoder,
       UserRepository userRepository,
       UsergroupRepository userGroupRepository) {
