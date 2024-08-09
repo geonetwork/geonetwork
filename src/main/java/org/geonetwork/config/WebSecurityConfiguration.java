@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.config.security;
+package org.geonetwork.config;
 
 import org.geonetwork.proxy.HttpProxyPolicyAgentAuthorizationManager;
 import org.geonetwork.repository.UserRepository;
@@ -13,9 +13,10 @@ import org.geonetwork.security.DatabaseUserDetailsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
@@ -33,7 +34,7 @@ public class WebSecurityConfiguration {
     http.authorizeHttpRequests(
             (requests) ->
                 requests
-                    .requestMatchers("/")
+                    .requestMatchers("/", "/home")
                     .permitAll()
                     .requestMatchers("/geonetwork/**")
                     .permitAll()
@@ -41,7 +42,16 @@ public class WebSecurityConfiguration {
                     .access(proxyPolicyAgentAuthorizationManager)
                     .anyRequest()
                     .authenticated())
-        .httpBasic(Customizer.withDefaults());
+        .formLogin((form) -> form.loginPage("/login").defaultSuccessUrl("/home", true).permitAll())
+        .httpBasic(
+            (basic) ->
+                // No popup in browsers
+                basic.authenticationEntryPoint(
+                    (request, response, authException) ->
+                        response.sendError(
+                            HttpStatus.UNAUTHORIZED.value(),
+                            HttpStatus.UNAUTHORIZED.getReasonPhrase())))
+        .logout(LogoutConfigurer::permitAll);
 
     return http.build();
   }
