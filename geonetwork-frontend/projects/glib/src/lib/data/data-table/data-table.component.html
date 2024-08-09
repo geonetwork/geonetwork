@@ -12,7 +12,7 @@
     <ng-template pTemplate="header" let-columns>
       <tr>
         @for (column of columns; track $index) {
-          <th style="width:100px" [pSortableColumn]="column">
+          <th style="width: 100px" [pSortableColumn]="column">
             {{ column }}
             <p-sortIcon [field]="column" />
           </th>

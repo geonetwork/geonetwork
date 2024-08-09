@@ -12,8 +12,19 @@ import { KeyValuePipe } from '@angular/common';
 })
 export class SearchAggsContainerComponent extends SearchBaseComponent {
   exclude = input<string[]>([]);
+  type = input<string | undefined>();
 
   isAggregationDisplayed(key: string) {
-    return this.exclude().length == 0 || !this.exclude().includes(key);
+    const aggregationPlacement =
+      this.search.aggregationConfig()[key].meta?.placement;
+    if (this.type()) {
+      return aggregationPlacement == this.type();
+    } else if (this.exclude().length == 0) {
+      return aggregationPlacement === undefined;
+    } else {
+      return (
+        aggregationPlacement === undefined && !this.exclude().includes(key)
+      );
+    }
   }
 }
