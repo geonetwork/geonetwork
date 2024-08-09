@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 
 /** OpenAPI configuration. */
 @Configuration
-public class OpenApiConfig {
+public class OpenApiConfiguration {
   @Value("${geonetwork.openapi.url:'http://localhost:7979'}")
   private String serverUrl;
 

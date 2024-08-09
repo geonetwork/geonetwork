@@ -6,7 +6,7 @@
 
 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,10 +48,10 @@
     fetch('/api/me')
       .then((response) => response.json())
       .then((data) => {
-      $('#user').html(data.name);
-      $('.unauthenticated').hide();
-      $('.authenticated').show();
-    });
+        $('#user').html(data.name);
+        $('.unauthenticated').hide();
+        $('.authenticated').show();
+      });
   </script>
 
 </head>
@@ -61,18 +61,19 @@
   <p>Your gateway to all your data, maps, services and more!</p>
 
   <div>
-    <!--
-    Test for OAuth2 login
     <div class="container unauthenticated">
-      <div>
-        With GitHub: <a href="/oauth2/authorization/github">click here</a>
-      </div>
-      <div>
-        With Custom: <a href="/oauth2/authorization/custom">click here</a>
-      </div>
-    </div>-->
+      Sign in with
+      <a href="/login.html">Geonetwork</a>,
+      <a href="/oauth2/authorization/github">GitHub</a>,
+      <a href="/oauth2/authorization/custom">Custom provider</a>
+
+    </div>
     <div class="container authenticated" style="display:none">
       Logged in as: <span id="user"></span>
+
+      <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out" />
+      </form>
     </div>
   </div>
 </div>
