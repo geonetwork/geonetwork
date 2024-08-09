@@ -12,7 +12,9 @@
               routerLink="/metadata/{{ hit._id }}"
               title="{{ hit._source.resourceAbstractObject?.default }}">
               <div class="flex-none w-48 h-48 relative border border-gray-300">
-                <g-record-field-overview [field]="hit._source.overview" />
+                <g-record-field-overview
+                  [field]="hit._source.overview?.[0]"
+                  preview="false" />
 
                 <g-record-field-resource-type
                   [field]="hit._source.resourceType"
@@ -25,12 +27,12 @@
                   title="{{ hit._source.resourceTitleObject?.default }}">
                   {{ hit._source.resourceTitleObject?.default }}
                 </div>
-                <div class="w-full">
+                <div class="">
                   <p class="line-clamp-2">
-                    {{
+                    <!-- {{
                       hit._source.resourceAbstractObject?.default
                         | firstSentence
-                    }}
+                    }}-->
                   </p>
                   <div>
                     @for (

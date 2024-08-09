@@ -30,7 +30,7 @@
       "projectType": "library",
       "root": "projects/glib",
       "sourceRoot": "projects/glib/src",
-      "prefix": "lib",
+      "prefix": "g",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -84,7 +84,7 @@
       "schematics": {},
       "root": "projects/gapp",
       "sourceRoot": "projects/gapp/src",
-      "prefix": "app",
+      "prefix": "gn",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",

@@ -1,9 +1,39 @@
-@if (field(); as overviews) {
-  @if (overviews.length > 0) {
-    <p-image
-      [preview]="preview"
-      [imageClass]="'w-full h-full ' + styleClass()"
-      [src]="overviews[0].url"
-      [alt]="overviews[0].name"></p-image>
+@if (overviewList(); as overviews) {
+  @if (overviews.length === 1) {
+    <ng-container
+      *ngTemplateOutlet="
+        overview;
+        context: { $implicit: overviews[0] }
+      "></ng-container>
+  } @else if (overviews.length > 1) {
+    <p-galleria
+      [value]="overviews"
+      [showIndicators]="true"
+      indicatorsPosition="top"
+      [showThumbnails]="false"
+      [containerStyle]="{ 'max-width': '640px' }"
+      [numVisible]="5">
+      <ng-template pTemplate="item" let-item>
+        <ng-container
+          *ngTemplateOutlet="
+            overview;
+            context: { $implicit: item }
+          "></ng-container>
+      </ng-template>
+      <ng-template pTemplate="thumbnail" let-item>
+        <div class="grid grid-nogutter justify-content-center">
+          <img [src]="item.url" />
+        </div>
+      </ng-template>
+    </p-galleria>
   }
 }
+
+<ng-template #overview let-overview>
+  <p-image
+    [preview]="preview()"
+    [imageClass]="'w-full h-full m-w-full' + styleClass()"
+    [styleClass]="'w-full h-full'"
+    [src]="overview.url"
+    [title]="overview.nameObject?.default || 'overview'"></p-image>
+</ng-template>

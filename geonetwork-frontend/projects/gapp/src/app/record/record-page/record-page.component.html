@@ -1,0 +1,9 @@
+<div class="p-4">
+  <g-record-view uuid="{{ uuid() }}" [backButtonTplRef]="backButton">
+    <ng-template #backButton>
+      <a [routerLink]="['/search']"
+        ><i class="fa fa-2x fa-arrow-circle-left"></i
+      ></a>
+    </ng-template>
+  </g-record-view>
+</div>

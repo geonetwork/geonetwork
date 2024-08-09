@@ -1,15 +1,27 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input, OnInit } from '@angular/core';
 import { ImageModule } from 'primeng/image';
+import { GalleriaModule } from 'primeng/galleria';
+import { GnOverview } from 'gapi';
 
 @Component({
   selector: 'g-record-field-overview',
   templateUrl: './record-field-overview.component.html',
   styleUrl: './record-field-overview.component.css',
   standalone: true,
-  imports: [ImageModule],
+  imports: [ImageModule, GalleriaModule],
 })
 export class RecordFieldOverviewComponent {
-  field = input<any[] | null>();
+  field = input<GnOverview | GnOverview[] | null>();
+  overviewList = computed<GnOverview[]>(() => {
+    const field = this.field();
+    if (!field) {
+      return [];
+    } else if (Array.isArray(field)) {
+      return field;
+    } else {
+      return [field];
+    }
+  });
   styleClass = input<string>('');
-  preview = input<boolean>(false);
+  preview = input<boolean>(true);
 }

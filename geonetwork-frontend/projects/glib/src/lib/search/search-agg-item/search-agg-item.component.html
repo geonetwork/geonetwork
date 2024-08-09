@@ -20,7 +20,11 @@
       class="cursor-pointer w-full m-2"
       (click)="switchValue()"
       (keydown)="switchValue()"
-      [styleClass]="isActive() ? 'border-4 border-blue-500' : ''">
+      [styleClass]="
+        isActive()
+          ? 'border-l-8 -left-8  border-indigo-500'
+          : 'border-l-8 -left-8 border-transparent hover:border-indigo-500'
+      ">
       <ng-template pTemplate="header">
         <g-search-agg-item-decorator
           [bucket]="bucket()"

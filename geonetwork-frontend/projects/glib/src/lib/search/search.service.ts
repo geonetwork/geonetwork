@@ -40,9 +40,10 @@ export class SearchService {
 
   register(searchId: string, searchStore: SearchStoreType) {
     if (this.store[searchId]) {
-      throw new Error(
-        `Search ${searchId} already registered. Choose another search id.`
-      );
+      console.log(`Search ${searchId} already registered. Reusing it.`);
+      // throw new Error(
+      //   `Search ${searchId} already registered. Choose another search id.`
+      // );
     }
     this.store[searchId] = searchStore;
   }
