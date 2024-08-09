@@ -25,6 +25,8 @@ import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api
 import { FormsModule } from '@angular/forms';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { SidebarModule } from 'primeng/sidebar';
+import { HeaderComponent } from './shared/header/header.component';
+import { NavigationComponent } from './shared/navigation/navigation.component';
 
 @Component({
   selector: 'app-root',
@@ -51,6 +53,8 @@ import { SidebarModule } from 'primeng/sidebar';
     FormsModule,
     ScrollTopModule,
     SidebarModule,
+    HeaderComponent,
+    NavigationComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -58,56 +62,11 @@ import { SidebarModule } from 'primeng/sidebar';
 export class AppComponent {
   title = 'GeoNetwork';
 
-  themeSidebarSelector = signal(false);
-
   uiConfiguration = inject(APPLICATION_CONFIGURATION).ui;
 
   scoreConfig = this.uiConfiguration?.mods.search.scoreConfig;
   pageSize = this.uiConfiguration?.mods.search.paginationInfo.hitsPerPage;
   aggregationConfig = this.uiConfiguration?.mods.search.facetConfig;
-  localAggregationConfig: Record<string, AggregationsAggregationContainer> = {
-    resourceType: {
-      terms: {
-        field: 'resourceType',
-        include: ['dataset', 'service', 'series', 'map', 'featureCatalog'],
-        missing: 'Others',
-      },
-      meta: {
-        refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
-        decorator: {
-          type: 'icon',
-          prefix: 'fa fa-fw ',
-          map: {
-            dataset: 'fa-database',
-            service: 'fa-cloud',
-            map: 'fa-map',
-          },
-        },
-      },
-    },
-    'cl_maintenanceAndUpdateFrequency.key': {
-      terms: {
-        field: 'cl_maintenanceAndUpdateFrequency.key',
-        size: 10,
-      },
-      meta: {
-        collapsed: true,
-      },
-    },
-    tag: { terms: { field: 'tag.default', size: 20 } },
-    organisationForResource: {
-      terms: {
-        field: 'OrgForResourceObject.default',
-        include: '.*',
-        size: 50,
-        order: { _key: 'asc' },
-      },
-      meta: {
-        layout: SearchAggLayout.MULTISELECT,
-        refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
-      },
-    },
-  };
 
   constructor() {}
 

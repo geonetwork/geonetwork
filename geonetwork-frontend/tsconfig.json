@@ -11,7 +11,8 @@
         "./dist/gapi"
       ],
       "glib": [
-        "./dist/glib"
+//        "./dist/glib"
+        "./projects/glib/src/public-api"
       ]
     },
     "noPropertyAccessFromIndexSignature": false,

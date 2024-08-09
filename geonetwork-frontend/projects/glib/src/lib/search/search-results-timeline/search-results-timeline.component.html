@@ -15,9 +15,9 @@
         <p-card styleClass="w-full mb-3">
           <ng-template pTemplate="header">
             <g-record-field-overview
-              [field]="hit._source.overview"
+              [field]="hit._source.overview?.[0]"
               styleClass="object-cover rounded-t-lg"
-              preview="true" />
+              preview="false" />
           </ng-template>
           <div>
             <div

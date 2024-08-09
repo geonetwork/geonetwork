@@ -1,0 +1,87 @@
+<div class="relative">
+  <div class="sticky top-0 z-20">
+    <div class="py-6 px-10 bg-slate-50/30 backdrop-blur-sm">
+      <p-inputGroup styleClass="pb-6">
+        <input gSearchQuerySetter="main" pInputText placeholder="Search ..." />
+        <button icon="fa fa-search" pButton></button>
+      </p-inputGroup>
+
+      <p-panel [toggleable]="true" [collapsed]="true" iconPos="end">
+        <ng-template pTemplate="header">
+          <div class="grid grid-cols-1">
+            <div class="w-full flex flex-row">
+              <g-search-aggs-container
+                scope="main"
+                type="main-filters"
+                class="grid grid-cols-2 gap-4 flex-grow" />
+              <div class="ml-4">
+                <p-button
+                  class=""
+                  title="Reset search"
+                  gSearchQueryReset="main">
+                  <span class="fa fa-times"></span>
+                </p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="icons"> </ng-template>
+        <div class="m-0">
+          <g-search-aggs-container
+            scope="main"
+            type="additional-filters"
+            class="grid grid-flow-col justify-start gap-4" />
+
+          <div class="mt-4">
+            <p-button
+              (onClick)="themeSidebarSelector.set(!themeSidebarSelector())"
+              size="small"
+              label="Focus"
+              type="button">
+              <i class="fa fa-fw fa-filter"></i>
+            </p-button>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+
+  <p-sidebar [(visible)]="themeSidebarSelector" position="right">
+    <h3>Focus</h3>
+
+    <g-search-agg aggregation="cl_topic" scope="main" />
+  </p-sidebar>
+
+  <div class="flex flex-row">
+    <div class="basis-1/4 px-4">
+      <g-search-aggs-container scope="main" [exclude]="['cl_topic']" />
+    </div>
+    <div class="basis-3/4">
+      <g-search-paging scope="main" />
+      <g-search-results scope="main" />
+      <g-search-paging-more-button scope="main" />
+    </div>
+  </div>
+</div>
+
+<div
+  class="relative bg-slate-300 p-4 mt-10 border-t-4"
+  gSearchContext="dada"
+  [aggregations]="localAggregationConfig">
+  <div class="flex flex-row">
+    <div class="basis-1/4 px-4">
+      <div class="text-4xl mt-10 py-5">Another search</div>
+      <g-search-input scope="dada" />
+
+      <g-search-agg aggregation="publicationYearForResource" scope="dada" />
+      <g-search-agg aggregation="organisationForResource" scope="dada" />
+      <g-search-agg
+        aggregation="cl_maintenanceAndUpdateFrequency.key"
+        scope="dada" />
+      <g-search-agg aggregation="tag" scope="dada" />
+    </div>
+    <div class="basis-3/4">
+      <g-search-results scope="dada" />
+    </div>
+  </div>
+</div>

@@ -50,12 +50,18 @@ type SearchAggLayoutValues = keyof typeof SearchAggLayout;
 export class SearchAggComponent extends SearchBaseComponent {
   aggregation = input.required<string>();
   layout = input<SearchAggLayout>();
-  isLabelDisplayed = input<boolean>(true);
+  isLabelDisplayed = input<boolean | undefined>();
+
+  isLabelDisplayedValue = computed(() => {
+    return this.isLabelDisplayed() || this.agg()?.meta?.label !== false;
+  });
 
   cssClass = computed(() => {
-    switch (this.layout()) {
+    switch (this.currentLayout()) {
       case SearchAggLayout.CHIP:
         return 'card flex flex-wrap items-center';
+      case SearchAggLayout.MULTISELECT:
+        return '';
       default:
         return 'mb-6';
     }

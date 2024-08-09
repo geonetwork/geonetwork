@@ -347,11 +347,39 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
       // See https://github.com/geonetwork/core-geonetwork/pull/5349
       isVegaEnabled: true,
       facetConfig: {
+        OrgForResource: {
+          terms: {
+            // field: 'OrgForResourceObject.${aggLang}',
+            field: 'OrgForResourceObject.default',
+            // field: "OrgForResourceObject.langfre",
+            include: '.*',
+            size: 20,
+          },
+          meta: {
+            placement: 'main-filters',
+            label: false,
+            layout: SearchAggLayout.MULTISELECT,
+            // Always display filter even no more elements
+            // This can be used when all facet values are loaded
+            // with a large size and you want to provide filtering.
+            // 'displayFilter': true,
+            caseInsensitiveInclude: true,
+            // decorator: {
+            //   type: 'img',
+            //   map: {
+            //     'EEA': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/79/EEA_agency_logo.svg/220px-EEA_agency_logo.svg.png'
+            //   }
+            // }
+          },
+        },
         resourceType: {
           terms: {
             field: 'resourceType',
           },
           meta: {
+            placement: 'main-filters',
+            label: false,
+            layout: SearchAggLayout.MULTISELECT,
             decorator: {
               type: 'icon',
               prefix: 'fa fa-fw gn-icon-',
@@ -372,12 +400,21 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
             field: 'cl_spatialRepresentationType.key',
             size: 10,
           },
+          meta: {
+            placement: 'additional-filters',
+            label: false,
+            layout: SearchAggLayout.MULTISELECT,
+          },
         },
         format: {
           terms: {
             field: 'format',
           },
           meta: {
+            placement: 'additional-filters',
+            label: false,
+            layout: SearchAggLayout.MULTISELECT,
+            refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
             collapsed: true,
           },
         },
@@ -543,28 +580,6 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
         //     }
         //   }
         // },
-        OrgForResource: {
-          terms: {
-            field: 'OrgForResourceObject.${aggLang}',
-            // field: "OrgForResourceObject.default",
-            // field: "OrgForResourceObject.langfre",
-            include: '.*',
-            size: 20,
-          },
-          meta: {
-            // Always display filter even no more elements
-            // This can be used when all facet values are loaded
-            // with a large size and you want to provide filtering.
-            // 'displayFilter': true,
-            caseInsensitiveInclude: true,
-            // decorator: {
-            //   type: 'img',
-            //   map: {
-            //     'EEA': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/79/EEA_agency_logo.svg/220px-EEA_agency_logo.svg.png'
-            //   }
-            // }
-          },
-        },
         cl_topic: {
           terms: {
             field: 'cl_topic.key',
