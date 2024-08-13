@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build-all": "ng build gapi && ng build glib && ng build gapp && ng build gwebcomponents --output-hashing none",
+    "build-all": "ng build gapi && ng build glib && ng build gapp && ng build gwebcomponents --output-hashing none --base-href /webcomponents/",
     "build-lib-gapi": "ng build gapi",
     "build-lib-glib": "ng build glib",
     "build-lib-gwebcomponents": "ng build gwebcomponents --output-hashing none",
