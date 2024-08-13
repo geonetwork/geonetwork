@@ -7,6 +7,9 @@ package org.geonetwork.security;
 
 import java.util.Collections;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -21,7 +24,8 @@ public class MeApi {
 
   /** Get user details. */
   @GetMapping()
-  public Map<String, Object> user(
+  @PreAuthorize("permitAll")
+  public ResponseEntity<Map<String, Object>> user(
       @AuthenticationPrincipal AuthenticationPrincipal principal,
       @AuthenticationPrincipal UserDetails userDetails) {
     String userName = "";
@@ -30,6 +34,10 @@ public class MeApi {
     } else if (userDetails != null) {
       userName = userDetails.getUsername();
     }
-    return Collections.singletonMap("name", userName);
+    if (StringUtils.isNotEmpty(userName)) {
+      return ResponseEntity.ok(Collections.singletonMap("username", userName));
+    } else {
+      return ResponseEntity.noContent().build();
+    }
   }
 }

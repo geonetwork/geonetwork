@@ -107,9 +107,10 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
                     ug -> Profile.values()[ug.getId().getProfile()].name(),
                     Collectors.mapping(ug -> ug.getGroupid().getId(), Collectors.toList())));
 
+    String mainUserProfile = user.get().getProfile().name();
     Map<String, Object> attributes = new HashMap<>(attributesToCast);
     attributes.put(USER_ID, user.get().getId());
-    attributes.put(HIGHEST_PROFILE, user.get().getProfile().name());
+    attributes.put(HIGHEST_PROFILE, mainUserProfile);
     attributes.putIfAbsent(Profile.UserAdmin.name(), Collections.emptyList());
     attributes.putIfAbsent(Profile.Reviewer.name(), Collections.emptyList());
     attributes.putIfAbsent(Profile.RegisteredUser.name(), Collections.emptyList());
@@ -120,6 +121,7 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
     return org.springframework.security.core.userdetails.User.withUsername(user.get().getUsername())
         .password(user.get().getPassword())
         .authorities(Collections.singletonList(authority))
+        .roles(mainUserProfile)
         .build();
   }
 
