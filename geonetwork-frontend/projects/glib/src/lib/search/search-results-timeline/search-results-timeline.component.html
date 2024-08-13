@@ -12,26 +12,7 @@
         </span>
       </ng-template>
       <ng-template pTemplate="content" let-hit>
-        <p-card styleClass="w-full mb-3">
-          <ng-template pTemplate="header">
-            <g-record-field-overview
-              [field]="hit._source.overview?.[0]"
-              styleClass="object-cover rounded-t-lg"
-              preview="false" />
-          </ng-template>
-          <div>
-            <div
-              class="text-2xl font-semibold line-clamp-1"
-              title="{{ hit._source.resourceTitleObject.default }}">
-              {{ hit._source.resourceTitleObject.default }}
-            </div>
-
-            {{ hit._source.dateStamp | date }}
-          </div>
-          <ng-template pTemplate="footer">
-            <p-button label="Read more" [text]="true" />
-          </ng-template>
-        </p-card>
+        <g-record-view-card [hit]="hit" />
       </ng-template>
     </p-timeline>
   }

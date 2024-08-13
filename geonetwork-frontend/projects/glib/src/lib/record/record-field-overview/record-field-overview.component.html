@@ -32,7 +32,7 @@
 <ng-template #overview let-overview>
   <p-image
     [preview]="preview()"
-    [imageClass]="'w-full h-full m-w-full' + styleClass()"
+    [imageClass]="'w-full h-full m-w-full ' + styleClass()"
     [styleClass]="'w-full h-full'"
     [src]="overview.url"
     [title]="overview.nameObject?.default || 'overview'"></p-image>

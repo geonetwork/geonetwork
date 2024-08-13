@@ -25,6 +25,7 @@ import { GnAngularjsComponent } from './components/gn-angularjs/gn-angularjs.com
 import { GWebcomponentsDocComponent } from './components/g-webcomponents-doc/g-webcomponents-doc.component';
 import { GWebcomponentsDocEmbedComponent } from './components/g-webcomponents-doc-embed/g-webcomponents-doc-embed.component';
 import { Button } from 'primeng/button';
+import { GWebcomponentConfigurationComponent } from './components/g-webcomponent-configuration/g-webcomponent-configuration.component';
 
 const CUSTOM_ELEMENTS = [
   {
@@ -49,6 +50,7 @@ const CUSTOM_ELEMENTS = [
     GnAngularjsComponent,
     GWebcomponentsDocComponent,
     GWebcomponentsDocEmbedComponent,
+    GWebcomponentConfigurationComponent,
   ],
   imports: [
     CommonModule,

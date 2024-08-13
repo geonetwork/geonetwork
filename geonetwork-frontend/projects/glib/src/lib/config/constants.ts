@@ -28,7 +28,7 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
     global: {
       hotkeys: true,
       humanizeDates: true,
-      dateFormat: 'dd-MM-YYYY',
+      dateFormat: 'd MMM y',
       timezone: 'Browser', // Default to browser timezone
     },
     footer: {

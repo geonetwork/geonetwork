@@ -1,16 +1,15 @@
 import {
   Component,
   computed,
-  ContentChild,
   inject,
   input,
   OnInit,
   signal,
   TemplateRef,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { API_CONFIGURATION } from '../../config/config.loader';
 import { GnIndexRecord, SearchApi } from 'gapi';
-import { NgTemplateOutlet } from '@angular/common';
 import { TabViewModule } from 'primeng/tabview';
 import { RecordFieldOverviewComponent } from '../record-field-overview/record-field-overview.component';
 import { RecordFieldKeywordsComponent } from '../record-field-keywords/record-field-keywords.component';
