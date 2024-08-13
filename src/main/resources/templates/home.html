@@ -48,7 +48,7 @@
     fetch('/api/me')
       .then((response) => response.json())
       .then((data) => {
-        $('#user').html(data.name);
+        $('#user').html(data.username);
         $('.unauthenticated').hide();
         $('.authenticated').show();
       });
@@ -63,7 +63,7 @@
   <div>
     <div class="container unauthenticated">
       Sign in with
-      <a href="/login.html">Geonetwork</a>,
+      <a href="/signin">Geonetwork</a>,
       <a href="/oauth2/authorization/github">GitHub</a>,
       <a href="/oauth2/authorization/custom">Custom provider</a>
 
@@ -71,7 +71,7 @@
     <div class="container authenticated" style="display:none">
       Logged in as: <span id="user"></span>
 
-      <form th:action="@{/logout}" method="post">
+      <form th:action="@{/api/user/signout}">
         <input type="submit" value="Sign Out" />
       </form>
     </div>

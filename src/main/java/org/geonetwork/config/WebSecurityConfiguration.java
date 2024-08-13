@@ -14,16 +14,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfiguration {
 
   @Bean
@@ -32,26 +34,35 @@ public class WebSecurityConfiguration {
       HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager)
       throws Exception {
     http.authorizeHttpRequests(
-            (requests) ->
+            requests ->
                 requests
-                    .requestMatchers("/", "/home")
+                    .requestMatchers("/", "/home", "/signin")
                     .permitAll()
                     .requestMatchers("/geonetwork/**")
                     .permitAll()
                     .requestMatchers("/api/proxy")
                     .access(proxyPolicyAgentAuthorizationManager)
                     .anyRequest()
-                    .authenticated())
-        .formLogin((form) -> form.loginPage("/login").defaultSuccessUrl("/home", true).permitAll())
+                    .permitAll())
+        .formLogin(
+            form ->
+                form.loginPage("/signin")
+                    .loginProcessingUrl("/api/user/signin")
+                    .defaultSuccessUrl("/home", true)
+                    .permitAll())
         .httpBasic(
-            (basic) ->
+            basic ->
                 // No popup in browsers
                 basic.authenticationEntryPoint(
                     (request, response, authException) ->
                         response.sendError(
                             HttpStatus.UNAUTHORIZED.value(),
                             HttpStatus.UNAUTHORIZED.getReasonPhrase())))
-        .logout(LogoutConfigurer::permitAll);
+        .logout(
+            logout ->
+                logout
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
+                    .logoutSuccessUrl("/"));
 
     return http.build();
   }
