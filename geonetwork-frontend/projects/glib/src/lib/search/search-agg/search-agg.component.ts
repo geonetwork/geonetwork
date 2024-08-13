@@ -53,7 +53,10 @@ export class SearchAggComponent extends SearchBaseComponent {
   isLabelDisplayed = input<boolean | undefined>();
 
   isLabelDisplayedValue = computed(() => {
-    return this.isLabelDisplayed() || this.agg()?.meta?.label !== false;
+    if (this.isLabelDisplayed() === false) {
+      return false;
+    }
+    return this.agg()?.meta?.label !== false;
   });
 
   cssClass = computed(() => {

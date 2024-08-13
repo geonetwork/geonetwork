@@ -1,11 +1,4 @@
-import {
-  Directive,
-  HostAttributeToken,
-  HostListener,
-  inject,
-  input,
-  OnInit,
-} from '@angular/core';
+import { Directive, HostListener, inject, input, OnInit } from '@angular/core';
 import { SearchService } from './search.service';
 import { SearchStoreType } from './search.state';
 

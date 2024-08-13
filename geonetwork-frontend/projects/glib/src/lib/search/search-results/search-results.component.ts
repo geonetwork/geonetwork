@@ -19,6 +19,13 @@ import {
 import { RecordFieldOverviewComponent } from '../../record/record-field-overview/record-field-overview.component';
 import { RecordFieldRange } from '../../record/record-field-range.pipe';
 import { FirstSentencePipe } from '../../shared/first-sentence.pipe';
+import { RecordViewListComponent } from '../../record/record-view-list/record-view-list.component';
+import { RecordViewCardComponent } from '../../record/record-view-card/record-view-card.component';
+
+export enum ResultsLayout {
+  LIST = 'list',
+  CARD = 'card',
+}
 
 @Component({
   selector: 'g-search-results',
@@ -43,6 +50,8 @@ import { FirstSentencePipe } from '../../shared/first-sentence.pipe';
     RecordFieldOverviewComponent,
     RecordFieldRange,
     FirstSentencePipe,
+    RecordViewListComponent,
+    RecordViewCardComponent,
   ],
   providers: [DatePipe],
   templateUrl: './search-results.component.html',
@@ -50,4 +59,10 @@ import { FirstSentencePipe } from '../../shared/first-sentence.pipe';
 })
 export class SearchResultsComponent extends SearchBaseComponent {
   protected readonly ResourceTypeLayout = ResourceTypeLayout;
+
+  layout = input<ResultsLayout>(ResultsLayout.LIST);
+  layoutClass = input<string>('');
+  landingPage = input<string>('');
+  landingPageLinkPath = input<string>();
+  protected readonly ResultsLayout = ResultsLayout;
 }

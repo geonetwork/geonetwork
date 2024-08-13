@@ -53,6 +53,7 @@ const initialSearchState: Search = {
   pageSize: DEFAULT_PAGE_SIZE,
   sort: DEFAULT_SORT,
   filters: {},
+  filter: '',
   response: null,
   aggregation: {},
   error: null,
@@ -66,6 +67,7 @@ export const SearchStore = signalStore(
         return {
           fullTextQuery: store.fullTextQuery(),
           filters: store.filters(),
+          filter: store.filter(),
           aggregationConfig: store.aggregationConfig(),
         } as SearchFilterParameters;
       }),
@@ -104,6 +106,7 @@ export const SearchStore = signalStore(
         functionScore,
         size: size,
         pageSize: size,
+        filter: filter,
         sort: sort || DEFAULT_SORT,
       });
     },
@@ -125,6 +128,7 @@ export const SearchStore = signalStore(
               size: store.size(),
               sort: store.sort(),
               functionScore: store.functionScore(),
+              filter: store.filter(),
             } as SearchRequestParameters)
           ).pipe(
             tapResponse({
@@ -166,6 +170,9 @@ export const SearchStore = signalStore(
         fullTextQuery: '',
         from: 0,
       });
+    },
+    setFilter(value: string) {
+      patchState(store, { filter: value });
     },
     isFilterActive(field: string, value: string) {
       const filter = store.filters()[field];
@@ -241,6 +248,7 @@ export const SearchStore = signalStore(
               ...store.searchFilterParameters(),
               ...searchRequestPageParameters,
               functionScore: store.functionScore(),
+              filter: store.filter(),
             })
           ).pipe(
             tap(console.log),

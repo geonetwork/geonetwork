@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchPagingMoreButtonComponent } from './search-paging-more-button.component';
-import { ComponentRef, InjectionToken } from '@angular/core';
-import { SearchAggItemComponent } from '../search-agg-item/search-agg-item.component';
+import { ComponentRef } from '@angular/core';
 import { SearchAggComponent } from '../search-agg/search-agg.component';
 import { SearchBaseComponent } from '../search-base/search-base.component';
 import { FormsModule } from '@angular/forms';

@@ -12,6 +12,9 @@ import {
   ResourceTypeLayout,
 } from '../../record/record-field-resource-type/record-field-resource-type.component';
 import { RecordFieldOverviewComponent } from '../../record/record-field-overview/record-field-overview.component';
+import { RouterLink } from '@angular/router';
+import { RecordModule } from '../../record/record.module';
+import { RecordViewCardComponent } from '../../record/record-view-card/record-view-card.component';
 
 @Component({
   selector: 'g-search-results-timeline',
@@ -34,6 +37,9 @@ import { RecordFieldOverviewComponent } from '../../record/record-field-overview
     RecordFieldResourceTypeComponent,
     RecordFieldOverviewComponent,
     DatePipe,
+    RouterLink,
+    RecordModule,
+    RecordViewCardComponent,
   ],
 })
 export class SearchResultsTimelineComponent extends SearchBaseComponent {

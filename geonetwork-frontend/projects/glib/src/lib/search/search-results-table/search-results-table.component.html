@@ -67,7 +67,7 @@
               @if (landingPageLinkOn() === field) {
                 <a
                   class="text-blue-500 underline"
-                  [attr.href]="buildLandingPageLink(hit._id)">
+                  [attr.href]="this.landingPage() | gUrlPlaceholder: hit._id">
                   <ng-container *ngTemplateOutlet="column_content" />
                 </a>
               } @else {

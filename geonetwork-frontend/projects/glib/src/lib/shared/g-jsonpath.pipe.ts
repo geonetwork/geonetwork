@@ -6,7 +6,10 @@ import { JSONPath } from 'jsonpath-plus';
   standalone: true,
 })
 export class GJsonpathPipe implements PipeTransform {
-  transform(json: any, path: string): any {
+  transform(json: any, path?: string): any {
+    if (!path) {
+      return;
+    }
     return JSONPath({ path, json });
   }
 }

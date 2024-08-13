@@ -6,3 +6,4 @@ assets/
 browserslist
 package*.json
 *.ico
+*.png

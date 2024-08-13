@@ -46,6 +46,9 @@ export class GWebcomponentsDocComponent implements OnInit {
 
   indexRecordProperties = Object.keys(GnIndexRecordToJSON({}));
 
+  searchFilter = signal('*');
+  pageSize = signal(15);
+
   isArrayProperty(v: string) {
     const arrayProperties = ['overview'];
     return (

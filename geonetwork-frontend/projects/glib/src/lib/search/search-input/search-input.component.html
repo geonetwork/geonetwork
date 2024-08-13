@@ -2,7 +2,7 @@
   <input
     type="text"
     pInputText
-    class=""
+    [class]="styleClass()"
     placeholder="Search ..."
     [ngModel]="search.fullTextQuery()"
     (ngModelChange)="search.setFullTextQuery($event)" />

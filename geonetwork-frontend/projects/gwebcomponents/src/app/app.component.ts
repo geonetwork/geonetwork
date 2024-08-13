@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
       {
         label: 'Webcomponents',
         icon: 'fa fa-code',
+        expanded: true,
         items: [
           {
             label: 'Search table',

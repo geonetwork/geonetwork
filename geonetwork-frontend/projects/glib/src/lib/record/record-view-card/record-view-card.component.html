@@ -1,0 +1,37 @@
+@if (hit(); as hit) {
+  <p-card styleClass="w-full mb-3">
+    <ng-template pTemplate="header">
+      <g-record-field-overview
+        [field]="hit._source.overview?.[0]"
+        styleClass="object-cover rounded-t-lg"
+        preview="false" />
+    </ng-template>
+    <div>
+      <div
+        class="text-2xl font-semibold line-clamp-1"
+        title="{{ hit._source.resourceTitleObject.default }}">
+        {{ hit._source.resourceTitleObject.default }}
+      </div>
+
+      <span title="Record updated">{{ hit._source.dateStamp | date }}</span>
+    </div>
+    <ng-template pTemplate="footer">
+      @if (landingPage() || landingPageLinkPath()) {
+        <a
+          class="p-button p-button-text"
+          [href]="
+            landingPage()
+              ? (landingPage() | gUrlPlaceholder: hit._id)
+              : (hit._source | gJsonpath: landingPageLinkPath())
+          ">
+          {{ landingPageLabel() }}
+        </a>
+      } @else {
+        <p-button
+          [label]="landingPageLabel()"
+          routerLink="/metadata/{{ hit._id }}"
+          [text]="true" />
+      }
+    </ng-template>
+  </p-card>
+}

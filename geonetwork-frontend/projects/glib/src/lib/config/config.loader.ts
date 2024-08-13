@@ -1,6 +1,6 @@
 import { Configuration, DefaultConfig, UiApi, UiConfiguration } from 'gapi';
 import { DEFAULT_UI_CONFIGURATION, MISSING_CONFIG_ERROR } from './constants';
-import { InjectionToken, signal, WritableSignal } from '@angular/core';
+import { InjectionToken, WritableSignal } from '@angular/core';
 
 export interface ApplicationConfiguration {
   ui: UiConfiguration | undefined;

@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { SearchService } from './search.service';
 import { DEFAULT_PAGE_SIZE, SearchStore } from './search.state';
 import { SearchRequestParameters } from './search.state.model';
-import { SearchApi } from 'gapi';
 
 let DEFAULT_SEARCH_REQUEST: SearchRequestParameters = {
   fullTextQuery: 'africa',

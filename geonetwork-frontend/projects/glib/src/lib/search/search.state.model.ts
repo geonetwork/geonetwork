@@ -51,6 +51,7 @@ export interface Search {
   sort: Sort;
   trackTotalHits?: boolean;
   filters: SearchFilterList;
+  filter: string;
   response: SearchResponse<GnIndexRecord> | null;
   aggregation: Record<AggregateName, AggregationsAggregate>;
   error: Error | null;
@@ -62,6 +63,7 @@ export interface SearchFilterParameters {
   aggregationConfig: Record<string, AggregationsAggregationContainer>;
   functionScore: QueryDslFunctionScoreQuery | null;
   sort: Sort;
+  filter: string;
 }
 
 export interface SearchRequestPageParameters {

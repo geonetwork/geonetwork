@@ -33,8 +33,7 @@ export class GnAngularjsComponent implements AfterViewInit {
   ngAfterViewInit() {
     var s = document.createElement('script');
     s.type = 'text/javascript';
-    s.src =
-      '/geonetwork/catalog/webcomponents/webcomponents.js';
+    s.src = '/geonetwork/catalog/webcomponents/webcomponents.js';
     this.el.nativeElement.appendChild(s);
   }
 }

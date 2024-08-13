@@ -11,6 +11,7 @@ import {
 } from '../../record/record-field-resource-type/record-field-resource-type.component';
 import { RecordFieldLinksComponent } from '../../record/record-field-links/record-field-links.component';
 import { RecordFieldKeywordsComponent } from '../../record/record-field-keywords/record-field-keywords.component';
+import { UrlPlaceholderPipe } from '../../shared/url-placeholder.pipe';
 
 @Component({
   selector: 'g-search-results-table',
@@ -27,6 +28,7 @@ import { RecordFieldKeywordsComponent } from '../../record/record-field-keywords
     RecordFieldResourceTypeComponent,
     RecordFieldLinksComponent,
     RecordFieldKeywordsComponent,
+    UrlPlaceholderPipe,
   ],
 })
 export class SearchResultsTableComponent extends SearchBaseComponent {
@@ -50,14 +52,6 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
           this.fields()?.join(', ')
       );
     }
-  }
-
-  buildLandingPageLink(uuid: string) {
-    return (
-      this.landingPage()
-        ?.replace('${uuid}', uuid)
-        .replace('${apiUrl}', this.apiUrl()) || ''
-    );
   }
 
   constructor() {

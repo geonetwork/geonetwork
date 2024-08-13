@@ -1,8 +1,8 @@
 import { Directive, effect, inject, input, OnInit } from '@angular/core';
 import {
   DEFAULT_PAGE_SIZE,
-  DEFAULT_SORT,
   DEFAULT_SCORE,
+  DEFAULT_SORT,
   SearchStore,
 } from './search.state';
 import { SearchService } from './search.service';
@@ -31,6 +31,18 @@ export class SearchContextDirective implements OnInit {
     effect(
       () => {
         this.#apiConfiguration() && this.#searchStore.reset();
+      },
+      { allowSignalWrites: true }
+    );
+    effect(
+      () => {
+        this.filter() && this.#searchStore.setFilter(this.filter());
+      },
+      { allowSignalWrites: true }
+    );
+    effect(
+      () => {
+        this.size() && this.#searchStore.setPageSize(this.size());
       },
       { allowSignalWrites: true }
     );

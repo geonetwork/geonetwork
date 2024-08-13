@@ -79,6 +79,7 @@ export class SearchService {
         })
         .filter(clause => clause !== null);
 
+    console.log('filter', parameters.filter);
     let baseQuery: QueryDslQueryContainer = {
       bool: {
         must: [
@@ -91,6 +92,16 @@ export class SearchService {
         ],
       },
     };
+
+    if (parameters.filter != '' && baseQuery.bool) {
+      baseQuery.bool.filter = [
+        {
+          query_string: {
+            query: parameters.filter,
+          },
+        },
+      ];
+    }
 
     let finalQuery: QueryDslQueryContainer = baseQuery;
     if (parameters.functionScore) {
