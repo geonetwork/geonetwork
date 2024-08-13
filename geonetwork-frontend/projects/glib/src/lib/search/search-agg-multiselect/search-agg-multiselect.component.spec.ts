@@ -1,12 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchAggMultiselectComponent } from './search-agg-multiselect.component';
-import { ComponentRef, InjectionToken } from '@angular/core';
-import { SearchPagingComponent } from '../search-paging/search-paging.component';
-import {
-  SearchAggComponent,
-  SearchAggLayout,
-} from '../search-agg/search-agg.component';
+import { ComponentRef } from '@angular/core';
+import { SearchAggComponent } from '../search-agg/search-agg.component';
 import { SearchBaseComponent } from '../search-base/search-base.component';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';

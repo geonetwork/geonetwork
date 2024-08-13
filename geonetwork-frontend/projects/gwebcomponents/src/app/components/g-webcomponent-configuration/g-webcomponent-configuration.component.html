@@ -1,0 +1,18 @@
+<p-fieldset legend="Configure component" [toggleable]="true" collapsed="true">
+  <div class="flex gap-2">
+    <div class="w-full">
+      <p-floatLabel class="m-2">
+        <p-dropdown
+          styleClass="w-full mb-4"
+          [options]="apiUrlList()"
+          optionValue="url"
+          optionLabel="url"
+          [(ngModel)]="apiUrl"
+          inputId="apiUrl" />
+        <label for="apiUrl">Select a catalogue</label>
+      </p-floatLabel>
+
+      <ng-content />
+    </div>
+  </div>
+</p-fieldset>

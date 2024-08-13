@@ -1,4 +1,4 @@
-import { Component, effect, input, OnInit, signal } from '@angular/core';
+import { Component, effect, input, signal } from '@angular/core';
 import Papa from 'papaparse';
 import { TableModule } from 'primeng/table';
 

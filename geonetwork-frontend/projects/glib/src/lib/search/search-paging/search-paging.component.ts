@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SearchBaseComponent } from '../search-base/search-base.component';
 
