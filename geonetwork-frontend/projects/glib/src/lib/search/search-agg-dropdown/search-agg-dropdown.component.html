@@ -1,6 +1,6 @@
 <p-dropdown
   (onChange)="handleChange($event)"
-  [filter]="true"
+  [filter]="buckets().length > 10"
   [showClear]="true"
   filterBy="key"
   optionLabel="key"

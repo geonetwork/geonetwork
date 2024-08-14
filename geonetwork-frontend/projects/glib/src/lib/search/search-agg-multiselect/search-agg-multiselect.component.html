@@ -1,7 +1,7 @@
 <p-multiSelect
   (onChange)="handleMutliSelectChange($event)"
   (onClear)="handleMutliSelectClear()"
-  [filter]="true"
+  [filter]="buckets().length > 10"
   filterBy="key"
   display="chip"
   optionLabel="key"

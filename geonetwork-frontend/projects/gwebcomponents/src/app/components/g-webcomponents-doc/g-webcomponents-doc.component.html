@@ -18,9 +18,9 @@
 
       <g-webcomponents-doc-embed>
         <pre class="whitespace-pre-wrap">
-<![CDATA[<gc-data-results-table source="{{
+<![CDATA[<gc-data-results-table-component source="{{
             selectedSourceFile()
-          }}" class="w-full"></gc-data-results-table>
+          }}" class="w-full"></gc-data-results-table-component>
 ]]>
         </pre>
       </g-webcomponents-doc-embed>
@@ -33,23 +33,29 @@
       <div class="m-4">
         <g-webcomponent-configuration
           [(apiUrl)]="apiUrl"
-          [apiUrlList]="apiUrlList"
+          [(fullTextSearch)]="fullTextSearch"
           [(searchFilter)]="searchFilter"
-          [(pageSize)]="pageSize">
+          [(pageSize)]="pageSize"
+          [(selectionMode)]="selectionMode"
+          [(selectedFilters)]="selectedFilters">
         </g-webcomponent-configuration>
 
         <gc-search
-          [apiUrl]="apiUrl"
-          landingPage="${apiUrl}/records/${uuid}"
+          [api-url]="apiUrl"
+          [full-text-search]="fullTextSearch()"
+          landing-page="${apiUrl}/records/${uuid}"
           [filter]="searchFilter()"
-          [size]="pageSize()" />
+          [size]="pageSize()"
+          [list-of-filter]="listOfFilters()" />
 
         <g-webcomponents-doc-embed>
           <pre class="whitespace-pre-wrap">
-<![CDATA[ <gc-search
-          apiUrl="{{ apiUrl }}"
+<![CDATA[ <gc-search-component
+          api-url="{{ apiUrl }}"
+          full-text-search="{{ fullTextSearch() }}"
           filter="{{ searchFilter() }}"
           size="{{ pageSize() }}"
+          list-of-filter="{{ listOfFilters() }}"
         />
 ]]>
           </pre>
@@ -64,10 +70,11 @@
       <div class="mb-4">
         <g-webcomponent-configuration
           [(apiUrl)]="apiUrl"
-          [apiUrlList]="apiUrlList"
+          [(fullTextSearch)]="fullTextSearch"
           [(searchFilter)]="searchFilter"
-          [(pageSize)]="pageSize">
-
+          [(pageSize)]="pageSize"
+          [(selectionMode)]="selectionMode"
+          [(selectedFilters)]="selectedFilters">
           <div>
             <p-floatLabel class="m-2">
               <p-autoComplete
@@ -91,55 +98,37 @@
                 [(ngModel)]="listOfLabelsAsText" />
               <label for="tableColumn">Define column label</label>
             </p-floatLabel>
-
-            <p-floatLabel class="m-2">
-              <p-multiSelect
-                styleClass="w-full mb-4"
-                [options]="filterList"
-                [(ngModel)]="selectedFilters"
-                inputId="selectionMode" />
-              <label for="tableColumn">Define filters</label>
-            </p-floatLabel>
-
-            <p-floatLabel class="m-2">
-              <p-dropdown
-                styleClass="w-full mb-4"
-                [options]="selectionModeList"
-                optionValue="type"
-                optionLabel="label"
-                [(ngModel)]="selectionMode"
-                inputId="selectionMode" />
-              <label for="selectionMode">Selection mode</label>
-            </p-floatLabel>
           </div>
         </g-webcomponent-configuration>
       </div>
 
       <gc-search-results-table
-        [apiUrl]="apiUrl"
+        [api-url]="apiUrl"
+        [full-text-search]="fullTextSearch()"
         [filter]="searchFilter()"
         [size]="pageSize()"
-        [listOfLabels]="listOfLabelsAsText()"
-        [listOfFields]="listOfFieldsAsText()"
-        [listOfFilter]="listOfFilters()"
-        landingPage="${apiUrl}/records/${uuid}"
-        landingPageLinkOn="resourceTitleObject.default"
-        scrollHeight="80vh"
-        [selectionMode]="selectionMode" />
+        [list-of-label]="listOfLabelsAsText()"
+        [list-of-field]="listOfFieldsAsText()"
+        [list-of-filter]="listOfFilters()"
+        landing-page="${apiUrl}/records/${uuid}"
+        landing-page-link-on="resourceTitleObject.default"
+        scroll-height="80vh"
+        [selection-mode]="selectionMode" />
 
       <g-webcomponents-doc-embed>
         <pre class="whitespace-pre-wrap">
-<![CDATA[<gc-search-results-table
-          apiUrl="{{ apiUrl }}"
+<![CDATA[<gc-search-results-table-component
+          api-url="{{ apiUrl }}"
+          full-text-search="{{ fullTextSearch() }}"
           filter="{{ searchFilter() }}"
           size="{{ pageSize() }}"
-          listOfLabels="{{ listOfLabelsAsText() }}"
-          listOfFields="{{ listOfFieldsAsText() }}"
-          listOfFilter="{{ listOfFilters() }}"
-          landingPage="${apiUrl}/records/${uuid}"
-          landingPageLinkOn="resourceTitleObject.default"
-          scrollHeight="80vh"
-          selectionMode="{{ selectionMode }}" />
+          list-of-label="{{ listOfLabelsAsText() }}"
+          list-of-field="{{ listOfFieldsAsText() }}"
+          list-of-filter="{{ listOfFilters() }}"
+          landing-page="${apiUrl}/records/${uuid}"
+          landing-page-llink-on="resourceTitleObject.default"
+          scroll-height="80vh"
+          selection-mode="{{ selectionMode }}" />
 ]]>
         </pre>
       </g-webcomponents-doc-embed>

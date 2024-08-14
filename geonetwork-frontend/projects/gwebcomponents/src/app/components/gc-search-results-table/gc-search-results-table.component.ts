@@ -1,15 +1,13 @@
 import {
   Component,
-  inject,
   Input,
-  OnChanges,
-  OnInit,
   signal,
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { Configuration, DefaultConfig } from 'gapi';
-import { API_CONFIGURATION, DEFAULT_PAGE_SIZE, SearchAggLayout, SearchService } from 'glib';
+import { DefaultConfig } from 'gapi';
+import { API_CONFIGURATION, SearchAggLayout, SearchService } from 'glib';
+import { GcBaseSearchComponent } from '../gc-base-search-component';
 
 @Component({
   selector: 'gc-search-results-table',
@@ -21,58 +19,25 @@ import { API_CONFIGURATION, DEFAULT_PAGE_SIZE, SearchAggLayout, SearchService } 
     SearchService,
   ],
 })
-export class GcSearchResultsTableComponent implements OnInit, OnChanges {
-  @Input() apiUrl: string;
-  @Input() size = DEFAULT_PAGE_SIZE;
-  @Input() filter: string;
-  @Input() listOfFilter: string;
-  @Input() listOfFields: string;
-  @Input() listOfLabels: string;
-  @Input() landingPage: string;
-  @Input() landingPageLinkOn: string;
-  @Input() selectionMode: 'single' | 'multiple' | undefined;
-  @Input() scrollHeight: string;
-  @Input() searchId = Math.random().toString().slice(2, 5);
+export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
+  @Input({ alias: 'list-of-field' }) listOfField: string;
+  @Input({ alias: 'list-of-label' }) listOfLabel: string;
+  @Input({ alias: 'scroll-height' }) scrollHeight: string;
 
-  apiConfiguration = inject(API_CONFIGURATION);
-  currentFilter = signal<string>('');
-  currentSize = signal(DEFAULT_PAGE_SIZE);
-
-  filters = signal<string[]>([]);
   fields = signal<string[]>([]);
   labels = signal<string[]>([]);
 
-  #inputToField: Record<string, string>  = {
-    'listOfFilter': 'filters',
-    'listOfFields': 'fields',
-    'listOfLabels': 'labels'
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    Object.keys(changes).forEach(prop => {
-      if (prop == 'apiUrl') {
-        this.apiConfiguration.set(
-          new Configuration({ basePath: changes['apiUrl'].currentValue })
-        );
-      } else if (prop == 'filter') {
-        this['currentFilter'].set(changes[prop].currentValue);
-      } else if (prop == 'size') {
-        this['currentSize'].set(changes[prop].currentValue);
-      } else if (this.#inputToField[prop]) {
-        (this as any)[this.#inputToField[prop]].set(
-          changes[prop].currentValue.split(',')
-        );
-      }
-    });
-  }
-
-  ngOnInit() {
-    this.apiConfiguration.set(new Configuration({ basePath: this.apiUrl }));
-    this.currentFilter.set(this.filter);
-    this.currentSize.set(this.size);
-    this.listOfFilter && this.filters.set(this.listOfFilter.split(','));
-    this.listOfFields && this.fields.set(this.listOfFields.split(','));
-    this.listOfLabels && this.labels.set(this.listOfLabels.split(','));
+  override ngOnInit() {
+    super.ngOnInit();
+    this.inputToField = {
+      ...this.inputToField,
+      ...{
+        listOfField: 'fields',
+        listOfLabel: 'labels',
+      },
+    };
+    this.listOfField && this.fields.set(this.listOfField.split(','));
+    this.listOfLabel && this.labels.set(this.listOfLabel.split(','));
   }
 
   protected readonly SearchAggLayout = SearchAggLayout;

@@ -1,16 +1,23 @@
 @defer (on viewport) {
-  <ng-container gSearchContext="{{ searchId }}"
-                [size]="currentSize()"
-                [filter]="currentFilter()">
-    @if (filters()) {
-      <p-toolbar styleClass="flex justify-start gap-4">
-        @for (filter of filters(); track filter) {
-          <g-search-agg
-            [layout]="SearchAggLayout.DROPDOWN"
-            [aggregation]="filter"
-            [isLabelDisplayed]="false"
-            [scope]="searchId" />
+  <ng-container
+    gSearchContext="{{ searchId }}"
+    [size]="currentSize()"
+    [filter]="currentFilter()">
+    @if (fullTextSearchEnabled() || filters().length > 0) {
+      <p-toolbar styleClass="my-6"
+                 [style]="{'background-image': 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }">
+        @if (fullTextSearchEnabled()) {
+          <g-search-input [scope]="searchId" styleClass="my-4 w-full" />
         }
+        <div class="flex justify-start gap-4 m-w-full">
+          @for (filter of filters(); track filter) {
+            <g-search-agg
+              [layout]="SearchAggLayout.DROPDOWN"
+              [aggregation]="filter"
+              [isLabelDisplayed]="false"
+              [scope]="searchId" />
+          }
+        </div>
       </p-toolbar>
     }
     <g-search-results-table

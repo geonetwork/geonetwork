@@ -93,7 +93,7 @@ export class SearchService {
       },
     };
 
-    if (parameters.filter != '' && baseQuery.bool) {
+    if (parameters.filter && parameters.filter != '' && baseQuery.bool) {
       baseQuery.bool.filter = [
         {
           query_string: {

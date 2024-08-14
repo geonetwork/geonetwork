@@ -10,6 +10,41 @@ interface field {
   path: string;
   order: number;
 }
+export const API_URL_LIST = [
+  { url: 'https://metawal.wallonie.be/geonetwork/srv/api' },
+  { url: 'https://metadata.vlaanderen.be/srv/api' },
+  { url: 'https://www.nationaalgeoregister.nl/geonetwork/srv/api' },
+  { url: 'https://sextant.ifremer.fr/geonetwork/srv/api' },
+  { url: 'https://catalogue.ec.gc.ca/geonetwork/srv/api' },
+  { url: 'https://apps.titellus.net/geonetwork/srv/api' },
+  { url: 'https://www.geocatalogue.fr/geonetwork/srv/api' },
+  { url: 'http://localhost:8080/geonetwork/srv/api' },
+];
+
+export const SELECTION_MODE_LIST = [
+  { label: 'none', type: undefined },
+  { label: 'single', type: 'single' },
+  { label: 'multiple', type: 'multiple' },
+];
+
+export const FILTER_LIST = [
+  'OrgForResourceObject.default',
+  'custodianOrgForResourceObject.default',
+  'cl_topic.default',
+  'cl_status.default',
+  'cl_spatialRepresentationType.default',
+  'resolutionScaleDenominator',
+  'creationYearForResource',
+  'th_gemet.default',
+  'resourceType',
+  'isPublishedToAll',
+];
+
+export const CSV_SOURCE_FILE_LIST = [
+  'https://static.data.gouv.fr/resources/journees-europeennes-du-patrimoine/20160914-151814/Journees_europeennes_du_patrimoine_20160914.csv',
+  'https://www.odwb.be/api/explore/v2.1/catalog/datasets/pw_agenda/exports/csv?lang=fr&timezone=Europe%2FBrussels&use_labels=true&delimiter=,',
+  'https://www.data.gouv.fr/fr/datasets/r/ca621361-ec32-458a-8c40-e27bdcf58b16',
+];
 
 @Component({
   selector: 'g-webcomponents-doc',
@@ -19,35 +54,19 @@ interface field {
 export class GWebcomponentsDocComponent implements OnInit {
   webcomponentId = input('');
 
-  apiUrlList = [
-    { url: 'https://metawal.wallonie.be/geonetwork/srv/api' },
-    { url: 'http://localhost:8080/geonetwork/srv/api' },
-    { url: 'https://apps.titellus.net/geonetwork/srv/api' },
-    { url: 'https://www.nationaalgeoregister.nl/geonetwork/srv/api' },
-    { url: 'https://sextant.ifremer.fr/geonetwork/srv/api' },
-  ];
+  apiUrl = API_URL_LIST[0].url;
 
-  apiUrl = this.apiUrlList[0].url;
+  selectedSourceFile = signal(CSV_SOURCE_FILE_LIST[0]);
 
-  csvSourceFiles = [
-    'https://static.data.gouv.fr/resources/journees-europeennes-du-patrimoine/20160914-151814/Journees_europeennes_du_patrimoine_20160914.csv',
-    'https://www.odwb.be/api/explore/v2.1/catalog/datasets/pw_agenda/exports/csv?lang=fr&timezone=Europe%2FBrussels&use_labels=true&delimiter=,',
-    'https://www.data.gouv.fr/fr/datasets/r/ca621361-ec32-458a-8c40-e27bdcf58b16',
-  ];
-
-  selectedSourceFile = signal(this.csvSourceFiles[0]);
-
-  selectionModeList = [
-    { label: 'none', type: undefined },
-    { label: 'single', type: 'single' },
-    { label: 'multiple', type: 'multiple' },
-  ];
-  selectionMode = this.selectionModeList[0].type;
+  selectionMode = SELECTION_MODE_LIST[0].type;
 
   indexRecordProperties = Object.keys(GnIndexRecordToJSON({}));
 
-  searchFilter = signal('*');
+  fullTextSearch = signal(true);
+  searchFilter = signal('+isTemplate:n');
   pageSize = signal(15);
+
+  protected readonly csvSourceFiles = CSV_SOURCE_FILE_LIST;
 
   isArrayProperty(v: string) {
     const arrayProperties = ['overview'];
@@ -107,21 +126,13 @@ export class GWebcomponentsDocComponent implements OnInit {
       .join(',')
   );
 
-  filterList = [
+  selectedFilters = signal([
     'OrgForResourceObject.default',
-    'custodianOrgForResourceObject.default',
     'cl_topic.default',
     'cl_status.default',
-    'cl_spatialRepresentationType.default',
-    'resolutionScaleDenominator',
-    'creationYearForResource',
-    'th_gemet.default',
-    'resourceType',
-    'isPublishedToAll',
-  ];
-  selectedFilters = signal([this.filterList[0]]);
+  ]);
   listOfFilters = computed(() => {
-    return this.selectedFilters().join(',');
+    return this.selectedFilters() ? this.selectedFilters().join(',') : '';
   });
 
   autocompleteField(event: AutoCompleteCompleteEvent) {
