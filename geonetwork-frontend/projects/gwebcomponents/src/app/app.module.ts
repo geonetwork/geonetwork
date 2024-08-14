@@ -26,6 +26,7 @@ import { GWebcomponentsDocComponent } from './components/g-webcomponents-doc/g-w
 import { GWebcomponentsDocEmbedComponent } from './components/g-webcomponents-doc-embed/g-webcomponents-doc-embed.component';
 import { Button } from 'primeng/button';
 import { GWebcomponentConfigurationComponent } from './components/g-webcomponent-configuration/g-webcomponent-configuration.component';
+import { SliderModule } from 'primeng/slider';
 
 const CUSTOM_ELEMENTS = [
   {
@@ -70,6 +71,7 @@ const CUSTOM_ELEMENTS = [
     InputTextModule,
     AutoCompleteModule,
     Button,
+    SliderModule,
   ],
   bootstrap: [
     GcDataResultsTableComponent,

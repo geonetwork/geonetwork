@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, input, model, output, signal } from '@angular/core';
 
 @Component({
   selector: 'g-webcomponent-configuration',
@@ -8,4 +8,6 @@ import { Component, input, model, output } from '@angular/core';
 export class GWebcomponentConfigurationComponent {
   apiUrlList = input<string[]>();
   apiUrl = model<string>();
+  searchFilter = model<string>();
+  pageSize = model<number>();
 }

@@ -1,10 +1,9 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, input, OnInit, signal } from '@angular/core';
 import {
   AutoCompleteCompleteEvent,
   AutoCompleteSelectEvent,
 } from 'primeng/autocomplete';
 import { GnIndexRecordToJSON } from 'gapi';
-import { ActivatedRoute } from '@angular/router';
 
 interface field {
   label: string;
@@ -106,6 +105,23 @@ export class GWebcomponentsDocComponent implements OnInit {
       })
       .join(',')
   );
+
+  filterList = [
+    'OrgForResourceObject.default',
+    'custodianOrgForResourceObject.default',
+    'cl_topic.default',
+    'cl_status.default',
+    'cl_spatialRepresentationType.default',
+    'resolutionScaleDenominator',
+    'creationYearForResource',
+    'th_gemet.default',
+    'resourceType',
+    'isPublishedToAll',
+  ];
+  selectedFilters = signal([this.filterList[0]]);
+  listOfFilters = computed(() => {
+    return this.selectedFilters().join(',');
+  });
 
   autocompleteField(event: AutoCompleteCompleteEvent) {
     let query = event.query.split(',').at(-1)?.toLowerCase() || '';
