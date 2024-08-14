@@ -4,12 +4,12 @@
     [size]="currentSize()"
     [filter]="currentFilter()">
     @if (fullTextSearchEnabled() || filters().length > 0) {
-      <p-toolbar styleClass="my-6"
-                 [style]="{'background-image': 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }">
+      <div class="my-6 p-4 rounded-2xl"
+           [style]="{'background-image': 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }">
         @if (fullTextSearchEnabled()) {
           <g-search-input [scope]="searchId" styleClass="my-4 w-full" />
         }
-        <div class="flex justify-start gap-4 m-w-full">
+        <div class="flex flex-wrap justify-start gap-4 m-w-full">
           @for (filter of filters(); track filter) {
             <g-search-agg
               [layout]="SearchAggLayout.DROPDOWN"
@@ -18,7 +18,7 @@
               [scope]="searchId" />
           }
         </div>
-      </p-toolbar>
+      </div>
     }
     <g-search-results-table
       [scope]="searchId"
