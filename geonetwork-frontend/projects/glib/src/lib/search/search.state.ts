@@ -178,10 +178,10 @@ export const SearchStore = signalStore(
       const filter = store.filters()[field];
       return filter?.values[value];
     },
-    addFilter(newFilter: SearchFilter) {
+    addFilter(newFilter: SearchFilter, replaceFilter: boolean = false) {
       const filters = store.filters();
       const existingFilter = filters[newFilter.field];
-      if (existingFilter) {
+      if (existingFilter && !replaceFilter) {
         existingFilter.values = {
           ...existingFilter.values,
           ...newFilter.values,

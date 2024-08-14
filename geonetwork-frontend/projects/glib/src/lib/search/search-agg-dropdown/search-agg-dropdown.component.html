@@ -1,0 +1,20 @@
+<p-dropdown
+  (onChange)="handleChange($event)"
+  [filter]="true"
+  [showClear]="true"
+  filterBy="key"
+  optionLabel="key"
+  [options]="buckets()"
+  panelStyleClass="w-80"
+  placeholder="{{ field() }}"
+  scrollHeight="400px"
+  styleClass="w-80">
+  <ng-template let-bucket pTemplate="item">
+    <div class="flex align-items-center gap-2">
+      <g-search-agg-item-decorator
+        [aggregationConfig]="aggregationConfig()"
+        [bucket]="bucket" />
+      <div>{{ bucket.key }} ({{ bucket.doc_count }})</div>
+    </div>
+  </ng-template>
+</p-dropdown>
