@@ -15,6 +15,7 @@ import { SearchModule } from '../search.module';
 import { SearchAggMultiselectComponent } from '../search-agg-multiselect/search-agg-multiselect.component';
 import { SearchBaseComponent } from '../search-base/search-base.component';
 import { SearchAggSelectButtonComponent } from '../search-agg-selectbutton/search-agg-select-button.component';
+import { SearchAggDropdownComponent } from '../search-agg-dropdown/search-agg-dropdown.component';
 
 export enum SearchAggLayout {
   CHECKBOX = 'checkbox',
@@ -22,6 +23,7 @@ export enum SearchAggLayout {
   CHIP = 'chip',
   CARD = 'card',
   SELECT_BUTTON = 'selectbutton',
+  DROPDOWN = 'dropdown',
   MULTISELECT = 'multiselect',
 }
 
@@ -43,6 +45,7 @@ type SearchAggLayoutValues = keyof typeof SearchAggLayout;
     SearchModule,
     SearchAggMultiselectComponent,
     SearchAggSelectButtonComponent,
+    SearchAggDropdownComponent,
   ],
   templateUrl: './search-agg.component.html',
   styleUrl: './search-agg.component.css',
