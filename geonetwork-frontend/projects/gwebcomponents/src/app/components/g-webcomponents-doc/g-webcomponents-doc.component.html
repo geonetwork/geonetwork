@@ -33,24 +33,9 @@
       <div class="m-4">
         <g-webcomponent-configuration
           [(apiUrl)]="apiUrl"
-          [apiUrlList]="apiUrlList">
-          <p-floatLabel class="m-2">
-            <input
-              type="text"
-              class="w-full"
-              pInputText
-              [(ngModel)]="searchFilter" />
-            <label for="tableColumn">Search filter</label>
-          </p-floatLabel>
-
-          <p-floatLabel class="m-2">
-            <p-dropdown
-              styleClass="w-full mb-4"
-              [options]="[15, 30, 90]"
-              [(ngModel)]="pageSize"
-              inputId="pageSize" />
-            <label for="pageSize">Number of results</label>
-          </p-floatLabel>
+          [apiUrlList]="apiUrlList"
+          [(searchFilter)]="searchFilter"
+          [(pageSize)]="pageSize">
         </g-webcomponent-configuration>
 
         <gc-search
@@ -79,7 +64,10 @@
       <div class="mb-4">
         <g-webcomponent-configuration
           [(apiUrl)]="apiUrl"
-          [apiUrlList]="apiUrlList">
+          [apiUrlList]="apiUrlList"
+          [(searchFilter)]="searchFilter"
+          [(pageSize)]="pageSize">
+
           <div>
             <p-floatLabel class="m-2">
               <p-autoComplete
@@ -105,6 +93,15 @@
             </p-floatLabel>
 
             <p-floatLabel class="m-2">
+              <p-multiSelect
+                styleClass="w-full mb-4"
+                [options]="filterList"
+                [(ngModel)]="selectedFilters"
+                inputId="selectionMode" />
+              <label for="tableColumn">Define filters</label>
+            </p-floatLabel>
+
+            <p-floatLabel class="m-2">
               <p-dropdown
                 styleClass="w-full mb-4"
                 [options]="selectionModeList"
@@ -120,9 +117,11 @@
 
       <gc-search-results-table
         [apiUrl]="apiUrl"
+        [filter]="searchFilter()"
+        [size]="pageSize()"
         [listOfLabels]="listOfLabelsAsText()"
         [listOfFields]="listOfFieldsAsText()"
-        listOfFilter="OrgForResourceObject.default,cl_status.default,th_gemet.default"
+        [listOfFilter]="listOfFilters()"
         landingPage="${apiUrl}/records/${uuid}"
         landingPageLinkOn="resourceTitleObject.default"
         scrollHeight="80vh"
@@ -132,9 +131,11 @@
         <pre class="whitespace-pre-wrap">
 <![CDATA[<gc-search-results-table
           apiUrl="{{ apiUrl }}"
+          filter="{{ searchFilter() }}"
+          size="{{ pageSize() }}"
           listOfLabels="{{ listOfLabelsAsText() }}"
           listOfFields="{{ listOfFieldsAsText() }}"
-          listOfFilter="OrgForResourceObject.default,cl_status.default,th_gemet.default"
+          listOfFilter="{{ listOfFilters() }}"
           landingPage="${apiUrl}/records/${uuid}"
           landingPageLinkOn="resourceTitleObject.default"
           scrollHeight="80vh"

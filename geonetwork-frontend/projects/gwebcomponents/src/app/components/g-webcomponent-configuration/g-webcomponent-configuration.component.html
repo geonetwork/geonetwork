@@ -12,6 +12,25 @@
         <label for="apiUrl">Select a catalogue</label>
       </p-floatLabel>
 
+      <p-floatLabel class="m-2">
+        <input
+          type="text"
+          class="w-full"
+          pInputText
+          [(ngModel)]="searchFilter" />
+        <label for="tableColumn">Search filter</label>
+      </p-floatLabel>
+
+      <p-floatLabel class="m-2">
+        <!--<p-dropdown
+          styleClass="w-full mb-4"
+          [options]="[10, 15, 30, 90]"
+          [(ngModel)]="pageSize"
+          inputId="pageSize" />-->
+        <input type="text" pInputText [(ngModel)]="pageSize" class="w-full mb-10"/>
+        <label for="pageSize">Number of results</label>
+      </p-floatLabel>
+      <p-slider [(ngModel)]="pageSize" [min]="0" [max]="100" [step]="10" class="w-full" />
       <ng-content />
     </div>
   </div>
