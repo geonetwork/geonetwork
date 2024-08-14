@@ -69,7 +69,7 @@ export class SearchAggComponent extends SearchBaseComponent {
       case SearchAggLayout.MULTISELECT:
         return '';
       default:
-        return 'mb-6';
+        return 'my-2';
     }
   });
 

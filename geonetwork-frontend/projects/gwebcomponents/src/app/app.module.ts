@@ -27,6 +27,9 @@ import { GWebcomponentsDocEmbedComponent } from './components/g-webcomponents-do
 import { Button } from 'primeng/button';
 import { GWebcomponentConfigurationComponent } from './components/g-webcomponent-configuration/g-webcomponent-configuration.component';
 import { SliderModule } from 'primeng/slider';
+import { GcBaseComponent } from './components/gc-base-component';
+import { GcBaseSearchComponent } from './components/gc-base-search-component';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 const CUSTOM_ELEMENTS = [
   {
@@ -45,6 +48,8 @@ const CUSTOM_ELEMENTS = [
 
 @NgModule({
   declarations: [
+    GcBaseComponent,
+    GcBaseSearchComponent,
     GcDataResultsTableComponent,
     GcSearchComponent,
     GcSearchResultsTableComponent,
@@ -72,6 +77,7 @@ const CUSTOM_ELEMENTS = [
     AutoCompleteModule,
     Button,
     SliderModule,
+    InputSwitchModule,
   ],
   bootstrap: [
     GcDataResultsTableComponent,
@@ -90,6 +96,7 @@ export class AppModule {
     CUSTOM_ELEMENTS.forEach(({ component, selector }) => {
       const el = createCustomElement(component, { injector });
       customElements.define(selector, el);
+      console.log('Custom element created:', selector);
     });
   }
 
