@@ -31,6 +31,7 @@ export class GWebcomponentsDocComponent implements OnInit {
 
   csvSourceFiles = [
     'https://static.data.gouv.fr/resources/journees-europeennes-du-patrimoine/20160914-151814/Journees_europeennes_du_patrimoine_20160914.csv',
+    'https://www.odwb.be/api/explore/v2.1/catalog/datasets/pw_agenda/exports/csv?lang=fr&timezone=Europe%2FBrussels&use_labels=true&delimiter=,',
     'https://www.data.gouv.fr/fr/datasets/r/ca621361-ec32-458a-8c40-e27bdcf58b16',
   ];
 

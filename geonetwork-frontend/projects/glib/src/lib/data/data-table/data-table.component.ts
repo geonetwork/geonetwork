@@ -31,6 +31,7 @@ export class DataTableComponent {
 
     Papa.parse<Array<any>>(source, {
       download: true,
+      // delimitersToGuess: [';', ',', '\t', '|', Papa.RECORD_SEP, Papa.UNIT_SEP],
       // header: true,
       // dynamicTyping: true,
       complete: (results, file) => {
