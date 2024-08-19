@@ -7,9 +7,19 @@
 
       <div class="text-2x font-bold">Browse CSV file</div>
       <div class="m-4">
+        <p-floatLabel class="m-2">
         <p-dropdown
+          styleClass="w-full"
           [(ngModel)]="selectedSourceFile"
           [options]="csvSourceFiles" />
+          <label>Choose a sample file</label>
+        </p-floatLabel>
+
+        <p-floatLabel class="m-2">
+        <input type="text" pInputText [(ngModel)]="selectedSourceFile"
+                    class="w-full"/>
+          <label>CSV file URL</label>
+        </p-floatLabel>
       </div>
 
       <gc-data-results-table
