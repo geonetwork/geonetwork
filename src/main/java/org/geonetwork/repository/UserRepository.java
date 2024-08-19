@@ -16,5 +16,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   Optional<User> findOptionalByEmailAndAuthtypeIsNull(String email);
 
+  Optional<User> findOptionalByEmail(String email);
+
   Optional<User> findOptionalByUsernameOrEmailAndAuthtypeIsNull(String username, String email);
 }
