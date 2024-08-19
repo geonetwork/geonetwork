@@ -38,6 +38,7 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
 
   public static final String HIGHEST_PROFILE = "highest_profile";
   public static final String USER_ID = "user_id";
+  public static final String USER_NAME = "username";
   public static final String GN_AUTHORITY = "gn";
 
   @Setter @Getter private DatabaseUserAuthProperties checkUsernameOrEmail;
@@ -110,6 +111,7 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
     String mainUserProfile = user.get().getProfile().name();
     Map<String, Object> attributes = new HashMap<>(attributesToCast);
     attributes.put(USER_ID, user.get().getId());
+    attributes.put(USER_NAME, user.get().getUsername());
     attributes.put(HIGHEST_PROFILE, mainUserProfile);
     attributes.putIfAbsent(Profile.UserAdmin.name(), Collections.emptyList());
     attributes.putIfAbsent(Profile.Reviewer.name(), Collections.emptyList());
