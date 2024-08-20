@@ -6,20 +6,15 @@
 
 package org.geonetwork.security;
 
+import static org.geonetwork.security.GeoNetworkUserService.isUserFoundAndEnabled;
+
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.geonetwork.domain.Profile;
-import org.geonetwork.domain.Usergroup;
 import org.geonetwork.repository.UserRepository;
-import org.geonetwork.repository.UsergroupRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,18 +39,18 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
   @Setter @Getter private DatabaseUserAuthProperties checkUsernameOrEmail;
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
-  private final UsergroupRepository userGroupRepository;
+  private final GeoNetworkUserService geoNetworkUserService;
 
   public DatabaseUserDetailsService(
       @Value("${geonetwork.security.databaseUserAuthProperty: 'USERNAME_OR_EMAIL'}")
           DatabaseUserAuthProperties checkUsernameOrEmail,
       PasswordEncoder passwordEncoder,
-      UserRepository userRepository,
-      UsergroupRepository userGroupRepository) {
+      GeoNetworkUserService geoNetworkUserService,
+      UserRepository userRepository) {
     this.checkUsernameOrEmail = checkUsernameOrEmail;
     this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
-    this.userGroupRepository = userGroupRepository;
+    this.geoNetworkUserService = geoNetworkUserService;
   }
 
   @Override
@@ -91,39 +86,17 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
               userRepository.findOptionalByUsernameOrEmailAndAuthtypeIsNull(username, username);
         };
 
-    if (user.isEmpty()) {
-      throw new UsernameNotFoundException(username + " is not a valid username");
-    }
+    isUserFoundAndEnabled(username, user);
 
-    if ("n".equals(user.get().getIsenabled())) {
-      throw new UsernameNotFoundException(username + " account is disabled");
-    }
+    org.geonetwork.domain.User currentUser = user.get();
 
-    List<Usergroup> userGroups = userGroupRepository.findAllByUserid_Id(user.get().getId());
+    OAuth2UserAuthority authority = geoNetworkUserService.buildUserAuthority(user.get());
 
-    Map<String, List<Integer>> attributesToCast =
-        userGroups.stream()
-            .collect(
-                Collectors.groupingBy(
-                    ug -> Profile.values()[ug.getId().getProfile()].name(),
-                    Collectors.mapping(ug -> ug.getGroupid().getId(), Collectors.toList())));
-
-    String mainUserProfile = user.get().getProfile().name();
-    Map<String, Object> attributes = new HashMap<>(attributesToCast);
-    attributes.put(USER_ID, user.get().getId());
-    attributes.put(USER_NAME, user.get().getUsername());
-    attributes.put(HIGHEST_PROFILE, mainUserProfile);
-    attributes.putIfAbsent(Profile.UserAdmin.name(), Collections.emptyList());
-    attributes.putIfAbsent(Profile.Reviewer.name(), Collections.emptyList());
-    attributes.putIfAbsent(Profile.RegisteredUser.name(), Collections.emptyList());
-    attributes.putIfAbsent(Profile.Editor.name(), Collections.emptyList());
-
-    OAuth2UserAuthority authority = new OAuth2UserAuthority(GN_AUTHORITY, attributes);
-
-    return org.springframework.security.core.userdetails.User.withUsername(user.get().getUsername())
-        .password(user.get().getPassword())
+    return org.springframework.security.core.userdetails.User.withUsername(
+            currentUser.getUsername())
+        .password(currentUser.getPassword())
         .authorities(Collections.singletonList(authority))
-        .roles(mainUserProfile)
+        .roles(currentUser.getProfile().name())
         .build();
   }
 

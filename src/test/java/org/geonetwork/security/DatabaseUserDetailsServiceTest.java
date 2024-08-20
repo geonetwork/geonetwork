@@ -28,6 +28,10 @@ class DatabaseUserDetailsServiceTest {
 
   @Mock private UsergroupRepository userGroupRepository;
 
+  @SuppressWarnings("unused")
+  @Mock
+  private GeoNetworkUserService geoNetworkUserService;
+
   @InjectMocks private DatabaseUserDetailsService databaseUserDetailsService;
 
   @BeforeEach
@@ -62,7 +66,8 @@ class DatabaseUserDetailsServiceTest {
         UsernameNotFoundException.class,
         () -> {
           databaseUserDetailsService.retrieveUser("invalidUser", null);
-        });
+        },
+        "invalidUser is not a valid username");
   }
 
   @Test
@@ -78,7 +83,8 @@ class DatabaseUserDetailsServiceTest {
         UsernameNotFoundException.class,
         () -> {
           databaseUserDetailsService.retrieveUser("disabledUser", null);
-        });
+        },
+        "disabledUser account is disabled");
   }
 
   @Test
