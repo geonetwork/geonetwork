@@ -9,6 +9,7 @@ import static org.geonetwork.security.DatabaseUserDetailsService.USER_NAME;
 
 import java.util.Collections;
 import java.util.Map;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,16 +24,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Me API. */
 @RestController
-@RequestMapping("/api/me")
+@RequestMapping("/api")
+@AllArgsConstructor
 public class MeApi {
+  JwtService jwtService;
+
+  @GetMapping("/token")
+  @PreAuthorize("authenticated")
+  public String getToken(Authentication authentication) {
+    String token = jwtService.generateToken(authentication);
+    return token;
+  }
 
   /** Get user details. */
-  @GetMapping()
+  @GetMapping("/me")
   @PreAuthorize("permitAll")
   public ResponseEntity<Map<String, Object>> user(
-      @AuthenticationPrincipal AuthenticationPrincipal principal,
-      Authentication authentication,
-      @AuthenticationPrincipal UserDetails userDetails) {
+      Authentication authentication, @AuthenticationPrincipal UserDetails userDetails) {
     String userName = "";
     if (authentication instanceof OAuth2AuthenticationToken) {
       userName =

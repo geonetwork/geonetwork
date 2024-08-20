@@ -6,6 +6,10 @@
 
 package org.geonetwork.config;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import javax.crypto.spec.SecretKeySpec;
 import org.geonetwork.proxy.HttpProxyPolicyAgentAuthorizationManager;
 import org.geonetwork.repository.UserRepository;
 import org.geonetwork.security.DatabaseUserAuthProperties;
@@ -16,12 +20,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -55,6 +66,7 @@ public class WebSecurityConfiguration {
                         userInfo ->
                             userInfo.userAuthoritiesMapper(
                                 oauthAuthoritiesMapperService.userOauthAuthoritiesMapper())))
+        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
         .formLogin(
             form ->
                 form.loginPage("/signin")
@@ -75,6 +87,9 @@ public class WebSecurityConfiguration {
                     .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
                     .logoutSuccessUrl("/"));
 
+    //    http.sessionManagement(
+    //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
     return http.build();
   }
 
@@ -83,6 +98,19 @@ public class WebSecurityConfiguration {
   public PasswordEncoder passwordEncoder(
       @Value("${geonetwork.security.passwordSalt}") String salt) {
     return new StandardPasswordEncoder(salt);
+  }
+
+  @Bean
+  public JwtDecoder jwtDecoder(@Value("${geonetwork.security.jwt.key}") String jwtKey) {
+    SecretKeySpec secretKey =
+        new SecretKeySpec(
+            jwtKey.getBytes(UTF_8), 0, jwtKey.getBytes(UTF_8).length, "RSA");
+    return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
+  }
+
+  @Bean
+  public JwtEncoder jwtEncoder(@Value("${geonetwork.security.jwt.key}") String jwtKey) {
+    return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getBytes(UTF_8)));
   }
 
   @Bean
