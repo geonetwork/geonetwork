@@ -24,6 +24,8 @@ public class SearchUtils {
     final Query existingQuery = request.query();
     Query filterQuery = QueryBuilders.term(t -> t.field("isTemplate").value("n"));
     // TODO: Add user permissions to filterQuery
+    //    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
     Query queryWithPermission;
     if (StringUtils.isNotEmpty(request.q())) {
       queryWithPermission =
