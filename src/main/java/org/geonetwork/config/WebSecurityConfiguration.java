@@ -24,7 +24,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
@@ -103,8 +102,7 @@ public class WebSecurityConfiguration {
   @Bean
   public JwtDecoder jwtDecoder(@Value("${geonetwork.security.jwt.key}") String jwtKey) {
     SecretKeySpec secretKey =
-        new SecretKeySpec(
-            jwtKey.getBytes(UTF_8), 0, jwtKey.getBytes(UTF_8).length, "RSA");
+        new SecretKeySpec(jwtKey.getBytes(UTF_8), 0, jwtKey.getBytes(UTF_8).length, "RSA");
     return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
   }
 

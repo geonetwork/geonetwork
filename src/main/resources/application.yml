@@ -54,13 +54,13 @@ spring:
     open-in-view: false
 #    database-platform: org.hibernate.dialect.PostgreSQLDialect
     database-platform: org.hibernate.dialect.H2Dialect
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          github:
-#            clientId: github-client-id
-#            clientSecret: github-client-secret
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: github-client-id
+            clientSecret: github-client-secret
 #          custom:
 #            client-id: custom-client-id
 #            client-secret: custom-client-secret
