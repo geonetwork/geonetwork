@@ -39,13 +39,51 @@
       color: #666;
     }
   </style>
+
+  <script
+    src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+    integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+    crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    fetch('/api/me')
+      .then((response) => response.json())
+      .then((data) => {
+        $('#user').html(data.username);
+        $('.unauthenticated').hide();
+        $('.authenticated').show();
+      });
+  </script>
+
 </head>
 <body>
 <div class="container">
   <h1>Sign in to GeoNetwork</h1>
   <p>Your gateway to all your data, maps, services and more!</p>
 
-  <a href="home">Home</a>
+  <div class="container authenticated" style="display:none">
+    Logged in as: <span id="user"></span>
+
+    <form th:action="@{/api/user/signout}">
+      <input type="submit" value="Sign Out" />
+    </form>
+  </div>
+
+  <div class="container unauthenticated">
+    Sign in with Geonetwork
+    <div>
+      <form th:action="@{/api/user/signin}" method="post">
+        <div><label> User Name : <input type="text" name="username" /> </label></div>
+        <div><label> Password: <input type="password" name="password" /> </label></div>
+        <div><input type="submit" value="Sign In" /></div>
+      </form>
+    </div>
+    <br/>
+    or with
+    <a href="/oauth2/authorization/github">GitHub</a>
+    <br/>
+    <a href="/oauth2/authorization/custom">Custom provider</a>
+  </div>
   <div>
     <div th:if="${param.error}">
       Invalid username and password.
@@ -53,12 +91,6 @@
     <div th:if="${param.logout}">
       You have been logged out.
     </div>
-
-    <form th:action="@{/api/user/signin}" method="post">
-      <div><label> User Name : <input type="text" name="username" /> </label></div>
-      <div><label> Password: <input type="password" name="password" /> </label></div>
-      <div><input type="submit" value="Sign In" /></div>
-    </form>
   </div>
 </div>
 </body>
