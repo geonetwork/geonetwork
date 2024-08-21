@@ -70,7 +70,7 @@ public class WebSecurityConfiguration {
             form ->
                 form.loginPage("/signin")
                     .loginProcessingUrl("/api/user/signin")
-                    .defaultSuccessUrl("/home", true)
+                    .defaultSuccessUrl("/signin", true)
                     .permitAll())
         .httpBasic(
             basic ->
@@ -84,7 +84,7 @@ public class WebSecurityConfiguration {
             logout ->
                 logout
                     .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
-                    .logoutSuccessUrl("/"));
+                    .logoutSuccessUrl("/signin"));
 
     //    http.sessionManagement(
     //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
