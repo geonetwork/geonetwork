@@ -1,6 +1,7 @@
 import { Component, model } from '@angular/core';
 import {
-  API_URL_LIST, CSV_SOURCE_FILE_LIST,
+  API_URL_LIST,
+  CSV_SOURCE_FILE_LIST,
   FILTER_LIST,
   SELECTION_MODE_LIST,
 } from '../g-webcomponents-doc/g-webcomponents-doc.component';
