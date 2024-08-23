@@ -18,10 +18,12 @@ export * from './lib/search/search-aggs-container/search-aggs-container.componen
 export * from './lib/search/search-results/search-results.component';
 export * from './lib/search/search-results-table/search-results-table.component';
 export * from './lib/search/search-results-timeline/search-results-timeline.component';
+export * from './lib/search/search-results-carousel/search-results-carousel.component';
 export * from './lib/search/search-results-error/search-results-error.component';
 export * from './lib/search/search-input/search-input.component';
 export * from './lib/search/search-paging/search-paging.component';
 export * from './lib/search/search-paging-more-button/search-paging-more-button.component';
+export * from './lib/search/search-results-first-overview-as-background.directive';
 export * from './lib/search/search.module';
 export * from './lib/search/search.service';
 export * from './lib/search/search.state.model';

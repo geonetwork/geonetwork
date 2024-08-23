@@ -58,7 +58,7 @@ export class GcBaseSearchComponent extends GcBaseComponent {
         this['currentFilter'].set(changes[prop].currentValue);
       } else if (prop == 'size') {
         this['currentSize'].set(changes[prop].currentValue);
-      }  else if (prop == 'fullTextSearch') {
+      } else if (prop == 'fullTextSearch') {
         this.fullTextSearchEnabled.set(changes[prop].currentValue);
       } else if (this.inputToField[prop]) {
         (this as any)[this.inputToField[prop]].set(
