@@ -6,6 +6,12 @@
 
 package org.geonetwork.config;
 
+<<<<<<< HEAD:src/apps/geonetwork/src/main/java/org/geonetwork/config/WebSecurityConfiguration.java
+=======
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.springframework.security.config.Customizer.withDefaults;
+
+>>>>>>> b99f02c (feat(security): Disable CSRF to allow POST request to GN4.):src/main/java/org/geonetwork/config/WebSecurityConfiguration.java
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import javax.crypto.spec.SecretKeySpec;
@@ -19,7 +25,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,52 +46,51 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfiguration {
 
   @Bean
-  public SecurityFilterChain securityFilterChain(
-    HttpSecurity http,
-    HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
-    OauthAuthoritiesMapperService oauthAuthoritiesMapperService)
-    throws Exception {
+  public SecurityFilterChain securityFilterChain(      HttpSecurity http,
+      HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
+      OauthAuthoritiesMapperService oauthAuthoritiesMapperService)
+      throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
-      .authorizeHttpRequests(
-        requests ->
-          requests
-            .requestMatchers("/", "/home", "/signin")
-            .permitAll()
-            .requestMatchers("/geonetwork/**")
-            .permitAll()
-            .requestMatchers("/api/proxy")
-            .access(proxyPolicyAgentAuthorizationManager)
-            .anyRequest()
-            .permitAll())
-      .oauth2Login(
-        oauth ->
-          oauth
-            .permitAll()
-            .userInfoEndpoint(
-              userInfo ->
-                userInfo.userAuthoritiesMapper(
-                  oauthAuthoritiesMapperService.userOauthAuthoritiesMapper())))
-      .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-      .formLogin(
-        form ->
-          form.loginPage("/signin")
-            .loginProcessingUrl("/api/user/signin")
-            .defaultSuccessUrl("/signin", true)
-            .permitAll())
-      .httpBasic(
-        basic ->
-          // No popup in browsers
-          basic.authenticationEntryPoint(
-            (request, response, authException) ->
-              response.sendError(
-                HttpStatus.UNAUTHORIZED.value(),
-                HttpStatus.UNAUTHORIZED.getReasonPhrase())))
-      .logout(
-        logout ->
-          logout
-            .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
-            .logoutSuccessUrl("/signin"));
-        .csrf(csrf -> csrf.disable());
+        .authorizeHttpRequests(
+            requests ->
+                requests
+                    .requestMatchers("/", "/home", "/signin")
+                    .permitAll()
+                    .requestMatchers("/geonetwork/**")
+                    .permitAll()
+                    .requestMatchers("/api/proxy")
+                    .access(proxyPolicyAgentAuthorizationManager)
+                    .anyRequest()
+                    .permitAll())
+        .oauth2Login(
+            oauth ->
+                oauth
+                    .permitAll()
+                    .userInfoEndpoint(
+                        userInfo ->
+                            userInfo.userAuthoritiesMapper(
+                                oauthAuthoritiesMapperService.userOauthAuthoritiesMapper())))
+        .oauth2ResourceServer((oauth2) -> oauth2.jwt(withDefaults()))
+        .formLogin(
+            form ->
+                form.loginPage("/signin")
+                    .loginProcessingUrl("/api/user/signin")
+                    .defaultSuccessUrl("/signin", true)
+                    .permitAll())
+        .httpBasic(
+            basic ->
+                // No popup in browsers
+                basic.authenticationEntryPoint(
+                    (request, response, authException) ->
+                        response.sendError(
+                            HttpStatus.UNAUTHORIZED.value(),
+                            HttpStatus.UNAUTHORIZED.getReasonPhrase())))
+        .logout(
+            logout ->
+                logout
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
+                    .logoutSuccessUrl("/signin"));
+
     //    http.sessionManagement(
     //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
