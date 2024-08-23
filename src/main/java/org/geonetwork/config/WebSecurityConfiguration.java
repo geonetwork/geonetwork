@@ -7,6 +7,7 @@
 package org.geonetwork.config;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,10 +21,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
@@ -46,7 +47,8 @@ public class WebSecurityConfiguration {
       HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
       OauthAuthoritiesMapperService oauthAuthoritiesMapperService)
       throws Exception {
-    http.authorizeHttpRequests(
+    http.csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(
             requests ->
                 requests
                     .requestMatchers("/", "/home", "/signin")
@@ -65,7 +67,7 @@ public class WebSecurityConfiguration {
                         userInfo ->
                             userInfo.userAuthoritiesMapper(
                                 oauthAuthoritiesMapperService.userOauthAuthoritiesMapper())))
-        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+        .oauth2ResourceServer((oauth2) -> oauth2.jwt(withDefaults()))
         .formLogin(
             form ->
                 form.loginPage("/signin")
