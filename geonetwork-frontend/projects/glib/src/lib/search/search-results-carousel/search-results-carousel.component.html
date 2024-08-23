@@ -1,0 +1,14 @@
+@if (search) {
+  <g-search-results-error [error]="search.error()" />
+  @if (search.response(); as response) {
+    <p-carousel
+      [value]="response.hits.hits"
+      [numVisible]="numVisible()"
+      [numScroll]="numScroll()"
+      [contentClass]="">
+      <ng-template pTemplate="item" let-hit>
+        <g-record-view-card [hit]="hit" styleClass="mx-4" />
+      </ng-template>
+    </p-carousel>
+  }
+}

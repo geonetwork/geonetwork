@@ -4,8 +4,12 @@
     [size]="currentSize()"
     [filter]="currentFilter()">
     @if (fullTextSearchEnabled() || filters().length > 0) {
-      <div class="my-6 p-4 rounded-2xl"
-                 [style]="{'background-image': 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }">
+      <div
+        class="my-6 p-4 rounded-2xl"
+        [style]="{
+          'background-image':
+            'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))',
+        }">
         @if (fullTextSearchEnabled()) {
           <g-search-input [scope]="searchId" styleClass="my-4 w-full" />
         }

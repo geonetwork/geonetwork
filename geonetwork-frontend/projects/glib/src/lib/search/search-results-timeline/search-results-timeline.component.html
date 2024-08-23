@@ -12,7 +12,9 @@
         </span>
       </ng-template>
       <ng-template pTemplate="content" let-hit>
-        <g-record-view-card [hit]="hit" />
+        <div class="mb-8">
+          <g-record-view-card [hit]="hit" />
+        </div>
       </ng-template>
     </p-timeline>
   }

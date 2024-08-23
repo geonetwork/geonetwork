@@ -29,4 +29,5 @@ export class RecordViewCardComponent {
   landingPage = input<string>();
   landingPageLinkPath = input<string>();
   landingPageLabel = input<string>('Read more');
+  styleClass = input<string>('');
 }
