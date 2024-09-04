@@ -9,7 +9,7 @@
     <g-search-results-timeline scope="highlights" />
   </div>
 
-  <div class="p-4 w-1/3 border-r-2">
+  <div class="p-4 w-1/3 border-r-2 has-[g-search-agg:empty]:hidden">
     <h1 class="text-4xl mb-4">Topics</h1>
 
     <g-search-agg
@@ -18,7 +18,7 @@
       scope="main" />
   </div>
 
-  <div class="p-4 w-1/3">
+  <div class="p-4 w-1/3 has-[g-search-agg:empty]:hidden">
     <h1 class="text-4xl mb-4">Numbers</h1>
 
     <g-search-agg
@@ -29,17 +29,17 @@
   </div>
 </div>
 
-@for(infoPanel of uiConfiguration?.mods?.home.info; track $index) {
+@for (infoPanel of uiConfiguration?.mods?.home.info; track $index) {
   @switch (infoPanel.type) {
     @case ('search') {
       <div
         class="w-screen"
-        gSearchContext="highlights-{{$index}}"
+        gSearchContext="highlights-{{ $index }}"
         [size]="getSize(infoPanel.params)"
         [sort]="getSort(infoPanel.params)">
         <div
           class="my-8 p-8 text-white bg-gray-800 bg-blend-overlay"
-          gSearchResultsFirstOverviewAsBackground="highlights-{{$index}}">
+          gSearchResultsFirstOverviewAsBackground="highlights-{{ $index }}">
           <h1 class="font-bold text-3xl mb-8">
             {{ infoPanel.title }}
           </h1>
@@ -48,18 +48,17 @@
               {{ infoPanel.description }}
             </p>
           }
-          <g-search-results-carousel scope="highlights-{{$index}}" />
+          <p-carousel g-search-results-layout="" />
+          <g-search-results-carousel
+            scope="highlights-{{ $index }}"
+            [numVisible]="4" />
         </div>
       </div>
     }
     @case ('Comments') {
-      <div
-        class="w-screen">
-        <div
-          class="my-8 p-8 text-white bg-gray-800 bg-blend-overlay">
-          <h1 class="font-bold text-3xl mb-8">
-            Comments
-          </h1>
+      <div class="w-screen">
+        <div class="my-8 p-8 text-white bg-gray-800 bg-blend-overlay">
+          <h1 class="font-bold text-3xl mb-8">Comments</h1>
         </div>
       </div>
     }

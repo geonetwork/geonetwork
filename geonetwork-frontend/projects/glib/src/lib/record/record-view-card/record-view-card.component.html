@@ -9,10 +9,10 @@
     <div>
       <div
         class="text-2xl font-semibold line-clamp-1 break-all"
-        title="{{ hit._source.resourceTitleObject.default }}&#013;{{
-          hit._source.resourceAbstractObject.default
+        title="{{ hit._source.resourceTitleObject?.default }}&#013;{{
+          hit._source.resourceAbstractObject?.default
         }}">
-        {{ hit._source.resourceTitleObject.default }}
+        {{ hit._source.resourceTitleObject?.default }}
       </div>
 
       <span title="Record updated">{{ hit._source.dateStamp | date }}</span>

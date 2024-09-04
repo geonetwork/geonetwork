@@ -16,6 +16,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app/app.routes';
 import { environment } from './environments/environment';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
 
 if (environment.production) {
   enableProdMode();
@@ -35,6 +36,7 @@ loadAppConfig(environment).then((config: any) => {
       provideExperimentalZonelessChangeDetection(),
       provideRouter(routes),
       provideAnimations(),
+      provideHttpClient(),
     ],
   };
 
