@@ -1,15 +1,18 @@
 import { Component, inject } from '@angular/core';
 import {
-  APPLICATION_CONFIGURATION, DEFAULT_PAGE_SIZE,
+  APPLICATION_CONFIGURATION,
+  DEFAULT_PAGE_SIZE,
   SearchAggComponent,
   SearchAggLayout,
   SearchContextDirective,
   SearchResultsCarouselComponent,
   SearchResultsFirstOverviewAsBackgroundDirective,
+  SearchResultsLayoutDirective,
   SearchResultsTimelineComponent,
 } from 'glib';
 import { Params } from '../../../../../gapi/src/lib/ui-settings';
 import { Sort } from '@elastic/elasticsearch/lib/api/types';
+import { CarouselModule } from 'primeng/carousel';
 
 @Component({
   selector: 'gn-home-page',
@@ -21,7 +24,9 @@ import { Sort } from '@elastic/elasticsearch/lib/api/types';
     SearchAggComponent,
     SearchResultsTimelineComponent,
     SearchResultsCarouselComponent,
+    SearchResultsLayoutDirective,
     SearchResultsFirstOverviewAsBackgroundDirective,
+    CarouselModule,
   ],
 })
 export class HomePageComponent {
