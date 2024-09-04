@@ -11,8 +11,8 @@
       "name": "GPL 2.0",
       "url": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html"
     },
-    "title": "GeoNetwork 4.4.5 OpenAPI Documentation",
-    "version": "4.4.5"
+    "title": "GeoNetwork 4.4.6 OpenAPI Documentation",
+    "version": "4.4.6"
   },
   "externalDocs": {
     "description": "Learn how to access the catalog using the GeoNetwork REST API.",
@@ -38,12 +38,12 @@
   ],
   "tags": [
     {
-      "description": "Catalog operations",
-      "name": "site"
-    },
-    {
       "description": "Standard related operations",
       "name": "standards"
+    },
+    {
+      "description": "Catalog operations",
+      "name": "site"
     },
     {
       "description": "Mapservices related operations",
@@ -110,12 +110,12 @@
       "name": "translationproviders"
     },
     {
-      "description": "Functionalities for custom styling",
-      "name": "customstyle"
-    },
-    {
       "description": "Formatter operations",
       "name": "formatters"
+    },
+    {
+      "description": "Functionalities for custom styling",
+      "name": "customstyle"
     },
     {
       "description": "Processing operations",
@@ -138,28 +138,28 @@
       "name": "mapservers"
     },
     {
-      "description": "User selections related operations",
-      "name": "userselections"
-    },
-    {
       "description": "Logos operations",
       "name": "logos"
     },
     {
-      "description": "Me operations",
-      "name": "me"
+      "description": "User selections related operations",
+      "name": "userselections"
     },
     {
       "description": "Identifiers operations",
       "name": "identifiers"
     },
     {
-      "description": "User custom searches operations",
-      "name": "usersearches"
+      "description": "Me operations",
+      "name": "me"
     },
     {
       "description": "Regions operations",
       "name": "regions"
+    },
+    {
+      "description": "User custom searches operations",
+      "name": "usersearches"
     },
     {
       "description": "User interface configuration operations",
@@ -212,7 +212,6 @@
             "description": "Feeds."
           },
           "204": {
-            "content": {},
             "description": "Not authenticated."
           }
         },
@@ -240,7 +239,6 @@
             "description": "Feeds."
           },
           "204": {
-            "content": {},
             "description": "Not authenticated."
           }
         },
@@ -287,7 +285,6 @@
             "description": "Get a data file related to dataset"
           },
           "204": {
-            "content": {},
             "description": "Not authenticated."
           }
         },
@@ -327,18 +324,6 @@
             "description": "Get a list of feeds."
           },
           "204": {
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "text/html": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
             "description": "Not authenticated."
           }
         },
@@ -362,13 +347,6 @@
             "description": "Scan completed."
           },
           "204": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
             "description": "Not authenticated."
           }
         },
@@ -1309,83 +1287,6 @@
         ],
         "responses": {
           "204": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "enum": [
-                    "CONTINUE",
-                    "SWITCHING_PROTOCOLS",
-                    "PROCESSING",
-                    "CHECKPOINT",
-                    "OK",
-                    "CREATED",
-                    "ACCEPTED",
-                    "NON_AUTHORITATIVE_INFORMATION",
-                    "NO_CONTENT",
-                    "RESET_CONTENT",
-                    "PARTIAL_CONTENT",
-                    "MULTI_STATUS",
-                    "ALREADY_REPORTED",
-                    "IM_USED",
-                    "MULTIPLE_CHOICES",
-                    "MOVED_PERMANENTLY",
-                    "FOUND",
-                    "MOVED_TEMPORARILY",
-                    "SEE_OTHER",
-                    "NOT_MODIFIED",
-                    "USE_PROXY",
-                    "TEMPORARY_REDIRECT",
-                    "PERMANENT_REDIRECT",
-                    "BAD_REQUEST",
-                    "UNAUTHORIZED",
-                    "PAYMENT_REQUIRED",
-                    "FORBIDDEN",
-                    "NOT_FOUND",
-                    "METHOD_NOT_ALLOWED",
-                    "NOT_ACCEPTABLE",
-                    "PROXY_AUTHENTICATION_REQUIRED",
-                    "REQUEST_TIMEOUT",
-                    "CONFLICT",
-                    "GONE",
-                    "LENGTH_REQUIRED",
-                    "PRECONDITION_FAILED",
-                    "PAYLOAD_TOO_LARGE",
-                    "REQUEST_ENTITY_TOO_LARGE",
-                    "URI_TOO_LONG",
-                    "REQUEST_URI_TOO_LONG",
-                    "UNSUPPORTED_MEDIA_TYPE",
-                    "REQUESTED_RANGE_NOT_SATISFIABLE",
-                    "EXPECTATION_FAILED",
-                    "I_AM_A_TEAPOT",
-                    "INSUFFICIENT_SPACE_ON_RESOURCE",
-                    "METHOD_FAILURE",
-                    "DESTINATION_LOCKED",
-                    "UNPROCESSABLE_ENTITY",
-                    "LOCKED",
-                    "FAILED_DEPENDENCY",
-                    "TOO_EARLY",
-                    "UPGRADE_REQUIRED",
-                    "PRECONDITION_REQUIRED",
-                    "TOO_MANY_REQUESTS",
-                    "REQUEST_HEADER_FIELDS_TOO_LARGE",
-                    "UNAVAILABLE_FOR_LEGAL_REASONS",
-                    "INTERNAL_SERVER_ERROR",
-                    "NOT_IMPLEMENTED",
-                    "BAD_GATEWAY",
-                    "SERVICE_UNAVAILABLE",
-                    "GATEWAY_TIMEOUT",
-                    "HTTP_VERSION_NOT_SUPPORTED",
-                    "VARIANT_ALSO_NEGOTIATES",
-                    "INSUFFICIENT_STORAGE",
-                    "LOOP_DETECTED",
-                    "BANDWIDTH_LIMIT_EXCEEDED",
-                    "NOT_EXTENDED",
-                    "NETWORK_AUTHENTICATION_REQUIRED"
-                  ]
-                }
-              }
-            },
             "description": "Harvester records transfered to new source."
           },
           "403": {
@@ -2746,13 +2647,6 @@
             "description": "Authenticated. Return user details."
           },
           "204": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MeResponse"
-                }
-              }
-            },
             "description": "Not authenticated."
           }
         },
@@ -3534,7 +3428,7 @@
     },
     "/processes/reports": {
       "delete": {
-        "operationId": "delete",
+        "operationId": "deleteProcessReport",
         "responses": {
           "204": {
             "description": "Report registry cleared."
@@ -4612,6 +4506,15 @@
             }
           },
           {
+            "in": "query",
+            "name": "language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "eng"
+            }
+          },
+          {
             "description": "XPath pointing to the XML element to loop on.",
             "example": "Use . for the metadata, .//gmd:CI_ResponsibleParty for all contacts in ISO19139, .//gmd:transferOptions/*/gmd:onLine/* for all online resources in ISO19139.",
             "in": "query",
@@ -5508,6 +5411,15 @@
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "eng"
             }
           }
         ],
@@ -6761,7 +6673,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "User feedback"
+              "default": "feedback_subject_userFeedback"
             }
           },
           {
@@ -7447,13 +7359,6 @@
         ],
         "responses": {
           "204": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "DOI unregistered."
           },
           "403": {
@@ -8203,6 +8108,15 @@
               "type": "string",
               "default": "0,0,0,255"
             }
+          },
+          {
+            "in": "query",
+            "name": "approved",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
@@ -8308,6 +8222,15 @@
             "schema": {
               "type": "string",
               "default": "0,0,0,255"
+            }
+          },
+          {
+            "in": "query",
+            "name": "approved",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
             }
           }
         ],
@@ -13443,6 +13366,73 @@
         "tags": ["site"]
       }
     },
+    "/site/userfeedback": {
+      "post": {
+        "operationId": "sendApplicationUserFeedback",
+        "parameters": [
+          {
+            "description": "Recaptcha validation key.",
+            "in": "query",
+            "name": "recaptcha",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "description": "User name.",
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "User organisation.",
+            "in": "query",
+            "name": "org",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "User email address.",
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "A comment or question.",
+            "in": "query",
+            "name": "comments",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Created"
+          }
+        },
+        "summary": "Send an email to catalogue administrator with feedback about the application",
+        "tags": ["site"]
+      }
+    },
     "/sitemap": {
       "get": {
         "operationId": "getSitemap",
@@ -13571,13 +13561,6 @@
         ],
         "responses": {
           "204": {
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "Source deleted."
           },
           "403": {
@@ -13619,13 +13602,6 @@
         },
         "responses": {
           "204": {
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "Source updated."
           },
           "403": {
@@ -14252,13 +14228,6 @@
         ],
         "responses": {
           "204": {
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "Tag removed."
           },
           "403": {
@@ -14330,13 +14299,6 @@
         },
         "responses": {
           "204": {
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "Tag updated."
           },
           "403": {
@@ -14645,13 +14607,6 @@
         ],
         "responses": {
           "204": {
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "UI Configuration removed."
           },
           "403": {
@@ -14731,13 +14686,6 @@
         },
         "responses": {
           "204": {
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "UI configuration updated."
           },
           "403": {
@@ -14970,13 +14918,6 @@
         ],
         "responses": {
           "204": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "User feedback removed."
           },
           "403": {
@@ -15039,13 +14980,6 @@
         ],
         "responses": {
           "204": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "User feedback published."
           },
           "403": {
@@ -16040,13 +15974,6 @@
         ],
         "responses": {
           "204": {
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "Selection removed."
           },
           "403": {
@@ -16099,13 +16026,6 @@
         },
         "responses": {
           "204": {
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "Selection updated."
           },
           "403": {
@@ -16172,13 +16092,6 @@
         ],
         "responses": {
           "204": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "Items removed from a set."
           },
           "403": {
@@ -20014,6 +19927,9 @@
             "type": "string"
           },
           "email": {
+            "type": "string"
+          },
+          "group": {
             "type": "string"
           },
           "name": {
