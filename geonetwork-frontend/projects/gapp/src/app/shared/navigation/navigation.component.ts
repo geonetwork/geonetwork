@@ -54,11 +54,12 @@ export class NavigationComponent implements OnInit {
           this.router.navigate(['search']);
         },
       },
-      {
-        label: 'Sign in',
-        icon: 'fa fa-sign-in',
-        url: '/signin',
-      },
+      // GN5 signin
+      // {
+      //   label: 'Sign in',
+      //   icon: 'fa fa-sign-in',
+      //   url: '/signin',
+      // },
     ];
   }
 
