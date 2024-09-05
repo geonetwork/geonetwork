@@ -42,10 +42,10 @@ export class HomePageComponent {
   }
   getFilter(params: Params): string {
     return Object.keys(params).reduce((acc, key) => {
-      if (!["from", "to", "sortBy", "sortOrder"].includes(key)) {
+      if (!['from', 'to', 'sortBy', 'sortOrder'].includes(key)) {
         return acc + `+${key}:${params[key]}`;
       }
       return acc;
-    }, "");
+    }, '');
   }
 }

@@ -39,23 +39,28 @@ describe('Search Page Test', () => {
     it('Check sign in and out with form', () => {
       cy.get('@signInForm').click();
       ['username', 'password'].forEach(field => {
-        cy.get(`input[name=${field}]`)
-          .type( 'admin');
+        cy.get(`input[name=${field}]`).type('admin');
       });
 
-      cy.get('form[name=gSignInForm] button').should('not.have.attr', 'disabled');
-      cy.intercept('/geonetwork/srv/api/me').as('meApiCall')
-      cy.get('form[name=gSignInForm] button').click().then(() => {
-        cy.wait('@meApiCall');
-        cy.get('[data-cy=gUserInfo]').first().then($userInfo => {
-          expect($userInfo.text().trim()).to.eq('admin');
-        })
+      cy.get('form[name=gSignInForm] button').should(
+        'not.have.attr',
+        'disabled'
+      );
+      cy.intercept('/geonetwork/srv/api/me').as('meApiCall');
+      cy.get('form[name=gSignInForm] button')
+        .click()
+        .then(() => {
+          cy.wait('@meApiCall');
+          cy.get('[data-cy=gUserInfo]')
+            .first()
+            .then($userInfo => {
+              expect($userInfo.text().trim()).to.eq('admin');
+            });
 
-
-        cy.get('[data-cy=gSignOutButton]').click();
-        cy.wait('@meApiCall');
-        cy.get('[data-cy=gUserInfo]').should('not.exist');
-      });
+          cy.get('[data-cy=gSignOutButton]').click();
+          cy.wait('@meApiCall');
+          cy.get('[data-cy=gUserInfo]').should('not.exist');
+        });
     });
   });
 
@@ -63,7 +68,9 @@ describe('Search Page Test', () => {
     it('Visits the home page and check highlights and numbers', () => {
       cy.visit('/');
       cy.get('[gsearchcontext=highlights]').should('exist');
-      cy.get('[gsearchcontext=highlights] p-timeline div.p-timeline-event').should('have.length', 5);
+      cy.get(
+        '[gsearchcontext=highlights] p-timeline div.p-timeline-event'
+      ).should('have.length', 5);
     });
   });
 });
