@@ -1,16 +1,18 @@
 import { Component, effect, input, signal } from '@angular/core';
 import Papa from 'papaparse';
 import { TableModule } from 'primeng/table';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'g-data-table',
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
   standalone: true,
-  imports: [TableModule],
+  imports: [TableModule, Button],
 })
 export class DataTableComponent {
   source = input.required<string>();
+  isAllowingExport = input<boolean>(false);
 
   data = signal<Array<any>>([]);
   isLoading = false;
@@ -40,11 +42,16 @@ export class DataTableComponent {
           console.error('Errors while parsing:', results.errors);
           this.error = 'Error while parsing CSV file.';
         } else {
-          this.headerData = results.data[0];
+          this.headerData = results.data[0].map(columnName => {
+            return {
+              field: columnName,
+              label: columnName,
+            };
+          });
           results.data.slice(1).forEach((row, index) => {
             let object: any = {};
             row.map((value, index) => {
-              object[this.headerData[index]] = value;
+              object[this.headerData[index].field] = value;
             });
             data.push(object);
           });

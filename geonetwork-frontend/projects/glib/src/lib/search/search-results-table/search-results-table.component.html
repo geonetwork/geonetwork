@@ -1,6 +1,7 @@
 @if (search) {
   @if (search.response(); as response) {
     <p-table
+      #dt
       [lazy]="true"
       [loading]="search.isSearching()"
       [value]="response.hits.hits"
@@ -16,14 +17,30 @@
       [selectionMode]="selectionMode()"
       [(selection)]="selectedRecords"
       metaKeySelection="true"
+      exportFilename="search-results"
       [tableStyle]="{ 'min-width': '60rem' }"
       [scrollHeight]="scrollHeight()">
       <ng-template pTemplate="caption">
-        <div class="flex align-items-center justify-content-between">
-          {{ response.hits.total.value }} records found
+        <div class="flex items-center justify-content-between">
+          <div class="grow">
+            {{ response.hits.total.value }} records found
 
-          @if (selectionMode() === 'multiple') {
-            ({{ selectedRecords.length }} selected)
+            @if (selectionMode() === 'multiple') {
+              ({{ selectedRecords.length }} selected)
+            }
+          </div>
+
+          @if (isAllowingExport()) {
+            <p-buttonGroup class="justify-self-end">
+              @for (format of exportFormats; track $index) {
+                <p-button
+                  icon="fa fa-download"
+                  label="Export ({{ format }})"
+                  [outlined]="true"
+                  size="small"
+                  (onClick)="exportTable(format)" />
+              }
+            </p-buttonGroup>
           }
         </div>
       </ng-template>
