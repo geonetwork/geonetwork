@@ -61,7 +61,7 @@ const initialSearchState: Search = {
 
 export const SearchStore = signalStore(
   withState(initialSearchState),
-  withComputed((store, searchService = inject(SearchService)) => {
+  withComputed(store => {
     return {
       searchFilterParameters: computed(() => {
         return {

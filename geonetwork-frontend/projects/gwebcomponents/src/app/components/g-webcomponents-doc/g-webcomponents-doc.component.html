@@ -6,33 +6,53 @@
       </div>
 
       <div class="text-2x font-bold">Browse CSV file</div>
-      <div class="m-4">
-        <p-floatLabel class="m-2">
-          <p-dropdown
-            styleClass="w-full"
-            [(ngModel)]="selectedSourceFile"
-            [options]="csvSourceFiles" />
-          <label>Choose a sample file</label>
-        </p-floatLabel>
 
-        <p-floatLabel class="m-2">
-          <input
-            type="text"
-            pInputText
-            [(ngModel)]="selectedSourceFile"
-            class="w-full" />
-          <label>CSV file URL</label>
-        </p-floatLabel>
-      </div>
+      <p-fieldset
+        legend="Configure component"
+        [toggleable]="true"
+        collapsed="true">
+        <div class="flex gap-2">
+          <div class="w-full">
+            <p-floatLabel class="m-2">
+              <p-dropdown
+                styleClass="w-full"
+                [(ngModel)]="selectedSourceFile"
+                [options]="csvSourceFiles" />
+              <label>Choose a sample file</label>
+            </p-floatLabel>
+
+            <p-floatLabel class="m-2">
+              <input
+                type="text"
+                pInputText
+                [(ngModel)]="selectedSourceFile"
+                class="w-full" />
+              <label>CSV file URL</label>
+            </p-floatLabel>
+
+            <div class="">
+              <label for="allowDataTableExport" class="text-xs">
+                Enable CSV export
+              </label>
+              <p-inputSwitch
+                inputId="allowDataTableExport"
+                [(ngModel)]="allowDataTableExport" />
+            </div>
+          </div>
+        </div>
+      </p-fieldset>
 
       <gc-data-results-table
         [source]="selectedSourceFile()"
+        [export]="allowDataTableExport()"
         class="w-full"></gc-data-results-table>
 
       <g-webcomponents-doc-embed>
         <pre class="whitespace-pre-wrap">
 <![CDATA[<gc-data-results-table-component source="{{
             selectedSourceFile()
+          }}" export="{{
+            allowDataTableExport()
           }}" class="w-full"></gc-data-results-table-component>
 ]]>
         </pre>
@@ -64,12 +84,12 @@
         <g-webcomponents-doc-embed>
           <pre class="whitespace-pre-wrap">
 <![CDATA[ <gc-search-component
-          api-url="{{ apiUrl }}"
-          full-text-search="{{ fullTextSearch() }}"
-          filter="{{ searchFilter() }}"
-          size="{{ pageSize() }}"
-          list-of-filter="{{ listOfFilters() }}"
-        />
+            api-url="{{ apiUrl }}"
+            full-text-search="{{ fullTextSearch() }}"
+            filter="{{ searchFilter() }}"
+            size="{{ pageSize() }}"
+            list-of-filter="{{ listOfFilters() }}"
+          />
 ]]>
           </pre>
         </g-webcomponents-doc-embed>
@@ -111,6 +131,15 @@
                 [(ngModel)]="listOfLabelsAsText" />
               <label for="tableColumn">Define column label</label>
             </p-floatLabel>
+
+            <div class="">
+              <label for="allowResultsTableExport" class="text-xs">
+                Enable CSV export
+              </label>
+              <p-inputSwitch
+                inputId="allowResultsTableExport"
+                [(ngModel)]="allowResultsTableExport" />
+            </div>
           </div>
         </g-webcomponent-configuration>
       </div>
@@ -123,6 +152,7 @@
         [list-of-label]="listOfLabelsAsText()"
         [list-of-field]="listOfFieldsAsText()"
         [list-of-filter]="listOfFilters()"
+        [export]="allowResultsTableExport()"
         landing-page="${apiUrl}/records/${uuid}"
         landing-page-link-on="resourceTitleObject.default"
         scroll-height="80vh"
@@ -138,6 +168,7 @@
           list-of-label="{{ listOfLabelsAsText() }}"
           list-of-field="{{ listOfFieldsAsText() }}"
           list-of-filter="{{ listOfFilters() }}"
+          export="{{ allowResultsTableExport() }}"
           landing-page="${apiUrl}/records/${uuid}"
           landing-page-llink-on="resourceTitleObject.default"
           scroll-height="80vh"

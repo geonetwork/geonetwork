@@ -1,5 +1,7 @@
 @defer (on viewport) {
-  <g-data-table [source]="currentSource()"></g-data-table>
+  <g-data-table
+    [source]="currentSource()"
+    [isAllowingExport]="isAllowingExport()"></g-data-table>
 } @placeholder {
   <p>Loading ...</p>
 }
