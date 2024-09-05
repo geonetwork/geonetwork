@@ -263,6 +263,30 @@ RewriteRule ^(.*) /index.html [NC,L]
 For SpringBoot app, the following configuration can be used to redirect all requests to the index.html file (see https://github.com/GeoCat/geonetwork/blob/frontend-exp/src/main/java/org/geonetwork/config/MvcConfiguration.java).
 
 
+# Development
+
+## New component
+
+All components are standalone and can be generated using the following command:
+
+```bash
+ng generate component auth/signin-form --standalone --project=glib
+```
+
+Once created expose the new component in the `public-api.ts` file.
+
+```typescript
+export * from './lib/auth/signin-form/signin-form.component';
+```
+
+And use it in your application.
+
+```html
+<g-signin-form/>
+```
+
+
+
 # Experimenting
 
 ## Components and styling

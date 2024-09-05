@@ -1,0 +1,59 @@
+@if (app.authenticated()) {
+  <p-chip styleClass="pl-0 pr-3">
+    <span
+      class="bg-primary border-circle w-2rem h-2rem flex align-items-center justify-content-center">
+      {{ app.user().username[0].toUpperCase() }}
+    </span>
+    <span class="ml-2 font-medium">
+      {{ app.user().username }}
+    </span>
+  </p-chip>
+
+  <button
+    type="button"
+    pButton
+    icon="fa fa-right-from-bracket"
+    (click)="app.signOut()"></button>
+} @else {
+  <p-button
+    (onClick)="op.toggle($event)"
+    icon="fa fa-right-to-bracket"
+    title="Sign in" />
+}
+<p-overlayPanel #op>
+  <form>
+    <p-inputGroup>
+      <p-inputGroupAddon>
+        <i class="fa fa-user"></i>
+      </p-inputGroupAddon>
+      <input
+        pInputText
+        placeholder="Username"
+        [(ngModel)]="username"
+        name="username"
+        required
+        minlength="4"
+        (keyup.enter)="signIn(op); op.hide()" />
+    </p-inputGroup>
+    <p-inputGroup>
+      <p-inputGroupAddon>
+        <i class="fa fa-lock"></i>
+      </p-inputGroupAddon>
+      <input
+        pInputText
+        placeholder="Password"
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        required
+        minlength="4"
+        (keyup.enter)="signIn(op); op.hide()" />
+      <button
+        type="button"
+        pButton
+        icon="fa fa-right-to-bracket"
+        [disabled]="username.length === 0 || password.length === 0"
+        (click)="signIn(op); op.hide()"></button>
+    </p-inputGroup>
+  </form>
+</p-overlayPanel>

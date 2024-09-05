@@ -143,7 +143,8 @@
               "buildTarget": "gapp:build:production"
             },
             "development": {
-              "buildTarget": "gapp:build:development"
+              "buildTarget": "gapp:build:development",
+              "proxyConfig": "proxy.config.js"
             }
           },
           "defaultConfiguration": "development"

@@ -1,26 +1,7 @@
 <p-menubar [model]="items">
   <ng-template pTemplate="end">
     <div class="flex gap-2">
-      <p-button (onClick)="op.toggle($event)" icon="fa fa-right-to-bracket" title="Sign in" />
-      <p-overlayPanel #op>
-        <form>
-          <p-inputGroup>
-            <p-inputGroupAddon>
-              <i class="fa fa-user"></i>
-            </p-inputGroupAddon>
-            <input pInputText placeholder="Username" [ngModel]="username" name="username" />
-          </p-inputGroup>
-          <p-inputGroup>
-            <p-inputGroupAddon>
-              <i class="fa fa-lock"></i>
-            </p-inputGroupAddon>
-            <input pInputText placeholder="Password" type="password" [ngModel]="password" name="password" />
-            <button type="button" pButton icon="fa fa-right-to-bracket"
-                    (click)="signin()"></button>
-          </p-inputGroup>
-        </form>
-      </p-overlayPanel>
-
+      <g-sign-in-form />
       <p-dropdown gLanguagesLoader (onChange)="setLanguage($event)" />
     </div>
   </ng-template>

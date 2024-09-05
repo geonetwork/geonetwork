@@ -4,7 +4,9 @@
 
 export * from './lib/glib.service';
 export * from './lib/glib.component';
+export * from './lib/app.state';
 export * from './lib/config/config.module';
+export * from './lib/auth/sign-in-form/sign-in-form.component';
 export * from './lib/language/languages-loader.directive';
 export * from './lib/search/search-context.directive';
 export * from './lib/search/search-base/search-base.component';
