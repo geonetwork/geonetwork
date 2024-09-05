@@ -46,7 +46,10 @@ describe('Search Page Test', () => {
     });
 
     it('should filter on aggregation click', () => {
-      let agg = cy.get('g-search-agg[data-cy="agg-cl_maintenanceAndUpdateFrequency.key"]').find('g-search-agg-item').first();
+      let agg = cy
+        .get('g-search-agg[data-cy="agg-cl_maintenanceAndUpdateFrequency.key"]')
+        .find('g-search-agg-item')
+        .first();
       let aggCount = '';
       agg.then($value => {
         aggCount = $value
@@ -55,11 +58,16 @@ describe('Search Page Test', () => {
           .trim();
       });
 
-      agg.find('input[type=checkbox]').click({force: true}).then(() => {
-        cy.get('@searchResults').find('a').should('have.length', aggCount);
-      });
+      agg
+        .find('input[type=checkbox]')
+        .click({ force: true })
+        .then(() => {
+          cy.get('@searchResults').find('a').should('have.length', aggCount);
+        });
 
-      cy.get('g-search-agg[data-cy="agg-cl_maintenanceAndUpdateFrequency.key"]').find('input[type=checkbox]').click({force: true});
+      cy.get('g-search-agg[data-cy="agg-cl_maintenanceAndUpdateFrequency.key"]')
+        .find('input[type=checkbox]')
+        .click({ force: true });
     });
   });
 });
