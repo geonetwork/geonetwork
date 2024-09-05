@@ -4,7 +4,7 @@
       class="bg-primary border-circle w-2rem h-2rem flex align-items-center justify-content-center">
       {{ app.user().username[0].toUpperCase() }}
     </span>
-    <span class="ml-2 font-medium">
+    <span class="ml-2 font-medium" data-cy="gUserInfo">
       {{ app.user().username }}
     </span>
   </p-chip>
@@ -13,6 +13,7 @@
     type="button"
     pButton
     icon="fa fa-right-from-bracket"
+    data-cy="gSignOutButton"
     (click)="app.signOut()"></button>
 } @else {
   <p-button
@@ -21,7 +22,7 @@
     title="Sign in" />
 }
 <p-overlayPanel #op>
-  <form>
+  <form name="gSignInForm">
     <p-inputGroup>
       <p-inputGroupAddon>
         <i class="fa fa-user"></i>
