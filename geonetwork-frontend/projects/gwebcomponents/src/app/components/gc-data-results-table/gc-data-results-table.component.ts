@@ -19,16 +19,22 @@ import { Configuration } from 'gapi';
 export class GcDataResultsTableComponent implements OnInit, OnChanges {
   @Input() source = '';
 
-  currentSource = signal<string>('');
+  @Input() export = false;
+
+  currentSource = signal<string>(this.source);
+  isAllowingExport = signal<boolean>(this.export);
 
   ngOnInit() {
     this.currentSource.set(this.source);
+    this.isAllowingExport.set(this.export);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     Object.keys(changes).forEach(prop => {
       if (prop == 'source') {
         this.currentSource.set(changes[prop].currentValue);
+      } else if (prop == 'export') {
+        this.isAllowingExport.set(changes[prop].currentValue);
       }
     });
   }

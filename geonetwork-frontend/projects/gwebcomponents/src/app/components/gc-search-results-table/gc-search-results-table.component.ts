@@ -23,9 +23,11 @@ export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
   @Input({ alias: 'list-of-field' }) listOfField: string;
   @Input({ alias: 'list-of-label' }) listOfLabel: string;
   @Input({ alias: 'scroll-height' }) scrollHeight: string;
+  @Input() export: boolean = false;
 
   fields = signal<string[]>([]);
   labels = signal<string[]>([]);
+  isAllowingExport = signal<boolean>(this.export);
 
   override ngOnInit() {
     super.ngOnInit();
@@ -34,10 +36,12 @@ export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
       ...{
         listOfField: 'fields',
         listOfLabel: 'labels',
+        export: 'isAllowingExport',
       },
     };
     this.listOfField && this.fields.set(this.listOfField.split(','));
     this.listOfLabel && this.labels.set(this.listOfLabel.split(','));
+    this.isAllowingExport.set(this.export);
   }
 
   protected readonly SearchAggLayout = SearchAggLayout;

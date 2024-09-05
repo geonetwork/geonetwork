@@ -1,6 +1,8 @@
 @for (agg of search.aggregationConfig() | keyvalue; track agg.key) {
   @if (isAggregationDisplayed(agg.key + '')) {
-    <g-search-agg [scope]="search.id()" [aggregation]="agg.key + ''"
-                  [attr.data-cy]="'agg-' + agg.key"/>
+    <g-search-agg
+      [scope]="search.id()"
+      [aggregation]="agg.key + ''"
+      [attr.data-cy]="'agg-' + agg.key" />
   }
 }

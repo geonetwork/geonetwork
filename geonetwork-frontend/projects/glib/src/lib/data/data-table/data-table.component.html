@@ -9,12 +9,26 @@
     [loading]="isLoading"
     [scrollable]="true"
     [paginator]="true">
+    <ng-template pTemplate="caption">
+      @if (isAllowingExport()) {
+        <div class="grid items-center justify-content-between">
+          <div class="justify-self-end">
+            <p-button
+              icon="fa fa-download"
+              label="CSV Export"
+              [outlined]="true"
+              size="small"
+              (onClick)="dt.exportCSV()" />
+          </div>
+        </div>
+      }
+    </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
         @for (column of columns; track $index) {
-          <th style="width: 100px" [pSortableColumn]="column">
-            {{ column }}
-            <p-sortIcon [field]="column" />
+          <th style="width: 100px" [pSortableColumn]="column.field">
+            {{ column.label }}
+            <p-sortIcon [field]="column.field" />
           </th>
         }
       </tr>
@@ -23,9 +37,9 @@
           <th>
             <p-columnFilter
               type="text"
-              field="{{ column }}"
-              placeholder="Search by {{ column }}"
-              ariaLabel="Filter {{ column }}" />
+              field="{{ column.field }}"
+              placeholder="Search by {{ column.label }}"
+              ariaLabel="Filter {{ column.label }}" />
           </th>
         }
       </tr>
@@ -34,7 +48,7 @@
       <tr>
         @for (column of columns; track $index) {
           <td class="truncate">
-            {{ rowData[column] }}
+            {{ rowData[column.field] }}
           </td>
         }
       </tr>

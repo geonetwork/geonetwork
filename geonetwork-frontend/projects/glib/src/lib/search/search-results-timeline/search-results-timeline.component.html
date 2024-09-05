@@ -1,5 +1,5 @@
 @if (search) {
-<!--  <g-search-results-error [error]="search.error()" />-->
+  <!--  <g-search-results-error [error]="search.error()" />-->
   @if (search.response()?.hits.total.value > 0) {
     <p-timeline [value]="search.response().hits.hits" align="left">
       <ng-template pTemplate="marker" let-hit>

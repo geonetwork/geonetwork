@@ -58,6 +58,9 @@ export class GWebcomponentsDocComponent implements OnInit {
 
   selectedSourceFile = signal(CSV_SOURCE_FILE_LIST[0]);
 
+  allowDataTableExport = signal(false);
+  allowResultsTableExport = signal(false);
+
   selectionMode = SELECTION_MODE_LIST[0].type;
 
   indexRecordProperties = Object.keys(GnIndexRecordToJSON({}));

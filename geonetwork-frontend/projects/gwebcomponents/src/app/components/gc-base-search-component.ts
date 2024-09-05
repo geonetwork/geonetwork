@@ -1,13 +1,5 @@
-import {
-  Component,
-  inject,
-  Input,
-  OnChanges,
-  OnInit,
-  signal,
-  SimpleChanges,
-} from '@angular/core';
-import { Configuration, DefaultConfig } from 'gapi';
+import { Component, Input, signal, SimpleChanges } from '@angular/core';
+import { DefaultConfig } from 'gapi';
 import { API_CONFIGURATION, DEFAULT_PAGE_SIZE, SearchService } from 'glib';
 import { GcBaseComponent } from './gc-base-component';
 
@@ -62,7 +54,11 @@ export class GcBaseSearchComponent extends GcBaseComponent {
         this.fullTextSearchEnabled.set(changes[prop].currentValue);
       } else if (this.inputToField[prop]) {
         (this as any)[this.inputToField[prop]].set(
-          changes[prop].currentValue.split(',').filter((v: string) => v !== '')
+          typeof changes[prop].currentValue === 'boolean'
+            ? changes[prop].currentValue
+            : changes[prop].currentValue
+                .split(',')
+                .filter((v: string) => v !== '')
         );
       }
     });
