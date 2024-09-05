@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:8080/geonetwork/srv/api',
+  baseUrl: '/geonetwork/srv/api',
 };
