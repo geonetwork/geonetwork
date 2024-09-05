@@ -1,7 +1,7 @@
 @if (search) {
-  <g-search-results-error [error]="search.error()" />
-  @if (search.response(); as response) {
-    <p-timeline [value]="response.hits.hits" align="left">
+<!--  <g-search-results-error [error]="search.error()" />-->
+  @if (search.response()?.hits.total.value > 0) {
+    <p-timeline [value]="search.response().hits.hits" align="left">
       <ng-template pTemplate="marker" let-hit>
         <span
           class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1 bg-colo">
