@@ -1,8 +1,9 @@
 <div class="flex">
   <div
-    class="relative bg-slate-300 p-4 w-1/3"
+    class="relative bg-slate-300 p-4 w-1/3 has-[g-search-results-timeline:empty]:hidden"
     gSearchContext="highlights"
     size="5"
+    filter="+isTemplate:n"
     [sort]="[{ changeDate: 'desc' }, '_score']">
     <h1 class="text-4xl mb-4">Highlights this month</h1>
 
@@ -35,6 +36,7 @@
       <div
         class="w-screen"
         gSearchContext="highlights-{{ $index }}"
+        [filter]="getFilter(infoPanel.params)"
         [size]="getSize(infoPanel.params)"
         [sort]="getSort(infoPanel.params)">
         <div

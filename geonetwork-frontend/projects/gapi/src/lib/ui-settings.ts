@@ -114,6 +114,7 @@ export interface Params {
   sortOrder: string;
   from: number;
   to: number;
+  [key: string]: string | number;
 }
 
 export interface Search {

@@ -40,4 +40,12 @@ export class HomePageComponent {
   getSize(params: Params): number {
     return params.to ? params.to : DEFAULT_PAGE_SIZE;
   }
+  getFilter(params: Params): string {
+    return Object.keys(params).reduce((acc, key) => {
+      if (!["from", "to", "sortBy", "sortOrder"].includes(key)) {
+        return acc + `+${key}:${params[key]}`;
+      }
+      return acc;
+    }, "");
+  }
 }

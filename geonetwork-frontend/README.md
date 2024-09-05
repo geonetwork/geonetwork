@@ -217,7 +217,7 @@ Then they can be used in any website by:
 ## Running unit tests
 
 Run `ng test` to execute the unit tests - work in progress -.
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice - work in progress -.
+Run `ng e2e` to execute the end-to-end tests using [cypress](https://www.cypress.io/) - work in progress -.
 
 ## Internationalization
 
