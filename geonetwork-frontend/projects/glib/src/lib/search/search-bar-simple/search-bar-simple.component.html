@@ -11,10 +11,12 @@
     <div class="flex flex-wrap justify-start gap-4 m-w-full">
       @for (filter of filters(); track filter) {
         <g-search-agg
-          [layout]="SearchAggLayout.DROPDOWN"
+          [layout]="
+            SearchAggLayout[filterLayouts()[$index]] || SearchAggLayout.DROPDOWN
+          "
           [aggregation]="filter"
           [isLabelDisplayed]="false"
-          [label]="filterLabels()[$index] || ''"
+          [placeholder]="filterPlaceholders()[$index] || ''"
           [scope]="scope()" />
       }
     </div>

@@ -53,7 +53,7 @@ type SearchAggLayoutValues = keyof typeof SearchAggLayout;
 export class SearchAggComponent extends SearchBaseComponent {
   aggregation = input.required<string>();
   layout = input<SearchAggLayout>();
-  label = input<string>();
+  placeholder = input<string>();
   isLabelDisplayed = input<boolean | undefined>();
 
   isLabelDisplayedValue = computed(() => {

@@ -19,6 +19,7 @@ import { DropdownModule } from 'primeng/dropdown';
 export class SearchAggMultiselectComponent extends SearchBaseComponent {
   buckets = input.required<any>();
   field = input.required<string>();
+  placeholder = input<string>();
   aggregationConfig = input.required<AggregationsAggregationContainer>();
 
   handleMutliSelectChange(event: MultiSelectChangeEvent) {

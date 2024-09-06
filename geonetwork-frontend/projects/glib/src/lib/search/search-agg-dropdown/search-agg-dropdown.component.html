@@ -6,7 +6,7 @@
   optionLabel="key"
   [options]="buckets()"
   panelStyleClass="w-80"
-  placeholder="{{ label() || field() }}"
+  placeholder="{{ placeholder() || '' }}"
   scrollHeight="400px"
   styleClass="w-80">
   <ng-template let-bucket pTemplate="item">

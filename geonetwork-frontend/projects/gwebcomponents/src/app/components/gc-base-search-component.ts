@@ -19,7 +19,9 @@ export class GcBaseSearchComponent extends GcBaseComponent {
   @Input() filter: string;
   @Input({ alias: 'full-text-search' }) fullTextSearch: boolean = true;
   @Input({ alias: 'list-of-filter' }) listOfFilter: string;
-  @Input({ alias: 'list-of-filter-label' }) listOfFilterLabels: string;
+  @Input({ alias: 'list-of-filter-placeholder' })
+  listOfFilterPlaceholders: string;
+  @Input({ alias: 'list-of-filter-layout' }) listOfFilterLayouts: string;
   @Input({ alias: 'landing-page' }) landingPage: string;
   @Input({ alias: 'landing-page-link-on' }) landingPageLinkOn: string;
   @Input({ alias: 'selection-mode' }) selectionMode:
@@ -31,11 +33,13 @@ export class GcBaseSearchComponent extends GcBaseComponent {
   currentSize = signal(DEFAULT_PAGE_SIZE);
   fullTextSearchEnabled = signal(true);
   filters = signal<string[]>([]);
-  filterLabels = signal<string[]>([]);
+  filterPlaceholders = signal<string[]>([]);
+  filterLayouts = signal<string[]>([]);
 
   inputToField: Record<string, string> = {
     listOfFilter: 'filters',
-    listOfFilterLabels: 'filterLabels',
+    listOfFilterPlaceholders: 'filterPlaceholders',
+    listOfFilterLayouts: 'filterLayouts',
   };
 
   override ngOnInit() {
