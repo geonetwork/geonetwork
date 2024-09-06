@@ -17,6 +17,7 @@ export class GWebcomponentConfigurationComponent {
   fullTextSearch = model<boolean>();
   searchFilter = model<string>();
   pageSize = model<number>();
+  sort = model<string>();
   selectedFilters = model<string>();
   selectedFilterPlaceholders = model<string>();
   selectedFilterLayouts = model<string>();

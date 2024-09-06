@@ -48,6 +48,26 @@
     </div>
 
     <div class="flex flex-col gap-2">
+      <label for="sort">Sort results</label>
+      <input
+        type="text"
+        pInputText
+        class="w-full mb-4"
+        [(ngModel)]="sort"
+        id="sort" />
+      <div>
+        Can be a
+        <a
+          href="https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html"
+          >JSON configuration</a
+        >
+        (eg. &#123;"resourceType": "desc"&#125;) or a field name (eg.
+        resourceTitleObject.default.keyword) with optional sort order (eg.
+        -dateStamp).
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
       <label for="selectedFilters">Define filters</label>
       <input
         type="text"
