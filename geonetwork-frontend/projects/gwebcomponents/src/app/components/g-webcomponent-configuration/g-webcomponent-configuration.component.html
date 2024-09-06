@@ -69,8 +69,28 @@
         type="text"
         pInputText
         class="w-full mb-4"
-        [(ngModel)]="selectedFilterLabels"
+        [(ngModel)]="selectedFilterPlaceholders"
         id="selectedFilterLabels" />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="listOfFilterLayouts">Define filter layouts</label>
+      <input
+        type="text"
+        pInputText
+        class="w-full mb-4"
+        [(ngModel)]="selectedFilterLayouts"
+        id="listOfFilterLayouts" />
+      <div>
+        Available layouts:
+        @for (layout of SearchAggLayout | keyvalue; track $index) {
+          <span
+            >{{ layout.key }}
+            @if (!$last) {
+              ,
+            }
+          </span>
+        }
+      </div>
     </div>
 
     <div class="flex flex-col gap-2">

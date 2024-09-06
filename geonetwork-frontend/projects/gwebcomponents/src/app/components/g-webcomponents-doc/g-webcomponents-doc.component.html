@@ -69,7 +69,8 @@
           [(pageSize)]="pageSize"
           [(selectionMode)]="selectionMode"
           [(selectedFilters)]="selectedFilters"
-          [(selectedFilterLabels)]="selectedFilterLabels">
+          [(selectedFilterPlaceholders)]="selectedFilterPlaceholders"
+          [(selectedFilterLayouts)]="listOfFilterLayouts">
         </g-webcomponent-configuration>
 
         <gc-search
@@ -79,7 +80,8 @@
           [filter]="searchFilter()"
           [size]="pageSize()"
           [list-of-filter]="listOfFilters()"
-          [list-of-filter-label]="listOfFilterLabels()" />
+          [list-of-filter-placeholder]="listOfFilterPlaceholders()"
+          [list-of-filter-layout]="listOfFilterLayouts()" />
 
         <g-webcomponents-doc-embed>
           <pre class="whitespace-pre-wrap">
@@ -89,7 +91,8 @@
             filter="{{ searchFilter() }}"
             size="{{ pageSize() }}"
             list-of-filter="{{ listOfFilters() }}"
-            list-of-filter-label="{{ listOfFilterLabels() }}"
+            list-of-filter-placeholders="{{ listOfFilterPlaceholders() }}"
+            list-of-filter-layout="{{ listOfFilterLayouts() }}"
           />
 ]]>
           </pre>
@@ -109,7 +112,8 @@
           [(pageSize)]="pageSize"
           [(selectionMode)]="selectionMode"
           [(selectedFilters)]="selectedFilters"
-          [(selectedFilterLabels)]="selectedFilterLabels">
+          [(selectedFilterPlaceholders)]="selectedFilterPlaceholders"
+          [(selectedFilterLayouts)]="listOfFilterLayouts">
           <div class="flex flex-col gap-2">
             <label for="listOfFieldsAsText">Select table columns</label>
             <p-autoComplete
@@ -152,7 +156,8 @@
         [list-of-label]="listOfLabelsAsText()"
         [list-of-field]="listOfFieldsAsText()"
         [list-of-filter]="listOfFilters()"
-        [list-of-filter-label]="listOfFilterLabels()"
+        [list-of-filter-placeholder]="listOfFilterPlaceholders()"
+        [list-of-filter-layout]="listOfFilterLayouts()"
         [export]="allowResultsTableExport()"
         landing-page="${apiUrl}/records/${uuid}"
         landing-page-link-on="resourceTitleObject.default"
@@ -169,7 +174,8 @@
           list-of-label="{{ listOfLabelsAsText() }}"
           list-of-field="{{ listOfFieldsAsText() }}"
           list-of-filter="{{ listOfFilters() }}"
-          list-of-filter-label="{{ listOfFilterLabels() }}"
+          list-of-filter-placeholder="{{ listOfFilterPlaceholders() }}"
+          list-of-filter-layout="{{ listOfFilterLayouts() }}"
           export="{{ allowResultsTableExport() }}"
           landing-page="${apiUrl}/records/${uuid}"
           landing-page-llink-on="resourceTitleObject.default"

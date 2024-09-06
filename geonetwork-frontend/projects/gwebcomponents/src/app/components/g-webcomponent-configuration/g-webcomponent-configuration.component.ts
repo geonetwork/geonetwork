@@ -5,6 +5,7 @@ import {
   FILTER_LIST,
   SELECTION_MODE_LIST,
 } from '../g-webcomponents-doc/g-webcomponents-doc.component';
+import { SearchAggLayout } from 'glib';
 
 @Component({
   selector: 'g-webcomponent-configuration',
@@ -17,9 +18,11 @@ export class GWebcomponentConfigurationComponent {
   searchFilter = model<string>();
   pageSize = model<number>();
   selectedFilters = model<string>();
-  selectedFilterLabels = model<string>();
+  selectedFilterPlaceholders = model<string>();
+  selectedFilterLayouts = model<string>();
   selectionMode = model<string>();
   protected readonly apiUrlList = API_URL_LIST;
   protected readonly selectionModeList = SELECTION_MODE_LIST;
   protected readonly filterList = FILTER_LIST;
+  protected readonly SearchAggLayout = SearchAggLayout;
 }

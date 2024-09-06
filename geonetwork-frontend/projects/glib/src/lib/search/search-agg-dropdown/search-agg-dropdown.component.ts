@@ -25,7 +25,7 @@ import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 export class SearchAggDropdownComponent extends SearchBaseComponent {
   buckets = input.required<any>();
   field = input.required<string>();
-  label = input<string>();
+  placeholder = input<string>();
   aggregationConfig = input.required<AggregationsAggregationContainer>();
 
   handleChange(event: DropdownChangeEvent) {
