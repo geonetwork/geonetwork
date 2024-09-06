@@ -19,6 +19,7 @@ export class GcBaseSearchComponent extends GcBaseComponent {
   @Input() filter: string;
   @Input({ alias: 'full-text-search' }) fullTextSearch: boolean = true;
   @Input({ alias: 'list-of-filter' }) listOfFilter: string;
+  @Input({ alias: 'list-of-filter-label' }) listOfFilterLabels: string;
   @Input({ alias: 'landing-page' }) landingPage: string;
   @Input({ alias: 'landing-page-link-on' }) landingPageLinkOn: string;
   @Input({ alias: 'selection-mode' }) selectionMode:
@@ -30,9 +31,11 @@ export class GcBaseSearchComponent extends GcBaseComponent {
   currentSize = signal(DEFAULT_PAGE_SIZE);
   fullTextSearchEnabled = signal(true);
   filters = signal<string[]>([]);
+  filterLabels = signal<string[]>([]);
 
   inputToField: Record<string, string> = {
     listOfFilter: 'filters',
+    listOfFilterLabels: 'filterLabels',
   };
 
   override ngOnInit() {
@@ -40,7 +43,7 @@ export class GcBaseSearchComponent extends GcBaseComponent {
     this.currentFilter.set(this.filter);
     this.fullTextSearchEnabled.set(this.fullTextSearch);
     this.currentSize.set(this.size);
-    this.listOfFilter && this.filters.set(this.listOfFilter.split(','));
+    // this.listOfFilter && this.filters.set(this.listOfFilter.split(','));
   }
 
   override ngOnChanges(changes: SimpleChanges): void {

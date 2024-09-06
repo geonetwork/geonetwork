@@ -4,6 +4,7 @@ import { createCustomElement } from '@angular/elements';
 import {
   DataTableComponent,
   SearchAggComponent,
+  SearchBarSimpleComponent,
   SearchContextDirective,
   SearchInputComponent,
   SearchResultsComponent,
@@ -78,6 +79,7 @@ const CUSTOM_ELEMENTS = [
     Button,
     SliderModule,
     InputSwitchModule,
+    SearchBarSimpleComponent,
   ],
   bootstrap: [
     GcDataResultsTableComponent,

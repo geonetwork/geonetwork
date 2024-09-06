@@ -1,75 +1,89 @@
 <p-fieldset legend="Configure component" [toggleable]="true" collapsed="true">
-  <div class="flex gap-2">
-    <div class="w-full">
-      <p-floatLabel class="m-2">
-        <p-dropdown
-          styleClass="w-full mb-4"
-          [options]="apiUrlList"
-          optionValue="url"
-          optionLabel="url"
-          [(ngModel)]="apiUrl"
-          inputId="apiUrl" />
-        <label for="apiUrl">Select a catalogue</label>
-      </p-floatLabel>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
+      <label for="apiUrl">Select a catalogue</label>
+      <p-dropdown
+        styleClass="w-full mb-4"
+        [options]="apiUrlList"
+        optionValue="url"
+        optionLabel="url"
+        [(ngModel)]="apiUrl"
+        inputId="apiUrl" />
+    </div>
 
-      <div class="p-float-label">
-        <label for="fullTextSearchBox" class="text-xs">
-          With full text search box
-        </label>
-        <p-inputSwitch name="fullTextSearchBox" [(ngModel)]="fullTextSearch" />
-      </div>
+    <div class="flex flex-col gap-2">
+      <label for="fullTextSearchBox"> With full text search box </label>
+      <p-inputSwitch name="fullTextSearchBox" [(ngModel)]="fullTextSearch" />
+    </div>
 
-      <p-floatLabel class="m-2">
-        <input
-          type="text"
-          class="w-full"
-          pInputText
-          [(ngModel)]="searchFilter" />
-        <label for="tableColumn">Search filter</label>
-      </p-floatLabel>
+    <div class="flex flex-col gap-2">
+      <label for="searchFilter">Search filter</label>
+      <input
+        id="searchFilter"
+        type="text"
+        class="w-full"
+        pInputText
+        [(ngModel)]="searchFilter" />
+    </div>
 
-      <p-floatLabel class="m-2">
-        <!--<p-dropdown
-          styleClass="w-full mb-4"
-          [options]="[10, 15, 30, 90]"
-          [(ngModel)]="pageSize"
-          inputId="pageSize" />-->
-        <input
-          type="text"
-          pInputText
-          [(ngModel)]="pageSize"
-          class="w-full mb-10" />
-        <label for="pageSize">Number of results</label>
-      </p-floatLabel>
+    <div class="flex flex-col gap-2">
+      <!--<p-dropdown
+        styleClass="w-full mb-4"
+        [options]="[10, 15, 30, 90]"
+        [(ngModel)]="pageSize"
+        inputId="pageSize" />-->
+      <label for="pageSize">Number of results</label>
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="pageSize"
+        class="w-full mb-10" />
+
       <p-slider
         [(ngModel)]="pageSize"
         [min]="0"
         [max]="100"
         [step]="10"
         class="w-full" />
-
-      <p-floatLabel class="m-2">
-        <p-multiSelect
-          styleClass="w-full mb-4"
-          [showClear]="true"
-          [options]="filterList"
-          [(ngModel)]="selectedFilters"
-          inputId="selectionMode" />
-        <label for="tableColumn">Define filters</label>
-      </p-floatLabel>
-
-      <p-floatLabel class="m-2">
-        <p-dropdown
-          styleClass="w-full mb-4"
-          [options]="selectionModeList"
-          optionValue="type"
-          optionLabel="label"
-          [(ngModel)]="selectionMode"
-          inputId="selectionMode" />
-        <label for="selectionMode">Selection mode</label>
-      </p-floatLabel>
-
-      <ng-content />
     </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="selectedFilters">Define filters</label>
+      <input
+        type="text"
+        pInputText
+        class="w-full mb-4"
+        [(ngModel)]="selectedFilters"
+        id="selectedFilters" />
+      <!--<p-multiSelect
+        styleClass="w-full mb-4"
+        [showClear]="true"
+        [options]="filterList"
+        [(ngModel)]="selectedFilters"
+        inputId="selectedFilters" />-->
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="selectedFilterLabels">Define filter labels</label>
+      <input
+        type="text"
+        pInputText
+        class="w-full mb-4"
+        [(ngModel)]="selectedFilterLabels"
+        id="selectedFilterLabels" />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="selectionMode">Selection mode</label>
+      <p-dropdown
+        styleClass="w-full mb-4"
+        [options]="selectionModeList"
+        optionValue="type"
+        optionLabel="label"
+        [(ngModel)]="selectionMode"
+        inputId="selectionMode" />
+    </div>
+
+    <ng-content />
   </div>
 </p-fieldset>

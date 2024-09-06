@@ -129,13 +129,24 @@ export class GWebcomponentsDocComponent implements OnInit {
       .join(',')
   );
 
-  selectedFilters = signal([
-    'OrgForResourceObject.default',
-    'cl_topic.default',
-    'cl_status.default',
-  ]);
+  selectedFilters = signal(
+    [
+      'OrgForResourceObject.default',
+      'cl_topic.default',
+      'cl_status.default',
+      'resourceType',
+    ].join(',')
+  );
+  selectedFilterLabels = signal(
+    ['Organisation', 'Topic', 'Status', 'Type'].join(',')
+  );
   listOfFilters = computed(() => {
-    return this.selectedFilters() ? this.selectedFilters().join(',') : '';
+    return this.selectedFilters();
+    // return this.selectedFilters() ? this.selectedFilters().join(',') : '';
+  });
+  listOfFilterLabels = computed(() => {
+    return this.selectedFilterLabels();
+    // return this.selectedFilterLabels() ? this.selectedFilterLabels().join(',') : '';
   });
 
   autocompleteField(event: AutoCompleteCompleteEvent) {

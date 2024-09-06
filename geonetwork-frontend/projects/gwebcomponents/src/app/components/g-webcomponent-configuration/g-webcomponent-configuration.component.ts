@@ -16,7 +16,8 @@ export class GWebcomponentConfigurationComponent {
   fullTextSearch = model<boolean>();
   searchFilter = model<string>();
   pageSize = model<number>();
-  selectedFilters = model<string[]>();
+  selectedFilters = model<string>();
+  selectedFilterLabels = model<string>();
   selectionMode = model<string>();
   protected readonly apiUrlList = API_URL_LIST;
   protected readonly selectionModeList = SELECTION_MODE_LIST;

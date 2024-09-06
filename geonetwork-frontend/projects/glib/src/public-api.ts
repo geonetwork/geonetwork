@@ -12,6 +12,7 @@ export * from './lib/search/search-context.directive';
 export * from './lib/search/search-base/search-base.component';
 export * from './lib/search/search-query-setter.directive';
 export * from './lib/search/search-query-reset.directive';
+export * from './lib/search/search-bar-simple/search-bar-simple.component';
 export * from './lib/search/search-agg/search-agg.component';
 export * from './lib/search/search-agg-selectbutton/search-agg-select-button.component';
 export * from './lib/search/search-agg-multiselect/search-agg-multiselect.component';

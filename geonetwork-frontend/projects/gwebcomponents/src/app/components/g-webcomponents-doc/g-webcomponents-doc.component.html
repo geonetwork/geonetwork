@@ -11,33 +11,31 @@
         legend="Configure component"
         [toggleable]="true"
         collapsed="true">
-        <div class="flex gap-2">
-          <div class="w-full">
-            <p-floatLabel class="m-2">
-              <p-dropdown
-                styleClass="w-full"
-                [(ngModel)]="selectedSourceFile"
-                [options]="csvSourceFiles" />
-              <label>Choose a sample file</label>
-            </p-floatLabel>
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="selectedSourceFile">Choose a sample file</label>
+            <p-dropdown
+              inputId="selectedSourceFile"
+              styleClass="w-full"
+              [(ngModel)]="selectedSourceFile"
+              [options]="csvSourceFiles" />
+          </div>
 
-            <p-floatLabel class="m-2">
-              <input
-                type="text"
-                pInputText
-                [(ngModel)]="selectedSourceFile"
-                class="w-full" />
-              <label>CSV file URL</label>
-            </p-floatLabel>
+          <div class="flex flex-col gap-2">
+            <label for="selectedSourceFileInput"> CSV file URL</label>
+            <input
+              id="selectedSourceFileInput"
+              type="text"
+              pInputText
+              [(ngModel)]="selectedSourceFile"
+              class="w-full" />
+          </div>
 
-            <div class="">
-              <label for="allowDataTableExport" class="text-xs">
-                Enable CSV export
-              </label>
-              <p-inputSwitch
-                inputId="allowDataTableExport"
-                [(ngModel)]="allowDataTableExport" />
-            </div>
+          <div class="flex flex-col gap-2">
+            <label for="allowDataTableExport"> Enable CSV export </label>
+            <p-inputSwitch
+              inputId="allowDataTableExport"
+              [(ngModel)]="allowDataTableExport" />
           </div>
         </div>
       </p-fieldset>
@@ -70,7 +68,8 @@
           [(searchFilter)]="searchFilter"
           [(pageSize)]="pageSize"
           [(selectionMode)]="selectionMode"
-          [(selectedFilters)]="selectedFilters">
+          [(selectedFilters)]="selectedFilters"
+          [(selectedFilterLabels)]="selectedFilterLabels">
         </g-webcomponent-configuration>
 
         <gc-search
@@ -79,7 +78,8 @@
           landing-page="${apiUrl}/records/${uuid}"
           [filter]="searchFilter()"
           [size]="pageSize()"
-          [list-of-filter]="listOfFilters()" />
+          [list-of-filter]="listOfFilters()"
+          [list-of-filter-label]="listOfFilterLabels()" />
 
         <g-webcomponents-doc-embed>
           <pre class="whitespace-pre-wrap">
@@ -89,6 +89,7 @@
             filter="{{ searchFilter() }}"
             size="{{ pageSize() }}"
             list-of-filter="{{ listOfFilters() }}"
+            list-of-filter-label="{{ listOfFilterLabels() }}"
           />
 ]]>
           </pre>
@@ -107,39 +108,38 @@
           [(searchFilter)]="searchFilter"
           [(pageSize)]="pageSize"
           [(selectionMode)]="selectionMode"
-          [(selectedFilters)]="selectedFilters">
-          <div>
-            <p-floatLabel class="m-2">
-              <p-autoComplete
-                styleClass="w-full"
-                [suggestions]="filteredFields"
-                [dropdown]="true"
-                optionValue="path"
-                optionLabel="label"
-                (completeMethod)="autocompleteField($event)"
-                (onSelect)="autocompleteAddValue($event)"
-                (onKeyUp)="autocompleteKeyboardEvent($event)"
-                [ngModel]="listOfFieldsAsText()" />
-              <label for="tableColumn">Select table columns</label>
-            </p-floatLabel>
+          [(selectedFilters)]="selectedFilters"
+          [(selectedFilterLabels)]="selectedFilterLabels">
+          <div class="flex flex-col gap-2">
+            <label for="listOfFieldsAsText">Select table columns</label>
+            <p-autoComplete
+              inputId="listOfFieldsAsText"
+              styleClass="w-full"
+              [suggestions]="filteredFields"
+              [dropdown]="true"
+              optionValue="path"
+              optionLabel="label"
+              (completeMethod)="autocompleteField($event)"
+              (onSelect)="autocompleteAddValue($event)"
+              (onKeyUp)="autocompleteKeyboardEvent($event)"
+              [ngModel]="listOfFieldsAsText()" />
+          </div>
 
-            <p-floatLabel class="m-2">
-              <input
-                type="text"
-                class="w-full"
-                pInputText
-                [(ngModel)]="listOfLabelsAsText" />
-              <label for="tableColumn">Define column label</label>
-            </p-floatLabel>
+          <div class="flex flex-col gap-2">
+            <label for="listOfLabelsAsText">Define column label</label>
+            <input
+              id="listOfLabelsAsText"
+              type="text"
+              class="w-full"
+              pInputText
+              [(ngModel)]="listOfLabelsAsText" />
+          </div>
 
-            <div class="">
-              <label for="allowResultsTableExport" class="text-xs">
-                Enable CSV export
-              </label>
-              <p-inputSwitch
-                inputId="allowResultsTableExport"
-                [(ngModel)]="allowResultsTableExport" />
-            </div>
+          <div class="flex flex-col gap-2">
+            <label for="allowResultsTableExport"> Enable CSV export </label>
+            <p-inputSwitch
+              inputId="allowResultsTableExport"
+              [(ngModel)]="allowResultsTableExport" />
           </div>
         </g-webcomponent-configuration>
       </div>
@@ -152,6 +152,7 @@
         [list-of-label]="listOfLabelsAsText()"
         [list-of-field]="listOfFieldsAsText()"
         [list-of-filter]="listOfFilters()"
+        [list-of-filter-label]="listOfFilterLabels()"
         [export]="allowResultsTableExport()"
         landing-page="${apiUrl}/records/${uuid}"
         landing-page-link-on="resourceTitleObject.default"
@@ -168,6 +169,7 @@
           list-of-label="{{ listOfLabelsAsText() }}"
           list-of-field="{{ listOfFieldsAsText() }}"
           list-of-filter="{{ listOfFilters() }}"
+          list-of-filter-label="{{ listOfFilterLabels() }}"
           export="{{ allowResultsTableExport() }}"
           landing-page="${apiUrl}/records/${uuid}"
           landing-page-llink-on="resourceTitleObject.default"
