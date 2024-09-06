@@ -68,6 +68,8 @@ export class GWebcomponentsDocComponent implements OnInit {
   fullTextSearch = signal(true);
   searchFilter = signal('+isTemplate:n');
   pageSize = signal(15);
+  //sort = signal('{"resourceTitleObject.default.keyword": "asc"}');
+  sort = signal('resourceTitleObject.default.keyword');
 
   protected readonly csvSourceFiles = CSV_SOURCE_FILE_LIST;
 
@@ -148,7 +150,7 @@ export class GWebcomponentsDocComponent implements OnInit {
     return this.selectedFilterPlaceholders();
     // return this.selectedFilterLabels() ? this.selectedFilterLabels().join(',') : '';
   });
-  listOfFilterLayouts = signal('DROPDOWN,CHECKBOX');
+  listOfFilterLayouts = signal('MULTISELECT,DROPDOWN');
 
   autocompleteField(event: AutoCompleteCompleteEvent) {
     let query = event.query.split(',').at(-1)?.toLowerCase() || '';

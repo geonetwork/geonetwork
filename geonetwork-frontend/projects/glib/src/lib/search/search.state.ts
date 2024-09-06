@@ -68,6 +68,7 @@ export const SearchStore = signalStore(
           fullTextQuery: store.fullTextQuery(),
           filters: store.filters(),
           filter: store.filter(),
+          sort: store.sort(),
           aggregationConfig: store.aggregationConfig(),
         } as SearchFilterParameters;
       }),
@@ -79,12 +80,6 @@ export const SearchStore = signalStore(
       }),
       hasMore: computed(() => {
         let total = store.response()?.hits.total as SearchTotalHits;
-        console.log(
-          total,
-          store.from(),
-          store.size(),
-          total && total.value && store.from() + store.size() <= total.value
-        );
         return (
           total && total.value && store.from() + store.size() < total.value
         );
@@ -221,6 +216,13 @@ export const SearchStore = signalStore(
     setPageSize(pageSize: number) {
       patchState(store, { pageSize, size: pageSize });
     },
+    setSort(sort: Sort) {
+      patchState(store, {
+        from: 0,
+        size: store.pageSize(),
+        sort: sort,
+      });
+    },
     more(size: number) {
       patchState(store, { from: store.from() + store.size() });
     },
@@ -247,6 +249,7 @@ export const SearchStore = signalStore(
             searchService.page({
               ...store.searchFilterParameters(),
               ...searchRequestPageParameters,
+              sort: store.sort(),
               functionScore: store.functionScore(),
               filter: store.filter(),
             })

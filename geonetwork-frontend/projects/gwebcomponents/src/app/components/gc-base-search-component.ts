@@ -1,6 +1,11 @@
 import { Component, Input, signal, SimpleChanges } from '@angular/core';
 import { DefaultConfig } from 'gapi';
-import { API_CONFIGURATION, DEFAULT_PAGE_SIZE, SearchService } from 'glib';
+import {
+  API_CONFIGURATION,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_SORT,
+  SearchService,
+} from 'glib';
 import { GcBaseComponent } from './gc-base-component';
 
 @Component({
@@ -17,6 +22,7 @@ export class GcBaseSearchComponent extends GcBaseComponent {
     .slice(2, 5);
   @Input() size = DEFAULT_PAGE_SIZE;
   @Input() filter: string;
+  @Input({ alias: 'sort' }) sort: string;
   @Input({ alias: 'full-text-search' }) fullTextSearch: boolean = true;
   @Input({ alias: 'list-of-filter' }) listOfFilter: string;
   @Input({ alias: 'list-of-filter-placeholder' })
@@ -31,6 +37,7 @@ export class GcBaseSearchComponent extends GcBaseComponent {
 
   currentFilter = signal<string>('');
   currentSize = signal(DEFAULT_PAGE_SIZE);
+  currentSort = signal(DEFAULT_SORT);
   fullTextSearchEnabled = signal(true);
   filters = signal<string[]>([]);
   filterPlaceholders = signal<string[]>([]);
@@ -47,7 +54,23 @@ export class GcBaseSearchComponent extends GcBaseComponent {
     this.currentFilter.set(this.filter);
     this.fullTextSearchEnabled.set(this.fullTextSearch);
     this.currentSize.set(this.size);
+    this.#parseSortField();
     // this.listOfFilter && this.filters.set(this.listOfFilter.split(','));
+  }
+
+  #parseSortField() {
+    if (this.sort) {
+      try {
+        this.currentSort.set(JSON.parse(this.sort));
+      } catch (e) {
+        this.currentSort.set(
+          this.sort.split(',').map(field => {
+            const order = field.startsWith('-') ? 'desc' : 'asc';
+            return { [field.replace(/^-/, '')]: order };
+          })
+        );
+      }
+    }
   }
 
   override ngOnChanges(changes: SimpleChanges): void {
@@ -57,6 +80,8 @@ export class GcBaseSearchComponent extends GcBaseComponent {
         this['currentFilter'].set(changes[prop].currentValue);
       } else if (prop == 'size') {
         this['currentSize'].set(changes[prop].currentValue);
+      } else if (prop == 'sort') {
+        this.#parseSortField();
       } else if (prop == 'fullTextSearch') {
         this.fullTextSearchEnabled.set(changes[prop].currentValue);
       } else if (this.inputToField[prop]) {

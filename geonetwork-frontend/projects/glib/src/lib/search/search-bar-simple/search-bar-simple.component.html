@@ -8,7 +8,7 @@
     @if (fullTextSearchEnabled()) {
       <g-search-input [scope]="scope()" styleClass="my-4 w-full" />
     }
-    <div class="flex flex-wrap justify-start gap-4 m-w-full">
+    <div class="flex flex-wrap justify-start items-center gap-4 m-w-full">
       @for (filter of filters(); track filter) {
         <g-search-agg
           [layout]="

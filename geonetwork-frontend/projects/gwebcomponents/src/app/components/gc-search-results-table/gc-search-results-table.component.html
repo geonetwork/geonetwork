@@ -1,6 +1,7 @@
 @defer (on viewport) {
   <ng-container
     gSearchContext="{{ searchId }}"
+    [sort]="currentSort()"
     [size]="currentSize()"
     [filter]="currentFilter()">
     <g-search-bar-simple

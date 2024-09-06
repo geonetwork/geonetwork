@@ -46,6 +46,12 @@ export class SearchContextDirective implements OnInit {
       },
       { allowSignalWrites: true }
     );
+    effect(
+      () => {
+        this.sort() && this.#searchStore.setSort(this.sort());
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   ngOnInit(): void {
