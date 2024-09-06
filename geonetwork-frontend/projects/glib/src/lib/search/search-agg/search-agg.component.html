@@ -17,6 +17,7 @@
           [scope]="scope()"
           [buckets]="agg().buckets"
           [field]="searchField"
+          [label]="label()"
           [aggregationConfig]="aggregationConfig" />
       }
       @case (SearchAggLayout.SELECT_BUTTON) {

@@ -79,7 +79,6 @@ export class SearchService {
         })
         .filter(clause => clause !== null);
 
-    console.log('filter', parameters.filter);
     let baseQuery: QueryDslQueryContainer = {
       bool: {
         must: [

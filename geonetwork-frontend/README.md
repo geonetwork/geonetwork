@@ -286,6 +286,16 @@ And use it in your application.
 ```
 
 
+## Common issues
+
+```
+File change detected. Starting incremental compilation...
+ERROR: Entry point glib has a circular dependency on itself.
+```
+
+Search for `from 'glib'` in the code to find the import using the lib name instead of relative path.
+
+ 
 
 # Experimenting
 
