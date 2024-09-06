@@ -3,27 +3,11 @@
     gSearchContext="{{ searchId }}"
     [size]="currentSize()"
     [filter]="currentFilter()">
-    @if (fullTextSearchEnabled() || filters().length > 0) {
-      <div
-        class="my-6 p-4 rounded-2xl"
-        [style]="{
-          'background-image':
-            'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))',
-        }">
-        @if (fullTextSearchEnabled()) {
-          <g-search-input [scope]="searchId" styleClass="my-4 w-full" />
-        }
-        <div class="flex flex-wrap justify-start gap-4 m-w-full">
-          @for (filter of filters(); track filter) {
-            <g-search-agg
-              [layout]="SearchAggLayout.DROPDOWN"
-              [aggregation]="filter"
-              [isLabelDisplayed]="false"
-              [scope]="searchId" />
-          }
-        </div>
-      </div>
-    }
+    <g-search-bar-simple
+      [scope]="searchId"
+      [fullTextSearchEnabled]="fullTextSearchEnabled()"
+      [filters]="filters()"
+      [filterLabels]="filterLabels()" />
     <g-search-results
       [scope]="searchId"
       [layout]="layout"
