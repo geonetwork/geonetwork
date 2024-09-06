@@ -1,3 +1,5 @@
+import { Sort } from '@elastic/elasticsearch/lib/api/types';
+
 export interface UiConfiguration {
   langDetector: LangDetector;
   nodeDetector: NodeDetector;
@@ -106,6 +108,9 @@ export interface Info {
   title?: string;
   active?: boolean;
   params?: Params;
+  sort?: Sort;
+  size?: number;
+  filter?: string;
 }
 
 export interface Params {

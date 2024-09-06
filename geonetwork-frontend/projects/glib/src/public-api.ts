@@ -28,7 +28,6 @@ export * from './lib/search/search-input/search-input.component';
 export * from './lib/search/search-paging/search-paging.component';
 export * from './lib/search/search-paging-more-button/search-paging-more-button.component';
 export * from './lib/search/search-results-first-overview-as-background.directive';
-export * from './lib/search/search-results-layout.directive';
 export * from './lib/search/search.module';
 export * from './lib/search/search.service';
 export * from './lib/search/search.state.model';

@@ -218,9 +218,9 @@ export const SearchStore = signalStore(
     },
     setSort(sort: Sort) {
       patchState(store, {
+        sort,
         from: 0,
         size: store.pageSize(),
-        sort: sort,
       });
     },
     more(size: number) {

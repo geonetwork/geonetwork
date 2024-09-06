@@ -30,15 +30,15 @@
   </div>
 </div>
 
-@for (infoPanel of uiConfiguration?.mods?.home.info; track $index) {
+@for (infoPanel of panels(); track $index) {
   @switch (infoPanel.type) {
     @case ('search') {
       <div
         class="w-screen"
         gSearchContext="highlights-{{ $index }}"
-        [filter]="getFilter(infoPanel.params)"
-        [size]="getSize(infoPanel.params)"
-        [sort]="getSort(infoPanel.params)">
+        [filter]="infoPanel.filter"
+        [size]="infoPanel.size"
+        [sort]="infoPanel.sort">
         <div
           class="my-8 p-8 text-white bg-gray-800 bg-blend-overlay"
           gSearchResultsFirstOverviewAsBackground="highlights-{{ $index }}">
@@ -50,7 +50,6 @@
               {{ infoPanel.description }}
             </p>
           }
-          <p-carousel g-search-results-layout="" />
           <g-search-results-carousel
             scope="highlights-{{ $index }}"
             [numVisible]="4" />
