@@ -10,6 +10,7 @@
           [scope]="scope()"
           [buckets]="agg().buckets"
           [field]="searchField"
+          [placeholder]="placeholder()"
           [aggregationConfig]="aggregationConfig" />
       }
       @case (SearchAggLayout.DROPDOWN) {
@@ -17,7 +18,7 @@
           [scope]="scope()"
           [buckets]="agg().buckets"
           [field]="searchField"
-          [label]="label()"
+          [placeholder]="placeholder()"
           [aggregationConfig]="aggregationConfig" />
       }
       @case (SearchAggLayout.SELECT_BUTTON) {

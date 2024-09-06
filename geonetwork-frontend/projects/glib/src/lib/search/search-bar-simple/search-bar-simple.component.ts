@@ -16,6 +16,7 @@ import {
 export class SearchBarSimpleComponent extends SearchBaseComponent {
   fullTextSearchEnabled = input(true);
   filters = input<string[]>([]);
-  filterLabels = input<string[]>([]);
+  filterPlaceholders = input<string[]>([]);
+  filterLayouts = input<string[]>([]);
   protected readonly SearchAggLayout = SearchAggLayout;
 }

@@ -137,17 +137,18 @@ export class GWebcomponentsDocComponent implements OnInit {
       'resourceType',
     ].join(',')
   );
-  selectedFilterLabels = signal(
+  selectedFilterPlaceholders = signal(
     ['Organisation', 'Topic', 'Status', 'Type'].join(',')
   );
   listOfFilters = computed(() => {
     return this.selectedFilters();
     // return this.selectedFilters() ? this.selectedFilters().join(',') : '';
   });
-  listOfFilterLabels = computed(() => {
-    return this.selectedFilterLabels();
+  listOfFilterPlaceholders = computed(() => {
+    return this.selectedFilterPlaceholders();
     // return this.selectedFilterLabels() ? this.selectedFilterLabels().join(',') : '';
   });
+  listOfFilterLayouts = signal('DROPDOWN,CHECKBOX');
 
   autocompleteField(event: AutoCompleteCompleteEvent) {
     let query = event.query.split(',').at(-1)?.toLowerCase() || '';
