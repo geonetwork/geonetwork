@@ -28,21 +28,13 @@
     </Or>
   </Match>
   <Match>
-    <Package name="org.geonetwork.tasks.ogcapi.processes.generated.model"/>
+    <Package name="org.geonetwork.data.gdal.model.generated"/>
     <Or>
       <Bug pattern="EI_EXPOSE_REP2"/>
       <Bug pattern="EI_EXPOSE_REP"/>
-    </Or>
-  </Match>
-  <Match>
-    <Package name="org.geonetwork.data.gdal.model"/>
-    <Or>
-      <Bug pattern="EI_EXPOSE_REP2"/>
-      <Bug pattern="EI_EXPOSE_REP"/>
-      <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
-      <Bug pattern="RC_REF_COMPARISON"/>
-      <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
-      <Bug pattern="RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN"/>
+      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+      <Bug pattern="SA_FIELD_SELF_ASSIGNMENT"/>
+      <Bug pattern="UR_UNINIT_READ"/>
     </Or>
   </Match>
   <!--
