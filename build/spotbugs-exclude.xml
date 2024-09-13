@@ -27,6 +27,24 @@
       <Bug pattern="EI_EXPOSE_REP"/>
     </Or>
   </Match>
+  <Match>
+    <Package name="org.geonetwork.tasks.ogcapi.processes.generated.model"/>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+      <Bug pattern="EI_EXPOSE_REP"/>
+    </Or>
+  </Match>
+  <Match>
+    <Package name="org.geonetwork.data.gdal.model"/>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
+      <Bug pattern="RC_REF_COMPARISON"/>
+      <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+      <Bug pattern="RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN"/>
+    </Or>
+  </Match>
   <!--
   https://jpa-buddy.com/blog/hopefully-the-final-article-about-equals-and-hashcode-for-jpa-entities-with-db-generated-ids/
   -->

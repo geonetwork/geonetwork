@@ -51,6 +51,7 @@
     <errorProne.version>2.18.0</errorProne.version>
     <pmd.version>6.42.0</pmd.version>
     <errorProne.version>2.29.0</errorProne.version>
+    <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
 
     <!-- build -->
     <fork.javac>false</fork.javac>
@@ -140,6 +141,11 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.14.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-exec</artifactId>
+      <version>1.4.0</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -354,6 +360,24 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.jsonschema2pojo</groupId>
+        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+        <version>${jsonschema2pojo.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectory>${project.basedir}/src/main/resources/data/schema</sourceDirectory>
+          <targetPackage>org.geonetwork.data.gdal.model</targetPackage>
+          <classNamePrefix>Gdal</classNamePrefix>
+        </configuration>
+      </plugin>
+
       <!--
         See https://openapi-generator.tech/docs/generators/spring
           for more information on the configuration options
@@ -431,7 +455,6 @@
       </activation>
       <build>
         <plugins>
-
           <plugin>
             <groupId>com.diffplug.spotless</groupId>
             <artifactId>spotless-maven-plugin</artifactId>
