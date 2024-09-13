@@ -15,7 +15,7 @@ It is composed of 4 projects:
 * Install [Node.js](https://nodejs.org/en/download/) using nvm
 
 ```bash
-nvm use 18.19
+nvm install 18.19
 ```
 
 ## Build and run
@@ -288,12 +288,24 @@ And use it in your application.
 
 ## Common issues
 
+### Circular dependency
+
 ```
 File change detected. Starting incremental compilation...
 ERROR: Entry point glib has a circular dependency on itself.
 ```
 
 Search for `from 'glib'` in the code to find the import using the lib name instead of relative path.
+
+### Proxy 
+
+```
+8:53:03 AM [vite] http proxy error: /geonetwork/srv/api/search/records/_search
+Error: connect ECONNREFUSED 127.0.0.1:8080
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1549:16) (x4)
+```
+
+GeoNetwork is not running or the proxy is not correctly configured.
 
  
 
