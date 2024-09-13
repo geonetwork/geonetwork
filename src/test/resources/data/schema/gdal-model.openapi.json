@@ -1,0 +1,754 @@
+{
+  "openapi": "3.0.1",
+  "paths": {
+  },
+  "components": {
+    "schemas": {
+      "ogrinfo": {
+        "type": "object",
+        "properties": {
+          "dataset": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "driverShortName": {
+                "type": "string"
+              },
+              "driverLongName": {
+                "type": "string"
+              },
+              "layers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/layer"
+                }
+              },
+              "metadata": {
+                "$ref": "#/components/schemas/metadata"
+              },
+              "domains": {
+                "$ref": "#/components/schemas/domains"
+              },
+              "relationships": {
+                "$ref": "#/components/schemas/relationships"
+              },
+              "rootGroup": {
+                "$ref": "#/components/schemas/group"
+              }
+            },
+            "required": [
+              "layers",
+              "metadata",
+              "domains"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "gdalinfo": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "driverShortName": {
+            "type": "string"
+          },
+          "driverLongName": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "size": {
+            "$ref": "#/components/schemas/arrayOfTwoIntegers"
+          },
+          "coordinateSystem": {
+            "$ref": "#/components/schemas/coordinateSystem"
+          },
+          "geoTransform": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "cornerCoordinates": {
+            "$ref": "#/components/schemas/cornerCoordinates"
+          },
+          "wgs84Extent": {
+            "$ref": "https://geojson.org/schema/Geometry.json"
+          },
+          "bands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/band"
+            }
+          },
+          "stac": {
+            "$ref": "#/components/schemas/stac"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/metadata"
+          }
+        },
+        "required": [
+          "size",
+          "bands"
+        ]
+      },
+      "layer": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/metadata"
+          },
+          "fidColumnName": {
+            "type": "string"
+          },
+          "featureCount": {
+            "type": "number"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "$ref": "https://geojson.org/schema/Feature.json"
+            }
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/field"
+            }
+          },
+          "geometryFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/geometryField"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "metadata",
+          "geometryFields",
+          "fields"
+        ],
+        "additionalProperties": false
+      },
+      "metadata": {
+        "type": "object",
+        "description": "Object whose keys are metadata domain names. The empty string is a valid metadata domain name, and is used for the default domain.",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/metadataDomain"
+        }
+      },
+      "metadataDomain": {
+        "description": " The values of a metadadomain are key: string pairs, or arbitrary JSON objects for metadata domain names starting with the \"json:\" prefix.",
+        "anyOf": [
+          {
+            "type": "object"
+          },
+          {
+            "$ref": "#/components/schemas/keyValueDict"
+          }
+        ]
+      },
+      "field": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/fieldType"
+          },
+          "subType": {
+            "$ref": "#/components/schemas/fieldSubType"
+          },
+          "width": {
+            "type": "integer"
+          },
+          "precision": {
+            "type": "integer"
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "uniqueConstraint": {
+            "type": "boolean"
+          },
+          "defaultValue": {
+            "type": "string"
+          },
+          "alias": {
+            "type": "string"
+          },
+          "domainName": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string",
+            "pattern": "^(localtime|(mixed timezones)|UTC|((\\+|-)[0-9][0-9]:[0-9][0-9]))$"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "nullable",
+          "uniqueConstraint"
+        ],
+        "additionalProperties": false
+      },
+      "fieldType": {
+        "enum": [
+          "Integer",
+          "Integer64",
+          "Real",
+          "String",
+          "Binary",
+          "IntegerList",
+          "Integer64List",
+          "RealList",
+          "StringList",
+          "Date",
+          "Time",
+          "DateTime"
+        ]
+      },
+      "fieldSubType": {
+        "enum": [
+          "None",
+          "Boolean",
+          "Int16",
+          "Float32",
+          "JSON",
+          "UUID"
+        ]
+      },
+      "geometryField": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "pattern": "^(Geometry|((Multi)?Point)|((Multi)?LineString)|((Multi)?Polygon)|GeometryCollection|((Multi)?Curve)|((Multi)?Surface)|CircularString|CompoundCurve|CurvePolygon|Tin|PolyhedralSurface|Triangle)[Z]?[M]?$"
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "extent": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "extent3D": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "minItems": 6,
+              "maxItems": 6
+            }
+          },
+          "coordinateSystem": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/coordinateSystem"
+              }
+            ]
+          },
+          "supportedSRSList": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "object",
+                      "properties": {
+                        "authority": {
+                          "type": "string"
+                        },
+                        "code": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "wkt": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "name",
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      "coordinateSystem": {
+        "type": "object",
+        "properties": {
+          "wkt": {
+            "type": "string"
+          },
+          "dataAxisToSRSAxisMapping": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "coordinateEpoch": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "wkt",
+          "dataAxisToSRSAxisMapping"
+        ],
+        "additionalProperties": false
+      },
+      "domains": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/domain"
+        }
+      },
+      "keyValueDict": {
+        "type": "object"
+      },
+      "domain": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "coded",
+              "range",
+              "glob"
+            ]
+          },
+          "fieldType": {
+            "$ref": "#/components/schemas/fieldType"
+          },
+          "fieldSubType": {
+            "$ref": "#/components/schemas/fieldSubType"
+          },
+          "glob": {
+            "description": "only present when type=coded",
+            "type": "string"
+          },
+          "codedValues": {
+            "$ref": "#/components/schemas/keyValueDict"
+          },
+          "splitPolicy": {
+            "enum": [
+              "default value",
+              "duplicate",
+              "geometry ratio"
+            ]
+          },
+          "mergePolicy": {
+            "enum": [
+              "default value",
+              "sum",
+              "geometry weighted"
+            ]
+          },
+          "minValue": {
+            "description": "only present when type=range",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "minValueIncluded": {
+            "description": "only present when type=range",
+            "type": "boolean"
+          },
+          "maxValue": {
+            "description": "only present when type=range",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "maxValueIncluded": {
+            "description": "only present when type=range",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "fieldType",
+          "splitPolicy",
+          "mergePolicy"
+        ],
+        "additionalProperties": false
+      },
+      "group": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "layerNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/group"
+            }
+          }
+        },
+        "required": [
+          "layerNames",
+          "groups"
+        ],
+        "additionalProperties": false
+      },
+      "relationships": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/relationship"
+        }
+      },
+      "relationship": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "Composite",
+              "Association",
+              "Aggregation"
+            ]
+          },
+          "related_table_type": {
+            "type": "string"
+          },
+          "cardinality": {
+            "type": "string",
+            "enum": [
+              "OneToOne",
+              "OneToMany",
+              "ManyToOne",
+              "ManyToMany"
+            ]
+          },
+          "left_table_name": {
+            "type": "string"
+          },
+          "right_table_name": {
+            "type": "string"
+          },
+          "left_table_fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "right_table_fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mapping_table_name": {
+            "type": "string"
+          },
+          "left_mapping_table_fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "right_mapping_table_fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "forward_path_label": {
+            "type": "string"
+          },
+          "backward_path_label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "related_table_type",
+          "cardinality",
+          "left_table_name",
+          "right_table_name",
+          "left_table_fields",
+          "right_table_fields",
+          "forward_path_label",
+          "backward_path_label"
+        ],
+        "additionalProperties": false
+      },
+      "arrayOfTwoIntegers": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "arrayOfTwoNumbers": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      },
+      "band": {
+        "type": "object",
+        "properties": {
+          "band": {
+            "type": "integer"
+          },
+          "block": {
+            "$ref": "#/components/schemas/arrayOfTwoIntegers"
+          },
+          "checksum": {
+            "type": "integer"
+          },
+          "colorInterpretation": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "Byte",
+              "Int8",
+              "UInt16",
+              "Int16",
+              "UInt32",
+              "Int32",
+              "UInt64",
+              "Int32",
+              "Float32",
+              "Float64",
+              "CInt16",
+              "CInt32",
+              "CFloat32",
+              "CFloat64"
+            ]
+          },
+          "histogram": {
+            "type": "object",
+            "properties": {
+              "buckets": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "count": {
+                "type": "integer"
+              },
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              }
+            }
+          },
+          "min": {
+            "type": "number"
+          },
+          "max": {
+            "type": "number"
+          },
+          "computedMin": {
+            "type": "number"
+          },
+          "computedMax": {
+            "type": "number"
+          },
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "mean": {
+            "type": "number"
+          },
+          "stdDev": {
+            "type": "number"
+          },
+          "overviews": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "size": {
+                  "$ref": "#/components/schemas/arrayOfTwoIntegers"
+                }
+              }
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/metadata"
+          }
+        },
+        "required": [
+          "band",
+          "block",
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      "cornerCoordinates": {
+        "type": "object",
+        "properties": {
+          "upperLeft": {
+            "$ref": "#/components/schemas/arrayOfTwoNumbers"
+          },
+          "lowerLeft": {
+            "$ref": "#/components/schemas/arrayOfTwoNumbers"
+          },
+          "lowerRight": {
+            "$ref": "#/components/schemas/arrayOfTwoNumbers"
+          },
+          "upperRight": {
+            "$ref": "#/components/schemas/arrayOfTwoNumbers"
+          },
+          "center": {
+            "$ref": "#/components/schemas/arrayOfTwoNumbers"
+          }
+        },
+        "required": [
+          "upperLeft",
+          "lowerLeft",
+          "lowerRight",
+          "upperRight",
+          "center"
+        ],
+        "additionalProperties": false
+      },
+      "stac": {
+        "description": "Derived from https://raw.githubusercontent.com/stac-extensions/projection/main/json-schema/schema.json#/definitions/fields, https://raw.githubusercontent.com/stac-extensions/eo/v1.1.0/json-schema/schema.json#/definitions/bands and https://raw.githubusercontent.com/stac-extensions/eo/v1.1.0/json-schema/schema.json#/definitions/bands",
+        "type": "object",
+        "properties": {
+          "proj:epsg": {
+            "title": "EPSG code",
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "proj:wkt2": {
+            "title": "Coordinate Reference System in WKT2 format",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "proj:projjson": {
+            "title": "Coordinate Reference System in PROJJSON format",
+            "oneOf": [
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "proj:shape": {
+            "description": "note that the order of items in proj:shape is height,width starting with GDAL 3.8.5 (previous versions ordered it wrongly as width,height)",
+            "title": "Shape",
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "integer"
+            }
+          },
+          "proj:transform": {
+            "title": "Transform",
+            "type": "array",
+            "oneOf": [
+              {
+                "minItems": 6,
+                "maxItems": 6
+              },
+              {
+                "minItems": 9,
+                "maxItems": 9
+              }
+            ],
+            "items": {
+              "type": "number"
+            }
+          },
+          "eo:bands": {
+            "$ref": "https://raw.githubusercontent.com/stac-extensions/eo/v1.1.0/json-schema/schema.json#/definitions/bands"
+          },
+          "raster:bands": {
+            "$ref": "https://raw.githubusercontent.com/stac-extensions/eo/v1.1.0/json-schema/schema.json#/definitions/bands"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "info": {
+    "title": "ogrinfo",
+    "version": "1.0.0"
+  }
+}

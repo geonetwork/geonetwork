@@ -20,8 +20,10 @@ import org.geonetwork.data.AttributeStatistics;
 import org.geonetwork.data.DataFormat;
 import org.geonetwork.data.RasterDataAnalyzer;
 import org.geonetwork.data.VectorDataAnalyzer;
-import org.geonetwork.data.gdal.model.GdalDataset;
-import org.geonetwork.data.gdal.model.GdalGdalinfoSchema;
+import org.geonetwork.data.gdal.model.generated.GdalGdalinfoDto;
+import org.geonetwork.data.gdal.model.generated.GdalOgrinfoDatasetDto;
+import org.openapitools.jackson.nullable.JsonNullable;
+import org.openapitools.jackson.nullable.JsonNullableModule;
 
 public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer {
 
@@ -78,15 +80,15 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   }
 
   @Override
-  public Optional<GdalDataset> getLayerProperties(String dataSource, String layer) {
+  public Optional<GdalOgrinfoDatasetDto> getLayerProperties(String dataSource, String layer) {
     return executeCommand(OGR_INFO_APP, "-json", "-so", "-ro", dataSource, layer)
-        .map(output -> parseJson(output, GdalDataset.class));
+        .map(output -> parseJson(output, GdalOgrinfoDatasetDto.class));
   }
 
   @Override
-  public Optional<GdalGdalinfoSchema> getRasterProperties(String rasterSource) {
+  public Optional<GdalGdalinfoDto> getRasterProperties(String rasterSource) {
     return executeCommand(GDAL_INFO_APP, "-json", rasterSource)
-        .map(output -> parseJson(output, GdalGdalinfoSchema.class));
+        .map(output -> parseJson(output, GdalGdalinfoDto.class));
   }
 
   @Override
@@ -139,11 +141,17 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     return null;
   }
 
+  private ObjectMapper buildObjectMapper() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new JsonNullableModule());
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
+    return objectMapper;
+  }
+
   private <T> T parseJson(String json, Class<T> clazz) {
     try {
-      ObjectMapper objectMapper = new ObjectMapper();
-      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-      return objectMapper.readValue(json, clazz);
+      return buildObjectMapper().readValue(json, clazz);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -152,9 +160,11 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   private Optional<AttributeStatistics> parseAttributeStatistics(
       String json, String attributeName) {
     try {
-      GdalDataset dataset = new ObjectMapper().readValue(json, GdalDataset.class);
-      if (dataset.getLayers().getFirst().getFeatures().getFirst().getProperties()
-          instanceof Map properties) {
+      GdalOgrinfoDatasetDto dataset =
+          buildObjectMapper().readValue(json, GdalOgrinfoDatasetDto.class);
+      JsonNullable<Object> optionalProperties =
+          dataset.getLayers().getFirst().getFeatures().getFirst().getProperties();
+      if (optionalProperties.isPresent() && optionalProperties.get() instanceof Map properties) {
         return Optional.of(
             AttributeStatistics.builder()
                 .name(attributeName)
@@ -171,11 +181,13 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
   private List<Object> parseAttributeValues(String json, String attributeName) {
     try {
-      GdalDataset dataset = new ObjectMapper().readValue(json, GdalDataset.class);
+      GdalOgrinfoDatasetDto dataset =
+          buildObjectMapper().readValue(json, GdalOgrinfoDatasetDto.class);
       return dataset.getLayers().getFirst().getFeatures().stream()
           .map(
               feature -> {
-                if (feature.getProperties() instanceof Map properties) {
+                if (feature.getProperties().isPresent()
+                    && feature.getProperties().get() instanceof Map properties) {
                   return properties.get(attributeName);
                 } else {
                   return null;

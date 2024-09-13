@@ -8,14 +8,19 @@ package org.geonetwork.data.gdal;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.geonetwork.data.AttributeStatistics;
 import org.geonetwork.data.DataFormat;
-import org.geonetwork.data.gdal.model.GdalDataset;
+import org.geonetwork.data.gdal.model.generated.GdalFieldDto;
+import org.geonetwork.data.gdal.model.generated.GdalGdalinfoDto;
+import org.geonetwork.data.gdal.model.generated.GdalLayerDto;
+import org.geonetwork.data.gdal.model.generated.GdalOgrinfoDatasetDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -89,13 +94,38 @@ class GdalDataAnalyzerTest {
 
   @Test
   void getLayerProperties() throws IOException {
-    Optional<GdalDataset> layerProperties =
+    Optional<GdalOgrinfoDatasetDto> layerProperties =
         analyzer.getLayerProperties(
             new ClassPathResource("data/samples/CEEUBG100kV2_1.shp").getFile().getCanonicalPath(),
             "CEEUBG100kV2_1");
 
-    assertEquals(51738, layerProperties.get().getLayers().getFirst().getFeatureCount());
-    // TODO: Add more assertions
+    assertEquals("ESRI Shapefile", layerProperties.get().getDriverShortName());
+
+    GdalLayerDto layer = layerProperties.get().getLayers().getFirst();
+    assertEquals(BigDecimal.valueOf(51738), layer.getFeatureCount());
+    assertEquals("CEEUBG100kV2_1", layer.getName());
+    assertEquals("", layer.getGeometryFields().getFirst().getName());
+    assertEquals("LineString", layer.getGeometryFields().getFirst().getType().get());
+    assertEquals(
+        "[-61.805814108435243, 4.2138689443886506, 34.605668981354938, 65.90833200184602]",
+        layer.getGeometryFields().getFirst().getExtent().toString());
+
+    assertTrue(
+        layer
+            .getGeometryFields()
+            .getFirst()
+            .getCoordinateSystem()
+            .get()
+            .getWkt()
+            .contains("ID[\"EPSG\",4258]"));
+
+    assertEquals(null, layer.getFidColumnName());
+    assertEquals(
+        "CESGCD,CESGLN,NURGCDV7,CEMOV1,CEMOV2,CEEVV1,CEEVV2,CEGOV2,CEDWV1,CEDWV2,CEDAV2,CEDC,COVERED",
+        layer.getFields().stream().map(GdalFieldDto::getName).collect(Collectors.joining(",")));
+    assertEquals(
+        "STRING,REAL,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING",
+        layer.getFields().stream().map(f -> f.getType().name()).collect(Collectors.joining(",")));
   }
 
   @Test
@@ -137,12 +167,29 @@ class GdalDataAnalyzerTest {
 
   @Test
   void getRasterProperties() throws IOException {
-    Object layerProperties =
+    Optional<GdalGdalinfoDto> layerProperties =
         analyzer.getRasterProperties(
             new ClassPathResource("data/samples/ENI2018_CHA0018_00_V2020_1_AM_PILOT.tif")
                 .getFile()
                 .getCanonicalPath());
 
+    assertEquals("GTiff", layerProperties.get().getDriverShortName());
+
     assertNotNull(layerProperties);
+    assertTrue(layerProperties.get().getCoordinateSystem().getWkt().contains("\"EPSG\",3035"));
+    assertEquals(3035, layerProperties.get().getStac().getProjColonEpsg().get());
+    assertEquals(
+        "7146300.0,2543100.0",
+        layerProperties.get().getCornerCoordinates().getLowerLeft().stream()
+            .map(BigDecimal::toString)
+            .collect(Collectors.joining(",")));
+    assertEquals(
+        "7203800.0,2600700.0",
+        layerProperties.get().getCornerCoordinates().getUpperRight().stream()
+            .map(BigDecimal::toString)
+            .collect(Collectors.joining(",")));
+    assertEquals(575, layerProperties.get().getSize().get(0));
+    assertEquals(576, layerProperties.get().getSize().get(1));
+    assertEquals(1, layerProperties.get().getBands().size());
   }
 }
