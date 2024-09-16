@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
+import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.data.AttributeStatistics;
 import org.geonetwork.data.DataFormat;
 import org.geonetwork.data.RasterDataAnalyzer;
@@ -24,13 +26,27 @@ import org.geonetwork.data.gdal.model.generated.GdalGdalinfoDto;
 import org.geonetwork.data.gdal.model.generated.GdalOgrinfoDatasetDto;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.openapitools.jackson.nullable.JsonNullableModule;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
+@Slf4j(topic = "org.geonetwork.tasks.data.analysis")
 public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer {
 
-  // TODO: configuration from application.yml
-  // docker run --rm -v ${metadataDir}:/data ghcr.io/osgeo/gdal:ubuntu-full-latest ogrinfo
   public static final String OGR_INFO_APP = "ogrinfo";
   public static final String GDAL_INFO_APP = "gdalinfo";
+  private String command;
+  private String baseDir;
+  private String mountPoint;
+
+  public GdalDataAnalyzer(
+      @Value("${geonetwork.data.analyzer.gdal.command:''}") String command,
+      @Value("${geonetwork.data.analyzer.gdal.baseDir:''}") String baseDir,
+      @Value("${geonetwork.data.analyzer.gdal.mountPoint:''}") String mountPoint) {
+    this.command = command;
+    this.baseDir = baseDir;
+    this.mountPoint = mountPoint;
+  }
 
   @Override
   public String getName() {
@@ -39,8 +55,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
   /** JSON output added in version 3.7. */
   protected boolean isValidVersion(String version) {
-    String versionNumberAsString =
-        version.replaceFirst("GDAL (\\d+\\.\\d+\\.\\d+),.*", "$1").trim();
+    String versionNumberAsString = version.replaceFirst("GDAL (\\d+\\.\\d+\\.\\d+).*", "$1").trim();
     int versionNumber = Integer.parseInt(versionNumberAsString.replace(".", ""));
     return versionNumber >= 370;
   }
@@ -74,20 +89,27 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
   @Override
   public List<String> getDatasourceLayers(String dataSource) {
-    return executeCommand(OGR_INFO_APP, "-ro", dataSource)
+    return executeCommand(buildUtilityCommand(OGR_INFO_APP), "-ro", buildDataSourcePath(dataSource))
         .map(GdalUtils::parseLayers)
         .orElse(List.of());
   }
 
   @Override
   public Optional<GdalOgrinfoDatasetDto> getLayerProperties(String dataSource, String layer) {
-    return executeCommand(OGR_INFO_APP, "-json", "-so", "-ro", dataSource, layer)
+    return executeCommand(
+            buildUtilityCommand(OGR_INFO_APP),
+            "-json",
+            "-so",
+            "-ro",
+            buildDataSourcePath(dataSource),
+            layer)
         .map(output -> parseJson(output, GdalOgrinfoDatasetDto.class));
   }
 
   @Override
   public Optional<GdalGdalinfoDto> getRasterProperties(String rasterSource) {
-    return executeCommand(GDAL_INFO_APP, "-json", rasterSource)
+    return executeCommand(
+            buildUtilityCommand(GDAL_INFO_APP), "-json", buildDataSourcePath(rasterSource))
         .map(output -> parseJson(output, GdalGdalinfoDto.class));
   }
 
@@ -95,7 +117,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   public List<AttributeStatistics> getAttributesStatistics(
       String dataSource, String layer, List<String> attribute) {
     return attribute.stream()
-        .map(attr -> getAttributeStatistics(dataSource, layer, attr))
+        .map(attr -> getAttributeStatistics(buildDataSourcePath(dataSource), layer, attr))
         .filter(Optional::isPresent)
         .map(Optional::get)
         .toList();
@@ -107,13 +129,13 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
         String.format(
             "SELECT MIN(%s) AS min, MAX(%s) AS max FROM %s", attributeName, attributeName, layer);
     return execute(
-            new CommandLine(OGR_INFO_APP)
+            new CommandLine(buildUtilityCommand(OGR_INFO_APP))
                 .addArgument("-json")
                 .addArgument("-features")
                 .addArgument("-ro")
                 .addArgument("-sql")
                 .addArgument(query, false)
-                .addArgument(dataSource))
+                .addArgument(buildDataSourcePath(dataSource)))
         .flatMap(output -> parseAttributeStatistics(output, attributeName));
   }
 
@@ -125,13 +147,13 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
             "SELECT DISTINCT %s AS value FROM %s ORDER BY %s LIMIT %d",
             attributeName, layer, attributeName, limit);
     return execute(
-            new CommandLine(OGR_INFO_APP)
+            buildUtilityCommand(OGR_INFO_APP)
                 .addArgument("-json")
                 .addArgument("-features")
                 .addArgument("-ro")
                 .addArgument("-sql")
                 .addArgument(query, false)
-                .addArgument(dataSource))
+                .addArgument(buildDataSourcePath(dataSource)))
         .map(output -> parseAttributeValues(output, "value"))
         .orElse(List.of());
   }
@@ -139,6 +161,37 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   @Override
   public Object getFeatures(String dataSource, String layer, int limit) {
     return null;
+  }
+
+  public CommandLine getVersionCommand() {
+    return buildUtilityCommand(OGR_INFO_APP).addArgument("--version");
+  }
+
+  public CommandLine getFormatCommand(String utility) {
+    return buildUtilityCommand(utility).addArgument("--formats");
+  }
+
+  private String buildDataSourcePath(String dataSource) {
+    // TODO: Only applies to file system data sources
+    return mountPoint.isEmpty() ? dataSource : dataSource.replace(baseDir, mountPoint);
+  }
+
+  private CommandLine buildUtilityCommand(String utility) {
+    if (command.isEmpty()) {
+      return new CommandLine(utility);
+    } else {
+      String[] commandArgs = StringUtils.split(command, " ");
+      CommandLine commandLine = new CommandLine(commandArgs[0]);
+      for (int i = 1; i < commandArgs.length; i++) {
+        commandLine.addArgument(commandArgs[i]);
+      }
+      commandLine.addArgument(utility);
+      return commandLine;
+    }
+  }
+
+  protected List<DataFormat> getFormatsFromUtility(String utility) {
+    return execute(getFormatCommand(utility)).map(GdalUtils::parseFormats).orElse(List.of());
   }
 
   private ObjectMapper buildObjectMapper() {
