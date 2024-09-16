@@ -56,6 +56,9 @@ public class GdalGeometryFieldDto {
   @Valid
   private List<GdalGeometryFieldSupportedSRSListInnerDto> supportedSRSList = new ArrayList<>();
 
+  //  private List<GdalGeometryFieldSupportedSRSListInnerOneOfDto> supportedSRSList = new
+  // ArrayList<>();
+
   public GdalGeometryFieldDto() {
     super();
   }

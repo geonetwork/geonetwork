@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.geonetwork.data.AttributeStatistics;
@@ -90,6 +91,38 @@ class GdalDataAnalyzerTest {
         analyzer.getDatasourceLayers(
             new ClassPathResource("data/samples/CEEUBG100kV2_1.shp").getFile().getCanonicalPath());
     assertEquals("CEEUBG100kV2_1", datasourceLayers.getFirst());
+  }
+
+  @Test
+  void getDatasourceLayersFromWfs() {
+    //    String wfsUrl = "WFS:https://sextant.ifremer.fr/services/wfs/environnement_marin";
+    //    String wfsTypeName = "surval_lieux_actifs_ligne";
+    String wfsUrl = "WFS:https://geoservices.brgm.fr/risques";
+    String wfsTypeName = "ms:NEOPAL_FAILLE";
+    List<String> datasourceLayers = analyzer.getDatasourceLayers(wfsUrl);
+    assertTrue(datasourceLayers.stream().anyMatch(wfsTypeName::equals));
+
+    analyzer.getLayerProperties(wfsUrl, wfsTypeName);
+    GdalOgrinfoDatasetDto properties = analyzer.getLayerProperties(wfsUrl, wfsTypeName).get();
+    assertEquals("WFS", properties.getDriverShortName());
+    if (properties.getMetadata().getAdditionalProperty("") instanceof Map serviceProperties) {
+      assertEquals("GéoServices : risques naturels et industriels", serviceProperties.get("TITLE"));
+      assertEquals(
+          "Ensemble des services d'accès aux données sur les risques naturels et industriels"
+              + " diffusées par le BRGM",
+          serviceProperties.get("ABSTRACT"));
+      assertEquals("BRGM", serviceProperties.get("PROVIDER_NAME"));
+    }
+    if (properties.getLayers().getFirst().getMetadata().getAdditionalProperty("")
+        instanceof Map layerProperties) {
+      assertEquals("Déformations récentes et paléoséismes - Failles", layerProperties.get("TITLE"));
+      assertEquals(
+          "Néopal est la base de données recensant les arguments géologiques de déformation plus"
+              + " récentes que deux millions d'années (indices néotectoniques) en France, publiés"
+              + " dans la littérature scientifique et évalués par un comité d'experts.",
+          layerProperties.get("ABSTRACT"));
+      assertEquals("Risques;INSPIRE:Zones à risque naturel", layerProperties.get("KEYWORD_1"));
+    }
   }
 
   @Test

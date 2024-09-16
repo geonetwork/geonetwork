@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import lombok.NoArgsConstructor;
 
 /**
  * Object whose keys are metadata domain names. The empty string is a valid metadata domain name,
@@ -35,21 +36,22 @@ import java.util.Objects;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2024-09-13T15:07:19.066965162+02:00[Europe/Paris]",
     comments = "Generator version: 7.7.0")
+@NoArgsConstructor
 public class GdalMetadataDto {
   /**
    * A container for additional, undeclared properties. This is a holder for any undeclared
    * properties as specified with the 'additionalProperties' keyword in the OAS document.
    */
-  private Map<String, GdalMetadataDomainDto> additionalProperties;
+  private Map<String, Object> additionalProperties;
 
   /**
    * Set the additional (undeclared) property with the specified name and value. If the property
    * does not already exist, create it otherwise replace it.
    */
   @JsonAnySetter
-  public GdalMetadataDto putAdditionalProperty(String key, GdalMetadataDomainDto value) {
+  public GdalMetadataDto putAdditionalProperty(String key, Object value) {
     if (this.additionalProperties == null) {
-      this.additionalProperties = new HashMap<String, GdalMetadataDomainDto>();
+      this.additionalProperties = new HashMap<String, Object>();
     }
     this.additionalProperties.put(key, value);
     return this;
@@ -57,12 +59,12 @@ public class GdalMetadataDto {
 
   /** Return the additional (undeclared) property. */
   @JsonAnyGetter
-  public Map<String, GdalMetadataDomainDto> getAdditionalProperties() {
+  public Map<String, Object> getAdditionalProperties() {
     return additionalProperties;
   }
 
   /** Return the additional (undeclared) property with the specified name. */
-  public GdalMetadataDomainDto getAdditionalProperty(String key) {
+  public Object getAdditionalProperty(String key) {
     if (this.additionalProperties == null) {
       return null;
     }
@@ -123,7 +125,7 @@ public class GdalMetadataDto {
       return this;
     }
 
-    public Builder additionalProperties(Map<String, GdalMetadataDomainDto> additionalProperties) {
+    public Builder additionalProperties(Map<String, Object> additionalProperties) {
       this.instance.additionalProperties = additionalProperties;
       return this;
     }
