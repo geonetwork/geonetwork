@@ -38,14 +38,18 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   private String command;
   private String baseDir;
   private String mountPoint;
+  private int timeoutInSeconds = 60;
 
   public GdalDataAnalyzer(
       @Value("${geonetwork.data.analyzer.gdal.command:''}") String command,
       @Value("${geonetwork.data.analyzer.gdal.baseDir:''}") String baseDir,
-      @Value("${geonetwork.data.analyzer.gdal.mountPoint:''}") String mountPoint) {
+      @Value("${geonetwork.data.analyzer.gdal.mountPoint:''}") String mountPoint,
+      @Value("${geonetwork.data.analyzer.gdal.processTimeoutInSeconds:60''}")
+          int processTimeoutInSeconds) {
     this.command = command;
     this.baseDir = baseDir;
     this.mountPoint = mountPoint;
+    this.timeoutInSeconds = processTimeoutInSeconds;
   }
 
   @Override
@@ -62,7 +66,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
   @Override
   public String getVersion() {
-    Optional<String> version = execute(getVersionCommand());
+    Optional<String> version = execute(getVersionCommand(), timeoutInSeconds);
     if (version.isPresent()) {
       if (!isValidVersion(version.get())) {
         throw new RuntimeException(
@@ -89,7 +93,11 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
   @Override
   public List<String> getDatasourceLayers(String dataSource) {
-    return executeCommand(buildUtilityCommand(OGR_INFO_APP), "-ro", buildDataSourcePath(dataSource))
+    return executeCommand(
+            buildUtilityCommand(OGR_INFO_APP),
+            timeoutInSeconds,
+            "-ro",
+            buildDataSourcePath(dataSource))
         .map(GdalUtils::parseLayers)
         .orElse(List.of());
   }
@@ -98,6 +106,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   public Optional<GdalOgrinfoDatasetDto> getLayerProperties(String dataSource, String layer) {
     return executeCommand(
             buildUtilityCommand(OGR_INFO_APP),
+            timeoutInSeconds,
             "-json",
             "-so",
             "-ro",
@@ -109,7 +118,10 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   @Override
   public Optional<GdalGdalinfoDto> getRasterProperties(String rasterSource) {
     return executeCommand(
-            buildUtilityCommand(GDAL_INFO_APP), "-json", buildDataSourcePath(rasterSource))
+            buildUtilityCommand(GDAL_INFO_APP),
+            timeoutInSeconds,
+            "-json",
+            buildDataSourcePath(rasterSource))
         .map(output -> parseJson(output, GdalGdalinfoDto.class));
   }
 
@@ -135,7 +147,8 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                 .addArgument("-ro")
                 .addArgument("-sql")
                 .addArgument(query, false)
-                .addArgument(buildDataSourcePath(dataSource)))
+                .addArgument(buildDataSourcePath(dataSource)),
+            timeoutInSeconds)
         .flatMap(output -> parseAttributeStatistics(output, attributeName));
   }
 
@@ -153,7 +166,8 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                 .addArgument("-ro")
                 .addArgument("-sql")
                 .addArgument(query, false)
-                .addArgument(buildDataSourcePath(dataSource)))
+                .addArgument(buildDataSourcePath(dataSource)),
+            timeoutInSeconds)
         .map(output -> parseAttributeValues(output, "value"))
         .orElse(List.of());
   }
@@ -191,7 +205,9 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   }
 
   protected List<DataFormat> getFormatsFromUtility(String utility) {
-    return execute(getFormatCommand(utility)).map(GdalUtils::parseFormats).orElse(List.of());
+    return execute(getFormatCommand(utility), timeoutInSeconds)
+        .map(GdalUtils::parseFormats)
+        .orElse(List.of());
   }
 
   private ObjectMapper buildObjectMapper() {
