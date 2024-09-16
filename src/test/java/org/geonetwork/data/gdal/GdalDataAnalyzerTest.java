@@ -35,7 +35,7 @@ class GdalDataAnalyzerTest {
   @BeforeEach
   void setUp() throws IOException, InterruptedException {
     if (USE_GDAL_FROM_THE_SYSTEM) {
-      analyzer = new GdalDataAnalyzer("", "", "");
+      analyzer = new GdalDataAnalyzer("", "", "", 60);
     } else {
       String dataFolder = new ClassPathResource("data/samples").getFile().toString();
       String mountPoint = "/data";
@@ -45,7 +45,8 @@ class GdalDataAnalyzerTest {
                   "docker run --rm -v %s:%s ghcr.io/osgeo/gdal:alpine-normal-latest ",
                   dataFolder, mountPoint),
               dataFolder,
-              mountPoint);
+              mountPoint,
+              60);
       //      GdalDataAnalyzer gdalDataAnalyzerMock = mock(GdalDataAnalyzer.class);
       //      when(gdalDataAnalyzerMock.getName()).thenReturn("GDAL");
       //      when(gdalDataAnalyzerMock.getVersion()).thenReturn("GDAL 3.2.0, released 2020/10/26");
@@ -207,9 +208,9 @@ class GdalDataAnalyzerTest {
 
   @Test
   void getDatasourceLayersAndPropertiesFromParquet() throws IOException {
-    String parquetFile = new ClassPathResource("data/samples/Weather.parquet").getFile().getCanonicalPath();
-    List<String> datasourceLayers =
-      analyzer.getDatasourceLayers(parquetFile);
+    String parquetFile =
+        new ClassPathResource("data/samples/Weather.parquet").getFile().getCanonicalPath();
+    List<String> datasourceLayers = analyzer.getDatasourceLayers(parquetFile);
     assertTrue(datasourceLayers.stream().anyMatch("Weather"::equals));
 
     GdalOgrinfoDatasetDto properties = analyzer.getLayerProperties(parquetFile, "Weather").get();
@@ -232,19 +233,19 @@ class GdalDataAnalyzerTest {
     if (properties.getMetadata().getAdditionalProperty("") instanceof Map serviceProperties) {
       assertEquals("GéoServices : risques naturels et industriels", serviceProperties.get("TITLE"));
       assertEquals(
-        "Ensemble des services d'accès aux données sur les risques naturels et industriels"
-          + " diffusées par le BRGM",
-        serviceProperties.get("ABSTRACT"));
+          "Ensemble des services d'accès aux données sur les risques naturels et industriels"
+              + " diffusées par le BRGM",
+          serviceProperties.get("ABSTRACT"));
       assertEquals("BRGM", serviceProperties.get("PROVIDER_NAME"));
     }
     if (properties.getLayers().getFirst().getMetadata().getAdditionalProperty("")
-      instanceof Map layerProperties) {
+        instanceof Map layerProperties) {
       assertEquals("Déformations récentes et paléoséismes - Failles", layerProperties.get("TITLE"));
       assertEquals(
-        "Néopal est la base de données recensant les arguments géologiques de déformation plus"
-          + " récentes que deux millions d'années (indices néotectoniques) en France, publiés"
-          + " dans la littérature scientifique et évalués par un comité d'experts.",
-        layerProperties.get("ABSTRACT"));
+          "Néopal est la base de données recensant les arguments géologiques de déformation plus"
+              + " récentes que deux millions d'années (indices néotectoniques) en France, publiés"
+              + " dans la littérature scientifique et évalués par un comité d'experts.",
+          layerProperties.get("ABSTRACT"));
       assertEquals("Risques;INSPIRE:Zones à risque naturel", layerProperties.get("KEYWORD_1"));
     }
   }

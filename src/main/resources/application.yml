@@ -34,6 +34,7 @@ geonetwork:
         command: docker run --rm -v ${metadataDir}:/data ghcr.io/osgeo/gdal:alpine-normal-latest
         # Mount point for the data directory
         mountPoint: /data
+        processTimeoutInSeconds: 60
   openapi:
     url: http://localhost:7979
   settings:

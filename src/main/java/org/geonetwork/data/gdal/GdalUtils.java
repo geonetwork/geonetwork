@@ -9,6 +9,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.geonetwork.data.DataFormat;
 
@@ -55,26 +57,28 @@ public class GdalUtils {
         .toList();
   }
 
-  protected static Optional<String> execute(CommandLine command) {
+  protected static Optional<String> execute(CommandLine command, int timeoutInSeconds) {
     DefaultExecutor executor = DefaultExecutor.builder().get();
     DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    // TODO: timeout
+    ExecuteWatchdog watchdog =
+        ExecuteWatchdog.builder().setTimeout(Duration.ofSeconds(timeoutInSeconds)).get();
+    executor.setWatchdog(watchdog);
     executor.setStreamHandler(new PumpStreamHandler(outputStream));
     try {
       executor.execute(command, resultHandler);
       resultHandler.waitFor();
-      System.out.println(outputStream.toString(UTF_8));
       return Optional.of(outputStream.toString(UTF_8));
     } catch (InterruptedException | IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  protected static Optional<String> executeCommand(CommandLine cmdLine, String... args) {
+  protected static Optional<String> executeCommand(
+      CommandLine cmdLine, int timeoutInSeconds, String... args) {
     for (int i = 0; i < args.length; i++) {
       cmdLine.addArgument(args[i]);
     }
-    return execute(cmdLine);
+    return execute(cmdLine, timeoutInSeconds);
   }
 }
