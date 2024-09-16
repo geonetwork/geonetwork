@@ -15,6 +15,8 @@ import jakarta.validation.constraints.*;
 import jakarta.xml.bind.annotation.*;
 import java.util.*;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /** GdalGeometryFieldSupportedSRSListInnerOneOfIdDto */
 @JsonTypeName("geometryField_supportedSRSList_inner_oneOf_id")
@@ -25,6 +27,8 @@ import java.util.Objects;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2024-09-13T15:07:19.066965162+02:00[Europe/Paris]",
     comments = "Generator version: 7.7.0")
+@NoArgsConstructor
+@AllArgsConstructor
 public class GdalGeometryFieldSupportedSRSListInnerOneOfIdDto {
 
   private String authority;

@@ -25,7 +25,7 @@ public class GdalUtils {
 
   private static final String GDAL_FORMAT_REGEX =
       " +(\\w+) +-([\\w,]+)- \\(([rwvso\\+]+)\\):\\ (.*)";
-  private static final String GDAL_LAYERS_REGEX = "[0-9]+: (\\w+) +\\(.*\\)";
+  private static final String GDAL_LAYERS_REGEX = "[0-9]+: ([:\\w]+) +\\(.*\\)";
 
   protected static List<DataFormat> parseFormats(String output) {
     Pattern pattern = Pattern.compile(GDAL_FORMAT_REGEX);
@@ -45,6 +45,10 @@ public class GdalUtils {
 
   protected static List<String> parseLayers(String output) {
     Pattern pattern = Pattern.compile(GDAL_LAYERS_REGEX);
+    // TODO: may contains title
+    //  1: ms:ALEARG_REALISE (title: Exposition au retrait-gonflement des argiles)
+    // or geom type
+    // 1: CEEUBG100kV2_1 (Line String)
     return Arrays.stream(output.split(System.lineSeparator()))
         .map(pattern::matcher)
         .filter(Matcher::matches)

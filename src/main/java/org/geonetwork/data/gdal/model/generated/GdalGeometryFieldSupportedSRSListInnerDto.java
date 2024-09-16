@@ -5,6 +5,7 @@
  */
 package org.geonetwork.data.gdal.model.generated;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.annotation.Generated;
 import jakarta.validation.constraints.*;
@@ -18,4 +19,7 @@ import java.util.*;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2024-09-13T15:07:19.066965162+02:00[Europe/Paris]",
     comments = "Generator version: 7.7.0")
+// FIXME abstract types either need to be mapped to concrete types,
+//  have custom deserializer,
+@JsonDeserialize(as = GdalGeometryFieldSupportedSRSListInnerOneOfDto.class)
 public interface GdalGeometryFieldSupportedSRSListInnerDto {}
