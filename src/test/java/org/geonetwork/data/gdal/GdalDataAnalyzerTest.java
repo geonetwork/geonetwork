@@ -30,14 +30,22 @@ class GdalDataAnalyzerTest {
 
   private GdalDataAnalyzer analyzer;
 
-  private static final boolean USE_GDAL_FROM_THE_SYSTEM = true;
+  private static final boolean USE_GDAL_FROM_THE_SYSTEM = false;
 
   @BeforeEach
-  void setUp() throws IOException {
+  void setUp() throws IOException, InterruptedException {
     if (USE_GDAL_FROM_THE_SYSTEM) {
-      analyzer = new GdalDataAnalyzer();
+      analyzer = new GdalDataAnalyzer("", "", "");
     } else {
-      analyzer = new GdalDataAnalyzer();
+      String dataFolder = new ClassPathResource("data/samples").getFile().toString();
+      String mountPoint = "/data";
+      analyzer =
+          new GdalDataAnalyzer(
+              String.format(
+                  "docker run --rm -v %s:%s ghcr.io/osgeo/gdal:alpine-normal-latest ",
+                  dataFolder, mountPoint),
+              dataFolder,
+              mountPoint);
       //      GdalDataAnalyzer gdalDataAnalyzerMock = mock(GdalDataAnalyzer.class);
       //      when(gdalDataAnalyzerMock.getName()).thenReturn("GDAL");
       //      when(gdalDataAnalyzerMock.getVersion()).thenReturn("GDAL 3.2.0, released 2020/10/26");
@@ -65,6 +73,9 @@ class GdalDataAnalyzerTest {
     assertFalse(analyzer.isValidVersion("GDAL 2.2.2, rel"));
     assertTrue(analyzer.isValidVersion("GDAL 3.7.0, rel"));
     assertTrue(analyzer.isValidVersion("GDAL 4.7.0, rel"));
+    assertTrue(
+        analyzer.isValidVersion(
+            "GDAL 3.10.0dev-d1efd4e8b238d3c76d62dd66e65673d3a15c4ee2, released 2024/08/28\n"));
   }
 
   @Test

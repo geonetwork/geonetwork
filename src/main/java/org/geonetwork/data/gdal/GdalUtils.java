@@ -6,7 +6,6 @@
 package org.geonetwork.data.gdal;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.geonetwork.data.gdal.GdalDataAnalyzer.OGR_INFO_APP;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -56,18 +55,6 @@ public class GdalUtils {
         .toList();
   }
 
-  public static CommandLine getVersionCommand() {
-    return new CommandLine(OGR_INFO_APP).addArgument("--version");
-  }
-
-  public static CommandLine getFormatCommand(String utility) {
-    return new CommandLine(utility).addArgument("--formats");
-  }
-
-  protected static List<DataFormat> getFormatsFromUtility(String utility) {
-    return execute(getFormatCommand(utility)).map(GdalUtils::parseFormats).orElse(List.of());
-  }
-
   protected static Optional<String> execute(CommandLine command) {
     DefaultExecutor executor = DefaultExecutor.builder().get();
     DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
@@ -77,15 +64,15 @@ public class GdalUtils {
     try {
       executor.execute(command, resultHandler);
       resultHandler.waitFor();
+      System.out.println(outputStream.toString(UTF_8));
       return Optional.of(outputStream.toString(UTF_8));
     } catch (InterruptedException | IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  protected static Optional<String> executeCommand(String... args) {
-    CommandLine cmdLine = new CommandLine(args[0]);
-    for (int i = 1; i < args.length; i++) {
+  protected static Optional<String> executeCommand(CommandLine cmdLine, String... args) {
+    for (int i = 0; i < args.length; i++) {
       cmdLine.addArgument(args[i]);
     }
     return execute(cmdLine);

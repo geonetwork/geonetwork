@@ -19,6 +19,21 @@ geonetwork:
     requestimeout: 45000
     # Elasticsearch Bulk Async API
     asynchronous: false
+  directory:
+    data:
+  data:
+    analyzer:
+      gdal:
+        # GeoNetwork data directory
+        baseDir:
+        # Use GDAL on the system
+        # command:
+        # mountPoint:
+        # Use GDAL in a Docker container
+        # https://github.com/OSGeo/gdal/tree/master/docker for images and supported formats
+        command: docker run --rm -v ${metadataDir}:/data ghcr.io/osgeo/gdal:alpine-normal-latest
+        # Mount point for the data directory
+        mountPoint: /data
   openapi:
     url: http://localhost:7979
   settings:
