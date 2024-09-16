@@ -105,38 +105,6 @@ class GdalDataAnalyzerTest {
   }
 
   @Test
-  void getDatasourceLayersFromWfs() {
-    //    String wfsUrl = "WFS:https://sextant.ifremer.fr/services/wfs/environnement_marin";
-    //    String wfsTypeName = "surval_lieux_actifs_ligne";
-    String wfsUrl = "WFS:https://geoservices.brgm.fr/risques";
-    String wfsTypeName = "ms:NEOPAL_FAILLE";
-    List<String> datasourceLayers = analyzer.getDatasourceLayers(wfsUrl);
-    assertTrue(datasourceLayers.stream().anyMatch(wfsTypeName::equals));
-
-    analyzer.getLayerProperties(wfsUrl, wfsTypeName);
-    GdalOgrinfoDatasetDto properties = analyzer.getLayerProperties(wfsUrl, wfsTypeName).get();
-    assertEquals("WFS", properties.getDriverShortName());
-    if (properties.getMetadata().getAdditionalProperty("") instanceof Map serviceProperties) {
-      assertEquals("GéoServices : risques naturels et industriels", serviceProperties.get("TITLE"));
-      assertEquals(
-          "Ensemble des services d'accès aux données sur les risques naturels et industriels"
-              + " diffusées par le BRGM",
-          serviceProperties.get("ABSTRACT"));
-      assertEquals("BRGM", serviceProperties.get("PROVIDER_NAME"));
-    }
-    if (properties.getLayers().getFirst().getMetadata().getAdditionalProperty("")
-        instanceof Map layerProperties) {
-      assertEquals("Déformations récentes et paléoséismes - Failles", layerProperties.get("TITLE"));
-      assertEquals(
-          "Néopal est la base de données recensant les arguments géologiques de déformation plus"
-              + " récentes que deux millions d'années (indices néotectoniques) en France, publiés"
-              + " dans la littérature scientifique et évalués par un comité d'experts.",
-          layerProperties.get("ABSTRACT"));
-      assertEquals("Risques;INSPIRE:Zones à risque naturel", layerProperties.get("KEYWORD_1"));
-    }
-  }
-
-  @Test
   void getLayerProperties() throws IOException {
     Optional<GdalOgrinfoDatasetDto> layerProperties =
         analyzer.getLayerProperties(
@@ -235,5 +203,49 @@ class GdalDataAnalyzerTest {
     assertEquals(575, layerProperties.get().getSize().get(0));
     assertEquals(576, layerProperties.get().getSize().get(1));
     assertEquals(1, layerProperties.get().getBands().size());
+  }
+
+  @Test
+  void getDatasourceLayersAndPropertiesFromParquet() throws IOException {
+    String parquetFile = new ClassPathResource("data/samples/Weather.parquet").getFile().getCanonicalPath();
+    List<String> datasourceLayers =
+      analyzer.getDatasourceLayers(parquetFile);
+    assertTrue(datasourceLayers.stream().anyMatch("Weather"::equals));
+
+    GdalOgrinfoDatasetDto properties = analyzer.getLayerProperties(parquetFile, "Weather").get();
+    assertEquals("Parquet", properties.getDriverShortName());
+    assertEquals(22, properties.getLayers().getFirst().getFields().size());
+  }
+
+  @Test
+  void getDatasourceLayersAndPropertiesFromWfs() {
+    //    String wfsUrl = "WFS:https://sextant.ifremer.fr/services/wfs/environnement_marin";
+    //    String wfsTypeName = "surval_lieux_actifs_ligne";
+    String wfsUrl = "WFS:https://geoservices.brgm.fr/risques";
+    String wfsTypeName = "ms:NEOPAL_FAILLE";
+    List<String> datasourceLayers = analyzer.getDatasourceLayers(wfsUrl);
+    assertTrue(datasourceLayers.stream().anyMatch(wfsTypeName::equals));
+
+    analyzer.getLayerProperties(wfsUrl, wfsTypeName);
+    GdalOgrinfoDatasetDto properties = analyzer.getLayerProperties(wfsUrl, wfsTypeName).get();
+    assertEquals("WFS", properties.getDriverShortName());
+    if (properties.getMetadata().getAdditionalProperty("") instanceof Map serviceProperties) {
+      assertEquals("GéoServices : risques naturels et industriels", serviceProperties.get("TITLE"));
+      assertEquals(
+        "Ensemble des services d'accès aux données sur les risques naturels et industriels"
+          + " diffusées par le BRGM",
+        serviceProperties.get("ABSTRACT"));
+      assertEquals("BRGM", serviceProperties.get("PROVIDER_NAME"));
+    }
+    if (properties.getLayers().getFirst().getMetadata().getAdditionalProperty("")
+      instanceof Map layerProperties) {
+      assertEquals("Déformations récentes et paléoséismes - Failles", layerProperties.get("TITLE"));
+      assertEquals(
+        "Néopal est la base de données recensant les arguments géologiques de déformation plus"
+          + " récentes que deux millions d'années (indices néotectoniques) en France, publiés"
+          + " dans la littérature scientifique et évalués par un comité d'experts.",
+        layerProperties.get("ABSTRACT"));
+      assertEquals("Risques;INSPIRE:Zones à risque naturel", layerProperties.get("KEYWORD_1"));
+    }
   }
 }
