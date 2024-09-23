@@ -53,13 +53,15 @@ While working on the main app, you can run the following command to watch the `g
 in order to  change components and automatically refresh the main app.
 
 ```bash
-npm run start & npm run watch-lib-glib && fg
+npm run start
+npm run watch-lib-glib 
 ```
 
 To work on the webcomponents, use
 
 ```bash
-npm run start-webcomponents & npm run watch-lib-glib && fg
+npm run start-webcomponents
+npm run watch-lib-glib
 ```
 
 See [package.json](package.json) for more details.
