@@ -30,6 +30,15 @@
             }
           </div>
 
+          <p-multiSelect
+            display="chip"
+            [options]="columns"
+            [(ngModel)]="selectedColumns"
+            optionLabel="header"
+            selectedItemsLabel="{0} columns selected"
+            [style]="{'min-width': '200px'}"
+            placeholder="Choose Columns" />
+
           @if (isAllowingExport()) {
             <p-buttonGroup class="justify-self-end">
               @for (format of exportFormats; track $index) {
@@ -45,44 +54,47 @@
           }
         </div>
       </ng-template>
+
       <ng-template pTemplate="header">
         <tr>
-          @for (fieldLabel of labels() || fields(); track $index) {
-            <th>{{ fieldLabel }}</th>
+          @for ( col of selectedColumns(); track $index) {
+            <th pSortableColumn="{{col.field}}" >
+              {{ col.header }} <p-sortIcon field="{{col.field}}" />
+            </th>
           }
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-hit let-rowIndex="rowIndex">
         <tr [pSelectableRow]="hit" [pSelectableRowIndex]="rowIndex">
-          @for (field of fields(); track $index) {
+          @for (col of selectedColumns(); track $index) {
             <td>
               <ng-template #column_content>
-                @switch (field) {
+                @switch (col.field) {
                   @case ('overview[*]') {
                     <g-record-field-overview
-                      [field]="hit._source | gJsonpath: field"
+                      [field]="hit._source | gJsonpath: col.field"
                       styleClass="max-w-14" />
                   }
                   @case ('resourceType[0]') {
                     <g-record-field-resource-type
                       [layout]="ResourceTypeLayout.ICON"
-                      [field]="hit._source | gJsonpath: field" />
+                      [field]="hit._source | gJsonpath: col.field" />
                   }
                   @default {
-                    @if (field.startsWith('link')) {
+                    @if (col.field.startsWith('link')) {
                       <g-record-field-links
-                        [field]="hit._source | gJsonpath: field" />
-                    } @else if (field.startsWith('th_')) {
+                        [field]="hit._source | gJsonpath: col.field" />
+                    } @else if (col.field.startsWith('th_')) {
                       <g-record-field-keywords
-                        [field]="hit._source | gJsonpath: field" />
+                        [field]="hit._source | gJsonpath: col.field" />
                     } @else {
-                      {{ hit._source | gJsonpath: field }}
+                      {{ hit._source | gJsonpath: col.field }}
                     }
                   }
                 }
               </ng-template>
 
-              @if (landingPageLinkOn() === field) {
+              @if (landingPageLinkOn() === col.field) {
                 <a
                   class="text-blue-500 underline"
                   [attr.href]="this.landingPage() | gUrlPlaceholder: hit._id">

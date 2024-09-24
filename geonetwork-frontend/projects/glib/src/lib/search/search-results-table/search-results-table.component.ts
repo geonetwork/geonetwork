@@ -1,4 +1,5 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { SearchBaseComponent } from '../search-base/search-base.component';
 import { TableModule, TablePageEvent } from 'primeng/table';
 import { Button } from 'primeng/button';
@@ -15,10 +16,17 @@ import { UrlPlaceholderPipe } from '../../shared/url-placeholder.pipe';
 import Papa from 'papaparse';
 import { DownloadService } from '../../shared/download.service';
 import { ButtonGroupModule } from 'primeng/buttongroup';
+import { MultiSelectModule } from 'primeng/multiselect';
+
 
 enum ExportFormat {
   CSV = 'CSV',
   JSON = 'JSON',
+}
+
+interface Column {
+    field: string;
+    header: string;
 }
 
 @Component({
@@ -38,10 +46,15 @@ enum ExportFormat {
     RecordFieldKeywordsComponent,
     UrlPlaceholderPipe,
     ButtonGroupModule,
+    MultiSelectModule,
+    FormsModule,
+
   ],
 })
 export class SearchResultsTableComponent extends SearchBaseComponent {
   fields = input.required<string[]>(); // fields to display as table mode
+  columns: Column[];
+  selectedColumns = signal<Column[]>([]);
   labels = input<string[]>();
   selectionMode = input<'single' | 'multiple' | undefined>();
   scrollHeight = input('flex');
@@ -75,11 +88,19 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
 
     this.#validateInputs();
 
+
+
     effect(() => {
       this.selectionMode();
       this.selectedRecords = [];
     });
   }
+
+   override ngOnInit() {
+      super.ngOnInit();
+      this.columns = this.fields().map( (col,index) => { let label = this.labels() ? this.labels()![index] : col ; return { field: col, header: label  } } );
+      this.selectedColumns.set(this.columns)
+    }
 
   pageChange(event: TablePageEvent) {
     this.search.setPage(event.first, event.rows);
@@ -117,4 +138,5 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
   }
 
   protected readonly ResourceTypeLayout = ResourceTypeLayout;
+
 }
