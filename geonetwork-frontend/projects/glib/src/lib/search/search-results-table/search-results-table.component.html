@@ -30,6 +30,7 @@
             }
           </div>
 
+          @if(columnSelection){
           <p-multiSelect
             display="chip"
             [options]="columns"
@@ -38,6 +39,7 @@
             selectedItemsLabel="{0} columns selected"
             [style]="{'min-width': '200px'}"
             placeholder="Choose Columns" />
+          }
 
           @if (isAllowingExport()) {
             <p-buttonGroup class="justify-self-end">

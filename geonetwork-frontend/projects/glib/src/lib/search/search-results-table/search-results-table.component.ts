@@ -53,6 +53,7 @@ interface Column {
 })
 export class SearchResultsTableComponent extends SearchBaseComponent {
   fields = input.required<string[]>(); // fields to display as table mode
+  columnSelection = input<boolean>(false);
   columns: Column[];
   selectedColumns = signal<Column[]>([]);
   labels = input<string[]>();
