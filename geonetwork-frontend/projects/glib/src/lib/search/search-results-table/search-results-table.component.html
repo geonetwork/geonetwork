@@ -30,15 +30,15 @@
             }
           </div>
 
-          @if(columnSelection){
-          <p-multiSelect
-            display="chip"
-            [options]="columns"
-            [(ngModel)]="selectedColumns"
-            optionLabel="header"
-            selectedItemsLabel="{0} columns selected"
-            [style]="{'min-width': '200px'}"
-            placeholder="Choose Columns" />
+          @if (isAllowingColumnSelection()) {
+            <p-multiSelect
+              display="chip"
+              [options]="columns"
+              [(ngModel)]="selectedColumns"
+              optionLabel="header"
+              selectedItemsLabel="{0} columns selected"
+              [style]="{ 'min-width': '200px' }"
+              placeholder="Choose Columns" />
           }
 
           @if (isAllowingExport()) {
@@ -59,9 +59,9 @@
 
       <ng-template pTemplate="header">
         <tr>
-          @for ( col of selectedColumns(); track $index) {
-            <th pSortableColumn="{{col.field}}" >
-              {{ col.header }} <p-sortIcon field="{{col.field}}" />
+          @for (col of selectedColumns(); track $index) {
+            <th pSortableColumn="{{ col.field }}">
+              {{ col.header }} <p-sortIcon field="{{ col.field }}" />
             </th>
           }
         </tr>

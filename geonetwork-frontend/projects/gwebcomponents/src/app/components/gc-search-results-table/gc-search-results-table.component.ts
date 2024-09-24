@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   signal,
-  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { DefaultConfig } from 'gapi';
@@ -24,7 +23,7 @@ export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
   @Input({ alias: 'list-of-label' }) listOfLabel: string;
   @Input({ alias: 'scroll-height' }) scrollHeight: string;
   @Input() export: boolean = false;
-  @Input() columnSelection: boolean = false;
+  @Input() columnSelection: boolean = true;
 
   fields = signal<string[]>([]);
   labels = signal<string[]>([]);
@@ -40,7 +39,7 @@ export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
         listOfField: 'fields',
         listOfLabel: 'labels',
         export: 'isAllowingExport',
-        columnSelection: 'isAllowingColumnSelection'
+        columnSelection: 'isAllowingColumnSelection',
       },
     };
     this.listOfField && this.fields.set(this.listOfField.split(','));

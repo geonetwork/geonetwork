@@ -18,15 +18,14 @@ import { DownloadService } from '../../shared/download.service';
 import { ButtonGroupModule } from 'primeng/buttongroup';
 import { MultiSelectModule } from 'primeng/multiselect';
 
-
 enum ExportFormat {
   CSV = 'CSV',
   JSON = 'JSON',
 }
 
 interface Column {
-    field: string;
-    header: string;
+  field: string;
+  header: string;
 }
 
 @Component({
@@ -48,12 +47,11 @@ interface Column {
     ButtonGroupModule,
     MultiSelectModule,
     FormsModule,
-
   ],
 })
 export class SearchResultsTableComponent extends SearchBaseComponent {
   fields = input.required<string[]>(); // fields to display as table mode
-  columnSelection = input<boolean>(false);
+  isAllowingColumnSelection = input<boolean>(false);
   columns: Column[];
   selectedColumns = signal<Column[]>([]);
   labels = input<string[]>();
@@ -89,19 +87,20 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
 
     this.#validateInputs();
 
-
-
     effect(() => {
       this.selectionMode();
       this.selectedRecords = [];
     });
   }
 
-   override ngOnInit() {
-      super.ngOnInit();
-      this.columns = this.fields().map( (col,index) => { let label = this.labels() ? this.labels()![index] : col ; return { field: col, header: label  } } );
-      this.selectedColumns.set(this.columns)
-    }
+  override ngOnInit() {
+    super.ngOnInit();
+    this.columns = this.fields().map((col, index) => {
+      let label = this.labels() ? this.labels()![index] : col;
+      return { field: col, header: label };
+    });
+    this.selectedColumns.set(this.columns);
+  }
 
   pageChange(event: TablePageEvent) {
     this.search.setPage(event.first, event.rows);
@@ -139,5 +138,4 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
   }
 
   protected readonly ResourceTypeLayout = ResourceTypeLayout;
-
 }
