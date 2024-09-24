@@ -60,8 +60,8 @@
       <ng-template pTemplate="header">
         <tr>
           @for (col of selectedColumns(); track $index) {
-            <th pSortableColumn="{{ col.field }}">
-              {{ col.header }} <p-sortIcon field="{{ col.field }}" />
+            <th>
+              {{ col.header }}
             </th>
           }
         </tr>
