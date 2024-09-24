@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   signal,
-  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { DefaultConfig } from 'gapi';
@@ -24,10 +23,13 @@ export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
   @Input({ alias: 'list-of-label' }) listOfLabel: string;
   @Input({ alias: 'scroll-height' }) scrollHeight: string;
   @Input() export: boolean = false;
+  @Input() columnSelection: boolean = true;
 
   fields = signal<string[]>([]);
   labels = signal<string[]>([]);
+
   isAllowingExport = signal<boolean>(this.export);
+  isAllowingColumnSelection = signal<boolean>(this.columnSelection);
 
   override ngOnInit() {
     super.ngOnInit();
@@ -37,11 +39,13 @@ export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
         listOfField: 'fields',
         listOfLabel: 'labels',
         export: 'isAllowingExport',
+        columnSelection: 'isAllowingColumnSelection',
       },
     };
     this.listOfField && this.fields.set(this.listOfField.split(','));
     this.listOfLabel && this.labels.set(this.listOfLabel.split(','));
     this.isAllowingExport.set(this.export);
+    this.isAllowingColumnSelection.set(this.columnSelection);
   }
 
   protected readonly SearchAggLayout = SearchAggLayout;
