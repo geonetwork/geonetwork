@@ -138,9 +138,9 @@ export class SearchService {
 
     }else {
       //Normalize field name to remove accents if present.
-      field = new String(field).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      if(! field.endsWith(".keyword")){ //Ensure it is a keyword
-        sortField = field+'.keyword';
+      const normalizedField = field.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if(! normalizedField.endsWith(".keyword")){ //Ensure it is a keyword
+        sortField = normalizedField+'.keyword';
       }
     }
 
