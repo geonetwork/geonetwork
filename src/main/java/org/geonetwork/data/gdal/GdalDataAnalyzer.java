@@ -10,19 +10,30 @@ import static org.geonetwork.data.gdal.GdalUtils.*;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.data.AttributeStatistics;
+import org.geonetwork.data.RasterCornerCoordinates;
 import org.geonetwork.data.DataFormat;
+import org.geonetwork.data.DatasetInfo;
+import org.geonetwork.data.DatasetLayer;
+import org.geonetwork.data.DatasetLayerField;
+import org.geonetwork.data.DatasetLayerGeomField;
+import org.geonetwork.data.RasterBand;
 import org.geonetwork.data.RasterDataAnalyzer;
+import org.geonetwork.data.RasterInfo;
 import org.geonetwork.data.VectorDataAnalyzer;
 import org.geonetwork.data.gdal.model.generated.GdalGdalinfoDto;
+import org.geonetwork.data.gdal.model.generated.GdalGeoJSONPolygonDto;
 import org.geonetwork.data.gdal.model.generated.GdalOgrinfoDatasetDto;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.openapitools.jackson.nullable.JsonNullableModule;
@@ -41,11 +52,11 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   private int timeoutInSeconds = 60;
 
   public GdalDataAnalyzer(
-      @Value("${geonetwork.data.analyzer.gdal.command:''}") String command,
-      @Value("${geonetwork.data.analyzer.gdal.baseDir:''}") String baseDir,
-      @Value("${geonetwork.data.analyzer.gdal.mountPoint:''}") String mountPoint,
-      @Value("${geonetwork.data.analyzer.gdal.processTimeoutInSeconds:60''}")
-          int processTimeoutInSeconds) {
+    @Value("${geonetwork.data.analyzer.gdal.command:}") String command,
+    @Value("${geonetwork.data.analyzer.gdal.baseDir:}") String baseDir,
+    @Value("${geonetwork.data.analyzer.gdal.mountPoint:}") String mountPoint,
+    @Value("${geonetwork.data.analyzer.gdal.processTimeoutInSeconds:60}")
+    int processTimeoutInSeconds) {
     this.command = command;
     this.baseDir = baseDir;
     this.mountPoint = mountPoint;
@@ -57,7 +68,9 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     return "GDAL";
   }
 
-  /** JSON output added in version 3.7. */
+  /**
+   * JSON output added in version 3.7.
+   */
   protected boolean isValidVersion(String version) {
     String versionNumberAsString = version.replaceFirst("GDAL (\\d+\\.\\d+\\.\\d+).*", "$1").trim();
     int versionNumber = Integer.parseInt(versionNumberAsString.replace(".", ""));
@@ -70,7 +83,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     if (version.isPresent()) {
       if (!isValidVersion(version.get())) {
         throw new RuntimeException(
-            "GDAL version is not supported. JSON output is available since version 3.7");
+          "GDAL version is not supported. JSON output is available since version 3.7");
       }
       return version.get();
     } else {
@@ -81,9 +94,9 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   @Override
   public List<DataFormat> getFormats() {
     return Stream.concat(
-            getFormatsFromUtility(OGR_INFO_APP).stream(),
-            getFormatsFromUtility(GDAL_INFO_APP).stream())
-        .toList();
+        getFormatsFromUtility(OGR_INFO_APP).stream(),
+        getFormatsFromUtility(GDAL_INFO_APP).stream())
+      .toList();
   }
 
   @Override
@@ -94,82 +107,82 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   @Override
   public List<String> getDatasourceLayers(String dataSource) {
     return executeCommand(
-            buildUtilityCommand(OGR_INFO_APP),
-            timeoutInSeconds,
-            "-ro",
-            buildDataSourcePath(dataSource))
-        .map(GdalUtils::parseLayers)
-        .orElse(List.of());
+      buildUtilityCommand(OGR_INFO_APP),
+      timeoutInSeconds,
+      "-ro",
+      buildDataSourcePath(dataSource))
+      .map(GdalUtils::parseLayers)
+      .orElse(List.of());
   }
 
   @Override
-  public Optional<GdalOgrinfoDatasetDto> getLayerProperties(String dataSource, String layer) {
+  public Optional<DatasetInfo> getLayerProperties(String dataSource, String layer) {
     return executeCommand(
-            buildUtilityCommand(OGR_INFO_APP),
-            timeoutInSeconds,
-            "-json",
-            "-so",
-            "-ro",
-            buildDataSourcePath(dataSource),
-            layer)
-        .map(output -> parseJson(output, GdalOgrinfoDatasetDto.class));
+      buildUtilityCommand(OGR_INFO_APP),
+      timeoutInSeconds,
+      "-json",
+      "-so",
+      "-ro",
+      buildDataSourcePath(dataSource),
+      layer)
+      .map(this::parseDatasetInfo);
   }
 
   @Override
-  public Optional<GdalGdalinfoDto> getRasterProperties(String rasterSource) {
+  public Optional<RasterInfo> getRasterProperties(String rasterSource) {
     return executeCommand(
-            buildUtilityCommand(GDAL_INFO_APP),
-            timeoutInSeconds,
-            "-json",
-            buildDataSourcePath(rasterSource))
-        .map(output -> parseJson(output, GdalGdalinfoDto.class));
+      buildUtilityCommand(GDAL_INFO_APP),
+      timeoutInSeconds,
+      "-json",
+      buildDataSourcePath(rasterSource))
+      .map(output -> parseRasterInfo(output));
   }
 
   @Override
   public List<AttributeStatistics> getAttributesStatistics(
-      String dataSource, String layer, List<String> attribute) {
+    String dataSource, String layer, List<String> attribute) {
     return attribute.stream()
-        .map(attr -> getAttributeStatistics(buildDataSourcePath(dataSource), layer, attr))
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .toList();
+      .map(attr -> getAttributeStatistics(buildDataSourcePath(dataSource), layer, attr))
+      .filter(Optional::isPresent)
+      .map(Optional::get)
+      .toList();
   }
 
   private Optional<AttributeStatistics> getAttributeStatistics(
-      String dataSource, String layer, String attributeName) {
+    String dataSource, String layer, String attributeName) {
     String query =
-        String.format(
-            "SELECT MIN(%s) AS min, MAX(%s) AS max FROM %s", attributeName, attributeName, layer);
+      String.format(
+        "SELECT MIN(%s) AS min, MAX(%s) AS max FROM %s", attributeName, attributeName, layer);
     return execute(
-            new CommandLine(buildUtilityCommand(OGR_INFO_APP))
-                .addArgument("-json")
-                .addArgument("-features")
-                .addArgument("-ro")
-                .addArgument("-sql")
-                .addArgument(query, false)
-                .addArgument(buildDataSourcePath(dataSource)),
-            timeoutInSeconds)
-        .flatMap(output -> parseAttributeStatistics(output, attributeName));
+      new CommandLine(buildUtilityCommand(OGR_INFO_APP))
+        .addArgument("-json")
+        .addArgument("-features")
+        .addArgument("-ro")
+        .addArgument("-sql")
+        .addArgument(query, false)
+        .addArgument(buildDataSourcePath(dataSource)),
+      timeoutInSeconds)
+      .flatMap(output -> parseAttributeStatistics(output, attributeName));
   }
 
   @Override
   public List<Object> getAttributeUniqueValues(
-      String dataSource, String layer, String attributeName, int limit) {
+    String dataSource, String layer, String attributeName, int limit) {
     String query =
-        String.format(
-            "SELECT DISTINCT %s AS value FROM %s ORDER BY %s LIMIT %d",
-            attributeName, layer, attributeName, limit);
+      String.format(
+        "SELECT DISTINCT %s AS value FROM %s ORDER BY %s LIMIT %d",
+        attributeName, layer, attributeName, limit);
     return execute(
-            buildUtilityCommand(OGR_INFO_APP)
-                .addArgument("-json")
-                .addArgument("-features")
-                .addArgument("-ro")
-                .addArgument("-sql")
-                .addArgument(query, false)
-                .addArgument(buildDataSourcePath(dataSource)),
-            timeoutInSeconds)
-        .map(output -> parseAttributeValues(output, "value"))
-        .orElse(List.of());
+      buildUtilityCommand(OGR_INFO_APP)
+        .addArgument("-json")
+        .addArgument("-features")
+        .addArgument("-ro")
+        .addArgument("-sql")
+        .addArgument(query, false)
+        .addArgument(buildDataSourcePath(dataSource)),
+      timeoutInSeconds)
+      .map(output -> parseAttributeValues(output, "value"))
+      .orElse(List.of());
   }
 
   @Override
@@ -206,8 +219,8 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
   protected List<DataFormat> getFormatsFromUtility(String utility) {
     return execute(getFormatCommand(utility), timeoutInSeconds)
-        .map(GdalUtils::parseFormats)
-        .orElse(List.of());
+      .map(GdalUtils::parseFormats)
+      .orElse(List.of());
   }
 
   private ObjectMapper buildObjectMapper() {
@@ -228,19 +241,19 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   }
 
   private Optional<AttributeStatistics> parseAttributeStatistics(
-      String json, String attributeName) {
+    String json, String attributeName) {
     try {
       GdalOgrinfoDatasetDto dataset =
-          buildObjectMapper().readValue(json, GdalOgrinfoDatasetDto.class);
+        buildObjectMapper().readValue(json, GdalOgrinfoDatasetDto.class);
       JsonNullable<Object> optionalProperties =
-          dataset.getLayers().getFirst().getFeatures().getFirst().getProperties();
+        dataset.getLayers().getFirst().getFeatures().getFirst().getProperties();
       if (optionalProperties.isPresent() && optionalProperties.get() instanceof Map properties) {
         return Optional.of(
-            AttributeStatistics.builder()
-                .name(attributeName)
-                .statistic(AttributeStatistics.StatisticFields.MIN, (Double) properties.get("min"))
-                .statistic(AttributeStatistics.StatisticFields.MAX, (Double) properties.get("max"))
-                .build());
+          AttributeStatistics.builder()
+            .name(attributeName)
+            .statistic(AttributeStatistics.StatisticFields.MIN, properties.get("min"))
+            .statistic(AttributeStatistics.StatisticFields.MAX, properties.get("max"))
+            .build());
       } else {
         return Optional.empty();
       }
@@ -252,21 +265,107 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   private List<Object> parseAttributeValues(String json, String attributeName) {
     try {
       GdalOgrinfoDatasetDto dataset =
-          buildObjectMapper().readValue(json, GdalOgrinfoDatasetDto.class);
+        buildObjectMapper().readValue(json, GdalOgrinfoDatasetDto.class);
       return dataset.getLayers().getFirst().getFeatures().stream()
-          .map(
-              feature -> {
-                if (feature.getProperties().isPresent()
-                    && feature.getProperties().get() instanceof Map properties) {
-                  return properties.get(attributeName);
-                } else {
-                  return null;
-                }
-              })
-          .toList();
+        .map(
+          feature -> {
+            if (feature.getProperties().isPresent()
+              && feature.getProperties().get() instanceof Map properties) {
+              return properties.get(attributeName);
+            } else {
+              return null;
+            }
+          })
+        .toList();
     } catch (IOException e) {
       //      throw new RuntimeException(e);
       return List.of();
     }
   }
+
+  private DatasetInfo parseDatasetInfo(
+    String json) {
+    try {
+      GdalOgrinfoDatasetDto dataset =
+        buildObjectMapper().readValue(json, GdalOgrinfoDatasetDto.class);
+
+      List<DatasetLayer> layers = dataset.getLayers().stream().map(l -> {
+        Map<String, Object> layerMetadataInfo = new HashMap<>();
+        if (l.getMetadata().getAdditionalProperties() != null) {
+          l.getMetadata().getAdditionalProperties().entrySet().stream().forEach(e -> layerMetadataInfo.put(e.getKey(), e.getValue()));
+        }
+
+        return DatasetLayer.builder()
+          .name(l.getName())
+          .fidColumnName(l.getFidColumnName())
+          .featureCount(l.getFeatureCount())
+          .metadata(layerMetadataInfo)
+          .fields((List<DatasetLayerField>) l.getFields().stream().map(f -> DatasetLayerField.builder()
+            .name(f.getName())
+            .defaultValue(f.getDefaultValue())
+            .nullable(f.getNullable())
+            .type(f.getType().name())
+            .build()).toList())
+          .geometryFields((List<DatasetLayerGeomField>)
+            l.getGeometryFields().stream().map(f -> DatasetLayerGeomField.builder()
+              .name(f.getName())
+              .type(f.getType().isPresent() ? f.getType().get().toString() : "")
+              .crs(f.getCoordinateSystem().isPresent() ? f.getCoordinateSystem().get().getWkt() : "")
+              .nullable(f.getNullable())
+              .extent(f.getExtent())
+              .build()).toList()
+          )
+          .build();
+      }).toList();
+
+      Map<String, Object> metadataInfo = new HashMap<>();
+      if (dataset.getMetadata().getAdditionalProperties() != null) {
+        dataset.getMetadata().getAdditionalProperties().entrySet().stream().forEach(e -> metadataInfo.put(e.getKey(), e.getValue().toString()));
+      }
+
+      return DatasetInfo.builder()
+        .description(dataset.getDescription())
+        .type(dataset.getDriverShortName())
+        .metadata(metadataInfo)
+        .layers(layers)
+        .build();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private RasterInfo parseRasterInfo(String json) {
+    try {
+      GdalGdalinfoDto raster =
+        buildObjectMapper().readValue(json, GdalGdalinfoDto.class);
+
+      Map<String, Object> metadataInfo = new HashMap<>();
+      raster.getMetadata().getAdditionalProperties().entrySet().stream().forEach(e -> metadataInfo.put(e.getKey(), e.getValue().toString()));
+
+      GdalGeoJSONPolygonDto extent = (GdalGeoJSONPolygonDto) raster.getWgs84Extent();
+
+      RasterCornerCoordinates rasterCornerCoordinates = RasterCornerCoordinates.builder()
+        .upperLeft(raster.getCornerCoordinates().getUpperLeft())
+        .upperRight(raster.getCornerCoordinates().getUpperRight())
+        .lowerLeft(raster.getCornerCoordinates().getLowerLeft())
+        .lowerRight(raster.getCornerCoordinates().getLowerRight())
+        .center(raster.getCornerCoordinates().getCenter()).build();
+
+      return RasterInfo.builder()
+        .description(raster.getDescription())
+        .type(raster.getDriverShortName())
+        .metadata(metadataInfo)
+        .crs(raster.getCoordinateSystem().getWkt())
+        .wgs84Extent(extent.getBbox().stream().map(Number::doubleValue).toList())
+        .rasterCornerCoordinates(rasterCornerCoordinates)
+        .bands(raster.getBands().stream().map(b -> RasterBand.builder().build()).toList())
+        .size(raster.getSize())
+        .build();
+
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+
 }

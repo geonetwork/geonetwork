@@ -26,5 +26,5 @@ public class AttributeStatistics {
 
   String name;
 
-  @Singular Map<StatisticFields, Double> statistics;
+  @Singular Map<StatisticFields, Object> statistics;
 }
