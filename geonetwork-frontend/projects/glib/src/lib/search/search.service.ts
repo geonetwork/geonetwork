@@ -137,10 +137,9 @@ export class SearchService {
       sortField = undefined;
 
     }else {
-      //Normalize field name to remove accents if present.
-      const normalizedField = field.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      if(! normalizedField.endsWith(".keyword")){ //Ensure it is a keyword
-        sortField = normalizedField+'.keyword';
+
+      if( field.includes("Object.")){ //Ensure it is a keyword
+        sortField = field+'.keyword';
       }
     }
 
