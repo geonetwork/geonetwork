@@ -332,6 +332,11 @@
               <formatJavadoc>true</formatJavadoc>
             </googleJavaFormat>
             <removeUnusedImports></removeUnusedImports>
+            <!--<replaceRegex>
+              <name>Remove wildcard imports</name>
+              <searchRegex>import\s+[^\*\s]+\*;(\r\n|\r|\n)</searchRegex>
+              <replacement>$1</replacement>
+            </replaceRegex>-->
           </java>
         </configuration>
       </plugin>
@@ -428,6 +433,38 @@
         </executions>
       </plugin>
   -->
+
+      <!--      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>7.7.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/test/resources/ogcprocesses_openapi_spec/ogcapi-processes-1.yaml</inputSpec>
+              <generatorName>spring</generatorName>
+              <generateAliasAsModel>true</generateAliasAsModel>
+              <modelNamePrefix>OgcApiProcesses</modelNamePrefix>
+              <modelNameSuffix>Dto</modelNameSuffix>
+              <skipValidateSpec>true</skipValidateSpec>
+              <configOptions>
+                <sourceFolder>src/gen/java/main</sourceFolder>
+                <useSpringBoot3>true</useSpringBoot3>
+                <generateBuilders>true</generateBuilders>
+                <annotationLibrary>swagger2</annotationLibrary>
+                <withXml>true</withXml>
+                <useOptional>false</useOptional>
+                <apiPackage>org.geonetwork.ogcapi.processes.generated</apiPackage>
+                <modelPackage>org.geonetwork.ogcapi.processes.generated.model</modelPackage>
+              </configOptions>
+              <additionalProperties></additionalProperties>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>-->
     </plugins>
   </build>
 

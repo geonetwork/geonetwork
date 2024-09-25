@@ -18,10 +18,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.geonetwork.data.AttributeStatistics;
 import org.geonetwork.data.DataFormat;
-import org.geonetwork.data.gdal.model.generated.GdalFieldDto;
-import org.geonetwork.data.gdal.model.generated.GdalGdalinfoDto;
-import org.geonetwork.data.gdal.model.generated.GdalLayerDto;
-import org.geonetwork.data.gdal.model.generated.GdalOgrinfoDatasetDto;
+import org.geonetwork.data.DatasetInfo;
+import org.geonetwork.data.DatasetLayer;
+import org.geonetwork.data.DatasetLayerField;
+import org.geonetwork.data.RasterInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -107,18 +107,18 @@ class GdalDataAnalyzerTest {
 
   @Test
   void getLayerProperties() throws IOException {
-    Optional<GdalOgrinfoDatasetDto> layerProperties =
+    Optional<DatasetInfo> layerProperties =
         analyzer.getLayerProperties(
             new ClassPathResource("data/samples/CEEUBG100kV2_1.shp").getFile().getCanonicalPath(),
             "CEEUBG100kV2_1");
 
-    assertEquals("ESRI Shapefile", layerProperties.get().getDriverShortName());
+    assertEquals("ESRI Shapefile", layerProperties.get().getType());
 
-    GdalLayerDto layer = layerProperties.get().getLayers().getFirst();
+    DatasetLayer layer = layerProperties.get().getLayers().getFirst();
     assertEquals(BigDecimal.valueOf(51738), layer.getFeatureCount());
     assertEquals("CEEUBG100kV2_1", layer.getName());
-    assertEquals("", layer.getGeometryFields().getFirst().getName());
-    assertEquals("LineString", layer.getGeometryFields().getFirst().getType().get());
+    assertEquals("CESGCD", layer.getFields().getFirst().getName());
+    assertEquals("LineString", layer.getGeometryFields().getFirst().getType());
     assertEquals(
         "[-61.805814108435243, 4.2138689443886506, 34.605668981354938, 65.90833200184602]",
         layer.getGeometryFields().getFirst().getExtent().toString());
@@ -127,18 +127,16 @@ class GdalDataAnalyzerTest {
         layer
             .getGeometryFields()
             .getFirst()
-            .getCoordinateSystem()
-            .get()
-            .getWkt()
+            .getCrs()
             .contains("ID[\"EPSG\",4258]"));
 
     assertEquals(null, layer.getFidColumnName());
     assertEquals(
         "CESGCD,CESGLN,NURGCDV7,CEMOV1,CEMOV2,CEEVV1,CEEVV2,CEGOV2,CEDWV1,CEDWV2,CEDAV2,CEDC,COVERED",
-        layer.getFields().stream().map(GdalFieldDto::getName).collect(Collectors.joining(",")));
+        layer.getFields().stream().map(DatasetLayerField::getName).collect(Collectors.joining(",")));
     assertEquals(
         "STRING,REAL,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING",
-        layer.getFields().stream().map(f -> f.getType().name()).collect(Collectors.joining(",")));
+        layer.getFields().stream().map(f -> f.getType()).collect(Collectors.joining(",")));
   }
 
   @Test
@@ -180,25 +178,25 @@ class GdalDataAnalyzerTest {
 
   @Test
   void getRasterProperties() throws IOException {
-    Optional<GdalGdalinfoDto> layerProperties =
+    Optional<RasterInfo> layerProperties =
         analyzer.getRasterProperties(
             new ClassPathResource("data/samples/ENI2018_CHA0018_00_V2020_1_AM_PILOT.tif")
                 .getFile()
                 .getCanonicalPath());
 
-    assertEquals("GTiff", layerProperties.get().getDriverShortName());
+    assertEquals("GTiff", layerProperties.get().getType());
 
     assertNotNull(layerProperties);
-    assertTrue(layerProperties.get().getCoordinateSystem().getWkt().contains("\"EPSG\",3035"));
-    assertEquals(3035, layerProperties.get().getStac().getProjColonEpsg().get());
+    assertTrue(layerProperties.get().getCrs().contains("\"EPSG\",3035"));
+    //assertEquals(3035, layerProperties.get().getStac().getProjColonEpsg().get());
     assertEquals(
         "7146300.0,2543100.0",
-        layerProperties.get().getCornerCoordinates().getLowerLeft().stream()
+        layerProperties.get().getRasterCornerCoordinates().getLowerLeft().stream()
             .map(BigDecimal::toString)
             .collect(Collectors.joining(",")));
     assertEquals(
         "7203800.0,2600700.0",
-        layerProperties.get().getCornerCoordinates().getUpperRight().stream()
+        layerProperties.get().getRasterCornerCoordinates().getUpperRight().stream()
             .map(BigDecimal::toString)
             .collect(Collectors.joining(",")));
     assertEquals(575, layerProperties.get().getSize().get(0));
@@ -213,8 +211,8 @@ class GdalDataAnalyzerTest {
     List<String> datasourceLayers = analyzer.getDatasourceLayers(parquetFile);
     assertTrue(datasourceLayers.stream().anyMatch("Weather"::equals));
 
-    GdalOgrinfoDatasetDto properties = analyzer.getLayerProperties(parquetFile, "Weather").get();
-    assertEquals("Parquet", properties.getDriverShortName());
+    DatasetInfo properties = analyzer.getLayerProperties(parquetFile, "Weather").get();
+    assertEquals("Parquet", properties.getType());
     assertEquals(22, properties.getLayers().getFirst().getFields().size());
   }
 
@@ -228,9 +226,9 @@ class GdalDataAnalyzerTest {
     assertTrue(datasourceLayers.stream().anyMatch(wfsTypeName::equals));
 
     analyzer.getLayerProperties(wfsUrl, wfsTypeName);
-    GdalOgrinfoDatasetDto properties = analyzer.getLayerProperties(wfsUrl, wfsTypeName).get();
-    assertEquals("WFS", properties.getDriverShortName());
-    if (properties.getMetadata().getAdditionalProperty("") instanceof Map serviceProperties) {
+    DatasetInfo properties = analyzer.getLayerProperties(wfsUrl, wfsTypeName).get();
+    assertEquals("WFS", properties.getType());
+    if (properties.getMetadata().get("") instanceof Map serviceProperties) {
       assertEquals("GéoServices : risques naturels et industriels", serviceProperties.get("TITLE"));
       assertEquals(
           "Ensemble des services d'accès aux données sur les risques naturels et industriels"
@@ -238,7 +236,7 @@ class GdalDataAnalyzerTest {
           serviceProperties.get("ABSTRACT"));
       assertEquals("BRGM", serviceProperties.get("PROVIDER_NAME"));
     }
-    if (properties.getLayers().getFirst().getMetadata().getAdditionalProperty("")
+    if (properties.getLayers().getFirst().getMetadata().get("")
         instanceof Map layerProperties) {
       assertEquals("Déformations récentes et paléoséismes - Failles", layerProperties.get("TITLE"));
       assertEquals(
