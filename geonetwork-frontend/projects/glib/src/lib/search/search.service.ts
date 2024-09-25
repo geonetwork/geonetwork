@@ -125,4 +125,26 @@ export class SearchService {
 
     return query;
   }
+
+
+  /*
+  Check if field is sortable or note, if  sortable: return the field name to used, otherwise return undefined;
+   */
+  getSortableField(field: string) {
+
+    let sortField;
+    if(field == null || field.includes("[") || field.includes("(")){//Check if field is null or non-sortable type
+      sortField = undefined;
+
+    }else {
+      //Normalize field name to remove accents if present.
+      field = field.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if(! field.endsWith(".keyword")){ //Ensure it is a keyword
+        sortField = field+'.keyword';
+      }
+    }
+
+    return sortField;
+  }
+
 }

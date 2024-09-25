@@ -16,6 +16,8 @@
       [rowsPerPageOptions]="[10, 25, 50]"
       [selectionMode]="selectionMode()"
       [(selection)]="selectedRecords"
+      [customSort]="true"
+      (onSort)="sort($event)"
       metaKeySelection="true"
       exportFilename="search-results"
       [tableStyle]="{ 'min-width': '60rem' }"
@@ -60,9 +62,13 @@
       <ng-template pTemplate="header">
         <tr>
           @for (col of selectedColumns(); track $index) {
-            <th>
-              {{ col.header }}
+            @if (searchService.getSortableField(col.field) != undefined ){
+            <th pSortableColumn="{{ col.field }}">
+              {{ col.header }} <p-sortIcon field="{{ col.field }}" />
             </th>
+            } @else{
+              <th> {{ col.header }}</th>
+            }
           }
         </tr>
       </ng-template>

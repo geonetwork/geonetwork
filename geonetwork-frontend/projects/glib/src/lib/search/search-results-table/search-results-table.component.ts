@@ -17,6 +17,8 @@ import Papa from 'papaparse';
 import { DownloadService } from '../../shared/download.service';
 import { ButtonGroupModule } from 'primeng/buttongroup';
 import { MultiSelectModule } from 'primeng/multiselect';
+import {Sort} from "@elastic/elasticsearch/lib/api/types";
+import {DEFAULT_SORT} from "../search.state";
 
 enum ExportFormat {
   CSV = 'CSV',
@@ -134,6 +136,20 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
           'search-results.csv'
         );
       }
+    }
+  }
+
+  sort(sortEvent: any){
+    //TODO
+    console.log('all available fields',this.fields());
+    console.log('Sorting event: ',sortEvent);
+    const order = sortEvent.order > 0 ? 'asc' : 'desc';
+    const sortField =  this.searchService.getSortableField(sortEvent.field);
+    if(sortField != undefined){
+      let sort: any = {};
+      sort[sortField] = order;
+      console.log('sorting: ',sort);
+      this.search.setSort([sort]);
     }
   }
 
