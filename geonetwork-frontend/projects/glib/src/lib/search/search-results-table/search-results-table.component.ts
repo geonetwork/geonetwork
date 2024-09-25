@@ -66,7 +66,6 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
   isAllowingExport = input<boolean>(false);
   apiUrl = input<string>('');
 
-
   exportFormats = [ExportFormat.CSV];
 
   selectedRecords: any[] = [];
