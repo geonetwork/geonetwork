@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, input, signal} from '@angular/core';
+import {Component, effect, inject, input, signal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SearchBaseComponent } from '../search-base/search-base.component';
 import { TableModule, TablePageEvent } from 'primeng/table';
@@ -17,8 +17,6 @@ import Papa from 'papaparse';
 import { DownloadService } from '../../shared/download.service';
 import { ButtonGroupModule } from 'primeng/buttongroup';
 import { MultiSelectModule } from 'primeng/multiselect';
-import {Sort} from "@elastic/elasticsearch/lib/api/types";
-import {DEFAULT_SORT} from "../search.state";
 
 enum ExportFormat {
   CSV = 'CSV',
@@ -58,7 +56,7 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
   selectedColumns = signal<Column[]>([]);
   labels = input<string[]>();
   currentSortField : string;
-  currrentSortOrder: number;
+  currentSortOrder: number;
   selectionMode = input<'single' | 'multiple' | undefined>();
   scrollHeight = input('flex');
   landingPage = input<string>('');
@@ -144,7 +142,7 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
   sort(sortEvent: any){
     //Updated p-table sorting icons.
     this.currentSortField = sortEvent.field;
-    this.currrentSortOrder = sortEvent.order;
+    this.currentSortOrder = sortEvent.order;
     //Determine sorting order: 1 for ASCENDING , -1 for DESCENDING
     const order = sortEvent.order > 0 ? 'asc' : 'desc';
     //Build sort field name used in the query
