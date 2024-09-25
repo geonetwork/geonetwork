@@ -133,12 +133,13 @@ export class SearchService {
   getSortableField(field: string) {
 
     let sortField;
-    if(field == null || field.includes("[") || field.includes("(")){//Check if field is null or non-sortable type
+    //Check if field is null or non-sortable type
+    if(field == null || field.includes("[") || field.includes("(")){
       sortField = undefined;
 
     }else {
-
-      if( field.includes("Object.")){ //Ensure it is a keyword
+      //if field name contains '.Object', it should be a text field -> ensure to use the keyword for sorting.
+      if( field.includes("Object.")){
         sortField = field+'.keyword';
       }
     }
