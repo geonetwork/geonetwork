@@ -43,7 +43,8 @@ public class ProcessManager {
    * @return
    */
   public IProcess getProcess(String processName) {
-    IProcess process = processes.stream().filter(p -> p.getName().equals(processName)).findFirst().orElse(null);
+    IProcess process =
+        processes.stream().filter(p -> p.getName().equals(processName)).findFirst().orElse(null);
 
     if (process == null) {
       throw new ProcessNotFoundException();
@@ -54,6 +55,7 @@ public class ProcessManager {
 
   /**
    * Gets the list of processes available.
+   *
    * @return
    */
   public List<IProcess> getProcesses() {
@@ -61,8 +63,8 @@ public class ProcessManager {
   }
 
   /**
-   * Executes a process with the provided parameters and returns the
-   * Spring Batch execution identifier.
+   * Executes a process with the provided parameters and returns the Spring Batch execution
+   * identifier.
    *
    * @param process
    * @param processDetails
@@ -99,7 +101,8 @@ public class ProcessManager {
    * @return
    * @throws ProcessExecutionNotFoundException
    */
-  public BatchStatus processExecutionStatus(Long executionJobId) throws ProcessExecutionNotFoundException {
+  public BatchStatus processExecutionStatus(Long executionJobId)
+      throws ProcessExecutionNotFoundException {
     JobExecution jobExecution = jobExplorer.getJobExecution(executionJobId);
     if (jobExecution == null) {
       throw new ProcessExecutionNotFoundException();
@@ -111,7 +114,7 @@ public class ProcessManager {
   /**
    * Returns a report of a process execution, using the process execution identifier.
    *
-   * The process should be in a COMPLETED status, otherwise returns null.
+   * <p>The process should be in a COMPLETED status, otherwise returns null.
    *
    * @param executionJobId
    * @return
