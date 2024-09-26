@@ -6,7 +6,6 @@
 package org.geonetwork.process.tasks;
 
 import java.util.Optional;
-
 import org.geonetwork.data.DataAnalyzerException;
 import org.geonetwork.data.DatasetInfo;
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
@@ -36,21 +35,18 @@ public class DatasetAnalysisTasklet implements Tasklet {
 
     try {
       Optional<DatasetInfo> layerProperties =
-        dataAnalyzer.getLayerProperties(
-          parameters.getString("datasource"), parameters.getString("layer"));
+          dataAnalyzer.getLayerProperties(
+              parameters.getString("datasource"), parameters.getString("layer"));
 
       dataAnalysisProcessReport =
-        DataAnalysisProcessReport.builder()
-          .status("COMPLETED")
-          .result(layerProperties.get())
-          .build();
+          DataAnalysisProcessReport.builder()
+              .status("COMPLETED")
+              .result(layerProperties.get())
+              .build();
 
     } catch (DataAnalyzerException ex) {
       dataAnalysisProcessReport =
-        DataAnalysisProcessReport.builder()
-          .status("ERROR")
-          .errorMessage(ex.getMessage())
-          .build();
+          DataAnalysisProcessReport.builder().status("ERROR").errorMessage(ex.getMessage()).build();
     }
 
     // set variable in JobExecutionContext

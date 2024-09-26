@@ -6,10 +6,10 @@
 package org.geonetwork.process;
 
 import java.util.List;
-import org.geonetwork.process.model.ProcessDetails;
-import org.geonetwork.process.model.ProcessReport;
 import org.geonetwork.process.manager.IProcess;
 import org.geonetwork.process.manager.ProcessManager;
+import org.geonetwork.process.model.ProcessDetails;
+import org.geonetwork.process.model.ProcessReport;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
@@ -31,8 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProcessController {
   private final ProcessManager processManager;
 
-  public ProcessController(
-      final ProcessManager processManager) {
+  public ProcessController(final ProcessManager processManager) {
     this.processManager = processManager;
   }
 

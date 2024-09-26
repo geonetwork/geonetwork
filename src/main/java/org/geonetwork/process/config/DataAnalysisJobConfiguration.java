@@ -21,9 +21,7 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
-/**
- * Spring Batch configuration for data analysis jobs.
- */
+/** Spring Batch configuration for data analysis jobs. */
 @Configuration
 public class DataAnalysisJobConfiguration extends DefaultBatchConfiguration {
 

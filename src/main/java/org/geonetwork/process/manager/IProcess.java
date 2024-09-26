@@ -16,6 +16,7 @@ public interface IProcess {
 
   /**
    * Spring Batch
+   *
    * @return
    */
   @JsonIgnore
