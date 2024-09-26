@@ -283,70 +283,70 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
   private DatasetInfo parseDatasetInfo(String json) {
     try {
       GdalOgrinfoDatasetDto dataset =
-        buildObjectMapper().readValue(json, GdalOgrinfoDatasetDto.class);
+          buildObjectMapper().readValue(json, GdalOgrinfoDatasetDto.class);
 
       List<DatasetLayer> layers =
-        dataset.getLayers().stream()
-          .map(
-            l -> {
-              Map<String, Object> layerMetadataInfo = new HashMap<>();
-              if (l.getMetadata().getAdditionalProperties() != null) {
-                l.getMetadata().getAdditionalProperties().entrySet().stream()
-                  .forEach(e -> layerMetadataInfo.put(e.getKey(), e.getValue()));
-              }
+          dataset.getLayers().stream()
+              .map(
+                  l -> {
+                    Map<String, Object> layerMetadataInfo = new HashMap<>();
+                    if (l.getMetadata().getAdditionalProperties() != null) {
+                      l.getMetadata().getAdditionalProperties().entrySet().stream()
+                          .forEach(e -> layerMetadataInfo.put(e.getKey(), e.getValue()));
+                    }
 
-              return DatasetLayer.builder()
-                .name(l.getName())
-                .fidColumnName(l.getFidColumnName())
-                .featureCount(l.getFeatureCount())
-                .metadata(layerMetadataInfo)
-                .fields(
-                  (List<DatasetLayerField>)
-                    l.getFields().stream()
-                      .map(
-                        f ->
-                          DatasetLayerField.builder()
-                            .name(f.getName())
-                            .defaultValue(f.getDefaultValue())
-                            .nullable(f.getNullable())
-                            .type(f.getType().name())
-                            .build())
-                      .toList())
-                .geometryFields(
-                  (List<DatasetLayerGeomField>)
-                    l.getGeometryFields().stream()
-                      .map(
-                        f ->
-                          DatasetLayerGeomField.builder()
-                            .name(f.getName())
-                            .type(
-                              f.getType().isPresent()
-                                ? f.getType().get().toString()
-                                : "")
-                            .crs(
-                              f.getCoordinateSystem().isPresent()
-                                ? f.getCoordinateSystem().get().getWkt()
-                                : "")
-                            .nullable(f.getNullable())
-                            .extent(f.getExtent())
-                            .build())
-                      .toList())
-                .build();
-            })
-          .toList();
+                    return DatasetLayer.builder()
+                        .name(l.getName())
+                        .fidColumnName(l.getFidColumnName())
+                        .featureCount(l.getFeatureCount())
+                        .metadata(layerMetadataInfo)
+                        .fields(
+                            (List<DatasetLayerField>)
+                                l.getFields().stream()
+                                    .map(
+                                        f ->
+                                            DatasetLayerField.builder()
+                                                .name(f.getName())
+                                                .defaultValue(f.getDefaultValue())
+                                                .nullable(f.getNullable())
+                                                .type(f.getType().name())
+                                                .build())
+                                    .toList())
+                        .geometryFields(
+                            (List<DatasetLayerGeomField>)
+                                l.getGeometryFields().stream()
+                                    .map(
+                                        f ->
+                                            DatasetLayerGeomField.builder()
+                                                .name(f.getName())
+                                                .type(
+                                                    f.getType().isPresent()
+                                                        ? f.getType().get().toString()
+                                                        : "")
+                                                .crs(
+                                                    f.getCoordinateSystem().isPresent()
+                                                        ? f.getCoordinateSystem().get().getWkt()
+                                                        : "")
+                                                .nullable(f.getNullable())
+                                                .extent(f.getExtent())
+                                                .build())
+                                    .toList())
+                        .build();
+                  })
+              .toList();
 
       Map<String, Object> metadataInfo = new HashMap<>();
       if (dataset.getMetadata().getAdditionalProperties() != null) {
         dataset.getMetadata().getAdditionalProperties().entrySet().stream()
-          .forEach(e -> metadataInfo.put(e.getKey(), e.getValue().toString()));
+            .forEach(e -> metadataInfo.put(e.getKey(), e.getValue().toString()));
       }
 
       return DatasetInfo.builder()
-        .description(dataset.getDescription())
-        .type(dataset.getDriverShortName())
-        .metadata(metadataInfo)
-        .layers(layers)
-        .build();
+          .description(dataset.getDescription())
+          .type(dataset.getDriverShortName())
+          .metadata(metadataInfo)
+          .layers(layers)
+          .build();
     } catch (IOException e) {
       throw new DataAnalyzerException(json);
     }

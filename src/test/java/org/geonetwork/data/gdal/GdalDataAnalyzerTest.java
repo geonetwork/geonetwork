@@ -123,17 +123,14 @@ class GdalDataAnalyzerTest {
         "[-61.805814108435243, 4.2138689443886506, 34.605668981354938, 65.90833200184602]",
         layer.getGeometryFields().getFirst().getExtent().toString());
 
-    assertTrue(
-        layer
-            .getGeometryFields()
-            .getFirst()
-            .getCrs()
-            .contains("ID[\"EPSG\",4258]"));
+    assertTrue(layer.getGeometryFields().getFirst().getCrs().contains("ID[\"EPSG\",4258]"));
 
     assertEquals(null, layer.getFidColumnName());
     assertEquals(
         "CESGCD,CESGLN,NURGCDV7,CEMOV1,CEMOV2,CEEVV1,CEEVV2,CEGOV2,CEDWV1,CEDWV2,CEDAV2,CEDC,COVERED",
-        layer.getFields().stream().map(DatasetLayerField::getName).collect(Collectors.joining(",")));
+        layer.getFields().stream()
+            .map(DatasetLayerField::getName)
+            .collect(Collectors.joining(",")));
     assertEquals(
         "STRING,REAL,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING,STRING",
         layer.getFields().stream().map(f -> f.getType()).collect(Collectors.joining(",")));
@@ -188,7 +185,7 @@ class GdalDataAnalyzerTest {
 
     assertNotNull(layerProperties);
     assertTrue(layerProperties.get().getCrs().contains("\"EPSG\",3035"));
-    //assertEquals(3035, layerProperties.get().getStac().getProjColonEpsg().get());
+    // assertEquals(3035, layerProperties.get().getStac().getProjColonEpsg().get());
     assertEquals(
         "7146300.0,2543100.0",
         layerProperties.get().getRasterCornerCoordinates().getLowerLeft().stream()
@@ -236,8 +233,7 @@ class GdalDataAnalyzerTest {
           serviceProperties.get("ABSTRACT"));
       assertEquals("BRGM", serviceProperties.get("PROVIDER_NAME"));
     }
-    if (properties.getLayers().getFirst().getMetadata().get("")
-        instanceof Map layerProperties) {
+    if (properties.getLayers().getFirst().getMetadata().get("") instanceof Map layerProperties) {
       assertEquals("Déformations récentes et paléoséismes - Failles", layerProperties.get("TITLE"));
       assertEquals(
           "Néopal est la base de données recensant les arguments géologiques de déformation plus"
