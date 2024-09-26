@@ -6,15 +6,15 @@
 
 package org.geonetwork.data;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-import java.util.Map;
-
 @Data
 @Builder
-public class RasterInfo {
+public class RasterInfo implements Serializable {
   private String description;
   private String type;
   private String crs;

@@ -3,15 +3,14 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+package org.geonetwork.process.model;
 
-package org.geonetwork.data;
-
-import java.io.Serializable;
-import lombok.Builder;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Data;
 
 @Data
-@Builder
-public class RasterBand implements Serializable {
-  private Integer band;
+public class ProcessDetails {
+  private String process;
+  private Map<String, String> parameters = new HashMap<>();
 }

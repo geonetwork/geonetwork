@@ -106,12 +106,17 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-gateway-mvc</artifactId>
     </dependency>
-    <dependency>
+    <!-- Commented to avoid error:
+    java.lang.ClassCastException: class org.geonetwork.springbatchharvester.HarvesterResult cannot be cast to class org.geonetwork.springbatchharvester.HarvesterResult (org.geonetwork.springbatchharvester.HarvesterResult is in unnamed module of loader 'app'; org.geonetwork.springbatchharvester.HarvesterResult is in unnamed module of loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @2fb46040)
+
+    See https://stackoverflow.com/questions/57750294/class-loader-error-unnamed-module-of-loader-org-springframework-boot-devtools
+    -->
+    <!--<dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <scope>runtime</scope>
       <optional>true</optional>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -212,6 +217,15 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-batch</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.batch</groupId>
+      <artifactId>spring-batch-test</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
