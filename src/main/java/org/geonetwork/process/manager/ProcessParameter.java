@@ -3,18 +3,14 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+package org.geonetwork.process.manager;
 
-package org.geonetwork.data;
-
-import java.io.Serializable;
+import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 
 @Data
-@SuperBuilder
-public class DatasetLayerField implements Serializable {
+@Builder
+public class ProcessParameter {
   private String name;
   private String type;
-  private boolean nullable;
-  private String defaultValue;
 }

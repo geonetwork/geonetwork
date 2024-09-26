@@ -7,6 +7,7 @@
 package org.geonetwork.data;
 
 import java.util.List;
+import java.util.Optional;
 
 /** Data analyzer provides information about a data file. */
 public interface DataAnalyzer {
@@ -34,5 +35,5 @@ public interface DataAnalyzer {
    *   ogrinfo -ro -json https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2022-2023_v01_r00/Emerald_2023_SPECIES.csv Emerald_2023_SPECIES
    * </pre>
    */
-  Object getLayerProperties(String dataSource, String layer);
+  Optional<DatasetInfo> getLayerProperties(String dataSource, String layer);
 }

@@ -6,15 +6,15 @@
 
 package org.geonetwork.data;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 @Data
 @SuperBuilder
-public class DatasetLayerGeomField extends DatasetLayerField {
+public class DatasetLayerGeomField extends DatasetLayerField implements Serializable {
   private List<BigDecimal> extent;
   private String crs;
 }

@@ -1,6 +1,13 @@
+/*
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
 package org.geonetwork.process;
 
 import jakarta.validation.constraints.Max;
+import java.util.List;
+import java.util.Optional;
 import org.geonetwork.data.AttributeStatistics;
 import org.geonetwork.data.DataFormat;
 import org.geonetwork.data.DatasetInfo;
@@ -13,9 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/data/analysis")
@@ -41,38 +45,28 @@ public class DataAnalysisController {
 
   @GetMapping(path = "/attribute/statistics", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasRole('Administrator')")
-  public List<AttributeStatistics> attributeStatistics(@RequestParam String datasource,
-                                    @RequestParam String layer,
-                                    @RequestParam String attribute) {
+  public List<AttributeStatistics> attributeStatistics(
+      @RequestParam String datasource, @RequestParam String layer, @RequestParam String attribute) {
 
-    return analyzer.getAttributesStatistics(
-        datasource,
-        layer,
-        List.of(attribute));
+    return analyzer.getAttributesStatistics(datasource, layer, List.of(attribute));
   }
 
   @GetMapping(path = "/attribute/codelist", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasRole('Administrator')")
-  public List<Object> attributeCodelist(@RequestParam String datasource,
-                                        @RequestParam String layer,
-                                        @RequestParam String attribute,
-                                        @RequestParam(defaultValue = "10") @Max(value = 100) int limit) {
+  public List<Object> attributeCodelist(
+      @RequestParam String datasource,
+      @RequestParam String layer,
+      @RequestParam String attribute,
+      @RequestParam(defaultValue = "10") @Max(value = 100) int limit) {
 
-    return analyzer.getAttributeUniqueValues(
-        datasource,
-        layer,
-        attribute,
-        limit);
+    return analyzer.getAttributeUniqueValues(datasource, layer, attribute, limit);
   }
 
-  @GetMapping(path = "/analysis", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(path = "/execute", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasRole('Administrator')")
-  public ResponseEntity<DatasetInfo> analysis(@RequestParam String datasource,
-                                              @RequestParam String layer) {
-    Optional<DatasetInfo> layerProperties =
-      analyzer.getLayerProperties(
-        datasource,
-        layer);
+  public ResponseEntity<DatasetInfo> analysisSynch(
+      @RequestParam String datasource, @RequestParam String layer) {
+    Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
 
     if (layerProperties.isPresent()) {
       return new ResponseEntity<>(layerProperties.get(), HttpStatus.OK);

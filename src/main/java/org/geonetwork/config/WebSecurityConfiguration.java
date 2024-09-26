@@ -84,7 +84,8 @@ public class WebSecurityConfiguration {
             logout ->
                 logout
                     .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
-                    .logoutSuccessUrl("/"));
+                    .logoutSuccessUrl("/"))
+        .csrf(csrf -> csrf.disable());
 
     //    http.sessionManagement(
     //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

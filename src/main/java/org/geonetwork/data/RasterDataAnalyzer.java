@@ -5,7 +5,9 @@
  */
 package org.geonetwork.data;
 
+import java.util.Optional;
+
 /** Raster data analyzer provides information about a raster data file. */
 public interface RasterDataAnalyzer extends DataAnalyzer {
-  Object getRasterProperties(String rasterSource);
+  Optional<RasterInfo> getRasterProperties(String rasterSource);
 }
