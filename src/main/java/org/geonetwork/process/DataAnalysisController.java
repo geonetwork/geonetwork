@@ -8,9 +8,11 @@ package org.geonetwork.process;
 import jakarta.validation.constraints.Max;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.geonetwork.data.AttributeStatistics;
 import org.geonetwork.data.DataFormat;
 import org.geonetwork.data.DatasetInfo;
+import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,13 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/data/analysis")
+@AllArgsConstructor
 public class DataAnalysisController {
 
   GdalDataAnalyzer analyzer;
 
-  public DataAnalysisController(GdalDataAnalyzer gdalDataAnalyzer) {
-    this.analyzer = gdalDataAnalyzer;
-  }
+  MetadataBuilder metadataBuilder;
 
   @GetMapping(path = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasRole('Administrator')")
@@ -69,6 +70,20 @@ public class DataAnalysisController {
     Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
 
     if (layerProperties.isPresent()) {
+      return new ResponseEntity<>(layerProperties.get(), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @GetMapping(path = "/preview", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasRole('Administrator')")
+  public ResponseEntity<DatasetInfo> previewSynch(
+      @RequestParam String datasource, @RequestParam String layer) {
+    Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
+
+    if (layerProperties.isPresent()) {
+      metadataBuilder.buildMetadata(layerProperties.get());
       return new ResponseEntity<>(layerProperties.get(), HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);

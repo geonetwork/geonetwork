@@ -27,13 +27,13 @@ geonetwork:
         # GeoNetwork data directory
         baseDir:
         # Use GDAL on the system
-        # command:
-        # mountPoint:
+         command:
+         mountPoint:
         # Use GDAL in a Docker container
         # https://github.com/OSGeo/gdal/tree/master/docker for images and supported formats
-        command: docker run --rm -v ${metadataDir}:/data ghcr.io/osgeo/gdal:alpine-normal-latest
+#        command: docker run --rm -v ${metadataDir}:/data ghcr.io/osgeo/gdal:alpine-normal-latest
         # Mount point for the data directory
-        mountPoint: /data
+#        mountPoint: /data
         processTimeoutInSeconds: 60
   openapi:
     url: http://localhost:7979
@@ -58,17 +58,17 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-#    url: jdbc:postgresql://localhost:5432/gn
-#    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/gn
+    driverClassName: org.postgresql.Driver
 #    url: jdbc:h2:mem:gn5
-    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE
-    driverClassName: org.h2.Driver
+#    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE
+#    driverClassName: org.h2.Driver
     username: www-data
     password: www-data
   jpa:
     open-in-view: false
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    database-platform: org.hibernate.dialect.H2Dialect
   security:
     oauth2:
       client:
@@ -126,8 +126,9 @@ debug: false
 
 logging:
   level:
-    org.geonetwork.tasks.indexing: DEBUG
-    org.elasticsearch.client.RestClient: TRACE
-    org.apache.http.impl.client and org.apache.http.wire: TRACE
-    org.apache.http.headers: TRACE
+    org.geonetwork.schemas: DEBUG
+#    org.geonetwork.tasks.indexing: DEBUG
+#    org.elasticsearch.client.RestClient: TRACE
+#    org.apache.http.impl.client and org.apache.http.wire: TRACE
+#    org.apache.http.headers: TRACE
 #    org.springframework.cache: TRACE
