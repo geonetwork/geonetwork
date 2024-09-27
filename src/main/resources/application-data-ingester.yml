@@ -186,7 +186,7 @@ geonetwork:
                   xpath: "./gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[*/gmd:name/*/text() ='{{formatDescription}}']"
                   operation: "gn_delete"
                 - schema: "iso19139"
-                  xpath: "./gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat"
+                  xpath: "./gmd:distributionInfo/gmd:MD_Distribution"
                   operation: "gn_add"
                   value:  >
                     <gmd:distributionFormat
@@ -204,7 +204,10 @@ geonetwork:
                       </gmd:distributionFormat>
 
                 - schema: "iso19115-3.2018"
-                  xpath: "./mdb:distributionInfo/mri:MD_Distribution/mri:distributionFormat[*/mrd:formatSpecificationCitation/*/cit:name/*/text() ='{{formatDescription}}']"
+                  xpath: "./mdb:distributionInfo/mrd:MD_Distribution/mri:distributionFormat[*/mrd:formatSpecificationCitation/*/cit:name/*/text() ='{{formatDescription}}']"
+                  operation: "gn_delete"
+                - schema: "iso19115-3.2018"
+                  xpath: "./mdb:distributionInfo/mrd:MD_Distribution"
                   operation: "gn_add"
                   value: >
                     <mrd:distributionFormat xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
