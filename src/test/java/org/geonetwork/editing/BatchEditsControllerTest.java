@@ -56,8 +56,6 @@ class BatchEditsControllerTest {
         "<mdb:MD_Metadata xmlns:mdb=\"http://standards.iso.org/iso/19115/-3/mdb/2.0\"/>");
     when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
 
-    System.out.println(metadataRepository.hashCode());
-    System.out.println(metadataRepository.findAllByUuidIn(List.of("uuid1")).size());
     String result =
         Xml.getString(
             batchEditService.applyBatchEdits(uuids, null, false, edits, request, true).two());

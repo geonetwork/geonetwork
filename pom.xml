@@ -209,6 +209,11 @@
       <artifactId>commons-collections4</artifactId>
       <version>4.4</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.12.0</version>
+    </dependency>
     <!-- Patched XML Resolver 1.2 from apache xml-commons - fixes problems
                with windows URLs
     <dependency>

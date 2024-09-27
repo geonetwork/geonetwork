@@ -41,7 +41,7 @@ public class OpenApiConfiguration {
     Info info =
         new Info()
             .title("GeoNetwork API")
-            .version("1.0")
+            .version("5.0.0")
             .contact(contact)
             .description("This API exposes endpoints to GeoNetwork API.")
             .license(license);

@@ -1,0 +1,228 @@
+geonetwork:
+  tasks:
+    data-ingester:
+      resources:
+        - type: "dataset"
+          properties:
+            - name: "name"
+              context: "DatasetLayer"
+              operations:
+                - schema: "iso19139"
+                  xpath: "./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+                  operation: "gn_delete"
+                - schema: "iso19139"
+                  xpath: "./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+                  condition: "starts-with(./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString, 'Copy of')"
+                  operation: "gn_add"
+                  value:
+                    - "{{title}}"
+
+                - schema: "iso19115-3.2018"
+                  xpath: "./mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString"
+                  operation: "gn_delete"
+                - schema: "iso19115-3.2018"
+                  xpath: "./mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString"
+                  condition: "starts-with(./mdb:identificationInfo/*/mri:citation/*/cit:title/gco:CharacterString, 'Copy of')"
+                  operation: "gn_add"
+                  value:
+                    - "{{title}}"
+
+
+            - name: "spatialRepresentationType"
+              context: "DatasetLayer"
+              operations:
+                - schema: "iso19139"
+                  xpath: "./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType"
+                  operation: "gn_delete"
+                - schema: "iso19139"
+                  xpath: "./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType"
+                  operation: "gn_replace"
+                  value:  >
+                    <gmd:spatialRepresentationType>
+                          <gmd:MD_SpatialRepresentationTypeCode
+                                codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_SpatialRepresentationTypeCode"
+                                codeListValue="{{datasetType}}" />
+                        </gmd:spatialRepresentationType>
+
+                - schema: "iso19115-3.2018"
+                  xpath: "./mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType"
+                  operation: "gn_replace"
+                  value: >
+                    <mri:spatialRepresentationType xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0"
+                                     xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0">
+                      <mcc:MD_SpatialRepresentationTypeCode
+                            codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_SpatialRepresentationTypeCode"
+                            codeListValue="{{datasetType}}"/>
+                    </mri:spatialRepresentationType>
+
+            - name: "latLonBoundingBox"
+              context: "DatasetLayer"
+              help: "Replace existing geographic bounding box"
+              operations:
+                - schema: "iso19139"
+                  xpath: "./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement[gmd:EX_GeographicBoundingBox]"
+                  operation: "gn_delete"
+                - schema: "iso19139"
+                  xpath: "./gmd:identificationInfo/*"
+                  value: >
+                    <gmd:extent xmlns:gco="http://www.isotc211.org/2005/gco"
+                                         xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                                         gco:nilReason="computedFromDatasource">
+                      <gmd:EX_Extent>
+                        <gmd:geographicElement>
+                          <gmd:EX_GeographicBoundingBox>
+                            <gmd:westBoundLongitude>
+                              <gco:Decimal>{{west:--180}}</gco:Decimal>
+                            </gmd:westBoundLongitude>
+                            <gmd:eastBoundLongitude>
+                              <gco:Decimal>{{east:-180}}</gco:Decimal>
+                            </gmd:eastBoundLongitude>
+                            <gmd:southBoundLatitude>
+                              <gco:Decimal>{{south:--90}}</gco:Decimal>
+                            </gmd:southBoundLatitude>
+                            <gmd:northBoundLatitude>
+                              <gco:Decimal>{{north:-90}}</gco:Decimal>
+                            </gmd:northBoundLatitude>
+                          </gmd:EX_GeographicBoundingBox>
+                        </gmd:geographicElement>
+                      </gmd:EX_Extent>
+                    </gmd:extent>
+                - schema: "iso19115-3.2018"
+                  xpath: "./mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:geographicElement[gex:EX_GeographicBoundingBox]"
+                  operation: "gn_delete"
+                - schema: "iso19115-3.2018"
+                  xpath: "./mdb:identificationInfo/mri:MD_DataIdentification"
+                  operation: "gn_add"
+                  value: >
+                    <mri:extent xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0"
+                                         xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
+                                         xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                                         gco:nilReason="computedFromDatasource">
+                     <gex:extent>
+                       <gex:EX_Extent>
+                         <gex:geographicElement>
+                           <gex:EX_GeographicBoundingBox>
+                             <gex:westBoundLongitude>
+                               <gco:Decimal>{{west:--180}}</gco:Decimal>
+                             </gex:westBoundLongitude>
+                             <gex:eastBoundLongitude>
+                               <gco:Decimal>{{east:-180}}</gco:Decimal>
+                             </gex:eastBoundLongitude>
+                             <gex:southBoundLatitude>
+                               <gco:Decimal>{{south:--90}}</gco:Decimal>
+                             </gex:southBoundLatitude>
+                             <gex:northBoundLatitude>
+                               <gco:Decimal>{{north:-90}}</gco:Decimal>
+                             </gex:northBoundLatitude>
+                           </gex:EX_GeographicBoundingBox>
+                         </gex:geographicElement>
+                       </gex:EX_Extent>
+                     </gex:extent>
+                    </mri:extent>
+
+
+            - name: "vectorSpatialRepresentation"
+              context: "DatasetLayer"
+              help: "For each layers, set the feature count and geometry type if geometry column found"
+              operations:
+                - schema: "iso19139"
+                  xpath: "./gmd:spatialRepresentationInfo[@gco:nilReason = 'computedFromDatasource']"
+                  operation: "gn_delete"
+                - schema: "iso19139"
+                  xpath: "."
+                  operation: "gn_add"
+                  value: >
+                    <gmd:spatialRepresentationInfo
+                               xmlns:gco="http://www.isotc211.org/2005/gco"
+                               xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                               gco:nilReason="computedFromDatasource">
+                               <gmd:MD_VectorSpatialRepresentation>
+                                 <gmd:geometricObjects>
+                                   <gmd:MD_GeometricObjects>
+                                     <gmd:geometricObjectType>
+                                       <gmd:MD_GeometricObjectTypeCode
+                                         codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_GeometricObjectTypeCode"
+                                         codeListValue="{{geometryType:-unknown}}"/>
+                                     </gmd:geometricObjectType>
+                                     <gmd:geometricObjectCount>
+                                       <gco:Integer>{{featureCount}}</gco:Integer>
+                                     </gmd:geometricObjectCount>
+                                   </gmd:MD_GeometricObjects>
+                                 </gmd:geometricObjects>
+                               </gmd:MD_VectorSpatialRepresentation>
+                             </gmd:spatialRepresentationInfo>
+                - schema: "iso19115-3.2018"
+                  xpath: "./gmd:spatialRepresentationInfo[@gco:nilReason = 'computedFromDatasource']"
+                  operation: "gn_delete"
+                - schema: "iso19115-3.2018"
+                  xpath: "."
+                  operation: "gn_add"
+                  value: >
+                    <mdb:spatialRepresentationInfo xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
+                                                             xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
+                                                             xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                                                             gco:nilReason="computedFromDatasource">
+                                <msr:MD_VectorSpatialRepresentation>
+                                  <msr:geometricObjects>
+                                    <msr:MD_GeometricObjects>
+                                      <msr:geometricObjectType>
+                                        <msr:MD_GeometricObjectTypeCode
+                                          codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_GeometricObjectTypeCode"
+                                          codeListValue="{{geometryType:-unknown}}"/>
+                                      </msr:geometricObjectType>
+                                      <msr:geometricObjectCount>
+                                       <gco:Integer>{{featureCount}}</gco:Integer>
+                                      </msr:geometricObjectCount>
+                                    </msr:MD_GeometricObjects>
+                                  </msr:geometricObjects>
+                                </msr:MD_VectorSpatialRepresentation>
+                              </mdb:spatialRepresentationInfo>
+
+
+            - name: "distributionFormat"
+              context: "DatasetLayer"
+              operations:
+                - schema: "iso19139"
+                  xpath: "./gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[*/gmd:name/*/text() ='{{formatDescription}}']"
+                  operation: "gn_delete"
+                - schema: "iso19139"
+                  xpath: "./gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat"
+                  operation: "gn_add"
+                  value:  >
+                    <gmd:distributionFormat
+                        xmlns:gco="http://www.isotc211.org/2005/gco"
+                        xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                        gco:nilReason="computedFromDatasource">
+                        <gmd:MD_Format>
+                          <gmd:name>
+                            <gco:CharacterString>{{formatDescription:-}}</gco:CharacterString>
+                          </gmd:name>
+                          <gmd:version gco:nilReason="unknown">
+                            <gco:CharacterString/>
+                          </gmd:version>
+                        </gmd:MD_Format>
+                      </gmd:distributionFormat>
+
+                - schema: "iso19115-3.2018"
+                  xpath: "./mdb:distributionInfo/mri:MD_Distribution/mri:distributionFormat[*/mrd:formatSpecificationCitation/*/cit:name/*/text() ='{{formatDescription}}']"
+                  operation: "gn_add"
+                  value: >
+                    <mrd:distributionFormat xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
+                                                      xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
+                                                      xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
+                                                      xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0"
+                                                      xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                                                      gco:nilReason="computedFromDatasource">
+                                <mrd:MD_Format>
+                                  <mrd:formatSpecificationCitation>
+                                    <cit:CI_Citation>
+                                      <cit:title>
+                                        <gco:CharacterString>{{formatDescription:-}}</gco:CharacterString>
+                                      </cit:title>
+                                      <cit:alternateTitle>
+                                        <gco:CharacterString>{{format:-}}</gco:CharacterString>
+                                      </cit:alternateTitle>
+                                    </cit:CI_Citation>
+                                  </mrd:formatSpecificationCitation>
+                                </mrd:MD_Format>
+                              </mrd:distributionFormat>

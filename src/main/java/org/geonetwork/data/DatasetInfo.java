@@ -16,7 +16,8 @@ import lombok.Data;
 @Builder
 public class DatasetInfo implements Serializable {
   private String description;
-  private String type;
+  private String format;
+  private String formatDescription;
   private List<DatasetLayer> layers;
   private Map<String, Object> metadata;
 }

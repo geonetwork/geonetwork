@@ -112,7 +112,7 @@ class GdalDataAnalyzerTest {
             new ClassPathResource("data/samples/CEEUBG100kV2_1.shp").getFile().getCanonicalPath(),
             "CEEUBG100kV2_1");
 
-    assertEquals("ESRI Shapefile", layerProperties.get().getType());
+    assertEquals("ESRI Shapefile", layerProperties.get().getFormatDescription());
 
     DatasetLayer layer = layerProperties.get().getLayers().getFirst();
     assertEquals(BigDecimal.valueOf(51738), layer.getFeatureCount());
@@ -209,7 +209,7 @@ class GdalDataAnalyzerTest {
     assertTrue(datasourceLayers.stream().anyMatch("Weather"::equals));
 
     DatasetInfo properties = analyzer.getLayerProperties(parquetFile, "Weather").get();
-    assertEquals("Parquet", properties.getType());
+    assertEquals("Parquet", properties.getFormatDescription());
     assertEquals(22, properties.getLayers().getFirst().getFields().size());
   }
 
@@ -224,7 +224,7 @@ class GdalDataAnalyzerTest {
 
     analyzer.getLayerProperties(wfsUrl, wfsTypeName);
     DatasetInfo properties = analyzer.getLayerProperties(wfsUrl, wfsTypeName).get();
-    assertEquals("WFS", properties.getType());
+    assertEquals("WFS", properties.getFormatDescription());
     if (properties.getMetadata().get("") instanceof Map serviceProperties) {
       assertEquals("GéoServices : risques naturels et industriels", serviceProperties.get("TITLE"));
       assertEquals(
