@@ -343,7 +343,8 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
       return DatasetInfo.builder()
           .description(dataset.getDescription())
-          .type(dataset.getDriverShortName())
+          .formatDescription(dataset.getDriverShortName())
+          .format(dataset.getDriverLongName())
           .metadata(metadataInfo)
           .layers(layers)
           .build();

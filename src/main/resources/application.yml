@@ -89,7 +89,6 @@ spring:
   cloud:
     gateway:
       mvc:
-
         routes:
           - id: geonetwork_proxy_redirect
             uri: ${geonetwork.openapi.url}
@@ -99,8 +98,6 @@ spring:
               - RewritePath=/geonetwork/(?<url>.*), /api/$\{url}
           - id: geonetwork_route
             uri: ${geonetwork.core.url}
-#            filters:
-#              -
             predicates:
               - Path=/geonetwork/**
   batch:
@@ -108,6 +105,8 @@ spring:
       initialize-schema: always
     job:
       enabled: false
+  config:
+    import: optional:classpath:application-data-ingester.yml
 management:
   endpoint:
     info:

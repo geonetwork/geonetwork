@@ -7,18 +7,19 @@ package org.geonetwork.data;
 
 import java.util.List;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ConfigurationProperties("gn.data-ingester")
-@PropertySource("classpath:gn.data-ingester.yml")
+@ConfigurationProperties("geonetwork.tasks.data-ingester")
 @Data
+@NoArgsConstructor
 public class DataIngesterConfiguration {
   List<Resource> resources;
 
-  private class Resource {
+  @Data
+  public static class Resource {
     private enum Type {
       dataset,
       service
@@ -27,14 +28,34 @@ public class DataIngesterConfiguration {
     Type type;
     List<Property> properties;
 
-    private class Property {
-      private enum Context {
+    @Data
+    public static class Property {
+      enum Context {
         DatasetLayer,
         DatasetInfo
       }
 
       String name;
-      Context context;
+      String help;
+      String context;
+
+      List<Operation> operations;
+
+      @Data
+      static class Operation {
+        // Replace by SpecialUpdateTags
+        enum OperationType {
+          gn_add,
+          gn_delete,
+          gn_replace
+        }
+
+        String schema;
+        OperationType operation;
+        String xpath;
+        String condition;
+        String value;
+      }
     }
   }
 }
