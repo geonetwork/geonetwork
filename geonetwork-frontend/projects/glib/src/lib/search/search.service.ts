@@ -125,4 +125,21 @@ export class SearchService {
 
     return query;
   }
+
+  /**
+   * Check if field is sortable or not, if sortable: return the field name to used, otherwise return undefined;
+   */
+  getSortableField(field: string) {
+    const isNullOrIsExpression =
+      field == null || field.includes('[') || field.includes('(');
+    if (isNullOrIsExpression) {
+      return undefined;
+    } else {
+      const isMultilingual = field.includes('Object.');
+      if (isMultilingual) {
+        return field + '.sort';
+      }
+    }
+    return field;
+  }
 }
