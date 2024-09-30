@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  signal,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, Input, signal, ViewEncapsulation } from '@angular/core';
 import { DefaultConfig } from 'gapi';
 import { API_CONFIGURATION, SearchAggLayout, SearchService } from 'glib';
 import { GcBaseSearchComponent } from '../gc-base-search-component';
