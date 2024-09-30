@@ -60,6 +60,7 @@ export class GWebcomponentsDocComponent implements OnInit {
 
   allowDataTableExport = signal(false);
   allowResultsTableExport = signal(false);
+  allowColumnsSelection = signal(false);
 
   selectionMode = SELECTION_MODE_LIST[0].type;
 

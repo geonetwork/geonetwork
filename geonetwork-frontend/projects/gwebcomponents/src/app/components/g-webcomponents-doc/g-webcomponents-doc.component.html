@@ -149,6 +149,12 @@
               inputId="allowResultsTableExport"
               [(ngModel)]="allowResultsTableExport" />
           </div>
+          <div class="flex flex-col gap-2">
+            <label for="allowColumnsSelection"> Enable column toggle </label>
+            <p-inputSwitch
+              inputId="allowColumnsSelection"
+              [(ngModel)]="allowColumnsSelection" />
+          </div>
         </g-webcomponent-configuration>
       </div>
 
@@ -167,6 +173,7 @@
         landing-page="${apiUrl}/records/${uuid}"
         landing-page-link-on="resourceTitleObject.default"
         scroll-height="80vh"
+        [column-selection]="allowColumnsSelection()"
         [selection-mode]="selectionMode" />
 
       <g-webcomponents-doc-embed>
@@ -186,6 +193,7 @@
           landing-page="${apiUrl}/records/${uuid}"
           landing-page-llink-on="resourceTitleObject.default"
           scroll-height="80vh"
+          columnSelection="{{ allowColumnsSelection() }}"
           selection-mode="{{ selectionMode }}" />
 ]]>
         </pre>

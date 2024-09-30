@@ -17,8 +17,8 @@ export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
   @Input({ alias: 'list-of-field' }) listOfField: string;
   @Input({ alias: 'list-of-label' }) listOfLabel: string;
   @Input({ alias: 'scroll-height' }) scrollHeight: string;
+  @Input({ alias: 'column-selection' }) columnSelection: boolean = false;
   @Input() export: boolean = false;
-  @Input() columnSelection: boolean = true;
 
   fields = signal<string[]>([]);
   labels = signal<string[]>([]);
