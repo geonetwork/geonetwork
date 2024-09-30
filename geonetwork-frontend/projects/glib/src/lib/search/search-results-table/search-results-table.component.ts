@@ -55,6 +55,8 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
   columns: Column[];
   selectedColumns = signal<Column[]>([]);
   labels = input<string[]>();
+  currentSortField: string;
+  currentSortOrder: number;
   selectionMode = input<'single' | 'multiple' | undefined>();
   scrollHeight = input('flex');
   landingPage = input<string>('');
@@ -134,6 +136,22 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
           'search-results.csv'
         );
       }
+    }
+  }
+
+  sort(sortEvent: any) {
+    //Updated p-table sorting icons.
+    this.currentSortField = sortEvent.field;
+    this.currentSortOrder = sortEvent.order;
+    //Determine sorting order: 1 for ASCENDING , -1 for DESCENDING
+    const order = sortEvent.order > 0 ? 'asc' : 'desc';
+    //Build sort field name used in the query
+    const sortField = this.searchService.getSortableField(sortEvent.field);
+    //if undefined, this field is not suitable for sorting (should not occur if HTML template is correct)
+    if (sortField != undefined) {
+      let sort: any = {};
+      sort[sortField] = order;
+      this.search.setSort([sort]);
     }
   }
 

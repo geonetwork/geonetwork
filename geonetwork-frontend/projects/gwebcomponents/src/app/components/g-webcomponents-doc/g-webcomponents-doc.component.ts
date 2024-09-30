@@ -113,7 +113,7 @@ export class GWebcomponentsDocComponent implements OnInit {
       path: 'custodianOrgForResourceObject[*].default',
       order: 8,
     },
-    { label: 'Crédit', path: 'resourceCréditObject.default', order: 9 },
+    { label: 'Crédit', path: 'resourceCreditObject.default', order: 9 },
   ];
 
   listOfFieldsAsText = signal(
