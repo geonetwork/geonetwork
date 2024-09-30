@@ -63,12 +63,12 @@
       <ng-template pTemplate="header">
         <tr>
           @for (col of selectedColumns(); track $index) {
-            @if (searchService.getSortableField(col.field) != undefined ){
-            <th pSortableColumn="{{ col.field }}" >
-              {{ col.header }} <p-sortIcon field="{{ col.field }}"/>
-            </th>
-            } @else{
-              <th> {{ col.header }}</th>
+            @if (searchService.getSortableField(col.field) != undefined) {
+              <th pSortableColumn="{{ col.field }}">
+                {{ col.header }} <p-sortIcon field="{{ col.field }}" />
+              </th>
+            } @else {
+              <th>{{ col.header }}</th>
             }
           }
         </tr>

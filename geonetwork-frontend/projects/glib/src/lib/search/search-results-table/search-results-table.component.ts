@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, signal} from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SearchBaseComponent } from '../search-base/search-base.component';
 import { TableModule, TablePageEvent } from 'primeng/table';
@@ -55,7 +55,7 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
   columns: Column[];
   selectedColumns = signal<Column[]>([]);
   labels = input<string[]>();
-  currentSortField : string;
+  currentSortField: string;
   currentSortOrder: number;
   selectionMode = input<'single' | 'multiple' | undefined>();
   scrollHeight = input('flex');
@@ -139,16 +139,16 @@ export class SearchResultsTableComponent extends SearchBaseComponent {
     }
   }
 
-  sort(sortEvent: any){
+  sort(sortEvent: any) {
     //Updated p-table sorting icons.
     this.currentSortField = sortEvent.field;
     this.currentSortOrder = sortEvent.order;
     //Determine sorting order: 1 for ASCENDING , -1 for DESCENDING
     const order = sortEvent.order > 0 ? 'asc' : 'desc';
     //Build sort field name used in the query
-    const sortField =  this.searchService.getSortableField(sortEvent.field);
+    const sortField = this.searchService.getSortableField(sortEvent.field);
     //if undefined, this field is not suitable for sorting (should not occur if HTML template is correct)
-    if(sortField != undefined){
+    if (sortField != undefined) {
       let sort: any = {};
       sort[sortField] = order;
       this.search.setSort([sort]);

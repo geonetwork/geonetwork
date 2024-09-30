@@ -126,25 +126,20 @@ export class SearchService {
     return query;
   }
 
-
-  /*
-  Check if field is sortable or note, if  sortable: return the field name to used, otherwise return undefined;
+  /**
+   * Check if field is sortable or not, if sortable: return the field name to used, otherwise return undefined;
    */
   getSortableField(field: string) {
-
-    let sortField;
-    //Check if field is null or non-sortable type
-    if(field == null || field.includes("[") || field.includes("(")){
-      sortField = undefined;
-
-    }else {
-      //if field name contains '.Object', it should be a text field -> ensure to use the keyword for sorting.
-      if( field.includes("Object.")){
-        sortField = field+'.keyword';
+    const isNullOrIsExpression =
+      field == null || field.includes('[') || field.includes('(');
+    if (isNullOrIsExpression) {
+      return undefined;
+    } else {
+      const isMultilingual = field.includes('Object.');
+      if (isMultilingual) {
+        return field + '.sort';
       }
     }
-
-    return sortField;
+    return field;
   }
-
 }
