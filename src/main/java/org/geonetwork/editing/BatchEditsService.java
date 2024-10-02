@@ -170,6 +170,7 @@ public class BatchEditsService {
             //            report.incrementUnchangedRecords();
           }
         } catch (Exception e) {
+          System.out.println("Error processing record: " + recordUuid + e.getMessage());
           //          report.addMetadataError(record, e);
         }
         //        report.incrementProcessedRecords();
