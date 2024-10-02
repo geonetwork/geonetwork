@@ -5,6 +5,7 @@ geonetwork:
         - type: "dataset"
           properties:
             - name: "name"
+              help: "Set the title of the dataset if not set and not starts with 'Copy of'"
               context: "DatasetLayer"
               operations:
                 - schema: "iso19139"
@@ -29,6 +30,7 @@ geonetwork:
 
 
             - name: "spatialRepresentationType"
+              help: "Set the spatial representation type of the dataset. If not set, it will be set to 'vector'"
               context: "DatasetLayer"
               operations:
                 - schema: "iso19139"
@@ -41,7 +43,7 @@ geonetwork:
                     <gmd:spatialRepresentationType>
                           <gmd:MD_SpatialRepresentationTypeCode
                                 codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_SpatialRepresentationTypeCode"
-                                codeListValue="{{datasetType}}" />
+                                codeListValue="{{datasetType:-vector}}" />
                         </gmd:spatialRepresentationType>
 
                 - schema: "iso19115-3.2018"
@@ -55,12 +57,12 @@ geonetwork:
                                      xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0">
                       <mcc:MD_SpatialRepresentationTypeCode
                             codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_SpatialRepresentationTypeCode"
-                            codeListValue="{{datasetType}}"/>
+                            codeListValue="{{datasetType:-vector}}"/>
                     </mri:spatialRepresentationType>
 
             - name: "latLonBoundingBox"
-              context: "DatasetLayer"
               help: "Replace existing geographic bounding box"
+              context: "DatasetLayer"
               operations:
                 - schema: "iso19139"
                   operation: "gn_delete"
@@ -127,8 +129,9 @@ geonetwork:
 
 
             - name: "vectorSpatialRepresentation"
+              # TODO: Raster support
+              help: "For each layers, set the feature count and geometry type if geometry column found."
               context: "DatasetLayer"
-              help: "For each layers, set the feature count and geometry type if geometry column found"
               operations:
                 - schema: "iso19139"
                   xpath: "gmd:spatialRepresentationInfo[@gco:nilReason = 'computedFromDatasource']"
@@ -187,6 +190,7 @@ geonetwork:
 
 
             - name: "distributionFormat"
+              help: "Set the distribution format of the dataset based on the data analyzer driver information."
               context: "DatasetLayer"
               operations:
                 - schema: "iso19139"
@@ -239,6 +243,7 @@ geonetwork:
 
 
             - name: "featureCatalogue"
+              help: "Add feature catalogue information to the dataset if not exists."
               context: "DatasetLayer"
               operations:
                 # Not supported in iso19139
@@ -291,7 +296,7 @@ geonetwork:
                         </gfc:featureType>
 
             - name: "featureTypeColumns"
-              context: "DatasetLayer"
+              context: "DatasetColumns"
               operations:
                 - schema: "iso19115-3.2018"
                   operation: "gn_add"
