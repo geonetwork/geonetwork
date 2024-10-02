@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringSubstitutor;
 import org.geonetwork.editing.BatchEditsService;
 import org.geonetwork.editing.model.BatchEditParameter;
@@ -18,11 +19,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class MetadataBuilder {
   DataIngesterConfiguration dataIngesterConfiguration;
   BatchEditsService batchEditsService;
 
-  private String buildPropertyValue(
+  private String buildWithPropertySubstitutions(
       String template,
       DataIngesterConfiguration.Resource.Property property,
       DatasetInfo datasetInfo) {
@@ -61,12 +63,29 @@ public class MetadataBuilder {
           replacements.put("format", datasetInfo.getFormat());
           replacements.put("formatDescription", datasetInfo.getFormatDescription());
           break;
+        case "featureCatalogue":
+        case "featureType":
+          replacements.put("featureTypeName", datasetLayer.getName());
+          break;
+        case "featureTypeColumns":
+          replacements.put("featureTypeName", datasetLayer.getName());
+          int fieldIndex = 0;
+          replacements.put("fieldName", datasetLayer.getFields().get(fieldIndex).getName());
+          replacements.put("fieldType", datasetLayer.getFields().get(fieldIndex).getType());
+//          replacements.put(
+//              "fieldDescription",
+//              datasetLayer.getFields().get(fieldIndex).getClass().descriptorString());
+          break;
       }
     }
 
     // TODO: An empty replacement should not be inserted?
     StringSubstitutor sub = new StringSubstitutor(replacements, "{{", "}}");
-    return sub.replace(template);
+    String result = sub.replace(template);
+    log.debug(replacements.keySet().toString());
+    log.debug(replacements.values().toString());
+    log.debug(result);
+    return result;
   }
 
   public String buildMetadata(String uuid, DatasetInfo datasetInfo) {
@@ -88,7 +107,8 @@ public class MetadataBuilder {
 
                         edits.add(
                             new BatchEditParameter(
-                                operation.getXpath(),
+                                buildWithPropertySubstitutions(
+                                    operation.getXpath(), property, datasetInfo),
                                 String.format(
                                     "<%s>%s</%s>",
                                     operation.getOperation(),
@@ -98,7 +118,7 @@ public class MetadataBuilder {
                                                 DataIngesterConfiguration.Resource.Property
                                                     .Operation.OperationType.gn_delete)
                                         ? ""
-                                        : buildPropertyValue(
+                                        : buildWithPropertySubstitutions(
                                             operation.getValue(), property, datasetInfo),
                                     operation.getOperation()),
                                 operation.getCondition()));
@@ -119,7 +139,6 @@ public class MetadataBuilder {
                       null,
                       true)
                   .two());
-      System.out.println(result);
       return result;
     } catch (Exception e) {
       throw new RuntimeException(e);

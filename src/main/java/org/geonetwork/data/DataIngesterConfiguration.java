@@ -5,6 +5,7 @@
  */
 package org.geonetwork.data;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,12 +47,13 @@ public class DataIngesterConfiguration {
         // Replace by SpecialUpdateTags
         enum OperationType {
           gn_add,
+          gn_create,
           gn_delete,
           gn_replace
         }
 
         String schema;
-        OperationType operation;
+        @NotNull OperationType operation;
         String xpath;
         String condition;
         String value;
