@@ -70,6 +70,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
   }
 
   /** Return sibling relation defined in aggregationInfo. */
+  @Override
   public Set<AssociatedResource> getAssociatedResourcesUUIDs(Element metadata) {
 
     String xpathForAggregationInfo =
@@ -84,8 +85,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
 
       for (Object o : sibs) {
         try {
-          if (o instanceof Element) {
-            Element sib = (Element) o;
+          if (o instanceof Element sib) {
             Element agId =
                 (Element) sib.getChild("aggregateDataSetIdentifier", GMD).getChildren().get(0);
             List children = getChild(agId, "code", GMD).getChildren();
@@ -159,6 +159,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
     return associatedResources;
   }
 
+  @Override
   public Set<String> getAssociatedDatasetUUIDs(Element metadata) {
     return getAssociatedDatasets(metadata).stream()
         .map(AssociatedResource::getUuid)
@@ -170,6 +171,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
     return collectAssociatedResources(metadata, "*//srv:operatesOn", true);
   }
 
+  @Override
   public Set<String> getAssociatedFeatureCatalogueUUIDs(Element metadata) {
     // Feature catalog may also be embedded into the document
     // Or the citation of the feature catalog may contains a reference to it
@@ -183,6 +185,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
     return collectAssociatedResources(metadata, "*//gmd:featureCatalogueCitation[@uuidref]");
   }
 
+  @Override
   public Set<String> getAssociatedSourceUUIDs(Element metadata) {
     return getAssociatedSources(metadata).stream()
         .map(AssociatedResource::getUuid)
@@ -210,7 +213,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
         associatedResources.add(resource);
       }
     } catch (JDOMException e) {
-      e.printStackTrace();
+      log.debug("Error getting associated resources {}", e.getMessage());
     }
     return associatedResources;
   }
@@ -304,10 +307,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
    * Remove all multilingual aspect of an element. Keep the md language localized strings as default
    * gco:CharacterString for the element.
    *
-   * @param element
    * @param langs Metadata languages. The main language MUST be the first one.
-   * @return
-   * @throws JDOMException
    */
   @Override
   public Element removeTranslationFromElement(Element element, List<String> langs)
@@ -533,7 +533,6 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
    * @param attributeRef the attribute reference
    * @param parsedAttributeName the name of the attribute, for example <code>xlink:href</code>
    * @param attributeValue the attribute value
-   * @return
    */
   @Override
   public Element processElement(
@@ -611,7 +610,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
     try {
       String mainLanguage = getMainLanguage(md);
 
-      if (mainLanguage.length() > 0) {
+      if (!mainLanguage.isEmpty()) {
         languages.add(mainLanguage);
       }
 

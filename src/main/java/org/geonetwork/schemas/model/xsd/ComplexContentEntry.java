@@ -37,8 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jdom.Element;
 
-// ==============================================================================
-
 public class ComplexContentEntry extends BaseHandler {
   public String base;
   public ArrayList<String> alAttribGroups = new ArrayList<String>();
@@ -46,31 +44,17 @@ public class ComplexContentEntry extends BaseHandler {
   public ArrayList<AttributeEntry> alAttribs = new ArrayList<AttributeEntry>();
   public boolean restriction = false;
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // ---------------------------------------------------------------------------
-
   public ComplexContentEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
     this(new ElementInfo(el, file, targetNS, targetNSPrefix));
   }
-
-  // ---------------------------------------------------------------------------
 
   public ComplexContentEntry(ElementInfo ei) {
     handleAttribs(ei);
     handleChildren(ei);
   }
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Private methods
-  // ---
-  // ---------------------------------------------------------------------------
-
+  @SuppressWarnings("unused")
   private void handleAttribs(ElementInfo ei) {
-    //		@SuppressWarnings("unchecked")
     //        List<Attribute> attribs = ei.element.getAttributes();
     //
     //        for (Attribute at : attribs) {
@@ -85,8 +69,6 @@ public class ComplexContentEntry extends BaseHandler {
     //        }
   }
 
-  // ---------------------------------------------------------------------------
-
   private void handleChildren(ElementInfo ei) {
     @SuppressWarnings("unchecked")
     List<Element> children = ei.element.getChildren();
@@ -100,8 +82,6 @@ public class ComplexContentEntry extends BaseHandler {
       }
     }
   }
-
-  // ---------------------------------------------------------------------------
 
   private void handleExtension(Element el, ElementInfo ei) {
     base = el.getAttributeValue("base");
@@ -137,8 +117,6 @@ public class ComplexContentEntry extends BaseHandler {
       }
     }
   }
-
-  // ---------------------------------------------------------------------------
 
   private void handleRestriction(Element el, ElementInfo ei) {
     base = el.getAttributeValue("base");

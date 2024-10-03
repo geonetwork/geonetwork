@@ -49,10 +49,10 @@ public class XPath {
    * element.
    */
   public static String getXPath(Element root, Object target) throws JDOMException {
-    StringBuffer xpath = null;
+    StringBuilder xpath = null;
 
     if (root == target) {
-      xpath = new StringBuffer("/").append(root.getQualifiedName());
+      xpath = new StringBuilder("/").append(root.getQualifiedName());
     } else {
       xpath = followXPath(root, target);
     }
@@ -93,8 +93,8 @@ public class XPath {
    *
    * <p>NOTE: This does not compare root to target. That should be done before calling this method.
    */
-  private static StringBuffer followXPath(Element root, Object target) throws JDOMException {
-    StringBuffer xpath;
+  private static StringBuilder followXPath(Element root, Object target) throws JDOMException {
+    StringBuilder xpath;
 
     if (target instanceof Element) {
       if (((Element) target).isRootElement()) {
@@ -124,14 +124,14 @@ public class XPath {
    * Computes the xpath of the target. At this point its parent is known, so the algorithm can walk
    * up the tree from the parent to the root, which is easier than walking down the tree.
    */
-  private static StringBuffer computeXPath(Element root, Parent parent, Object target)
+  private static StringBuilder computeXPath(Element root, Parent parent, Object target)
       throws JDOMException {
-    StringBuffer xpath;
+    StringBuilder xpath;
 
     if (target == root) {
-      xpath = new StringBuffer("/").append(root.getQualifiedName());
+      xpath = new StringBuilder("/").append(root.getQualifiedName());
     } else if (parent == root) {
-      xpath = new StringBuffer("/").append(root.getQualifiedName());
+      xpath = new StringBuilder("/").append(root.getQualifiedName());
       xpath.append(targetXPath((Element) parent, target));
     } else {
       xpath = computeXPathToNode(root, (Element) parent);
@@ -142,15 +142,15 @@ public class XPath {
   }
 
   /** Computes the child's xpath relative to its parent. */
-  private static StringBuffer targetXPath(Element parent, Object child) throws JDOMException {
-    StringBuffer xpath;
+  private static StringBuilder targetXPath(Element parent, Object child) throws JDOMException {
+    StringBuilder xpath;
 
     if (parent == null || child == null) {
       throw new JDOMException("can't use null parent or child");
     }
 
     if (child instanceof Element) {
-      xpath = new StringBuffer();
+      xpath = new StringBuilder();
       xpath.append("/").append(((Element) child).getQualifiedName());
       int i = computeTwinIndex(parent, (Element) child);
       if (i > 0) {
@@ -161,15 +161,15 @@ public class XPath {
       // a name, so the xpath has to use the ::node() syntax.
 
       int i = computeChildIndex(parent, child);
-      xpath = new StringBuffer("/self::node()[").append(i).append("]");
+      xpath = new StringBuilder("/self::node()[").append(i).append("]");
     }
 
     return xpath;
   }
 
-  /** Computes the xpath from the root to the node. It returns the result in a StringBuffer. */
-  private static StringBuffer computeXPathToNode(Element root, Element node) throws JDOMException {
-    StringBuffer xpath = new StringBuffer();
+  /** Computes the xpath from the root to the node. It returns the result in a StringBuilder. */
+  private static StringBuilder computeXPathToNode(Element root, Element node) throws JDOMException {
+    StringBuilder xpath = new StringBuilder();
     Element n = node;
 
     if (root == null || node == null) {
@@ -178,7 +178,9 @@ public class XPath {
 
     while (n != null) {
       Element p = null;
-      if (n.getParent() != null && n.getParent() instanceof Element) p = (Element) (n.getParent());
+      if (n.getParent() != null && n.getParent() instanceof Element) {
+        p = (Element) n.getParent();
+      }
 
       if (p != null) {
         int ti = computeTwinIndex(p, n);
@@ -474,7 +476,8 @@ public class XPath {
 
     if (identicalTwins.size() > 1) {
       for (int j = 0; index < 0 && j < identicalTwins.size(); ++j) {
-        if (identicalTwins.get(j) == child) {
+        if (identicalTwins.get(j).getName().equals(child.getName())) {
+
           // Add 1 to convert to 1-origin index used by
           // Xpath.
 

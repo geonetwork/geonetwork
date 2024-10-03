@@ -35,10 +35,9 @@ package org.geonetwork.schemas.model.xsd;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom.Element;
 import org.jdom.Namespace;
-
-// ==============================================================================
 
 /**
  * This class parses a "SimpleType" element. All attributes are ignored (a warning is logged). Only
@@ -49,25 +48,18 @@ public class SimpleTypeEntry extends BaseHandler {
   public List<String> alTypes = new ArrayList<String>();
   public List<String> alEnum = new ArrayList<String>();
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // ---------------------------------------------------------------------------
-
   public SimpleTypeEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
     this(new ElementInfo(el, file, targetNS, targetNSPrefix));
   }
-
-  // ---------------------------------------------------------------------------
 
   public SimpleTypeEntry(ElementInfo ei) {
     name = handleAttribs(ei, null);
     handleChildren(ei);
   }
 
+  @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append("SimpleTypeEntry name:" + name + " Enums:[");
     for (int j = 0; j < alEnum.size(); j++) {
       sb.append(alEnum.get(j) + ", ");
@@ -79,12 +71,6 @@ public class SimpleTypeEntry extends BaseHandler {
     sb.append("]");
     return sb.toString();
   }
-
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Private methods
-  // ---
-  // ---------------------------------------------------------------------------
 
   private void handleChildren(ElementInfo ei) {
     List<?> children = ei.element.getChildren();
@@ -141,7 +127,7 @@ public class SimpleTypeEntry extends BaseHandler {
           String memberTypes = elChild.getAttributeValue("memberTypes");
           // TODO : Probably member types should be handled as geonet:choose style complexElement
           if (memberTypes != null) {
-            String[] types = memberTypes.split(" ");
+            String[] types = StringUtils.split(memberTypes, " ");
             for (String type : types) {
               alTypes.add(type);
             }
