@@ -39,8 +39,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
-// ==============================================================================
-
 @Slf4j(topic = "org.geonetwork.schemas")
 public class ComplexTypeEntry extends BaseHandler {
   public String name;
@@ -54,28 +52,14 @@ public class ComplexTypeEntry extends BaseHandler {
   public List<AttributeEntry> alAttribs = new ArrayList<AttributeEntry>();
   public List<String> alAttribGroups = new ArrayList<String>();
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // ---------------------------------------------------------------------------
-
   public ComplexTypeEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
     this(new ElementInfo(el, file, targetNS, targetNSPrefix));
   }
-
-  // ---------------------------------------------------------------------------
 
   public ComplexTypeEntry(ElementInfo ei) {
     handleAttribs(ei);
     handleChildren(ei);
   }
-
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Private methods
-  // ---
-  // ---------------------------------------------------------------------------
 
   private void handleAttribs(ElementInfo ei) {
     List<?> attribs = ei.element.getAttributes();
@@ -103,8 +87,6 @@ public class ComplexTypeEntry extends BaseHandler {
 
     }
   }
-
-  // ---------------------------------------------------------------------------
 
   private void handleChildren(ElementInfo ei) {
     List<?> children = ei.element.getChildren();
@@ -149,11 +131,8 @@ public class ComplexTypeEntry extends BaseHandler {
       } else if (elName.equals("simpleContent")) {
         first = false;
         simpleContent = new SimpleContentEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
-      } else if (elName.equals("annotation")) {
-
+        //      } else if (elName.equals("annotation")) {
       }
     }
   }
 }
-
-// ==============================================================================

@@ -79,6 +79,7 @@ public class LocaleMessages {
    *     when there are multiple beans for ResourceBundleMessageSource
    * @return bean for ResourceBundleMessageSource
    */
+  @SuppressWarnings("unused")
   private static ResourceBundleMessageSource getResourceBundleMessageSource(
       String resourceBundleBeanQualifier) {
     ResourceBundleMessageSource resourceBundleMessageSource = null;

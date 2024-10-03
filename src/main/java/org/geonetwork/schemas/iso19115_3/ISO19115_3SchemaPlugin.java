@@ -73,6 +73,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
     super(IDENTIFIER, allNamespaces);
   }
 
+  @Override
   public Set<AssociatedResource> getAssociatedResourcesUUIDs(Element metadata) {
     String xpathForAggregationInfo =
         "*//mri:associatedResource/*" + "[mri:metadataReference/@uuidref " + "and %s]";
@@ -92,14 +93,13 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
               new ArrayList<>(allNamespaces));
 
       for (Object o : sibs) {
-        if (o instanceof Element) {
-          Element sib = (Element) o;
+        if (o instanceof Element sib) {
           AssociatedResource resource = metadataRefAsAssociatedResource(sib);
           listOfResources.add(resource);
         }
       }
     } catch (JDOMException e) {
-      e.printStackTrace();
+      log.debug("getAssociatedResourcesUUIDs error {}", e.getMessage());
     }
     return listOfResources;
   }
@@ -140,6 +140,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
     return associatedResources;
   }
 
+  @Override
   public Set<String> getAssociatedDatasetUUIDs(Element metadata) {
     return getAssociatedDatasets(metadata).stream()
         .map(AssociatedResource::getUuid)
@@ -151,6 +152,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
     return collectAssociatedResources(metadata, "*//srv:operatesOn", true);
   }
 
+  @Override
   public Set<String> getAssociatedFeatureCatalogueUUIDs(Element metadata) {
     // Feature catalog may also be embedded into the document
     // Or the citation of the feature catalog may contains a reference to it
@@ -164,6 +166,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
     return collectAssociatedResources(metadata, "*//mrc:featureCatalogueCitation[@uuidref]");
   }
 
+  @Override
   public Set<String> getAssociatedSourceUUIDs(Element metadata) {
     return getAssociatedSources(metadata).stream()
         .map(AssociatedResource::getUuid)
@@ -191,7 +194,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
         associatedResources.add(resource);
       }
     } catch (JDOMException e) {
-      e.printStackTrace();
+      log.debug("collectAssociatedResources error {}", e.getMessage());
     }
     return associatedResources;
   }
@@ -279,10 +282,6 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
    *            <lan:LocalisedCharacterString locale="#FRE">Modèle de données vectorielles en ISO19139 (multilingue)</lan:LocalisedCharacterString>
    *        </lan:textGroup>
    * </pre>
-   *
-   * @param element
-   * @param languageIdentifier
-   * @param value
    */
   @Override
   public void addTranslationToElement(Element element, String languageIdentifier, String value) {
@@ -311,10 +310,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
    * Remove all multingual aspect of an element. Keep the md language localized strings as default
    * gco:CharacterString for the element.
    *
-   * @param element
    * @param langs Metadata languages. The main language MUST be the first one.
-   * @return
-   * @throws JDOMException
    */
   @Override
   public Element removeTranslationFromElement(Element element, List<String> langs)
@@ -536,7 +532,6 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
    * @param attributeRef the attribute reference
    * @param parsedAttributeName the name of the attribute, for example <code>xlink:href</code>
    * @param attributeValue the attribute value
-   * @return
    */
   @Override
   public Element processElement(
@@ -612,10 +607,8 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
   //  }
 
   /**
-   * If not empty defind if parent metadata reference should also be searched in associated
+   * If not empty defined if parent metadata reference should also be searched in associated
    * resources. Define the value of associationType to use.
-   *
-   * @return
    */
   public String getParentAssociatedResourceType() {
     return parentAssociatedResourceType;

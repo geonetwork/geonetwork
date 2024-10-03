@@ -36,7 +36,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystemNotFoundException;
-import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.*;
@@ -48,7 +47,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.ValidatorHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.xml.resolver.tools.CatalogResolver;
 import org.geonetwork.schemas.exceptions.XSDValidationErrorEx;
 import org.geonetwork.utility.io.IO;
 import org.geonetwork.utility.nio.NioPathAwareEntityResolver;
@@ -112,21 +110,10 @@ public final class Xml {
     return builder;
   }
 
-  // --------------------------------------------------------------------------
-
-  /** */
   public static void resetResolver() {
     Resolver resolver = ResolverWrapper.getInstance();
     resolver.reset();
   }
-
-  // --------------------------------------------------------------------------
-  // ---
-  // --- Load API
-  // ---
-  // --------------------------------------------------------------------------
-
-  // --------------------------------------------------------------------------
 
   /** Loads an xml file from a URL and returns its root node. */
   public static Element loadFile(URL url) throws IOException, JDOMException {
@@ -174,8 +161,6 @@ public final class Xml {
     }
     return result;
   }
-
-  // --------------------------------------------------------------------------
 
   public static Element loadFile(Path file) throws JDOMException, NoSuchFileException {
     try {
@@ -569,29 +554,20 @@ public final class Xml {
   //        return json.toString(2);
   //    }
 
-  /**
-   * @param data
-   * @return
-   */
   public static String getString(DocType data) {
     XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
 
     return outputter.outputString(data);
   }
 
-  /**
-   * @param data
-   * @return
-   */
   public static String getString(Document data) {
     XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
 
     return outputter.outputString(data);
   }
 
-  // ---------------------------------------------------------------------------
-
   /** Creates and prepares an XPath element - simple xpath (like "a/b/c"). */
+  @SuppressWarnings("unused")
   private static XPath prepareXPath(Element xml, String xpath, List<Namespace> theNSs)
       throws JDOMException {
     XPath xp = XPath.newInstance(xpath);
@@ -602,8 +578,6 @@ public final class Xml {
     return xp;
   }
 
-  // ---------------------------------------------------------------------------
-
   /** Retrieves a single XML element given a simple xpath (like "a/b/c"). */
   public static Object selectSingle(Element xml, String xpath, List<Namespace> theNSs)
       throws JDOMException {
@@ -613,14 +587,10 @@ public final class Xml {
     return xp.selectSingleNode(xml);
   }
 
-  // ---------------------------------------------------------------------------
-
   /** Retrieves a single XML element as a JDOM element given a simple xpath. */
   public static Element selectElement(Element xml, String xpath) throws JDOMException {
     return selectElement(xml, xpath, new ArrayList<Namespace>());
   }
-
-  // ---------------------------------------------------------------------------
 
   /** Retrieves a single XML element as a JDOM element given a simple xpath. */
   public static Element selectElement(Element xml, String xpath, List<Namespace> theNSs)
@@ -637,16 +607,12 @@ public final class Xml {
     }
   }
 
-  // ---------------------------------------------------------------------------
-
   /** Evaluates an XPath expression on an element and returns Elements. */
   public static List<?> selectNodes(Element xml, String xpath, List<Namespace> theNSs)
       throws JDOMException {
     XPath xp = prepareXPath(xml, xpath, theNSs);
     return xp.selectNodes(xml);
   }
-
-  // ---------------------------------------------------------------------------
 
   /** Evaluates an XPath expression on an document and returns Elements. */
   public static List<?> selectDocumentNodes(Element xml, String xpath, List<Namespace> theNSs)
@@ -757,7 +723,6 @@ public final class Xml {
     @SuppressWarnings("unchecked")
     Iterator<Element> i = element.getDescendants(elementFilter);
     Set<String> values = new HashSet<String>();
-    boolean first = true;
     while (i.hasNext()) {
       Element e = i.next();
       String uuid =
@@ -1023,68 +988,5 @@ public final class Xml {
       retBool = firstTag.matches("<.*:(rdf|catalog|catalogrecord)\\n?");
     }
     return retBool;
-  }
-
-  private static class JeevesURIResolver implements URIResolver {
-
-    /**
-     * @param href
-     * @param base
-     * @return
-     * @throws TransformerException
-     */
-    public Source resolve(String href, String base) throws TransformerException {
-      Resolver resolver = ResolverWrapper.getInstance();
-      CatalogResolver catResolver = resolver.getCatalogResolver();
-      if (log.isDebugEnabled()) {
-        log.debug("Trying to resolve " + href + ":" + base);
-      }
-      Source s = catResolver.resolve(href, base);
-
-      boolean isFile;
-      try {
-        final Path file = IO.toPath(new URI(s.getSystemId()));
-        isFile = Files.isRegularFile(file);
-      } catch (Exception e) {
-        isFile = false;
-      }
-
-      // If resolver has a blank XSL file use it to replace
-      // resolved file that doesn't exist...
-      String blankXSLFile = resolver.getBlankXSLFile();
-      if (blankXSLFile != null && s.getSystemId().endsWith(".xsl") && !isFile) {
-        try {
-          if (log.isDebugEnabled()) {
-            log.debug("  Check if exist " + s.getSystemId());
-          }
-
-          Path f;
-          f = resolvePath(s);
-          if (log.isDebugEnabled())
-            log.debug("Check on " + f + " exists returned: " + Files.exists(f));
-          // If the resolved resource does not exist, set it to blank file path to not trigger
-          // FileNotFound Exception
-
-          if (!Files.exists(f)) {
-            if (log.isDebugEnabled()) {
-              log.debug(
-                  "  Resolved resource "
-                      + s.getSystemId()
-                      + " does not exist. blankXSLFile returned instead.");
-            }
-            s.setSystemId(blankXSLFile);
-          } else {
-            s.setSystemId(f.toUri().toASCIIString());
-          }
-        } catch (URISyntaxException e) {
-          log.warn("URI syntax problem: " + e.getMessage(), e);
-        }
-      }
-
-      if (log.isDebugEnabled() && s != null) {
-        log.debug("Resolved as " + s.getSystemId());
-      }
-      return s;
-    }
   }
 }

@@ -5,6 +5,12 @@
  */
 package org.geonetwork.schemas;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
+
+@ToString
+@EqualsAndHashCode
 public class Version implements Comparable<Version> {
   private final int major, minor, micro;
 
@@ -32,7 +38,7 @@ public class Version implements Comparable<Version> {
         break;
     }
 
-    final String[] parts = number.split("\\.");
+    final String[] parts = StringUtils.split(number, ".");
     String major = parts[0];
     String minor = parts.length > 1 ? parts[1] : "0";
     String micro = parts.length > 2 ? parts[2] : "0";
@@ -63,33 +69,6 @@ public class Version implements Comparable<Version> {
     return 0;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Version version = (Version) o;
-
-    if (major != version.major) return false;
-    if (micro != version.micro) return false;
-    if (minor != version.minor) return false;
-
-    return true;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = major;
-    result = 31 * result + minor;
-    result = 31 * result + micro;
-    return result;
-  }
-
-  @Override
-  public String toString() {
-    return major + "." + minor + "." + micro;
-  }
-
   private static int numDots(String number) {
     int num = 0;
 
@@ -98,7 +77,6 @@ public class Version implements Comparable<Version> {
         num++;
       }
     }
-
     return num;
   }
 }

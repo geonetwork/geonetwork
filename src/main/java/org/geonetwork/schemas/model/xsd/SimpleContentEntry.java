@@ -37,8 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jdom.Element;
 
-// ==============================================================================
-
 public class SimpleContentEntry {
   public String base;
 
@@ -46,34 +44,19 @@ public class SimpleContentEntry {
   public List<String> alAttribGroups = new ArrayList<String>();
   public boolean restriction = false;
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // ---------------------------------------------------------------------------
-
   public SimpleContentEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
     this(new ElementInfo(el, file, targetNS, targetNSPrefix));
   }
-
-  // ---------------------------------------------------------------------------
 
   public SimpleContentEntry(ElementInfo ei) {
     handleAttribs(ei);
     handleChildren(ei);
   }
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Private methods
-  // ---
-  // ---------------------------------------------------------------------------
-
+  @SuppressWarnings("unused")
   private void handleAttribs(ElementInfo ei) {
     // TODO; handle attributes
   }
-
-  // ---------------------------------------------------------------------------
 
   private void handleChildren(ElementInfo ei) {
     @SuppressWarnings("unchecked")
@@ -88,8 +71,6 @@ public class SimpleContentEntry {
       }
     }
   }
-
-  // ---------------------------------------------------------------------------
 
   private void handleExtension(Element el, ElementInfo ei) {
     restriction = false;
