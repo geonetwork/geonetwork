@@ -6,11 +6,13 @@
 package org.geonetwork.process.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import org.geonetwork.data.DatasetInfo;
 
 @Data
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class DataAnalysisProcessReport extends ProcessReport {
   private DatasetInfo result;
 }

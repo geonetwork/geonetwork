@@ -30,7 +30,7 @@ public enum ReservedOperation {
 
   private final int _id;
 
-  private ReservedOperation(int id) {
+  ReservedOperation(int id) {
     this._id = id;
   }
 

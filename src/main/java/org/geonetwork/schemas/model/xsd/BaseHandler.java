@@ -5,19 +5,19 @@
  */
 package org.geonetwork.schemas.model.xsd;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
 /**
+ * Base handler.
+ *
  * @author heikki doeleman
  */
 public abstract class BaseHandler {
 
   /** TODO Javadoc. */
-  protected void handleSequence(
-      Element elChild, ArrayList<ElementEntry> alElements, ElementInfo ei) {
+  protected void handleSequence(Element elChild, List<ElementEntry> alElements, ElementInfo ei) {
     @SuppressWarnings("unchecked")
     List<Element> sequence = elChild.getChildren();
 

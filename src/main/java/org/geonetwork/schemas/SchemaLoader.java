@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.schemas.constant.Edit;
 import org.geonetwork.schemas.constant.Geonet;
@@ -216,7 +217,7 @@ public class SchemaLoader {
           hmAllAttrs.put(attr.name, attr);
         }
       }
-      ArrayList<AttributeEntry> attrs = resolveNestedAttributeGroups(age);
+      List<AttributeEntry> attrs = resolveNestedAttributeGroups(age);
       hmAttrGrp.put(age.name, attrs);
     }
 
@@ -326,7 +327,7 @@ public class SchemaLoader {
             elements = ee.alContainerElems;
           }
           String type = ee.name = baseName + extension + (Integer) j;
-          ArrayList<ComplexTypeEntry> newCtes =
+          List<ComplexTypeEntry> newCtes =
               createTypeAndResolveNestedContainers(mds, elements, baseName, extension, j);
           if (newCtes.size() != 0) {
             for (ComplexTypeEntry newCte : newCtes) {
@@ -412,7 +413,7 @@ public class SchemaLoader {
     mds.addElement(ee.name, ee.type, elemRestr, new ArrayList<String>(), "");
     mdt.addElementWithType(ee.name, ee.type, ee.min, ee.max);
 
-    return (cteInt);
+    return cteInt;
   }
 
   // ---------------------------------------------------------------------------
@@ -427,7 +428,7 @@ public class SchemaLoader {
   // ---     OR  a list of ElementEntry objects to use as substitutes
   // ---
   // ---------------------------------------------------------------------------
-  private ArrayList<ElementEntry> getOverRideSubstitutes(String elementName) {
+  private List<ElementEntry> getOverRideSubstitutes(String elementName) {
 
     ArrayList<ElementEntry> subs = hmSubsGrp.get(elementName);
     List<String> ssOs = ssOverRides.getSubstitutes(elementName);
@@ -478,7 +479,7 @@ public class SchemaLoader {
     // If we have user specified substitutions then use them otherwise
     // use those from the schema
     boolean doSubs = true;
-    ArrayList<ElementEntry> al = getOverRideSubstitutes(ee.ref);
+    List<ElementEntry> al = getOverRideSubstitutes(ee.ref);
     if (al == null) al = hmSubsGrp.get(ee.ref);
     else doSubs = false;
 
@@ -525,22 +526,15 @@ public class SchemaLoader {
       mdt.addRefElementWithType(ee.ref, type, ee.min, ee.max);
     } else {
       log.warn(
-          "WARNING: element "
-              + ee.ref
-              + " from "
-              + baseName
-              + " has fallen through the logic (abstract: "
-              + isAbstract
-              + ") - ignoring");
+          "WARNING: element {} from {} has fallen through the logic (abstract: {}) - ignoring",
+          ee.ref,
+          baseName,
+          isAbstract);
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Recurse on attributeGroups to build a list of AttributeEntry objects
-  // ---
-  // ---------------------------------------------------------------------------
-  private ArrayList<AttributeEntry> resolveNestedAttributeGroups(AttributeGroupEntry age) {
+  /** Recurse on attributeGroups to build a list of AttributeEntry objects. */
+  private List<AttributeEntry> resolveNestedAttributeGroups(AttributeGroupEntry age) {
     ArrayList<AttributeEntry> attrs = new ArrayList<AttributeEntry>();
 
     if (age.alAttrGrps.size() > 0) {
@@ -557,14 +551,10 @@ public class SchemaLoader {
     return attrs;
   }
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Descend recursively to deal with nested containers
-  // ---
-  // ---------------------------------------------------------------------------
-  private ArrayList<ComplexTypeEntry> createTypeAndResolveNestedContainers(
+  /** Descend recursively to deal with nested containers. */
+  private List<ComplexTypeEntry> createTypeAndResolveNestedContainers(
       MetadataSchema mds,
-      ArrayList<ElementEntry> al,
+      List<ElementEntry> al,
       String baseName,
       String extension,
       Integer baseNr) {
@@ -582,7 +572,7 @@ public class SchemaLoader {
       // CHOICE
       if (ee.choiceElem) {
         String newExtension = Edit.RootChild.CHOICE;
-        ArrayList<ComplexTypeEntry> newCtes =
+        List<ComplexTypeEntry> newCtes =
             createTypeAndResolveNestedContainers(
                 mds, ee.alContainerElems, baseName, newExtension, baseNr);
         if (newCtes.size() > 0) complexTypes.addAll(newCtes);
@@ -596,7 +586,7 @@ public class SchemaLoader {
         if (ee.ref != null) {
           GroupEntry group = hmGroups.get(ee.ref);
           ArrayList<ElementEntry> alGroupElements = group.alElements;
-          ArrayList<ComplexTypeEntry> newCtes =
+          List<ComplexTypeEntry> newCtes =
               createTypeAndResolveNestedContainers(
                   mds, alGroupElements, baseName, newExtension, baseNr);
           if (newCtes.size() > 0) complexTypes.addAll(newCtes);
@@ -604,16 +594,18 @@ public class SchemaLoader {
           mds.addElement(ee.name, ee.type, new ArrayList<String>(), new ArrayList<String>(), "");
           mdt.addElementWithType(ee.name, ee.type, ee.min, ee.max);
         } else {
-          log.warn("WARNING: group element ref is NULL in " + baseName + extension + baseNr);
+          log.warn("WARNING: group element ref is NULL in {}{}{}", baseName, extension, baseNr);
         }
 
         // SEQUENCE
       } else if (ee.sequenceElem) {
         String newExtension = Edit.RootChild.SEQUENCE;
-        ArrayList<ComplexTypeEntry> newCtes =
+        List<ComplexTypeEntry> newCtes =
             createTypeAndResolveNestedContainers(
                 mds, ee.alContainerElems, baseName, newExtension, baseNr);
-        if (newCtes.size() > 0) complexTypes.addAll(newCtes);
+        if (!newCtes.isEmpty()) {
+          complexTypes.addAll(newCtes);
+        }
         ee.name = ee.type = baseName + newExtension + baseNr;
         mds.addElement(ee.name, ee.type, new ArrayList<String>(), new ArrayList<String>(), "");
         mdt.addElementWithType(ee.name, ee.type, ee.min, ee.max);
@@ -637,7 +629,7 @@ public class SchemaLoader {
   // --- Descend recursively to deal with abstract elements
   // ---
   // ---------------------------------------------------------------------------
-  private int assembleChoiceElements(MetadataType mdt, ArrayList<ElementEntry> al, boolean doSubs) {
+  private int assembleChoiceElements(MetadataType mdt, List<ElementEntry> al, boolean doSubs) {
 
     int number = 0;
     if (al == null) return number;
@@ -671,8 +663,7 @@ public class SchemaLoader {
   // ---------------------------------------------------------------------------
 
   /** Loads the xml-schema file, removes annotations and resolve imports/includes */
-  private List<ElementInfo> loadFile(Path xmlSchemaFile, HashSet<Path> loadedFiles)
-      throws Exception {
+  private List<ElementInfo> loadFile(Path xmlSchemaFile, Set<Path> loadedFiles) throws Exception {
     loadedFiles.add(xmlSchemaFile.toAbsolutePath().normalize());
 
     Path path = xmlSchemaFile.getParent();

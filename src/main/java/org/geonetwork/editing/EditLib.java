@@ -140,6 +140,7 @@ public class EditLib {
    * Given an expanded tree, removes all info added for editing and replaces choice_elements with
    * their children.
    */
+  @SuppressWarnings("unchecked")
   public void removeEditingInfo(Element md) {
     // --- purge geonet: attributes
     for (Attribute attr : (List<Attribute>) new ArrayList(md.getAttributes())) {
@@ -238,6 +239,7 @@ public class EditLib {
     addChildToParent(mdSchema, targetElement, childToAdd, qname, removeExisting);
   }
 
+  @SuppressWarnings("unchecked")
   private void addChildToParent(
       MetadataSchema mdSchema,
       Element targetElement,
@@ -260,7 +262,7 @@ public class EditLib {
     // readd all children to the element and assure a correct position for the new one: at the end
     // of the others
     // or just add the new one
-    List<Element> existingAllType = new ArrayList(targetElement.getChildren());
+    List<Element> existingAllType = new ArrayList<Element>(targetElement.getChildren());
     targetElement.removeContent();
     for (String singleType : type.getAlElements()) {
       List<Element> existingForThisType = filterOnQname(existingAllType, singleType);
@@ -296,7 +298,7 @@ public class EditLib {
     // Loop over each XML fragments to insert or replace
     Map<String, Element> nodeRefToElem = new HashMap<>();
     for (Map.Entry<String, String> entry : xmlInputs.entrySet()) {
-      String[] nodeConfig = entry.getKey().split("_");
+      String[] nodeConfig = StringUtils.split(entry.getKey(), "_");
       String nodeRef = nodeConfig[0];
 
       Element el = findElement(md, nodeConfig[0]);
@@ -308,7 +310,7 @@ public class EditLib {
       String nodeName = null;
       boolean replaceExisting = false;
 
-      String[] nodeConfig = entry.getKey().split("_");
+      String[] nodeConfig = StringUtils.split(entry.getKey(), "_");
       // Possibilities:
       // * X125
       // * X125_replace
@@ -333,7 +335,7 @@ public class EditLib {
       if (xmlSnippetAsString == null || xmlSnippetAsString.equals("")) {
         continue;
       }
-      String[] fragments = xmlSnippetAsString.split(XML_FRAGMENT_SEPARATOR);
+      String[] fragments = StringUtils.split(xmlSnippetAsString, XML_FRAGMENT_SEPARATOR);
       for (String fragment : fragments) {
         if (nodeName != null) {
           log.debug("Add XML fragment; {} to element with ref: {}", fragment, nodeRef);
@@ -350,7 +352,7 @@ public class EditLib {
           if (replaceExisting) {
             @SuppressWarnings("unchecked")
             List<Element> children = node.getChildren();
-            if (children.size() > 0) {
+            if (!children.isEmpty()) {
               for (Element child : children) {
                 el.addContent((Element) child.clone());
               }
@@ -358,6 +360,7 @@ public class EditLib {
               String textContent = node.getText();
               el.addContent(textContent);
             }
+            @SuppressWarnings("unchecked")
             List<Attribute> attributes = node.getAttributes();
             for (Attribute a : attributes) {
               el.setAttribute((Attribute) a.clone());
@@ -384,7 +387,7 @@ public class EditLib {
    */
   public int addElementOrFragmentFromXpaths(
       Element metadataRecord,
-      LinkedHashMap<String, AddElemValue> xmlAndXpathInputs,
+      Map<String, AddElemValue> xmlAndXpathInputs,
       MetadataSchema metadataSchema,
       boolean createXpathNodeIfNotExist)
       throws JDOMException, IOException {
@@ -411,8 +414,9 @@ public class EditLib {
             createXpathNodeIfNotExist);
 
         Element fragments = propertyValue.getNodeValue();
-
-        for (Element fragment : (List<Element>) fragments.getChildren()) {
+        @SuppressWarnings("unchecked")
+        List<Element> children = (List<Element>) fragments.getChildren();
+        for (Element fragment : children) {
           propertyValueToProcess =
               new AddElemValue("<gn_create>" + Xml.getString(fragment) + "</gn_create>");
 
@@ -565,9 +569,7 @@ public class EditLib {
             if (elem == null) {
               isUpdated =
                   createAndAddFromXPath(metadataRecord, metadataSchema, requiredXPath, value);
-            } else if (elem instanceof Element) {
-              Element element = (Element) elem;
-
+            } else if (elem instanceof Element element) {
               isUpdated =
                   createAndAddFromXPath(
                       element,
@@ -655,8 +657,7 @@ public class EditLib {
       @SuppressWarnings("unchecked")
       List<Object> children = new ArrayList(newValue.getContent());
       for (Object o : children) {
-        if (o instanceof Element) {
-          Element child = (Element) o;
+        if (o instanceof Element child) {
           if (log.isDebugEnabled()) {
             log.debug(" > add " + Xml.getString(child));
           }
@@ -704,7 +705,7 @@ public class EditLib {
             }
           }
         } else if (o instanceof Text) {
-          propEl.addContent((Content) (new Text(((Text) o).getText())));
+          propEl.addContent((Content) new Text(((Text) o).getText()));
         }
       }
     } else if (newValue.getName().equals(SpecialUpdateTags.DELETE)) {
@@ -735,7 +736,7 @@ public class EditLib {
     // Removes root metadata element for xpath filters
     xpathProperty = cleanRootFromXPath(xpathProperty, metadataRecord);
 
-    List<String> xpathParts = Arrays.asList(xpathProperty.split("/"));
+    List<String> xpathParts = Arrays.asList(StringUtils.split(xpathProperty, "/"));
     SelectResult rootElem = trySelectNode(metadataRecord, metadataSchema, xpathParts.get(0), false);
 
     Pair<Element, String> result;
@@ -893,8 +894,11 @@ public class EditLib {
 
     // update worked so now we can update original element...
     elementToAttachTo.removeContent();
-    List<Content> toAdd = new ArrayList(cloneOfElementToAttachTo.getContent());
-    List<Attribute> attributeToAdd = new ArrayList(cloneOfElementToAttachTo.getAttributes());
+    @SuppressWarnings("unchecked")
+    List<Content> toAdd = new ArrayList<Content>(cloneOfElementToAttachTo.getContent());
+    @SuppressWarnings("unchecked")
+    List<Attribute> attributeToAdd =
+        new ArrayList<Attribute>(cloneOfElementToAttachTo.getAttributes());
     for (Attribute a : attributeToAdd) {
       elementToAttachTo.setAttribute(a.detach());
     }
@@ -958,8 +962,7 @@ public class EditLib {
               metadataSchema,
               String.join("/", xpathPropertyParts.subList(0, nextIndex)),
               false);
-      if (found.result instanceof Element) {
-        Element newBest = (Element) found.result;
+      if (found.result instanceof Element newBest) {
         int newIndex = nextIndex + ((xpathPropertyParts.size() - nextIndex) / 2);
         return findLongestMatch(
             metadataRecord,
@@ -1012,7 +1015,9 @@ public class EditLib {
       xpath.setNamespaceContext(new SimpleNamespaceContext(mapNs));
       // Select the node to update and check it exists
       if (allNodes) {
-        return SelectResult.of(xpath.selectNodes(metadataRecord));
+        @SuppressWarnings("unchecked")
+        List<?> list = xpath.selectNodes(metadataRecord);
+        return SelectResult.of(list);
       } else {
         return SelectResult.of(xpath.selectSingleNode(metadataRecord));
       }
@@ -1024,8 +1029,6 @@ public class EditLib {
 
   /**
    * Removes the version of the edit session for a metadata. Used when the edit session is finished.
-   *
-   * @param id
    */
   public void clearVersion(String id) {
     htVersions.remove(id);
@@ -1038,6 +1041,7 @@ public class EditLib {
   // --------------------------------------------------------------------------
 
   private List<Element> filterOnQname(List<Element> children, String qname) {
+    @SuppressWarnings("JdkObsolete")
     Vector<Element> result = new Vector<Element>();
     for (Element child : children) {
       if (child.getQualifiedName().equals(qname)) {
@@ -1051,9 +1055,13 @@ public class EditLib {
   private synchronized String getVersion(String id, boolean increment) {
     Integer inVer = htVersions.get(id);
 
-    if (inVer == null) inVer = 1;
+    if (inVer == null) {
+      inVer = 1;
+    }
 
-    if (increment) inVer = inVer + 1;
+    if (increment) {
+      inVer = inVer + 1;
+    }
 
     htVersions.put(id, inVer);
 
@@ -1251,6 +1259,7 @@ public class EditLib {
     //
 
     boolean hasContent = false;
+    @SuppressWarnings("JdkObsolete")
     Vector<Element> holder = new Vector<Element>();
 
     MetadataSchema mdSchema = scm.getSchema(schema);
@@ -1265,7 +1274,9 @@ public class EditLib {
       if (edit_CHOICE_GROUP_SEQUENCE_in(elemName)) {
         elems = searchChildren(elemName, md, schema);
       } else {
-        elems = filterOnQname(md.getChildren(), elemName);
+        @SuppressWarnings("unchecked")
+        List<Element> children = md.getChildren();
+        elems = filterOnQname(children, elemName);
       }
       for (Element elem : elems) {
         container.addContent((Element) elem.clone());
@@ -1286,7 +1297,7 @@ public class EditLib {
   /** Given an unexpanded tree, creates container elements and their children. */
   public void expandElements(String schema, Element md) throws Exception {
     // Do not process GeoNetwork element eg. validation report
-    if (md.getNamespace() == Edit.NAMESPACE) {
+    if (md.getNamespace().getURI().equals(Edit.NAMESPACE.getURI())) {
       return;
     }
     // --- create containers and fill them with elements using a depth first
@@ -1305,16 +1316,19 @@ public class EditLib {
     MetadataType thisType = mdSchema.getTypeInfo(typeName);
 
     if (thisType.hasContainers) {
+      @SuppressWarnings("JdkObsolete")
       Vector<Content> holder = new Vector<Content>();
 
       for (String chName : thisType.getAlElements()) {
         if (edit_CHOICE_GROUP_SEQUENCE_in(chName)) {
           List<Element> elems = searchChildren(chName, md, schema);
-          if (elems.size() > 0) {
+          if (!elems.isEmpty()) {
             holder.addAll(elems);
           }
         } else {
-          List<Element> chElem = filterOnQname(md.getChildren(), chName);
+          @SuppressWarnings("unchecked")
+          List<Element> children = md.getChildren();
+          List<Element> chElem = filterOnQname(children, chName);
           for (Element elem : chElem) {
             holder.add(elem.detach());
           }
@@ -1327,6 +1341,7 @@ public class EditLib {
 
   /** For each container element - descend and collect children. */
   private Vector<Object> getContainerChildren(Element md) {
+    @SuppressWarnings("JdkObsolete")
     Vector<Object> result = new Vector<Object>();
 
     @SuppressWarnings("unchecked")
@@ -1346,13 +1361,12 @@ public class EditLib {
   /** Contracts container elements. */
   public void contractElements(Element md) {
     // --- contract container children at each level in the XML tree
-
+    @SuppressWarnings("JdkObsolete")
     Vector<Object> children = new Vector<Object>();
     @SuppressWarnings("unchecked")
     List<Content> childs = md.getContent();
     for (Content obj : childs) {
-      if (obj instanceof Element) {
-        Element mdCh = (Element) obj;
+      if (obj instanceof Element mdCh) {
         String mdName = mdCh.getName();
         if (edit_CHOICE_GROUP_SEQUENCE_in(mdName)) {
           if (mdCh.getChildren().size() > 0) {
@@ -1483,7 +1497,7 @@ public class EditLib {
       log.debug("- namespace = {}", childNS);
 
       List<?> list = md.getChildren(childName, Namespace.getNamespace(childNS));
-      if (list.isEmpty() && !(type.isOrType())) {
+      if (list.isEmpty() && !type.isOrType()) {
         log.debug("- no children of this type already present");
 
         Element newElem =
@@ -1607,7 +1621,8 @@ public class EditLib {
   }
 
   private void insertFirst(Element md, Element child) {
-    List<Element> list = new ArrayList(md.getChildren());
+    @SuppressWarnings("unchecked")
+    List<Element> list = new ArrayList<Element>(md.getChildren());
     md.removeContent();
     md.addContent(child);
     for (Element elem : list) {
@@ -1776,14 +1791,14 @@ public class EditLib {
 
               for (String chElem1 : chElems) {
                 chElem = chElem1;
-                if (!useSuggestion || (mdSugg.isSuggested(qname, chElem))) {
+                if (!useSuggestion || mdSugg.isSuggested(qname, chElem)) {
                   // Add all substitute found in the schema or all suggested if suggestion
                   createAndAddChoose(child, chElem);
                 }
               }
             } else {
 
-              if (!useSuggestion || (mdSugg.isSuggested(qname, chElem))) {
+              if (!useSuggestion || mdSugg.isSuggested(qname, chElem)) {
                 // Add all substitute found in the schema or all suggested if suggestion
                 createAndAddChoose(child, chElem);
               }

@@ -33,8 +33,8 @@ import org.xml.sax.SAXException;
  * @author Jesse on 11/4/2014.
  */
 public class NioPathAwareCatalogResolver extends CatalogResolver {
-  private static final Map<Object, ResolverRewriteDirective> urlRewriteDirectives = new HashMap();
-  private final Set<Path> catalogPaths = new HashSet();
+  private static final Map<Object, ResolverRewriteDirective> urlRewriteDirectives = new HashMap<>();
+  private final Set<Path> catalogPaths = new HashSet<>();
 
   public NioPathAwareCatalogResolver(CatalogManager catMan) {
     super(catMan);
@@ -44,7 +44,7 @@ public class NioPathAwareCatalogResolver extends CatalogResolver {
       final String path = catalogFile.toString();
       if (!new File(path).exists() && Files.exists(IO.toPath(path))) {
         try {
-          final String xml = new String(Files.readAllBytes(IO.toPath(path)), Constants.CHARSET);
+          final String xml = Files.readString(IO.toPath(path), Constants.CHARSET);
           final Element element = Xml.loadString(xml, false);
         } catch (Exception e) {
           throw new RuntimeException(e);

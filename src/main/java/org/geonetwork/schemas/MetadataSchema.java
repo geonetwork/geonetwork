@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.schemas.constant.Geonet;
-import org.geonetwork.schemas.constant.ReservedOperation;
 import org.geonetwork.schemas.editorconfig.Editor;
 import org.geonetwork.schemas.exceptions.ResourceNotFoundException;
 import org.geonetwork.schemas.plugin.SavedQuery;
@@ -119,6 +119,7 @@ public class MetadataSchema {
   }
 
   @JsonIgnore
+  @SuppressWarnings("unused")
   public Editor getConfigEditor() {
     Path metadataSchemaConfig = getSchemaDir().resolve("layout").resolve("config-editor.xml");
     //    if (metadataSchemaConfig.toFile().exists()) {
@@ -261,7 +262,7 @@ public class MetadataSchema {
     if (exType != null && exType.contains(type)) return;
 
     // it's already there but doesn't have this type
-    if (exType != null && !(exType.contains(type))) {
+    if (exType != null && !exType.contains(type)) {
 
       // it's not there so add a new list
     } else {
@@ -345,11 +346,13 @@ public class MetadataSchema {
     return mapNs;
   }
 
+  @SuppressWarnings("unused")
   public void buildchematronRules(Path basePath) {
     Path schematronResourceDir =
         basePath.resolve("WEB-INF").resolve("classes").resolve(SCHEMATRON_DIR);
     Path schemaSchematronDir = schemaDir.resolve(SCHEMATRON_DIR);
     Path schematronCompilationFile = schematronResourceDir.resolve("iso_svrl_for_xslt2.xsl");
+    @SuppressWarnings("unused")
     Path schematronExpandFile = schematronResourceDir.resolve("iso_abstract_expand.xsl");
 
     if (log.isDebugEnabled()) {
@@ -412,65 +415,67 @@ public class MetadataSchema {
     // Compile schema schematron rules
     buildchematronRules(basePath);
 
-    List<String> saSchemas = new ArrayList();
+    setSchematronRules(new String[] {});
+    //    List<String> saSchemas = new ArrayList();
 
-    final Path schematronDir = schemaDir.resolve(SCHEMATRON_DIR);
-    if (Files.exists(schematronDir)) {
+    //    final Path schematronDir = schemaDir.resolve(SCHEMATRON_DIR);
+    //    if (Files.exists(schematronDir)) {
 
-      //      Map<String, Schematron> existing = Maps.newHashMap();
-      //
-      //      for (Schematron schematron : schemaRepo.findAllBySchemaName(schemaName)) {
-      //        existing.put(schematron.getRuleName(), schematron);
-      //      }
+    //      Map<String, Schematron> existing = Maps.newHashMap();
+    //
+    //      for (Schematron schematron : schemaRepo.findAllBySchemaName(schemaName)) {
+    //        existing.put(schematron.getRuleName(), schematron);
+    //      }
 
-      //      try (DirectoryStream<Path> schematronFiles =
-      //          Files.newDirectoryStream(schematronDir, new SchematronReportRulesFilter())) {
-      //        for (Path schematronFile : schematronFiles) {
-      //          final String schematronFileName = schematronFile.getFileName().toString();
-      //          saSchemas.add(schematronFileName);
-      //
-      //          Schematron schematron = new Schematron();
-      //          schematron.setSchemaName(schemaName);
-      //          schematron.setFile(schematronFileName);
-      //          schematron.setDisplayPriority(0);
-      //
-      //          // if schematron not already exists
-      //          if (existing.containsKey(schematron.getRuleName())) {
-      //            if (!Files.exists(schematronDir.resolve(schematron.getFile()))) {
-      //              schematron.setFile(schematronFileName);
-      //              schemaRepo.saveAndFlush(schematron);
-      //            }
-      //          } else {
-      //            schematron
-      //                .getLabelTranslations()
-      //                .put(Geonet.DEFAULT_LANGUAGE, schematron.getRuleName());
-      //            schemaRepo.saveAndFlush(schematron);
-      //
-      //            final SchematronCriteriaGroup schematronCriteriaGroup = new
-      // SchematronCriteriaGroup();
-      //            schematronCriteriaGroup.setId(
-      //                new SchematronCriteriaGroupId("*Generated*", schematron.getId()));
-      //            schematronCriteriaGroup.setRequirement(schematron.getDefaultRequirement());
-      //
-      //            SchematronCriteria criteria = new SchematronCriteria();
-      //            criteria.setValue("_ignored_");
-      //            criteria.setType(SchematronCriteriaType.ALWAYS_ACCEPT);
-      //
-      //            schematronCriteriaGroup.addCriteria(criteria);
-      //
-      //            criteriaGroupRepository.saveAndFlush(schematronCriteriaGroup);
-      //          }
-      //        }
-      //      } catch (IOException e) {
-      //        throw new RuntimeException(e);
-      //      }
+    //      try (DirectoryStream<Path> schematronFiles =
+    //          Files.newDirectoryStream(schematronDir, new SchematronReportRulesFilter())) {
+    //        for (Path schematronFile : schematronFiles) {
+    //          final String schematronFileName = schematronFile.getFileName().toString();
+    //          saSchemas.add(schematronFileName);
+    //
+    //          Schematron schematron = new Schematron();
+    //          schematron.setSchemaName(schemaName);
+    //          schematron.setFile(schematronFileName);
+    //          schematron.setDisplayPriority(0);
+    //
+    //          // if schematron not already exists
+    //          if (existing.containsKey(schematron.getRuleName())) {
+    //            if (!Files.exists(schematronDir.resolve(schematron.getFile()))) {
+    //              schematron.setFile(schematronFileName);
+    //              schemaRepo.saveAndFlush(schematron);
+    //            }
+    //          } else {
+    //            schematron
+    //                .getLabelTranslations()
+    //                .put(Geonet.DEFAULT_LANGUAGE, schematron.getRuleName());
+    //            schemaRepo.saveAndFlush(schematron);
+    //
+    //            final SchematronCriteriaGroup schematronCriteriaGroup = new
+    // SchematronCriteriaGroup();
+    //            schematronCriteriaGroup.setId(
+    //                new SchematronCriteriaGroupId("*Generated*", schematron.getId()));
+    //            schematronCriteriaGroup.setRequirement(schematron.getDefaultRequirement());
+    //
+    //            SchematronCriteria criteria = new SchematronCriteria();
+    //            criteria.setValue("_ignored_");
+    //            criteria.setType(SchematronCriteriaType.ALWAYS_ACCEPT);
+    //
+    //            schematronCriteriaGroup.addCriteria(criteria);
+    //
+    //            criteriaGroupRepository.saveAndFlush(schematronCriteriaGroup);
+    //          }
+    //        }
+    //      } catch (IOException e) {
+    //        throw new RuntimeException(e);
+    //      }
 
-      setSchematronPriorities();
-    }
-
-    setSchematronRules(saSchemas.toArray(new String[saSchemas.size()]));
+    //      setSchematronPriorities();
+    //    }
+    //
+    //    setSchematronRules(saSchemas.toArray(new String[saSchemas.size()]));
   }
 
+  @SuppressWarnings("unused")
   private void setSchematronPriorities() {
     //    List<Schematron> schematronList = schemaRepo.findAllBySchemaName(schemaName);
     //
@@ -603,7 +608,9 @@ public class MetadataSchema {
   }
 
   /** Schematron rules filename is like "schematron-rules-iso.xsl */
+  @SuppressWarnings("unused")
   private static class SchematronReportRulesFilter implements DirectoryStream.Filter<Path> {
+    @Override
     public boolean accept(Path entry) {
       String filename = entry.getFileName().toString();
       return filename.startsWith(SCHEMATRON_RULE_FILE_PREFIX)
@@ -615,8 +622,9 @@ public class MetadataSchema {
    * Query XML document with one of the saved query to retrieve a simple string value.
    *
    * @param savedQuery {@link SavedQuery}
-   * @param xml
+   * @param xml XML document to query
    */
+  @SuppressWarnings("unused")
   public String queryString(String savedQuery, Element xml)
       throws ResourceNotFoundException, JDOMException {
     SavedQuery query = schemaPlugin.getSavedQuery(savedQuery);

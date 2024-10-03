@@ -60,8 +60,9 @@ public class BatchEditParameter implements Serializable {
     this.condition = condition;
   }
 
+  @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer("Editing xpath ");
+    StringBuilder sb = new StringBuilder("Editing xpath ");
     sb.append(this.xpath);
     if (StringUtils.isNotEmpty(this.value)) {
       sb.append(", searching for ");

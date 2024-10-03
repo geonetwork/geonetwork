@@ -901,18 +901,18 @@ public final class Xml {
   }
 
   private static boolean doCreateXpathExpr(Object content, StringBuilder builder) {
-    if (builder.length() > 0) {
+    if (!builder.isEmpty()) {
       builder.insert(0, "/");
     }
 
     Element parentElement;
-    if (content instanceof Element) {
-      Element element = (Element) content;
+    if (content instanceof Element element) {
+      @SuppressWarnings("unchecked")
       final List<Attribute> attributes = element.getAttributes();
       doCreateAttributesXpathExpr(builder, attributes);
       final String textTrim = element.getTextTrim();
       if (!textTrim.isEmpty()) {
-        boolean addToCondition = builder.length() > 0 && builder.charAt(0) == '[';
+        boolean addToCondition = !builder.isEmpty() && builder.charAt(0) == '[';
 
         if (!addToCondition) {
           builder.insert(0, "']");

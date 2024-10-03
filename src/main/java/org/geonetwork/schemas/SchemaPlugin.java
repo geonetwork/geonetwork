@@ -91,9 +91,7 @@ public abstract class SchemaPlugin implements CSWPlugin {
    * its substitutes.
    *
    * @param el element to process.
-   * @param attributeName
    * @param parsedAttributeName the name of the attribute, for example <code>xlink:href</code>
-   * @param attributeValue
    * @return the processed element.
    */
   public Element processElement(

@@ -30,21 +30,15 @@ package org.geonetwork.schemas.model.xsd;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.geonetwork.schemas.utility.Xml;
 import org.jdom.Element;
 
-// =============================================================================
-
+/** Schema substitutions. */
 public class SchemaSubstitutions {
-  private Hashtable<String, Element> htFields = new Hashtable<String, Element>();
-
-  // --------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // --------------------------------------------------------------------------
+  private Map<String, Element> htFields = new LinkedHashMap<String, Element>();
 
   public SchemaSubstitutions(Path xmlSubstitutionFile) throws Exception {
     if (xmlSubstitutionFile != null) {
@@ -61,13 +55,7 @@ public class SchemaSubstitutions {
     }
   }
 
-  // --------------------------------------------------------------------------
-  // ---
-  // --- API methods
-  // ---
-  // --------------------------------------------------------------------------
-
-  public ArrayList<String> getSubstitutes(String child) {
+  public List<String> getSubstitutes(String child) {
     Element fieldEl = htFields.get(child);
     if (fieldEl == null) return null;
 

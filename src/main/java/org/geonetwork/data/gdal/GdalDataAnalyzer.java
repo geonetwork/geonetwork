@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
@@ -229,6 +230,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     return objectMapper;
   }
 
+  @SuppressWarnings("unused")
   private <T> T parseJson(String json, Class<T> clazz) {
     try {
       return buildObjectMapper().readValue(json, clazz);
@@ -301,36 +303,34 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                         .featureCount(l.getFeatureCount())
                         .metadata(layerMetadataInfo)
                         .fields(
-                            (List<DatasetLayerField>)
-                                l.getFields().stream()
-                                    .map(
-                                        f ->
-                                            DatasetLayerField.builder()
-                                                .name(f.getName())
-                                                .defaultValue(f.getDefaultValue())
-                                                .nullable(f.getNullable())
-                                                .type(f.getType().name())
-                                                .build())
-                                    .toList())
+                            l.getFields().stream()
+                                .map(
+                                    f ->
+                                        DatasetLayerField.builder()
+                                            .name(f.getName())
+                                            .defaultValue(f.getDefaultValue())
+                                            .nullable(f.getNullable())
+                                            .type(f.getType().name())
+                                            .build())
+                                .collect(Collectors.toUnmodifiableList()))
                         .geometryFields(
-                            (List<DatasetLayerGeomField>)
-                                l.getGeometryFields().stream()
-                                    .map(
-                                        f ->
-                                            DatasetLayerGeomField.builder()
-                                                .name(f.getName())
-                                                .type(
-                                                    f.getType().isPresent()
-                                                        ? f.getType().get().toString()
-                                                        : "")
-                                                .crs(
-                                                    f.getCoordinateSystem().isPresent()
-                                                        ? f.getCoordinateSystem().get().getWkt()
-                                                        : "")
-                                                .nullable(f.getNullable())
-                                                .extent(f.getExtent())
-                                                .build())
-                                    .toList())
+                            l.getGeometryFields().stream()
+                                .map(
+                                    f ->
+                                        DatasetLayerGeomField.builder()
+                                            .name(f.getName())
+                                            .type(
+                                                f.getType().isPresent()
+                                                    ? f.getType().get().toString()
+                                                    : "")
+                                            .crs(
+                                                f.getCoordinateSystem().isPresent()
+                                                    ? f.getCoordinateSystem().get().getWkt()
+                                                    : "")
+                                            .nullable(f.getNullable())
+                                            .extent(f.getExtent())
+                                            .build())
+                                .collect(Collectors.toUnmodifiableList()))
                         .build();
                   })
               .toList();

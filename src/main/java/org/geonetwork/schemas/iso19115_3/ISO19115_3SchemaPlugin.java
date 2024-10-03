@@ -319,11 +319,13 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
   @Override
   public Element removeTranslationFromElement(Element element, List<String> langs)
       throws JDOMException {
-    String mainLanguage = langs != null && !langs.isEmpty() ? langs.get(0) : "#EN";
+    String mainLanguage = langs != null && !langs.isEmpty() ? langs.getFirst() : "#EN";
 
+    @SuppressWarnings("unchecked")
     List<Element> nodesWithStrings =
         (List<Element>)
-            Xml.selectNodes(element, "*//lan:PT_FreeText", Arrays.asList(ISO19115_3Namespaces.LAN));
+            Xml.selectNodes(
+                element, "*//lan:PT_FreeText", Collections.singletonList(ISO19115_3Namespaces.LAN));
 
     for (Element e : nodesWithStrings) {
       // Retrieve or create the main language element
@@ -336,16 +338,17 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
       }
 
       // Retrieve the main language value if exist
+      @SuppressWarnings("unchecked")
       List<Element> mainLangElement =
           (List<Element>)
               Xml.selectNodes(
                   e,
                   "*//lan:LocalisedCharacterString[@locale='" + mainLanguage + "']",
-                  Arrays.asList(ISO19115_3Namespaces.LAN));
+                  Collections.singletonList(ISO19115_3Namespaces.LAN));
 
       // Set the main language value
       if (mainLangElement.size() == 1) {
-        String mainLangString = mainLangElement.get(0).getText();
+        String mainLangString = mainLangElement.getFirst().getText();
 
         if (StringUtils.isNotEmpty(mainLangString)) {
           mainCharacterString.setText(mainLangString);
@@ -361,6 +364,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
     }
 
     // Remove unused lang entries
+    @SuppressWarnings("unchecked")
     List<Element> translationNodes = (List<Element>) Xml.selectNodes(element, "*//node()[@locale]");
     for (Element el : translationNodes) {
       // Remove all translations if there is no or only one language requested

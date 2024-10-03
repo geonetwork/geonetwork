@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -79,14 +80,23 @@ public class SchemaManager {
 
   private Map<String, Schema> hmSchemas = new HashMap<>();
   private Map<String, Namespace> hmSchemasTypenames = new HashMap<>();
+
+  @SuppressWarnings("unused")
   private String[] fnames = {"labels.xml", "codelists.xml", "strings.xml"};
+
   private Path schemaPluginsDir;
   private Path schemaPluginsCat;
   private boolean createOrUpdateSchemaCatalog;
+
+  @SuppressWarnings("unused")
   private String defaultLang;
+
   private String defaultSchema;
   private Path basePath;
+
+  @SuppressWarnings("unused")
   private Path resourcePath;
+
   private Path schemaPublicationDir;
   private int numberOfCoreSchemasAdded = 0;
 
@@ -122,6 +132,7 @@ public class SchemaManager {
   }
 
   public static SchemaPlugin getSchemaPlugin(String schemaIdentifier) {
+    @SuppressWarnings("unused")
     String schemaBeanIdentifier = schemaIdentifier + "SchemaPlugin";
     SchemaPlugin schemaPlugin = null;
     try {
@@ -177,15 +188,7 @@ public class SchemaManager {
   //            "sharedFormatterDir/", dataDir.getFormatterDir().toAbsolutePath().toUri() + "/"));
   //  }
 
-  /**
-   * initialize and configure schema manager. should only be on startup.
-   *
-   * <p>// * @param basePath the web app base path // * @param resourcePath the resource folder (eg.
-   * images, logo) // * @param schemaPublicationDir the schema publication folder (ie. schema plugin
-   * XSDs) // * @param schemaPluginsCat the schema catalogue file (ie. schemaplugin-uri-catalog.xml)
-   * // * @param sPDir the schema plugin directory // * @param defaultLang the default language
-   * (taken from context) // * @param defaultSchema the default schema (taken from config.xml)
-   */
+  /** initialize and configure schema manager. should only be on startup. */
   @PostConstruct
   public void configure() throws Exception {
     ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
@@ -321,13 +324,13 @@ public class SchemaManager {
    */
   public void addPluginSchema(ApplicationContext applicationContext, String name, FileSystem zipFs)
       throws Exception {
-
-    beforeWrite();
-    try {
-      realAddPluginSchema(applicationContext, name, zipFs);
-    } finally {
-      afterWrite();
-    }
+    //
+    //    beforeWrite();
+    //    try {
+    //      realAddPluginSchema(applicationContext, name, zipFs);
+    //    } finally {
+    //      afterWrite();
+    //    }
   }
 
   /**
@@ -339,28 +342,28 @@ public class SchemaManager {
   public void updatePluginSchema(
       ApplicationContext applicationContext, String name, FileSystem zipFs) throws Exception {
 
-    beforeWrite();
-    try {
-      // -- delete schema, trap any exception here as we need to say
-      // -- why the update failed
-      try {
-        boolean doDependencies = false;
-        realDeletePluginSchema(name, doDependencies);
-      } catch (Exception e) {
-        String errStr =
-            "Could not update schema "
-                + name
-                + ", remove of outdated schema failed. Exception message if any is "
-                + e.getMessage();
-        log.error(errStr, e);
-        throw new RuntimeException(errStr, e);
-      }
-
-      // -- add the new one
-      realAddPluginSchema(applicationContext, name, zipFs);
-    } finally {
-      afterWrite();
-    }
+    //    beforeWrite();
+    //    try {
+    //      // -- delete schema, trap any exception here as we need to say
+    //      // -- why the update failed
+    //      try {
+    //        boolean doDependencies = false;
+    //        realDeletePluginSchema(name, doDependencies);
+    //      } catch (Exception e) {
+    //        String errStr =
+    //            "Could not update schema "
+    //                + name
+    //                + ", remove of outdated schema failed. Exception message if any is "
+    //                + e.getMessage();
+    //        log.error(errStr, e);
+    //        throw new RuntimeException(errStr, e);
+    //      }
+    //
+    //      // -- add the new one
+    //      realAddPluginSchema(applicationContext, name, zipFs);
+    //    } finally {
+    //      afterWrite();
+    //    }
   }
 
   /**
@@ -678,13 +681,7 @@ public class SchemaManager {
     return autodetectSchema(md, defaultSchema);
   }
 
-  /**
-   * @param md
-   * @param defaultSchema
-   * @return
-   * @throws SchemaMatchConflictException
-   * @throws NoSchemaMatchesException
-   */
+  /** See schema-ident.xml for configuration of schema identification. */
   public String autodetectSchema(Element md, String defaultSchema)
       throws SchemaMatchConflictException, NoSchemaMatchesException {
 
@@ -829,7 +826,8 @@ public class SchemaManager {
     while (activeReaders > 0 || activeWriters > 0) {
       try {
         wait();
-      } catch (InterruptedException iex) {
+      } catch (InterruptedException ignored) {
+        log.debug("Interrupted while waiting for write lock");
       }
     }
     ++activeWriters;
@@ -871,11 +869,11 @@ public class SchemaManager {
   /**
    * Really add a plugin schema to the list of schemas registered here.
    *
-   * @param name the metadata schema we want to add
-   * @param zipFs A filesystem (probably a ZipFileSystem) to copy files from.
+   * <p>name the metadata schema we want to add zipFs A filesystem (probably a ZipFileSystem) to
+   * copy files from.
    */
-  private void realAddPluginSchema(
-      ApplicationContext applicationContext, String name, FileSystem zipFs) throws Exception {
+  @SuppressWarnings("unused")
+  private void realAddPluginSchema() throws Exception {
 
     throw new UnsupportedOperationException("Not implemented");
     //    Element schemaPluginCatRoot = getSchemaPluginCatalog();
@@ -914,6 +912,7 @@ public class SchemaManager {
    * @param oasisCatFile name of XML OASIS catalog file
    * @param conversionsFile name of XML conversions file
    */
+  @SuppressWarnings("unused")
   private void addSchema(
       ApplicationContext applicationContext,
       Path schemaDir,
@@ -1513,17 +1512,16 @@ public class SchemaManager {
 
   private Map<String, String> getSchemaIdentMultilingualProperty(Element root, String propName) {
     Map<String, String> props = new HashMap<>();
-    root.getChildren(propName, GEONET_SCHEMA_NS)
-        .forEach(
-            o -> {
-              if (o instanceof Element) {
-                Element e = (Element) o;
-                String lang = e.getAttributeValue("lang", Geonet.Namespaces.XML);
-                if (lang != null) {
-                  props.put(lang, e.getTextNormalize());
-                }
-              }
-            });
+    List<?> children = root.getChildren(propName, GEONET_SCHEMA_NS);
+    children.forEach(
+        o -> {
+          if (o instanceof Element e) {
+            String lang = e.getAttributeValue("lang", Geonet.Namespaces.XML);
+            if (lang != null) {
+              props.put(lang, e.getTextNormalize());
+            }
+          }
+        });
     return props;
   }
 
@@ -1540,8 +1538,7 @@ public class SchemaManager {
       return filterRules;
     } else {
       for (Object rule : filters.getChildren("filter", GEONET_SCHEMA_NS)) {
-        if (rule instanceof Element) {
-          Element ruleElement = (Element) rule;
+        if (rule instanceof Element ruleElement) {
           String xpath = ruleElement.getAttributeValue("xpath");
           String jsonpath = ruleElement.getAttributeValue("jsonpath");
           String ifNotOperation = ruleElement.getAttributeValue("ifNotOperation");
@@ -1769,7 +1766,9 @@ public class SchemaManager {
             }
           }
         }
-        if (match && (!matches.contains(schemaName))) matches.add(schemaName);
+        if (match && !matches.contains(schemaName)) {
+          matches.add(schemaName);
+        }
       }
     }
 
@@ -1963,7 +1962,7 @@ public class SchemaManager {
         new DirectoryStream.Filter<Path>() {
           @Override
           public boolean accept(Path entry) throws IOException {
-            return entry.getFileName().toString().toLowerCase().endsWith(".xsd");
+            return entry.getFileName().toString().toLowerCase(Locale.ROOT).endsWith(".xsd");
           }
         };
     try (DirectoryStream<Path> schemaplugins =

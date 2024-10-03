@@ -32,9 +32,8 @@ public class DataIngesterConfiguration {
     @Data
     public static class Property {
       /**
-       * Define where to collect properties in data analysis context.
-       * Can be related to the data source, the layers,
-       * the dataset columns.
+       * Define where to collect properties in data analysis context. Can be related to the data
+       * source, the layers, the dataset columns.
        */
       enum Context {
         DatasetInfo,

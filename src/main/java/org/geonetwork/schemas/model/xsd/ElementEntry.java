@@ -40,8 +40,7 @@ import org.geonetwork.schemas.constant.Geonet;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
-// ==============================================================================
-
+/** Element entry. */
 @Slf4j(topic = "org.geonetwork.schemas")
 public class ElementEntry {
   public String name;
@@ -60,12 +59,6 @@ public class ElementEntry {
 
   public ComplexTypeEntry complexType;
   public SimpleTypeEntry simpleType;
-
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Constructor - this class handles both <element> and <choice> entries
-  // ---
-  // ---------------------------------------------------------------------------
 
   private ElementEntry() {}
 
@@ -115,6 +108,7 @@ public class ElementEntry {
     return ee;
   }
 
+  @Override
   public String toString() {
     return "ElementEntry name: "
         + name
@@ -131,12 +125,6 @@ public class ElementEntry {
         + " sequence: "
         + sequenceElem;
   }
-
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Private methods
-  // ---
-  // ---------------------------------------------------------------------------
 
   private void handleAttribs(ElementInfo ei) {
     if (ei.element.getName().equals("choice")) choiceElem = true;
@@ -191,8 +179,6 @@ public class ElementEntry {
     }
   }
 
-  // ---------------------------------------------------------------------------
-
   private void handleChildren(ElementInfo ei) {
     @SuppressWarnings("unchecked")
     List<Element> children = ei.element.getChildren();
@@ -213,9 +199,7 @@ public class ElementEntry {
     }
   }
 
-  // ---------------------------------------------------------------------------
-
-  private void handleContainerChildren(ElementInfo ei, ArrayList<ElementEntry> elements) {
+  private void handleContainerChildren(ElementInfo ei, List<ElementEntry> elements) {
     @SuppressWarnings("unchecked")
     List<Element> children = ei.element.getChildren();
 
@@ -245,5 +229,3 @@ public class ElementEntry {
     }
   }
 }
-
-// ==============================================================================

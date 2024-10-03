@@ -38,8 +38,7 @@ import java.util.List;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
-// ==============================================================================
-
+/** Attribute entry. */
 public class AttributeEntry {
   public String name;
   public String type;
@@ -53,28 +52,14 @@ public class AttributeEntry {
   public ArrayList<String> alValues = new ArrayList<String>();
   public ArrayList<String> alTypes = new ArrayList<String>();
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // ---------------------------------------------------------------------------
-
   public AttributeEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
     this(new ElementInfo(el, file, targetNS, targetNSPrefix));
   }
-
-  // ---------------------------------------------------------------------------
 
   public AttributeEntry(ElementInfo ei) {
     handleAttribs(ei);
     handleChildren(ei);
   }
-
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Private methods
-  // ---
-  // ---------------------------------------------------------------------------
 
   private void handleAttribs(ElementInfo ei) {
     List<?> attribs = ei.element.getAttributes();
@@ -109,8 +94,6 @@ public class AttributeEntry {
     }
   }
 
-  // ---------------------------------------------------------------------------
-
   private void handleChildren(ElementInfo ei) {
     List<?> children = ei.element.getChildren();
     for (Object aChildren : children) {
@@ -130,8 +113,9 @@ public class AttributeEntry {
     }
   }
 
+  @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append("AttributeEntry name:" + name + ", type:" + type + " [");
     for (int j = 0; j < alValues.size(); j++) {
       sb.append(alValues.get(j) + ",");
@@ -144,5 +128,3 @@ public class AttributeEntry {
     return sb.toString();
   }
 }
-
-// ==============================================================================

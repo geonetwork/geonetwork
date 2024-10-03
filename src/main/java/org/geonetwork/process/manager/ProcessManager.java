@@ -36,12 +36,7 @@ public class ProcessManager {
     this.jobExplorer = jobExplorer;
   }
 
-  /**
-   * Gets a process by name.
-   *
-   * @param processName
-   * @return
-   */
+  /** Gets a process by name. */
   public IProcess getProcess(String processName) {
     IProcess process =
         processes.stream().filter(p -> p.getName().equals(processName)).findFirst().orElse(null);
@@ -53,11 +48,7 @@ public class ProcessManager {
     return process;
   }
 
-  /**
-   * Gets the list of processes available.
-   *
-   * @return
-   */
+  /** Gets the list of processes available. */
   public List<IProcess> getProcesses() {
     return processes;
   }
@@ -65,14 +56,6 @@ public class ProcessManager {
   /**
    * Executes a process with the provided parameters and returns the Spring Batch execution
    * identifier.
-   *
-   * @param process
-   * @param processDetails
-   * @return
-   * @throws JobInstanceAlreadyCompleteException
-   * @throws JobExecutionAlreadyRunningException
-   * @throws JobParametersInvalidException
-   * @throws JobRestartException
    */
   public Long execute(IProcess process, ProcessDetails processDetails)
       throws JobInstanceAlreadyCompleteException,
@@ -94,13 +77,7 @@ public class ProcessManager {
     return jobExecution.getId();
   }
 
-  /**
-   * Returns a process execution status, using the process execution identifier.
-   *
-   * @param executionJobId
-   * @return
-   * @throws ProcessExecutionNotFoundException
-   */
+  /** Returns a process execution status, using the process execution identifier. */
   public BatchStatus processExecutionStatus(Long executionJobId)
       throws ProcessExecutionNotFoundException {
     JobExecution jobExecution = jobExplorer.getJobExecution(executionJobId);
@@ -115,9 +92,6 @@ public class ProcessManager {
    * Returns a report of a process execution, using the process execution identifier.
    *
    * <p>The process should be in a COMPLETED status, otherwise returns null.
-   *
-   * @param executionJobId
-   * @return
    */
   public ProcessReport processExecutionResult(Long executionJobId) {
     JobExecution jobExecution = jobExplorer.getJobExecution(executionJobId);
