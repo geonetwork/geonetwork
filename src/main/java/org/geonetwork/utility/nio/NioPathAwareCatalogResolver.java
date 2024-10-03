@@ -12,9 +12,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
@@ -25,17 +23,16 @@ import org.geonetwork.schemas.constant.Constants;
 import org.geonetwork.schemas.utility.Xml;
 import org.geonetwork.utility.io.IO;
 import org.geonetwork.utility.resolver.ResolverRewriteDirective;
-import org.jdom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
  * A CatalogResolver that can resolve paths as well as URIs.
+ *
  * @author Jesse on 11/4/2014.
  */
 public class NioPathAwareCatalogResolver extends CatalogResolver {
   private static final Map<Object, ResolverRewriteDirective> urlRewriteDirectives = new HashMap<>();
-  private final Set<Path> catalogPaths = new HashSet<>();
 
   public NioPathAwareCatalogResolver(CatalogManager catMan) {
     super(catMan);
@@ -46,7 +43,7 @@ public class NioPathAwareCatalogResolver extends CatalogResolver {
       if (!new File(path).exists() && Files.exists(IO.toPath(path))) {
         try {
           final String xml = Files.readString(IO.toPath(path), Constants.CHARSET);
-          final Element element = Xml.loadString(xml, false);
+          Xml.loadString(xml, false);
         } catch (Exception e) {
           throw new RuntimeException(e);
         }
