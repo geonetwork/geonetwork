@@ -19,7 +19,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.ApplicationContextProvider;
 import org.geonetwork.domain.Metadata;
-import org.geonetwork.index.IndexClient;
+import org.geonetwork.index.client.IndexClient;
 import org.geonetwork.repository.MetadataRepository;
 import org.geonetwork.schemas.CodeListTranslator;
 import org.geonetwork.testing.ElasticsearchBasedIntegrationTest;
