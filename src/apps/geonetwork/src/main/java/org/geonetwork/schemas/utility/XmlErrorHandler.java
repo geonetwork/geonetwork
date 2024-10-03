@@ -22,16 +22,11 @@ public class XmlErrorHandler extends DefaultHandler {
 
   private int errorCount = 0;
   private Element xpaths;
-  /**
-   * -- SETTER --
-   * Set namespace to use for report elements
-   */
-  @Setter
-  @Getter
-  private Namespace ns = Namespace.NO_NAMESPACE;
 
-  @Setter
-  protected SAXOutputter so;
+  /** -- SETTER -- Set namespace to use for report elements */
+  @Setter @Getter private Namespace ns = Namespace.NO_NAMESPACE;
+
+  @Setter protected SAXOutputter so;
 
   public boolean errors() {
     return errorCount > 0;
