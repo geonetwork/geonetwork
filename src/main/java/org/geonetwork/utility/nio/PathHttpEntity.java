@@ -38,10 +38,12 @@ public class PathHttpEntity extends AbstractHttpEntity implements Cloneable {
     this(file, null);
   }
 
+  @Override
   public boolean isRepeatable() {
     return true;
   }
 
+  @Override
   public long getContentLength() {
     try {
       return Files.size(this.file);
@@ -50,10 +52,12 @@ public class PathHttpEntity extends AbstractHttpEntity implements Cloneable {
     }
   }
 
+  @Override
   public InputStream getContent() throws IOException {
     return IO.newInputStream(this.file);
   }
 
+  @Override
   public void writeTo(final OutputStream outstream) throws IOException {
     Args.notNull(outstream, "Output stream");
 
@@ -72,6 +76,7 @@ public class PathHttpEntity extends AbstractHttpEntity implements Cloneable {
    *
    * @return <code>false</code>
    */
+  @Override
   public boolean isStreaming() {
     return false;
   }
@@ -82,4 +87,4 @@ public class PathHttpEntity extends AbstractHttpEntity implements Cloneable {
     // No need to make a copy of it
     return super.clone();
   }
-} // class FileEntity
+}

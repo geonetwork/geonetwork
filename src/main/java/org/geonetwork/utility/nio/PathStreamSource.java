@@ -12,6 +12,8 @@ import javax.xml.transform.stream.StreamSource;
 import org.geonetwork.schemas.constant.Constants;
 
 /**
+ * A StreamSource that reads from a Path.
+ *
  * @author Jesse on 1/20/2015.
  */
 public class PathStreamSource extends StreamSource {
