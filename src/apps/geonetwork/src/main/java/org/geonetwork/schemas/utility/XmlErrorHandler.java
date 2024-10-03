@@ -5,6 +5,8 @@
  */
 package org.geonetwork.schemas.utility;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -20,12 +22,16 @@ public class XmlErrorHandler extends DefaultHandler {
 
   private int errorCount = 0;
   private Element xpaths;
+  /**
+   * -- SETTER --
+   * Set namespace to use for report elements
+   */
+  @Setter
+  @Getter
   private Namespace ns = Namespace.NO_NAMESPACE;
-  protected SAXOutputter so;
 
-  public void setSo(SAXOutputter so) {
-    this.so = so;
-  }
+  @Setter
+  protected SAXOutputter so;
 
   public boolean errors() {
     return errorCount > 0;
@@ -81,24 +87,18 @@ public class XmlErrorHandler extends DefaultHandler {
     return x.getText();
   }
 
+  @Override
   public void error(SAXParseException parseException) throws SAXException {
     addMessage(parseException, "ERROR");
   }
 
+  @Override
   public void fatalError(SAXParseException parseException) throws SAXException {
     addMessage(parseException, "FATAL ERROR");
   }
 
+  @Override
   public void warning(SAXParseException parseException) throws SAXException {
     addMessage(parseException, "WARNING");
-  }
-
-  public Namespace getNs() {
-    return ns;
-  }
-
-  /** Set namespace to use for report elements */
-  public void setNs(Namespace ns) {
-    this.ns = ns;
   }
 }

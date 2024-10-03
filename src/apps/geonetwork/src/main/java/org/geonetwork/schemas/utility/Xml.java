@@ -892,12 +892,10 @@ public final class Xml {
         builder.insert(0, ':').insert(0, element.getNamespacePrefix());
       }
       parentElement = element.getParentElement();
-    } else if (content instanceof Text) {
-      final Text text = (Text) content;
+    } else if (content instanceof Text text) {
       builder.insert(0, "text()");
       parentElement = text.getParentElement();
-    } else if (content instanceof Attribute) {
-      Attribute attribute = (Attribute) content;
+    } else if (content instanceof Attribute attribute) {
       builder.insert(0, attribute.getName());
       if (attribute.getNamespacePrefix() != null
           && !attribute.getNamespacePrefix().trim().isEmpty()) {
@@ -983,7 +981,7 @@ public final class Xml {
     boolean retBool = false;
     if (isXMLLike(inXMLStr)) {
       String xml = inXMLStr.replaceFirst(XML_VERSION_HEADER, ""),
-          firstTag = xml.substring(0, xml.indexOf(" ")).toLowerCase();
+          firstTag = xml.substring(0, xml.indexOf(" ")).toLowerCase(Locale.ROOT);
       retBool = firstTag.matches("<.*:(rdf|catalog|catalogrecord)\\n?");
     }
     return retBool;
