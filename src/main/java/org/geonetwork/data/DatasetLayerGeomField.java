@@ -10,10 +10,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class DatasetLayerGeomField extends DatasetLayerField implements Serializable {
   private List<BigDecimal> extent;
   private String crs;

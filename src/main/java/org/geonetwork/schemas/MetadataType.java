@@ -48,19 +48,7 @@ public class MetadataType {
   private List<MetadataAttribute> alAttribs = new ArrayList<MetadataAttribute>();
   private List<Boolean> alExamineSubs = new ArrayList<Boolean>();
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // ---------------------------------------------------------------------------
-
   MetadataType() {}
-
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- API methods
-  // ---
-  // ---------------------------------------------------------------------------
 
   public int getElementCount() {
     return alElements.size();
@@ -71,60 +59,42 @@ public class MetadataType {
     return (List<String>) alElements.clone();
   }
 
-  // --------------------------------------------------------------------------
-
   /** Return the component in a given position */
   public String getElementAt(int pos) {
     return alElements.get(pos);
   }
-
-  // --------------------------------------------------------------------------
 
   /** Return the type of element in a given position */
   public String getElementTypeAt(int pos) {
     return alTypes.get(pos);
   }
 
-  // --------------------------------------------------------------------------
-
   /** Returns the min cardinality of element in a given pos */
   public int getMinCardinAt(int pos) {
     return alMinCard.get(pos);
   }
-
-  // --------------------------------------------------------------------------
 
   /** Returns the max cardinality of element in a given pos */
   public int getMaxCardinAt(int pos) {
     return alMaxCard.get(pos);
   }
 
-  // --------------------------------------------------------------------------
-
   /** Returns true is this type has children in or mode */
   public boolean isOrType() {
     return isOrType;
   }
 
-  // --------------------------------------------------------------------------
-
   void setOrType(boolean yesno) {
     isOrType = yesno;
   }
-
-  // --------------------------------------------------------------------------
 
   public int getAttributeCount() {
     return alAttribs.size();
   }
 
-  // --------------------------------------------------------------------------
-
   public MetadataAttribute getAttributeAt(int i) {
     return alAttribs.get(i);
   }
-
-  // --------------------------------------------------------------------------
 
   public String getName() {
     return name;
@@ -138,20 +108,11 @@ public class MetadataType {
     return alAttribs;
   }
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Package protected API methods
-  // ---
-  // ---------------------------------------------------------------------------
-
   void setName(String name) {
     this.name = name;
   }
 
-  // ---------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------
-
+  @Override
   public String toString() {
     StringBuilder res = new StringBuilder();
 
@@ -191,21 +152,13 @@ public class MetadataType {
     return res.toString();
   }
 
-  // ---------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------
-
   void addElementWithType(String name, String elementType, int minCard, int maxCard) {
     addElement(name, elementType, false, minCard, maxCard);
   }
 
-  // ---------------------------------------------------------------------------
-
   void addRefElementWithType(String name, String elementType, int minCard, int maxCard) {
     addElement(name, elementType, true, minCard, maxCard);
   }
-
-  // ---------------------------------------------------------------------------
 
   void addElement(
       String name, String elementType, Boolean examineElementSubs, int minCard, int maxCard) {
@@ -226,11 +179,7 @@ public class MetadataType {
         || name.contains(Edit.RootChild.SEQUENCE)) hasContainers = true;
   }
 
-  // ---------------------------------------------------------------------------
-
   void addAttribute(MetadataAttribute ma) {
     alAttribs.add(ma);
   }
 }
-
-// ==============================================================================

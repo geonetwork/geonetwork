@@ -14,11 +14,7 @@ public interface IProcess {
 
   List<ProcessParameter> getParameters();
 
-  /**
-   * Spring Batch
-   *
-   * @return
-   */
+  /** Spring Batch */
   @JsonIgnore
   Job getJob();
 }

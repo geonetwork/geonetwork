@@ -115,7 +115,7 @@ public class ComplexTypeEntry extends BaseHandler {
       boolean first = true;
 
       if (elName.equals("sequence") || elName.equals("choice")) {
-        isOrType = elName.equals("choice") && (first);
+        isOrType = elName.equals("choice") && first;
 
         List<?> sequence = elChild.getChildren();
 

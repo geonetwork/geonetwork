@@ -314,6 +314,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
       throws JDOMException {
     String mainLanguage = langs != null && !langs.isEmpty() ? langs.get(0) : "#EN";
 
+    @SuppressWarnings("unchecked")
     List<Element> nodesWithStrings =
         (List<Element>) Xml.selectNodes(element, "*//gmd:PT_FreeText", Arrays.asList(GMD));
 
@@ -327,6 +328,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
       }
 
       // Retrieve the main language value if exist
+      @SuppressWarnings("unchecked")
       List<Element> mainLangElement =
           (List<Element>)
               Xml.selectNodes(
@@ -350,6 +352,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
 
     // Remove unused lang entries
     // eg. the directory entry contains more languages than requested.
+    @SuppressWarnings("unchecked")
     List<Element> translationNodes = (List<Element>) Xml.selectNodes(element, "*//node()[@locale]");
     for (Element el : translationNodes) {
       // Remove all translations if there is no or only one language requested
@@ -373,12 +376,14 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
     // be preserved in order to display fields in the editor in the same
     // order as other element in the record.
     if (langs.size() > 1) {
+      @SuppressWarnings("unchecked")
       List<Element> elementList =
           (List<Element>) Xml.selectNodes(element, ".//*[gmd:PT_FreeText]", Arrays.asList(GMD));
       for (Element el : elementList) {
         final Element ptFreeText = el.getChild("PT_FreeText", GMD);
         List<Element> orderedTextGroup = new ArrayList<>();
         for (String l : langs) {
+          @SuppressWarnings("unchecked")
           List<Element> node =
               (List<Element>)
                   Xml.selectNodes(
@@ -611,6 +616,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
       }
 
       // Append all other locales as ordered in the locale section
+      @SuppressWarnings("unchecked")
       List<Attribute> locales =
           (List<Attribute>)
               Xml.selectNodes(

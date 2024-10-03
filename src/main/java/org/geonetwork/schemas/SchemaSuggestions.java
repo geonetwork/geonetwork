@@ -30,13 +30,14 @@ package org.geonetwork.schemas;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.geonetwork.schemas.utility.Xml;
 import org.jdom.Element;
 
 public class SchemaSuggestions {
-  private Hashtable<String, Element> htFields = new Hashtable<String, Element>();
+  private Map<String, Element> htFields = new LinkedHashMap<String, Element>();
 
   public SchemaSuggestions(Path xmlSuggestFile) throws Exception {
     Element sugg = Xml.loadFile(xmlSuggestFile);

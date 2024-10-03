@@ -59,12 +59,12 @@ public class BatchEditsService {
       //                final Set<String> selection = selectionManager.getSelection(bucket);
       //                setOfUuidsToEdit = Sets.newHashSet(selection);
       //            }
-      setOfUuidsToEdit = new HashSet();
+      setOfUuidsToEdit = new HashSet<>();
     } else {
-      setOfUuidsToEdit = new HashSet(Arrays.asList(uuids));
+      setOfUuidsToEdit = new HashSet<>(Arrays.asList(uuids));
     }
 
-    if (setOfUuidsToEdit.size() == 0) {
+    if (setOfUuidsToEdit.isEmpty()) {
       throw new IllegalArgumentException(
           "At least one record should be defined or selected for updates.");
     }
@@ -80,6 +80,7 @@ public class BatchEditsService {
     //    report.setTotalRecords(setOfUuidsToEdit.size());
     //    UserSession userSession = ApiUtils.getUserSession(request.getSession());
 
+    @SuppressWarnings("unused")
     String changeDate = null;
     Element preview = new Element("preview");
 
@@ -98,6 +99,7 @@ public class BatchEditsService {
           EditLib editLib = new EditLib(schemaManager);
           MetadataSchema metadataSchema = schemaManager.getSchema(record.getSchemaid());
           Element metadata = Xml.loadString(record.getData(), false);
+          @SuppressWarnings("unused")
           String original = Xml.getString(metadata);
           boolean metadataChanged = false;
 
@@ -136,8 +138,11 @@ public class BatchEditsService {
             // diffType));
             //            }
           } else if (metadataChanged) {
+            @SuppressWarnings("unused")
             boolean validate = false;
+            @SuppressWarnings("unused")
             boolean ufo = true;
+            @SuppressWarnings("unused")
             boolean uds = updateDateStamp;
             //            Element beforeMetadata =
             //                dataMan.getMetadata(

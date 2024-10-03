@@ -24,6 +24,7 @@ public class ResourceNotFoundException extends LocalizedException {
     super(cause);
   }
 
+  @Override
   protected String getResourceBundleBeanQualifier() {
     return "apiMessages";
   }

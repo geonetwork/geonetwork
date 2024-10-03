@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.schemas.constant.Geonet;
 import org.geonetwork.utility.io.FilePathChecker;
@@ -198,6 +199,7 @@ public class GeonetworkDataDirectory {
     return dataDirStr == null ? null : IO.toPath(dataDirStr);
   }
 
+  @SuppressWarnings("unused")
   private Path setDataDirectory(String webappName) throws IOException {
 
     if (this.systemDataDir == null) {
@@ -791,11 +793,7 @@ public class GeonetworkDataDirectory {
     return schemaPublicationDir;
   }
 
-  /**
-   * Set directory for publishing schemas and making them publicly available.
-   *
-   * @param schemaPublicationDir
-   */
+  /** Set directory for publishing schemas and making them publicly available. */
   public void setSchemaPublicationDir(Path schemaPublicationDir) {
     this.schemaPublicationDir = schemaPublicationDir;
   }
@@ -849,7 +847,7 @@ public class GeonetworkDataDirectory {
 
   public Path getXsltConversion(String conversionId) {
     if (conversionId.startsWith(IMPORT_STYLESHEETS_SCHEMA_PREFIX)) {
-      String[] pathToken = conversionId.split(":");
+      String[] pathToken = StringUtils.split(conversionId, ":");
       if (pathToken.length == 3) {
         String schema = pathToken[1];
         if (!schemaManager.existsSchema(schema)) {

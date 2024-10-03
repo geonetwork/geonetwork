@@ -115,12 +115,12 @@ public class XmlResolver extends XMLCatalogResolver {
     try {
 
       if (publicId != null && publicId.startsWith("http://")) {
-        externalRef = new URL(publicId);
+        externalRef = new URI(publicId).toURL();
       } else if (systemId != null && systemId.startsWith("http://")) {
-        externalRef = new URL(systemId);
+        externalRef = new URI(systemId).toURL();
       } else if (systemId != null && baseURI != null) {
         if (baseURI.startsWith("http://")) {
-          URL ref = new URL(baseURI);
+          URL ref = new URI(baseURI).toURL();
           String thePath = new File(ref.getPath()).getParent().replace('\\', '/');
           externalRef =
               new URI(

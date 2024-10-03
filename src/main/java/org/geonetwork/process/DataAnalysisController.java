@@ -78,13 +78,13 @@ public class DataAnalysisController {
 
   @GetMapping(path = "/preview", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasRole('Administrator')")
-  public ResponseEntity<DatasetInfo> previewSynch(
+  public ResponseEntity<String> previewSynch(
       @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer) {
     Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
 
     if (layerProperties.isPresent()) {
-      metadataBuilder.buildMetadata(uuid, layerProperties.get());
-      return new ResponseEntity<>(layerProperties.get(), HttpStatus.OK);
+      String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
+      return new ResponseEntity<>(builtMetadata, HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

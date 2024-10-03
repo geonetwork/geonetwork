@@ -323,7 +323,7 @@ public final class IO {
   private static URL createFsSpecificURL(URI uri, FileSystem fileSystem)
       throws MalformedURLException {
     if (fileSystem != null && uri.getScheme().equals(fileSystem.getPath(".").toUri().getScheme())) {
-      return new URL(null, uri.toString(), new FileSystemSpecificStreamHandler());
+      return URL.of(uri, new FileSystemSpecificStreamHandler());
     }
     return null;
   }
