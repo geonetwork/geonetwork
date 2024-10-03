@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0" xmlns:mex="http://standards.iso.org/iso/19115/-3/mex/1.0" elementFormDefault="qualified" targetNamespace="http://standards.iso.org/iso/19115/-3/mex/1.0" version="1.0">
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
+  <annotation>
+    <documentation>Namespace for XML elements &lt;font color="#1f497d"&gt;used to document user-defined metadata extensions&lt;/font&gt;.</documentation>
+  </annotation>
+  <include schemaLocation="metadataExtension.xsd"/>
+  <import namespace="http://standards.iso.org/iso/19115/-3/mcc/1.0" schemaLocation="../../../../19115/-3/mcc/1.0/mcc.xsd"/>
+  <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
+</schema>
