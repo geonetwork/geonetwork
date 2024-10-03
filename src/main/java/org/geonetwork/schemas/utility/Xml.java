@@ -497,10 +497,10 @@ public final class Xml {
   }
 
   public static String stripNonValidXMLCharacters(String in) {
-    StringBuffer out = new StringBuffer();
+    StringBuilder out = new StringBuilder();
     char current;
 
-    if (in == null || ("".equals(in))) return "";
+    if (in == null || "".equals(in)) return "";
     for (int i = 0; i < in.length(); i++) {
       current = in.charAt(i);
       if ((current == 0x9)
@@ -539,8 +539,7 @@ public final class Xml {
   /**
    * Converts an xml string to JSON
    *
-   * @param xml the XML element
-   * @return the JSON response
+   * <p>xml the XML element the JSON response
    */
   //    public static String getJSON(String xml) throws IOException {
   //        XMLSerializer xmlSerializer = new XMLSerializer();

@@ -33,8 +33,10 @@ package org.geonetwork.utility.resolver;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /** Subject for observers (Jeeves classes) that need proxy info from GeoNetwork */
+@Slf4j()
 public class ProxyInfo {
 
   /** Active readers count */
@@ -46,27 +48,15 @@ public class ProxyInfo {
   private final ProxyParams proxyParams = new ProxyParams();
   private List<ProxyInfoObserver> observers = new ArrayList<ProxyInfoObserver>();
 
-  // --------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // --------------------------------------------------------------------------
-
   public ProxyInfo() {}
-
-  // ---------------------------------------------------------------------------
 
   public void addObserver(ProxyInfoObserver o) {
     observers.add(o);
   }
 
-  // ---------------------------------------------------------------------------
-
   public void removeObserver(ProxyInfoObserver o) {
     observers.remove(o);
   }
-
-  // ---------------------------------------------------------------------------
 
   public void setProxyInfo(String host, int port, String username, String password) {
 
@@ -95,8 +85,6 @@ public class ProxyInfo {
     afterRead();
   }
 
-  // ---------------------------------------------------------------------------
-
   public void notifyAllObservers() {
     // -- notify all observers that proxy info has changed
 
@@ -106,8 +94,6 @@ public class ProxyInfo {
       o.update(this);
     }
   }
-
-  // ---------------------------------------------------------------------------
 
   public ProxyParams getProxyParams() {
 
@@ -119,22 +105,17 @@ public class ProxyInfo {
     }
   }
 
-  // --------------------------------------------------------------------------
-  // -- Private methods
-  // --------------------------------------------------------------------------
-
   /** Invoked just before reading, waits until reading is allowed. */
   private synchronized void beforeRead() {
     while (activeWriters > 0) {
       try {
         wait();
       } catch (InterruptedException iex) {
+        log.debug("Interrupted", iex);
       }
     }
     ++activeReaders;
   }
-
-  // --------------------------------------------------------------------------
 
   /** Invoked just after reading. */
   private synchronized void afterRead() {
@@ -142,20 +123,17 @@ public class ProxyInfo {
     notifyAll();
   }
 
-  // --------------------------------------------------------------------------
-
   /** Invoked just before writing, waits until writing is allowed. */
   private synchronized void beforeWrite() {
     while (activeReaders > 0 || activeWriters > 0) {
       try {
         wait();
       } catch (InterruptedException iex) {
+        log.debug("Interrupted", iex);
       }
     }
     ++activeWriters;
   }
-
-  // --------------------------------------------------------------------------
 
   /** Invoked just after writing. */
   private synchronized void afterWrite() {
@@ -163,5 +141,3 @@ public class ProxyInfo {
     notifyAll();
   }
 }
-
-// =============================================================================

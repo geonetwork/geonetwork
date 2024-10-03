@@ -159,6 +159,7 @@ public final class Resolver implements ProxyInfoObserver {
 
   // --------------------------------------------------------------------------
 
+  @Override
   public void update(ProxyInfo proxyInfo) {
     beforeWrite();
     try {
@@ -180,6 +181,7 @@ public final class Resolver implements ProxyInfoObserver {
       try {
         wait();
       } catch (InterruptedException iex) {
+        log.debug("Interrupted", iex);
       }
     }
     ++activeReaders;
@@ -201,6 +203,7 @@ public final class Resolver implements ProxyInfoObserver {
       try {
         wait();
       } catch (InterruptedException iex) {
+        log.debug("Interrupted", iex);
       }
     }
     ++activeWriters;

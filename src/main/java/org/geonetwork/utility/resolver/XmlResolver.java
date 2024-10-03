@@ -33,10 +33,8 @@ hence this extension.  */
 @Slf4j(topic = "org.geonetwork.xml.resolver")
 public class XmlResolver extends XMLCatalogResolver {
 
-  public static final String XMLRESOLVER_JCS = "XmlResolver";
+  @SuppressWarnings("unused")
   private ProxyParams proxyParams;
-
-  // --------------------------------------------------------------------------
 
   /**
    * Constructs a catalog resolver with the given list of entry files.
@@ -66,6 +64,7 @@ public class XmlResolver extends XMLCatalogResolver {
    * @param baseURI the absolute base URI of the resource being parsed, or <code>null</code> if
    *     there is no base URI
    */
+  @Override
   public LSInput resolveResource(
       String type, String namespaceURI, String publicId, String systemId, String baseURI) {
 
@@ -221,39 +220,4 @@ public class XmlResolver extends XMLCatalogResolver {
     }
     return null;
   }
-
-  // --------------------------------------------------------------------------
-
-  /** Clear the cache. */
-  //    public void clearCache() throws CacheException {
-  //        JeevesJCS.getInstance(XMLRESOLVER_JCS).clear();
-  //    }
-
-  // --------------------------------------------------------------------------
-
-  /** Add an XLink to the cache. */
-  //    public void addXmlToCache(String uri, Element xml) throws CacheException {
-  //        JeevesJCS xmlCache = JeevesJCS.getInstance(XMLRESOLVER_JCS);
-  //        Element cachedXml = (Element) xmlCache.get(uri.toLowerCase());
-  //        if (cachedXml == null) {
-  //            Log.info(Log.XML_RESOLVER, "Caching " + uri.toLowerCase());
-  //            xmlCache.put(uri.toLowerCase(), xml);
-  //        }
-  //    }
-
-  // --------------------------------------------------------------------------
-
-  /** Resolves an xlink */
-  //    public Element isXmlInCache(String uri) throws CacheException {
-  //        JeevesJCS xmlCache = JeevesJCS.getInstance(XMLRESOLVER_JCS);
-  //        Element xml = (Element) xmlCache.get(uri.toLowerCase());
-  //
-  //        if (xml == null) {
-  //            Log.info(Log.XML_RESOLVER, "cache MISS on " + uri.toLowerCase());
-  //        } else {
-  //            Log.info(Log.XML_RESOLVER, "cache HIT on " + uri.toLowerCase());
-  //        }
-  //        return xml;
-  //    }
-
 }

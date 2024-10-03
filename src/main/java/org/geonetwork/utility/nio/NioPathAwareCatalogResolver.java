@@ -30,6 +30,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
+ * A CatalogResolver that can resolve paths as well as URIs.
  * @author Jesse on 11/4/2014.
  */
 public class NioPathAwareCatalogResolver extends CatalogResolver {
