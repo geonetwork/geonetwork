@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringSubstitutor;
 import org.geonetwork.editing.BatchEditsService;
 import org.geonetwork.editing.model.BatchEditParameter;
-import org.geonetwork.schemas.utility.Xml;
+import org.geonetwork.utility.legacy.xml.Xml;
 import org.springframework.stereotype.Component;
 
 @Component

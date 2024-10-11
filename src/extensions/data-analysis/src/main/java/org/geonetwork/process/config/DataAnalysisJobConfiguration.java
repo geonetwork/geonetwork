@@ -6,6 +6,8 @@
 package org.geonetwork.process.config;
 
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
+import org.geonetwork.process.manager.DataAnalysisProcess;
+import org.geonetwork.tasks.DatasetAnalysisTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
@@ -18,8 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.geonetwork.process.manager.DataAnalysisProcess;
-import org.geonetwork.tasks.DatasetAnalysisTasklet;
 
 /** Spring Batch configuration for data analysis jobs. */
 @Configuration

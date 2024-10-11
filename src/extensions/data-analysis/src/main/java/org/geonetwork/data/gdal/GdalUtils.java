@@ -7,7 +7,6 @@ package org.geonetwork.data.gdal;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import org.geonetwork.data.DataFormat;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.Duration;
@@ -21,6 +20,7 @@ import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
+import org.geonetwork.data.DataFormat;
 
 public class GdalUtils {
 

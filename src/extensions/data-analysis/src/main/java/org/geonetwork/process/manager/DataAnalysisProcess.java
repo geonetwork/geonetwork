@@ -7,7 +7,6 @@ package org.geonetwork.process.manager;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.batch.core.Job;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

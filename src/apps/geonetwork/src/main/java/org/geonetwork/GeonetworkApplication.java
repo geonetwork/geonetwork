@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
 /** The main class of the application. */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"org.geonetwork"})
 @EnableCaching
 public class GeonetworkApplication {
 

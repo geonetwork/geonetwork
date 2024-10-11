@@ -10,8 +10,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import javax.crypto.spec.SecretKeySpec;
+import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.proxy.HttpProxyPolicyAgentAuthorizationManager;
-import org.geonetwork.repository.UserRepository;
 import org.geonetwork.security.DatabaseUserAuthProperties;
 import org.geonetwork.security.DatabaseUserDetailsService;
 import org.geonetwork.security.GeoNetworkUserService;

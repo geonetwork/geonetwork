@@ -1,18 +1,23 @@
-package org.geonetwork;/*
+/*
  * (c) 2003 Open Source Geospatial Foundation - all rights reserved
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+package org.geonetwork; /*
+                         * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+                         * This code is licensed under the GPL 2.0 license,
+                         * available at the root application directory.
+                         */
 
+import jakarta.validation.constraints.Max;
+import java.util.List;
+import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.geonetwork.data.AttributeStatistics;
 import org.geonetwork.data.DataFormat;
 import org.geonetwork.data.DatasetInfo;
 import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
-import jakarta.validation.constraints.Max;
-import java.util.List;
-import java.util.Optional;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
