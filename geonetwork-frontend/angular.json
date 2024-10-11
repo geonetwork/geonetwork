@@ -102,7 +102,7 @@
               }
             ],
             "styles": [
-              "projects/gapp/src/styles.scss"
+              "projects/gapp/src/styles.css"
             ],
             "scripts": []
           },
@@ -165,7 +165,7 @@
               }
             ],
             "styles": [
-              "projects/gapp/src/styles.scss"
+              "projects/gapp/src/styles.css"
             ],
             "scripts": []
           }

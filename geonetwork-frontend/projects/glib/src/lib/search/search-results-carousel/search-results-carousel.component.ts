@@ -23,7 +23,6 @@ import { CarouselModule } from 'primeng/carousel';
   standalone: true,
   imports: [
     CardModule,
-    Button,
     SearchResultsErrorComponent,
     ImageModule,
     NgIf,

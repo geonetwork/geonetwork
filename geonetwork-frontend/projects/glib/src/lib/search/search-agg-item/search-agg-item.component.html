@@ -23,7 +23,7 @@
       [styleClass]="
         isActive()
           ? 'border-l-8 -left-8  border-indigo-500'
-          : 'border-l-8 -left-8 border-transparent hover:border-indigo-500'
+          : 'border-l-8 -left-8 border-transparent hover:border-primary-800'
       ">
       <ng-template pTemplate="header">
         <g-search-agg-item-decorator
@@ -34,13 +34,16 @@
     </p-card>
   }
   @default {
-    <div>
+    <div class="my-2">
       <p-checkbox
         [(ngModel)]="checked"
         [value]="isActive()"
         [binary]="true"
-        (ngModelChange)="handleCheck($event)"
-        [label]="bucket().key + ' (' + bucket().doc_count + ')'" />
+        inputId="checkbox-{{ bucket().key }}"
+        (ngModelChange)="handleCheck($event)" />
+      <label class="mx-2" for="checkbox-{{ bucket().key }}">{{
+        bucket().key + ' (' + bucket().doc_count + ')'
+      }}</label>
     </div>
   }
 }

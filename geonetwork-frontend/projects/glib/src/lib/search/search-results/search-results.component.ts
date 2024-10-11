@@ -32,7 +32,6 @@ export enum ResultsLayout {
   standalone: true,
   imports: [
     SearchContextDirective,
-    ButtonDirective,
     JsonPipe,
     SkeletonModule,
     RouterLink,
@@ -43,7 +42,6 @@ export enum ResultsLayout {
     NgIf,
     AsyncPipe,
     DataViewModule,
-    PrimeTemplate,
     SearchModule,
     SearchResultsErrorComponent,
     RecordFieldResourceTypeComponent,

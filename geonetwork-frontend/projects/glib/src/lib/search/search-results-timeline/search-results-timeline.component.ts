@@ -29,7 +29,6 @@ import { RecordViewCardComponent } from '../../record/record-view-card/record-vi
   imports: [
     TimelineModule,
     CardModule,
-    Button,
     SearchResultsErrorComponent,
     ImageModule,
     NgIf,

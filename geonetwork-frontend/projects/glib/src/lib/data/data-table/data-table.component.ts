@@ -1,14 +1,13 @@
 import { Component, effect, input, signal } from '@angular/core';
 import Papa from 'papaparse';
 import { TableModule } from 'primeng/table';
-import { Button } from 'primeng/button';
 
 @Component({
   selector: 'g-data-table',
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css',
   standalone: true,
-  imports: [TableModule, Button],
+  imports: [TableModule],
 })
 export class DataTableComponent {
   source = input.required<string>();

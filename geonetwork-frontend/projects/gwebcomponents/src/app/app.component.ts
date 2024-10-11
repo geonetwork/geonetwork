@@ -1,13 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { Router, RouterOutlet } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import {MenuItem, PrimeNGConfig} from 'primeng/api';
 import { AppModule } from './app.module';
+import {GeoNetworkTheme} from "glib";
+import {MenuModule} from "primeng/menu";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [PanelMenuModule, AppModule, RouterOutlet],
+  imports: [PanelMenuModule, AppModule, RouterOutlet, MenuModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

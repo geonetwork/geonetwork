@@ -16,7 +16,7 @@ import {
   SearchResultsComponent,
   SearchResultsTimelineComponent,
   SearchService,
-  APPLICATION_CONFIGURATION,
+  APPLICATION_CONFIGURATION, GeoNetworkTheme,
 } from 'glib';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -27,6 +27,12 @@ import { ScrollTopModule } from 'primeng/scrolltop';
 import { SidebarModule } from 'primeng/sidebar';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
+import { PrimeNGConfig } from 'primeng/api';
+import { Aura } from 'primeng/themes/aura';
+import { Nora } from 'primeng/themes/nora';
+import { Lara } from 'primeng/themes/lara';
+import { definePreset } from 'primeng/themes';
+
 
 @Component({
   selector: 'app-root',
@@ -34,7 +40,6 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
   providers: [SearchService],
   imports: [
     RouterOutlet,
-    Button,
     GlibComponent,
     SearchAggsContainerComponent,
     SearchAggComponent,
@@ -46,7 +51,6 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
     SearchPagingMoreButtonComponent,
     SearchInputComponent,
     InputGroupModule,
-    ButtonDirective,
     InputGroupAddonModule,
     InputTextModule,
     SearchContextDirective,
@@ -68,7 +72,17 @@ export class AppComponent {
   pageSize = this.uiConfiguration?.mods.search.paginationInfo.hitsPerPage;
   aggregationConfig = this.uiConfiguration?.mods.search.facetConfig;
 
-  constructor() {}
+  constructor(private config: PrimeNGConfig) {
+    this.config.theme.set({
+      preset: GeoNetworkTheme,
+      options: {
+        cssLayer: {
+          name: 'primeng',
+          order: 'tailwind-base, primeng, tailwind-utilities',
+        },
+      },
+    });
+  }
 
   protected readonly SearchAggLayout = SearchAggLayout;
 }

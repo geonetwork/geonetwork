@@ -3,10 +3,11 @@ import { DefaultConfig } from 'gapi';
 import {
   API_CONFIGURATION,
   DEFAULT_PAGE_SIZE,
-  DEFAULT_SORT,
+  DEFAULT_SORT, GeoNetworkTheme,
   SearchService,
 } from 'glib';
 import { GcBaseComponent } from './gc-base-component';
+import {PrimeNGConfig} from "primeng/api";
 
 @Component({
   selector: 'gc-base-search-component',
@@ -48,6 +49,7 @@ export class GcBaseSearchComponent extends GcBaseComponent {
     listOfFilterPlaceholders: 'filterPlaceholders',
     listOfFilterLayouts: 'filterLayouts',
   };
+
 
   override ngOnInit() {
     super.ngOnInit();

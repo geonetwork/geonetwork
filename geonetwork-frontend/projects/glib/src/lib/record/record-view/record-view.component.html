@@ -17,8 +17,8 @@
     <div class="basis-1/3"></div>
   </div>
 
-  <p-tabView>
-    <p-tabPanel>
+  <p-tabs>
+    <p-tabpanel>
       <ng-template pTemplate="header">
         <div class="flex align-items-center gap-2">
           <i class="fa fa-info"></i>
@@ -56,8 +56,8 @@
           </div>
         </div>
       </div>
-    </p-tabPanel>
-    <p-tabPanel>
+    </p-tabpanel>
+    <p-tabpanel>
       <ng-template pTemplate="header">
         <div class="flex align-items-center gap-2">
           <i class="fa fa-database"></i>
@@ -65,8 +65,8 @@
         </div>
       </ng-template>
       <p></p>
-    </p-tabPanel>
-    <p-tabPanel>
+    </p-tabpanel>
+    <p-tabpanel>
       <ng-template pTemplate="header">
         <div class="flex align-items-center gap-2">
           <i class="fa fa-download"></i>
@@ -76,8 +76,8 @@
       <p>
         <g-record-field-links [field]="record.link" />
       </p>
-    </p-tabPanel>
-    <p-tabPanel>
+    </p-tabpanel>
+    <p-tabpanel>
       <ng-template pTemplate="header">
         <div class="flex align-items-center gap-2">
           <i class="fa fa-table"></i>
@@ -85,6 +85,6 @@
         </div>
       </ng-template>
       <p></p>
-    </p-tabPanel>
-  </p-tabView>
+    </p-tabpanel>
+  </p-tabs>
 }

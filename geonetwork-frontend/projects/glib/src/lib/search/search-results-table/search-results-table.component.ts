@@ -35,7 +35,6 @@ interface Column {
   standalone: true,
   imports: [
     TableModule,
-    Button,
     JsonPipe,
     GJsonpathPipe,
     RecordFieldOverviewComponent,

@@ -14,11 +14,10 @@ import {
   SearchResultsComponent,
 } from 'glib';
 import { SidebarModule } from 'primeng/sidebar';
-import { Button, ButtonDirective } from 'primeng/button';
-import { ChipsModule } from 'primeng/chips';
 import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'gn-search-page',
@@ -28,10 +27,7 @@ import { AvatarModule } from 'primeng/avatar';
   imports: [
     InputGroupModule,
     SidebarModule,
-    Button,
     SearchQuerySetterDirective,
-    ChipsModule,
-    ButtonDirective,
     SearchAggComponent,
     SearchQueryResetDirective,
     SearchAggsContainerComponent,
@@ -42,6 +38,7 @@ import { AvatarModule } from 'primeng/avatar';
     SearchInputComponent,
     PanelModule,
     AvatarModule,
+    ButtonModule,
   ],
 })
 export class SearchPageComponent {

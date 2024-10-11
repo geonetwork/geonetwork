@@ -12,6 +12,7 @@ import {
 import { Info, Params } from '../../../../../gapi/src/lib/ui-settings';
 import { Sort } from '@elastic/elasticsearch/lib/api/types';
 import { CarouselModule } from 'primeng/carousel';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'gn-home-page',
@@ -25,6 +26,7 @@ import { CarouselModule } from 'primeng/carousel';
     SearchResultsCarouselComponent,
     SearchResultsFirstOverviewAsBackgroundDirective,
     CarouselModule,
+    FormsModule,
   ],
 })
 export class HomePageComponent implements OnInit {

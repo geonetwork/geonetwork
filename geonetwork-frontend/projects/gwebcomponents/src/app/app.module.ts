@@ -25,12 +25,12 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { GnAngularjsComponent } from './components/gn-angularjs/gn-angularjs.component';
 import { GWebcomponentsDocComponent } from './components/g-webcomponents-doc/g-webcomponents-doc.component';
 import { GWebcomponentsDocEmbedComponent } from './components/g-webcomponents-doc-embed/g-webcomponents-doc-embed.component';
-import { Button } from 'primeng/button';
 import { GWebcomponentConfigurationComponent } from './components/g-webcomponent-configuration/g-webcomponent-configuration.component';
 import { SliderModule } from 'primeng/slider';
 import { GcBaseComponent } from './components/gc-base-component';
 import { GcBaseSearchComponent } from './components/gc-base-search-component';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import {Select} from "primeng/select";
 
 const CUSTOM_ELEMENTS = [
   {
@@ -59,28 +59,28 @@ const CUSTOM_ELEMENTS = [
     GWebcomponentsDocEmbedComponent,
     GWebcomponentConfigurationComponent,
   ],
-  imports: [
-    CommonModule,
-    DataTableComponent,
-    DropdownModule,
-    FormsModule,
-    SearchContextDirective,
-    SearchAggComponent,
-    SearchInputComponent,
-    SearchResultsComponent,
-    SearchResultsTableComponent,
-    ToolbarModule,
-    FloatLabelModule,
-    MultiSelectModule,
-    FieldsetModule,
-    InputGroupModule,
-    InputTextModule,
-    AutoCompleteModule,
-    Button,
-    SliderModule,
-    InputSwitchModule,
-    SearchBarSimpleComponent,
-  ],
+    imports: [
+        CommonModule,
+        DataTableComponent,
+        DropdownModule,
+        FormsModule,
+        SearchContextDirective,
+        SearchAggComponent,
+        SearchInputComponent,
+        SearchResultsComponent,
+        SearchResultsTableComponent,
+        ToolbarModule,
+        FloatLabelModule,
+        MultiSelectModule,
+        FieldsetModule,
+        InputGroupModule,
+        InputTextModule,
+        AutoCompleteModule,
+        SliderModule,
+        InputSwitchModule,
+        SearchBarSimpleComponent,
+        Select,
+    ],
   bootstrap: [
     GcDataResultsTableComponent,
     GcSearchComponent,

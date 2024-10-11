@@ -2,16 +2,15 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
-import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { LanguagesLoaderDirective, SignInFormComponent } from 'glib';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ChipModule } from 'primeng/chip';
 import { AppStore } from 'glib';
+import { Select, SelectChangeEvent } from 'primeng/select';
 
 @Component({
   selector: 'gn-navigation',
@@ -20,16 +19,15 @@ import { AppStore } from 'glib';
   standalone: true,
   imports: [
     MenubarModule,
-    DropdownModule,
     SpeedDialModule,
     LanguagesLoaderDirective,
     InputGroupModule,
     InputGroupAddonModule,
     InputTextModule,
     FormsModule,
-    OverlayPanelModule,
     ChipModule,
     SignInFormComponent,
+    Select,
   ],
 })
 export class NavigationComponent implements OnInit {
@@ -63,7 +61,7 @@ export class NavigationComponent implements OnInit {
     ];
   }
 
-  setLanguage(event: DropdownChangeEvent) {
+  setLanguage(event: SelectChangeEvent) {
     this.app.setLanguage(event.value.code);
   }
 }

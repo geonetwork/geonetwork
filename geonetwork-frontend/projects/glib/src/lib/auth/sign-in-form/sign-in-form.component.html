@@ -20,41 +20,41 @@
     (onClick)="op.toggle($event)"
     icon="fa fa-right-to-bracket"
     title="Sign in" />
+  <p-popover #op>
+    <form name="gSignInForm">
+      <p-inputgroup class="mb-2">
+        <p-inputgroup-addon>
+          <i class="fa fa-user"></i>
+        </p-inputgroup-addon>
+        <input
+          pInputText
+          placeholder="Username"
+          [(ngModel)]="username"
+          name="username"
+          required
+          minlength="4"
+          (keyup.enter)="signIn(op); op.hide()" />
+      </p-inputgroup>
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="fa fa-lock"></i>
+        </p-inputgroup-addon>
+        <input
+          pInputText
+          placeholder="Password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          minlength="4"
+          (keyup.enter)="signIn(op); op.hide()" />
+        <button
+          type="button"
+          pButton
+          icon="fa fa-right-to-bracket"
+          [disabled]="username.length === 0 || password.length === 0"
+          (click)="signIn(op); op.hide()"></button>
+      </p-inputgroup>
+    </form>
+  </p-popover>
 }
-<p-overlayPanel #op>
-  <form name="gSignInForm">
-    <p-inputGroup>
-      <p-inputGroupAddon>
-        <i class="fa fa-user"></i>
-      </p-inputGroupAddon>
-      <input
-        pInputText
-        placeholder="Username"
-        [(ngModel)]="username"
-        name="username"
-        required
-        minlength="4"
-        (keyup.enter)="signIn(op); op.hide()" />
-    </p-inputGroup>
-    <p-inputGroup>
-      <p-inputGroupAddon>
-        <i class="fa fa-lock"></i>
-      </p-inputGroupAddon>
-      <input
-        pInputText
-        placeholder="Password"
-        type="password"
-        [(ngModel)]="password"
-        name="password"
-        required
-        minlength="4"
-        (keyup.enter)="signIn(op); op.hide()" />
-      <button
-        type="button"
-        pButton
-        icon="fa fa-right-to-bracket"
-        [disabled]="username.length === 0 || password.length === 0"
-        (click)="signIn(op); op.hide()"></button>
-    </p-inputGroup>
-  </form>
-</p-overlayPanel>

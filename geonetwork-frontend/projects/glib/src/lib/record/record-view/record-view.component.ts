@@ -10,11 +10,11 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { API_CONFIGURATION } from '../../config/config.loader';
 import { GnIndexRecord, SearchApi } from 'gapi';
-import { TabViewModule } from 'primeng/tabview';
 import { RecordFieldOverviewComponent } from '../record-field-overview/record-field-overview.component';
 import { RecordFieldKeywordsComponent } from '../record-field-keywords/record-field-keywords.component';
 import { AccordionModule } from 'primeng/accordion';
 import { RecordFieldLinksComponent } from '../record-field-links/record-field-links.component';
+import { TabPanel, Tabs } from 'primeng/tabs';
 
 @Component({
   selector: 'g-record-view',
@@ -23,11 +23,12 @@ import { RecordFieldLinksComponent } from '../record-field-links/record-field-li
   standalone: true,
   imports: [
     NgTemplateOutlet,
-    TabViewModule,
     RecordFieldOverviewComponent,
     RecordFieldKeywordsComponent,
     AccordionModule,
     RecordFieldLinksComponent,
+    Tabs,
+    TabPanel,
   ],
 })
 export class RecordViewComponent implements OnInit {

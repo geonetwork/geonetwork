@@ -3,7 +3,6 @@ import { AsyncPipe, JsonPipe, NgClass } from '@angular/common';
 import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
-import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { SearchAggItemComponent } from '../search-agg-item/search-agg-item.component';
 import {
   SearchFilterOperator,
@@ -37,7 +36,6 @@ type SearchAggLayoutValues = keyof typeof SearchAggLayout;
     AsyncPipe,
     CheckboxModule,
     FormsModule,
-    TriStateCheckboxModule,
     SearchAggItemComponent,
     NgClass,
     ChipModule,

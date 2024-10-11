@@ -7,19 +7,14 @@ import {
 } from '../search.state.model';
 import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { PrimeTemplate } from 'primeng/api';
 import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
+import {Select} from "primeng/select";
 
 @Component({
   selector: 'g-search-agg-dropdown',
   templateUrl: './search-agg-dropdown.component.html',
   styleUrl: './search-agg-dropdown.component.css',
-  imports: [
-    MultiSelectModule,
-    PrimeTemplate,
-    SearchAggItemDecoratorComponent,
-    DropdownModule,
-  ],
+  imports: [MultiSelectModule, SearchAggItemDecoratorComponent, DropdownModule, Select],
   standalone: true,
 })
 export class SearchAggDropdownComponent extends SearchBaseComponent {

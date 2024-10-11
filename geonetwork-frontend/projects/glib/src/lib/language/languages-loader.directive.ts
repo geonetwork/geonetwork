@@ -1,6 +1,7 @@
 import { Directive, inject, Optional } from '@angular/core';
 import { Dropdown } from 'primeng/dropdown';
 import { APPLICATION_CONFIGURATION } from '../config/config.loader';
+import { Select } from 'primeng/select';
 
 @Directive({
   selector: '[gLanguagesLoader]',
@@ -18,7 +19,7 @@ export class LanguagesLoaderDirective {
     };
   });
 
-  constructor(@Optional() private dropdown: Dropdown) {}
+  constructor(@Optional() private dropdown: Select) {}
 
   public ngOnInit(): void {
     if (this.dropdown) {

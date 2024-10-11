@@ -5,7 +5,7 @@ import { SearchBaseComponent } from '../search-base/search-base.component';
 @Component({
   selector: 'g-search-paging-more-button',
   standalone: true,
-  imports: [Button],
+  imports: [],
   templateUrl: './search-paging-more-button.component.html',
   styleUrl: './search-paging-more-button.component.css',
 })
