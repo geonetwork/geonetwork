@@ -7,7 +7,7 @@ package org.geonetwork.editing.model;
 
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
-import org.geonetwork.schemas.utility.Xml;
+import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 

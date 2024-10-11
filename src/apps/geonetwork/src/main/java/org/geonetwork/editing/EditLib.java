@@ -32,9 +32,9 @@
 
 package org.geonetwork.editing;
 
-import static org.geonetwork.schemas.constant.Edit.ChildElem.Attr.NAME;
-import static org.geonetwork.schemas.constant.Edit.ChildElem.Attr.NAMESPACE;
-import static org.geonetwork.schemas.constant.Edit.RootChild.CHILD;
+import static org.geonetwork.constants.Edit.ChildElem.Attr.NAMESPACE;
+import static org.geonetwork.constants.Edit.RootChild.CHILD;
+import static org.geonetwork.index.model.record.IndexRecordFieldNames.LinkField.NAME;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -48,6 +48,7 @@ import org.apache.commons.jxpath.ri.parser.Token;
 import org.apache.commons.jxpath.ri.parser.XPathParser;
 import org.apache.commons.jxpath.ri.parser.XPathParserConstants;
 import org.apache.commons.lang3.StringUtils;
+import org.geonetwork.constants.Edit;
 import org.geonetwork.editing.model.AddElemValue;
 import org.geonetwork.schemas.MetadataAttribute;
 import org.geonetwork.schemas.MetadataSchema;
@@ -55,10 +56,9 @@ import org.geonetwork.schemas.MetadataType;
 import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.schemas.SchemaPlugin;
 import org.geonetwork.schemas.SchemaSuggestions;
-import org.geonetwork.schemas.constant.Edit;
 import org.geonetwork.schemas.plugin.ISOPlugin;
-import org.geonetwork.schemas.utility.Pair;
-import org.geonetwork.schemas.utility.Xml;
+import org.geonetwork.utility.legacy.Pair;
+import org.geonetwork.utility.legacy.xml.Xml;
 import org.jaxen.JaxenException;
 import org.jaxen.SimpleNamespaceContext;
 import org.jaxen.jdom.JDOMXPath;

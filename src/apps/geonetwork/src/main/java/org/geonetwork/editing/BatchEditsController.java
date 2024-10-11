@@ -14,7 +14,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.geonetwork.editing.model.BatchEditParameter;
 import org.geonetwork.repository.MetadataRepository;
-import org.geonetwork.schemas.utility.Xml;
+import org.geonetwork.utility.legacy.xml.Xml;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;

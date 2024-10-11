@@ -5,7 +5,7 @@
  */
 package org.geonetwork.config;
 
-import static org.geonetwork.schemas.constant.Geonet.Path.IMPORT_STYLESHEETS_SCHEMA_PREFIX;
+import static org.geonetwork.constants.Geonet.Path.IMPORT_STYLESHEETS_SCHEMA_PREFIX;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,10 +15,10 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.geonetwork.constants.Geonet;
 import org.geonetwork.schemas.SchemaManager;
-import org.geonetwork.schemas.constant.Geonet;
-import org.geonetwork.utility.io.FilePathChecker;
-import org.geonetwork.utility.io.IO;
+import org.geonetwork.utility.legacy.io.FilePathChecker;
+import org.geonetwork.utility.legacy.io.IO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
  * GeoNetwork? What schema is plugged in GeoNetwork?. The data directory also contains a number of
  * support files used by GeoNetwork for various purposes (eg. Lucene index, spatial index, logos).
  */
-@Slf4j(topic = "org.geonetwork.datadirectory")
+@Slf4j
 @Component
 public class GeonetworkDataDirectory {
   /**

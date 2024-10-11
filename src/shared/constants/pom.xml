@@ -10,23 +10,17 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geonetwork</groupId>
-    <artifactId>geonetwork</artifactId>
+    <artifactId>gn-shared</artifactId>
     <version>5.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>gn-shared</artifactId>
-  <version>5.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>GeoNetwork shared modules</name>
+  <artifactId>gn-constants</artifactId>
+  <name>GeoNetwork constants (legacy)</name>
 
-  <modules>
-    <module>constants</module>
-    <module>domain</module>
-    <module>utility</module>
-    <module>utility-legacy</module>
-    <module>schemas</module>
-    <module>index-client</module>
-    <module>index-model</module>
-    <module>process-manager</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>org.jdom</groupId>
+      <artifactId>jdom</artifactId>
+    </dependency>
+  </dependencies>
 </project>
