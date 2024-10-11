@@ -39,6 +39,11 @@
       <version>5.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-searching</artifactId>
+      <version>5.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
@@ -78,10 +83,6 @@
     <dependency>
       <groupId>co.elastic.clients</groupId>
       <artifactId>elasticsearch-java</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.openapitools</groupId>
-      <artifactId>jackson-databind-nullable</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
