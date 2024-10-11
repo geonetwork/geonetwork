@@ -46,7 +46,7 @@ import org.springframework.web.context.request.NativeWebRequest;
     date = "2024-08-01T19:35:56.379122136+02:00[Europe/Paris]",
     comments = "Generator version: 7.7.0")
 @Validated
-@Tag(name = "Collection", description = "description of a catalog offered by this API")
+@Tag(name = "OGC API Records", description = "")
 public interface CollectionsApi {
 
   default Optional<NativeWebRequest> getRequest() {
@@ -77,7 +77,6 @@ public interface CollectionsApi {
       operationId = "describeCollection",
       summary = "describe the record collection with id `catalogId`",
       description = "Fetch a detailed description of the catalog with id `catalogId`.",
-      tags = {"Collection"},
       responses = {
         @ApiResponse(
             responseCode = "200",
@@ -357,7 +356,6 @@ public interface CollectionsApi {
       operationId = "getCollections",
       summary = "the record collections",
       description = "Fetch list of catalogs offered by this API",
-      tags = {"Collections"},
       responses = {
         @ApiResponse(
             responseCode = "200",
@@ -458,7 +456,6 @@ public interface CollectionsApi {
       description =
           "Fetch the record with id `recordId` in the record collection with id `catalogId`.  Use"
               + " content negotiation to request HTML or GeoJSON.",
-      tags = {"Record"},
       responses = {
         @ApiResponse(
             responseCode = "200",
@@ -655,7 +652,6 @@ public interface CollectionsApi {
               + " belongs to a collection. A dataset may consist of multiple record collections. A"
               + " record collection is often a collection of records of a similar type, based on a"
               + " common schema.  Use content negotiation to request HTML or GeoJSON.",
-      tags = {"Records"},
       responses = {
         @ApiResponse(
             responseCode = "200",
@@ -930,7 +926,6 @@ public interface CollectionsApi {
       summary = "get the list of sortable properties",
       description =
           "Fetch the list of properties which can be used to sort the getRecords response.",
-      tags = {"Sortables"},
       responses = {
         @ApiResponse(
             responseCode = "200",

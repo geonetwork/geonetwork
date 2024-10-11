@@ -31,7 +31,7 @@ import org.springframework.web.context.request.NativeWebRequest;
     date = "2024-08-01T19:35:56.379122136+02:00[Europe/Paris]",
     comments = "Generator version: 7.7.0")
 @Validated
-@Tag(name = "Conformance", description = "list of conformance classes implemented by this API")
+@Tag(name = "OGC API Records", description = "")
 public interface ConformanceApi {
 
   default Optional<NativeWebRequest> getRequest() {
@@ -50,7 +50,6 @@ public interface ConformanceApi {
       summary = "information about specifications that this API conforms to",
       description =
           "A list of all conformance classes specified in a standard that the server conforms to.",
-      tags = {"Conformance"},
       responses = {
         @ApiResponse(
             responseCode = "200",
