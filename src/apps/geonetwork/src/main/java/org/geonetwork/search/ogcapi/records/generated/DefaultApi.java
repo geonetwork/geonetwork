@@ -31,7 +31,7 @@ import org.springframework.web.context.request.NativeWebRequest;
     date = "2024-08-01T19:35:56.379122136+02:00[Europe/Paris]",
     comments = "Generator version: 7.7.0")
 @Validated
-@Tag(name = "Capabilities", description = "essential characteristics of this API")
+@Tag(name = "OGC API Records", description = "")
 public interface DefaultApi {
 
   default Optional<NativeWebRequest> getRequest() {
@@ -54,7 +54,6 @@ public interface DefaultApi {
       description =
           "The landing page provides links to the API definition, the conformance statements and to"
               + " the record collections in this dataset.",
-      tags = {"Capabilities"},
       responses = {
         @ApiResponse(
             responseCode = "200",

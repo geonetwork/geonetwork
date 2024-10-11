@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
     date = "2024-07-03T16:51:11.791047085+02:00[Europe/Paris]",
     comments = "Generator version: 7.6.0")
 @Controller
-@RequestMapping("${openapi.oGCAPIRecordsPart1Core.base-path:/data}")
+@RequestMapping("${openapi.oGCAPIRecordsPart1Core.base-path:/ogcapi/records}")
 public class CollectionsApiController implements CollectionsApi {
 
   private final IndexClient client;
