@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:fcc="http://standards.iso.org/iso/19110/fcc/1.0" xmlns:lan="http://standards.iso.org/iso/19115/-3/lan/1.0" xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0" xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0" elementFormDefault="qualified" targetNamespace="http://standards.iso.org/iso/19115/-3/mrc/2.0" version="1.0">
-<!--
-
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
-
--->
   <annotation>
     <documentation>Namespace for XML elements &lt;font color="#1f497d"&gt;used to document schema and amount of content in a structured resource.&lt;/font&gt;</documentation>
   </annotation>

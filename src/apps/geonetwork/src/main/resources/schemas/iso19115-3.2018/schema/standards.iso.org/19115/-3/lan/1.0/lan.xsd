@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/1.0" xmlns:lan="http://standards.iso.org/iso/19115/-3/lan/1.0" elementFormDefault="qualified" targetNamespace="http://standards.iso.org/iso/19115/-3/lan/1.0" version="1.0">
-<!--
-
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
-
--->
   <annotation>
     <documentation>Namespace for XML elements used to implement cultural and linguistic adaptability, i.e. different character set and language encoding of metadata content. Originally defined in ISO 19139.</documentation>
   </annotation>

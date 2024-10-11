@@ -1,3 +1,10 @@
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
 <sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en">
 	<sch:title>Schematron constraints for GML / ISO 19136</sch:title>
 	<sch:ns prefix="sch" uri="http://purl.oclc.org/dsdl/schematron"/>
