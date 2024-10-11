@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
 <!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by STEPHANE BIDAULT (I.G.N/SAF/RECEPTIONS) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmd="http://www.isotc211.org/2005/gmd"

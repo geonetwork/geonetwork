@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
+<!--
 =================== OpenGIS ============================
 	This schema is here because there are errors in publicly available smil schemas at w3c site.
 	One is acknowledged by w3c - it is typographical error described in SMIL errata document at:

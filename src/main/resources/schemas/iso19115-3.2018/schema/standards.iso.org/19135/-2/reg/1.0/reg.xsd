@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/1.0" xmlns:lan="http://standards.iso.org/iso/19115/-3/lan/1.0" xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0" xmlns:pre="http://standards.iso.org/iso/19135/-2/pre/1.0" xmlns:reg="http://standards.iso.org/iso/19135/-2/reg/1.0" elementFormDefault="qualified" targetNamespace="http://standards.iso.org/iso/19135/-2/reg/1.0" version="1.0">
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
   <include schemaLocation="registration.xsd"/>
   <import namespace="http://standards.iso.org/iso/19115/-3/cit/1.0" schemaLocation="../../../../19115/-3/cit/1.0/cit.xsd"/>
   <import namespace="http://standards.iso.org/iso/19115/-3/lan/1.0" schemaLocation="../../../../19115/-3/lan/1.0/lan.xsd"/>

@@ -1,5 +1,12 @@
 <?xml version='1.0'?>
 <?xml-stylesheet href="../2008/09/xsd.xsl" type="text/xsl"?>
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
 <xs:schema targetNamespace="http://www.w3.org/XML/1998/namespace" 
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
   xmlns   ="http://www.w3.org/1999/xhtml"
