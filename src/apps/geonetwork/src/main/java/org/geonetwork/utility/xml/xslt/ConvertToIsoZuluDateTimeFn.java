@@ -15,7 +15,7 @@ import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
-import org.geonetwork.utility.date.DateUtil;
+import org.geonetwork.utility.legacy.date.DateUtil;
 
 /** Extension function to convert a date to ISO Zulu date time. */
 public class ConvertToIsoZuluDateTimeFn extends ExtensionFunctionDefinition {

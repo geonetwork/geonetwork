@@ -19,8 +19,8 @@ import org.geonetwork.editing.model.BatchEditParameter;
 import org.geonetwork.repository.MetadataRepository;
 import org.geonetwork.schemas.MetadataSchema;
 import org.geonetwork.schemas.SchemaManager;
-import org.geonetwork.schemas.utility.Pair;
-import org.geonetwork.schemas.utility.Xml;
+import org.geonetwork.utility.legacy.Pair;
+import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
 import org.springframework.stereotype.Component;
 

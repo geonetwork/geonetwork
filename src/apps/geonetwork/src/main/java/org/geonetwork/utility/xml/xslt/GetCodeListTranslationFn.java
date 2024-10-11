@@ -14,8 +14,8 @@ import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
-import org.geonetwork.ApplicationContextProvider;
 import org.geonetwork.schemas.CodeListTranslator;
+import org.geonetwork.utility.ApplicationContextProvider;
 
 /** Extension function to get the translation of a code from a codelist. */
 public class GetCodeListTranslationFn extends ExtensionFunctionDefinition {

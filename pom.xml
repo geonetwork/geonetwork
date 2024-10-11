@@ -280,9 +280,9 @@
                 <include>pom.xml</include>
               </includes>
               <excludes>
-                <exclude>target/**.*</exclude>
+                <exclude>**/target/**</exclude>
                 <exclude>src/apps/geonetwork/srv/main/resources/schemas/iso19139/schema/**</exclude>
-                <exclude>src/apps/geonetwork/srv/main/resources/schemas/iso19139/schema2007/**</exclude>
+                <exclude>src/apps/geonetwork/src/main/resources/schemas/iso19139/schema2007/**</exclude>
                 <exclude>src/apps/geonetwork/srv/main/resources/schemas/iso19115-3.2018/schema/**</exclude>
               </excludes>
             </licenseSet>
