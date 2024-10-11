@@ -5,10 +5,10 @@
  */
 package org.geonetwork.process.model;
 
-import org.geonetwork.data.DatasetInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+import org.geonetwork.data.DatasetInfo;
 
 @Data
 @SuperBuilder

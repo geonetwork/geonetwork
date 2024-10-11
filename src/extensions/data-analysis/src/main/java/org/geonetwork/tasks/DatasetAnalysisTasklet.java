@@ -5,17 +5,17 @@
  */
 package org.geonetwork.tasks;
 
+import java.util.Optional;
 import org.geonetwork.data.DataAnalyzerException;
 import org.geonetwork.data.DatasetInfo;
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
-import java.util.Optional;
+import org.geonetwork.process.model.DataAnalysisProcessReport;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
-import org.geonetwork.process.model.DataAnalysisProcessReport;
 
 @Component
 public class DatasetAnalysisTasklet implements Tasklet {
