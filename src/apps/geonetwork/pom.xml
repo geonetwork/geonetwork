@@ -15,33 +15,32 @@
   </parent>
 
   <artifactId>gn-geonetwork-app</artifactId>
-  <version>5.0.0-SNAPSHOT</version>
 
   <dependencies>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-index-client</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-index-model</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-data-analysis</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-indexing</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-searching</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -187,13 +186,12 @@
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-schemas</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-constants</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
-      <scope>compile</scope>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

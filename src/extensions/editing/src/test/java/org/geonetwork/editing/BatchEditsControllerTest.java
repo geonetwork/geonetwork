@@ -6,7 +6,6 @@
 
 package org.geonetwork.editing;
 
-import org.geonetwork.schemas.SchemaManager;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +21,7 @@ import net.sf.saxon.s9api.XdmValue;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.editing.model.BatchEditParameter;
+import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.schemas.iso19115_3.ISO19115_3SchemaPlugin;
 import org.geonetwork.schemas.iso19139.ISO19139SchemaPlugin;
 import org.geonetwork.utility.legacy.xml.Xml;

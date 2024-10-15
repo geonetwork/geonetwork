@@ -43,18 +43,18 @@
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-domain</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-index-client</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-index-model</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
