@@ -5,27 +5,27 @@
  */
 package org.geonetwork.data.gdal;
 
-import org.geonetwork.domain.repository.MetadataRepository;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-
-import org.geonetwork.data.DataIngesterConfiguration;
-import org.geonetwork.data.DatasetInfo;
-import org.geonetwork.data.MetadataBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import org.geonetwork.data.DataIngesterConfiguration;
+import org.geonetwork.data.DatasetInfo;
+import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.domain.Metadata;
+import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.editing.BatchEditsService;
 import org.geonetwork.schemas.SchemaManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
@@ -37,7 +37,6 @@ import org.xmlunit.diff.DefaultNodeMatcher;
 import org.xmlunit.diff.Diff;
 import org.xmlunit.diff.ElementSelectors;
 
-@DataJpaTest(showSql = false)
 @ExtendWith(SpringExtension.class)
 @Import({
   MetadataBuilder.class,
@@ -46,6 +45,7 @@ import org.xmlunit.diff.ElementSelectors;
   SchemaManager.class
 })
 @ActiveProfiles({"prod", "test"})
+@SpringBootTest(classes = {TestConfiguration.class})
 class MetadataBuilderTest {
 
   @Autowired private MetadataBuilder metadataBuilder;
