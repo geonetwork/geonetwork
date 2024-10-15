@@ -5,6 +5,7 @@
  */
 package org.geonetwork.data.gdal;
 
+import org.geonetwork.domain.repository.MetadataRepository;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -19,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.editing.BatchEditsService;
-import org.geonetwork.repository.MetadataRepository;
 import org.geonetwork.schemas.SchemaManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

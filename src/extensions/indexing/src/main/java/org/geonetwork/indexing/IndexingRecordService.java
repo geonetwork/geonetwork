@@ -87,7 +87,7 @@ public class IndexingRecordService {
    * document..
    */
   public IndexRecords collectProperties(String schema, List<Metadata> schemaRecords) {
-    String indexingXsltFileName = String.format("xslt/indexing/%s.xsl", schema);
+    String indexingXsltFileName = String.format("indexing/xslt/%s.xsl", schema);
     File indexingXsltFile = null;
     try {
       indexingXsltFile = new ClassPathResource(indexingXsltFileName).getFile();
