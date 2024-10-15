@@ -3,10 +3,12 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.editing;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import org.geonetwork.schemas.SchemaManager;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 import java.io.StringReader;
 import java.util.List;
@@ -18,18 +20,18 @@ import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 import org.geonetwork.domain.Metadata;
+import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.editing.model.BatchEditParameter;
-import org.geonetwork.repository.MetadataRepository;
 import org.geonetwork.schemas.iso19115_3.ISO19115_3SchemaPlugin;
 import org.geonetwork.schemas.iso19139.ISO19139SchemaPlugin;
-import org.geonetwork.schemas.utility.Xml;
+import org.geonetwork.utility.legacy.xml.Xml;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-@SpringBootTest
+@SpringBootTest(classes = {TestConfiguration.class, BatchEditsService.class, SchemaManager.class})
 class BatchEditsControllerTest {
 
   @MockBean private MetadataRepository metadataRepository;
