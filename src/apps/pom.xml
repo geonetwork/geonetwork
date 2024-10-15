@@ -16,7 +16,7 @@
 
   <artifactId>gn-apps</artifactId>
   <packaging>pom</packaging>
-  <name>GeoNetwork application modules</name>
+  <name>GeoNetwork applications</name>
 
   <modules>
     <module>geonetwork</module>

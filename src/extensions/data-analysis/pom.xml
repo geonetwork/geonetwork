@@ -16,7 +16,7 @@
 
   <artifactId>gn-data-analysis</artifactId>
   <packaging>jar</packaging>
-  <name>GeoNetwork data analysis extension</name>
+  <name>GeoNetwork data analysis module</name>
 
   <dependencies>
     <dependency>

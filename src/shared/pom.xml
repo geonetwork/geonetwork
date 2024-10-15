@@ -17,6 +17,7 @@
   <artifactId>gn-shared</artifactId>
   <packaging>pom</packaging>
   <name>GeoNetwork shared modules</name>
+  <description>All components that can be reused in modules and applications</description>
 
   <modules>
     <module>constants</module>

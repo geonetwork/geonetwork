@@ -16,7 +16,7 @@
 
   <artifactId>gn-editing</artifactId>
   <packaging>jar</packaging>
-  <name>GeoNetwork editing extension</name>
+  <name>GeoNetwork editing module</name>
 
   <dependencies>
     <dependency>
