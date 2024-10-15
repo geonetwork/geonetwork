@@ -6,14 +6,14 @@
 
 package org.geonetwork.security;
 
+import org.geonetwork.domain.repository.UserRepository;
+import org.geonetwork.domain.repository.UsergroupRepository;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Collections;
 import java.util.Optional;
 import org.geonetwork.domain.User;
-import org.geonetwork.repository.UserRepository;
-import org.geonetwork.repository.UsergroupRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
