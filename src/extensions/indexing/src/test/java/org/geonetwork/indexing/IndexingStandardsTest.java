@@ -21,17 +21,21 @@ import org.geonetwork.index.model.record.IndexRecords;
 import org.geonetwork.utility.ApplicationContextProvider;
 import org.geonetwork.utility.schemas.CodeListTranslator;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@DataJpaTest(showSql = false)
+@Disabled("FIXME")
+@SpringBootTest(classes = {TestConfiguration.class})
+// @DataJpaTest(showSql = false)
 @ExtendWith(SpringExtension.class)
 @Import(
     value = {

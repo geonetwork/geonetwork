@@ -57,8 +57,8 @@ public class IndexingService {
   /** Constructor. */
   public IndexingService(
       @Value("${geonetwork.indexing.asynchronous:false}") boolean isAsynchronousIndexing,
-      @Value("${geonetwork.indexing.chunksize:'1000'}") int indexingChunkSize,
-      @Value("${geonetwork.indexing.poolsize:'2'}") int poolSize,
+      @Value("${geonetwork.indexing.chunksize:1000}") int indexingChunkSize,
+      @Value("${geonetwork.indexing.poolsize:2}") int poolSize,
       @Value("${geonetwork.indexing.bulktimeout:'45s'}") String bulktimeout,
       IndexingRecordService indexingRecordService,
       MetadataRepository metadataRepository,
