@@ -9,7 +9,7 @@ import org.testcontainers.elasticsearch.ElasticsearchContainer;
 
 public class ElasticsearchTestContainer extends ElasticsearchContainer {
   private static final String DOCKER_ELASTIC =
-      "docker.elastic.co/elasticsearch/elasticsearch:8.14.1";
+      "docker.elastic.co/elasticsearch/elasticsearch:8.14.3";
 
   private static final String CLUSTER_NAME = "gn5-cluster";
 

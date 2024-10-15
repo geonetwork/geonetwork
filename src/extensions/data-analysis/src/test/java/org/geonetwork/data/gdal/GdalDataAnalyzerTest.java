@@ -7,13 +7,6 @@ package org.geonetwork.data.gdal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.geonetwork.data.AttributeStatistics;
-import org.geonetwork.data.DataFormat;
-import org.geonetwork.data.DatasetInfo;
-import org.geonetwork.data.DatasetLayer;
-import org.geonetwork.data.DatasetLayerField;
-import org.geonetwork.data.RasterInfo;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -23,10 +16,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.geonetwork.data.AttributeStatistics;
+import org.geonetwork.data.DataFormat;
+import org.geonetwork.data.DatasetInfo;
+import org.geonetwork.data.DatasetLayer;
+import org.geonetwork.data.DatasetLayerField;
+import org.geonetwork.data.RasterInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.core.io.ClassPathResource;
 
+@SpringBootTest(classes = {TestConfiguration.class})
 class GdalDataAnalyzerTest {
 
   private GdalDataAnalyzer analyzer;

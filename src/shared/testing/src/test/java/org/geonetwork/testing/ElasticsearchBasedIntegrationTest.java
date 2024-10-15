@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.testing;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

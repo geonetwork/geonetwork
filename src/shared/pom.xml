@@ -20,6 +20,7 @@
   <description>All components that can be reused in modules and applications</description>
 
   <modules>
+    <module>testing</module>
     <module>constants</module>
     <module>domain</module>
     <module>utility</module>
