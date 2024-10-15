@@ -51,11 +51,11 @@ public class IndexClient {
       @Value("${geonetwork.index.password}") String password,
       @Value("${geonetwork.index.indexPrefix:'gn-'}") String defaultIndexPrefix,
       @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
-      @Value("${geonetwork.index.elasticsearch.settings.maxResultWindow:'50000'}")
+      @Value("${geonetwork.index.elasticsearch.settings.maxResultWindow:50000}")
           Integer maxResultWindow,
-      @Value("${geonetwork.index.elasticsearch.settings.mapping.totalFields:'10000'}")
+      @Value("${geonetwork.index.elasticsearch.settings.mapping.totalFields:10000}")
           Long totalFieldsLimit,
-      @Value("${geonetwork.indexing.requestimeout:'45000'}") int requestTimeout) {
+      @Value("${geonetwork.indexing.requestimeout:45000}") int requestTimeout) {
     this.serverUrl = serverUrl;
     this.defaultIndexPrefix = defaultIndexPrefix;
     this.indexRecordName = indexRecordName;
