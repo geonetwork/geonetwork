@@ -16,7 +16,7 @@
 
   <artifactId>gn-searching</artifactId>
   <packaging>jar</packaging>
-  <name>GeoNetwork indexing extension</name>
+  <name>GeoNetwork search module</name>
 
   <dependencies>
     <dependency>

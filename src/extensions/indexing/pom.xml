@@ -16,7 +16,7 @@
 
   <artifactId>gn-indexing</artifactId>
   <packaging>jar</packaging>
-  <name>GeoNetwork indexing extension</name>
+  <name>GeoNetwork indexing module</name>
 
   <dependencies>
     <dependency>
