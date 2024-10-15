@@ -33,22 +33,22 @@
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-constants</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-legacy-utility</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-domain</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-utility</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
