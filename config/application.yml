@@ -58,13 +58,17 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:h2:mem:gn5
-    driverClassName: org.h2.Driver
-    username: www-data
-    password: www-data
+    url: jdbc:postgresql://localhost:5432/geonetwork
+    driverClassName: org.postgresql.Driver
+    #    url: jdbc:h2:mem:gn5
+    #    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE
+    #    driverClassName: org.h2.Driver
+    username: postgres
+    password: postgres
   jpa:
     open-in-view: false
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  #    database-platform: org.hibernate.dialect.H2Dialect
   security:
     oauth2:
       client:
@@ -121,7 +125,7 @@ debug: false
 
 logging:
   level:
-#    org.geonetwork.schemas: DEBUG
+    org.geonetwork.schemas: DEBUG
     org.geonetwork.data: DEBUG
 #    org.geonetwork.tasks.indexing: DEBUG
 #    org.elasticsearch.client.RestClient: TRACE

@@ -119,8 +119,8 @@ public class MetadataBuilder {
                                         : buildForLayerProperties(
                                             operation.getValue(), property, datasetInfo),
                                     operation.getOperation()),
-                              buildForLayerProperties(
-                                operation.getCondition(), property, datasetInfo)));
+                                buildForLayerProperties(
+                                    operation.getCondition(), property, datasetInfo)));
                       }
                     });
           } else if (property

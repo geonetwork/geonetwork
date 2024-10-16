@@ -69,4 +69,21 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <testResources>
+      <testResource>
+        <directory>${maven.multiModuleProjectDirectory}/config</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </testResource>
+    </testResources>
+  </build>
 </project>

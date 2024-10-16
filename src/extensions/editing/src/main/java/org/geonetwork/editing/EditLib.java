@@ -1929,7 +1929,7 @@ public class EditLib {
     /** Replace the content of the target. */
     String REPLACE = "gn_replace";
 
-     /** Add to the target (or set value for an attribute). */
+    /** Add to the target (or set value for an attribute). */
     String ADD = "gn_add";
 
     /** Create the target element and add. */
