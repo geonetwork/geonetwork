@@ -4,7 +4,7 @@
  * available at the root application directory.
  */
 
-package org.geonetwork.data;
+package org.geonetwork.data.model;
 
 import java.io.Serializable;
 import lombok.Builder;

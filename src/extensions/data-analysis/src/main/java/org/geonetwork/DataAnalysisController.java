@@ -13,9 +13,9 @@ import jakarta.validation.constraints.Max;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.geonetwork.data.AttributeStatistics;
-import org.geonetwork.data.DataFormat;
-import org.geonetwork.data.DatasetInfo;
+import org.geonetwork.data.model.AttributeStatistics;
+import org.geonetwork.data.model.DataFormat;
+import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
 import org.springframework.http.HttpStatus;
@@ -83,7 +83,9 @@ public class DataAnalysisController {
   @GetMapping(path = "/preview", produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasRole('Administrator')")
   public ResponseEntity<String> previewSynch(
-      @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer) {
+      @RequestParam String uuid,
+      @RequestParam String datasource,
+      @RequestParam String layer) {
     Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
 
     if (layerProperties.isPresent()) {

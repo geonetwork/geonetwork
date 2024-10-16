@@ -8,6 +8,8 @@ package org.geonetwork.data;
 
 import java.util.List;
 import java.util.Optional;
+import org.geonetwork.data.model.DataFormat;
+import org.geonetwork.data.model.DatasetInfo;
 
 /** Data analyzer provides information about a data file. */
 public interface DataAnalyzer {

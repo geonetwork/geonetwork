@@ -8,7 +8,7 @@ package org.geonetwork.process.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.geonetwork.data.DatasetInfo;
+import org.geonetwork.data.model.DatasetInfo;
 
 @Data
 @SuperBuilder

@@ -20,7 +20,7 @@ import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
-import org.geonetwork.data.DataFormat;
+import org.geonetwork.data.model.DataFormat;
 
 public class GdalUtils {
 

@@ -4,9 +4,10 @@
  * available at the root application directory.
  */
 
-package org.geonetwork.data;
+package org.geonetwork.data.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
@@ -14,13 +15,11 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RasterInfo implements Serializable {
-  private String description;
-  private String type;
-  private String crs;
-  private List<Double> wgs84Extent;
-  private RasterCornerCoordinates rasterCornerCoordinates;
+public class DatasetLayer implements Serializable {
+  private String name;
+  private String fidColumnName;
+  private BigDecimal featureCount;
+  private List<DatasetLayerField> fields;
+  private List<DatasetLayerGeomField> geometryFields;
   private Map<String, Object> metadata;
-  private List<Integer> size;
-  private List<RasterBand> bands;
 }
