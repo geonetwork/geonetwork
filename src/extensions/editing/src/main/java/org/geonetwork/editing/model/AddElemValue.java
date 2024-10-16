@@ -68,7 +68,7 @@ public class AddElemValue {
       return EditLib.SpecialUpdateTags.CREATE;
     } else if (value.startsWith("<gn_replace_all>")) {
       return EditLib.SpecialUpdateTags.REPLACE_ALL;
-    }  else if (value.startsWith("<gn_replace>")) {
+    } else if (value.startsWith("<gn_replace>")) {
       return EditLib.SpecialUpdateTags.REPLACE;
     } else if (value.startsWith("<gn_delete>")) {
       return EditLib.SpecialUpdateTags.DELETE;

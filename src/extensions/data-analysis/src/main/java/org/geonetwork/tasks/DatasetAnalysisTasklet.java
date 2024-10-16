@@ -7,8 +7,8 @@ package org.geonetwork.tasks;
 
 import java.util.Optional;
 import org.geonetwork.data.DataAnalyzerException;
-import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
+import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.process.model.DataAnalysisProcessReport;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepContribution;

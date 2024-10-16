@@ -14,8 +14,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import org.geonetwork.data.DataIngesterConfiguration;
-import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.data.MetadataBuilder;
+import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.editing.BatchEditsService;
@@ -31,7 +31,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.builder.Input;
@@ -40,11 +39,7 @@ import org.xmlunit.diff.Diff;
 import org.xmlunit.diff.ElementSelectors;
 
 @ExtendWith(SpringExtension.class)
-@Import({
-  MetadataBuilder.class,
-  BatchEditsService.class,
-  SchemaManager.class
-})
+@Import({MetadataBuilder.class, BatchEditsService.class, SchemaManager.class})
 @EnableConfigurationProperties({DataIngesterConfiguration.class})
 @ActiveProfiles({"prod", "test"})
 @SpringBootTest(classes = {TestConfiguration.class})
