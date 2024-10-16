@@ -4,7 +4,7 @@
  * available at the root application directory.
  */
 
-package org.geonetwork.data;
+package org.geonetwork.data.model;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,10 +14,13 @@ import lombok.Data;
 
 @Data
 @Builder
-public class DatasetInfo implements Serializable {
+public class RasterInfo implements Serializable {
   private String description;
-  private String format;
-  private String formatDescription;
-  private List<DatasetLayer> layers;
+  private String type;
+  private String crs;
+  private List<Double> wgs84Extent;
+  private RasterCornerCoordinates rasterCornerCoordinates;
   private Map<String, Object> metadata;
+  private List<Integer> size;
+  private List<RasterBand> bands;
 }

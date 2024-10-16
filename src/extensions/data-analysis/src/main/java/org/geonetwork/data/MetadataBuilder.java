@@ -3,6 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+
 package org.geonetwork.data;
 
 import java.math.BigDecimal;
@@ -13,6 +14,9 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringSubstitutor;
+import org.geonetwork.data.model.DatasetInfo;
+import org.geonetwork.data.model.DatasetLayer;
+import org.geonetwork.data.model.DatasetLayerField;
 import org.geonetwork.editing.BatchEditsService;
 import org.geonetwork.editing.model.BatchEditParameter;
 import org.geonetwork.utility.legacy.xml.Xml;
@@ -82,11 +86,7 @@ public class MetadataBuilder {
 
   private String buildWithPropertySubstitutions(String template, Map<String, String> replacements) {
     StringSubstitutor sub = new StringSubstitutor(replacements, "{{", "}}");
-    String result = sub.replace(template);
-    log.debug(replacements.keySet().toString());
-    log.debug(replacements.values().toString());
-    log.debug(result);
-    return result;
+    return sub.replace(template);
   }
 
   public String buildMetadata(String uuid, DatasetInfo datasetInfo) {
@@ -119,7 +119,8 @@ public class MetadataBuilder {
                                         : buildForLayerProperties(
                                             operation.getValue(), property, datasetInfo),
                                     operation.getOperation()),
-                                operation.getCondition()));
+                              buildForLayerProperties(
+                                operation.getCondition(), property, datasetInfo)));
                       }
                     });
           } else if (property
@@ -164,6 +165,7 @@ public class MetadataBuilder {
           }
         });
     try {
+      log.atDebug().log(edits.toString());
       return Xml.getString(
           batchEditsService
               .applyBatchEdits(

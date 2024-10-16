@@ -35,13 +35,13 @@ public class ProcessController {
     this.processManager = processManager;
   }
 
-  @GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasRole('Administrator')")
   public List<IProcess> list() {
     return processManager.getProcesses();
   }
 
-  @PutMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @PreAuthorize("hasRole('Administrator')")
   public ResponseEntity<Long> execute(@RequestBody ProcessDetails processDetails)
       throws JobInstanceAlreadyCompleteException,

@@ -523,12 +523,8 @@ public class EditLib {
     boolean isUpdated = false;
     try {
       final boolean isValueXml = value.isXml();
-      final boolean isDeleteMode =
-          value.getNodeValue() != null
-              && value.getNodeValue().getName().startsWith(SpecialUpdateTags.DELETE);
-      final boolean isCreateMode =
-          value.getNodeValue() != null
-              && value.getNodeValue().getName().equals(SpecialUpdateTags.CREATE);
+      final boolean isDeleteMode = SpecialUpdateTags.DELETE.equals(value.getMode());
+      final boolean isCreateMode = SpecialUpdateTags.CREATE.equals(value.getMode());
 
       log.debug("Inserting at location {} the snippet or value {}", xpathProperty, value);
 
@@ -598,7 +594,7 @@ public class EditLib {
                 if (parent != null) {
                   Element matchingNode = ((Element) propNode);
                   // Remove only matching node
-                  if (value.getNodeValue().getName().equals(SpecialUpdateTags.DELETE)) {
+                  if (SpecialUpdateTags.DELETE.equals(value.getNodeValue().getName())) {
                     parent.removeContent(parent.indexOf(matchingNode));
                   }
                 }
@@ -1013,7 +1009,7 @@ public class EditLib {
       // Select the node to update and check it exists
       if (allNodes) {
         @SuppressWarnings("unchecked")
-        List<?> list = xpath.selectNodes(metadataRecord);
+        List<Object> list = xpath.selectNodes(metadataRecord);
         return SelectResult.of(list);
       } else {
         return SelectResult.of(xpath.selectSingleNode(metadataRecord));
@@ -1933,7 +1929,7 @@ public class EditLib {
     /** Replace the content of the target. */
     String REPLACE = "gn_replace";
 
-    /** Add to the target. */
+     /** Add to the target (or set value for an attribute). */
     String ADD = "gn_add";
 
     /** Create the target element and add. */

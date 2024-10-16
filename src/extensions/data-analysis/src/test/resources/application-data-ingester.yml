@@ -281,17 +281,17 @@ geonetwork:
                   xpath: "/mdb:contentInfo/*[@uuid = 'fc/{{featureTypeName}}']/mrc:featureCatalogue/*"
                   condition: "count(mdb:contentInfo/*[@uuid = 'fc/{{featureTypeName}}']/mrc:featureCatalogue/*/gfc:featureType[*/gfc:typeName = '{{featureTypeName}}']) = 0"
                   value: >
-                    <gfc:featureType xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
-                      xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0"
-                      xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
-                      xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0">
-                        <gfc:FC_FeatureType>
-                          <gfc:typeName>{{featureTypeName}}</gfc:typeName>
-                          <gfc:isAbstract>
-                          <gco:Boolean>false</gco:Boolean>
-                          </gfc:isAbstract>
-                        </gfc:FC_FeatureType>
-                      </gfc:featureType>
+                      <gfc:featureType xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
+                        xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0"
+                        xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
+                        xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0">
+                          <gfc:FC_FeatureType>
+                            <gfc:typeName>{{featureTypeName}}</gfc:typeName>
+                            <gfc:isAbstract>
+                            <gco:Boolean>false</gco:Boolean>
+                            </gfc:isAbstract>
+                          </gfc:FC_FeatureType>
+                        </gfc:featureType>
 
             - name: "featureTypeColumns"
               context: "DatasetColumns"

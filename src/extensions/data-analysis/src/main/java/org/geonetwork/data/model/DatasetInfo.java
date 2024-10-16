@@ -4,10 +4,9 @@
  * available at the root application directory.
  */
 
-package org.geonetwork.data;
+package org.geonetwork.data.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
@@ -15,11 +14,10 @@ import lombok.Data;
 
 @Data
 @Builder
-public class DatasetLayer implements Serializable {
-  private String name;
-  private String fidColumnName;
-  private BigDecimal featureCount;
-  private List<DatasetLayerField> fields;
-  private List<DatasetLayerGeomField> geometryFields;
+public class DatasetInfo implements Serializable {
+  private String description;
+  private String format;
+  private String formatDescription;
+  private List<DatasetLayer> layers;
   private Map<String, Object> metadata;
 }
