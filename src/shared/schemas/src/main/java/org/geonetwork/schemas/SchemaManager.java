@@ -6,28 +6,35 @@
 package org.geonetwork.schemas;
 
 import jakarta.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Constants;
 import org.geonetwork.constants.Geonet;
 import org.geonetwork.utility.ApplicationContextProvider;
+import org.geonetwork.utility.JarFileCopy;
+import static org.geonetwork.utility.JarFileCopy.*;
 import org.geonetwork.utility.legacy.Pair;
 import org.geonetwork.utility.legacy.exceptions.NoSchemaMatchesException;
 import org.geonetwork.utility.legacy.exceptions.SchemaMatchConflictException;
@@ -99,7 +106,7 @@ public class SchemaManager {
   private Path schemaPublicationDir;
   private int numberOfCoreSchemasAdded = 0;
 
-  public static Path registerXmlCatalogFiles(Path webappDir, Path schemapluginUriCatalog)
+  public static Path registerXmlCatalogFiles(Path basePath, Path schemapluginUriCatalog)
       throws IOException {
     //    Path webInf = webappDir.resolve("WEB-INF");
 
@@ -117,13 +124,13 @@ public class SchemaManager {
               + catalogProp
               + ")");
     }
-    catalogProp =
-        new ClassPathResource("xml/resolver/oasis-catalog.xml").getFile().getCanonicalPath();
+
+    catalogProp =  basePath.resolve("xml").resolve("resolver").resolve("oasis-catalog.xml").toUri().toASCIIString();
     //    catalogProp = webInf.resolve("oasis-catalog.xml") + ";" + schemapluginUriCatalog;
     System.setProperty(Constants.XML_CATALOG_FILES, catalogProp);
     log.info(Constants.XML_CATALOG_FILES + " property set to " + catalogProp);
 
-    Path blankXSLFile = webappDir.resolve("xsl").resolve("blanks.xsl");
+    Path blankXSLFile = basePath.resolve("xsl").resolve("blanks.xsl");
     System.setProperty(Constants.XML_CATALOG_BLANKXSLFILE, blankXSLFile.toUri().toASCIIString());
     log.info(Constants.XML_CATALOG_BLANKXSLFILE + " property set to " + blankXSLFile);
 
@@ -193,18 +200,29 @@ public class SchemaManager {
     ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
     hmSchemas.clear();
 
+    // FIXME: Should be in the data directory?
     Path schemaPath = Path.of("/tmp/gn5-schema/");
     Files.createDirectories(schemaPath);
     this.basePath = schemaPath; // .resolve("usedforschematronrulecompilation");
     //    this.resourcePath = resourcePath;
     this.schemaPublicationDir = schemaPath.resolve("schemapublicationwww");
-    this.schemaPluginsDir = Path.of(new ClassPathResource("/schemas").getURI());
-    //    this.schemaPluginsCat =
-    //        Path.of(new ClassPathResource("xml/resolver/schemaplugin-uri-catalog.xml").getURI());
-    FileUtils.copyFileToDirectory(
-        new ClassPathResource("xml/resolver/schemaplugin-uri-catalog.xml").getFile(),
-        schemaPath.toFile());
-    this.schemaPluginsCat = schemaPath.resolve("schemaplugin-uri-catalog.xml");
+
+    // Copy JAR resources to the schema directory
+    copyFolder(
+        new ClassPathResource("/schemas").getURI(), "schemas", schemaPath.resolve("schemaplugins"));
+    this.schemaPluginsDir = schemaPath.resolve("schemaplugins");
+
+    copyFolder(new ClassPathResource("/xml").getURI(), "xml", schemaPath.resolve("xml"));
+
+    Path uriCatalogPath = schemaPath.resolve("schemaplugin-uri-catalog.xml");
+    if (Files.notExists(uriCatalogPath)) {
+      Files.copy(
+        new ClassPathResource("xml/resolver/schemaplugin-uri-catalog.xml").getInputStream(),
+        uriCatalogPath,
+        StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    this.schemaPluginsCat = uriCatalogPath;
 
     this.defaultLang = "eng";
     this.defaultSchema = "iso19115-3.2018";
@@ -212,7 +230,7 @@ public class SchemaManager {
 
     //    final Path configDir = IO.toPath(handlerConfig.getValue(Geonet.Config.CONFIG_DIR));
     //    final Path schemapluginUriCatalog = configDir.resolve("schemaplugin-uri-catalog.xml");
-    registerXmlCatalogFiles(this.schemaPluginsDir, null);
+    registerXmlCatalogFiles(this.basePath, null);
 
     Element schemaPluginCatRoot = getSchemaPluginCatalogTemplate();
 
