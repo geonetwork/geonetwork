@@ -33,7 +33,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
 /** Static container for a single instance of Resolver */
-@Slf4j(topic = "org.geonetwork.xml.resolver")
+@Slf4j
 public final class ResolverWrapper {
 
   private static final String DEFAULT = "DEFAULT";

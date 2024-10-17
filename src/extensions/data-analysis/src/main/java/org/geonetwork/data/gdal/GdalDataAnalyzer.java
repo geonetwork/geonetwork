@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j(topic = "org.geonetwork.tasks.data.analysis")
+@Slf4j
 public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer {
 
   public static final String OGR_INFO_APP = "ogrinfo";

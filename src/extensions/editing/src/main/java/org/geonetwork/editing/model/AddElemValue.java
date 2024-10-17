@@ -15,7 +15,7 @@ import org.jdom.JDOMException;
 /**
  * A simple container class for some add methods in {@link EditLib} Created by Jesse on 12/10/13.
  */
-@Slf4j(topic = "org.geonetwork.editing")
+@Slf4j
 public class AddElemValue {
   private final String stringValue;
   private final Element nodeValue;

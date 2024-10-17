@@ -27,7 +27,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 
-@Slf4j(topic = "org.geonetwork.security")
+@Slf4j
 public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticationProvider
     implements UserDetailsService {
 

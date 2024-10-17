@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-@Slf4j(topic = "org.geonetwork.security")
+@Slf4j
 public class GeoNetworkUserService {
   UserRepository userRepository;
   UsergroupRepository userGroupRepository;

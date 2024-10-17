@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 /** Service to map OAuth authorities to GeoNetwork authority. */
 @Service
 @AllArgsConstructor
-@Slf4j(topic = "org.geonetwork.security")
+@Slf4j
 public class OauthAuthoritiesMapperService {
   UserRepository userRepository;
   UsergroupRepository userGroupRepository;
