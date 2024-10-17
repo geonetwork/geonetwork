@@ -5,27 +5,24 @@
  */
 package org.geonetwork.schemas;
 
+import static org.geonetwork.utility.JarFileCopy.*;
+
 import jakarta.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +30,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Constants;
 import org.geonetwork.constants.Geonet;
 import org.geonetwork.utility.ApplicationContextProvider;
-import org.geonetwork.utility.JarFileCopy;
-import static org.geonetwork.utility.JarFileCopy.*;
 import org.geonetwork.utility.legacy.Pair;
 import org.geonetwork.utility.legacy.exceptions.NoSchemaMatchesException;
 import org.geonetwork.utility.legacy.exceptions.SchemaMatchConflictException;
@@ -125,7 +120,13 @@ public class SchemaManager {
               + ")");
     }
 
-    catalogProp =  basePath.resolve("xml").resolve("resolver").resolve("oasis-catalog.xml").toUri().toASCIIString();
+    catalogProp =
+        basePath
+            .resolve("xml")
+            .resolve("resolver")
+            .resolve("oasis-catalog.xml")
+            .toUri()
+            .toASCIIString();
     //    catalogProp = webInf.resolve("oasis-catalog.xml") + ";" + schemapluginUriCatalog;
     System.setProperty(Constants.XML_CATALOG_FILES, catalogProp);
     log.info(Constants.XML_CATALOG_FILES + " property set to " + catalogProp);
@@ -217,9 +218,9 @@ public class SchemaManager {
     Path uriCatalogPath = schemaPath.resolve("schemaplugin-uri-catalog.xml");
     if (Files.notExists(uriCatalogPath)) {
       Files.copy(
-        new ClassPathResource("xml/resolver/schemaplugin-uri-catalog.xml").getInputStream(),
-        uriCatalogPath,
-        StandardCopyOption.REPLACE_EXISTING);
+          new ClassPathResource("xml/resolver/schemaplugin-uri-catalog.xml").getInputStream(),
+          uriCatalogPath,
+          StandardCopyOption.REPLACE_EXISTING);
     }
 
     this.schemaPluginsCat = uriCatalogPath;
