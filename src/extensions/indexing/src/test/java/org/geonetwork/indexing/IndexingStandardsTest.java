@@ -15,35 +15,20 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.TimeZone;
 import org.apache.commons.lang3.StringUtils;
+import org.geonetwork.GeonetworkTestingApplication;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.index.model.record.IndexRecords;
-import org.geonetwork.utility.ApplicationContextProvider;
-import org.geonetwork.utility.schemas.CodeListTranslator;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@Disabled("FIXME")
-@SpringBootTest(classes = {TestConfiguration.class})
-// @DataJpaTest(showSql = false)
-@ExtendWith(SpringExtension.class)
-@Import(
-    value = {
-      IndexingRecordService.class,
-      ApplicationContextProvider.class,
-      CodeListTranslator.class
-    })
-@ActiveProfiles(value = {"prod", "test"})
+@SpringBootTest(classes = {GeonetworkTestingApplication.class})
+@ActiveProfiles(value = {"test"})
 class IndexingStandardsTest {
 
   @Autowired IndexingRecordService indexingRecordService;
