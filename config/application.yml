@@ -20,7 +20,7 @@ geonetwork:
     # Elasticsearch Bulk Async API
     asynchronous: false
   directory:
-    data:
+    data: /data/dev/gn/5/web/src/main/webapp/WEB-INF/data/data
   data:
     analyzer:
       gdal:
