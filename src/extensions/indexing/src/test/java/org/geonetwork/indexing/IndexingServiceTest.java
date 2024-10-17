@@ -6,7 +6,6 @@
 
 package org.geonetwork.indexing;
 
-import org.geonetwork.domain.repository.MetadataDraftRepository;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -18,43 +17,20 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.Future;
 import org.apache.commons.lang3.StringUtils;
+import org.geonetwork.GeonetworkTestingApplication;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.index.client.IndexClient;
 import org.geonetwork.testing.ElasticsearchBasedIntegrationTest;
-import org.geonetwork.utility.ApplicationContextProvider;
-import org.geonetwork.utility.schemas.CodeListTranslator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-//@SpringBootTest(classes = {TestConfiguration.class})
-//@ContextConfiguration(classes = {TestConfiguration.class})
-@SpringBootTest(classes = {TestConfiguration.class})
-//@DataJpaTest(showSql = false)
-//@ExtendWith(SpringExtension.class)
-@Import(
-    value = {
-      IndexClient.class,
-      IndexingService.class,
-      IndexingRecordService.class,
-      ApplicationContextProvider.class,
-      CodeListTranslator.class,
-      MetadataRepository.class,
-      MetadataDraftRepository.class
-    })
-//@ActiveProfiles(value = {"prod", "test"})
+@SpringBootTest(classes = {GeonetworkTestingApplication.class})
+@ActiveProfiles(value = {"test"})
 class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
 
   @Autowired IndexingRecordService indexingRecordService;

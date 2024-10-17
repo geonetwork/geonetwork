@@ -132,3 +132,13 @@ logging:
 #    org.apache.http.impl.client and org.apache.http.wire: TRACE
 #    org.apache.http.headers: TRACE
 #    org.springframework.cache: TRACE
+
+---
+
+spring:
+  config:
+    import:
+      classpath:application-test.yml,
+      optional:classpath:application-data-ingester.yml
+  profiles:
+    active: test
