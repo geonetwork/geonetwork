@@ -17,6 +17,7 @@
   <artifactId>gn-process-manager</artifactId>
   <packaging>jar</packaging>
   <name>GeoNetwork process manager</name>
+  <description>This module contains the process manager to execute tasks with Spring Batch.</description>
 
   <dependencies>
     <dependency>

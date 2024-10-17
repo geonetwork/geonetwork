@@ -16,6 +16,7 @@
 
   <artifactId>gn-index-client</artifactId>
   <name>GeoNetwork index client</name>
+  <description>This module contains the Elasticsearch index client.</description>
 
   <dependencies>
     <dependency>
