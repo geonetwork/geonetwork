@@ -17,6 +17,7 @@
   <artifactId>gn-index-model</artifactId>
   <packaging>jar</packaging>
   <name>GeoNetwork index model</name>
+  <description>This module contains the model of the metadata index in Elasticsearch.</description>
 
   <dependencies>
     <dependency>
