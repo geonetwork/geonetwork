@@ -1,3 +1,8 @@
+/*
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
 package org.geonetwork.utility;
 
 import java.io.IOException;
@@ -25,17 +30,19 @@ public class JarFileCopy {
   }
 
   private static void copyDirectory(Path sourceDir, Path targetDir) throws IOException {
-    Files.walk(sourceDir).forEach(source -> {
-      try {
-        Path destination = targetDir.resolve(sourceDir.relativize(source).toString());
-        if (Files.isDirectory(source)) {
-          Files.createDirectories(destination);
-        } else {
-          Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
-        }
-      } catch (IOException e) {
-        throw new RuntimeException("Error copying file", e);
-      }
-    });
+    Files.walk(sourceDir)
+        .forEach(
+            source -> {
+              try {
+                Path destination = targetDir.resolve(sourceDir.relativize(source).toString());
+                if (Files.isDirectory(source)) {
+                  Files.createDirectories(destination);
+                } else {
+                  Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+                }
+              } catch (IOException e) {
+                throw new RuntimeException("Error copying file", e);
+              }
+            });
   }
 }
