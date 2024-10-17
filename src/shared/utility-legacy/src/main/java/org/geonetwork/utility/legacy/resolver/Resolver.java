@@ -40,7 +40,7 @@ import org.geonetwork.utility.legacy.nio.NioPathAwareCatalogResolver;
  * Utility that handles the CatalogResolver and XmlResolver and observes the ProxyInfo subject class
  * to obtain proxy info needed for resolver
  */
-@Slf4j(topic = "org.geonetwork.xml.resolver")
+@Slf4j
 public final class Resolver implements ProxyInfoObserver {
 
   /** Active readers count */

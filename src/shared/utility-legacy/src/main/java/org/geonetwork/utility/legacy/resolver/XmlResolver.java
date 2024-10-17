@@ -30,7 +30,7 @@ import org.w3c.dom.ls.LSInput;
 external references since we need to use config'd proxy details on
 any http connection we make and Xerces doesn't do this (why?)
 hence this extension.  */
-@Slf4j(topic = "org.geonetwork.xml.resolver")
+@Slf4j
 public class XmlResolver extends XMLCatalogResolver {
 
   @SuppressWarnings("unused")

@@ -41,7 +41,7 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 
 /** Element entry. */
-@Slf4j(topic = "org.geonetwork.schemas")
+@Slf4j
 public class ElementEntry {
   public String name;
   public String ns;

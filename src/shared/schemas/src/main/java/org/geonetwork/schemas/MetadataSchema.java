@@ -31,7 +31,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 
-@Slf4j(topic = "org.geonetwork.schemas")
+@Slf4j
 @JsonPropertyOrder({
   "name",
   "titles",

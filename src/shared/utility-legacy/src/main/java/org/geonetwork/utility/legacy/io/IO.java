@@ -53,7 +53,7 @@ import org.springframework.util.Assert;
  *
  * <p>
  */
-@Slf4j(topic = "org.geonetwork.io")
+@Slf4j
 public final class IO {
   public static final DirectoryStream.Filter<Path> DIRECTORIES_FILTER =
       new DirectoryStream.Filter<Path>() {

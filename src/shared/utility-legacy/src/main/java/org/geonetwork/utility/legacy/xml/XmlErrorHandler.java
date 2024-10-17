@@ -17,7 +17,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /** Error handler that collects up validation errors. */
-@Slf4j(topic = "org.geonetwork.xml")
+@Slf4j
 public class XmlErrorHandler extends DefaultHandler {
 
   private int errorCount = 0;

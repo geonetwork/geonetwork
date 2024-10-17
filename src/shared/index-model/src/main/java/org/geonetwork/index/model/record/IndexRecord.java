@@ -125,7 +125,7 @@ import org.apache.commons.lang3.StringUtils;
   IndexRecordFieldNames.OVERVIEW,
   IndexRecordFieldNames.UUID
 })
-@Slf4j(topic = "org.geonetwork.index.model")
+@Slf4j
 public class IndexRecord {
 
   /**

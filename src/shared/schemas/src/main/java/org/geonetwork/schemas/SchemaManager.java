@@ -56,7 +56,7 @@ import org.springframework.stereotype.Component;
  * holds a map of Schema objects known to GeoNetwork.
  */
 @Component
-@Slf4j(topic = "org.geonetwork.schemas")
+@Slf4j
 public class SchemaManager {
 
   private static final int MODE_NEEDLE = 0;

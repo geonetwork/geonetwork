@@ -62,7 +62,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 
-@Slf4j(topic = "org.geonetwork.schemas")
+@Slf4j
 public class SchemaLoader {
   private Element elFirst = null;
   private Map<String, String> hmElements = new HashMap<String, String>();

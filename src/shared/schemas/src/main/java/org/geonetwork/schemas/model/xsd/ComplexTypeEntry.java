@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
-@Slf4j(topic = "org.geonetwork.schemas")
+@Slf4j
 public class ComplexTypeEntry extends BaseHandler {
   public String name;
   public boolean isOrType = false;

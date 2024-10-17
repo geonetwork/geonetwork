@@ -55,7 +55,7 @@ import org.springframework.stereotype.Component;
  * is applied.
  */
 @Component
-@Slf4j(topic = "org.geonetwork.tasks.indexing")
+@Slf4j
 @RequiredArgsConstructor
 public class IndexingRecordService {
 

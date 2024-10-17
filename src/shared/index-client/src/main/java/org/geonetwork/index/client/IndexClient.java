@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 /** Index client. */
 @Data
 @Component
-@Slf4j(topic = "org.geonetwork.tasks.index")
+@Slf4j
 public class IndexClient {
   private final ElasticsearchClient esClient;
   private final ElasticsearchAsyncClient esAsynchClient;

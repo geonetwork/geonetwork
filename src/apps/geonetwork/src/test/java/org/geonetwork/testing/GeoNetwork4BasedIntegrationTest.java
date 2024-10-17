@@ -35,7 +35,7 @@ import org.testcontainers.junit.jupiter.Container;
 @SpringBootTest(classes = GeonetworkApplication.class)
 @AutoConfigureMockMvc
 @ActiveProfiles(value = {"prod", "test"})
-@Slf4j(topic = "org.geonetwork.test")
+@Slf4j
 @ContextConfiguration(initializers = GeoNetwork4BasedIntegrationTest.class)
 public class GeoNetwork4BasedIntegrationTest
     implements ApplicationContextInitializer<ConfigurableApplicationContext> {
