@@ -85,7 +85,7 @@ public class ProcessManager {
       throw new ProcessExecutionNotFoundException();
     }
 
-    return jobExplorer.getJobExecution(executionJobId).getStatus();
+    return jobExecution.getStatus();
   }
 
   /**
@@ -101,8 +101,7 @@ public class ProcessManager {
     }
 
     if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
-      return (ProcessReport)
-          jobExplorer.getJobExecution(executionJobId).getExecutionContext().get("result");
+      return (ProcessReport) jobExecution.getExecutionContext().get("result");
     } else {
       // TODO: Throw proper exception
       return null;

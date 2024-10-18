@@ -68,6 +68,8 @@ public class MetadataBuilder {
       case "featureTypeColumns":
         replacements.put("featureTypeName", datasetLayer.getName());
         break;
+      default:
+        break;
     }
     return buildWithPropertySubstitutions(template, replacements);
   }

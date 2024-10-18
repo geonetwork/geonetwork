@@ -680,7 +680,7 @@
               <logViolationsToConsole>true</logViolationsToConsole>
               <maxAllowedViolations>0</maxAllowedViolations>
               <violationSeverity>warning</violationSeverity>
-              <suppressionsLocation>build/checkstyle_suppressions.xml</suppressionsLocation>
+              <suppressionsLocation>${maven.multiModuleProjectDirectory}/build/checkstyle_suppressions.xml</suppressionsLocation>
               <skip>${checkstyle.skip}</skip>
             </configuration>
           </plugin>
@@ -718,7 +718,7 @@
               <!-- 1-4: terror, 5-9: scary, 10-14: trouble, 15-20: concern           -->
               <!-- increase this over time to check for more and more serious issues -->
               <maxRank>20</maxRank>
-              <excludeFilterFile>${project.basedir}/build/spotbugs-exclude.xml</excludeFilterFile>
+              <excludeFilterFile>${maven.multiModuleProjectDirectory}/build/spotbugs-exclude.xml</excludeFilterFile>
             </configuration>
           </plugin>
         </plugins>

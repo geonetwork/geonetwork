@@ -78,8 +78,10 @@ public final class Xml {
   public static final NioPathAwareEntityResolver PATH_RESOLVER = new NioPathAwareEntityResolver();
 
   // http://www.w3.org/TR/REC-xml/#charsets
+  @SuppressWarnings("UnicodeEscape")
   public static final String XML10_ILLEGAL_CHAR_PATTERN =
       "[^" + "\u0009\r\n" + "\u0020-\uD7FF" + "\uE000-\uFFFD" + "\ud800\udc00-\udbff\udfff" + "]";
+
   public static final String XML_VERSION_HEADER =
       "<\\?xml version=['\"]1.0['\"] encoding=['\"].*['\"]\\?>\\s*";
 
@@ -129,7 +131,7 @@ public final class Xml {
     return (Element) jdoc.getRootElement().detach();
   }
 
-  protected static Path pathFromUrl(URL url) {
+  private static Path pathFromUrl(URL url) {
     Path path = null;
     try {
       path = IO.toPath(url.toURI());
@@ -348,7 +350,8 @@ public final class Xml {
 
   // --------------------------------------------------------------------------
 
-  protected static Path resolvePath(Source s) throws URISyntaxException {
+  @SuppressWarnings("unused")
+  private static Path resolvePath(Source s) throws URISyntaxException {
     Path f;
     final String systemId = s.getSystemId().replaceAll("%5C", "/");
     try {
@@ -505,15 +508,18 @@ public final class Xml {
     StringBuilder out = new StringBuilder();
     char current;
 
-    if (in == null || "".equals(in)) return "";
+    if (in == null || "".equals(in)) {
+      return "";
+    }
     for (int i = 0; i < in.length(); i++) {
       current = in.charAt(i);
-      if ((current == 0x9)
-          || (current == 0xA)
-          || (current == 0xD)
-          || ((current >= 0x20) && (current <= 0xD7FF))
-          || ((current >= 0xE000) && (current <= 0xFFFD))
-          || ((current >= 0x10000) && (current <= 0x10FFFF))) out.append(current);
+      if (current == 0x9
+          || current == 0xA
+          || current == 0xD
+          || (current >= 0x20 && current <= 0xD7FF)
+          || (current >= 0xE000 && current <= 0xFFFD)) {
+        out.append(current);
+      }
     }
     return out.toString();
   }
@@ -602,9 +608,8 @@ public final class Xml {
     Object result = selectSingle(xml, xpath, theNSs);
     if (result == null) {
       return null;
-    } else if (result instanceof Element) {
-      Element elem = (Element) result;
-      return (Element) (elem);
+    } else if (result instanceof Element elem) {
+      return elem;
     } else {
       // -- Found something but not an element
       return null;
