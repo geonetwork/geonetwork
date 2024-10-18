@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.io.IOUtils;
 import org.geonetwork.data.DataIngesterConfiguration;
 import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.model.DatasetInfo;
@@ -81,8 +82,8 @@ class MetadataBuilderTest {
 
     String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
     String expected =
-        Files.readString(
-            Path.of(new ClassPathResource("data/samples/" + layerFile + ".xml").getURI()));
+        IOUtils.toString(
+            new ClassPathResource("data/samples/" + layerFile + ".xml").getInputStream());
 
     Diff diff =
         DiffBuilder.compare(Input.fromString(builtMetadata))
@@ -106,9 +107,9 @@ class MetadataBuilderTest {
 
     String uuid = "uuid1";
     String template =
-        Files.readString(
-            Path.of(
-                new ClassPathResource("schemas/iso19115-3.2018/templates/geodata.xml").getURI()));
+        IOUtils.toString(
+            new ClassPathResource("schemas/iso19115-3.2018/templates/geodata.xml")
+                .getInputStream());
 
     Metadata metadata = new Metadata();
     metadata.setUuid(uuid);
