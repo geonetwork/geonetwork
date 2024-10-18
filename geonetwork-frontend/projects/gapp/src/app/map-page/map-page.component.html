@@ -1,0 +1,40 @@
+<div class="flex-grow w-full">
+  <div class="pb-2 pt-2 border-b-2">
+    <p-button
+      (click)="
+        addLayerFromService(
+          'https://sextant.ifremer.fr/services/wms/environnement_marin'
+        )
+      "
+      class="m-2">
+      Choose service layer
+    </p-button>
+    <p-button
+      (click)="
+        addLayer(
+          'https://sextant.ifremer.fr/services/wms/environnement_marin',
+          'Zones_Marines_Quadrige'
+        )
+      "
+      class="m-2">
+      Add layer
+    </p-button>
+    <p-button
+      (click)="
+        addMap(
+          'https://www.aquacoope.org/cat_eecca/srv/api/records/b3379e3c-de52-4ea0-9547-46feafe0e681/attachments/map-z7-c3272727.8030581065-5926621.425119426.ows'
+        )
+      "
+      class="m-2">
+      Add map
+    </p-button>
+    <p-button
+      (click)="
+        addMap('https://apps.titellus.net/geonetwork/map/config-viewer.xml')
+      "
+      class="m-2"
+      >Default map
+    </p-button>
+    <p-button (click)="setTool('legend')" class="m-2">Legend</p-button>
+  </div>
+</div>

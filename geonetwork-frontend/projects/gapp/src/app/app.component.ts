@@ -1,12 +1,20 @@
-import { Component, inject, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {
+  AfterViewInit,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  ElementRef,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Button, ButtonDirective } from 'primeng/button';
 import {
+  APPLICATION_CONFIGURATION,
   GlibComponent,
-  SearchAggsContainerComponent,
   SearchAggComponent,
   SearchAggLayout,
-  SearchAggRefreshPolicy,
+  SearchAggsContainerComponent,
   SearchContextDirective,
   SearchInputComponent,
   SearchPagingComponent,
@@ -16,17 +24,16 @@ import {
   SearchResultsComponent,
   SearchResultsTimelineComponent,
   SearchService,
-  APPLICATION_CONFIGURATION,
 } from 'glib';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
-import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
 import { FormsModule } from '@angular/forms';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { SidebarModule } from 'primeng/sidebar';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -58,9 +65,12 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'GeoNetwork';
+
+  isMapRoute = signal(false);
 
   uiConfiguration = inject(APPLICATION_CONFIGURATION).ui;
 
@@ -68,7 +78,29 @@ export class AppComponent {
   pageSize = this.uiConfiguration?.mods.search.paginationInfo.hitsPerPage;
   aggregationConfig = this.uiConfiguration?.mods.search.facetConfig;
 
-  constructor() {}
+  constructor(
+    private router: Router,
+    private el: ElementRef
+  ) {}
+
+  ngOnInit(): void {
+    this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd
+        )
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.isMapRoute.set(event.url.includes('map'));
+      });
+  }
+
+  ngAfterViewInit() {
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.src = '/geonetwork/catalog/webcomponents/webcomponents.js';
+    this.el.nativeElement.appendChild(s);
+  }
 
   protected readonly SearchAggLayout = SearchAggLayout;
 }

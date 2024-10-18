@@ -54,6 +54,13 @@ export class NavigationComponent implements OnInit {
           this.router.navigate(['search']);
         },
       },
+      {
+        label: 'Map',
+        icon: 'fa fa-map',
+        command: () => {
+          this.router.navigate(['map'], { fragment: '/map' });
+        },
+      },
       // GN5 signin
       // {
       //   label: 'Sign in',

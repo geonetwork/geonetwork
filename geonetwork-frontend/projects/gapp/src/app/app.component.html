@@ -7,8 +7,21 @@
   <gn-header></gn-header>
   <gn-navigation></gn-navigation>
 
-  <div class="flex">
+  <div>
     <router-outlet></router-outlet>
+
+    <gn-app
+      class="clear-both flex-grow w-full"
+      [class.hidden]="!isMapRoute()"
+      config='{"mods": {
+                      "global": {"hotkeys": false},
+                      "home": {"enabled": false},
+                      "search": {"enabled": false},
+                      "footer": {"enabled": false},
+                      "header": {"enabled": false}
+                      }}'
+      portal="srv"
+      url="https://apps.titellus.net/geonetwork"></gn-app>
 
     <p-scrollTop />
   </div>
