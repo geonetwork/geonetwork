@@ -22,6 +22,7 @@ jobs:
         cache: 'maven'
     - name: Relaxed Build to check if this compiles
       run: |
+        mvn --version
         mvn -B -fae clean install -Drelax
     - name: Check for any unformatted files
       run: |
