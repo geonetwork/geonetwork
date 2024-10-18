@@ -10,13 +10,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geonetwork</groupId>
-    <artifactId>gn-extensions</artifactId>
+    <artifactId>gn-modules</artifactId>
     <version>5.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>gn-indexing</artifactId>
+  <artifactId>gn-editing</artifactId>
   <packaging>jar</packaging>
-  <name>GeoNetwork indexing module</name>
+  <name>GeoNetwork editing module</name>
 
   <dependencies>
     <dependency>
@@ -37,6 +37,14 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>commons-jxpath</groupId>
+      <artifactId>commons-jxpath</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-schemas</artifactId>
       <version>${project.version}</version>
@@ -53,61 +61,23 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
-      <artifactId>gn-index-client</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geonetwork</groupId>
-      <artifactId>gn-index-model</artifactId>
+      <artifactId>gn-constants</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-test-autoconfigure</artifactId>
+      <artifactId>spring-boot-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.geonetwork</groupId>
-      <artifactId>gn-testing</artifactId>
-      <version>${project.version}</version>
-      <classifier>tests</classifier>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>elasticsearch</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-  <build>
-    <testResources>
-      <testResource>
-        <directory>${maven.multiModuleProjectDirectory}/config</directory>
-        <includes>
-          <include>**/*</include>
-        </includes>
-      </testResource>
-      <testResource>
-        <directory>src/test/resources</directory>
-        <includes>
-          <include>**/*</include>
-        </includes>
-      </testResource>
-    </testResources>
-  </build>
 </project>

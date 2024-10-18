@@ -40,7 +40,7 @@
 
   <modules>
     <module>src/shared</module>
-    <module>src/extensions</module>
+    <module>src/modules</module>
     <module>src/apps</module>
   </modules>
   <issueManagement>
