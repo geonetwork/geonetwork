@@ -438,44 +438,6 @@
         </executions>
       </plugin>
       -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-frontend</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}/public</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.basedir}/geonetwork-frontend/dist/gapp/browser</directory>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-frontend-webcomponents</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}/public/webcomponents</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.basedir}/geonetwork-frontend/dist/gwebcomponents/browser</directory>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
