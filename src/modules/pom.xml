@@ -12,9 +12,10 @@
     <groupId>org.geonetwork</groupId>
     <artifactId>geonetwork</artifactId>
     <version>5.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>gn-modules</artifactId>
+  <artifactId>gn-extensions</artifactId>
   <packaging>pom</packaging>
   <name>GeoNetwork modules</name>
 

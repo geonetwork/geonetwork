@@ -12,6 +12,7 @@
     <groupId>org.geonetwork</groupId>
     <artifactId>geonetwork</artifactId>
     <version>5.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <artifactId>gn-apps</artifactId>
