@@ -49,9 +49,6 @@ public class ProcessController {
           JobParametersInvalidException,
           JobRestartException {
     IProcess process = processManager.getProcess(processDetails.getProcess());
-    if (process == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
 
     Long processExecutionId = processManager.execute(process, processDetails);
 

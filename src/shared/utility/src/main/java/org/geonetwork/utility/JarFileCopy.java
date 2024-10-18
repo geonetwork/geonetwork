@@ -7,17 +7,16 @@ package org.geonetwork.utility;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 public class JarFileCopy {
-  public static void copyFolder(URI uri, String folderName, Path targetDir)
-      throws IOException, URISyntaxException {
+  public static void copyFolder(URI uri, String folderName, Path targetDir) throws IOException {
     boolean isJarFile = uri.toString().contains(".jar!");
     if (isJarFile) {
       try (FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
@@ -30,19 +29,20 @@ public class JarFileCopy {
   }
 
   private static void copyDirectory(Path sourceDir, Path targetDir) throws IOException {
-    Files.walk(sourceDir)
-        .forEach(
-            source -> {
-              try {
-                Path destination = targetDir.resolve(sourceDir.relativize(source).toString());
-                if (Files.isDirectory(source)) {
-                  Files.createDirectories(destination);
-                } else {
-                  Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
-                }
-              } catch (IOException e) {
-                throw new RuntimeException("Error copying file", e);
+    try (Stream<Path> paths = Files.walk(sourceDir)) {
+      paths.forEach(
+          source -> {
+            try {
+              Path destination = targetDir.resolve(sourceDir.relativize(source).toString());
+              if (Files.isDirectory(source)) {
+                Files.createDirectories(destination);
+              } else {
+                Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
               }
-            });
+            } catch (IOException e) {
+              throw new RuntimeException("Error copying file", e);
+            }
+          });
+    }
   }
 }

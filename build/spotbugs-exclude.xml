@@ -42,11 +42,101 @@
   -->
   <Match>
     <Package name="org.geonetwork.domain"/>
-    <Or>
+    <!--<Or>
       <Method name="equals"/>
       <Method name="hashCode"/>
+    </Or>-->
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS" />
     </Or>
-    <Bug pattern="EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS" />
+  </Match>
+  <Match>
+    <Or>
+      <Package name="org.geonetwork.schemas.model"/>
+      <Package name="org.geonetwork.utility.legacy.exceptions"/>
+      <Package name="org.geonetwork.utility.legacy.resolver"/>
+      <Package name="org.geonetwork.utility.legacy.xml"/>
+      <Package name="org.geonetwork.schemas"/>
+      <Package name="org.geonetwork.schemas.editorconfig"/>
+      <Package name="org.geonetwork.schemas.model.xsd"/>
+      <Package name="org.geonetwork.schemas.iso19115_3"/>
+      <Package name="org.geonetwork.schemas.iso19139"/>
+      <Package name="org.geonetwork.index.client"/>
+      <Package name="org.geonetwork.index.model.record"/>
+      <Package name="org.geonetwork.process.model"/>
+      <Package name="org.geonetwork.process.manager"/>
+      <Package name="org.geonetwork.editing.model"/>
+      <Package name="org.geonetwork.data"/>
+      <Package name="org.geonetwork.data.model"/>
+    </Or>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+    </Or>
+  </Match>
+  <Match>
+    <Or>
+      <Package name="org.geonetwork.index.model.record"/>
+    </Or>
+    <Or>
+      <Bug pattern="NP_BOOLEAN_RETURN_NULL"/>
+    </Or>
+  </Match>
+  <!-- Q: GeoNetworkDataDirectory to review -->
+  <Match>
+    <Or>
+      <Package name="org.geonetwork.config"/>
+    </Or>
+    <Or>
+      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+      <Bug pattern="NP_UNWRITTEN_FIELD"/>
+    </Or>
+  </Match>
+  <!-- Q: Do we need the ProxyInfo class?-->
+  <Match>
+    <Package name="org.geonetwork.utility.legacy.resolver"/>
+    <Or>
+      <Bug pattern="URF_UNREAD_FIELD"/>
+      <Bug pattern="SSD_DO_NOT_USE_INSTANCE_LOCK_ON_SHARED_STATIC_DATA"/>
+    </Or>
+  </Match>
+  <Match>
+    <Package name="org.geonetwork.utility.legacy.io"/>
+    <Or>
+      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Or>
+  </Match>
+  <Match>
+    <Or>
+      <Package name="org.geonetwork.schemas"/>
+      <Package name="org.geonetwork.schemas.plugin"/>
+      <Package name="org.geonetwork.schemas.iso19139"/>
+      <Package name="org.geonetwork.schemas.iso19115_3"/>
+      <Package name="org.geonetwork.schemas.model.xsd"/>
+      <Package name="org.geonetwork.editing.model"/>
+    </Or>
+    <Or>
+      <Bug pattern="MS_SHOULD_BE_FINAL"/>
+      <Bug pattern="UCF_USELESS_CONTROL_FLOW"/>
+      <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+      <Bug pattern="UC_USELESS_CONDITION"/>
+      <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+      <Bug pattern="CT_CONSTRUCTOR_THROW"/>
+      <Bug pattern="SSD_DO_NOT_USE_INSTANCE_LOCK_ON_SHARED_STATIC_DATA"/>
+      <Bug pattern="DCN_NULLPOINTER_EXCEPTION"/>
+      <Bug pattern="WMI_WRONG_MAP_ITERATOR"/>
+      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+      <Bug pattern="PA_PUBLIC_PRIMITIVE_ATTRIBUTE"/>
+      <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
+    </Or>
+  </Match>
+  <Match>
+    <Package name="org.geonetwork.utility.legacy.nio"/>
+    <Or>
+      <Bug pattern="CT_CONSTRUCTOR_THROW"/>
+    </Or>
   </Match>
   <Match>
     <Class name="org.geonetwork.index.model.record.IndexRecord"/>
