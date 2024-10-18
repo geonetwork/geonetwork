@@ -7,8 +7,8 @@
 package org.geonetwork.utility.schemas;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,11 +53,10 @@ public class CodeListTranslator {
       return;
     }
     XmlMapper xmlMapper = new XmlMapper();
-    try {
-      File translationFile =
-          new ClassPathResource(String.format("schemas/%s/loc/%s/codelists.xml", schema, language))
-              .getFile();
-      if (translationFile.exists()) {
+    try (InputStream translationFile =
+        new ClassPathResource(String.format("schemas/%s/loc/%s/codelists.xml", schema, language))
+            .getInputStream()) {
+      if (translationFile != null) {
         this.codelists.put(language, xmlMapper.readValue(translationFile, Codelists.class));
       }
     } catch (IOException e) {
