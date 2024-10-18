@@ -106,7 +106,8 @@ spring:
     job:
       enabled: false
   config:
-    import: optional:classpath:application-data-ingester.yml
+    import:
+      optional:classpath:application-data-ingester.yml
 management:
   endpoint:
     info:
@@ -138,7 +139,7 @@ logging:
 spring:
   config:
     import:
-      classpath:application-test.yml,
+      optional:classpath:application-test.yml
       optional:classpath:application-data-ingester.yml
-  profiles:
-    active: test
+    activate:
+      on-profile: test
