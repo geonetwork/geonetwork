@@ -7,15 +7,13 @@
 package org.geonetwork.indexing;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import co.elastic.clients.elasticsearch.core.ExistsRequest;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.Future;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.GeonetworkTestingApplication;
 import org.geonetwork.domain.Metadata;
@@ -44,51 +42,50 @@ class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
   }
 
   @Test
-  void test_which_requires_elasticsearch() {
+  void test_which_requires_elasticsearch() throws Exception {
     String file = "iso19115-3.2018_dataset";
-    try {
-      String schema = StringUtils.split(file, "_")[0];
-      String fileBaseName = String.format("samples/%s", file);
-      String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName + ".xml").getURI()));
-      Metadata dbRecord =
-          Metadata.builder()
-              .uuid(fileBaseName)
-              .istemplate("n")
-              .schemaid(schema)
-              .changedate("2020-01-01T00:00:00Z")
-              .createdate("2020-01-01T00:00:00Z")
-              .isharvested("n")
-              .source("null")
-              .popularity(0)
-              .rating(0)
-              .owner(1)
-              .groupowner(null)
-              .data(xml)
-              .build();
+    String schema = StringUtils.split(file, "_")[0];
+    String fileBaseName = String.format("samples/%s", file);
+    // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
+    // ".xml").getURI()));
+    String xml = IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream());
 
-      metadataRepository.save(dbRecord);
+    Metadata dbRecord =
+        Metadata.builder()
+            .uuid(fileBaseName)
+            .istemplate("n")
+            .schemaid(schema)
+            .changedate("2020-01-01T00:00:00Z")
+            .createdate("2020-01-01T00:00:00Z")
+            .isharvested("n")
+            .source("null")
+            .popularity(0)
+            .rating(0)
+            .owner(1)
+            .groupowner(null)
+            .data(xml)
+            .build();
 
-      List<Future<?>> indexTaskSubmissions = indexingService.index(List.of(dbRecord.getUuid()));
-      for (Future<?> task : indexTaskSubmissions) {
-        task.get();
-      }
+    metadataRepository.save(dbRecord);
 
-      boolean allDone = true;
-      for (Future<?> future : indexTaskSubmissions) {
-        allDone &= future.isDone();
-      }
+    List<Future<?>> indexTaskSubmissions = indexingService.index(List.of(dbRecord.getUuid()));
+    for (Future<?> task : indexTaskSubmissions) {
+      task.get();
+    }
 
-      if (allDone) {
-        BooleanResponse exists =
-            indexClient
-                .getEsClient()
-                .exists(
-                    ExistsRequest.of(
-                        o -> o.index(indexClient.getIndexRecordName()).id(dbRecord.getUuid())));
-        assertTrue(exists.value());
-      }
-    } catch (Exception e) {
-      fail(e.getMessage());
+    boolean allDone = true;
+    for (Future<?> future : indexTaskSubmissions) {
+      allDone &= future.isDone();
+    }
+
+    if (allDone) {
+      BooleanResponse exists =
+          indexClient
+              .getEsClient()
+              .exists(
+                  ExistsRequest.of(
+                      o -> o.index(indexClient.getIndexRecordName()).id(dbRecord.getUuid())));
+      assertTrue(exists.value());
     }
   }
 }
