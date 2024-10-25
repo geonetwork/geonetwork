@@ -7,13 +7,11 @@
 package org.geonetwork.indexing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.TimeZone;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.GeonetworkTestingApplication;
 import org.geonetwork.domain.Metadata;
@@ -48,47 +46,48 @@ class IndexingStandardsTest {
         "dublin-core_dataset",
         "iso19110_datamodel"
       })
-  void test_indexing_dataset(String file) {
-    try {
-      String schema = StringUtils.split(file, "_")[0];
-      String fileBaseName = String.format("samples/%s", file);
-      String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName + ".xml").getURI()));
-      String expectedIndexDocument =
-          Files.readString(Path.of(new ClassPathResource(fileBaseName + ".json").getURI()));
-      Metadata dbRecord =
-          Metadata.builder()
-              .uuid(fileBaseName)
-              .istemplate("n")
-              .schemaid(schema)
-              .changedate("2020-01-01T00:00:00Z")
-              .createdate("2020-01-01T00:00:00Z")
-              .isharvested("n")
-              .source("null")
-              .popularity(0)
-              .rating(0)
-              .owner(1)
-              .groupowner(null)
-              .data(xml)
-              .build();
+  void test_indexing_dataset(String file) throws Exception {
+    String schema = StringUtils.split(file, "_")[0];
+    String fileBaseName = String.format("samples/%s", file);
+    // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
+    // ".xml").getURI()));
 
-      IndexRecords indexRecords =
-          indexingRecordService.collectProperties(schema, List.of(dbRecord));
-      IndexRecord indexRecord = indexRecords.getIndexRecord().getFirst();
+    String xml = IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream());
 
-      indexRecord.setIndexingDate("");
-      indexRecord.setId(null);
-      expectedIndexDocument =
-          expectedIndexDocument.replaceAll(" +\"indexingDate\" : \".*\",\n", "").trim();
-      expectedIndexDocument =
-          expectedIndexDocument.replaceAll(" +\"id\" : \"[0-9]+\",\n", "").trim();
+    //    String expectedIndexDocument =
+    //        Files.readString(Path.of(new ClassPathResource(fileBaseName + ".json").getURI()));
 
-      assertEquals(
-          expectedIndexDocument,
-          new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(indexRecord),
-          indexRecord.getUuid());
+    String expectedIndexDocument =
+        IOUtils.toString(new ClassPathResource(fileBaseName + ".json").getInputStream());
 
-    } catch (Exception e) {
-      fail(e.getMessage());
-    }
+    Metadata dbRecord =
+        Metadata.builder()
+            .uuid(fileBaseName)
+            .istemplate("n")
+            .schemaid(schema)
+            .changedate("2020-01-01T00:00:00Z")
+            .createdate("2020-01-01T00:00:00Z")
+            .isharvested("n")
+            .source("null")
+            .popularity(0)
+            .rating(0)
+            .owner(1)
+            .groupowner(null)
+            .data(xml)
+            .build();
+
+    IndexRecords indexRecords = indexingRecordService.collectProperties(schema, List.of(dbRecord));
+    IndexRecord indexRecord = indexRecords.getIndexRecord().getFirst();
+
+    indexRecord.setIndexingDate("");
+    indexRecord.setId(null);
+    expectedIndexDocument =
+        expectedIndexDocument.replaceAll(" +\"indexingDate\" : \".*\",\n", "").trim();
+    expectedIndexDocument = expectedIndexDocument.replaceAll(" +\"id\" : \"[0-9]+\",\n", "").trim();
+
+    assertEquals(
+        expectedIndexDocument,
+        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(indexRecord),
+        indexRecord.getUuid());
   }
 }
