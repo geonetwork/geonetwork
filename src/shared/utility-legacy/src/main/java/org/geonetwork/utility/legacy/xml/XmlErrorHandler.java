@@ -20,80 +20,83 @@ import org.xml.sax.helpers.DefaultHandler;
 @Slf4j
 public class XmlErrorHandler extends DefaultHandler {
 
-  private int errorCount = 0;
-  private Element xpaths;
+    private int errorCount = 0;
+    private Element xpaths;
 
-  /** -- SETTER -- Set namespace to use for report elements */
-  @Setter @Getter private Namespace ns = Namespace.NO_NAMESPACE;
+    /** -- SETTER -- Set namespace to use for report elements */
+    @Setter
+    @Getter
+    private Namespace ns = Namespace.NO_NAMESPACE;
 
-  @Setter protected SAXOutputter so;
+    @Setter
+    protected SAXOutputter so;
 
-  public boolean errors() {
-    return errorCount > 0;
-  }
+    public boolean errors() {
+        return errorCount > 0;
+    }
 
-  public Element getXPaths() {
-    return xpaths;
-  }
+    public Element getXPaths() {
+        return xpaths;
+    }
 
-  public String addMessage(SAXParseException exception, String typeOfError) {
-    if (errorCount == 0) xpaths = new Element("xsderrors", ns);
-    errorCount++;
+    public String addMessage(SAXParseException exception, String typeOfError) {
+        if (errorCount == 0) xpaths = new Element("xsderrors", ns);
+        errorCount++;
 
-    Element elem = (Element) so.getLocator().getNode();
-    Element x = new Element("xpath", ns);
-    try {
-      String xpath = XPath.getXPath(elem);
-      // -- remove the first element to ensure XPath fits XML passed with
-      // -- root element
-      if (xpath.startsWith("/")) {
-        int ind = xpath.indexOf('/', 1);
-        if (ind != -1) {
-          xpath = xpath.substring(ind + 1);
-        } else {
-          xpath = "."; // error to be placed on the root element
+        Element elem = (Element) so.getLocator().getNode();
+        Element x = new Element("xpath", ns);
+        try {
+            String xpath = XPath.getXPath(elem);
+            // -- remove the first element to ensure XPath fits XML passed with
+            // -- root element
+            if (xpath.startsWith("/")) {
+                int ind = xpath.indexOf('/', 1);
+                if (ind != -1) {
+                    xpath = xpath.substring(ind + 1);
+                } else {
+                    xpath = "."; // error to be placed on the root element
+                }
+            }
+            x.setText(xpath);
+        } catch (JDOMException e) {
+            log.error(e.getMessage(), e);
+            x.setText("nopath");
         }
-      }
-      x.setText(xpath);
-    } catch (JDOMException e) {
-      log.error(e.getMessage(), e);
-      x.setText("nopath");
+        String message = exception.getMessage() + " (Element: " + elem.getQualifiedName();
+        String parentName;
+        if (!elem.isRootElement()) {
+            Element parent = (Element) elem.getParent();
+            if (parent != null) parentName = parent.getQualifiedName();
+            else parentName = "Unknown";
+        } else {
+            parentName = "/";
+        }
+        message += " with parent element: " + parentName + ")";
+
+        Element m = new Element("message", ns).setText(message);
+        Element errorType = new Element("typeOfError", ns).setText(typeOfError);
+        Element errorNumber = new Element("errorNumber", ns).setText(String.valueOf(errorCount));
+        Element e = new Element("error", ns);
+        e.addContent(errorType);
+        e.addContent(errorNumber);
+        e.addContent(m);
+        e.addContent(x);
+        xpaths.addContent(e);
+        return x.getText();
     }
-    String message = exception.getMessage() + " (Element: " + elem.getQualifiedName();
-    String parentName;
-    if (!elem.isRootElement()) {
-      Element parent = (Element) elem.getParent();
-      if (parent != null) parentName = parent.getQualifiedName();
-      else parentName = "Unknown";
-    } else {
-      parentName = "/";
+
+    @Override
+    public void error(SAXParseException parseException) throws SAXException {
+        addMessage(parseException, "ERROR");
     }
-    message += " with parent element: " + parentName + ")";
 
-    Element m = new Element("message", ns).setText(message);
-    Element errorType = new Element("typeOfError", ns).setText(typeOfError);
-    Element errorNumber = new Element("errorNumber", ns).setText(String.valueOf(errorCount));
-    Element e = new Element("error", ns);
-    e.addContent(errorType);
-    e.addContent(errorNumber);
-    e.addContent(m);
-    e.addContent(x);
-    xpaths.addContent(e);
-    return x.getText();
-  }
+    @Override
+    public void fatalError(SAXParseException parseException) throws SAXException {
+        addMessage(parseException, "FATAL ERROR");
+    }
 
-  @Override
-  public void error(SAXParseException parseException) throws SAXException {
-    addMessage(parseException, "ERROR");
-  }
-
-  @Override
-  public void fatalError(SAXParseException parseException) throws SAXException {
-    addMessage(parseException, "FATAL ERROR");
-  }
-
-  @Override
-  public void warning(SAXParseException parseException) throws SAXException {
-    addMessage(parseException, "WARNING");
-  }
+    @Override
+    public void warning(SAXParseException parseException) throws SAXException {
+        addMessage(parseException, "WARNING");
+    }
 }

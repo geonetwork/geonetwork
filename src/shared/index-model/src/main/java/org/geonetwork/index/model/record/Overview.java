@@ -24,9 +24,9 @@ import lombok.RequiredArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Overview {
 
-  @JsonProperty("nameObject")
-  Map<String, String> name;
+    @JsonProperty("nameObject")
+    Map<String, String> name;
 
-  private String url;
-  private String data;
+    private String url;
+    private String data;
 }

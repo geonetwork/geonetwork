@@ -40,45 +40,45 @@ import org.jdom.Element;
 // ==============================================================================
 
 public class GroupEntry extends BaseHandler {
-  public String name;
-  public ArrayList<ElementEntry> alElements = new ArrayList<ElementEntry>();
+    public String name;
+    public ArrayList<ElementEntry> alElements = new ArrayList<ElementEntry>();
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // ---
+    // --- Constructor
+    // ---
+    // ---------------------------------------------------------------------------
 
-  public GroupEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
-    this(new ElementInfo(el, file, targetNS, targetNSPrefix));
-  }
-
-  // ---------------------------------------------------------------------------
-
-  public GroupEntry(ElementInfo ei) {
-    name = handleAttribs(ei, null);
-    handleChildren(ei);
-  }
-
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Private methods
-  // ---
-  // ---------------------------------------------------------------------------
-
-  private void handleChildren(ElementInfo ei) {
-    @SuppressWarnings("unchecked")
-    List<Element> children = ei.element.getChildren();
-
-    for (Element elChild : children) {
-      String elName = elChild.getName();
-
-      if (elName.equals("sequence")) {
-        handleSequence(elChild, alElements, ei);
-      } else if (elName.equals("choice")) {
-        alElements.add(new ElementEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix));
-        //            } else if (elName.equals("annotation")) {
-      }
+    public GroupEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
+        this(new ElementInfo(el, file, targetNS, targetNSPrefix));
     }
-  }
+
+    // ---------------------------------------------------------------------------
+
+    public GroupEntry(ElementInfo ei) {
+        name = handleAttribs(ei, null);
+        handleChildren(ei);
+    }
+
+    // ---------------------------------------------------------------------------
+    // ---
+    // --- Private methods
+    // ---
+    // ---------------------------------------------------------------------------
+
+    private void handleChildren(ElementInfo ei) {
+        @SuppressWarnings("unchecked")
+        List<Element> children = ei.element.getChildren();
+
+        for (Element elChild : children) {
+            String elName = elChild.getName();
+
+            if (elName.equals("sequence")) {
+                handleSequence(elChild, alElements, ei);
+            } else if (elName.equals("choice")) {
+                alElements.add(new ElementEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix));
+                //            } else if (elName.equals("annotation")) {
+            }
+        }
+    }
 }

@@ -33,70 +33,59 @@ import org.springframework.web.servlet.function.ServerResponse;
 /** Configuration for the HTTP proxy. */
 @Configuration
 public class HttpProxyConfiguration {
-  private static final String X_METHOD = "X-METHOD";
+    private static final String X_METHOD = "X-METHOD";
 
-  private final Set<HttpMethod> allowedHttpMethods = Set.of(HttpMethod.GET, HttpMethod.POST);
+    private final Set<HttpMethod> allowedHttpMethods = Set.of(HttpMethod.GET, HttpMethod.POST);
 
-  private final Set<Integer> allowedHttpPorts = Set.of(-1, 80, 443);
+    private final Set<Integer> allowedHttpPorts = Set.of(-1, 80, 443);
 
-  @Bean
-  RouterFunction<ServerResponse> universalProxy() {
-    return route("geonetwork_proxy")
-        .route(path("/api/proxy"), http())
-        .before(
-            (ServerRequest serverRequest) -> {
-              String method = serverRequest.headers().firstHeader(X_METHOD);
-              if (method == null) {
-                method = serverRequest.method().name();
-              }
+    @Bean
+    RouterFunction<ServerResponse> universalProxy() {
+        return route("geonetwork_proxy")
+                .route(path("/api/proxy"), http())
+                .before((ServerRequest serverRequest) -> {
+                    String method = serverRequest.headers().firstHeader(X_METHOD);
+                    if (method == null) {
+                        method = serverRequest.method().name();
+                    }
 
-              HttpMethod httpMethod = HttpMethod.valueOf(method.toUpperCase(Locale.getDefault()));
-              if (!allowedHttpMethods.contains(httpMethod)) {
-                throw new HttpClientErrorException(
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid method value: " + method + " in " + X_METHOD + " header.");
-              }
+                    HttpMethod httpMethod = HttpMethod.valueOf(method.toUpperCase(Locale.getDefault()));
+                    if (!allowedHttpMethods.contains(httpMethod)) {
+                        throw new HttpClientErrorException(
+                                HttpStatus.BAD_REQUEST,
+                                "Invalid method value: " + method + " in " + X_METHOD + " header.");
+                    }
 
-              String uriString =
-                  serverRequest
-                      .param("url")
-                      .orElseThrow(
-                          () ->
-                              new HttpClientErrorException(
-                                  HttpStatus.BAD_REQUEST, "Missing url parameter"));
-              URI uri = URI.create(uriString);
+                    String uriString = serverRequest
+                            .param("url")
+                            .orElseThrow(() ->
+                                    new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing url parameter"));
+                    URI uri = URI.create(uriString);
 
-              if (!allowedHttpPorts.contains(uri.getPort())) {
-                throw new HttpClientErrorException(
-                    HttpStatus.BAD_REQUEST, "Invalid port value: " + uri.getPort());
-              }
+                    if (!allowedHttpPorts.contains(uri.getPort())) {
+                        throw new HttpClientErrorException(
+                                HttpStatus.BAD_REQUEST, "Invalid port value: " + uri.getPort());
+                    }
 
-              ServerRequest request =
-                  ServerRequest.from(serverRequest)
-                      .params(
-                          stringStringMultiValueMap -> {
-                            stringStringMultiValueMap.remove("url");
-                            if (uri.getQuery() != null) {
-                              stringStringMultiValueMap.putAll(
-                                  Stream.of(StringUtils.split(uri.getQuery(), "&"))
-                                      .map(
-                                          param -> {
-                                            String[] parts = StringUtils.split(param, "=");
-                                            return new AbstractMap.SimpleEntry<>(
-                                                parts[0], parts[1]);
-                                          })
-                                      .collect(
-                                          groupingBy(
-                                              Map.Entry::getKey,
-                                              mapping(Map.Entry::getValue, toList()))));
-                            }
-                          })
-                      .method(httpMethod)
-                      .uri(uri)
-                      .build();
-              MvcUtils.setRequestUrl(request, uri);
-              return request;
-            })
-        .build();
-  }
+                    ServerRequest request = ServerRequest.from(serverRequest)
+                            .params(stringStringMultiValueMap -> {
+                                stringStringMultiValueMap.remove("url");
+                                if (uri.getQuery() != null) {
+                                    stringStringMultiValueMap.putAll(Stream.of(StringUtils.split(uri.getQuery(), "&"))
+                                            .map(param -> {
+                                                String[] parts = StringUtils.split(param, "=");
+                                                return new AbstractMap.SimpleEntry<>(parts[0], parts[1]);
+                                            })
+                                            .collect(groupingBy(
+                                                    Map.Entry::getKey, mapping(Map.Entry::getValue, toList()))));
+                                }
+                            })
+                            .method(httpMethod)
+                            .uri(uri)
+                            .build();
+                    MvcUtils.setRequestUrl(request, uri);
+                    return request;
+                })
+                .build();
+    }
 }

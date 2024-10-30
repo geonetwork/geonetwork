@@ -37,58 +37,56 @@ import org.testcontainers.junit.jupiter.Container;
 @ActiveProfiles(value = {"prod", "test"})
 @Slf4j
 @ContextConfiguration(initializers = GeoNetwork4BasedIntegrationTest.class)
-public class GeoNetwork4BasedIntegrationTest
-    implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class GeoNetwork4BasedIntegrationTest implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-  public static final String GEONETWORK4_SERVICE = "geonetwork-1";
-  public static final int GEONETWORK4_PORT = 8082;
+    public static final String GEONETWORK4_SERVICE = "geonetwork-1";
+    public static final int GEONETWORK4_PORT = 8082;
 
-  @Container
-  public static ComposeContainer environment =
-      new ComposeContainer(new File("src/test/resources/docker-compose.yml"))
-          .withLogConsumer(GEONETWORK4_SERVICE, new Slf4jLogConsumer(log))
-          .withExposedService("database-1", 5432)
-          .withExposedService(
-              GEONETWORK4_SERVICE,
-              GEONETWORK4_PORT,
-              Wait.forHealthcheck().withStartupTimeout(Duration.ofMinutes(2)));
+    @Container
+    public static ComposeContainer environment = new ComposeContainer(new File("src/test/resources/docker-compose.yml"))
+            .withLogConsumer(GEONETWORK4_SERVICE, new Slf4jLogConsumer(log))
+            .withExposedService("database-1", 5432)
+            .withExposedService(
+                    GEONETWORK4_SERVICE,
+                    GEONETWORK4_PORT,
+                    Wait.forHealthcheck().withStartupTimeout(Duration.ofMinutes(2)));
 
-  @Override
-  public void initialize(ConfigurableApplicationContext ctx) {
-    TestPropertyValues.of(
-            "geonetwork.core.url=" + getGeoNetworkCoreUrl(),
-            "spring.datasource.url=" + getGeoNetworkDatabaseUrl(),
-            "spring.datasource.username=geonetwork",
-            "spring.datasource.password=geonetwork",
-            "spring.datasource.driverClassName=org.postgresql.Driver",
-            "spring.jpa. database-platform=org.hibernate.dialect.PostgreSQLDialect")
-        .applyTo(ctx.getEnvironment());
-  }
+    @Override
+    public void initialize(ConfigurableApplicationContext ctx) {
+        TestPropertyValues.of(
+                        "geonetwork.core.url=" + getGeoNetworkCoreUrl(),
+                        "spring.datasource.url=" + getGeoNetworkDatabaseUrl(),
+                        "spring.datasource.username=geonetwork",
+                        "spring.datasource.password=geonetwork",
+                        "spring.datasource.driverClassName=org.postgresql.Driver",
+                        "spring.jpa. database-platform=org.hibernate.dialect.PostgreSQLDialect")
+                .applyTo(ctx.getEnvironment());
+    }
 
-  protected String getGeoNetworkCoreUrl() {
-    String serviceHost = environment.getServiceHost(GEONETWORK4_SERVICE, GEONETWORK4_PORT);
-    Integer servicePort = environment.getServicePort(GEONETWORK4_SERVICE, GEONETWORK4_PORT);
-    String geonetworkCoreUrl = "http://" + serviceHost + ":" + servicePort + "/geonetwork";
-    log.atInfo().log("Running with GeoNetwork 4 at URL {}", geonetworkCoreUrl);
-    return geonetworkCoreUrl;
-  }
+    protected String getGeoNetworkCoreUrl() {
+        String serviceHost = environment.getServiceHost(GEONETWORK4_SERVICE, GEONETWORK4_PORT);
+        Integer servicePort = environment.getServicePort(GEONETWORK4_SERVICE, GEONETWORK4_PORT);
+        String geonetworkCoreUrl = "http://" + serviceHost + ":" + servicePort + "/geonetwork";
+        log.atInfo().log("Running with GeoNetwork 4 at URL {}", geonetworkCoreUrl);
+        return geonetworkCoreUrl;
+    }
 
-  protected String getGeoNetworkDatabaseUrl() {
-    String dbHost = environment.getServiceHost("database-1", 5432);
-    Integer dbPort = environment.getServicePort("database-1", 5432);
-    return "jdbc:postgresql://" + dbHost + ":" + dbPort + "/geonetwork";
-  }
+    protected String getGeoNetworkDatabaseUrl() {
+        String dbHost = environment.getServiceHost("database-1", 5432);
+        Integer dbPort = environment.getServicePort("database-1", 5432);
+        return "jdbc:postgresql://" + dbHost + ":" + dbPort + "/geonetwork";
+    }
 
-  @BeforeAll
-  static void setUp() {
-    environment.start();
-  }
+    @BeforeAll
+    static void setUp() {
+        environment.start();
+    }
 
-  @BeforeEach
-  void testIsContainerRunning() {}
+    @BeforeEach
+    void testIsContainerRunning() {}
 
-  @AfterAll
-  static void destroy() {
-    environment.stop();
-  }
+    @AfterAll
+    static void destroy() {
+        environment.stop();
+    }
 }

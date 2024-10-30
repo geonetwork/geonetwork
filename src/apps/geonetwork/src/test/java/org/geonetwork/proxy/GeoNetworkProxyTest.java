@@ -17,22 +17,19 @@ import org.springframework.test.web.servlet.MockMvc;
 
 class GeoNetworkProxyTest extends GeoNetwork4BasedIntegrationTest {
 
-  @Autowired private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-  @Test
-  void test_can_access_testcontainer_directly() throws Exception {
-    mockMvc
-        .perform(get(getGeoNetworkCoreUrl() + "/srv/api/me").accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isNoContent());
-  }
+    @Test
+    void test_can_access_testcontainer_directly() throws Exception {
+        mockMvc.perform(get(getGeoNetworkCoreUrl() + "/srv/api/me").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
 
-  @Test
-  void test_can_access_geonetwork4_thourgh_gateway() throws Exception {
-    mockMvc
-        .perform(get("/geonetwork/srv/api/me").accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isNoContent());
-    mockMvc
-        .perform(get("/geonetwork/").accept(MediaType.TEXT_HTML))
-        .andExpect(status().is3xxRedirection());
-  }
+    @Test
+    void test_can_access_geonetwork4_thourgh_gateway() throws Exception {
+        mockMvc.perform(get("/geonetwork/srv/api/me").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+        mockMvc.perform(get("/geonetwork/").accept(MediaType.TEXT_HTML)).andExpect(status().is3xxRedirection());
+    }
 }

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CachingCustomizer implements CacheManagerCustomizer<ConcurrentMapCacheManager> {
 
-  @Override
-  public void customize(ConcurrentMapCacheManager cacheManager) {
-    cacheManager.setCacheNames(List.of("schema-codelists"));
-  }
+    @Override
+    public void customize(ConcurrentMapCacheManager cacheManager) {
+        cacheManager.setCacheNames(List.of("schema-codelists"));
+    }
 }

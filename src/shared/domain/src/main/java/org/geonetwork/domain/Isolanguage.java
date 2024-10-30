@@ -28,21 +28,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "isolanguages")
 public class Isolanguage {
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "isolanguages_id_gen")
-  @SequenceGenerator(
-      name = "isolanguages_id_gen",
-      sequenceName = "iso_language_id_seq",
-      allocationSize = 1)
-  @Column(name = "id", nullable = false)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "isolanguages_id_gen")
+    @SequenceGenerator(name = "isolanguages_id_gen", sequenceName = "iso_language_id_seq", allocationSize = 1)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-  @Size(max = 3)
-  @NotNull
-  @Column(name = "code", nullable = false, length = 3)
-  private String code;
+    @Size(max = 3)
+    @NotNull
+    @Column(name = "code", nullable = false, length = 3)
+    private String code;
 
-  @Size(max = 2)
-  @Column(name = "shortcode", length = 2)
-  private String shortcode;
+    @Size(max = 2)
+    @Column(name = "shortcode", length = 2)
+    private String shortcode;
 }

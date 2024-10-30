@@ -25,29 +25,28 @@ import org.hibernate.Hibernate;
 @Setter
 @Embeddable
 public class ValidationId implements Serializable {
-  private static final long serialVersionUID = 1162216089847311602L;
+    private static final long serialVersionUID = 1162216089847311602L;
 
-  @NotNull
-  @Column(name = "metadataid", nullable = false)
-  private Integer metadataid;
+    @NotNull
+    @Column(name = "metadataid", nullable = false)
+    private Integer metadataid;
 
-  @Size(max = 128)
-  @NotNull
-  @Column(name = "valtype", nullable = false, length = 128)
-  private String valtype;
+    @Size(max = 128)
+    @NotNull
+    @Column(name = "valtype", nullable = false, length = 128)
+    private String valtype;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    if (!ValidationId.class.isInstance(o)) return false;
-    ValidationId entity = (ValidationId) o;
-    return Objects.equals(this.metadataid, entity.metadataid)
-        && Objects.equals(this.valtype, entity.valtype);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (!ValidationId.class.isInstance(o)) return false;
+        ValidationId entity = (ValidationId) o;
+        return Objects.equals(this.metadataid, entity.metadataid) && Objects.equals(this.valtype, entity.valtype);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(metadataid, valtype);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(metadataid, valtype);
+    }
 }

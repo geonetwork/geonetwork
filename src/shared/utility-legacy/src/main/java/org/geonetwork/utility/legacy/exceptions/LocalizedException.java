@@ -32,132 +32,130 @@ import java.util.Locale;
 
 public abstract class LocalizedException extends Exception implements ILocalizedException {
 
-  private Locale locale;
+    private Locale locale;
 
-  private String messageKey;
-  private Object[] messageKeyArgs;
+    private String messageKey;
+    private Object[] messageKeyArgs;
 
-  private String descriptionKey;
-  private Object[] descriptionKeyArgs;
+    private String descriptionKey;
+    private Object[] descriptionKeyArgs;
 
-  public LocalizedException() {
-    super();
-  }
+    public LocalizedException() {
+        super();
+    }
 
-  public LocalizedException(String message) {
-    super(message);
-  }
+    public LocalizedException(String message) {
+        super(message);
+    }
 
-  public LocalizedException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    public LocalizedException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-  public LocalizedException(Throwable cause) {
-    super(cause);
-  }
+    public LocalizedException(Throwable cause) {
+        super(cause);
+    }
 
-  public LocalizedException(
-      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-    super(message, cause, enableSuppression, writableStackTrace);
-  }
+    public LocalizedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 
-  // Note that the following could not be a generic abstract class using generic type -i.e<T extends
-  // LocalizedException>
-  // As generic class is not allowed to extend the Throwable class directly or indirectly.
-  // https://docs.oracle.com/javase/specs/jls/se6/html/classes.html#303584
-  // So each child class needs to have it's own version.
-  public LocalizedException withMessageKey(String messageKey) {
-    return withMessageKey(messageKey, null);
-  }
+    // Note that the following could not be a generic abstract class using generic type -i.e<T extends
+    // LocalizedException>
+    // As generic class is not allowed to extend the Throwable class directly or indirectly.
+    // https://docs.oracle.com/javase/specs/jls/se6/html/classes.html#303584
+    // So each child class needs to have it's own version.
+    public LocalizedException withMessageKey(String messageKey) {
+        return withMessageKey(messageKey, null);
+    }
 
-  public LocalizedException withMessageKey(String messageKey, Object[] messageKeyArgs) {
-    this.messageKey = messageKey;
-    this.messageKeyArgs = messageKeyArgs;
-    return this;
-  }
+    public LocalizedException withMessageKey(String messageKey, Object[] messageKeyArgs) {
+        this.messageKey = messageKey;
+        this.messageKeyArgs = messageKeyArgs;
+        return this;
+    }
 
-  public LocalizedException withDescriptionKey(String descriptionKey) {
-    return withDescriptionKey(descriptionKey, null);
-  }
+    public LocalizedException withDescriptionKey(String descriptionKey) {
+        return withDescriptionKey(descriptionKey, null);
+    }
 
-  public LocalizedException withDescriptionKey(String descriptionKey, Object[] descriptionKeyArgs) {
-    this.descriptionKey = descriptionKey;
-    this.descriptionKeyArgs = descriptionKeyArgs;
-    return this;
-  }
+    public LocalizedException withDescriptionKey(String descriptionKey, Object[] descriptionKeyArgs) {
+        this.descriptionKey = descriptionKey;
+        this.descriptionKeyArgs = descriptionKeyArgs;
+        return this;
+    }
 
-  public LocalizedException withLocale(Locale locale) {
-    this.locale = locale;
-    return this;
-  }
+    public LocalizedException withLocale(Locale locale) {
+        this.locale = locale;
+        return this;
+    }
 
-  /**
-   * Class that extends this class will need to override this function so that it returns the bean
-   * qualifier for where it wants to get the messages from.
-   *
-   * @return bean qualifier to use for the message translations.
-   */
-  protected abstract String getResourceBundleBeanQualifier();
+    /**
+     * Class that extends this class will need to override this function so that it returns the bean
+     * qualifier for where it wants to get the messages from.
+     *
+     * @return bean qualifier to use for the message translations.
+     */
+    protected abstract String getResourceBundleBeanQualifier();
 
-  @Override
-  public Locale getLocale() {
-    return locale;
-  }
+    @Override
+    public Locale getLocale() {
+        return locale;
+    }
 
-  @Override
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-  }
+    @Override
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
 
-  @Override
-  public String getLocalizedMessage() {
-    return LocaleMessages.getMessageForLocale(
-        messageKey, messageKeyArgs, locale, getResourceBundleBeanQualifier());
-  }
+    @Override
+    public String getLocalizedMessage() {
+        return LocaleMessages.getMessageForLocale(messageKey, messageKeyArgs, locale, getResourceBundleBeanQualifier());
+    }
 
-  @Override
-  public String getMessageKey() {
-    return messageKey;
-  }
+    @Override
+    public String getMessageKey() {
+        return messageKey;
+    }
 
-  @Override
-  public void setMessageKey(String messageKey) {
-    this.messageKey = messageKey;
-  }
+    @Override
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
+    }
 
-  @Override
-  public Object[] getMessageKeyArgs() {
-    return messageKeyArgs;
-  }
+    @Override
+    public Object[] getMessageKeyArgs() {
+        return messageKeyArgs;
+    }
 
-  @Override
-  public void setMessageKeyArgs(Object[] messageKeyArgs) {
-    this.messageKeyArgs = messageKeyArgs;
-  }
+    @Override
+    public void setMessageKeyArgs(Object[] messageKeyArgs) {
+        this.messageKeyArgs = messageKeyArgs;
+    }
 
-  @Override
-  public String getLocalizedDescription() {
-    return LocaleMessages.getMessageForLocale(
-        descriptionKey, descriptionKeyArgs, locale, getResourceBundleBeanQualifier());
-  }
+    @Override
+    public String getLocalizedDescription() {
+        return LocaleMessages.getMessageForLocale(
+                descriptionKey, descriptionKeyArgs, locale, getResourceBundleBeanQualifier());
+    }
 
-  @Override
-  public String getDescriptionKey() {
-    return descriptionKey;
-  }
+    @Override
+    public String getDescriptionKey() {
+        return descriptionKey;
+    }
 
-  @Override
-  public void setDescriptionKey(String descriptionKey) {
-    this.descriptionKey = descriptionKey;
-  }
+    @Override
+    public void setDescriptionKey(String descriptionKey) {
+        this.descriptionKey = descriptionKey;
+    }
 
-  @Override
-  public Object[] getDescriptionKeyArgs() {
-    return descriptionKeyArgs;
-  }
+    @Override
+    public Object[] getDescriptionKeyArgs() {
+        return descriptionKeyArgs;
+    }
 
-  @Override
-  public void setDescriptionKeyArgs(Object[] descriptionKeyArgs) {
-    this.descriptionKeyArgs = descriptionKeyArgs;
-  }
+    @Override
+    public void setDescriptionKeyArgs(Object[] descriptionKeyArgs) {
+        this.descriptionKeyArgs = descriptionKeyArgs;
+    }
 }

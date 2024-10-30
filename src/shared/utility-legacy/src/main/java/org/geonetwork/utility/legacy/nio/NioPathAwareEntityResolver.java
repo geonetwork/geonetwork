@@ -18,9 +18,8 @@ import org.xml.sax.SAXException;
  */
 public class NioPathAwareEntityResolver implements EntityResolver {
 
-  @Override
-  public InputSource resolveEntity(String publicId, String systemId)
-      throws SAXException, IOException {
-    return NioPathHolder.resolveEntity(publicId, systemId);
-  }
+    @Override
+    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+        return NioPathHolder.resolveEntity(publicId, systemId);
+    }
 }

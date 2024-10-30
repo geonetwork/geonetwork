@@ -22,64 +22,63 @@ import java.nio.file.Path;
  * @author Jesse on 11/18/2014.
  */
 class FileSystemSpecificStreamHandler extends URLStreamHandler {
-  @Override
-  protected URLConnection openConnection(URL u) throws IOException {
-    try {
-      final Path path = IO.toPath(new URI(u.toExternalForm().replace('\\', '/')));
-      return new URLConnection(u) {
+    @Override
+    protected URLConnection openConnection(URL u) throws IOException {
+        try {
+            final Path path = IO.toPath(new URI(u.toExternalForm().replace('\\', '/')));
+            return new URLConnection(u) {
 
-        @Override
-        public void connect() throws IOException {
-          // nothing to do
-        }
+                @Override
+                public void connect() throws IOException {
+                    // nothing to do
+                }
 
-        @Override
-        public InputStream getInputStream() throws IOException {
-          return IO.newInputStream(path);
-        }
+                @Override
+                public InputStream getInputStream() throws IOException {
+                    return IO.newInputStream(path);
+                }
 
-        @Override
-        public int getContentLength() {
-          try {
-            final long size = Files.size(path);
-            if (size > Integer.MAX_VALUE) {
-              throw new AssertionError(
-                  path
-                      + " size is too large for the getContentLength method.  "
-                      + "It is greater than Integer.MAX_VALUE: "
-                      + size);
-            }
-            return (int) size;
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        }
+                @Override
+                public int getContentLength() {
+                    try {
+                        final long size = Files.size(path);
+                        if (size > Integer.MAX_VALUE) {
+                            throw new AssertionError(path
+                                    + " size is too large for the getContentLength method.  "
+                                    + "It is greater than Integer.MAX_VALUE: "
+                                    + size);
+                        }
+                        return (int) size;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
-        @Override
-        public String getContentType() {
-          try {
-            return Files.probeContentType(path);
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        }
+                @Override
+                public String getContentType() {
+                    try {
+                        return Files.probeContentType(path);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
-        @Override
-        public long getLastModified() {
-          try {
-            return Files.getLastModifiedTime(path).toMillis();
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        }
+                @Override
+                public long getLastModified() {
+                    try {
+                        return Files.getLastModifiedTime(path).toMillis();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
-        @Override
-        public OutputStream getOutputStream() throws IOException {
-          return Files.newOutputStream(path);
+                @Override
+                public OutputStream getOutputStream() throws IOException {
+                    return Files.newOutputStream(path);
+                }
+            };
+        } catch (URISyntaxException e1) {
+            throw new Error(e1);
         }
-      };
-    } catch (URISyntaxException e1) {
-      throw new Error(e1);
     }
-  }
 }

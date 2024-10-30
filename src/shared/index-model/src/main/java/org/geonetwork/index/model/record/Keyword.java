@@ -28,5 +28,9 @@ import lombok.Singular;
 @JsonPropertyOrder(alphabetic = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Keyword {
-  @JsonAnySetter @JsonAnyGetter @JsonIgnore @Singular Map<String, String> properties;
+    @JsonAnySetter
+    @JsonAnyGetter
+    @JsonIgnore
+    @Singular
+    Map<String, String> properties;
 }

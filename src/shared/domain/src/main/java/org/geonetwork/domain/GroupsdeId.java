@@ -25,28 +25,28 @@ import org.hibernate.Hibernate;
 @Setter
 @Embeddable
 public class GroupsdeId implements Serializable {
-  private static final long serialVersionUID = 7806926519951609363L;
+    private static final long serialVersionUID = 7806926519951609363L;
 
-  @NotNull
-  @Column(name = "iddes", nullable = false)
-  private Integer iddes;
+    @NotNull
+    @Column(name = "iddes", nullable = false)
+    private Integer iddes;
 
-  @Size(max = 5)
-  @NotNull
-  @Column(name = "langid", nullable = false, length = 5)
-  private String langid;
+    @Size(max = 5)
+    @NotNull
+    @Column(name = "langid", nullable = false, length = 5)
+    private String langid;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    if (!GroupsdeId.class.isInstance(o)) return false;
-    GroupsdeId entity = (GroupsdeId) o;
-    return Objects.equals(this.iddes, entity.iddes) && Objects.equals(this.langid, entity.langid);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (!GroupsdeId.class.isInstance(o)) return false;
+        GroupsdeId entity = (GroupsdeId) o;
+        return Objects.equals(this.iddes, entity.iddes) && Objects.equals(this.langid, entity.langid);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(iddes, langid);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(iddes, langid);
+    }
 }

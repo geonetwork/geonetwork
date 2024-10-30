@@ -22,5 +22,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "operationallowed")
 public class Operationallowed {
-  @EmbeddedId private OperationallowedId id;
+    @EmbeddedId
+    private OperationallowedId id;
 }

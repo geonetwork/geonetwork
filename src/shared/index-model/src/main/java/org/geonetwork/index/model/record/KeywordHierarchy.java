@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KeywordHierarchy {
-  @JsonProperty("default")
-  ArrayList<String> defaultTexts;
+    @JsonProperty("default")
+    ArrayList<String> defaultTexts;
 
-  @JsonProperty("key")
-  ArrayList<String> keys;
+    @JsonProperty("key")
+    ArrayList<String> keys;
 }

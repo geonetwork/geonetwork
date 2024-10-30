@@ -12,11 +12,10 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
 import org.springframework.stereotype.Component;
 
 @Component
-public class HttpProxyPolicyAgentAuthorizationManager
-    implements AuthorizationManager<RequestAuthorizationContext> {
-  @Override
-  public AuthorizationDecision check(Supplier authentication, RequestAuthorizationContext context) {
-    // TODO: Implement authorization logic
-    return new AuthorizationDecision(true);
-  }
+public class HttpProxyPolicyAgentAuthorizationManager implements AuthorizationManager<RequestAuthorizationContext> {
+    @Override
+    public AuthorizationDecision check(Supplier authentication, RequestAuthorizationContext context) {
+        // TODO: Implement authorization logic
+        return new AuthorizationDecision(true);
+    }
 }

@@ -42,998 +42,964 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 
 @Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-08-01T19:35:56.379122136+02:00[Europe/Paris]",
-    comments = "Generator version: 7.7.0")
+        value = "org.openapitools.codegen.languages.SpringCodegen",
+        date = "2024-08-01T19:35:56.379122136+02:00[Europe/Paris]",
+        comments = "Generator version: 7.7.0")
 @Validated
 @Tag(name = "OGC API Records", description = "")
 public interface CollectionsApi {
 
-  default Optional<NativeWebRequest> getRequest() {
-    return Optional.empty();
-  }
+    default Optional<NativeWebRequest> getRequest() {
+        return Optional.empty();
+    }
 
-  /**
-   * GET /collections/{catalogId} : describe the record collection with id &#x60;catalogId&#x60;
-   * Fetch a detailed description of the catalog with id &#x60;catalogId&#x60;.
-   *
-   * @param catalogId local identifier of a catalog (required)
-   * @return Information about the record collection with id &#x60;collectionId&#x60;. The response
-   *     contains a link to the items in the collection (path
-   *     &#x60;/collections/{collectionId}/items&#x60;, link relation &#x60;items&#x60;) as well as
-   *     key information about the collection. This information includes: * A local identifier for
-   *     the collection that is unique for the + catalog; * A list of coordinate reference systems
-   *     (CRS) in which geometries + may be returned by the server. The first CRS is the default +
-   *     coordinate reference system (the default is always WGS 84 with + axis order
-   *     longitude/latitude); * An optional title and description for the collection; * An optional
-   *     extent that can be used to provide an indication of + the spatial and temporal extent of
-   *     the collection - typically + derived from the data; * An optional indicator about the type
-   *     of the items in the collection + (the default value, if the indicator is not provided, is
-   *     &#39;record&#39;). (status code 200) or The requested resource does not exist on the
-   *     server. For example, a path parameter had an incorrect value. (status code 404) or A server
-   *     error occurred. (status code 500)
-   */
-  @Operation(
-      operationId = "describeCollection",
-      summary = "describe the record collection with id `catalogId`",
-      description = "Fetch a detailed description of the catalog with id `catalogId`.",
-      responses = {
-        @ApiResponse(
-            responseCode = "200",
-            description =
-                "Information about the record collection with id `collectionId`.  The response"
-                    + " contains a link to the items in the collection (path"
-                    + " `/collections/{collectionId}/items`, link relation `items`) as well as key"
-                    + " information about the collection. This information includes:  * A local"
-                    + " identifier for the collection that is unique for the +   catalog; * A list"
-                    + " of coordinate reference systems (CRS) in which geometries +   may be"
-                    + " returned by the server. The first CRS is the default +   coordinate"
-                    + " reference system (the default is always WGS 84 with +   axis order"
-                    + " longitude/latitude); * An optional title and description for the"
-                    + " collection; * An optional extent that can be used to provide an indication"
-                    + " of +   the spatial and temporal extent of the collection - typically +  "
-                    + " derived from the data; * An optional indicator about the type of the items"
-                    + " in the collection +   (the default value, if the indicator is not provided,"
-                    + " is 'record').",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsCatalog1Dto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsCatalog1Dto.class))
-            }),
-        @ApiResponse(
-            responseCode = "404",
-            description =
-                "The requested resource does not exist on the server. For example, a path parameter"
-                    + " had an incorrect value.",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "A server error occurred.",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+    /**
+     * GET /collections/{catalogId} : describe the record collection with id &#x60;catalogId&#x60;
+     * Fetch a detailed description of the catalog with id &#x60;catalogId&#x60;.
+     *
+     * @param catalogId local identifier of a catalog (required)
+     * @return Information about the record collection with id &#x60;collectionId&#x60;. The response
+     *     contains a link to the items in the collection (path
+     *     &#x60;/collections/{collectionId}/items&#x60;, link relation &#x60;items&#x60;) as well as
+     *     key information about the collection. This information includes: * A local identifier for
+     *     the collection that is unique for the + catalog; * A list of coordinate reference systems
+     *     (CRS) in which geometries + may be returned by the server. The first CRS is the default +
+     *     coordinate reference system (the default is always WGS 84 with + axis order
+     *     longitude/latitude); * An optional title and description for the collection; * An optional
+     *     extent that can be used to provide an indication of + the spatial and temporal extent of
+     *     the collection - typically + derived from the data; * An optional indicator about the type
+     *     of the items in the collection + (the default value, if the indicator is not provided, is
+     *     &#39;record&#39;). (status code 200) or The requested resource does not exist on the
+     *     server. For example, a path parameter had an incorrect value. (status code 404) or A server
+     *     error occurred. (status code 500)
+     */
+    @Operation(
+            operationId = "describeCollection",
+            summary = "describe the record collection with id `catalogId`",
+            description = "Fetch a detailed description of the catalog with id `catalogId`.",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Information about the record collection with id `collectionId`.  The response"
+                                + " contains a link to the items in the collection (path"
+                                + " `/collections/{collectionId}/items`, link relation `items`) as well as key"
+                                + " information about the collection. This information includes:  * A local"
+                                + " identifier for the collection that is unique for the +   catalog; * A list"
+                                + " of coordinate reference systems (CRS) in which geometries +   may be"
+                                + " returned by the server. The first CRS is the default +   coordinate"
+                                + " reference system (the default is always WGS 84 with +   axis order"
+                                + " longitude/latitude); * An optional title and description for the"
+                                + " collection; * An optional extent that can be used to provide an indication"
+                                + " of +   the spatial and temporal extent of the collection - typically +  "
+                                + " derived from the data; * An optional indicator about the type of the items"
+                                + " in the collection +   (the default value, if the indicator is not provided,"
+                                + " is 'record').",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsCatalog1Dto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsCatalog1Dto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "404",
+                        description =
+                                "The requested resource does not exist on the server. For example, a path parameter"
+                                        + " had an incorrect value.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "A server error occurred.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        })
             })
-      })
-  @RequestMapping(
-      method = RequestMethod.GET,
-      value = "/collections/{catalogId}",
-      produces = {"application/json", "text/html"})
-  default ResponseEntity<OgcApiRecordsCatalog1Dto> describeCollection(
-      @Parameter(
-              name = "catalogId",
-              description = "local identifier of a catalog",
-              required = true,
-              in = ParameterIn.PATH)
-          @PathVariable("catalogId")
-          String catalogId) {
-    getRequest()
-        .ifPresent(
-            request -> {
-              for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/collections/{catalogId}",
+            produces = {"application/json", "text/html"})
+    default ResponseEntity<OgcApiRecordsCatalog1Dto> describeCollection(
+            @Parameter(
+                            name = "catalogId",
+                            description = "local identifier of a catalog",
+                            required = true,
+                            in = ParameterIn.PATH)
+                    @PathVariable("catalogId")
+                    String catalogId) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"extent\" : { \"spatial\" : { \"crs\" :"
-                          + " \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\", \"bbox\" : [ ["
-                          + " -180, -90, 180, 90 ], [ -180, -90, 180, 90 ] ] }, \"temporal\" : {"
-                          + " \"trs\" : \"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian\","
-                          + " \"interval\" : [ [ \"2011-11-11T12:22:11Z\", null ], ["
-                          + " \"2011-11-11T12:22:11Z\", null ] ] } }, \"itemType\" : \"record\","
-                          + " \"formats\" : [ { \"name\" : \"name\", \"mediaType\" : \"mediaType\""
-                          + " }, { \"name\" : \"name\", \"mediaType\" : \"mediaType\" } ],"
-                          + " \"keywords\" : [ \"keywords\", \"keywords\" ], \"languages\" : [ {"
-                          + " \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
-                          + " \"Greek\", \"dir\" : \"ltr\" }, { \"code\" : \"el\", \"name\" :"
-                          + " \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\" } ],"
-                          + " \"crs\" : [ \"crs\", \"crs\" ], \"records\" : [ { \"linkTemplates\" :"
-                          + " [ { \"hreflang\" : \"en\", \"varBase\" :"
-                          + " \"http://example.com/aeiou\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
-                          + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
-                          + " \"varBase\" : \"http://example.com/aeiou\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
-                          + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" } ], \"geometry\" : \"{}\","
-                          + " \"links\" : [ { \"hreflang\" : \"en\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"rel\" : \"alternate\","
-                          + " \"length\" : 0, \"type\" : \"application/geo+json\", \"title\" :"
-                          + " \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
-                          + " \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 0, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" } ], \"id\" : \"id\", \"time\" :"
-                          + " \"{}\", \"type\" : \"Feature\", \"properties\" : { \"formats\" : [ {"
-                          + " \"name\" : \"name\", \"mediaType\" : \"mediaType\" }, { \"name\" :"
-                          + " \"name\", \"mediaType\" : \"mediaType\" } ], \"keywords\" : ["
-                          + " \"keywords\", \"keywords\" ], \"languages\" : [ { \"code\" : \"el\","
-                          + " \"name\" : \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\""
-                          + " }, { \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
-                          + " \"Greek\", \"dir\" : \"ltr\" } ], \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"externalIds\" : [ { \"scheme\" :"
-                          + " \"scheme\", \"value\" : \"value\" }, { \"scheme\" : \"scheme\","
-                          + " \"value\" : \"value\" } ], \"description\" : \"description\","
-                          + " \"language\" : { \"code\" : \"el\", \"name\" : \"Ελληνικά\","
-                          + " \"alternate\" : \"Greek\", \"dir\" : \"ltr\" }, \"resourceLanguages\""
-                          + " : [ { \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
-                          + " \"Greek\", \"dir\" : \"ltr\" }, { \"code\" : \"el\", \"name\" :"
-                          + " \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\" } ],"
-                          + " \"type\" : \"type\", \"title\" : \"title\", \"themes\" : [ {"
-                          + " \"concepts\" : [ { \"description\" : \"description\", \"id\" :"
-                          + " \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" }, { \"description\" :"
-                          + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" }, {"
-                          + " \"concepts\" : [ { \"description\" : \"description\", \"id\" :"
-                          + " \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" }, { \"description\" :"
-                          + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" } ],"
-                          + " \"license\" : { \"name\" : \"name\", \"url\" : \"url\" }, \"rights\""
-                          + " : \"rights\", \"conformsTo\" : [ \"conformsTo\", \"conformsTo\" ],"
-                          + " \"updated\" : \"2000-01-23T04:56:07.000+00:00\", \"contacts\" : [ {"
-                          + " \"name\" : \"name\", \"url\" : \"url\", \"email\" : \"email\" }, {"
-                          + " \"name\" : \"name\", \"url\" : \"url\", \"email\" : \"email\" } ] }"
-                          + " }, { \"linkTemplates\" : [ { \"hreflang\" : \"en\", \"varBase\" :"
-                          + " \"http://example.com/aeiou\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
-                          + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
-                          + " \"varBase\" : \"http://example.com/aeiou\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
-                          + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" } ], \"geometry\" : \"{}\","
-                          + " \"links\" : [ { \"hreflang\" : \"en\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"rel\" : \"alternate\","
-                          + " \"length\" : 0, \"type\" : \"application/geo+json\", \"title\" :"
-                          + " \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
-                          + " \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 0, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" } ], \"id\" : \"id\", \"time\" :"
-                          + " \"{}\", \"type\" : \"Feature\", \"properties\" : { \"formats\" : [ {"
-                          + " \"name\" : \"name\", \"mediaType\" : \"mediaType\" }, { \"name\" :"
-                          + " \"name\", \"mediaType\" : \"mediaType\" } ], \"keywords\" : ["
-                          + " \"keywords\", \"keywords\" ], \"languages\" : [ { \"code\" : \"el\","
-                          + " \"name\" : \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\""
-                          + " }, { \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
-                          + " \"Greek\", \"dir\" : \"ltr\" } ], \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"externalIds\" : [ { \"scheme\" :"
-                          + " \"scheme\", \"value\" : \"value\" }, { \"scheme\" : \"scheme\","
-                          + " \"value\" : \"value\" } ], \"description\" : \"description\","
-                          + " \"language\" : { \"code\" : \"el\", \"name\" : \"Ελληνικά\","
-                          + " \"alternate\" : \"Greek\", \"dir\" : \"ltr\" }, \"resourceLanguages\""
-                          + " : [ { \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
-                          + " \"Greek\", \"dir\" : \"ltr\" }, { \"code\" : \"el\", \"name\" :"
-                          + " \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\" } ],"
-                          + " \"type\" : \"type\", \"title\" : \"title\", \"themes\" : [ {"
-                          + " \"concepts\" : [ { \"description\" : \"description\", \"id\" :"
-                          + " \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" }, { \"description\" :"
-                          + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" }, {"
-                          + " \"concepts\" : [ { \"description\" : \"description\", \"id\" :"
-                          + " \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" }, { \"description\" :"
-                          + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" } ],"
-                          + " \"license\" : { \"name\" : \"name\", \"url\" : \"url\" }, \"rights\""
-                          + " : \"rights\", \"conformsTo\" : [ \"conformsTo\", \"conformsTo\" ],"
-                          + " \"updated\" : \"2000-01-23T04:56:07.000+00:00\", \"contacts\" : [ {"
-                          + " \"name\" : \"name\", \"url\" : \"url\", \"email\" : \"email\" }, {"
-                          + " \"name\" : \"name\", \"url\" : \"url\", \"email\" : \"email\" } ] } }"
-                          + " ], \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"externalIds\" :"
-                          + " [ { \"scheme\" : \"scheme\", \"value\" : \"value\" }, { \"scheme\" :"
-                          + " \"scheme\", \"value\" : \"value\" } ], \"recordsArrayName\" :"
-                          + " \"[records]\", \"description\" : \"description\", \"language\" : {"
-                          + " \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
-                          + " \"Greek\", \"dir\" : \"ltr\" }, \"resourceLanguages\" : [ { \"code\""
-                          + " : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\""
-                          + " : \"ltr\" }, { \"code\" : \"el\", \"name\" : \"Ελληνικά\","
-                          + " \"alternate\" : \"Greek\", \"dir\" : \"ltr\" } ], \"type\" :"
-                          + " \"Catalog\", \"title\" : \"title\", \"themes\" : [ { \"concepts\" : ["
-                          + " { \"description\" : \"description\", \"id\" : \"id\", \"title\" :"
-                          + " \"title\", \"url\" : \"https://openapi-generator.tech\" }, {"
-                          + " \"description\" : \"description\", \"id\" : \"id\", \"title\" :"
-                          + " \"title\", \"url\" : \"https://openapi-generator.tech\" } ],"
-                          + " \"scheme\" : \"scheme\" }, { \"concepts\" : [ { \"description\" :"
-                          + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" }, { \"description\" :"
-                          + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
-                          + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" } ],"
-                          + " \"license\" : { \"name\" : \"name\", \"url\" : \"url\" },"
-                          + " \"linkTemplates\" : [ { \"hreflang\" : \"en\", \"varBase\" :"
-                          + " \"http://example.com/aeiou\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
-                          + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
-                          + " \"varBase\" : \"http://example.com/aeiou\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
-                          + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" } ], \"rights\" : \"rights\","
-                          + " \"links\" : [ { \"hreflang\" : \"en\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"rel\" : \"alternate\","
-                          + " \"length\" : 0, \"type\" : \"application/geo+json\", \"title\" :"
-                          + " \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
-                          + " \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 0, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" } ], \"conformsTo\" : ["
-                          + " \"conformsTo\", \"conformsTo\" ], \"id\" : \"id\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"contacts\" : [ { \"name\" :"
-                          + " \"name\", \"url\" : \"url\", \"email\" : \"email\" }, { \"name\" :"
-                          + " \"name\", \"url\" : \"url\", \"email\" : \"email\" } ] }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"extent\" : { \"spatial\" : { \"crs\" :"
+                            + " \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\", \"bbox\" : [ ["
+                            + " -180, -90, 180, 90 ], [ -180, -90, 180, 90 ] ] }, \"temporal\" : {"
+                            + " \"trs\" : \"http://www.opengis.net/def/uom/ISO-8601/0/Gregorian\","
+                            + " \"interval\" : [ [ \"2011-11-11T12:22:11Z\", null ], ["
+                            + " \"2011-11-11T12:22:11Z\", null ] ] } }, \"itemType\" : \"record\","
+                            + " \"formats\" : [ { \"name\" : \"name\", \"mediaType\" : \"mediaType\""
+                            + " }, { \"name\" : \"name\", \"mediaType\" : \"mediaType\" } ],"
+                            + " \"keywords\" : [ \"keywords\", \"keywords\" ], \"languages\" : [ {"
+                            + " \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
+                            + " \"Greek\", \"dir\" : \"ltr\" }, { \"code\" : \"el\", \"name\" :"
+                            + " \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\" } ],"
+                            + " \"crs\" : [ \"crs\", \"crs\" ], \"records\" : [ { \"linkTemplates\" :"
+                            + " [ { \"hreflang\" : \"en\", \"varBase\" :"
+                            + " \"http://example.com/aeiou\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
+                            + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
+                            + " \"varBase\" : \"http://example.com/aeiou\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
+                            + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" } ], \"geometry\" : \"{}\","
+                            + " \"links\" : [ { \"hreflang\" : \"en\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"rel\" : \"alternate\","
+                            + " \"length\" : 0, \"type\" : \"application/geo+json\", \"title\" :"
+                            + " \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
+                            + " \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 0, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" } ], \"id\" : \"id\", \"time\" :"
+                            + " \"{}\", \"type\" : \"Feature\", \"properties\" : { \"formats\" : [ {"
+                            + " \"name\" : \"name\", \"mediaType\" : \"mediaType\" }, { \"name\" :"
+                            + " \"name\", \"mediaType\" : \"mediaType\" } ], \"keywords\" : ["
+                            + " \"keywords\", \"keywords\" ], \"languages\" : [ { \"code\" : \"el\","
+                            + " \"name\" : \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\""
+                            + " }, { \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
+                            + " \"Greek\", \"dir\" : \"ltr\" } ], \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"externalIds\" : [ { \"scheme\" :"
+                            + " \"scheme\", \"value\" : \"value\" }, { \"scheme\" : \"scheme\","
+                            + " \"value\" : \"value\" } ], \"description\" : \"description\","
+                            + " \"language\" : { \"code\" : \"el\", \"name\" : \"Ελληνικά\","
+                            + " \"alternate\" : \"Greek\", \"dir\" : \"ltr\" }, \"resourceLanguages\""
+                            + " : [ { \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
+                            + " \"Greek\", \"dir\" : \"ltr\" }, { \"code\" : \"el\", \"name\" :"
+                            + " \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\" } ],"
+                            + " \"type\" : \"type\", \"title\" : \"title\", \"themes\" : [ {"
+                            + " \"concepts\" : [ { \"description\" : \"description\", \"id\" :"
+                            + " \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" }, { \"description\" :"
+                            + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" }, {"
+                            + " \"concepts\" : [ { \"description\" : \"description\", \"id\" :"
+                            + " \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" }, { \"description\" :"
+                            + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" } ],"
+                            + " \"license\" : { \"name\" : \"name\", \"url\" : \"url\" }, \"rights\""
+                            + " : \"rights\", \"conformsTo\" : [ \"conformsTo\", \"conformsTo\" ],"
+                            + " \"updated\" : \"2000-01-23T04:56:07.000+00:00\", \"contacts\" : [ {"
+                            + " \"name\" : \"name\", \"url\" : \"url\", \"email\" : \"email\" }, {"
+                            + " \"name\" : \"name\", \"url\" : \"url\", \"email\" : \"email\" } ] }"
+                            + " }, { \"linkTemplates\" : [ { \"hreflang\" : \"en\", \"varBase\" :"
+                            + " \"http://example.com/aeiou\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
+                            + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
+                            + " \"varBase\" : \"http://example.com/aeiou\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
+                            + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" } ], \"geometry\" : \"{}\","
+                            + " \"links\" : [ { \"hreflang\" : \"en\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"rel\" : \"alternate\","
+                            + " \"length\" : 0, \"type\" : \"application/geo+json\", \"title\" :"
+                            + " \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
+                            + " \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 0, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" } ], \"id\" : \"id\", \"time\" :"
+                            + " \"{}\", \"type\" : \"Feature\", \"properties\" : { \"formats\" : [ {"
+                            + " \"name\" : \"name\", \"mediaType\" : \"mediaType\" }, { \"name\" :"
+                            + " \"name\", \"mediaType\" : \"mediaType\" } ], \"keywords\" : ["
+                            + " \"keywords\", \"keywords\" ], \"languages\" : [ { \"code\" : \"el\","
+                            + " \"name\" : \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\""
+                            + " }, { \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
+                            + " \"Greek\", \"dir\" : \"ltr\" } ], \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"externalIds\" : [ { \"scheme\" :"
+                            + " \"scheme\", \"value\" : \"value\" }, { \"scheme\" : \"scheme\","
+                            + " \"value\" : \"value\" } ], \"description\" : \"description\","
+                            + " \"language\" : { \"code\" : \"el\", \"name\" : \"Ελληνικά\","
+                            + " \"alternate\" : \"Greek\", \"dir\" : \"ltr\" }, \"resourceLanguages\""
+                            + " : [ { \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
+                            + " \"Greek\", \"dir\" : \"ltr\" }, { \"code\" : \"el\", \"name\" :"
+                            + " \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\" : \"ltr\" } ],"
+                            + " \"type\" : \"type\", \"title\" : \"title\", \"themes\" : [ {"
+                            + " \"concepts\" : [ { \"description\" : \"description\", \"id\" :"
+                            + " \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" }, { \"description\" :"
+                            + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" }, {"
+                            + " \"concepts\" : [ { \"description\" : \"description\", \"id\" :"
+                            + " \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" }, { \"description\" :"
+                            + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" } ],"
+                            + " \"license\" : { \"name\" : \"name\", \"url\" : \"url\" }, \"rights\""
+                            + " : \"rights\", \"conformsTo\" : [ \"conformsTo\", \"conformsTo\" ],"
+                            + " \"updated\" : \"2000-01-23T04:56:07.000+00:00\", \"contacts\" : [ {"
+                            + " \"name\" : \"name\", \"url\" : \"url\", \"email\" : \"email\" }, {"
+                            + " \"name\" : \"name\", \"url\" : \"url\", \"email\" : \"email\" } ] } }"
+                            + " ], \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"externalIds\" :"
+                            + " [ { \"scheme\" : \"scheme\", \"value\" : \"value\" }, { \"scheme\" :"
+                            + " \"scheme\", \"value\" : \"value\" } ], \"recordsArrayName\" :"
+                            + " \"[records]\", \"description\" : \"description\", \"language\" : {"
+                            + " \"code\" : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" :"
+                            + " \"Greek\", \"dir\" : \"ltr\" }, \"resourceLanguages\" : [ { \"code\""
+                            + " : \"el\", \"name\" : \"Ελληνικά\", \"alternate\" : \"Greek\", \"dir\""
+                            + " : \"ltr\" }, { \"code\" : \"el\", \"name\" : \"Ελληνικά\","
+                            + " \"alternate\" : \"Greek\", \"dir\" : \"ltr\" } ], \"type\" :"
+                            + " \"Catalog\", \"title\" : \"title\", \"themes\" : [ { \"concepts\" : ["
+                            + " { \"description\" : \"description\", \"id\" : \"id\", \"title\" :"
+                            + " \"title\", \"url\" : \"https://openapi-generator.tech\" }, {"
+                            + " \"description\" : \"description\", \"id\" : \"id\", \"title\" :"
+                            + " \"title\", \"url\" : \"https://openapi-generator.tech\" } ],"
+                            + " \"scheme\" : \"scheme\" }, { \"concepts\" : [ { \"description\" :"
+                            + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" }, { \"description\" :"
+                            + " \"description\", \"id\" : \"id\", \"title\" : \"title\", \"url\" :"
+                            + " \"https://openapi-generator.tech\" } ], \"scheme\" : \"scheme\" } ],"
+                            + " \"license\" : { \"name\" : \"name\", \"url\" : \"url\" },"
+                            + " \"linkTemplates\" : [ { \"hreflang\" : \"en\", \"varBase\" :"
+                            + " \"http://example.com/aeiou\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
+                            + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
+                            + " \"varBase\" : \"http://example.com/aeiou\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
+                            + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" } ], \"rights\" : \"rights\","
+                            + " \"links\" : [ { \"hreflang\" : \"en\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"rel\" : \"alternate\","
+                            + " \"length\" : 0, \"type\" : \"application/geo+json\", \"title\" :"
+                            + " \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
+                            + " \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 0, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" } ], \"conformsTo\" : ["
+                            + " \"conformsTo\", \"conformsTo\" ], \"id\" : \"id\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"contacts\" : [ { \"name\" :"
+                            + " \"name\", \"url\" : \"url\", \"email\" : \"email\" }, { \"name\" :"
+                            + " \"name\", \"url\" : \"url\", \"email\" : \"email\" } ] }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
-              }
-            });
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
-  /**
-   * GET /collections : the record collections Fetch list of catalogs offered by this API
-   *
-   * @return Information about the list of catalogs offered by this service. (status code 200) or A
-   *     server error occurred. (status code 500)
-   */
-  @Operation(
-      operationId = "getCollections",
-      summary = "the record collections",
-      description = "Fetch list of catalogs offered by this API",
-      responses = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Information about the list of catalogs offered by this service.",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema =
-                      @Schema(implementation = OgcApiRecordsGetCollections200ResponseDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema =
-                      @Schema(implementation = OgcApiRecordsGetCollections200ResponseDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "A server error occurred.",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+    /**
+     * GET /collections : the record collections Fetch list of catalogs offered by this API
+     *
+     * @return Information about the list of catalogs offered by this service. (status code 200) or A
+     *     server error occurred. (status code 500)
+     */
+    @Operation(
+            operationId = "getCollections",
+            summary = "the record collections",
+            description = "Fetch list of catalogs offered by this API",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Information about the list of catalogs offered by this service.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsGetCollections200ResponseDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsGetCollections200ResponseDto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "A server error occurred.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        })
             })
-      })
-  @RequestMapping(
-      method = RequestMethod.GET,
-      value = "/collections",
-      produces = {"application/json", "text/html"})
-  default ResponseEntity<OgcApiRecordsGetCollections200ResponseDto> getCollections() {
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/collections",
+            produces = {"application/json", "text/html"})
+    default ResponseEntity<OgcApiRecordsGetCollections200ResponseDto> getCollections() {
 
-    getRequest()
-        .ifPresent(
-            request -> {
-              for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"linkTemplates\" : [ { \"hreflang\" : \"en\", \"varBase\" :"
-                          + " \"http://example.com/aeiou\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
-                          + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
-                          + " \"varBase\" : \"http://example.com/aeiou\", \"created\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
-                          + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
-                          + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
-                          + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
-                          + " \"2000-01-23T04:56:07.000+00:00\" } ], \"collections\" : [ null, null"
-                          + " ], \"links\" : [ { \"hreflang\" : \"en\", \"rel\" : \"alternate\","
-                          + " \"length\" : 0, \"href\" : \"http://data.example.com/buildings/123\","
-                          + " \"type\" : \"application/geo+json\", \"title\" : \"Trierer Strasse"
-                          + " 70, 53115 Bonn\" }, { \"hreflang\" : \"en\", \"rel\" : \"alternate\","
-                          + " \"length\" : 0, \"href\" : \"http://data.example.com/buildings/123\","
-                          + " \"type\" : \"application/geo+json\", \"title\" : \"Trierer Strasse"
-                          + " 70, 53115 Bonn\" } ] }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"linkTemplates\" : [ { \"hreflang\" : \"en\", \"varBase\" :"
+                            + " \"http://example.com/aeiou\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
+                            + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" }, { \"hreflang\" : \"en\","
+                            + " \"varBase\" : \"http://example.com/aeiou\", \"created\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\", \"uriTemplate\" :"
+                            + " \"http://data.example.com/buildings/(building-id}\", \"rel\" :"
+                            + " \"alternate\", \"length\" : 6, \"type\" : \"application/geo+json\","
+                            + " \"title\" : \"Trierer Strasse 70, 53115 Bonn\", \"updated\" :"
+                            + " \"2000-01-23T04:56:07.000+00:00\" } ], \"collections\" : [ null, null"
+                            + " ], \"links\" : [ { \"hreflang\" : \"en\", \"rel\" : \"alternate\","
+                            + " \"length\" : 0, \"href\" : \"http://data.example.com/buildings/123\","
+                            + " \"type\" : \"application/geo+json\", \"title\" : \"Trierer Strasse"
+                            + " 70, 53115 Bonn\" }, { \"hreflang\" : \"en\", \"rel\" : \"alternate\","
+                            + " \"length\" : 0, \"href\" : \"http://data.example.com/buildings/123\","
+                            + " \"type\" : \"application/geo+json\", \"title\" : \"Trierer Strasse"
+                            + " 70, 53115 Bonn\" } ] }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
-              }
-            });
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
-  /**
-   * GET /collections/{catalogId}/items/{recordId} : fetch a single record Fetch the record with id
-   * &#x60;recordId&#x60; in the record collection with id &#x60;catalogId&#x60;. Use content
-   * negotiation to request HTML or GeoJSON.
-   *
-   * @param catalogId local identifier of a catalog (required)
-   * @param recordId local identifier of a record (required)
-   * @return Fetch the record with id &#x60;recordId&#x60; in the record collection with id
-   *     &#x60;collectionId&#x60; (status code 200) or The requested resource does not exist on the
-   *     server. For example, a path parameter had an incorrect value. (status code 404) or A server
-   *     error occurred. (status code 500)
-   */
-  @Operation(
-      operationId = "getRecord",
-      summary = "fetch a single record",
-      description =
-          "Fetch the record with id `recordId` in the record collection with id `catalogId`.  Use"
-              + " content negotiation to request HTML or GeoJSON.",
-      responses = {
-        @ApiResponse(
-            responseCode = "200",
-            description =
-                "Fetch the record with id `recordId` in the record collection with id"
-                    + " `collectionId`",
-            content = {
-              @Content(
-                  mediaType = "application/geo+json",
-                  schema = @Schema(implementation = OgcApiRecordsRecordGeoJSONDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsRecordGeoJSONDto.class)),
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsRecordGeoJSONDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "404",
-            description =
-                "The requested resource does not exist on the server. For example, a path parameter"
-                    + " had an incorrect value.",
-            content = {
-              @Content(
-                  mediaType = "application/geo+json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "A server error occurred.",
-            content = {
-              @Content(
-                  mediaType = "application/geo+json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+    /**
+     * GET /collections/{catalogId}/items/{recordId} : fetch a single record Fetch the record with id
+     * &#x60;recordId&#x60; in the record collection with id &#x60;catalogId&#x60;. Use content
+     * negotiation to request HTML or GeoJSON.
+     *
+     * @param catalogId local identifier of a catalog (required)
+     * @param recordId local identifier of a record (required)
+     * @return Fetch the record with id &#x60;recordId&#x60; in the record collection with id
+     *     &#x60;collectionId&#x60; (status code 200) or The requested resource does not exist on the
+     *     server. For example, a path parameter had an incorrect value. (status code 404) or A server
+     *     error occurred. (status code 500)
+     */
+    @Operation(
+            operationId = "getRecord",
+            summary = "fetch a single record",
+            description = "Fetch the record with id `recordId` in the record collection with id `catalogId`.  Use"
+                    + " content negotiation to request HTML or GeoJSON.",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Fetch the record with id `recordId` in the record collection with id"
+                                + " `collectionId`",
+                        content = {
+                            @Content(
+                                    mediaType = "application/geo+json",
+                                    schema = @Schema(implementation = OgcApiRecordsRecordGeoJSONDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsRecordGeoJSONDto.class)),
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsRecordGeoJSONDto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "404",
+                        description =
+                                "The requested resource does not exist on the server. For example, a path parameter"
+                                        + " had an incorrect value.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/geo+json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "A server error occurred.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/geo+json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        })
             })
-      })
-  @RequestMapping(
-      method = RequestMethod.GET,
-      value = "/collections/{catalogId}/items/{recordId}",
-      produces = {"application/geo+json", "text/html", "application/json"})
-  default ResponseEntity<OgcApiRecordsRecordGeoJSONDto> getRecord(
-      @Parameter(
-              name = "catalogId",
-              description = "local identifier of a catalog",
-              required = true,
-              in = ParameterIn.PATH)
-          @PathVariable("catalogId")
-          String catalogId,
-      @Parameter(
-              name = "recordId",
-              description = "local identifier of a record",
-              required = true,
-              in = ParameterIn.PATH)
-          @PathVariable("recordId")
-          String recordId) {
-    getRequest()
-        .ifPresent(
-            request -> {
-              for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/collections/{catalogId}/items/{recordId}",
+            produces = {"application/geo+json", "text/html", "application/json"})
+    default ResponseEntity<OgcApiRecordsRecordGeoJSONDto> getRecord(
+            @Parameter(
+                            name = "catalogId",
+                            description = "local identifier of a catalog",
+                            required = true,
+                            in = ParameterIn.PATH)
+                    @PathVariable("catalogId")
+                    String catalogId,
+            @Parameter(
+                            name = "recordId",
+                            description = "local identifier of a record",
+                            required = true,
+                            in = ParameterIn.PATH)
+                    @PathVariable("recordId")
+                    String recordId) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/geo+json"))) {
-                  String exampleString =
-                      "Custom MIME type example not yet supported: application/geo+json";
-                  ApiUtil.setExampleResponse(request, "application/geo+json", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: application/geo+json";
+                    ApiUtil.setExampleResponse(request, "application/geo+json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
-              }
-            });
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
-  /**
-   * GET /collections/{catalogId}/items : fetch records Fetch records of the record collection with
-   * id &#x60;catalogId&#x60;. Every record in a dataset belongs to a collection. A dataset may
-   * consist of multiple record collections. A record collection is often a collection of records of
-   * a similar type, based on a common schema. Use content negotiation to request HTML or GeoJSON.
-   *
-   * @param catalogId local identifier of a catalog (required)
-   * @param bbox Only features that have a geometry that intersects the bounding box are selected.
-   *     The bounding box is provided as four or six numbers, depending on whether the coordinate
-   *     reference system includes a vertical axis (height or depth): * Lower left corner,
-   *     coordinate axis 1 * Lower left corner, coordinate axis 2 * Minimum value, coordinate axis 3
-   *     (optional) * Upper right corner, coordinate axis 1 * Upper right corner, coordinate axis 2
-   *     * Maximum value, coordinate axis 3 (optional) If the value consists of four numbers, the
-   *     coordinate reference system is WGS 84 longitude/latitude
-   *     (http://www.opengis.net/def/crs/OGC/1.3/CRS84) unless a different coordinate reference
-   *     system is specified in the parameter &#x60;bbox-crs&#x60;. If the value consists of six
-   *     numbers, the coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height
-   *     (http://www.opengis.net/def/crs/OGC/0/CRS84h) unless a different coordinate reference
-   *     system is specified in the parameter &#x60;bbox-crs&#x60;. The query parameter
-   *     &#x60;bbox-crs&#x60; is specified in OGC API - Features - Part 2: Coordinate Reference
-   *     Systems by Reference. For WGS 84 longitude/latitude the values are in most cases the
-   *     sequence of minimum longitude, minimum latitude, maximum longitude and maximum latitude.
-   *     However, in cases where the box spans the antimeridian the first value (west-most box edge)
-   *     is larger than the third value (east-most box edge). If the vertical axis is included, the
-   *     third and the sixth number are the bottom and the top of the 3-dimensional bounding box. If
-   *     a feature has multiple spatial geometry properties, it is the decision of the server
-   *     whether only a single spatial geometry property is used to determine the extent or all
-   *     relevant geometries. (optional)
-   * @param datetime Either a date-time or an interval. Date and time expressions adhere to RFC
-   *     3339. Intervals may be bounded or half-bounded (double-dots at start or end). Examples: * A
-   *     date-time: \&quot;2018-02-12T23:20:50Z\&quot; * A bounded interval:
-   *     \&quot;2018-02-12T00:00:00Z/2018-03-18T12:31:12Z\&quot; * Half-bounded intervals:
-   *     \&quot;2018-02-12T00:00:00Z/..\&quot; or \&quot;../2018-03-18T12:31:12Z\&quot; Only
-   *     features that have a temporal property that intersects the value of &#x60;datetime&#x60;
-   *     are selected. If a feature has multiple temporal properties, it is the decision of the
-   *     server whether only a single temporal property is used to determine the extent or all
-   *     relevant temporal properties. (optional)
-   * @param limit The optional limit parameter limits the number of items that are presented in the
-   *     response document. Only items are counted that are on the first level of the collection in
-   *     the response document. Nested objects contained within the explicitly requested items shall
-   *     not be counted. Minimum &#x3D; 1. Maximum &#x3D; 10000. Default &#x3D; 10. (optional,
-   *     default to 10)
-   * @param q The optional q parameter supports keyword searching. Only records whose text fields
-   *     contain one or more of the specified search terms are selected. The specific set of text
-   *     keys/fields/properties of a record to which the q operator is applied is up to the
-   *     description of the server. Implementations should, however, apply the q operator to the
-   *     title, description and keywords keys/fields/properties. (optional)
-   * @param type The optional type parameter supports searching by resource type. Only records whose
-   *     type, as indicated by the value of the type core queryable, is equal to one of the listed
-   *     values shall be selected. (optional)
-   * @param externalId The optional externalId parameter supports searching by an identifier that
-   *     was not assigned by the catalog (i.e. an external identifier). Only records with an
-   *     external identifer, as indicated by the value of the externalId core queryable array, that
-   *     is equal to one of the listed values shall be selected. (optional)
-   * @param ids The optional ids parameter allows a specified of records to be fetched from a
-   *     catalog using their identifiers. (optional)
-   * @param sortby Specifies a comma-separated list of property names by which the response shall be
-   *     sorted. If the property name is preceded by a plus (+) sign it indicates an ascending sort
-   *     for that property. If the property name is preceded by a minus (-) sign it indicates a
-   *     descending sort for that property. If the property is not preceded by a plus or minus, then
-   *     the default sort order implied is ascending (+). (optional)
-   * @return The response is a document consisting of records in the collection. The records
-   *     included in the response are determined by the server based on the query parameters of the
-   *     request. To support access to larger collections without overloading the client, the API
-   *     supports paged access with links to the next page, if more records are selected that the
-   *     page size. The &#x60;bbox&#x60; and &#x60;datetime&#x60; parameter can be used to select
-   *     only a subset of the records in the collection (the records that are in the bounding box or
-   *     time interval). The &#x60;bbox&#x60; parameter matches all records in the collection that
-   *     are not associated with a location, too. The &#x60;datetime&#x60; parameter matches all
-   *     records in the collection that are not associated with a time stamp or interval, too. The
-   *     &#x60;limit&#x60; parameter may be used to control the subset of the selected records that
-   *     should be returned in the response, the page size. Each page may include information about
-   *     the number of selected and returned records (&#x60;numberMatched&#x60; and
-   *     &#x60;numberReturned&#x60;) as well as links to support paging (link relation
-   *     &#x60;next&#x60;). (status code 200) or A query parameter has an invalid value. (status
-   *     code 400) or The requested resource does not exist on the server. For example, a path
-   *     parameter had an incorrect value. (status code 404) or A server error occurred. (status
-   *     code 500)
-   */
-  @Operation(
-      operationId = "getRecords",
-      summary = "fetch records",
-      description =
-          "Fetch records of the record collection with id `catalogId`.  Every record in a dataset"
-              + " belongs to a collection. A dataset may consist of multiple record collections. A"
-              + " record collection is often a collection of records of a similar type, based on a"
-              + " common schema.  Use content negotiation to request HTML or GeoJSON.",
-      responses = {
-        @ApiResponse(
-            responseCode = "200",
-            description =
-                "The response is a document consisting of records in the collection. The records"
-                    + " included in the response are determined by the server based on the query"
-                    + " parameters of the request. To support access to larger collections without"
-                    + " overloading the client, the API supports paged access with links to the"
-                    + " next page, if more records are selected that the page size. The `bbox` and"
-                    + " `datetime` parameter can be used to select only a subset of the records in"
-                    + " the collection (the records that are in the bounding box or time interval)."
-                    + " The `bbox` parameter matches all records in the collection that are not"
-                    + " associated with a location, too. The `datetime` parameter matches all"
-                    + " records in the collection that are not associated with a time stamp or"
-                    + " interval, too. The `limit` parameter may be used to control the subset of"
-                    + " the selected records that should be returned in the response, the page"
-                    + " size. Each page may include information about the number of selected and"
-                    + " returned records (`numberMatched` and `numberReturned`) as well as links to"
-                    + " support paging (link relation `next`).",
-            content = {
-              @Content(
-                  mediaType = "application/geo+json",
-                  schema = @Schema(implementation = OgcApiRecordsGetRecords200ResponseDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsGetRecords200ResponseDto.class)),
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsGetRecords200ResponseDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "400",
-            description = "A query parameter has an invalid value.",
-            content = {
-              @Content(
-                  mediaType = "application/geo+json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "404",
-            description =
-                "The requested resource does not exist on the server. For example, a path parameter"
-                    + " had an incorrect value.",
-            content = {
-              @Content(
-                  mediaType = "application/geo+json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "A server error occurred.",
-            content = {
-              @Content(
-                  mediaType = "application/geo+json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+    /**
+     * GET /collections/{catalogId}/items : fetch records Fetch records of the record collection with
+     * id &#x60;catalogId&#x60;. Every record in a dataset belongs to a collection. A dataset may
+     * consist of multiple record collections. A record collection is often a collection of records of
+     * a similar type, based on a common schema. Use content negotiation to request HTML or GeoJSON.
+     *
+     * @param catalogId local identifier of a catalog (required)
+     * @param bbox Only features that have a geometry that intersects the bounding box are selected.
+     *     The bounding box is provided as four or six numbers, depending on whether the coordinate
+     *     reference system includes a vertical axis (height or depth): * Lower left corner,
+     *     coordinate axis 1 * Lower left corner, coordinate axis 2 * Minimum value, coordinate axis 3
+     *     (optional) * Upper right corner, coordinate axis 1 * Upper right corner, coordinate axis 2
+     *     * Maximum value, coordinate axis 3 (optional) If the value consists of four numbers, the
+     *     coordinate reference system is WGS 84 longitude/latitude
+     *     (http://www.opengis.net/def/crs/OGC/1.3/CRS84) unless a different coordinate reference
+     *     system is specified in the parameter &#x60;bbox-crs&#x60;. If the value consists of six
+     *     numbers, the coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height
+     *     (http://www.opengis.net/def/crs/OGC/0/CRS84h) unless a different coordinate reference
+     *     system is specified in the parameter &#x60;bbox-crs&#x60;. The query parameter
+     *     &#x60;bbox-crs&#x60; is specified in OGC API - Features - Part 2: Coordinate Reference
+     *     Systems by Reference. For WGS 84 longitude/latitude the values are in most cases the
+     *     sequence of minimum longitude, minimum latitude, maximum longitude and maximum latitude.
+     *     However, in cases where the box spans the antimeridian the first value (west-most box edge)
+     *     is larger than the third value (east-most box edge). If the vertical axis is included, the
+     *     third and the sixth number are the bottom and the top of the 3-dimensional bounding box. If
+     *     a feature has multiple spatial geometry properties, it is the decision of the server
+     *     whether only a single spatial geometry property is used to determine the extent or all
+     *     relevant geometries. (optional)
+     * @param datetime Either a date-time or an interval. Date and time expressions adhere to RFC
+     *     3339. Intervals may be bounded or half-bounded (double-dots at start or end). Examples: * A
+     *     date-time: \&quot;2018-02-12T23:20:50Z\&quot; * A bounded interval:
+     *     \&quot;2018-02-12T00:00:00Z/2018-03-18T12:31:12Z\&quot; * Half-bounded intervals:
+     *     \&quot;2018-02-12T00:00:00Z/..\&quot; or \&quot;../2018-03-18T12:31:12Z\&quot; Only
+     *     features that have a temporal property that intersects the value of &#x60;datetime&#x60;
+     *     are selected. If a feature has multiple temporal properties, it is the decision of the
+     *     server whether only a single temporal property is used to determine the extent or all
+     *     relevant temporal properties. (optional)
+     * @param limit The optional limit parameter limits the number of items that are presented in the
+     *     response document. Only items are counted that are on the first level of the collection in
+     *     the response document. Nested objects contained within the explicitly requested items shall
+     *     not be counted. Minimum &#x3D; 1. Maximum &#x3D; 10000. Default &#x3D; 10. (optional,
+     *     default to 10)
+     * @param q The optional q parameter supports keyword searching. Only records whose text fields
+     *     contain one or more of the specified search terms are selected. The specific set of text
+     *     keys/fields/properties of a record to which the q operator is applied is up to the
+     *     description of the server. Implementations should, however, apply the q operator to the
+     *     title, description and keywords keys/fields/properties. (optional)
+     * @param type The optional type parameter supports searching by resource type. Only records whose
+     *     type, as indicated by the value of the type core queryable, is equal to one of the listed
+     *     values shall be selected. (optional)
+     * @param externalId The optional externalId parameter supports searching by an identifier that
+     *     was not assigned by the catalog (i.e. an external identifier). Only records with an
+     *     external identifer, as indicated by the value of the externalId core queryable array, that
+     *     is equal to one of the listed values shall be selected. (optional)
+     * @param ids The optional ids parameter allows a specified of records to be fetched from a
+     *     catalog using their identifiers. (optional)
+     * @param sortby Specifies a comma-separated list of property names by which the response shall be
+     *     sorted. If the property name is preceded by a plus (+) sign it indicates an ascending sort
+     *     for that property. If the property name is preceded by a minus (-) sign it indicates a
+     *     descending sort for that property. If the property is not preceded by a plus or minus, then
+     *     the default sort order implied is ascending (+). (optional)
+     * @return The response is a document consisting of records in the collection. The records
+     *     included in the response are determined by the server based on the query parameters of the
+     *     request. To support access to larger collections without overloading the client, the API
+     *     supports paged access with links to the next page, if more records are selected that the
+     *     page size. The &#x60;bbox&#x60; and &#x60;datetime&#x60; parameter can be used to select
+     *     only a subset of the records in the collection (the records that are in the bounding box or
+     *     time interval). The &#x60;bbox&#x60; parameter matches all records in the collection that
+     *     are not associated with a location, too. The &#x60;datetime&#x60; parameter matches all
+     *     records in the collection that are not associated with a time stamp or interval, too. The
+     *     &#x60;limit&#x60; parameter may be used to control the subset of the selected records that
+     *     should be returned in the response, the page size. Each page may include information about
+     *     the number of selected and returned records (&#x60;numberMatched&#x60; and
+     *     &#x60;numberReturned&#x60;) as well as links to support paging (link relation
+     *     &#x60;next&#x60;). (status code 200) or A query parameter has an invalid value. (status
+     *     code 400) or The requested resource does not exist on the server. For example, a path
+     *     parameter had an incorrect value. (status code 404) or A server error occurred. (status
+     *     code 500)
+     */
+    @Operation(
+            operationId = "getRecords",
+            summary = "fetch records",
+            description = "Fetch records of the record collection with id `catalogId`.  Every record in a dataset"
+                    + " belongs to a collection. A dataset may consist of multiple record collections. A"
+                    + " record collection is often a collection of records of a similar type, based on a"
+                    + " common schema.  Use content negotiation to request HTML or GeoJSON.",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "The response is a document consisting of records in the collection. The records"
+                                + " included in the response are determined by the server based on the query"
+                                + " parameters of the request. To support access to larger collections without"
+                                + " overloading the client, the API supports paged access with links to the"
+                                + " next page, if more records are selected that the page size. The `bbox` and"
+                                + " `datetime` parameter can be used to select only a subset of the records in"
+                                + " the collection (the records that are in the bounding box or time interval)."
+                                + " The `bbox` parameter matches all records in the collection that are not"
+                                + " associated with a location, too. The `datetime` parameter matches all"
+                                + " records in the collection that are not associated with a time stamp or"
+                                + " interval, too. The `limit` parameter may be used to control the subset of"
+                                + " the selected records that should be returned in the response, the page"
+                                + " size. Each page may include information about the number of selected and"
+                                + " returned records (`numberMatched` and `numberReturned`) as well as links to"
+                                + " support paging (link relation `next`).",
+                        content = {
+                            @Content(
+                                    mediaType = "application/geo+json",
+                                    schema = @Schema(implementation = OgcApiRecordsGetRecords200ResponseDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsGetRecords200ResponseDto.class)),
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsGetRecords200ResponseDto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "A query parameter has an invalid value.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/geo+json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "404",
+                        description =
+                                "The requested resource does not exist on the server. For example, a path parameter"
+                                        + " had an incorrect value.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/geo+json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "A server error occurred.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/geo+json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        })
             })
-      })
-  @RequestMapping(
-      method = RequestMethod.GET,
-      value = "/collections/{catalogId}/items",
-      produces = {"application/geo+json", "text/html", "application/json"})
-  default ResponseEntity<OgcApiRecordsGetRecords200ResponseDto> getRecords(
-      @Parameter(
-              name = "catalogId",
-              description = "local identifier of a catalog",
-              required = true,
-              in = ParameterIn.PATH)
-          @PathVariable("catalogId")
-          String catalogId,
-      @Parameter(
-              name = "bbox",
-              description =
-                  "Only features that have a geometry that intersects the bounding box are"
-                      + " selected. The bounding box is provided as four or six numbers, depending"
-                      + " on whether the coordinate reference system includes a vertical axis"
-                      + " (height or depth):  * Lower left corner, coordinate axis 1 * Lower left"
-                      + " corner, coordinate axis 2 * Minimum value, coordinate axis 3 (optional) *"
-                      + " Upper right corner, coordinate axis 1 * Upper right corner, coordinate"
-                      + " axis 2 * Maximum value, coordinate axis 3 (optional)  If the value"
-                      + " consists of four numbers, the coordinate reference system is WGS 84"
-                      + " longitude/latitude (http://www.opengis.net/def/crs/OGC/1.3/CRS84) unless"
-                      + " a different coordinate reference system is specified in the parameter"
-                      + " `bbox-crs`.  If the value consists of six numbers, the coordinate"
-                      + " reference system is WGS 84 longitude/latitude/ellipsoidal height"
-                      + " (http://www.opengis.net/def/crs/OGC/0/CRS84h) unless a different"
-                      + " coordinate reference system is specified in the parameter `bbox-crs`. "
-                      + " The query parameter `bbox-crs` is specified in OGC API - Features - Part"
-                      + " 2: Coordinate Reference Systems by Reference.  For WGS 84"
-                      + " longitude/latitude the values are in most cases the sequence of minimum"
-                      + " longitude, minimum latitude, maximum longitude and maximum latitude."
-                      + " However, in cases where the box spans the antimeridian the first value"
-                      + " (west-most box edge) is larger than the third value (east-most box edge)."
-                      + "  If the vertical axis is included, the third and the sixth number are the"
-                      + " bottom and the top of the 3-dimensional bounding box.  If a feature has"
-                      + " multiple spatial geometry properties, it is the decision of the server"
-                      + " whether only a single spatial geometry property is used to determine the"
-                      + " extent or all relevant geometries.",
-              in = ParameterIn.QUERY)
-          @Valid
-          @RequestParam(value = "bbox", required = false)
-          GetRecordsBboxDto bbox,
-      @Parameter(
-              name = "datetime",
-              description =
-                  "Either a date-time or an interval. Date and time expressions adhere to RFC 3339."
-                      + " Intervals may be bounded or half-bounded (double-dots at start or end). "
-                      + " Examples:  * A date-time: \"2018-02-12T23:20:50Z\" * A bounded interval:"
-                      + " \"2018-02-12T00:00:00Z/2018-03-18T12:31:12Z\" * Half-bounded intervals:"
-                      + " \"2018-02-12T00:00:00Z/..\" or \"../2018-03-18T12:31:12Z\"  Only features"
-                      + " that have a temporal property that intersects the value of `datetime` are"
-                      + " selected.  If a feature has multiple temporal properties, it is the"
-                      + " decision of the server whether only a single temporal property is used to"
-                      + " determine the extent or all relevant temporal properties.",
-              in = ParameterIn.QUERY)
-          @Valid
-          @RequestParam(value = "datetime", required = false)
-          String datetime,
-      @Min(1)
-          @Max(10000)
-          @Parameter(
-              name = "limit",
-              description =
-                  "The optional limit parameter limits the number of items that are presented in"
-                      + " the response document.  Only items are counted that are on the first"
-                      + " level of the collection in the response document. Nested objects"
-                      + " contained within the explicitly requested items shall not be counted. "
-                      + " Minimum = 1. Maximum = 10000. Default = 10.",
-              in = ParameterIn.QUERY)
-          @Valid
-          @RequestParam(value = "limit", required = false, defaultValue = "10")
-          Integer limit,
-      @Parameter(
-              name = "q",
-              description =
-                  "The optional q parameter supports keyword searching.  Only records whose text"
-                      + " fields contain one or more of the specified search terms are selected. "
-                      + " The specific set of text keys/fields/properties of a record to which the"
-                      + " q operator is applied is up to the description of the server.  "
-                      + " Implementations should, however, apply the q operator to the title,"
-                      + " description and keywords keys/fields/properties.",
-              in = ParameterIn.QUERY)
-          @Valid
-          @RequestParam(value = "q", required = false)
-          List<String> q,
-      @Parameter(
-              name = "type",
-              description =
-                  "The optional type parameter supports searching by resource type.  Only records"
-                      + " whose type, as indicated by the value of the type core queryable, is"
-                      + " equal to one of the listed values shall be selected.",
-              in = ParameterIn.QUERY)
-          @Valid
-          @RequestParam(value = "type", required = false)
-          List<String> type,
-      @Parameter(
-              name = "externalId",
-              description =
-                  "The optional externalId parameter supports searching by an identifier that was"
-                      + " not assigned by the catalog (i.e. an external identifier). Only records"
-                      + " with an external identifer, as indicated by the value of the externalId"
-                      + " core queryable array, that is equal to one of the listed values shall be"
-                      + " selected.",
-              in = ParameterIn.QUERY)
-          @Valid
-          @RequestParam(value = "externalId", required = false)
-          List<String> externalId,
-      @Parameter(
-              name = "ids",
-              description =
-                  "The optional ids parameter allows a specified of records to be fetched from a"
-                      + " catalog using their identifiers.",
-              in = ParameterIn.QUERY)
-          @Valid
-          @RequestParam(value = "ids", required = false)
-          List<String> ids,
-      @Size(min = 1)
-          @Parameter(
-              name = "sortby",
-              description =
-                  "Specifies a comma-separated list of property names by which the response shall"
-                      + " be sorted.  If the property name is preceded by a plus (+) sign it"
-                      + " indicates an ascending sort for that property.  If the property name is"
-                      + " preceded by a minus (-) sign it indicates a descending sort for that"
-                      + " property.  If the property is not preceded by a plus or minus, then the"
-                      + " default sort order implied is ascending (+).",
-              in = ParameterIn.QUERY)
-          @Valid
-          @RequestParam(value = "sortby", required = false)
-          List<@Pattern(regexp = "[+|-]?[A-Za-z_].*") String> sortby) {
-    getRequest()
-        .ifPresent(
-            request -> {
-              for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/collections/{catalogId}/items",
+            produces = {"application/geo+json", "text/html", "application/json"})
+    default ResponseEntity<OgcApiRecordsGetRecords200ResponseDto> getRecords(
+            @Parameter(
+                            name = "catalogId",
+                            description = "local identifier of a catalog",
+                            required = true,
+                            in = ParameterIn.PATH)
+                    @PathVariable("catalogId")
+                    String catalogId,
+            @Parameter(
+                            name = "bbox",
+                            description = "Only features that have a geometry that intersects the bounding box are"
+                                    + " selected. The bounding box is provided as four or six numbers, depending"
+                                    + " on whether the coordinate reference system includes a vertical axis"
+                                    + " (height or depth):  * Lower left corner, coordinate axis 1 * Lower left"
+                                    + " corner, coordinate axis 2 * Minimum value, coordinate axis 3 (optional) *"
+                                    + " Upper right corner, coordinate axis 1 * Upper right corner, coordinate"
+                                    + " axis 2 * Maximum value, coordinate axis 3 (optional)  If the value"
+                                    + " consists of four numbers, the coordinate reference system is WGS 84"
+                                    + " longitude/latitude (http://www.opengis.net/def/crs/OGC/1.3/CRS84) unless"
+                                    + " a different coordinate reference system is specified in the parameter"
+                                    + " `bbox-crs`.  If the value consists of six numbers, the coordinate"
+                                    + " reference system is WGS 84 longitude/latitude/ellipsoidal height"
+                                    + " (http://www.opengis.net/def/crs/OGC/0/CRS84h) unless a different"
+                                    + " coordinate reference system is specified in the parameter `bbox-crs`. "
+                                    + " The query parameter `bbox-crs` is specified in OGC API - Features - Part"
+                                    + " 2: Coordinate Reference Systems by Reference.  For WGS 84"
+                                    + " longitude/latitude the values are in most cases the sequence of minimum"
+                                    + " longitude, minimum latitude, maximum longitude and maximum latitude."
+                                    + " However, in cases where the box spans the antimeridian the first value"
+                                    + " (west-most box edge) is larger than the third value (east-most box edge)."
+                                    + "  If the vertical axis is included, the third and the sixth number are the"
+                                    + " bottom and the top of the 3-dimensional bounding box.  If a feature has"
+                                    + " multiple spatial geometry properties, it is the decision of the server"
+                                    + " whether only a single spatial geometry property is used to determine the"
+                                    + " extent or all relevant geometries.",
+                            in = ParameterIn.QUERY)
+                    @Valid
+                    @RequestParam(value = "bbox", required = false)
+                    GetRecordsBboxDto bbox,
+            @Parameter(
+                            name = "datetime",
+                            description =
+                                    "Either a date-time or an interval. Date and time expressions adhere to RFC 3339."
+                                            + " Intervals may be bounded or half-bounded (double-dots at start or end). "
+                                            + " Examples:  * A date-time: \"2018-02-12T23:20:50Z\" * A bounded interval:"
+                                            + " \"2018-02-12T00:00:00Z/2018-03-18T12:31:12Z\" * Half-bounded intervals:"
+                                            + " \"2018-02-12T00:00:00Z/..\" or \"../2018-03-18T12:31:12Z\"  Only features"
+                                            + " that have a temporal property that intersects the value of `datetime` are"
+                                            + " selected.  If a feature has multiple temporal properties, it is the"
+                                            + " decision of the server whether only a single temporal property is used to"
+                                            + " determine the extent or all relevant temporal properties.",
+                            in = ParameterIn.QUERY)
+                    @Valid
+                    @RequestParam(value = "datetime", required = false)
+                    String datetime,
+            @Min(1)
+                    @Max(10000)
+                    @Parameter(
+                            name = "limit",
+                            description =
+                                    "The optional limit parameter limits the number of items that are presented in"
+                                            + " the response document.  Only items are counted that are on the first"
+                                            + " level of the collection in the response document. Nested objects"
+                                            + " contained within the explicitly requested items shall not be counted. "
+                                            + " Minimum = 1. Maximum = 10000. Default = 10.",
+                            in = ParameterIn.QUERY)
+                    @Valid
+                    @RequestParam(value = "limit", required = false, defaultValue = "10")
+                    Integer limit,
+            @Parameter(
+                            name = "q",
+                            description =
+                                    "The optional q parameter supports keyword searching.  Only records whose text"
+                                            + " fields contain one or more of the specified search terms are selected. "
+                                            + " The specific set of text keys/fields/properties of a record to which the"
+                                            + " q operator is applied is up to the description of the server.  "
+                                            + " Implementations should, however, apply the q operator to the title,"
+                                            + " description and keywords keys/fields/properties.",
+                            in = ParameterIn.QUERY)
+                    @Valid
+                    @RequestParam(value = "q", required = false)
+                    List<String> q,
+            @Parameter(
+                            name = "type",
+                            description =
+                                    "The optional type parameter supports searching by resource type.  Only records"
+                                            + " whose type, as indicated by the value of the type core queryable, is"
+                                            + " equal to one of the listed values shall be selected.",
+                            in = ParameterIn.QUERY)
+                    @Valid
+                    @RequestParam(value = "type", required = false)
+                    List<String> type,
+            @Parameter(
+                            name = "externalId",
+                            description =
+                                    "The optional externalId parameter supports searching by an identifier that was"
+                                            + " not assigned by the catalog (i.e. an external identifier). Only records"
+                                            + " with an external identifer, as indicated by the value of the externalId"
+                                            + " core queryable array, that is equal to one of the listed values shall be"
+                                            + " selected.",
+                            in = ParameterIn.QUERY)
+                    @Valid
+                    @RequestParam(value = "externalId", required = false)
+                    List<String> externalId,
+            @Parameter(
+                            name = "ids",
+                            description =
+                                    "The optional ids parameter allows a specified of records to be fetched from a"
+                                            + " catalog using their identifiers.",
+                            in = ParameterIn.QUERY)
+                    @Valid
+                    @RequestParam(value = "ids", required = false)
+                    List<String> ids,
+            @Size(min = 1)
+                    @Parameter(
+                            name = "sortby",
+                            description =
+                                    "Specifies a comma-separated list of property names by which the response shall"
+                                            + " be sorted.  If the property name is preceded by a plus (+) sign it"
+                                            + " indicates an ascending sort for that property.  If the property name is"
+                                            + " preceded by a minus (-) sign it indicates a descending sort for that"
+                                            + " property.  If the property is not preceded by a plus or minus, then the"
+                                            + " default sort order implied is ascending (+).",
+                            in = ParameterIn.QUERY)
+                    @Valid
+                    @RequestParam(value = "sortby", required = false)
+                    List<@Pattern(regexp = "[+|-]?[A-Za-z_].*") String> sortby) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/geo+json"))) {
-                  String exampleString =
-                      "Custom MIME type example not yet supported: application/geo+json";
-                  ApiUtil.setExampleResponse(request, "application/geo+json", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: application/geo+json";
+                    ApiUtil.setExampleResponse(request, "application/geo+json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
-              }
-            });
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
-  /**
-   * GET /collections/{catalogId}/sortables : get the list of sortable properties Fetch the list of
-   * properties which can be used to sort the getRecords response.
-   *
-   * @param catalogId local identifier of a catalog (required)
-   * @return A list of properties by which the server response may be sorted. (status code 200) or
-   *     The requested resource does not exist on the server. For example, a path parameter had an
-   *     incorrect value. (status code 404) or A server error occurred. (status code 500)
-   */
-  @Operation(
-      operationId = "getSortables",
-      summary = "get the list of sortable properties",
-      description =
-          "Fetch the list of properties which can be used to sort the getRecords response.",
-      responses = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "A list of properties by which the server response may be sorted.",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsSchemaDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsSchemaDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "404",
-            description =
-                "The requested resource does not exist on the server. For example, a path parameter"
-                    + " had an incorrect value.",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "A server error occurred.",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
-              @Content(
-                  mediaType = "text/html",
-                  schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+    /**
+     * GET /collections/{catalogId}/sortables : get the list of sortable properties Fetch the list of
+     * properties which can be used to sort the getRecords response.
+     *
+     * @param catalogId local identifier of a catalog (required)
+     * @return A list of properties by which the server response may be sorted. (status code 200) or
+     *     The requested resource does not exist on the server. For example, a path parameter had an
+     *     incorrect value. (status code 404) or A server error occurred. (status code 500)
+     */
+    @Operation(
+            operationId = "getSortables",
+            summary = "get the list of sortable properties",
+            description = "Fetch the list of properties which can be used to sort the getRecords response.",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "A list of properties by which the server response may be sorted.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsSchemaDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsSchemaDto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "404",
+                        description =
+                                "The requested resource does not exist on the server. For example, a path parameter"
+                                        + " had an incorrect value.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        }),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "A server error occurred.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class)),
+                            @Content(
+                                    mediaType = "text/html",
+                                    schema = @Schema(implementation = OgcApiRecordsExceptionDto.class))
+                        })
             })
-      })
-  @RequestMapping(
-      method = RequestMethod.GET,
-      value = "/collections/{catalogId}/sortables",
-      produces = {"application/json", "text/html"})
-  default ResponseEntity<OgcApiRecordsSchemaDto> getSortables(
-      @Parameter(
-              name = "catalogId",
-              description = "local identifier of a catalog",
-              required = true,
-              in = ParameterIn.PATH)
-          @PathVariable("catalogId")
-          String catalogId) {
-    getRequest()
-        .ifPresent(
-            request -> {
-              for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/collections/{catalogId}/sortables",
+            produces = {"application/json", "text/html"})
+    default ResponseEntity<OgcApiRecordsSchemaDto> getSortables(
+            @Parameter(
+                            name = "catalogId",
+                            description = "local identifier of a catalog",
+                            required = true,
+                            in = ParameterIn.PATH)
+                    @PathVariable("catalogId")
+                    String catalogId) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"security\" : [ null, null ], \"components\" : { \"headers\" : \"{}\","
-                          + " \"examples\" : \"{}\", \"schemas\" : \"{}\", \"requestBodies\" :"
-                          + " \"{}\", \"responses\" : \"{}\", \"callbacks\" : \"{}\", \"links\" :"
-                          + " \"{}\", \"securitySchemes\" : \"{}\", \"parameters\" : \"{}\" },"
-                          + " \"servers\" : [ { \"variables\" : { \"key\" : { \"default\" :"
-                          + " \"default\", \"description\" : \"description\", \"enum\" : ["
-                          + " \"enum\", \"enum\" ] } }, \"description\" : \"description\", \"url\""
-                          + " : \"url\" }, { \"variables\" : { \"key\" : { \"default\" :"
-                          + " \"default\", \"description\" : \"description\", \"enum\" : ["
-                          + " \"enum\", \"enum\" ] } }, \"description\" : \"description\", \"url\""
-                          + " : \"url\" } ], \"openapi\" : \"openapi\", \"paths\" : \"{}\","
-                          + " \"externalDocs\" : { \"description\" : \"description\", \"url\" :"
-                          + " \"url\" }, \"info\" : { \"license\" : { \"name\" : \"name\", \"url\""
-                          + " : \"url\" }, \"contact\" : { \"name\" : \"name\", \"url\" : \"url\","
-                          + " \"email\" : \"email\" }, \"description\" : \"description\","
-                          + " \"termsOfService\" : \"termsOfService\", \"title\" : \"title\","
-                          + " \"version\" : \"version\" }, \"tags\" : [ { \"name\" : \"name\","
-                          + " \"description\" : \"description\", \"externalDocs\" : {"
-                          + " \"description\" : \"description\", \"url\" : \"url\" } }, { \"name\""
-                          + " : \"name\", \"description\" : \"description\", \"externalDocs\" : {"
-                          + " \"description\" : \"description\", \"url\" : \"url\" } } ] }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"security\" : [ null, null ], \"components\" : { \"headers\" : \"{}\","
+                            + " \"examples\" : \"{}\", \"schemas\" : \"{}\", \"requestBodies\" :"
+                            + " \"{}\", \"responses\" : \"{}\", \"callbacks\" : \"{}\", \"links\" :"
+                            + " \"{}\", \"securitySchemes\" : \"{}\", \"parameters\" : \"{}\" },"
+                            + " \"servers\" : [ { \"variables\" : { \"key\" : { \"default\" :"
+                            + " \"default\", \"description\" : \"description\", \"enum\" : ["
+                            + " \"enum\", \"enum\" ] } }, \"description\" : \"description\", \"url\""
+                            + " : \"url\" }, { \"variables\" : { \"key\" : { \"default\" :"
+                            + " \"default\", \"description\" : \"description\", \"enum\" : ["
+                            + " \"enum\", \"enum\" ] } }, \"description\" : \"description\", \"url\""
+                            + " : \"url\" } ], \"openapi\" : \"openapi\", \"paths\" : \"{}\","
+                            + " \"externalDocs\" : { \"description\" : \"description\", \"url\" :"
+                            + " \"url\" }, \"info\" : { \"license\" : { \"name\" : \"name\", \"url\""
+                            + " : \"url\" }, \"contact\" : { \"name\" : \"name\", \"url\" : \"url\","
+                            + " \"email\" : \"email\" }, \"description\" : \"description\","
+                            + " \"termsOfService\" : \"termsOfService\", \"title\" : \"title\","
+                            + " \"version\" : \"version\" }, \"tags\" : [ { \"name\" : \"name\","
+                            + " \"description\" : \"description\", \"externalDocs\" : {"
+                            + " \"description\" : \"description\", \"url\" : \"url\" } }, { \"name\""
+                            + " : \"name\", \"description\" : \"description\", \"externalDocs\" : {"
+                            + " \"description\" : \"description\", \"url\" : \"url\" } } ] }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                  String exampleString =
-                      "{ \"code\" : \"code\", \"description\" : \"description\" }";
-                  ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                  break;
+                    String exampleString = "{ \"code\" : \"code\", \"description\" : \"description\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("text/html"))) {
-                  String exampleString = "Custom MIME type example not yet supported: text/html";
-                  ApiUtil.setExampleResponse(request, "text/html", exampleString);
-                  break;
+                    String exampleString = "Custom MIME type example not yet supported: text/html";
+                    ApiUtil.setExampleResponse(request, "text/html", exampleString);
+                    break;
                 }
-              }
-            });
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 }

@@ -38,39 +38,39 @@ import org.jdom.Element;
 
 /** Schema substitutions. */
 public class SchemaSubstitutions {
-  private Map<String, Element> htFields = new LinkedHashMap<String, Element>();
+    private Map<String, Element> htFields = new LinkedHashMap<String, Element>();
 
-  public SchemaSubstitutions(Path xmlSubstitutionFile) throws Exception {
-    if (xmlSubstitutionFile != null) {
-      Element subs = Xml.loadFile(xmlSubstitutionFile);
+    public SchemaSubstitutions(Path xmlSubstitutionFile) throws Exception {
+        if (xmlSubstitutionFile != null) {
+            Element subs = Xml.loadFile(xmlSubstitutionFile);
 
-      @SuppressWarnings("unchecked")
-      List<Element> list = subs.getChildren();
+            @SuppressWarnings("unchecked")
+            List<Element> list = subs.getChildren();
 
-      for (Element el : list) {
-        if (el.getName().equals("field")) {
-          htFields.put(el.getAttributeValue("name"), el);
+            for (Element el : list) {
+                if (el.getName().equals("field")) {
+                    htFields.put(el.getAttributeValue("name"), el);
+                }
+            }
         }
-      }
-    }
-  }
-
-  public List<String> getSubstitutes(String child) {
-    Element fieldEl = htFields.get(child);
-    if (fieldEl == null) return null;
-
-    ArrayList<String> results = new ArrayList<String>();
-
-    @SuppressWarnings("unchecked")
-    List<Element> list = fieldEl.getChildren();
-
-    for (Element elem : list) {
-      if (elem.getName().equals("substitute")) {
-        String name = elem.getAttributeValue("name");
-        results.add(name);
-      }
     }
 
-    return results;
-  }
+    public List<String> getSubstitutes(String child) {
+        Element fieldEl = htFields.get(child);
+        if (fieldEl == null) return null;
+
+        ArrayList<String> results = new ArrayList<String>();
+
+        @SuppressWarnings("unchecked")
+        List<Element> list = fieldEl.getChildren();
+
+        for (Element elem : list) {
+            if (elem.getName().equals("substitute")) {
+                String name = elem.getAttributeValue("name");
+                results.add(name);
+            }
+        }
+
+        return results;
+    }
 }

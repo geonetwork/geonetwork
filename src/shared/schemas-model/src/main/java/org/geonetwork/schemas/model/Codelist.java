@@ -34,13 +34,13 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Codelist {
 
-  @JacksonXmlProperty(isAttribute = true)
-  private String name;
+    @JacksonXmlProperty(isAttribute = true)
+    private String name;
 
-  @JacksonXmlProperty(isAttribute = true)
-  private String alias;
+    @JacksonXmlProperty(isAttribute = true)
+    private String alias;
 
-  @JacksonXmlProperty(localName = "entry")
-  @JacksonXmlElementWrapper(useWrapping = false)
-  private List<Entry> entry;
+    @JacksonXmlProperty(localName = "entry")
+    @JacksonXmlElementWrapper(useWrapping = false)
+    private List<Entry> entry;
 }

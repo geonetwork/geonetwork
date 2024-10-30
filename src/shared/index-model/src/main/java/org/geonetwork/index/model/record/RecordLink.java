@@ -27,18 +27,18 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RecordLink {
 
-  private String type;
-  private Origin origin;
-  private String to;
-  // TODO: Multilingual
-  private String title;
-  private String url;
-  private String associationType;
-  private String initiativeType;
+    private String type;
+    private Origin origin;
+    private String to;
+    // TODO: Multilingual
+    private String title;
+    private String url;
+    private String associationType;
+    private String initiativeType;
 
-  /** Origin of the link. */
-  public enum Origin {
-    remote,
-    catalog
-  }
+    /** Origin of the link. */
+    public enum Origin {
+        remote,
+        catalog
+    }
 }

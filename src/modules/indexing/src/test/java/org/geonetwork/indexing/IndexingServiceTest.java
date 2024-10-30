@@ -31,61 +31,64 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles(value = {"test"})
 class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
 
-  @Autowired IndexingRecordService indexingRecordService;
-  @Autowired IndexingService indexingService;
-  @Autowired MetadataRepository metadataRepository;
-  @Autowired private IndexClient indexClient;
+    @Autowired
+    IndexingRecordService indexingRecordService;
 
-  @BeforeAll
-  static void setup() {
-    TimeZone.setDefault(TimeZone.getTimeZone("CET"));
-  }
+    @Autowired
+    IndexingService indexingService;
 
-  @Test
-  void test_which_requires_elasticsearch() throws Exception {
-    String file = "iso19115-3.2018_dataset";
-    String schema = StringUtils.split(file, "_")[0];
-    String fileBaseName = String.format("samples/%s", file);
-    // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
-    // ".xml").getURI()));
-    String xml = IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream());
+    @Autowired
+    MetadataRepository metadataRepository;
 
-    Metadata dbRecord =
-        Metadata.builder()
-            .uuid(fileBaseName)
-            .istemplate("n")
-            .schemaid(schema)
-            .changedate("2020-01-01T00:00:00Z")
-            .createdate("2020-01-01T00:00:00Z")
-            .isharvested("n")
-            .source("null")
-            .popularity(0)
-            .rating(0)
-            .owner(1)
-            .groupowner(null)
-            .data(xml)
-            .build();
+    @Autowired
+    private IndexClient indexClient;
 
-    metadataRepository.save(dbRecord);
-
-    List<Future<?>> indexTaskSubmissions = indexingService.index(List.of(dbRecord.getUuid()));
-    for (Future<?> task : indexTaskSubmissions) {
-      task.get();
+    @BeforeAll
+    static void setup() {
+        TimeZone.setDefault(TimeZone.getTimeZone("CET"));
     }
 
-    boolean allDone = true;
-    for (Future<?> future : indexTaskSubmissions) {
-      allDone &= future.isDone();
-    }
+    @Test
+    void test_which_requires_elasticsearch() throws Exception {
+        String file = "iso19115-3.2018_dataset";
+        String schema = StringUtils.split(file, "_")[0];
+        String fileBaseName = String.format("samples/%s", file);
+        // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
+        // ".xml").getURI()));
+        String xml = IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream());
 
-    if (allDone) {
-      BooleanResponse exists =
-          indexClient
-              .getEsClient()
-              .exists(
-                  ExistsRequest.of(
-                      o -> o.index(indexClient.getIndexRecordName()).id(dbRecord.getUuid())));
-      assertTrue(exists.value());
+        Metadata dbRecord = Metadata.builder()
+                .uuid(fileBaseName)
+                .istemplate("n")
+                .schemaid(schema)
+                .changedate("2020-01-01T00:00:00Z")
+                .createdate("2020-01-01T00:00:00Z")
+                .isharvested("n")
+                .source("null")
+                .popularity(0)
+                .rating(0)
+                .owner(1)
+                .groupowner(null)
+                .data(xml)
+                .build();
+
+        metadataRepository.save(dbRecord);
+
+        List<Future<?>> indexTaskSubmissions = indexingService.index(List.of(dbRecord.getUuid()));
+        for (Future<?> task : indexTaskSubmissions) {
+            task.get();
+        }
+
+        boolean allDone = true;
+        for (Future<?> future : indexTaskSubmissions) {
+            allDone &= future.isDone();
+        }
+
+        if (allDone) {
+            BooleanResponse exists = indexClient.getEsClient().exists(ExistsRequest.of(o -> o.index(
+                            indexClient.getIndexRecordName())
+                    .id(dbRecord.getUuid())));
+            assertTrue(exists.value());
+        }
     }
-  }
 }

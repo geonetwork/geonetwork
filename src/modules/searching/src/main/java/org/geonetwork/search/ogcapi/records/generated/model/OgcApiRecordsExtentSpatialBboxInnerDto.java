@@ -15,7 +15,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "OgcApiRecordsExtentSpatialBboxInnerDto")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-08-01T19:35:56.379122136+02:00[Europe/Paris]",
-    comments = "Generator version: 7.7.0")
+        value = "org.openapitools.codegen.languages.SpringCodegen",
+        date = "2024-08-01T19:35:56.379122136+02:00[Europe/Paris]",
+        comments = "Generator version: 7.7.0")
 public interface OgcApiRecordsExtentSpatialBboxInnerDto {}

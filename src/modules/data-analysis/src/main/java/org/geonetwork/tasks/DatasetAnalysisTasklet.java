@@ -19,44 +19,44 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DatasetAnalysisTasklet implements Tasklet {
-  private GdalDataAnalyzer dataAnalyzer;
+    private GdalDataAnalyzer dataAnalyzer;
 
-  public DatasetAnalysisTasklet(GdalDataAnalyzer dataAnalyzer) {
-    this.dataAnalyzer = dataAnalyzer;
-  }
-
-  @Override
-  public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
-      throws Exception {
-    Thread.sleep(15000);
-    JobParameters parameters = contribution.getStepExecution().getJobExecution().getJobParameters();
-
-    DataAnalysisProcessReport dataAnalysisProcessReport;
-
-    try {
-      Optional<DatasetInfo> layerProperties =
-          dataAnalyzer.getLayerProperties(
-              parameters.getString("datasource"), parameters.getString("layer"));
-
-      dataAnalysisProcessReport =
-          DataAnalysisProcessReport.builder()
-              .status("COMPLETED")
-              .result(layerProperties.get())
-              .build();
-
-    } catch (DataAnalyzerException ex) {
-      dataAnalysisProcessReport =
-          DataAnalysisProcessReport.builder().status("ERROR").errorMessage(ex.getMessage()).build();
+    public DatasetAnalysisTasklet(GdalDataAnalyzer dataAnalyzer) {
+        this.dataAnalyzer = dataAnalyzer;
     }
 
-    // set variable in JobExecutionContext
-    chunkContext
-        .getStepContext()
-        .getStepExecution()
-        .getJobExecution()
-        .getExecutionContext()
-        .put("result", dataAnalysisProcessReport);
+    @Override
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+        Thread.sleep(15000);
+        JobParameters parameters =
+                contribution.getStepExecution().getJobExecution().getJobParameters();
 
-    return RepeatStatus.FINISHED;
-  }
+        DataAnalysisProcessReport dataAnalysisProcessReport;
+
+        try {
+            Optional<DatasetInfo> layerProperties =
+                    dataAnalyzer.getLayerProperties(parameters.getString("datasource"), parameters.getString("layer"));
+
+            dataAnalysisProcessReport = DataAnalysisProcessReport.builder()
+                    .status("COMPLETED")
+                    .result(layerProperties.get())
+                    .build();
+
+        } catch (DataAnalyzerException ex) {
+            dataAnalysisProcessReport = DataAnalysisProcessReport.builder()
+                    .status("ERROR")
+                    .errorMessage(ex.getMessage())
+                    .build();
+        }
+
+        // set variable in JobExecutionContext
+        chunkContext
+                .getStepContext()
+                .getStepExecution()
+                .getJobExecution()
+                .getExecutionContext()
+                .put("result", dataAnalysisProcessReport);
+
+        return RepeatStatus.FINISHED;
+    }
 }

@@ -30,17 +30,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "groupsdes")
 public class Groupsde {
-  @SequenceGenerator(name = "groupsdes_id_gen", sequenceName = "address_id_seq", allocationSize = 1)
-  @EmbeddedId
-  private GroupsdeId id;
+    @SequenceGenerator(name = "groupsdes_id_gen", sequenceName = "address_id_seq", allocationSize = 1)
+    @EmbeddedId
+    private GroupsdeId id;
 
-  @MapsId("iddes")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "iddes", nullable = false)
-  private Group iddes;
+    @MapsId("iddes")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "iddes", nullable = false)
+    private Group iddes;
 
-  @Size(max = 96)
-  @NotNull
-  @Column(name = "label", nullable = false, length = 96)
-  private String label;
+    @Size(max = 96)
+    @NotNull
+    @Column(name = "label", nullable = false, length = 96)
+    private String label;
 }

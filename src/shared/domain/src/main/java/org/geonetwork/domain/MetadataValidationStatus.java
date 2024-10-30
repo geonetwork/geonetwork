@@ -12,18 +12,18 @@ package org.geonetwork.domain;
  * @author Jesse
  */
 public enum MetadataValidationStatus {
-  INVALID(0),
-  VALID(1),
-  NEVER_CALCULATED(-1),
-  DOES_NOT_APPLY(-2);
+    INVALID(0),
+    VALID(1),
+    NEVER_CALCULATED(-1),
+    DOES_NOT_APPLY(-2);
 
-  private final int _id;
+    private final int _id;
 
-  private MetadataValidationStatus(int id) {
-    _id = id;
-  }
+    private MetadataValidationStatus(int id) {
+        _id = id;
+    }
 
-  public int getCode() {
-    return _id;
-  }
+    public int getCode() {
+        return _id;
+    }
 }

@@ -11,18 +11,15 @@ import org.jdom.JDOMException;
 
 /** Created by francois on 8/20/14. */
 public interface MultilingualSchemaPlugin {
-  /**
-   * Return the sub element matching the requested language.
-   *
-   * @param element The element to search in
-   * @param languageIdentifier The translation language to search for
-   */
-  public abstract List<Element> getTranslationForElement(
-      Element element, String languageIdentifier);
+    /**
+     * Return the sub element matching the requested language.
+     *
+     * @param element The element to search in
+     * @param languageIdentifier The translation language to search for
+     */
+    public abstract List<Element> getTranslationForElement(Element element, String languageIdentifier);
 
-  public abstract void addTranslationToElement(
-      Element element, String languageIdentifier, String value);
+    public abstract void addTranslationToElement(Element element, String languageIdentifier, String value);
 
-  public abstract Element removeTranslationFromElement(Element element, List<String> mdLang)
-      throws JDOMException;
+    public abstract Element removeTranslationFromElement(Element element, List<String> mdLang) throws JDOMException;
 }

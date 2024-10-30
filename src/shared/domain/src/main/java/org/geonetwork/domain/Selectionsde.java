@@ -30,20 +30,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "selectionsdes")
 public class Selectionsde {
-  @SequenceGenerator(
-      name = "selectionsdes_id_gen",
-      sequenceName = "operation_id_seq",
-      allocationSize = 1)
-  @EmbeddedId
-  private SelectionsdeId id;
+    @SequenceGenerator(name = "selectionsdes_id_gen", sequenceName = "operation_id_seq", allocationSize = 1)
+    @EmbeddedId
+    private SelectionsdeId id;
 
-  @MapsId("iddes")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "iddes", nullable = false)
-  private Selection iddes;
+    @MapsId("iddes")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "iddes", nullable = false)
+    private Selection iddes;
 
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "label", nullable = false)
-  private String label;
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "label", nullable = false)
+    private String label;
 }

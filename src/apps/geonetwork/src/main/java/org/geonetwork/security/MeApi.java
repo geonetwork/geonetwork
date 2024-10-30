@@ -27,34 +27,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @AllArgsConstructor
 public class MeApi {
-  JwtService jwtService;
+    JwtService jwtService;
 
-  @GetMapping("/token")
-  @PreAuthorize("authenticated")
-  public String getToken(Authentication authentication) {
-    String token = jwtService.generateToken(authentication);
-    return token;
-  }
+    @GetMapping("/token")
+    @PreAuthorize("authenticated")
+    public String getToken(Authentication authentication) {
+        String token = jwtService.generateToken(authentication);
+        return token;
+    }
 
-  /** Get user details. */
-  @GetMapping("/me")
-  @PreAuthorize("permitAll")
-  public ResponseEntity<Map<String, Object>> user(
-      Authentication authentication, @AuthenticationPrincipal UserDetails userDetails) {
-    String userName = "";
-    if (authentication instanceof OAuth2AuthenticationToken) {
-      userName =
-          ((OAuth2UserAuthority) authentication.getAuthorities().toArray()[0])
-              .getAttributes()
-              .get(USER_NAME)
-              .toString();
-    } else if (userDetails != null) {
-      userName = userDetails.getUsername();
+    /** Get user details. */
+    @GetMapping("/me")
+    @PreAuthorize("permitAll")
+    public ResponseEntity<Map<String, Object>> user(
+            Authentication authentication, @AuthenticationPrincipal UserDetails userDetails) {
+        String userName = "";
+        if (authentication instanceof OAuth2AuthenticationToken) {
+            userName = ((OAuth2UserAuthority) authentication.getAuthorities().toArray()[0])
+                    .getAttributes()
+                    .get(USER_NAME)
+                    .toString();
+        } else if (userDetails != null) {
+            userName = userDetails.getUsername();
+        }
+        if (StringUtils.isNotEmpty(userName)) {
+            return ResponseEntity.ok(Collections.singletonMap("username", userName));
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
-    if (StringUtils.isNotEmpty(userName)) {
-      return ResponseEntity.ok(Collections.singletonMap("username", userName));
-    } else {
-      return ResponseEntity.noContent().build();
-    }
-  }
 }

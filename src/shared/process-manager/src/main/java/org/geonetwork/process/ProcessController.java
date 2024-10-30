@@ -29,43 +29,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/process")
 public class ProcessController {
-  private final ProcessManager processManager;
+    private final ProcessManager processManager;
 
-  public ProcessController(final ProcessManager processManager) {
-    this.processManager = processManager;
-  }
+    public ProcessController(final ProcessManager processManager) {
+        this.processManager = processManager;
+    }
 
-  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public List<IProcess> list() {
-    return processManager.getProcesses();
-  }
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public List<IProcess> list() {
+        return processManager.getProcesses();
+    }
 
-  @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public ResponseEntity<Long> execute(@RequestBody ProcessDetails processDetails)
-      throws JobInstanceAlreadyCompleteException,
-          JobExecutionAlreadyRunningException,
-          JobParametersInvalidException,
-          JobRestartException {
-    IProcess process = processManager.getProcess(processDetails.getProcess());
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public ResponseEntity<Long> execute(@RequestBody ProcessDetails processDetails)
+            throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException,
+                    JobParametersInvalidException, JobRestartException {
+        IProcess process = processManager.getProcess(processDetails.getProcess());
 
-    Long processExecutionId = processManager.execute(process, processDetails);
+        Long processExecutionId = processManager.execute(process, processDetails);
 
-    return new ResponseEntity<>(processExecutionId, HttpStatus.OK);
-  }
+        return new ResponseEntity<>(processExecutionId, HttpStatus.OK);
+    }
 
-  @GetMapping(path = "/status/{executionJobId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public ResponseEntity<BatchStatus> analysisExecutionStatus(@PathVariable Long executionJobId) {
-    return new ResponseEntity<>(
-        processManager.processExecutionStatus(executionJobId), HttpStatus.OK);
-  }
+    @GetMapping(path = "/status/{executionJobId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public ResponseEntity<BatchStatus> analysisExecutionStatus(@PathVariable Long executionJobId) {
+        return new ResponseEntity<>(processManager.processExecutionStatus(executionJobId), HttpStatus.OK);
+    }
 
-  @GetMapping(path = "/result/{executionJobId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public ResponseEntity<ProcessReport> analysisExecutionResult(@PathVariable Long executionJobId) {
-    return new ResponseEntity<>(
-        processManager.processExecutionResult(executionJobId), HttpStatus.OK);
-  }
+    @GetMapping(path = "/result/{executionJobId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public ResponseEntity<ProcessReport> analysisExecutionResult(@PathVariable Long executionJobId) {
+        return new ResponseEntity<>(processManager.processExecutionResult(executionJobId), HttpStatus.OK);
+    }
 }

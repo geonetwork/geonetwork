@@ -15,16 +15,17 @@ import lombok.Singular;
 @Data
 @Builder
 public class AttributeStatistics {
-  @Getter
-  @AllArgsConstructor
-  public enum StatisticFields {
-    MIN("min"),
-    MAX("max"),
-    ;
-    final String name;
-  }
+    @Getter
+    @AllArgsConstructor
+    public enum StatisticFields {
+        MIN("min"),
+        MAX("max"),
+        ;
+        final String name;
+    }
 
-  String name;
+    String name;
 
-  @Singular Map<StatisticFields, Object> statistics;
+    @Singular
+    Map<StatisticFields, Object> statistics;
 }

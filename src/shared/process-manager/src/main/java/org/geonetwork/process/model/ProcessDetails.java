@@ -11,6 +11,6 @@ import lombok.Data;
 
 @Data
 public class ProcessDetails {
-  private String process;
-  private Map<String, String> parameters = new HashMap<>();
+    private String process;
+    private Map<String, String> parameters = new HashMap<>();
 }

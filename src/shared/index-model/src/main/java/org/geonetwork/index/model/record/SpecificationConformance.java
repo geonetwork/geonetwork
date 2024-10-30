@@ -18,9 +18,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SpecificationConformance {
 
-  private String link;
-  private String title;
-  private String explanation;
-  private String date;
-  private String pass;
+    private String link;
+    private String title;
+    private String explanation;
+    private String date;
+    private String pass;
 }

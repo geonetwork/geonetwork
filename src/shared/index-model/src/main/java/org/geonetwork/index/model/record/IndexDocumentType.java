@@ -8,6 +8,6 @@ package org.geonetwork.index.model.record;
 
 /** Index document type. */
 public enum IndexDocumentType {
-  metadata,
-  features
+    metadata,
+    features
 }

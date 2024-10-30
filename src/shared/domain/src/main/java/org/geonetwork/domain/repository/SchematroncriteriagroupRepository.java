@@ -10,4 +10,4 @@ import org.geonetwork.domain.SchematroncriteriagroupId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SchematroncriteriagroupRepository
-    extends JpaRepository<Schematroncriteriagroup, SchematroncriteriagroupId> {}
+        extends JpaRepository<Schematroncriteriagroup, SchematroncriteriagroupId> {}

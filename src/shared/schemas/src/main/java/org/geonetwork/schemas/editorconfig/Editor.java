@@ -34,107 +34,107 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"fields", "fieldsWithFieldset", "multilingualFields", "views", "batchEditing"})
+        name = "",
+        propOrder = {"fields", "fieldsWithFieldset", "multilingualFields", "views", "batchEditing"})
 @XmlRootElement(name = "editor")
 public class Editor {
 
-  protected Fields fields;
-  protected FieldsWithFieldset fieldsWithFieldset;
-  protected MultilingualFields multilingualFields;
+    protected Fields fields;
+    protected FieldsWithFieldset fieldsWithFieldset;
+    protected MultilingualFields multilingualFields;
 
-  @XmlElement(required = true)
-  protected Views views;
+    @XmlElement(required = true)
+    protected Views views;
 
-  protected BatchEditing batchEditing;
+    protected BatchEditing batchEditing;
 
-  /**
-   * Gets the value of the fields property.
-   *
-   * @return possible object is {@link Fields }
-   */
-  public Fields getFields() {
-    return fields;
-  }
+    /**
+     * Gets the value of the fields property.
+     *
+     * @return possible object is {@link Fields }
+     */
+    public Fields getFields() {
+        return fields;
+    }
 
-  /**
-   * Sets the value of the fields property.
-   *
-   * @param value allowed object is {@link Fields }
-   */
-  public void setFields(Fields value) {
-    this.fields = value;
-  }
+    /**
+     * Sets the value of the fields property.
+     *
+     * @param value allowed object is {@link Fields }
+     */
+    public void setFields(Fields value) {
+        this.fields = value;
+    }
 
-  /**
-   * Gets the value of the fieldsWithFieldset property.
-   *
-   * @return possible object is {@link FieldsWithFieldset }
-   */
-  public FieldsWithFieldset getFieldsWithFieldset() {
-    return fieldsWithFieldset;
-  }
+    /**
+     * Gets the value of the fieldsWithFieldset property.
+     *
+     * @return possible object is {@link FieldsWithFieldset }
+     */
+    public FieldsWithFieldset getFieldsWithFieldset() {
+        return fieldsWithFieldset;
+    }
 
-  /**
-   * Sets the value of the fieldsWithFieldset property.
-   *
-   * @param value allowed object is {@link FieldsWithFieldset }
-   */
-  public void setFieldsWithFieldset(FieldsWithFieldset value) {
-    this.fieldsWithFieldset = value;
-  }
+    /**
+     * Sets the value of the fieldsWithFieldset property.
+     *
+     * @param value allowed object is {@link FieldsWithFieldset }
+     */
+    public void setFieldsWithFieldset(FieldsWithFieldset value) {
+        this.fieldsWithFieldset = value;
+    }
 
-  /**
-   * Gets the value of the multilingualFields property.
-   *
-   * @return possible object is {@link MultilingualFields }
-   */
-  public MultilingualFields getMultilingualFields() {
-    return multilingualFields;
-  }
+    /**
+     * Gets the value of the multilingualFields property.
+     *
+     * @return possible object is {@link MultilingualFields }
+     */
+    public MultilingualFields getMultilingualFields() {
+        return multilingualFields;
+    }
 
-  /**
-   * Sets the value of the multilingualFields property.
-   *
-   * @param value allowed object is {@link MultilingualFields }
-   */
-  public void setMultilingualFields(MultilingualFields value) {
-    this.multilingualFields = value;
-  }
+    /**
+     * Sets the value of the multilingualFields property.
+     *
+     * @param value allowed object is {@link MultilingualFields }
+     */
+    public void setMultilingualFields(MultilingualFields value) {
+        this.multilingualFields = value;
+    }
 
-  /**
-   * Gets the value of the views property.
-   *
-   * @return possible object is {@link Views }
-   */
-  public Views getViews() {
-    return views;
-  }
+    /**
+     * Gets the value of the views property.
+     *
+     * @return possible object is {@link Views }
+     */
+    public Views getViews() {
+        return views;
+    }
 
-  /**
-   * Sets the value of the views property.
-   *
-   * @param value allowed object is {@link Views }
-   */
-  public void setViews(Views value) {
-    this.views = value;
-  }
+    /**
+     * Sets the value of the views property.
+     *
+     * @param value allowed object is {@link Views }
+     */
+    public void setViews(Views value) {
+        this.views = value;
+    }
 
-  /**
-   * Gets the value of the batchEditing property.
-   *
-   * @return possible object is {@link BatchEditing }
-   */
-  public BatchEditing getBatchEditing() {
-    return batchEditing;
-  }
+    /**
+     * Gets the value of the batchEditing property.
+     *
+     * @return possible object is {@link BatchEditing }
+     */
+    public BatchEditing getBatchEditing() {
+        return batchEditing;
+    }
 
-  /**
-   * Sets the value of the batchEditing property.
-   *
-   * @param value allowed object is {@link BatchEditing }
-   */
-  public void setBatchEditing(BatchEditing value) {
-    this.batchEditing = value;
-  }
+    /**
+     * Sets the value of the batchEditing property.
+     *
+     * @param value allowed object is {@link BatchEditing }
+     */
+    public void setBatchEditing(BatchEditing value) {
+        this.batchEditing = value;
+    }
 }

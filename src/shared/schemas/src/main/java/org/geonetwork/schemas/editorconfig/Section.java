@@ -43,149 +43,149 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"fieldOrActionOrText"})
+        name = "",
+        propOrder = {"fieldOrActionOrText"})
 @XmlRootElement(name = "section")
 public class Section {
 
-  @XmlElements({
-    @XmlElement(name = "field", type = Field.class),
-    @XmlElement(name = "action", type = Action.class),
-    @XmlElement(name = "text", type = Text.class),
-    @XmlElement(name = "section", type = Section.class),
-    @XmlElement(name = "fieldset", type = Fieldset.class)
-  })
-  protected List<Object> fieldOrActionOrText;
+    @XmlElements({
+        @XmlElement(name = "field", type = Field.class),
+        @XmlElement(name = "action", type = Action.class),
+        @XmlElement(name = "text", type = Text.class),
+        @XmlElement(name = "section", type = Section.class),
+        @XmlElement(name = "fieldset", type = Fieldset.class)
+    })
+    protected List<Object> fieldOrActionOrText;
 
-  @XmlAttribute(name = "mode")
-  protected String mode;
+    @XmlAttribute(name = "mode")
+    protected String mode;
 
-  @XmlAttribute(name = "name")
-  protected String name;
+    @XmlAttribute(name = "name")
+    protected String name;
 
-  @XmlAttribute(name = "xpath")
-  protected String xpath;
+    @XmlAttribute(name = "xpath")
+    protected String xpath;
 
-  @XmlAttribute(name = "or")
-  protected String or;
+    @XmlAttribute(name = "or")
+    protected String or;
 
-  @XmlAttribute(name = "in")
-  protected String in;
+    @XmlAttribute(name = "in")
+    protected String in;
 
-  /**
-   * Gets the value of the fieldOrActionOrText property.
-   *
-   * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
-   * modification you make to the returned list will be present inside the JAXB object. This is why
-   * there is not a <CODE>set</CODE> method for the fieldOrActionOrText property.
-   *
-   * <p>For example, to add a new item, do as follows:
-   *
-   * <pre>
-   *    getFieldOrActionOrText().add(newItem);
-   * </pre>
-   *
-   * <p>Objects of the following type(s) are allowed in the list {@link Field } {@link Action }
-   * {@link Text } {@link Section } {@link Fieldset }
-   */
-  public List<Object> getFieldOrActionOrText() {
-    if (fieldOrActionOrText == null) {
-      fieldOrActionOrText = new ArrayList<Object>();
+    /**
+     * Gets the value of the fieldOrActionOrText property.
+     *
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
+     * modification you make to the returned list will be present inside the JAXB object. This is why
+     * there is not a <CODE>set</CODE> method for the fieldOrActionOrText property.
+     *
+     * <p>For example, to add a new item, do as follows:
+     *
+     * <pre>
+     *    getFieldOrActionOrText().add(newItem);
+     * </pre>
+     *
+     * <p>Objects of the following type(s) are allowed in the list {@link Field } {@link Action }
+     * {@link Text } {@link Section } {@link Fieldset }
+     */
+    public List<Object> getFieldOrActionOrText() {
+        if (fieldOrActionOrText == null) {
+            fieldOrActionOrText = new ArrayList<Object>();
+        }
+        return this.fieldOrActionOrText;
     }
-    return this.fieldOrActionOrText;
-  }
 
-  /**
-   * Gets the value of the mode property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getMode() {
-    if (mode == null) {
-      return "flat";
-    } else {
-      return mode;
+    /**
+     * Gets the value of the mode property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getMode() {
+        if (mode == null) {
+            return "flat";
+        } else {
+            return mode;
+        }
     }
-  }
 
-  /**
-   * Sets the value of the mode property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setMode(String value) {
-    this.mode = value;
-  }
+    /**
+     * Sets the value of the mode property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setMode(String value) {
+        this.mode = value;
+    }
 
-  /**
-   * Gets the value of the name property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getName() {
-    return name;
-  }
+    /**
+     * Gets the value of the name property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getName() {
+        return name;
+    }
 
-  /**
-   * Sets the value of the name property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setName(String value) {
-    this.name = value;
-  }
+    /**
+     * Sets the value of the name property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
 
-  /**
-   * Gets the value of the xpath property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getXpath() {
-    return xpath;
-  }
+    /**
+     * Gets the value of the xpath property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getXpath() {
+        return xpath;
+    }
 
-  /**
-   * Sets the value of the xpath property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setXpath(String value) {
-    this.xpath = value;
-  }
+    /**
+     * Sets the value of the xpath property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setXpath(String value) {
+        this.xpath = value;
+    }
 
-  /**
-   * Gets the value of the or property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getOr() {
-    return or;
-  }
+    /**
+     * Gets the value of the or property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getOr() {
+        return or;
+    }
 
-  /**
-   * Sets the value of the or property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setOr(String value) {
-    this.or = value;
-  }
+    /**
+     * Sets the value of the or property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setOr(String value) {
+        this.or = value;
+    }
 
-  /**
-   * Gets the value of the in property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getIn() {
-    return in;
-  }
+    /**
+     * Gets the value of the in property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getIn() {
+        return in;
+    }
 
-  /**
-   * Sets the value of the in property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setIn(String value) {
-    this.in = value;
-  }
+    /**
+     * Sets the value of the in property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setIn(String value) {
+        this.in = value;
+    }
 }

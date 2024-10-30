@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class CodeListValue {
-  String label;
-  String definition;
-  String code;
+    String label;
+    String definition;
+    String code;
 }

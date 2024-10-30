@@ -11,6 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MetadatastatusRepository extends JpaRepository<Metadatastatus, Integer> {
 
-  Optional<Metadatastatus> findFirstByMetadataidAndStatusidTypeOrderByChangedateDesc(
-      Integer metadataId, String type);
+    Optional<Metadatastatus> findFirstByMetadataidAndStatusidTypeOrderByChangedateDesc(Integer metadataId, String type);
 }

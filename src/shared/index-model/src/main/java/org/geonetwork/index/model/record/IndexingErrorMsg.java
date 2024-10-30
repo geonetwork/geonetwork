@@ -23,7 +23,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IndexingErrorMsg {
-  String string;
-  String type;
-  @JsonAnySetter Map<String, String> values;
+    String string;
+    String type;
+
+    @JsonAnySetter
+    Map<String, String> values;
 }

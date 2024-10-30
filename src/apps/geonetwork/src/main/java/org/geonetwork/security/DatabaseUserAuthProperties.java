@@ -6,7 +6,7 @@
 package org.geonetwork.security;
 
 public enum DatabaseUserAuthProperties {
-  USERNAME,
-  EMAIL,
-  USERNAME_OR_EMAIL
+    USERNAME,
+    EMAIL,
+    USERNAME_OR_EMAIL
 }

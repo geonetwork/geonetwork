@@ -46,215 +46,215 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"template", "directiveAttributes"})
+        name = "",
+        propOrder = {"template", "directiveAttributes"})
 @XmlRootElement(name = "action")
 public class Action {
 
-  protected Template template;
-  protected DirectiveAttributes directiveAttributes;
+    protected Template template;
+    protected DirectiveAttributes directiveAttributes;
 
-  @XmlAttribute(name = "name")
-  protected String name;
+    @XmlAttribute(name = "name")
+    protected String name;
 
-  @XmlAttribute(name = "type")
-  protected String type;
+    @XmlAttribute(name = "type")
+    protected String type;
 
-  @XmlAttribute(name = "process")
-  protected String process;
+    @XmlAttribute(name = "process")
+    protected String process;
 
-  @XmlAttribute(name = "forceLabel")
-  protected Boolean forceLabel;
+    @XmlAttribute(name = "forceLabel")
+    protected Boolean forceLabel;
 
-  @XmlAttribute(name = "or")
-  protected String or;
+    @XmlAttribute(name = "or")
+    protected String or;
 
-  @XmlAttribute(name = "in")
-  protected String in;
+    @XmlAttribute(name = "in")
+    protected String in;
 
-  @XmlAttribute(name = "addDirective")
-  protected String addDirective;
+    @XmlAttribute(name = "addDirective")
+    protected String addDirective;
 
-  @XmlAttribute(name = "if")
-  protected String _if;
+    @XmlAttribute(name = "if")
+    protected String _if;
 
-  /**
-   * Gets the value of the template property.
-   *
-   * @return possible object is {@link Template }
-   */
-  public Template getTemplate() {
-    return template;
-  }
+    /**
+     * Gets the value of the template property.
+     *
+     * @return possible object is {@link Template }
+     */
+    public Template getTemplate() {
+        return template;
+    }
 
-  /**
-   * Sets the value of the template property.
-   *
-   * @param value allowed object is {@link Template }
-   */
-  public void setTemplate(Template value) {
-    this.template = value;
-  }
+    /**
+     * Sets the value of the template property.
+     *
+     * @param value allowed object is {@link Template }
+     */
+    public void setTemplate(Template value) {
+        this.template = value;
+    }
 
-  /**
-   * Gets the value of the directiveAttributes property.
-   *
-   * @return possible object is {@link DirectiveAttributes }
-   */
-  public DirectiveAttributes getDirectiveAttributes() {
-    return directiveAttributes;
-  }
+    /**
+     * Gets the value of the directiveAttributes property.
+     *
+     * @return possible object is {@link DirectiveAttributes }
+     */
+    public DirectiveAttributes getDirectiveAttributes() {
+        return directiveAttributes;
+    }
 
-  /**
-   * Sets the value of the directiveAttributes property.
-   *
-   * @param value allowed object is {@link DirectiveAttributes }
-   */
-  public void setDirectiveAttributes(DirectiveAttributes value) {
-    this.directiveAttributes = value;
-  }
+    /**
+     * Sets the value of the directiveAttributes property.
+     *
+     * @param value allowed object is {@link DirectiveAttributes }
+     */
+    public void setDirectiveAttributes(DirectiveAttributes value) {
+        this.directiveAttributes = value;
+    }
 
-  /**
-   * Gets the value of the name property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getName() {
-    return name;
-  }
+    /**
+     * Gets the value of the name property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getName() {
+        return name;
+    }
 
-  /**
-   * Sets the value of the name property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setName(String value) {
-    this.name = value;
-  }
+    /**
+     * Sets the value of the name property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
 
-  /**
-   * Gets the value of the type property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getType() {
-    return type;
-  }
+    /**
+     * Gets the value of the type property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getType() {
+        return type;
+    }
 
-  /**
-   * Sets the value of the type property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setType(String value) {
-    this.type = value;
-  }
+    /**
+     * Sets the value of the type property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setType(String value) {
+        this.type = value;
+    }
 
-  /**
-   * Gets the value of the process property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getProcess() {
-    return process;
-  }
+    /**
+     * Gets the value of the process property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getProcess() {
+        return process;
+    }
 
-  /**
-   * Sets the value of the process property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setProcess(String value) {
-    this.process = value;
-  }
+    /**
+     * Sets the value of the process property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setProcess(String value) {
+        this.process = value;
+    }
 
-  /**
-   * Gets the value of the forceLabel property.
-   *
-   * @return possible object is {@link Boolean }
-   */
-  public Boolean isForceLabel() {
-    return forceLabel;
-  }
+    /**
+     * Gets the value of the forceLabel property.
+     *
+     * @return possible object is {@link Boolean }
+     */
+    public Boolean isForceLabel() {
+        return forceLabel;
+    }
 
-  /**
-   * Sets the value of the forceLabel property.
-   *
-   * @param value allowed object is {@link Boolean }
-   */
-  public void setForceLabel(Boolean value) {
-    this.forceLabel = value;
-  }
+    /**
+     * Sets the value of the forceLabel property.
+     *
+     * @param value allowed object is {@link Boolean }
+     */
+    public void setForceLabel(Boolean value) {
+        this.forceLabel = value;
+    }
 
-  /**
-   * Gets the value of the or property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getOr() {
-    return or;
-  }
+    /**
+     * Gets the value of the or property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getOr() {
+        return or;
+    }
 
-  /**
-   * Sets the value of the or property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setOr(String value) {
-    this.or = value;
-  }
+    /**
+     * Sets the value of the or property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setOr(String value) {
+        this.or = value;
+    }
 
-  /**
-   * Gets the value of the in property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getIn() {
-    return in;
-  }
+    /**
+     * Gets the value of the in property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getIn() {
+        return in;
+    }
 
-  /**
-   * Sets the value of the in property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setIn(String value) {
-    this.in = value;
-  }
+    /**
+     * Sets the value of the in property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setIn(String value) {
+        this.in = value;
+    }
 
-  /**
-   * Gets the value of the addDirective property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getAddDirective() {
-    return addDirective;
-  }
+    /**
+     * Gets the value of the addDirective property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getAddDirective() {
+        return addDirective;
+    }
 
-  /**
-   * Sets the value of the addDirective property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setAddDirective(String value) {
-    this.addDirective = value;
-  }
+    /**
+     * Sets the value of the addDirective property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setAddDirective(String value) {
+        this.addDirective = value;
+    }
 
-  /**
-   * Gets the value of the if property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getIf() {
-    return _if;
-  }
+    /**
+     * Gets the value of the if property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getIf() {
+        return _if;
+    }
 
-  /**
-   * Sets the value of the if property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setIf(String value) {
-    this._if = value;
-  }
+    /**
+     * Sets the value of the if property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setIf(String value) {
+        this._if = value;
+    }
 }

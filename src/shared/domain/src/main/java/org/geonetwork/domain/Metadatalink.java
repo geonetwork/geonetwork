@@ -29,19 +29,16 @@ import lombok.Setter;
 @Entity
 @Table(name = "metadatalink")
 public class Metadatalink {
-  @SequenceGenerator(
-      name = "metadatalink_id_gen",
-      sequenceName = "harvester_setting_id_seq",
-      allocationSize = 1)
-  @EmbeddedId
-  private MetadatalinkId id;
+    @SequenceGenerator(name = "metadatalink_id_gen", sequenceName = "harvester_setting_id_seq", allocationSize = 1)
+    @EmbeddedId
+    private MetadatalinkId id;
 
-  @MapsId("linkid")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "linkid", nullable = false)
-  private Link linkid;
+    @MapsId("linkid")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "linkid", nullable = false)
+    private Link linkid;
 
-  @Size(max = 255)
-  @Column(name = "metadatauuid")
-  private String metadatauuid;
+    @Size(max = 255)
+    @Column(name = "metadatauuid")
+    private String metadatauuid;
 }

@@ -16,10 +16,10 @@ import lombok.Data;
 @Data
 @Builder
 public class DatasetLayer implements Serializable {
-  private String name;
-  private String fidColumnName;
-  private BigDecimal featureCount;
-  private List<DatasetLayerField> fields;
-  private List<DatasetLayerGeomField> geometryFields;
-  private Map<String, Object> metadata;
+    private String name;
+    private String fidColumnName;
+    private BigDecimal featureCount;
+    private List<DatasetLayerField> fields;
+    private List<DatasetLayerGeomField> geometryFields;
+    private Map<String, Object> metadata;
 }

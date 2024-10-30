@@ -15,9 +15,9 @@ import lombok.Data;
 @Data
 @Builder
 public class RasterCornerCoordinates implements Serializable {
-  List<BigDecimal> upperLeft;
-  List<BigDecimal> upperRight;
-  List<BigDecimal> lowerLeft;
-  List<BigDecimal> lowerRight;
-  List<BigDecimal> center;
+    List<BigDecimal> upperLeft;
+    List<BigDecimal> upperRight;
+    List<BigDecimal> lowerLeft;
+    List<BigDecimal> lowerRight;
+    List<BigDecimal> center;
 }

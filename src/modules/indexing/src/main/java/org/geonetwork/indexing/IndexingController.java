@@ -22,23 +22,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class IndexingController {
 
-  private final IndexingService indexingService;
-  private final IndexClient indexClient;
+    private final IndexingService indexingService;
+    private final IndexClient indexClient;
 
-  /** Create index. */
-  @GetMapping(path = "/setup", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public String setupIndex(@RequestParam(defaultValue = "true") boolean dropIfExists) {
-    indexClient.setupIndex(dropIfExists);
-    return "Index created.";
-  }
+    /** Create index. */
+    @GetMapping(path = "/setup", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public String setupIndex(@RequestParam(defaultValue = "true") boolean dropIfExists) {
+        indexClient.setupIndex(dropIfExists);
+        return "Index created.";
+    }
 
-  /** Index all records. */
-  @GetMapping(path = "/index", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public String indexRecords(@RequestParam(defaultValue = "", required = false) String[] uuid) {
+    /** Index all records. */
+    @GetMapping(path = "/index", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public String indexRecords(@RequestParam(defaultValue = "", required = false) String[] uuid) {
 
-    indexingService.index(uuid.length > 0 ? List.of(uuid) : null);
-    return "Indexing task started.";
-  }
+        indexingService.index(uuid.length > 0 ? List.of(uuid) : null);
+        return "Indexing task started.";
+    }
 }

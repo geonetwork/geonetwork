@@ -38,114 +38,114 @@ import java.util.List;
 import org.jdom.Element;
 
 public class ComplexContentEntry extends BaseHandler {
-  public String base;
-  public ArrayList<String> alAttribGroups = new ArrayList<String>();
-  public ArrayList<ElementEntry> alElements = new ArrayList<ElementEntry>();
-  public ArrayList<AttributeEntry> alAttribs = new ArrayList<AttributeEntry>();
-  public boolean restriction = false;
+    public String base;
+    public ArrayList<String> alAttribGroups = new ArrayList<String>();
+    public ArrayList<ElementEntry> alElements = new ArrayList<ElementEntry>();
+    public ArrayList<AttributeEntry> alAttribs = new ArrayList<AttributeEntry>();
+    public boolean restriction = false;
 
-  public ComplexContentEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
-    this(new ElementInfo(el, file, targetNS, targetNSPrefix));
-  }
-
-  public ComplexContentEntry(ElementInfo ei) {
-    handleAttribs(ei);
-    handleChildren(ei);
-  }
-
-  @SuppressWarnings("unused")
-  private void handleAttribs(ElementInfo ei) {
-    //        List<Attribute> attribs = ei.element.getAttributes();
-    //
-    //        for (Attribute at : attribs) {
-    //            String attrName = at.getName();
-    //  TODO:
-    //            if (attrName.equals("mixed")) {
-    //                Logger.log();
-    //            }
-    //            else {
-    //                Logger.log();
-    //            }
-    //        }
-  }
-
-  private void handleChildren(ElementInfo ei) {
-    @SuppressWarnings("unchecked")
-    List<Element> children = ei.element.getChildren();
-
-    for (Element elChild : children) {
-      if (elChild.getName().equals("extension")) {
-        handleExtension(elChild, ei);
-      } else if (elChild.getName().equals("restriction")) {
-        handleRestriction(elChild, ei);
-        restriction = true;
-      }
+    public ComplexContentEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
+        this(new ElementInfo(el, file, targetNS, targetNSPrefix));
     }
-  }
 
-  private void handleExtension(Element el, ElementInfo ei) {
-    base = el.getAttributeValue("base");
+    public ComplexContentEntry(ElementInfo ei) {
+        handleAttribs(ei);
+        handleChildren(ei);
+    }
 
-    @SuppressWarnings("unchecked")
-    List<Element> extension = el.getChildren();
+    @SuppressWarnings("unused")
+    private void handleAttribs(ElementInfo ei) {
+        //        List<Attribute> attribs = ei.element.getAttributes();
+        //
+        //        for (Attribute at : attribs) {
+        //            String attrName = at.getName();
+        //  TODO:
+        //            if (attrName.equals("mixed")) {
+        //                Logger.log();
+        //            }
+        //            else {
+        //                Logger.log();
+        //            }
+        //        }
+    }
 
-    for (Element elExt : extension) {
-      if (elExt.getName().equals("sequence")) {
+    private void handleChildren(ElementInfo ei) {
         @SuppressWarnings("unchecked")
-        List<Element> sequence = elExt.getChildren();
+        List<Element> children = ei.element.getChildren();
 
-        for (Element elSeq : sequence) {
-          if (isChoiceOrElementOrGroupOrSequence(elSeq)) {
-            alElements.add(new ElementEntry(elSeq, ei.file, ei.targetNS, ei.targetNSPrefix));
-          }
+        for (Element elChild : children) {
+            if (elChild.getName().equals("extension")) {
+                handleExtension(elChild, ei);
+            } else if (elChild.getName().equals("restriction")) {
+                handleRestriction(elChild, ei);
+                restriction = true;
+            }
         }
-      } else if (elExt.getName().equals("group")) {
-        alElements.add(new ElementEntry(elExt, ei.file, ei.targetNS, ei.targetNSPrefix));
-      } else if (elExt.getName().equals("choice")) {
-        alElements.add(new ElementEntry(elExt, ei.file, ei.targetNS, ei.targetNSPrefix));
-      } else if (elExt.getName().equals("attribute")) {
-        alAttribs.add(new AttributeEntry(elExt, ei.file, ei.targetNS, ei.targetNSPrefix));
-      } else if (elExt.getName().equals("attributeGroup")) {
-        String attribGroup = elExt.getAttributeValue("ref");
-
-        if (attribGroup == null) {
-          throw new IllegalArgumentException(
-              "'ref' is null for element in <attributeGroup> of ComplexContent with extension base "
-                  + base);
-        }
-        alAttribGroups.add(attribGroup);
-      }
     }
-  }
 
-  private void handleRestriction(Element el, ElementInfo ei) {
-    base = el.getAttributeValue("base");
+    private void handleExtension(Element el, ElementInfo ei) {
+        base = el.getAttributeValue("base");
 
-    // --- handle children
+        @SuppressWarnings("unchecked")
+        List<Element> extension = el.getChildren();
 
-    @SuppressWarnings("unchecked")
-    List<Element> restriction = el.getChildren();
+        for (Element elExt : extension) {
+            if (elExt.getName().equals("sequence")) {
+                @SuppressWarnings("unchecked")
+                List<Element> sequence = elExt.getChildren();
 
-    for (Element elRes : restriction) {
-      String elName = elRes.getName();
+                for (Element elSeq : sequence) {
+                    if (isChoiceOrElementOrGroupOrSequence(elSeq)) {
+                        alElements.add(new ElementEntry(elSeq, ei.file, ei.targetNS, ei.targetNSPrefix));
+                    }
+                }
+            } else if (elExt.getName().equals("group")) {
+                alElements.add(new ElementEntry(elExt, ei.file, ei.targetNS, ei.targetNSPrefix));
+            } else if (elExt.getName().equals("choice")) {
+                alElements.add(new ElementEntry(elExt, ei.file, ei.targetNS, ei.targetNSPrefix));
+            } else if (elExt.getName().equals("attribute")) {
+                alAttribs.add(new AttributeEntry(elExt, ei.file, ei.targetNS, ei.targetNSPrefix));
+            } else if (elExt.getName().equals("attributeGroup")) {
+                String attribGroup = elExt.getAttributeValue("ref");
 
-      if (elRes.getName().equals("sequence")) {
-        handleSequence(elRes, alElements, ei);
-      } else if (elRes.getName().equals("group")) {
-        alElements.add(new ElementEntry(elRes, ei.file, ei.targetNS, ei.targetNSPrefix));
-      } else if (elName.equals("attribute")) {
-        alAttribs.add(new AttributeEntry(elRes, ei.file, ei.targetNS, ei.targetNSPrefix));
-      } else if (elName.equals("attributeGroup")) {
-        String attribGroup = elRes.getAttributeValue("ref");
-
-        if (attribGroup == null) {
-          throw new IllegalArgumentException(
-              "'ref' is null for element in <attributeGroup> of ComplexContent with restriction"
-                  + " base "
-                  + base);
+                if (attribGroup == null) {
+                    throw new IllegalArgumentException(
+                            "'ref' is null for element in <attributeGroup> of ComplexContent with extension base "
+                                    + base);
+                }
+                alAttribGroups.add(attribGroup);
+            }
         }
-        alAttribGroups.add(attribGroup);
-      }
     }
-  }
+
+    private void handleRestriction(Element el, ElementInfo ei) {
+        base = el.getAttributeValue("base");
+
+        // --- handle children
+
+        @SuppressWarnings("unchecked")
+        List<Element> restriction = el.getChildren();
+
+        for (Element elRes : restriction) {
+            String elName = elRes.getName();
+
+            if (elRes.getName().equals("sequence")) {
+                handleSequence(elRes, alElements, ei);
+            } else if (elRes.getName().equals("group")) {
+                alElements.add(new ElementEntry(elRes, ei.file, ei.targetNS, ei.targetNSPrefix));
+            } else if (elName.equals("attribute")) {
+                alAttribs.add(new AttributeEntry(elRes, ei.file, ei.targetNS, ei.targetNSPrefix));
+            } else if (elName.equals("attributeGroup")) {
+                String attribGroup = elRes.getAttributeValue("ref");
+
+                if (attribGroup == null) {
+                    throw new IllegalArgumentException(
+                            "'ref' is null for element in <attributeGroup> of ComplexContent with restriction"
+                                    + " base "
+                                    + base);
+                }
+                alAttribGroups.add(attribGroup);
+            }
+        }
+    }
 }

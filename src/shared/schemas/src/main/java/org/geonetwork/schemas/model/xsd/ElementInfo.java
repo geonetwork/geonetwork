@@ -40,19 +40,19 @@ import org.jdom.Element;
 // ==============================================================================
 
 public class ElementInfo {
-  public Element element;
-  public Path file;
-  public String targetNS;
-  public String targetNSPrefix;
+    public Element element;
+    public Path file;
+    public String targetNS;
+    public String targetNSPrefix;
 
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
 
-  public ElementInfo(Element e, Path f, String tns, String tnsp) {
-    element = e;
-    file = f;
-    targetNS = tns;
-    targetNSPrefix = tnsp;
-  }
+    public ElementInfo(Element e, Path f, String tns, String tnsp) {
+        element = e;
+        file = f;
+        targetNS = tns;
+        targetNSPrefix = tnsp;
+    }
 }
 
 // ==============================================================================

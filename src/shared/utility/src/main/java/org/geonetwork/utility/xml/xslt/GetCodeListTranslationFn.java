@@ -19,37 +19,34 @@ import org.geonetwork.utility.schemas.CodeListTranslator;
 
 /** Extension function to get the translation of a code from a codelist. */
 public class GetCodeListTranslationFn extends ExtensionFunctionDefinition {
-  @Override
-  public StructuredQName getFunctionQName() {
-    return new StructuredQName(XslFn.PREFIX, XslFn.URI, "getCodelistTranslation");
-  }
+    @Override
+    public StructuredQName getFunctionQName() {
+        return new StructuredQName(XslFn.PREFIX, XslFn.URI, "getCodelistTranslation");
+    }
 
-  @Override
-  public SequenceType[] getArgumentTypes() {
-    return new SequenceType[] {
-      SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING
-    };
-  }
+    @Override
+    public SequenceType[] getArgumentTypes() {
+        return new SequenceType[] {SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING, SequenceType.SINGLE_STRING};
+    }
 
-  @Override
-  public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
-    return SequenceType.SINGLE_STRING;
-  }
+    @Override
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
+        return SequenceType.SINGLE_STRING;
+    }
 
-  @Override
-  public ExtensionFunctionCall makeCallExpression() {
-    return new ExtensionFunctionCall() {
-      @Override
-      public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
-        String codelist = arguments[0].head().getStringValue();
-        String value = arguments[1].head().getStringValue();
-        String language = arguments[2].head().getStringValue();
+    @Override
+    public ExtensionFunctionCall makeCallExpression() {
+        return new ExtensionFunctionCall() {
+            @Override
+            public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                String codelist = arguments[0].head().getStringValue();
+                String value = arguments[1].head().getStringValue();
+                String language = arguments[2].head().getStringValue();
 
-        return StringValue.makeStringValue(
-            ApplicationContextProvider.getApplicationContext()
-                .getBean(CodeListTranslator.class)
-                .getTranslation(codelist, value, language));
-      }
-    };
-  }
+                return StringValue.makeStringValue(ApplicationContextProvider.getApplicationContext()
+                        .getBean(CodeListTranslator.class)
+                        .getTranslation(codelist, value, language));
+            }
+        };
+    }
 }

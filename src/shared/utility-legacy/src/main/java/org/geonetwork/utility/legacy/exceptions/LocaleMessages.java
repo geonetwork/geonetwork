@@ -32,67 +32,65 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 public class LocaleMessages {
-  /**
-   * Get localized message based on message key
-   *
-   * @param messageKey message key to use when retrieving the value from the properties file.
-   * @param locale locale to use when getting the message key
-   * @param resourceBundleBeanQualifier resource bundle qualifier to use when getting
-   *     ResourceBundleMessageSource bean
-   * @return message
-   */
-  public static String getMessageForLocale(
-      String messageKey, Locale locale, String resourceBundleBeanQualifier) {
-    return getMessageForLocale(messageKey, null, locale, resourceBundleBeanQualifier);
-  }
-
-  /**
-   * Get localized message based on message key
-   *
-   * @param messageKey message key to use when retrieving the value from the properties file.
-   * @param args Argument that may be supplied to the messagekey string
-   * @param locale locale to use when getting the message key. If null then it will default to
-   *     locale context holder.
-   * @param resourceBundleBeanQualifier resource bundle qualifier to use when getting
-   *     ResourceBundleMessageSource bean
-   * @return message
-   */
-  public static String getMessageForLocale(
-      String messageKey, Object[] args, Locale locale, String resourceBundleBeanQualifier) {
-    if (!StringUtils.isEmpty(messageKey)) {
-      ResourceBundleMessageSource resourceBundleMessageSource =
-          getResourceBundleMessageSource(resourceBundleBeanQualifier);
-      if (resourceBundleMessageSource != null) {
-        return resourceBundleMessageSource.getMessage(
-            messageKey, args, locale == null ? LocaleContextHolder.getLocale() : locale);
-      }
+    /**
+     * Get localized message based on message key
+     *
+     * @param messageKey message key to use when retrieving the value from the properties file.
+     * @param locale locale to use when getting the message key
+     * @param resourceBundleBeanQualifier resource bundle qualifier to use when getting
+     *     ResourceBundleMessageSource bean
+     * @return message
+     */
+    public static String getMessageForLocale(String messageKey, Locale locale, String resourceBundleBeanQualifier) {
+        return getMessageForLocale(messageKey, null, locale, resourceBundleBeanQualifier);
     }
-    // If we could not find the ResourceBundleMessageSource or the messageKey was in an invalid
-    // format then lets return the original key as the message.
-    return messageKey;
-  }
 
-  /**
-   * Locate the ResourceBundleMessageSource bean.
-   *
-   * @param resourceBundleBeanQualifier to locate the bean. Without the qualifier, it will fails
-   *     when there are multiple beans for ResourceBundleMessageSource
-   * @return bean for ResourceBundleMessageSource
-   */
-  @SuppressWarnings("unused")
-  private static ResourceBundleMessageSource getResourceBundleMessageSource(
-      String resourceBundleBeanQualifier) {
-    ResourceBundleMessageSource resourceBundleMessageSource = null;
-    //        try {
-    //            resourceBundleMessageSource = BeanFactoryAnnotationUtils.qualifiedBeanOfType(
-    //                ApplicationContextHolder.get().getBeanFactory(),
-    //                ResourceBundleMessageSource.class,
-    //                resourceBundleBeanQualifier);
-    //        } catch (Exception e) {
-    //            //If there are any errors in getting the bean then lets just ensure
-    // resourceBundleMessageSource is null;
-    //            resourceBundleMessageSource = null;
-    //        }
-    return resourceBundleMessageSource;
-  }
+    /**
+     * Get localized message based on message key
+     *
+     * @param messageKey message key to use when retrieving the value from the properties file.
+     * @param args Argument that may be supplied to the messagekey string
+     * @param locale locale to use when getting the message key. If null then it will default to
+     *     locale context holder.
+     * @param resourceBundleBeanQualifier resource bundle qualifier to use when getting
+     *     ResourceBundleMessageSource bean
+     * @return message
+     */
+    public static String getMessageForLocale(
+            String messageKey, Object[] args, Locale locale, String resourceBundleBeanQualifier) {
+        if (!StringUtils.isEmpty(messageKey)) {
+            ResourceBundleMessageSource resourceBundleMessageSource =
+                    getResourceBundleMessageSource(resourceBundleBeanQualifier);
+            if (resourceBundleMessageSource != null) {
+                return resourceBundleMessageSource.getMessage(
+                        messageKey, args, locale == null ? LocaleContextHolder.getLocale() : locale);
+            }
+        }
+        // If we could not find the ResourceBundleMessageSource or the messageKey was in an invalid
+        // format then lets return the original key as the message.
+        return messageKey;
+    }
+
+    /**
+     * Locate the ResourceBundleMessageSource bean.
+     *
+     * @param resourceBundleBeanQualifier to locate the bean. Without the qualifier, it will fails
+     *     when there are multiple beans for ResourceBundleMessageSource
+     * @return bean for ResourceBundleMessageSource
+     */
+    @SuppressWarnings("unused")
+    private static ResourceBundleMessageSource getResourceBundleMessageSource(String resourceBundleBeanQualifier) {
+        ResourceBundleMessageSource resourceBundleMessageSource = null;
+        //        try {
+        //            resourceBundleMessageSource = BeanFactoryAnnotationUtils.qualifiedBeanOfType(
+        //                ApplicationContextHolder.get().getBeanFactory(),
+        //                ResourceBundleMessageSource.class,
+        //                resourceBundleBeanQualifier);
+        //        } catch (Exception e) {
+        //            //If there are any errors in getting the bean then lets just ensure
+        // resourceBundleMessageSource is null;
+        //            resourceBundleMessageSource = null;
+        //        }
+        return resourceBundleMessageSource;
+    }
 }

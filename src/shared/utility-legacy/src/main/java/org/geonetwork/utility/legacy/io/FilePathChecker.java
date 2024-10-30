@@ -39,20 +39,20 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class FilePathChecker {
 
-  /**
-   * Checks that a file path is not absolute path and doesn't have .. characters, throwing an
-   * exception in these cases.
-   */
-  public static void verify(String filePath) throws IllegalArgumentException {
-    if (StringUtils.isEmpty(filePath)) return;
+    /**
+     * Checks that a file path is not absolute path and doesn't have .. characters, throwing an
+     * exception in these cases.
+     */
+    public static void verify(String filePath) throws IllegalArgumentException {
+        if (StringUtils.isEmpty(filePath)) return;
 
-    if (filePath.contains("..")) {
-      throw new IllegalArgumentException("Invalid character found in path." + filePath);
-    }
+        if (filePath.contains("..")) {
+            throw new IllegalArgumentException("Invalid character found in path." + filePath);
+        }
 
-    Path path = Paths.get(filePath);
-    if (path.isAbsolute() || filePath.startsWith("/") || filePath.startsWith("://", 1)) {
-      throw new IllegalArgumentException("Invalid character found in path." + filePath);
+        Path path = Paths.get(filePath);
+        if (path.isAbsolute() || filePath.startsWith("/") || filePath.startsWith("://", 1)) {
+            throw new IllegalArgumentException("Invalid character found in path." + filePath);
+        }
     }
-  }
 }
