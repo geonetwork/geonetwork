@@ -330,11 +330,9 @@
         <configuration>
           <!--ratchetFrom>origin/main</ratchetFrom-->
           <java>
-            <googleJavaFormat>
-              <style>GOOGLE</style>
-              <reflowLongStrings>true</reflowLongStrings>
-              <formatJavadoc>true</formatJavadoc>
-            </googleJavaFormat>
+            <palantirJavaFormat>
+              <version>2.50.0</version>
+            </palantirJavaFormat>
             <removeUnusedImports></removeUnusedImports>
             <!--<replaceRegex>
               <name>Remove wildcard imports</name>
