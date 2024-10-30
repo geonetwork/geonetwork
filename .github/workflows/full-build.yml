@@ -20,6 +20,9 @@ jobs:
         distribution: 'temurin'
         java-version: 21
         cache: 'maven'
+    - name: Establish gdal environment for GdalDataAnalyzer
+      run: |
+        docker pull ghcr.io/osgeo/gdal:alpine-normal-latest
     - name: Full build with quality assurance testing
       run: |
         mvn -B -fae install -Dqa
