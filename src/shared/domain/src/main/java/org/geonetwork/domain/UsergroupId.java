@@ -24,33 +24,33 @@ import org.hibernate.Hibernate;
 @Setter
 @Embeddable
 public class UsergroupId implements Serializable {
-  private static final long serialVersionUID = 539309035788142295L;
+    private static final long serialVersionUID = 539309035788142295L;
 
-  @NotNull
-  @Column(name = "groupid", nullable = false)
-  private Integer groupid;
+    @NotNull
+    @Column(name = "groupid", nullable = false)
+    private Integer groupid;
 
-  @NotNull
-  @Column(name = "profile", nullable = false)
-  private Integer profile;
+    @NotNull
+    @Column(name = "profile", nullable = false)
+    private Integer profile;
 
-  @NotNull
-  @Column(name = "userid", nullable = false)
-  private Integer userid;
+    @NotNull
+    @Column(name = "userid", nullable = false)
+    private Integer userid;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    if (!UsergroupId.class.isInstance(o)) return false;
-    UsergroupId entity = (UsergroupId) o;
-    return Objects.equals(this.groupid, entity.groupid)
-        && Objects.equals(this.profile, entity.profile)
-        && Objects.equals(this.userid, entity.userid);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (!UsergroupId.class.isInstance(o)) return false;
+        UsergroupId entity = (UsergroupId) o;
+        return Objects.equals(this.groupid, entity.groupid)
+                && Objects.equals(this.profile, entity.profile)
+                && Objects.equals(this.userid, entity.userid);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(groupid, profile, userid);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(groupid, profile, userid);
+    }
 }

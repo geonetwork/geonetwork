@@ -27,69 +27,60 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Slf4j
 public class OauthAuthoritiesMapperService {
-  UserRepository userRepository;
-  UsergroupRepository userGroupRepository;
-  GeoNetworkUserService geoNetworkUserService;
+    UserRepository userRepository;
+    UsergroupRepository userGroupRepository;
+    GeoNetworkUserService geoNetworkUserService;
 
-  public GrantedAuthoritiesMapper userOauthAuthoritiesMapper() {
-    return (authorities) -> {
-      Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+    public GrantedAuthoritiesMapper userOauthAuthoritiesMapper() {
+        return (authorities) -> {
+            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 
-      authorities.forEach(
-          authority -> {
-            if (authority instanceof OidcUserAuthority) {
-              // Handle OIDC user authority
-            } else if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
-              Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
-              String email = userAttributes.get("email").toString();
-              Optional<User> oauthUser = userRepository.findOptionalByEmail(email);
+            authorities.forEach(authority -> {
+                if (authority instanceof OidcUserAuthority) {
+                    // Handle OIDC user authority
+                } else if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
+                    Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
+                    String email = userAttributes.get("email").toString();
+                    Optional<User> oauthUser = userRepository.findOptionalByEmail(email);
 
-              User user =
-                  oauthUser
-                      .map(
-                          existingUser -> {
-                            isUserFoundAndEnabled(email, oauthUser);
+                    User user = oauthUser
+                            .map(existingUser -> {
+                                isUserFoundAndEnabled(email, oauthUser);
 
-                            existingUser.setUsername(
-                                Optional.ofNullable(userAttributes.get("name"))
-                                    .orElse(email)
-                                    .toString());
-                            userRepository.save(existingUser);
+                                existingUser.setUsername(Optional.ofNullable(userAttributes.get("name"))
+                                        .orElse(email)
+                                        .toString());
+                                userRepository.save(existingUser);
 
-                            return existingUser;
-                          })
-                      .orElseGet(
-                          () -> {
-                            String username =
-                                Optional.ofNullable(userAttributes.get("login"))
-                                    .orElse(email)
-                                    .toString();
-                            User newUser =
-                                User.builder()
-                                    .isenabled("y")
-                                    .password("")
-                                    .username(username)
-                                    .name(
-                                        Optional.ofNullable(userAttributes.get("name"))
-                                            .orElse("")
-                                            .toString())
-                                    .surname("")
-                                    .authtype(authority.getAuthority())
-                                    .email(Set.of(email))
-                                    .organisation(
-                                        Optional.ofNullable(userAttributes.get("company"))
-                                            .orElse("")
-                                            .toString())
-                                    .build();
-                            userRepository.save(newUser);
-                            return newUser;
-                          });
+                                return existingUser;
+                            })
+                            .orElseGet(() -> {
+                                String username = Optional.ofNullable(userAttributes.get("login"))
+                                        .orElse(email)
+                                        .toString();
+                                User newUser = User.builder()
+                                        .isenabled("y")
+                                        .password("")
+                                        .username(username)
+                                        .name(Optional.ofNullable(userAttributes.get("name"))
+                                                .orElse("")
+                                                .toString())
+                                        .surname("")
+                                        .authtype(authority.getAuthority())
+                                        .email(Set.of(email))
+                                        .organisation(Optional.ofNullable(userAttributes.get("company"))
+                                                .orElse("")
+                                                .toString())
+                                        .build();
+                                userRepository.save(newUser);
+                                return newUser;
+                            });
 
-              mappedAuthorities.add(geoNetworkUserService.buildUserAuthority(user));
-            }
-          });
+                    mappedAuthorities.add(geoNetworkUserService.buildUserAuthority(user));
+                }
+            });
 
-      return mappedAuthorities;
-    };
-  }
+            return mappedAuthorities;
+        };
+    }
 }

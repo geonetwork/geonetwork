@@ -46,93 +46,80 @@ import org.xmlunit.diff.ElementSelectors;
 @SpringBootTest(classes = {TestConfiguration.class})
 class MetadataBuilderTest {
 
-  @Autowired private MetadataBuilder metadataBuilder;
-  @MockBean private MetadataRepository metadataRepository;
-  private GdalDataAnalyzer analyzer;
+    @Autowired
+    private MetadataBuilder metadataBuilder;
 
-  @BeforeEach
-  void setUp() throws IOException {
-    String dataFolder = new ClassPathResource("data/samples").getFile().toString();
-    String mountPoint = "/data";
-    analyzer =
-        new GdalDataAnalyzer(
-            String.format(
-                "docker run --rm -v %s:%s ghcr.io/osgeo/gdal:alpine-normal-latest ",
-                dataFolder, mountPoint),
-            dataFolder,
-            mountPoint,
-            60);
-  }
+    @MockBean
+    private MetadataRepository metadataRepository;
 
-  @Test
-  void dataAnalysisFromShapefileFromEmptyRecord() throws IOException {
-    String layerFile = "CEEUBG100kV2_1.shp";
-    Optional<DatasetInfo> layerProperties =
-        analyzer.getLayerProperties(
-            new ClassPathResource("data/samples/" + layerFile).getFile().getCanonicalPath(),
-            "CEEUBG100kV2_1");
+    private GdalDataAnalyzer analyzer;
 
-    String uuid = "uuid1";
-    Metadata metadata = new Metadata();
-    metadata.setUuid(uuid);
-    metadata.setSchemaid("iso19115-3.2018");
-    metadata.setData(
-        "<mdb:MD_Metadata xmlns:mdb=\"http://standards.iso.org/iso/19115/-3/mdb/2.0\"/>");
-    when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
+    @BeforeEach
+    void setUp() throws IOException {
+        String dataFolder = new ClassPathResource("data/samples").getFile().toString();
+        String mountPoint = "/data";
+        analyzer = new GdalDataAnalyzer(
+                String.format(
+                        "docker run --rm -v %s:%s ghcr.io/osgeo/gdal:alpine-normal-latest ", dataFolder, mountPoint),
+                dataFolder,
+                mountPoint,
+                60);
+    }
 
-    String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
-    String expected =
-        IOUtils.toString(
-            new ClassPathResource("data/samples/" + layerFile + ".xml").getInputStream());
+    @Test
+    void dataAnalysisFromShapefileFromEmptyRecord() throws IOException {
+        String layerFile = "CEEUBG100kV2_1.shp";
+        Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(
+                new ClassPathResource("data/samples/" + layerFile).getFile().getCanonicalPath(), "CEEUBG100kV2_1");
 
-    Diff diff =
-        DiffBuilder.compare(Input.fromString(builtMetadata))
-            .withTest(Input.fromString(expected))
-            .withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byName))
-            .normalizeWhitespace()
-            .ignoreComments()
-            .checkForSimilar()
-            .build();
-    assertFalse(
-        diff.hasDifferences(), String.format("%s. Differences: %s", layerFile, diff.toString()));
-  }
+        String uuid = "uuid1";
+        Metadata metadata = new Metadata();
+        metadata.setUuid(uuid);
+        metadata.setSchemaid("iso19115-3.2018");
+        metadata.setData("<mdb:MD_Metadata xmlns:mdb=\"http://standards.iso.org/iso/19115/-3/mdb/2.0\"/>");
+        when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
 
-  @Test
-  void dataAnalysisFromShapefileInjectedInTemplate() throws IOException {
-    String layerFile = "CEEUBG100kV2_1.shp";
-    Optional<DatasetInfo> layerProperties =
-        analyzer.getLayerProperties(
-            new ClassPathResource("data/samples/" + layerFile).getFile().getCanonicalPath(),
-            "CEEUBG100kV2_1");
+        String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
+        String expected =
+                IOUtils.toString(new ClassPathResource("data/samples/" + layerFile + ".xml").getInputStream());
 
-    String uuid = "uuid1";
-    String template =
-        IOUtils.toString(
-            new ClassPathResource("schemas/iso19115-3.2018/templates/geodata.xml")
-                .getInputStream());
+        Diff diff = DiffBuilder.compare(Input.fromString(builtMetadata))
+                .withTest(Input.fromString(expected))
+                .withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byName))
+                .normalizeWhitespace()
+                .ignoreComments()
+                .checkForSimilar()
+                .build();
+        assertFalse(diff.hasDifferences(), String.format("%s. Differences: %s", layerFile, diff.toString()));
+    }
 
-    Metadata metadata = new Metadata();
-    metadata.setUuid(uuid);
-    metadata.setSchemaid("iso19115-3.2018");
-    metadata.setData(template);
-    when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
+    @Test
+    void dataAnalysisFromShapefileInjectedInTemplate() throws IOException {
+        String layerFile = "CEEUBG100kV2_1.shp";
+        Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(
+                new ClassPathResource("data/samples/" + layerFile).getFile().getCanonicalPath(), "CEEUBG100kV2_1");
 
-    String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
-    String expected =
-        Files.readString(
-            Path.of(
-                new ClassPathResource("data/samples/test_data_analysis_injected_in_template.xml")
-                    .getURI()));
+        String uuid = "uuid1";
+        String template = IOUtils.toString(
+                new ClassPathResource("schemas/iso19115-3.2018/templates/geodata.xml").getInputStream());
 
-    Diff diff =
-        DiffBuilder.compare(Input.fromString(builtMetadata))
-            .withTest(Input.fromString(expected))
-            .withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byName))
-            .normalizeWhitespace()
-            .ignoreComments()
-            .checkForSimilar()
-            .build();
-    assertFalse(
-        diff.hasDifferences(), String.format("%s. Differences: %s", layerFile, diff.toString()));
-  }
+        Metadata metadata = new Metadata();
+        metadata.setUuid(uuid);
+        metadata.setSchemaid("iso19115-3.2018");
+        metadata.setData(template);
+        when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
+
+        String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
+        String expected = Files.readString(
+                Path.of(new ClassPathResource("data/samples/test_data_analysis_injected_in_template.xml").getURI()));
+
+        Diff diff = DiffBuilder.compare(Input.fromString(builtMetadata))
+                .withTest(Input.fromString(expected))
+                .withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byName))
+                .normalizeWhitespace()
+                .ignoreComments()
+                .checkForSimilar()
+                .build();
+        assertFalse(diff.hasDifferences(), String.format("%s. Differences: %s", layerFile, diff.toString()));
+    }
 }

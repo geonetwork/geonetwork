@@ -35,6 +35,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProcessStepSource {
-  @JsonProperty(IndexRecordFieldNames.ProcessStepField.DESCRIPTION)
-  Map<String, String> description;
+    @JsonProperty(IndexRecordFieldNames.ProcessStepField.DESCRIPTION)
+    Map<String, String> description;
 }

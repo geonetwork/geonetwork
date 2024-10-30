@@ -30,20 +30,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "isolanguagesdes")
 public class Isolanguagesde {
-  @SequenceGenerator(
-      name = "isolanguagesdes_id_gen",
-      sequenceName = "harvester_setting_id_seq",
-      allocationSize = 1)
-  @EmbeddedId
-  private IsolanguagesdeId id;
+    @SequenceGenerator(name = "isolanguagesdes_id_gen", sequenceName = "harvester_setting_id_seq", allocationSize = 1)
+    @EmbeddedId
+    private IsolanguagesdeId id;
 
-  @MapsId("iddes")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "iddes", nullable = false)
-  private Isolanguage iddes;
+    @MapsId("iddes")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "iddes", nullable = false)
+    private Isolanguage iddes;
 
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "label", nullable = false)
-  private String label;
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "label", nullable = false)
+    private String label;
 }

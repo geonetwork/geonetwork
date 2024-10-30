@@ -6,8 +6,8 @@
 package org.geonetwork.utility.legacy.resolver;
 
 public class ProxyParams {
-  String username, password, proxyHost;
-  int proxyPort;
-  boolean useProxy = false;
-  boolean useProxyAuth = false;
+    String username, password, proxyHost;
+    int proxyPort;
+    boolean useProxy = false;
+    boolean useProxyAuth = false;
 }

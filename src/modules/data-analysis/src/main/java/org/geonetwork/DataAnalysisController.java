@@ -32,65 +32,64 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class DataAnalysisController {
 
-  GdalDataAnalyzer analyzer;
+    GdalDataAnalyzer analyzer;
 
-  MetadataBuilder metadataBuilder;
+    MetadataBuilder metadataBuilder;
 
-  @GetMapping(path = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public String status() {
-    return analyzer.getStatus();
-  }
-
-  @GetMapping(path = "/formats", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public List<DataFormat> formats() {
-    return analyzer.getFormats();
-  }
-
-  @GetMapping(path = "/attribute/statistics", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public List<AttributeStatistics> attributeStatistics(
-      @RequestParam String datasource, @RequestParam String layer, @RequestParam String attribute) {
-
-    return analyzer.getAttributesStatistics(datasource, layer, List.of(attribute));
-  }
-
-  @GetMapping(path = "/attribute/codelist", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public List<Object> attributeCodelist(
-      @RequestParam String datasource,
-      @RequestParam String layer,
-      @RequestParam String attribute,
-      @RequestParam(defaultValue = "10") @Max(value = 100) int limit) {
-
-    return analyzer.getAttributeUniqueValues(datasource, layer, attribute, limit);
-  }
-
-  @GetMapping(path = "/execute", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public ResponseEntity<DatasetInfo> analysisSynch(
-      @RequestParam String datasource, @RequestParam String layer) {
-    Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
-
-    if (layerProperties.isPresent()) {
-      return new ResponseEntity<>(layerProperties.get(), HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping(path = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public String status() {
+        return analyzer.getStatus();
     }
-  }
 
-  @GetMapping(path = "/preview", produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize("hasRole('Administrator')")
-  public ResponseEntity<String> previewSynch(
-      @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer) {
-    Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
-
-    if (layerProperties.isPresent()) {
-      String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
-      return new ResponseEntity<>(builtMetadata, HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping(path = "/formats", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public List<DataFormat> formats() {
+        return analyzer.getFormats();
     }
-  }
+
+    @GetMapping(path = "/attribute/statistics", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public List<AttributeStatistics> attributeStatistics(
+            @RequestParam String datasource, @RequestParam String layer, @RequestParam String attribute) {
+
+        return analyzer.getAttributesStatistics(datasource, layer, List.of(attribute));
+    }
+
+    @GetMapping(path = "/attribute/codelist", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public List<Object> attributeCodelist(
+            @RequestParam String datasource,
+            @RequestParam String layer,
+            @RequestParam String attribute,
+            @RequestParam(defaultValue = "10") @Max(value = 100) int limit) {
+
+        return analyzer.getAttributeUniqueValues(datasource, layer, attribute, limit);
+    }
+
+    @GetMapping(path = "/execute", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public ResponseEntity<DatasetInfo> analysisSynch(@RequestParam String datasource, @RequestParam String layer) {
+        Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
+
+        if (layerProperties.isPresent()) {
+            return new ResponseEntity<>(layerProperties.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/preview", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public ResponseEntity<String> previewSynch(
+            @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer) {
+        Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
+
+        if (layerProperties.isPresent()) {
+            String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
+            return new ResponseEntity<>(builtMetadata, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

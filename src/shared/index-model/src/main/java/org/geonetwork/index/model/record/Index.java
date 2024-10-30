@@ -17,10 +17,10 @@ import lombok.ToString;
 @ToString
 public class Index {
 
-  private String name;
-  private IndexType type;
+    private String name;
+    private IndexType type;
 
-  Path getConfigFile() {
-    return null;
-  }
+    Path getConfigFile() {
+        return null;
+    }
 }

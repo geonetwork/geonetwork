@@ -31,50 +31,50 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"expanded", "exclude"})
+        name = "",
+        propOrder = {"expanded", "exclude"})
 @XmlRootElement(name = "multilingualFields")
 public class MultilingualFields {
 
-  @XmlElement(required = true)
-  protected Expanded expanded;
+    @XmlElement(required = true)
+    protected Expanded expanded;
 
-  @XmlElement(required = true)
-  protected Exclude exclude;
+    @XmlElement(required = true)
+    protected Exclude exclude;
 
-  /**
-   * Gets the value of the expanded property.
-   *
-   * @return possible object is {@link Expanded }
-   */
-  public Expanded getExpanded() {
-    return expanded;
-  }
+    /**
+     * Gets the value of the expanded property.
+     *
+     * @return possible object is {@link Expanded }
+     */
+    public Expanded getExpanded() {
+        return expanded;
+    }
 
-  /**
-   * Sets the value of the expanded property.
-   *
-   * @param value allowed object is {@link Expanded }
-   */
-  public void setExpanded(Expanded value) {
-    this.expanded = value;
-  }
+    /**
+     * Sets the value of the expanded property.
+     *
+     * @param value allowed object is {@link Expanded }
+     */
+    public void setExpanded(Expanded value) {
+        this.expanded = value;
+    }
 
-  /**
-   * Gets the value of the exclude property.
-   *
-   * @return possible object is {@link Exclude }
-   */
-  public Exclude getExclude() {
-    return exclude;
-  }
+    /**
+     * Gets the value of the exclude property.
+     *
+     * @return possible object is {@link Exclude }
+     */
+    public Exclude getExclude() {
+        return exclude;
+    }
 
-  /**
-   * Sets the value of the exclude property.
-   *
-   * @param value allowed object is {@link Exclude }
-   */
-  public void setExclude(Exclude value) {
-    this.exclude = value;
-  }
+    /**
+     * Sets the value of the exclude property.
+     *
+     * @param value allowed object is {@link Exclude }
+     */
+    public void setExclude(Exclude value) {
+        this.exclude = value;
+    }
 }

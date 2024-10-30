@@ -24,28 +24,27 @@ import org.hibernate.Hibernate;
 @Setter
 @Embeddable
 public class MetadatacategId implements Serializable {
-  private static final long serialVersionUID = -3508240483658841218L;
+    private static final long serialVersionUID = -3508240483658841218L;
 
-  @NotNull
-  @Column(name = "metadataid", nullable = false)
-  private Integer metadataid;
+    @NotNull
+    @Column(name = "metadataid", nullable = false)
+    private Integer metadataid;
 
-  @NotNull
-  @Column(name = "categoryid", nullable = false)
-  private Integer categoryid;
+    @NotNull
+    @Column(name = "categoryid", nullable = false)
+    private Integer categoryid;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    if (!MetadatacategId.class.isInstance(o)) return false;
-    MetadatacategId entity = (MetadatacategId) o;
-    return Objects.equals(this.metadataid, entity.metadataid)
-        && Objects.equals(this.categoryid, entity.categoryid);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (!MetadatacategId.class.isInstance(o)) return false;
+        MetadatacategId entity = (MetadatacategId) o;
+        return Objects.equals(this.metadataid, entity.metadataid) && Objects.equals(this.categoryid, entity.categoryid);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(metadataid, categoryid);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(metadataid, categoryid);
+    }
 }

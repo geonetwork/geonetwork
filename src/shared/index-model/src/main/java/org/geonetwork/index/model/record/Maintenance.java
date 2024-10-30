@@ -26,16 +26,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Maintenance {
-  String frequency;
+    String frequency;
 
-  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  @JacksonXmlElementWrapper(useWrapping = false)
-  @Builder.Default
-  List<String> nextUpdateDate = new ArrayList<>();
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @Builder.Default
+    List<String> nextUpdateDate = new ArrayList<>();
 
-  String userDefinedFrequency;
+    String userDefinedFrequency;
 
-  @JsonProperty(IndexRecordFieldNames.NOTE)
-  @Builder.Default
-  private Map<String, String> note = new HashMap<>();
+    @JsonProperty(IndexRecordFieldNames.NOTE)
+    @Builder.Default
+    private Map<String, String> note = new HashMap<>();
 }

@@ -32,27 +32,27 @@ import java.util.Locale;
 
 public interface ILocalizedException {
 
-  Locale getLocale();
+    Locale getLocale();
 
-  void setLocale(Locale locale);
+    void setLocale(Locale locale);
 
-  String getLocalizedMessage();
+    String getLocalizedMessage();
 
-  String getMessageKey();
+    String getMessageKey();
 
-  Object[] getMessageKeyArgs();
+    Object[] getMessageKeyArgs();
 
-  void setMessageKey(String messageKey);
+    void setMessageKey(String messageKey);
 
-  void setMessageKeyArgs(Object[] messageKeyArgs);
+    void setMessageKeyArgs(Object[] messageKeyArgs);
 
-  String getLocalizedDescription();
+    String getLocalizedDescription();
 
-  String getDescriptionKey();
+    String getDescriptionKey();
 
-  Object[] getDescriptionKeyArgs();
+    Object[] getDescriptionKeyArgs();
 
-  void setDescriptionKey(String descriptionKey);
+    void setDescriptionKey(String descriptionKey);
 
-  void setDescriptionKeyArgs(Object[] descriptionKeyArgs);
+    void setDescriptionKeyArgs(Object[] descriptionKeyArgs);
 }

@@ -31,15 +31,15 @@ package org.geonetwork.utility.legacy.exceptions;
 // =============================================================================
 
 public class NoSchemaMatchesException extends RuntimeException {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  public NoSchemaMatchesException(String name) {
-    this(name, null);
-  }
+    public NoSchemaMatchesException(String name) {
+        this(name, null);
+    }
 
-  public NoSchemaMatchesException(String name, Object value) {
-    //        super(name, value);
-    //
-    //        id = "no-schema-matches";
-  }
+    public NoSchemaMatchesException(String name, Object value) {
+        //        super(name, value);
+        //
+        //        id = "no-schema-matches";
+    }
 }

@@ -15,7 +15,7 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 public class GeonetworkApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(GeonetworkApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(GeonetworkApplication.class, args);
+    }
 }

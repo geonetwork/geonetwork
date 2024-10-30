@@ -16,17 +16,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.QueryHints;
 
 public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
-  List<Metadata> findAllByUuidIn(List<String> uuid);
+    List<Metadata> findAllByUuidIn(List<String> uuid);
 
-  @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
-  Stream<Metadata> streamAllBy();
+    @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
+    Stream<Metadata> streamAllBy();
 
-  @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
-  Stream<Metadata> streamAllBy(Sort sortBy);
+    @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
+    Stream<Metadata> streamAllBy(Sort sortBy);
 
-  @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
-  Stream<Metadata> streamAllByUuidIn(List<String> uuid);
+    @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
+    Stream<Metadata> streamAllByUuidIn(List<String> uuid);
 
-  @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
-  Stream<Metadata> streamAllByUuidIn(List<String> uuid, Sort sortBy);
+    @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
+    Stream<Metadata> streamAllByUuidIn(List<String> uuid, Sort sortBy);
 }

@@ -34,104 +34,89 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-07-03T16:51:11.791047085+02:00[Europe/Paris]",
-    comments = "Generator version: 7.6.0")
+        value = "org.openapitools.codegen.languages.SpringCodegen",
+        date = "2024-07-03T16:51:11.791047085+02:00[Europe/Paris]",
+        comments = "Generator version: 7.6.0")
 @Controller
 @RequestMapping("${openapi.oGCAPIRecordsPart1Core.base-path:/ogcapi/records}")
 public class CollectionsApiController implements CollectionsApi {
 
-  private final IndexClient client;
-  private final SourceRepository sourceRepository;
+    private final IndexClient client;
+    private final SourceRepository sourceRepository;
 
-  @Autowired
-  public CollectionsApiController(IndexClient client, SourceRepository sourceRepository) {
-    this.sourceRepository = sourceRepository;
-    this.client = client;
-  }
+    @Autowired
+    public CollectionsApiController(IndexClient client, SourceRepository sourceRepository) {
+        this.sourceRepository = sourceRepository;
+        this.client = client;
+    }
 
-  @Override
-  public ResponseEntity<OgcApiRecordsGetCollections200ResponseDto> getCollections() {
-    List<Source> sourceList = sourceRepository.findAll();
-    OgcApiRecordsGetCollections200ResponseDto collections =
-        OgcApiRecordsGetCollections200ResponseDto.builder()
-            .collections(
-                sourceList.stream()
-                    .map(
-                        source ->
-                            OgcApiRecordsCollectionDto.builder()
+    @Override
+    public ResponseEntity<OgcApiRecordsGetCollections200ResponseDto> getCollections() {
+        List<Source> sourceList = sourceRepository.findAll();
+        OgcApiRecordsGetCollections200ResponseDto collections = OgcApiRecordsGetCollections200ResponseDto.builder()
+                .collections(sourceList.stream()
+                        .map(source -> OgcApiRecordsCollectionDto.builder()
                                 .id(source.getUuid())
                                 .title(source.getName())
                                 .build())
-                    .collect(Collectors.toUnmodifiableList()))
-            .build();
-    return ResponseEntity.ok(collections);
-  }
+                        .collect(Collectors.toUnmodifiableList()))
+                .build();
+        return ResponseEntity.ok(collections);
+    }
 
-  @SneakyThrows
-  @Override
-  public ResponseEntity<OgcApiRecordsGetRecords200ResponseDto> getRecords(
-      String catalogId,
-      GetRecordsBboxDto bbox,
-      String datetime,
-      Integer limit,
-      List<String> q,
-      List<String> type,
-      List<String> externalId,
-      List<String> ids,
-      List<String> sortby) {
+    @SneakyThrows
+    @Override
+    public ResponseEntity<OgcApiRecordsGetRecords200ResponseDto> getRecords(
+            String catalogId,
+            GetRecordsBboxDto bbox,
+            String datetime,
+            Integer limit,
+            List<String> q,
+            List<String> type,
+            List<String> externalId,
+            List<String> ids,
+            List<String> sortby) {
 
-    SearchResponse<IndexRecord> searchResponse =
-        client
-            .getEsClient()
-            .search(
-                s -> {
-                  s.index("gn-records");
-                  if (limit != null) {
-                    s.size(limit);
-                  }
-                  if (q != null && StringUtils.isNoneEmpty(q.getFirst())) {
-                    s.q(q.getFirst());
-                  }
-                  return s;
-                },
-                IndexRecord.class);
+        SearchResponse<IndexRecord> searchResponse = client.getEsClient()
+                .search(
+                        s -> {
+                            s.index("gn-records");
+                            if (limit != null) {
+                                s.size(limit);
+                            }
+                            if (q != null && StringUtils.isNoneEmpty(q.getFirst())) {
+                                s.q(q.getFirst());
+                            }
+                            return s;
+                        },
+                        IndexRecord.class);
 
-    return ResponseEntity.ok(
-        OgcApiRecordsGetRecords200ResponseDto.builder()
-            .numberMatched(Math.toIntExact(searchResponse.hits().total().value()))
-            .numberReturned(searchResponse.hits().hits().size())
-            .features(
-                searchResponse.hits().hits().stream()
-                    .map(
-                        h -> {
-                          var title =
-                              Optional.ofNullable(h.source().getResourceTitle())
-                                  .map(t -> t.get(DEFAULT_TEXT))
-                                  .orElse("");
-                          var description =
-                              Optional.ofNullable(h.source().getResourceAbstract())
-                                  .map(a -> a.get(DEFAULT_TEXT))
-                                  .orElse("");
-                          var keywords =
-                              Optional.ofNullable(h.source().getTag())
-                                  .orElseGet(ArrayList::new)
-                                  .stream()
-                                  .flatMap(Stream::ofNullable)
-                                  .map(tag -> tag.get(DEFAULT_TEXT))
-                                  .toList();
+        return ResponseEntity.ok(OgcApiRecordsGetRecords200ResponseDto.builder()
+                .numberMatched(Math.toIntExact(searchResponse.hits().total().value()))
+                .numberReturned(searchResponse.hits().hits().size())
+                .features(searchResponse.hits().hits().stream()
+                        .map(h -> {
+                            var title = Optional.ofNullable(h.source().getResourceTitle())
+                                    .map(t -> t.get(DEFAULT_TEXT))
+                                    .orElse("");
+                            var description = Optional.ofNullable(h.source().getResourceAbstract())
+                                    .map(a -> a.get(DEFAULT_TEXT))
+                                    .orElse("");
+                            var keywords = Optional.ofNullable(h.source().getTag()).orElseGet(ArrayList::new).stream()
+                                    .flatMap(Stream::ofNullable)
+                                    .map(tag -> tag.get(DEFAULT_TEXT))
+                                    .toList();
 
-                          return OgcApiRecordsRecordGeoJSONDto.builder()
-                              .id(h.id())
-                              .properties(
-                                  OgcApiRecordsRecordGeoJSONPropertiesDto.builder()
-                                      .title(title)
-                                      .description(description)
-                                      .keywords(keywords)
-                                      .build())
-                              .build();
+                            return OgcApiRecordsRecordGeoJSONDto.builder()
+                                    .id(h.id())
+                                    .properties(OgcApiRecordsRecordGeoJSONPropertiesDto.builder()
+                                            .title(title)
+                                            .description(description)
+                                            .keywords(keywords)
+                                            .build())
+                                    .build();
                         })
-                    .toList())
-            .build());
-  }
+                        .toList())
+                .build());
+    }
 }

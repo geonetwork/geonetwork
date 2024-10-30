@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResourceDate {
-  private String type;
-  private String date;
+    private String type;
+    private String date;
 }

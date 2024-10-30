@@ -11,8 +11,8 @@ import lombok.Data;
 @Data
 @Builder
 public class DataFormat {
-  String name;
-  String dataType;
-  String rwFlag;
-  String description;
+    String name;
+    String dataType;
+    String rwFlag;
+    String description;
 }

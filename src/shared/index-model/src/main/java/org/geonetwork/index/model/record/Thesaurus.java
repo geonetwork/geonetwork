@@ -23,14 +23,14 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Thesaurus {
-  String id;
-  String title;
-  Map<String, String> multilingualTitle;
-  String theme;
-  String link;
+    String id;
+    String title;
+    Map<String, String> multilingualTitle;
+    String theme;
+    String link;
 
-  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  @JacksonXmlElementWrapper(useWrapping = false)
-  @JsonInclude()
-  ArrayList<Keyword> keywords = new ArrayList<>();
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @JsonInclude()
+    ArrayList<Keyword> keywords = new ArrayList<>();
 }

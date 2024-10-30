@@ -18,35 +18,35 @@ import org.xml.sax.InputSource;
  * @author Jesse on 1/20/2015.
  */
 public class PathInputSource extends InputSource {
-  private final PathSourceMixin pathSourceMixin;
+    private final PathSourceMixin pathSourceMixin;
 
-  public PathInputSource(Path resource) {
-    this.pathSourceMixin = new PathSourceMixin(resource);
-  }
-
-  @Override
-  public InputStream getByteStream() {
-    return this.pathSourceMixin.getInputStream();
-  }
-
-  @Override
-  public void setByteStream(InputStream byteStream) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Reader getCharacterStream() {
-    final Charset cs;
-    if (getEncoding() != null) {
-      cs = Charset.forName(getEncoding());
-    } else {
-      cs = Constants.CHARSET;
+    public PathInputSource(Path resource) {
+        this.pathSourceMixin = new PathSourceMixin(resource);
     }
-    return this.pathSourceMixin.getReader(cs);
-  }
 
-  @Override
-  public void setCharacterStream(Reader characterStream) {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public InputStream getByteStream() {
+        return this.pathSourceMixin.getInputStream();
+    }
+
+    @Override
+    public void setByteStream(InputStream byteStream) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Reader getCharacterStream() {
+        final Charset cs;
+        if (getEncoding() != null) {
+            cs = Charset.forName(getEncoding());
+        } else {
+            cs = Constants.CHARSET;
+        }
+        return this.pathSourceMixin.getReader(cs);
+    }
+
+    @Override
+    public void setCharacterStream(Reader characterStream) {
+        throw new UnsupportedOperationException();
+    }
 }

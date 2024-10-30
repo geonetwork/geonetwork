@@ -12,6 +12,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public abstract class ProcessReport implements Serializable {
-  private String status;
-  private String errorMessage;
+    private String status;
+    private String errorMessage;
 }

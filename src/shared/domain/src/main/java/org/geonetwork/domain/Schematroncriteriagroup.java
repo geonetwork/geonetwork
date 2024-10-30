@@ -30,20 +30,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "schematroncriteriagroup")
 public class Schematroncriteriagroup {
-  @SequenceGenerator(
-      name = "schematroncriteriagroup_id_gen",
-      sequenceName = "operation_id_seq",
-      allocationSize = 1)
-  @EmbeddedId
-  private SchematroncriteriagroupId id;
+    @SequenceGenerator(name = "schematroncriteriagroup_id_gen", sequenceName = "operation_id_seq", allocationSize = 1)
+    @EmbeddedId
+    private SchematroncriteriagroupId id;
 
-  @MapsId("schematronid")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "schematronid", nullable = false)
-  private Schematron schematronid;
+    @MapsId("schematronid")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "schematronid", nullable = false)
+    private Schematron schematronid;
 
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "requirement", nullable = false)
-  private String requirement;
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "requirement", nullable = false)
+    private String requirement;
 }

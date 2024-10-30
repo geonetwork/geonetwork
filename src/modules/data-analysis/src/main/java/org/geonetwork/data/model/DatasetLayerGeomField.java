@@ -17,6 +17,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class DatasetLayerGeomField extends DatasetLayerField implements Serializable {
-  private List<BigDecimal> extent;
-  private String crs;
+    private List<BigDecimal> extent;
+    private String crs;
 }

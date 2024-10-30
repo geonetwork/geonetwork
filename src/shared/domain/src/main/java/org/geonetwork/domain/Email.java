@@ -29,14 +29,14 @@ import lombok.Setter;
 @Entity
 @Table(name = "email")
 public class Email {
-  @Id
-  @Size(max = 255)
-  @SequenceGenerator(name = "email_id_gen", sequenceName = "address_id_seq", allocationSize = 1)
-  @Column(name = "email")
-  private String email;
+    @Id
+    @Size(max = 255)
+    @SequenceGenerator(name = "email_id_gen", sequenceName = "address_id_seq", allocationSize = 1)
+    @Column(name = "email")
+    private String email;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

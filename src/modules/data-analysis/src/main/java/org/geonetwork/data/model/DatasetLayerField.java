@@ -13,8 +13,8 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class DatasetLayerField implements Serializable {
-  private String name;
-  private String type;
-  private boolean nullable;
-  private String defaultValue;
+    private String name;
+    private String type;
+    private boolean nullable;
+    private String defaultValue;
 }

@@ -30,40 +30,40 @@ import org.geonetwork.utility.legacy.io.IO;
  * @author Jesse on 1/26/2015.
  */
 public class PathSourceMixin {
-  private final Path path;
-  private InputStream inputStream;
-  private Reader reader;
+    private final Path path;
+    private InputStream inputStream;
+    private Reader reader;
 
-  public PathSourceMixin(Path path) {
-    this.path = path;
-  }
-
-  public InputStream getInputStream() {
-    if (this.reader != null) {
-      return null;
-    }
-    if (this.inputStream == null) {
-      try {
-        this.inputStream = IO.newInputStream(this.path);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+    public PathSourceMixin(Path path) {
+        this.path = path;
     }
 
-    return this.inputStream;
-  }
+    public InputStream getInputStream() {
+        if (this.reader != null) {
+            return null;
+        }
+        if (this.inputStream == null) {
+            try {
+                this.inputStream = IO.newInputStream(this.path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
-  public Reader getReader(Charset charset) {
-    if (this.inputStream != null) {
-      return null;
+        return this.inputStream;
     }
-    if (this.reader == null) {
-      try {
-        this.reader = IO.newBufferedReader(path, charset);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+
+    public Reader getReader(Charset charset) {
+        if (this.inputStream != null) {
+            return null;
+        }
+        if (this.reader == null) {
+            try {
+                this.reader = IO.newBufferedReader(path, charset);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return this.reader;
     }
-    return this.reader;
-  }
 }

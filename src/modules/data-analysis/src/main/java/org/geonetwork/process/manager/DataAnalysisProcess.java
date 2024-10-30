@@ -14,28 +14,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataAnalysisProcess implements IProcess {
 
-  private final ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
-  public DataAnalysisProcess(ApplicationContext applicationContext) {
-    this.applicationContext = applicationContext;
-  }
+    public DataAnalysisProcess(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
-  @Override
-  public String getName() {
-    return "dataAnalysisProcess";
-  }
+    @Override
+    public String getName() {
+        return "dataAnalysisProcess";
+    }
 
-  @Override
-  public List<ProcessParameter> getParameters() {
-    List<ProcessParameter> params = new ArrayList<ProcessParameter>();
-    params.add(ProcessParameter.builder().name("datasource").type("String").build());
-    params.add(ProcessParameter.builder().name("layer").type("String").build());
+    @Override
+    public List<ProcessParameter> getParameters() {
+        List<ProcessParameter> params = new ArrayList<ProcessParameter>();
+        params.add(ProcessParameter.builder().name("datasource").type("String").build());
+        params.add(ProcessParameter.builder().name("layer").type("String").build());
 
-    return params;
-  }
+        return params;
+    }
 
-  @Override
-  public Job getJob() {
-    return (Job) applicationContext.getBean(getName() + "Job");
-  }
+    @Override
+    public Job getJob() {
+        return (Job) applicationContext.getBean(getName() + "Job");
+    }
 }

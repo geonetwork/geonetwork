@@ -41,22 +41,23 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Link {
 
-  @JsonInclude private String protocol;
+    @JsonInclude
+    private String protocol;
 
-  @JsonProperty(IndexRecordFieldNames.LinkField.URL)
-  private Map<String, String> url = new HashMap<>();
+    @JsonProperty(IndexRecordFieldNames.LinkField.URL)
+    private Map<String, String> url = new HashMap<>();
 
-  @JsonProperty(IndexRecordFieldNames.LinkField.NAME)
-  private Map<String, String> name = new HashMap<>();
+    @JsonProperty(IndexRecordFieldNames.LinkField.NAME)
+    private Map<String, String> name = new HashMap<>();
 
-  @JsonProperty(IndexRecordFieldNames.LinkField.DESCRIPTION)
-  private Map<String, String> description = new HashMap<>();
+    @JsonProperty(IndexRecordFieldNames.LinkField.DESCRIPTION)
+    private Map<String, String> description = new HashMap<>();
 
-  private String function;
-  private String applicationProfile;
-  private String group;
-  private String mimeType;
-  private String nilReason;
-  private String hash;
-  private String idx;
+    private String function;
+    private String applicationProfile;
+    private String group;
+    private String mimeType;
+    private String nilReason;
+    private String hash;
+    private String idx;
 }

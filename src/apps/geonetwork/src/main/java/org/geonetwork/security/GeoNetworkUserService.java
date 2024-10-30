@@ -31,42 +31,40 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Slf4j
 public class GeoNetworkUserService {
-  UserRepository userRepository;
-  UsergroupRepository userGroupRepository;
+    UserRepository userRepository;
+    UsergroupRepository userGroupRepository;
 
-  public static boolean isUserFoundAndEnabled(String username, Optional<User> user) {
-    if (user.isEmpty()) {
-      throw new UsernameNotFoundException(username + " is not a valid username");
+    public static boolean isUserFoundAndEnabled(String username, Optional<User> user) {
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException(username + " is not a valid username");
+        }
+
+        if ("n".equals(user.get().getIsenabled())) {
+            throw new UsernameNotFoundException(username + " account is disabled");
+        }
+
+        return true;
     }
 
-    if ("n".equals(user.get().getIsenabled())) {
-      throw new UsernameNotFoundException(username + " account is disabled");
+    public OAuth2UserAuthority buildUserAuthority(org.geonetwork.domain.User currentUser) {
+        List<Usergroup> userGroups = userGroupRepository.findAllByUserid_Id(currentUser.getId());
+
+        Map<String, List<Integer>> attributesToCast = userGroups.stream()
+                .collect(Collectors.groupingBy(
+                        ug -> Profile.values()[ug.getId().getProfile()].name(),
+                        Collectors.mapping(ug -> ug.getGroupid().getId(), Collectors.toList())));
+
+        String mainUserProfile = currentUser.getProfile().name();
+        Map<String, Object> attributes = new HashMap<>(attributesToCast);
+        attributes.put(USER_ID, currentUser.getId());
+        attributes.put(USER_NAME, currentUser.getUsername());
+        attributes.put(HIGHEST_PROFILE, mainUserProfile);
+        attributes.putIfAbsent(Profile.UserAdmin.name(), Collections.emptyList());
+        attributes.putIfAbsent(Profile.Reviewer.name(), Collections.emptyList());
+        attributes.putIfAbsent(Profile.RegisteredUser.name(), Collections.emptyList());
+        attributes.putIfAbsent(Profile.Editor.name(), Collections.emptyList());
+
+        OAuth2UserAuthority authority = new OAuth2UserAuthority(GN_AUTHORITY, attributes);
+        return authority;
     }
-
-    return true;
-  }
-
-  public OAuth2UserAuthority buildUserAuthority(org.geonetwork.domain.User currentUser) {
-    List<Usergroup> userGroups = userGroupRepository.findAllByUserid_Id(currentUser.getId());
-
-    Map<String, List<Integer>> attributesToCast =
-        userGroups.stream()
-            .collect(
-                Collectors.groupingBy(
-                    ug -> Profile.values()[ug.getId().getProfile()].name(),
-                    Collectors.mapping(ug -> ug.getGroupid().getId(), Collectors.toList())));
-
-    String mainUserProfile = currentUser.getProfile().name();
-    Map<String, Object> attributes = new HashMap<>(attributesToCast);
-    attributes.put(USER_ID, currentUser.getId());
-    attributes.put(USER_NAME, currentUser.getUsername());
-    attributes.put(HIGHEST_PROFILE, mainUserProfile);
-    attributes.putIfAbsent(Profile.UserAdmin.name(), Collections.emptyList());
-    attributes.putIfAbsent(Profile.Reviewer.name(), Collections.emptyList());
-    attributes.putIfAbsent(Profile.RegisteredUser.name(), Collections.emptyList());
-    attributes.putIfAbsent(Profile.Editor.name(), Collections.emptyList());
-
-    OAuth2UserAuthority authority = new OAuth2UserAuthority(GN_AUTHORITY, attributes);
-    return authority;
-  }
 }

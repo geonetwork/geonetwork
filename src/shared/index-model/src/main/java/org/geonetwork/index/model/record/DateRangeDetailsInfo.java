@@ -13,8 +13,8 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class DateRangeDetailsInfo {
-  String date;
-  String frame;
-  String calendarEraName;
-  String indeterminatePosition;
+    String date;
+    String frame;
+    String calendarEraName;
+    String indeterminatePosition;
 }

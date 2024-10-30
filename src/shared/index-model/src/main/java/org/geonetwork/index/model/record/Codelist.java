@@ -24,5 +24,9 @@ import lombok.Singular;
 @RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Codelist {
-  @JsonAnySetter @JsonAnyGetter @JsonIgnore @Singular Map<String, String> properties;
+    @JsonAnySetter
+    @JsonAnyGetter
+    @JsonIgnore
+    @Singular
+    Map<String, String> properties;
 }

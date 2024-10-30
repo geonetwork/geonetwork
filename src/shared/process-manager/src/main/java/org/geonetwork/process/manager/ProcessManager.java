@@ -23,88 +23,82 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProcessManager {
-  private final List<IProcess> processes;
-  private final JobLauncher jobLauncher;
-  private final JobExplorer jobExplorer;
+    private final List<IProcess> processes;
+    private final JobLauncher jobLauncher;
+    private final JobExplorer jobExplorer;
 
-  public ProcessManager(
-      final List<IProcess> processes,
-      final JobLauncher jobLauncher,
-      final JobExplorer jobExplorer) {
-    this.processes = processes;
-    this.jobLauncher = jobLauncher;
-    this.jobExplorer = jobExplorer;
-  }
-
-  /** Gets a process by name. */
-  public IProcess getProcess(String processName) {
-    IProcess process =
-        processes.stream().filter(p -> p.getName().equals(processName)).findFirst().orElse(null);
-
-    if (process == null) {
-      throw new ProcessNotFoundException();
+    public ProcessManager(
+            final List<IProcess> processes, final JobLauncher jobLauncher, final JobExplorer jobExplorer) {
+        this.processes = processes;
+        this.jobLauncher = jobLauncher;
+        this.jobExplorer = jobExplorer;
     }
 
-    return process;
-  }
+    /** Gets a process by name. */
+    public IProcess getProcess(String processName) {
+        IProcess process = processes.stream()
+                .filter(p -> p.getName().equals(processName))
+                .findFirst()
+                .orElse(null);
 
-  /** Gets the list of processes available. */
-  public List<IProcess> getProcesses() {
-    return processes;
-  }
+        if (process == null) {
+            throw new ProcessNotFoundException();
+        }
 
-  /**
-   * Executes a process with the provided parameters and returns the Spring Batch execution
-   * identifier.
-   */
-  public Long execute(IProcess process, ProcessDetails processDetails)
-      throws JobInstanceAlreadyCompleteException,
-          JobExecutionAlreadyRunningException,
-          JobParametersInvalidException,
-          JobRestartException {
-    Job job = process.getJob();
-
-    JobParametersBuilder jobParametersBuilder =
-        new JobParametersBuilder(jobExplorer).getNextJobParameters(job);
-
-    processDetails
-        .getParameters()
-        .forEach((k, v) -> jobParametersBuilder.addString(k, v.toString()));
-
-    JobParameters jobParameters = jobParametersBuilder.toJobParameters();
-    JobExecution jobExecution = jobLauncher.run(job, jobParameters);
-
-    return jobExecution.getId();
-  }
-
-  /** Returns a process execution status, using the process execution identifier. */
-  public BatchStatus processExecutionStatus(Long executionJobId)
-      throws ProcessExecutionNotFoundException {
-    JobExecution jobExecution = jobExplorer.getJobExecution(executionJobId);
-    if (jobExecution == null) {
-      throw new ProcessExecutionNotFoundException();
+        return process;
     }
 
-    return jobExecution.getStatus();
-  }
-
-  /**
-   * Returns a report of a process execution, using the process execution identifier.
-   *
-   * <p>The process should be in a COMPLETED status, otherwise returns null.
-   */
-  public ProcessReport processExecutionResult(Long executionJobId) {
-    JobExecution jobExecution = jobExplorer.getJobExecution(executionJobId);
-
-    if (jobExecution == null) {
-      throw new ProcessExecutionNotFoundException();
+    /** Gets the list of processes available. */
+    public List<IProcess> getProcesses() {
+        return processes;
     }
 
-    if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
-      return (ProcessReport) jobExecution.getExecutionContext().get("result");
-    } else {
-      // TODO: Throw proper exception
-      return null;
+    /**
+     * Executes a process with the provided parameters and returns the Spring Batch execution
+     * identifier.
+     */
+    public Long execute(IProcess process, ProcessDetails processDetails)
+            throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException,
+                    JobParametersInvalidException, JobRestartException {
+        Job job = process.getJob();
+
+        JobParametersBuilder jobParametersBuilder = new JobParametersBuilder(jobExplorer).getNextJobParameters(job);
+
+        processDetails.getParameters().forEach((k, v) -> jobParametersBuilder.addString(k, v.toString()));
+
+        JobParameters jobParameters = jobParametersBuilder.toJobParameters();
+        JobExecution jobExecution = jobLauncher.run(job, jobParameters);
+
+        return jobExecution.getId();
     }
-  }
+
+    /** Returns a process execution status, using the process execution identifier. */
+    public BatchStatus processExecutionStatus(Long executionJobId) throws ProcessExecutionNotFoundException {
+        JobExecution jobExecution = jobExplorer.getJobExecution(executionJobId);
+        if (jobExecution == null) {
+            throw new ProcessExecutionNotFoundException();
+        }
+
+        return jobExecution.getStatus();
+    }
+
+    /**
+     * Returns a report of a process execution, using the process execution identifier.
+     *
+     * <p>The process should be in a COMPLETED status, otherwise returns null.
+     */
+    public ProcessReport processExecutionResult(Long executionJobId) {
+        JobExecution jobExecution = jobExplorer.getJobExecution(executionJobId);
+
+        if (jobExecution == null) {
+            throw new ProcessExecutionNotFoundException();
+        }
+
+        if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
+            return (ProcessReport) jobExecution.getExecutionContext().get("result");
+        } else {
+            // TODO: Throw proper exception
+            return null;
+        }
+    }
 }

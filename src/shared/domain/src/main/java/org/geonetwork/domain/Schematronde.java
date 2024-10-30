@@ -30,20 +30,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "schematrondes")
 public class Schematronde {
-  @SequenceGenerator(
-      name = "schematrondes_id_gen",
-      sequenceName = "operation_id_seq",
-      allocationSize = 1)
-  @EmbeddedId
-  private SchematrondeId id;
+    @SequenceGenerator(name = "schematrondes_id_gen", sequenceName = "operation_id_seq", allocationSize = 1)
+    @EmbeddedId
+    private SchematrondeId id;
 
-  @MapsId("iddes")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "iddes", nullable = false)
-  private Schematron iddes;
+    @MapsId("iddes")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "iddes", nullable = false)
+    private Schematron iddes;
 
-  @Size(max = 96)
-  @NotNull
-  @Column(name = "label", nullable = false, length = 96)
-  private String label;
+    @Size(max = 96)
+    @NotNull
+    @Column(name = "label", nullable = false, length = 96)
+    private String label;
 }

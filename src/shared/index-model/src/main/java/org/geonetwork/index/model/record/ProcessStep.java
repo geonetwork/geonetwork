@@ -46,19 +46,19 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ProcessStep {
-  @JsonProperty(IndexRecordFieldNames.ProcessStepField.DESCRIPTION)
-  Map<String, String> description;
+    @JsonProperty(IndexRecordFieldNames.ProcessStepField.DESCRIPTION)
+    Map<String, String> description;
 
-  @JsonProperty(IndexRecordFieldNames.ProcessStepField.DATE)
-  String date;
+    @JsonProperty(IndexRecordFieldNames.ProcessStepField.DATE)
+    String date;
 
-  @JsonProperty(IndexRecordFieldNames.ProcessStepField.SOURCE)
-  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  @JacksonXmlElementWrapper(useWrapping = false)
-  List<ProcessStepSource> source;
+    @JsonProperty(IndexRecordFieldNames.ProcessStepField.SOURCE)
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @JacksonXmlElementWrapper(useWrapping = false)
+    List<ProcessStepSource> source;
 
-  @JsonProperty(IndexRecordFieldNames.ProcessStepField.PROCESSOR)
-  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  @JacksonXmlElementWrapper(useWrapping = false)
-  List<Contact> processor;
+    @JsonProperty(IndexRecordFieldNames.ProcessStepField.PROCESSOR)
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @JacksonXmlElementWrapper(useWrapping = false)
+    List<Contact> processor;
 }

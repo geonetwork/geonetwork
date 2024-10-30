@@ -10,13 +10,13 @@ import org.geonetwork.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-  Optional<User> findOptionalByUsername(String username);
+    Optional<User> findOptionalByUsername(String username);
 
-  Optional<User> findOptionalByUsernameAndAuthtypeIsNull(String username);
+    Optional<User> findOptionalByUsernameAndAuthtypeIsNull(String username);
 
-  Optional<User> findOptionalByEmailAndAuthtypeIsNull(String email);
+    Optional<User> findOptionalByEmailAndAuthtypeIsNull(String email);
 
-  Optional<User> findOptionalByEmail(String email);
+    Optional<User> findOptionalByEmail(String email);
 
-  Optional<User> findOptionalByUsernameOrEmailAndAuthtypeIsNull(String username, String email);
+    Optional<User> findOptionalByUsernameOrEmailAndAuthtypeIsNull(String username, String email);
 }

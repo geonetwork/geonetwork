@@ -26,8 +26,8 @@ import lombok.Singular;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IndexRecords {
 
-  @JsonProperty(value = "indexRecord")
-  @JacksonXmlElementWrapper(useWrapping = false)
-  @Singular("indexRecord")
-  private List<IndexRecord> indexRecord;
+    @JsonProperty(value = "indexRecord")
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @Singular("indexRecord")
+    private List<IndexRecord> indexRecord;
 }

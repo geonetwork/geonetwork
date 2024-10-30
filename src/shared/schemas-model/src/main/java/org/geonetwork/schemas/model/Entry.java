@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Entry {
-  private String code;
-  private String label;
-  private String description;
+    private String code;
+    private String label;
+    private String description;
 }

@@ -28,17 +28,14 @@ import lombok.Setter;
 @Entity
 @Table(name = "operations")
 public class Operation {
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "operations_id_gen")
-  @SequenceGenerator(
-      name = "operations_id_gen",
-      sequenceName = "operation_id_seq",
-      allocationSize = 1)
-  @Column(name = "id", nullable = false)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "operations_id_gen")
+    @SequenceGenerator(name = "operations_id_gen", sequenceName = "operation_id_seq", allocationSize = 1)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-  @Size(max = 32)
-  @NotNull
-  @Column(name = "name", nullable = false, length = 32)
-  private String name;
+    @Size(max = 32)
+    @NotNull
+    @Column(name = "name", nullable = false, length = 32)
+    private String name;
 }

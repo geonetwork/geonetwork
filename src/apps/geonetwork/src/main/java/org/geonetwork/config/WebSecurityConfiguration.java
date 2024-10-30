@@ -41,87 +41,70 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity
 public class WebSecurityConfiguration {
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(
-      HttpSecurity http,
-      HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
-      OauthAuthoritiesMapperService oauthAuthoritiesMapperService)
-      throws Exception {
-    http.csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(
-            requests ->
-                requests
-                    .requestMatchers("/", "/home", "/signin")
-                    .permitAll()
-                    .requestMatchers("/geonetwork/**")
-                    .permitAll()
-                    .requestMatchers("/api/proxy")
-                    .access(proxyPolicyAgentAuthorizationManager)
-                    .anyRequest()
-                    .permitAll())
-        .oauth2Login(
-            oauth ->
-                oauth
-                    .permitAll()
-                    .userInfoEndpoint(
-                        userInfo ->
-                            userInfo.userAuthoritiesMapper(
+    @Bean
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
+            OauthAuthoritiesMapperService oauthAuthoritiesMapperService)
+            throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/home", "/signin")
+                        .permitAll()
+                        .requestMatchers("/geonetwork/**")
+                        .permitAll()
+                        .requestMatchers("/api/proxy")
+                        .access(proxyPolicyAgentAuthorizationManager)
+                        .anyRequest()
+                        .permitAll())
+                .oauth2Login(oauth -> oauth.permitAll()
+                        .userInfoEndpoint(userInfo -> userInfo.userAuthoritiesMapper(
                                 oauthAuthoritiesMapperService.userOauthAuthoritiesMapper())))
-        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-        .formLogin(
-            form ->
-                form.loginPage("/signin")
-                    .loginProcessingUrl("/api/user/signin")
-                    .defaultSuccessUrl("/home", true)
-                    .permitAll())
-        .httpBasic(
-            basic ->
-                // No popup in browsers
-                basic.authenticationEntryPoint(
-                    (request, response, authException) ->
-                        response.sendError(
-                            HttpStatus.UNAUTHORIZED.value(),
-                            HttpStatus.UNAUTHORIZED.getReasonPhrase())))
-        .logout(
-            logout ->
-                logout
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
-                    .logoutSuccessUrl("/"))
-        .csrf(csrf -> csrf.disable());
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+                .formLogin(form -> form.loginPage("/signin")
+                        .loginProcessingUrl("/api/user/signin")
+                        .defaultSuccessUrl("/home", true)
+                        .permitAll())
+                .httpBasic(basic ->
+                        // No popup in browsers
+                        basic.authenticationEntryPoint((request, response, authException) -> response.sendError(
+                                HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase())))
+                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
+                        .logoutSuccessUrl("/"))
+                .csrf(csrf -> csrf.disable());
 
-    //    http.sessionManagement(
-    //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        //    http.sessionManagement(
+        //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    return http.build();
-  }
+        return http.build();
+    }
 
-  @Bean
-  @SuppressWarnings("deprecation")
-  public PasswordEncoder passwordEncoder(
-      @Value("${geonetwork.security.passwordSalt}") String salt) {
-    return new StandardPasswordEncoder(salt);
-  }
+    @Bean
+    @SuppressWarnings("deprecation")
+    public PasswordEncoder passwordEncoder(@Value("${geonetwork.security.passwordSalt}") String salt) {
+        return new StandardPasswordEncoder(salt);
+    }
 
-  @Bean
-  public JwtDecoder jwtDecoder(@Value("${geonetwork.security.jwt.key}") String jwtKey) {
-    SecretKeySpec secretKey =
-        new SecretKeySpec(jwtKey.getBytes(UTF_8), 0, jwtKey.getBytes(UTF_8).length, "RSA");
-    return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
-  }
+    @Bean
+    public JwtDecoder jwtDecoder(@Value("${geonetwork.security.jwt.key}") String jwtKey) {
+        SecretKeySpec secretKey = new SecretKeySpec(jwtKey.getBytes(UTF_8), 0, jwtKey.getBytes(UTF_8).length, "RSA");
+        return NimbusJwtDecoder.withSecretKey(secretKey)
+                .macAlgorithm(MacAlgorithm.HS256)
+                .build();
+    }
 
-  @Bean
-  public JwtEncoder jwtEncoder(@Value("${geonetwork.security.jwt.key}") String jwtKey) {
-    return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getBytes(UTF_8)));
-  }
+    @Bean
+    public JwtEncoder jwtEncoder(@Value("${geonetwork.security.jwt.key}") String jwtKey) {
+        return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getBytes(UTF_8)));
+    }
 
-  @Bean
-  public UserDetailsService userDetailsService(
-      @Value("${geonetwork.security.checkUsernameOrEmail: 'USERNAME_OR_EMAIL'}")
-          DatabaseUserAuthProperties checkUsernameOrEmail,
-      PasswordEncoder passwordEncoder,
-      UserRepository userRepository,
-      GeoNetworkUserService geoNetworkUserService) {
-    return new DatabaseUserDetailsService(
-        checkUsernameOrEmail, passwordEncoder, geoNetworkUserService, userRepository);
-  }
+    @Bean
+    public UserDetailsService userDetailsService(
+            @Value("${geonetwork.security.checkUsernameOrEmail: 'USERNAME_OR_EMAIL'}")
+                    DatabaseUserAuthProperties checkUsernameOrEmail,
+            PasswordEncoder passwordEncoder,
+            UserRepository userRepository,
+            GeoNetworkUserService geoNetworkUserService) {
+        return new DatabaseUserDetailsService(
+                checkUsernameOrEmail, passwordEncoder, geoNetworkUserService, userRepository);
+    }
 }

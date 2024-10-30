@@ -16,19 +16,18 @@ import java.util.List;
 
 /** Serialize a list of strings as a list of JsonNode. */
 public class StringAsNodeTreeSerializer extends JsonSerializer<List<String>> {
-  private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
-  @Override
-  public void serialize(List<String> value, JsonGenerator gen, SerializerProvider serializers)
-      throws IOException {
-    if (value == null || value.isEmpty()) {
-      return;
+    @Override
+    public void serialize(List<String> value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        if (value == null || value.isEmpty()) {
+            return;
+        }
+        gen.writeStartArray();
+        for (String v : value) {
+            JsonNode node = mapper.readTree(v);
+            gen.writeTree(node);
+        }
+        gen.writeEndArray();
     }
-    gen.writeStartArray();
-    for (String v : value) {
-      JsonNode node = mapper.readTree(v);
-      gen.writeTree(node);
-    }
-    gen.writeEndArray();
-  }
 }

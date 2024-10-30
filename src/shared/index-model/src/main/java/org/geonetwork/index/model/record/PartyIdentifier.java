@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 @Builder
 public class PartyIdentifier {
-  private String code;
-  private String codeSpace;
-  private String link;
+    private String code;
+    private String codeSpace;
+    private String link;
 }

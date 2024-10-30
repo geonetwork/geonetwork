@@ -29,15 +29,16 @@ import lombok.Setter;
 @Entity
 @Table(name = "sourcesdes")
 public class Sourcesde {
-  @EmbeddedId private SourcesdeId id;
+    @EmbeddedId
+    private SourcesdeId id;
 
-  @MapsId("iddes")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "iddes", nullable = false)
-  private Source iddes;
+    @MapsId("iddes")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "iddes", nullable = false)
+    private Source iddes;
 
-  @Size(max = 96)
-  @NotNull
-  @Column(name = "label", nullable = false, length = 96)
-  private String label;
+    @Size(max = 96)
+    @NotNull
+    @Column(name = "label", nullable = false, length = 96)
+    private String label;
 }

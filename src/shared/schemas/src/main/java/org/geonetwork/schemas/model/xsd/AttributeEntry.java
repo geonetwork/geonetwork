@@ -40,91 +40,91 @@ import org.jdom.Element;
 
 /** Attribute entry. */
 public class AttributeEntry {
-  public String name;
-  public String type;
-  public String unqualifiedName;
-  public String namespacePrefix;
-  public String defValue;
-  public String reference;
-  public String form = "unqualified";
-  public boolean required = false;
+    public String name;
+    public String type;
+    public String unqualifiedName;
+    public String namespacePrefix;
+    public String defValue;
+    public String reference;
+    public String form = "unqualified";
+    public boolean required = false;
 
-  public ArrayList<String> alValues = new ArrayList<String>();
-  public ArrayList<String> alTypes = new ArrayList<String>();
+    public ArrayList<String> alValues = new ArrayList<String>();
+    public ArrayList<String> alTypes = new ArrayList<String>();
 
-  public AttributeEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
-    this(new ElementInfo(el, file, targetNS, targetNSPrefix));
-  }
+    public AttributeEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
+        this(new ElementInfo(el, file, targetNS, targetNSPrefix));
+    }
 
-  public AttributeEntry(ElementInfo ei) {
-    handleAttribs(ei);
-    handleChildren(ei);
-  }
+    public AttributeEntry(ElementInfo ei) {
+        handleAttribs(ei);
+        handleChildren(ei);
+    }
 
-  private void handleAttribs(ElementInfo ei) {
-    List<?> attribs = ei.element.getAttributes();
+    private void handleAttribs(ElementInfo ei) {
+        List<?> attribs = ei.element.getAttributes();
 
-    for (Object attrib : attribs) {
-      Attribute at = (Attribute) attrib;
+        for (Object attrib : attribs) {
+            Attribute at = (Attribute) attrib;
 
-      String attrName = at.getName();
-      if (attrName.equals("name")) {
-        name = at.getValue();
-        unqualifiedName = name;
-        if (ei.targetNSPrefix != null) {
-          name = ei.targetNSPrefix + ":" + name;
-          namespacePrefix = ei.targetNSPrefix;
+            String attrName = at.getName();
+            if (attrName.equals("name")) {
+                name = at.getValue();
+                unqualifiedName = name;
+                if (ei.targetNSPrefix != null) {
+                    name = ei.targetNSPrefix + ":" + name;
+                    namespacePrefix = ei.targetNSPrefix;
+                }
+
+                // System.out.println("-- name is "+name);
+            } else if (attrName.equals("default") || attrName.equals("fixed")) {
+                defValue = at.getValue();
+            } else if (attrName.equals("ref")) {
+                reference = at.getValue();
+
+                // System.out.println("-- ref is "+reference);
+            } else if (attrName.equals("use")) {
+                required = "required".equals(at.getValue());
+                // System.out.println("-- Required is "+required);
+            } else if (attrName.equals("type")) {
+                type = ei.element.getAttributeValue(attrName);
+            } else if (attrName.equals("form")) {
+                form = at.getValue();
+            }
         }
-
-        // System.out.println("-- name is "+name);
-      } else if (attrName.equals("default") || attrName.equals("fixed")) {
-        defValue = at.getValue();
-      } else if (attrName.equals("ref")) {
-        reference = at.getValue();
-
-        // System.out.println("-- ref is "+reference);
-      } else if (attrName.equals("use")) {
-        required = "required".equals(at.getValue());
-        // System.out.println("-- Required is "+required);
-      } else if (attrName.equals("type")) {
-        type = ei.element.getAttributeValue(attrName);
-      } else if (attrName.equals("form")) {
-        form = at.getValue();
-      }
     }
-  }
 
-  private void handleChildren(ElementInfo ei) {
-    List<?> children = ei.element.getChildren();
-    for (Object aChildren : children) {
-      Element elChild = (Element) aChildren;
-      String elName = elChild.getName();
-      if (elName.equals("simpleType")) {
-        SimpleTypeEntry ste = new SimpleTypeEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
-        for (int j = 0; j < ste.alEnum.size(); j++) {
-          alValues.add(ste.alEnum.get(j));
+    private void handleChildren(ElementInfo ei) {
+        List<?> children = ei.element.getChildren();
+        for (Object aChildren : children) {
+            Element elChild = (Element) aChildren;
+            String elName = elChild.getName();
+            if (elName.equals("simpleType")) {
+                SimpleTypeEntry ste = new SimpleTypeEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
+                for (int j = 0; j < ste.alEnum.size(); j++) {
+                    alValues.add(ste.alEnum.get(j));
+                }
+
+                for (int j = 0; j < ste.alTypes.size(); j++) {
+                    alTypes.add(ste.alTypes.get(j));
+                }
+                //            } else if (elName.equals("annotation")) {
+            }
         }
+    }
 
-        for (int j = 0; j < ste.alTypes.size(); j++) {
-          alTypes.add(ste.alTypes.get(j));
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("AttributeEntry name:" + name + ", type:" + type + " [");
+        for (int j = 0; j < alValues.size(); j++) {
+            sb.append(alValues.get(j) + ",");
         }
-        //            } else if (elName.equals("annotation")) {
-      }
+        sb.append("], types:[");
+        for (int j = 0; j < alTypes.size(); j++) {
+            sb.append(alTypes.get(j) + ",");
+        }
+        sb.append("]");
+        return sb.toString();
     }
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("AttributeEntry name:" + name + ", type:" + type + " [");
-    for (int j = 0; j < alValues.size(); j++) {
-      sb.append(alValues.get(j) + ",");
-    }
-    sb.append("], types:[");
-    for (int j = 0; j < alTypes.size(); j++) {
-      sb.append(alTypes.get(j) + ",");
-    }
-    sb.append("]");
-    return sb.toString();
-  }
 }

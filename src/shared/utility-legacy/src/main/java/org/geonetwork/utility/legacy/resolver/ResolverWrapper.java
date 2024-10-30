@@ -36,35 +36,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class ResolverWrapper {
 
-  private static final String DEFAULT = "DEFAULT";
-  // The map contains the reference to different resolvers initialized with schema specific oasis
-  // catalogs
-  private static Map<String, Resolver> resolverMap = new HashMap<String, Resolver>();
+    private static final String DEFAULT = "DEFAULT";
+    // The map contains the reference to different resolvers initialized with schema specific oasis
+    // catalogs
+    private static Map<String, Resolver> resolverMap = new HashMap<String, Resolver>();
 
-  // Initializes a schema specific resolver
-  public static synchronized void createResolverForSchema(String schemaName, Path oasisDirFile) {
-    if (!resolverMap.containsKey(schemaName))
-      resolverMap.put(schemaName, new Resolver(oasisDirFile));
-  }
-
-  // Returns a specific resolver OR a generic one when not possible
-  public static Resolver getInstance(String schemaName) {
-    if (schemaName == null) {
-      return getInstance();
-    } else if (!resolverMap.containsKey(schemaName)) {
-      log.error("Oasis catalog files not available for " + schemaName);
-      return getInstance();
+    // Initializes a schema specific resolver
+    public static synchronized void createResolverForSchema(String schemaName, Path oasisDirFile) {
+        if (!resolverMap.containsKey(schemaName)) resolverMap.put(schemaName, new Resolver(oasisDirFile));
     }
-    return resolverMap.get(schemaName);
-  }
 
-  public static Collection<Resolver> getResolvers() {
-    return resolverMap.values();
-  }
+    // Returns a specific resolver OR a generic one when not possible
+    public static Resolver getInstance(String schemaName) {
+        if (schemaName == null) {
+            return getInstance();
+        } else if (!resolverMap.containsKey(schemaName)) {
+            log.error("Oasis catalog files not available for " + schemaName);
+            return getInstance();
+        }
+        return resolverMap.get(schemaName);
+    }
 
-  // Returns or initializes a generic resolver
-  public static synchronized Resolver getInstance() {
-    if (!resolverMap.containsKey(DEFAULT)) resolverMap.put(DEFAULT, new Resolver());
-    return resolverMap.get(DEFAULT);
-  }
+    public static Collection<Resolver> getResolvers() {
+        return resolverMap.values();
+    }
+
+    // Returns or initializes a generic resolver
+    public static synchronized Resolver getInstance() {
+        if (!resolverMap.containsKey(DEFAULT)) resolverMap.put(DEFAULT, new Resolver());
+        return resolverMap.get(DEFAULT);
+    }
 }

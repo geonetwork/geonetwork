@@ -34,31 +34,28 @@ import lombok.Setter;
 @Entity
 @Table(name = "harvestersettings")
 public class Harvestersetting {
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "harvestersettings_id_gen")
-  @SequenceGenerator(
-      name = "harvestersettings_id_gen",
-      sequenceName = "harvester_setting_id_seq",
-      allocationSize = 1)
-  @Column(name = "id", nullable = false)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "harvestersettings_id_gen")
+    @SequenceGenerator(name = "harvestersettings_id_gen", sequenceName = "harvester_setting_id_seq", allocationSize = 1)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "name", nullable = false)
-  private String name;
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
 
-  @Column(name = "\"value\"", length = Integer.MAX_VALUE)
-  private String value;
+    @Column(name = "\"value\"", length = Integer.MAX_VALUE)
+    private String value;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "parentid")
-  private Harvestersetting parentid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parentid")
+    private Harvestersetting parentid;
 
-  @NotNull
-  @Column(name = "encrypted", nullable = false, length = Integer.MAX_VALUE)
-  private String encrypted;
+    @NotNull
+    @Column(name = "encrypted", nullable = false, length = Integer.MAX_VALUE)
+    private String encrypted;
 
-  @OneToMany(mappedBy = "parentid")
-  private final Set<Harvestersetting> harvestersettings = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "parentid")
+    private final Set<Harvestersetting> harvestersettings = new LinkedHashSet<>();
 }

@@ -30,13 +30,13 @@ package org.geonetwork.utility.legacy.exceptions;
 
 @SuppressWarnings("serial")
 public class XSDValidationErrorEx extends RuntimeException {
-  public XSDValidationErrorEx(String name) {
-    this(name, null);
-  }
+    public XSDValidationErrorEx(String name) {
+        this(name, null);
+    }
 
-  public XSDValidationErrorEx(String name, Object value) {
-    super(name);
-    //        super(name, value);
-    //        id = "xsd-validation-error";
-  }
+    public XSDValidationErrorEx(String name, Object value) {
+        super(name);
+        //        super(name, value);
+        //        id = "xsd-validation-error";
+    }
 }

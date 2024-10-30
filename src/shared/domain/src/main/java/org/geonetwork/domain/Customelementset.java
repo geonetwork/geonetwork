@@ -25,12 +25,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "customelementset")
 public class Customelementset {
-  @Id
-  @Column(name = "xpathhashcode", nullable = false)
-  private Integer id;
+    @Id
+    @Column(name = "xpathhashcode", nullable = false)
+    private Integer id;
 
-  @Size(max = 1000)
-  @NotNull
-  @Column(name = "xpath", nullable = false, length = 1000)
-  private String xpath;
+    @Size(max = 1000)
+    @NotNull
+    @Column(name = "xpath", nullable = false, length = 1000)
+    private String xpath;
 }

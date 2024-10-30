@@ -29,79 +29,78 @@ import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 
 @Slf4j
 public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticationProvider
-    implements UserDetailsService {
+        implements UserDetailsService {
 
-  public static final String HIGHEST_PROFILE = "highest_profile";
-  public static final String USER_ID = "user_id";
-  public static final String USER_NAME = "username";
-  public static final String GN_AUTHORITY = "gn";
+    public static final String HIGHEST_PROFILE = "highest_profile";
+    public static final String USER_ID = "user_id";
+    public static final String USER_NAME = "username";
+    public static final String GN_AUTHORITY = "gn";
 
-  @Setter @Getter private DatabaseUserAuthProperties checkUsernameOrEmail;
-  private final PasswordEncoder passwordEncoder;
-  private final UserRepository userRepository;
-  private final GeoNetworkUserService geoNetworkUserService;
+    @Setter
+    @Getter
+    private DatabaseUserAuthProperties checkUsernameOrEmail;
 
-  public DatabaseUserDetailsService(
-      @Value("${geonetwork.security.databaseUserAuthProperty: 'USERNAME_OR_EMAIL'}")
-          DatabaseUserAuthProperties checkUsernameOrEmail,
-      PasswordEncoder passwordEncoder,
-      GeoNetworkUserService geoNetworkUserService,
-      UserRepository userRepository) {
-    this.checkUsernameOrEmail = checkUsernameOrEmail;
-    this.passwordEncoder = passwordEncoder;
-    this.userRepository = userRepository;
-    this.geoNetworkUserService = geoNetworkUserService;
-  }
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final GeoNetworkUserService geoNetworkUserService;
 
-  @Override
-  protected void additionalAuthenticationChecks(
-      UserDetails userDetails, UsernamePasswordAuthenticationToken authentication)
-      throws AuthenticationException {
-
-    User gnDetails = (User) userDetails;
-
-    if (authentication.getCredentials() == null) {
-      log.atWarn().log("Authentication failed: no credentials provided");
-      throw new BadCredentialsException("Authentication failed: no credentials provided");
+    public DatabaseUserDetailsService(
+            @Value("${geonetwork.security.databaseUserAuthProperty: 'USERNAME_OR_EMAIL'}")
+                    DatabaseUserAuthProperties checkUsernameOrEmail,
+            PasswordEncoder passwordEncoder,
+            GeoNetworkUserService geoNetworkUserService,
+            UserRepository userRepository) {
+        this.checkUsernameOrEmail = checkUsernameOrEmail;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.geoNetworkUserService = geoNetworkUserService;
     }
 
-    if (authentication.getCredentials().toString().isEmpty()
-        || StringUtils.isEmpty(gnDetails.getPassword())
-        || !passwordEncoder.matches(
-            authentication.getCredentials().toString(), gnDetails.getPassword())) {
-      log.atWarn().log("Authentication failed: wrong password provided");
-      throw new BadCredentialsException("Authentication failed: wrong password provided");
+    @Override
+    protected void additionalAuthenticationChecks(
+            UserDetails userDetails, UsernamePasswordAuthenticationToken authentication)
+            throws AuthenticationException {
+
+        User gnDetails = (User) userDetails;
+
+        if (authentication.getCredentials() == null) {
+            log.atWarn().log("Authentication failed: no credentials provided");
+            throw new BadCredentialsException("Authentication failed: no credentials provided");
+        }
+
+        if (authentication.getCredentials().toString().isEmpty()
+                || StringUtils.isEmpty(gnDetails.getPassword())
+                || !passwordEncoder.matches(authentication.getCredentials().toString(), gnDetails.getPassword())) {
+            log.atWarn().log("Authentication failed: wrong password provided");
+            throw new BadCredentialsException("Authentication failed: wrong password provided");
+        }
     }
-  }
 
-  @Override
-  protected UserDetails retrieveUser(
-      String username, UsernamePasswordAuthenticationToken authentication)
-      throws AuthenticationException {
-    Optional<org.geonetwork.domain.User> user =
-        switch (checkUsernameOrEmail) {
-          case USERNAME -> userRepository.findOptionalByUsernameAndAuthtypeIsNull(username);
-          case EMAIL -> userRepository.findOptionalByEmailAndAuthtypeIsNull(username);
-          default ->
-              userRepository.findOptionalByUsernameOrEmailAndAuthtypeIsNull(username, username);
-        };
+    @Override
+    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication)
+            throws AuthenticationException {
+        Optional<org.geonetwork.domain.User> user =
+                switch (checkUsernameOrEmail) {
+                    case USERNAME -> userRepository.findOptionalByUsernameAndAuthtypeIsNull(username);
+                    case EMAIL -> userRepository.findOptionalByEmailAndAuthtypeIsNull(username);
+                    default -> userRepository.findOptionalByUsernameOrEmailAndAuthtypeIsNull(username, username);
+                };
 
-    isUserFoundAndEnabled(username, user);
+        isUserFoundAndEnabled(username, user);
 
-    org.geonetwork.domain.User currentUser = user.get();
+        org.geonetwork.domain.User currentUser = user.get();
 
-    OAuth2UserAuthority authority = geoNetworkUserService.buildUserAuthority(user.get());
+        OAuth2UserAuthority authority = geoNetworkUserService.buildUserAuthority(user.get());
 
-    return org.springframework.security.core.userdetails.User.withUsername(
-            currentUser.getUsername())
-        .password(currentUser.getPassword())
-        .authorities(Collections.singletonList(authority))
-        .roles(currentUser.getProfile().name())
-        .build();
-  }
+        return org.springframework.security.core.userdetails.User.withUsername(currentUser.getUsername())
+                .password(currentUser.getPassword())
+                .authorities(Collections.singletonList(authority))
+                .roles(currentUser.getProfile().name())
+                .build();
+    }
 
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return retrieveUser(username, null);
-  }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return retrieveUser(username, null);
+    }
 }

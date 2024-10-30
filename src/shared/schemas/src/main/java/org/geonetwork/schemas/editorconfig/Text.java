@@ -31,24 +31,24 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "text")
 public class Text {
 
-  @XmlAttribute(name = "ref", required = true)
-  protected String ref;
+    @XmlAttribute(name = "ref", required = true)
+    protected String ref;
 
-  /**
-   * Gets the value of the ref property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getRef() {
-    return ref;
-  }
+    /**
+     * Gets the value of the ref property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getRef() {
+        return ref;
+    }
 
-  /**
-   * Sets the value of the ref property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setRef(String value) {
-    this.ref = value;
-  }
+    /**
+     * Sets the value of the ref property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setRef(String value) {
+        this.ref = value;
+    }
 }

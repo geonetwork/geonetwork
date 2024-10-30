@@ -30,55 +30,55 @@ import lombok.Setter;
 @Entity
 @Table(name = "guf_userfeedbacks")
 public class GufUserfeedback {
-  @Id
-  @Size(max = 255)
-  @SequenceGenerator(
-      name = "guf_userfeedbacks_id_gen",
-      sequenceName = "csw_server_capabilities_info_id_seq",
-      allocationSize = 1)
-  @Column(name = "uuid", nullable = false)
-  private String uuid;
+    @Id
+    @Size(max = 255)
+    @SequenceGenerator(
+            name = "guf_userfeedbacks_id_gen",
+            sequenceName = "csw_server_capabilities_info_id_seq",
+            allocationSize = 1)
+    @Column(name = "uuid", nullable = false)
+    private String uuid;
 
-  @Size(max = 255)
-  @Column(name = "authoremail")
-  private String authoremail;
+    @Size(max = 255)
+    @Column(name = "authoremail")
+    private String authoremail;
 
-  @Size(max = 255)
-  @Column(name = "authorname")
-  private String authorname;
+    @Size(max = 255)
+    @Column(name = "authorname")
+    private String authorname;
 
-  @Size(max = 255)
-  @Column(name = "authororganization")
-  private String authororganization;
+    @Size(max = 255)
+    @Column(name = "authororganization")
+    private String authororganization;
 
-  @Column(name = "authorprivacy")
-  private Integer authorprivacy;
+    @Column(name = "authorprivacy")
+    private Integer authorprivacy;
 
-  @Size(max = 255)
-  @Column(name = "commenttext")
-  private String commenttext;
+    @Size(max = 255)
+    @Column(name = "commenttext")
+    private String commenttext;
 
-  @Column(name = "creationdate")
-  private Instant creationdate;
+    @Column(name = "creationdate")
+    private Instant creationdate;
 
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "status", nullable = false)
-  private String status;
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "status", nullable = false)
+    private String status;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "approver_id")
-  private User approver;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "approver_id")
+    private User approver;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "author_id")
-  private User author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "metadata_uuid", referencedColumnName = "uuid")
-  private org.geonetwork.domain.Metadata metadataUuid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "metadata_uuid", referencedColumnName = "uuid")
+    private org.geonetwork.domain.Metadata metadataUuid;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "parent_uuid")
-  private GufUserfeedback parentUuid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_uuid")
+    private GufUserfeedback parentUuid;
 }

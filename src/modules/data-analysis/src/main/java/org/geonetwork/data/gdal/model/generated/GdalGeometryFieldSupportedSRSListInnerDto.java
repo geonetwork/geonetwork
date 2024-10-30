@@ -14,9 +14,9 @@ import jakarta.xml.bind.annotation.*;
 @XmlRootElement(name = "GdalGeometryFieldSupportedSRSListInnerDto")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-09-13T15:07:19.066965162+02:00[Europe/Paris]",
-    comments = "Generator version: 7.7.0")
+        value = "org.openapitools.codegen.languages.SpringCodegen",
+        date = "2024-09-13T15:07:19.066965162+02:00[Europe/Paris]",
+        comments = "Generator version: 7.7.0")
 // FIXME abstract types either need to be mapped to concrete types,
 //  have custom deserializer,
 @JsonDeserialize(as = GdalGeometryFieldSupportedSRSListInnerOneOfDto.class)

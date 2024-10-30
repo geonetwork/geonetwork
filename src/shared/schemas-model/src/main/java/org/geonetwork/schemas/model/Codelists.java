@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(value = {"noNamespaceSchemaLocation"})
 @JacksonXmlRootElement(localName = "codelists")
 public class Codelists {
-  @JacksonXmlProperty(localName = "codelist")
-  @JacksonXmlElementWrapper(useWrapping = false)
-  private List<Codelist> codelist;
+    @JacksonXmlProperty(localName = "codelist")
+    @JacksonXmlElementWrapper(useWrapping = false)
+    private List<Codelist> codelist;
 }

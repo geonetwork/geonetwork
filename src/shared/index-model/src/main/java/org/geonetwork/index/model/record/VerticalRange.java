@@ -11,7 +11,7 @@ import lombok.Data;
 /** Vertical range. */
 @Data
 public class VerticalRange {
-  private Double gte;
-  private Double lte;
-  private String unit;
+    private Double gte;
+    private Double lte;
+    private String unit;
 }
