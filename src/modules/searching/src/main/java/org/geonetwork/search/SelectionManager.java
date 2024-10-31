@@ -40,7 +40,8 @@ public class SelectionManager {
     }
 
     //    /**
-    //     * <p> Update result elements to present. </br> <ul> <li>set selected true if result element
+    //     * <p> Update result elements to present. </br> <ul> <li>set selected true if result
+    // element
     // in
     //     * session</li> <li>set selected false if result element not in session</li> </ul> </p>
     //     *
@@ -78,7 +79,8 @@ public class SelectionManager {
     //    /**
     //     * <p> Updates selected element in session. <ul> <li>[selected=add] : add selected
     // element</li>
-    //     * <li>[selected=remove] : remove non selected element</li> <li>[selected=add-all] : select
+    //     * <li>[selected=remove] : remove non selected element</li> <li>[selected=add-all] :
+    // select
     // all
     //     * elements</li> <li>[selected=remove-all] : clear the selection</li>
     // <li>[selected=clear-add] :

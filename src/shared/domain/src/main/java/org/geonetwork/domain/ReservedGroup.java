@@ -14,10 +14,7 @@ package org.geonetwork.domain;
 public enum ReservedGroup {
     /** The "All" group. IE the group that represents all. */
     all(1),
-    /**
-     * The Intranet group. IE the group that represents all users within the same intranet as the
-     * geonetwork server.
-     */
+    /** The Intranet group. IE the group that represents all users within the same intranet as the geonetwork server. */
     intranet(0),
     /** The "Guest" group. IE the group representing all users not signed in. */
     guest(-1);

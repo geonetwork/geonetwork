@@ -219,7 +219,8 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
         }
 
         // For srv:operatesOn, check if the xlink:href has a url with a parameter named 'id'
-        // (aligned with the index.xsl process), as that element usually contains the reference to the
+        // (aligned with the index.xsl process), as that element usually contains the reference to
+        // the
         // metadata.
         // GeoNetwork uses uuidref to store this reference, but that's just a GeoNetwork convention.
         if (checkUuidInHref) {
@@ -504,11 +505,10 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
     /**
      * Process some of the ISO elements which can have substitute.
      *
-     * <p>For example, a CharacterString can have a gmx:Anchor as a substitute to encode a text value
-     * + an extra URL. To make the transition between CharacterString and Anchor transparent, this
-     * method takes care of creating the appropriate element depending on the presence of an
-     * xlink:href attribute. If the attribute is empty, then a CharacterString is used, if a value is
-     * set, an Anchor is created.
+     * <p>For example, a CharacterString can have a gmx:Anchor as a substitute to encode a text value + an extra URL. To
+     * make the transition between CharacterString and Anchor transparent, this method takes care of creating the
+     * appropriate element depending on the presence of an xlink:href attribute. If the attribute is empty, then a
+     * CharacterString is used, if a value is set, an Anchor is created.
      *
      * @param el element to process.
      * @param attributeRef the attribute reference
@@ -561,8 +561,7 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
     }
 
     /**
-     * Checks if an element requires processing in {@link #processElement(Element, String, String,
-     * String)}.
+     * Checks if an element requires processing in {@link #processElement(Element, String, String, String)}.
      *
      * @param el Element to check.
      * @return boolean indicating if the element requires processing or not.
@@ -576,8 +575,8 @@ public class ISO19139SchemaPlugin extends SchemaPlugin
     /**
      * Return an ordered list of record languages. The main language is the first.
      *
-     * <p>This may be used when substituting elements by their matching XLinks. In such case, the
-     * XLink must contains an ordered list of language codes.
+     * <p>This may be used when substituting elements by their matching XLinks. In such case, the XLink must contains an
+     * ordered list of language codes.
      *
      * @param md The record to analyze
      * @return An ordered list of ISO 3 letters codes

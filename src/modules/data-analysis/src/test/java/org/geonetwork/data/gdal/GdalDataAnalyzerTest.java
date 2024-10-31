@@ -51,7 +51,8 @@ class GdalDataAnalyzerTest {
                     60);
             //      GdalDataAnalyzer gdalDataAnalyzerMock = mock(GdalDataAnalyzer.class);
             //      when(gdalDataAnalyzerMock.getName()).thenReturn("GDAL");
-            //      when(gdalDataAnalyzerMock.getVersion()).thenReturn("GDAL 3.2.0, released 2020/10/26");
+            //      when(gdalDataAnalyzerMock.getVersion()).thenReturn("GDAL 3.2.0, released
+            // 2020/10/26");
             //
             //      try (MockedStatic<GdalUtils> gdalUtilsMock = mockStatic(GdalUtils.class)) {
             //        gdalUtilsMock

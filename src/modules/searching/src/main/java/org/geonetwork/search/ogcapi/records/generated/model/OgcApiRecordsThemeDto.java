@@ -68,8 +68,8 @@ public class OgcApiRecordsThemeDto {
     }
 
     /**
-     * One or more entity/concept identifiers from this knowledge system. it is recommended that a
-     * resolvable URI be used for each entity/concept identifier.
+     * One or more entity/concept identifiers from this knowledge system. it is recommended that a resolvable URI be
+     * used for each entity/concept identifier.
      *
      * @return concepts
      */
@@ -99,11 +99,10 @@ public class OgcApiRecordsThemeDto {
     }
 
     /**
-     * An identifier for the knowledge organization system used to classify the resource. It is
-     * recommended that the identifier be a resolvable URI. The list of schemes used in a searchable
-     * catalog can be determined by inspecting the server's OpenAPI document or, if the server
-     * implements CQL2, by exposing a queryable (e.g. named `scheme`) and enumerating the list of
-     * schemes in the queryable's schema definition.
+     * An identifier for the knowledge organization system used to classify the resource. It is recommended that the
+     * identifier be a resolvable URI. The list of schemes used in a searchable catalog can be determined by inspecting
+     * the server's OpenAPI document or, if the server implements CQL2, by exposing a queryable (e.g. named `scheme`)
+     * and enumerating the list of schemes in the queryable's schema definition.
      *
      * @return scheme
      */
@@ -158,9 +157,7 @@ public class OgcApiRecordsThemeDto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

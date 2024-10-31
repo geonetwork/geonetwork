@@ -60,7 +60,8 @@ public abstract class LocalizedException extends Exception implements ILocalized
         super(message, cause, enableSuppression, writableStackTrace);
     }
 
-    // Note that the following could not be a generic abstract class using generic type -i.e<T extends
+    // Note that the following could not be a generic abstract class using generic type -i.e<T
+    // extends
     // LocalizedException>
     // As generic class is not allowed to extend the Throwable class directly or indirectly.
     // https://docs.oracle.com/javase/specs/jls/se6/html/classes.html#303584
@@ -91,8 +92,8 @@ public abstract class LocalizedException extends Exception implements ILocalized
     }
 
     /**
-     * Class that extends this class will need to override this function so that it returns the bean
-     * qualifier for where it wants to get the messages from.
+     * Class that extends this class will need to override this function so that it returns the bean qualifier for where
+     * it wants to get the messages from.
      *
      * @return bean qualifier to use for the message translations.
      */

@@ -19,12 +19,11 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 
 /**
- * The extent of the features in the collection. In the Core only spatial and temporal extents are
- * specified. Extensions may add additional members to represent other extents, for example, thermal
- * or pressure ranges. An array of extents is provided for each extent type (spatial, temporal). The
- * first item in the array describes the overall extent of the data. All subsequent items describe
- * more precise extents, e.g., to identify clusters of data. Clients only interested in the overall
- * extent will only need to access the first extent in the array.
+ * The extent of the features in the collection. In the Core only spatial and temporal extents are specified. Extensions
+ * may add additional members to represent other extents, for example, thermal or pressure ranges. An array of extents
+ * is provided for each extent type (spatial, temporal). The first item in the array describes the overall extent of the
+ * data. All subsequent items describe more precise extents, e.g., to identify clusters of data. Clients only interested
+ * in the overall extent will only need to access the first extent in the array.
  */
 @Schema(
         name = "extent",
@@ -130,9 +129,7 @@ public class OgcApiRecordsExtentDto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

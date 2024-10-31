@@ -21,19 +21,18 @@ import org.jdom.Parent;
 import org.jdom.ProcessingInstruction;
 
 /**
- * This class implements a subset of XPath, which allows an element in an XML document to be
- * specified by giving a path to it. In this subset, all paths must be absolute (they must start at
- * the root), and they must lead to a single element (the resulting nodeset must contain just one
- * node).
+ * This class implements a subset of XPath, which allows an element in an XML document to be specified by giving a path
+ * to it. In this subset, all paths must be absolute (they must start at the root), and they must lead to a single
+ * element (the resulting nodeset must contain just one node).
  *
- * <p>In Xpath, the index numbers of children start at 1. However, all the indexing done in computer
- * data structures starts at zero. To assist in this, all the methods in this class automatically
- * adjust, so the calling application will always use origin-0 indexes.
+ * <p>In Xpath, the index numbers of children start at 1. However, all the indexing done in computer data structures
+ * starts at zero. To assist in this, all the methods in this class automatically adjust, so the calling application
+ * will always use origin-0 indexes.
  */
 public class XPath {
     /**
-     * The constructor is private so the class cannot be instantiated. The methods are static, so an
-     * instance is not needed.
+     * The constructor is private so the class cannot be instantiated. The methods are static, so an instance is not
+     * needed.
      */
     private XPath() {}
 
@@ -43,10 +42,7 @@ public class XPath {
         return getXPath(root, target);
     }
 
-    /**
-     * This method generates an XPath that leads from the root element of the document to the target
-     * element.
-     */
+    /** This method generates an XPath that leads from the root element of the document to the target element. */
     public static String getXPath(Element root, Object target) throws JDOMException {
         StringBuilder xpath = null;
 
@@ -60,16 +56,16 @@ public class XPath {
     }
 
     /**
-     * This method generates an XPath that leads from the root element of the document to the target
-     * element. If the caller knows the target's parent, it can reduce the amount of work.
+     * This method generates an XPath that leads from the root element of the document to the target element. If the
+     * caller knows the target's parent, it can reduce the amount of work.
      */
     public static String getXPath(Element root, Element parent, Object target) throws JDOMException {
         return computeXPath(root, parent, target).toString();
     }
 
     /**
-     * This method generates an XPath that leads from the parent element to the target element. This
-     * is a relative path, not an absolute path.
+     * This method generates an XPath that leads from the parent element to the target element. This is a relative path,
+     * not an absolute path.
      */
     public static String getChildXPath(Element parent, Object target) throws JDOMException {
         String xpath = null;
@@ -120,8 +116,8 @@ public class XPath {
     }
 
     /**
-     * Computes the xpath of the target. At this point its parent is known, so the algorithm can walk
-     * up the tree from the parent to the root, which is easier than walking down the tree.
+     * Computes the xpath of the target. At this point its parent is known, so the algorithm can walk up the tree from
+     * the parent to the root, which is easier than walking down the tree.
      */
     private static StringBuilder computeXPath(Element root, Parent parent, Object target) throws JDOMException {
         StringBuilder xpath;
@@ -198,11 +194,10 @@ public class XPath {
     }
 
     /**
-     * Walks the tree of Elements from parent down, looking for one that matches the target object.
-     * Returns the parent of the target, or null if the target can't be found. This method is called
-     * only if the target is not an Element, Comment, or other similar type. Therefore we know the
-     * target is not an Element, and therefore can't be the tree root, and therefore it will have a
-     * parent.
+     * Walks the tree of Elements from parent down, looking for one that matches the target object. Returns the parent
+     * of the target, or null if the target can't be found. This method is called only if the target is not an Element,
+     * Comment, or other similar type. Therefore we know the target is not an Element, and therefore can't be the tree
+     * root, and therefore it will have a parent.
      */
     private static Element findTarget(Element parent, Object target) {
         Element rslt = null;
@@ -222,17 +217,14 @@ public class XPath {
     }
 
     /**
-     * This method follows the xpath from the root element and returns the element specified by the
-     * path. It throws an exception if there is an error. It returns null if the path does not lead to
-     * an element.
+     * This method follows the xpath from the root element and returns the element specified by the path. It throws an
+     * exception if there is an error. It returns null if the path does not lead to an element.
      *
-     * <p>This subset implementation recognizes only three of the XPath operators: '/', '[]', and
-     * ::node. It is sufficient to select one node from the XML document based on its heritage and
-     * position, and no more.
+     * <p>This subset implementation recognizes only three of the XPath operators: '/', '[]', and ::node. It is
+     * sufficient to select one node from the XML document based on its heritage and position, and no more.
      *
-     * <p>The <code>root</code> parameter is assumed to be the root of the XML document, but this
-     * method has no way to verify that. It does check to be sure the path is absolute by verifying
-     * the first character is '/'.
+     * <p>The <code>root</code> parameter is assumed to be the root of the XML document, but this method has no way to
+     * verify that. It does check to be sure the path is absolute by verifying the first character is '/'.
      */
     @SuppressWarnings("unchecked")
     public static Object getElement(Element root, String xpath) throws JDOMException {
@@ -305,10 +297,12 @@ public class XPath {
                             // Get the nth child from that list.
 
                             rslt = children.get(childIndex);
-                            // System.out.println("got child " + childIndex + " of " + children.size());
+                            // System.out.println("got child " + childIndex + " of " +
+                            // children.size());
                         } else {
                             rslt = null;
-                            // System.out.println("there are only " + children.size() + " children");
+                            // System.out.println("there are only " + children.size() + "
+                            // children");
                         }
                     } else if ((openBracket = pathPart.indexOf('[')) >= 0) {
                         // An index is specified, so we'll get all the children
@@ -319,7 +313,8 @@ public class XPath {
 
                         String nodeName = getNodeName(pathPart);
                         int childIndex = getIndex(pathPart);
-                        // System.out.println("looking for child with name " + nodeName + " and index " +
+                        // System.out.println("looking for child with name " + nodeName + " and
+                        // index " +
                         // childIndex);
 
                         // Get a list of the children with the specified name.
@@ -330,10 +325,12 @@ public class XPath {
                             // Get the nth child from that list.
 
                             rslt = children.get(childIndex);
-                            // System.out.println("got child " + childIndex + " of " + children.size());
+                            // System.out.println("got child " + childIndex + " of " +
+                            // children.size());
                         } else {
                             rslt = null;
-                            // System.out.println("there are only " + children.size() + " children");
+                            // System.out.println("there are only " + children.size() + "
+                            // children");
                         }
                     } else {
                         // No index is specified, so we'll get just the first
@@ -361,9 +358,8 @@ public class XPath {
     }
 
     /**
-     * Given an xpath to a node in a tree, returns the parent of that node. Returns null if the parent
-     * can't be determined. The parent should be an Element, because if it isn't it can't have
-     * children.
+     * Given an xpath to a node in a tree, returns the parent of that node. Returns null if the parent can't be
+     * determined. The parent should be an Element, because if it isn't it can't have children.
      */
     public static Element getParentElement(Element root, String xpath) throws JDOMException {
         Element rslt = null;
@@ -383,8 +379,8 @@ public class XPath {
     }
 
     /**
-     * Given an xpath to a node in a tree, returns an xpath to that node's parent. Returns null if the
-     * result can't be generated.
+     * Given an xpath to a node in a tree, returns an xpath to that node's parent. Returns null if the result can't be
+     * generated.
      */
     public static String getParentXpath(String xpath) {
         String rslt = null;
@@ -409,8 +405,7 @@ public class XPath {
     /**
      * Given a part of a path like "foobar[5]" or "self::node()[5]" return the index value.
      *
-     * <p>NOTE: The value will be converted from the origin-1 index used by Xpath to an origin-0
-     * value.
+     * <p>NOTE: The value will be converted from the origin-1 index used by Xpath to an origin-0 value.
      */
     public static int getIndex(String pathPart) throws JDOMException {
         int rslt = 0;
@@ -437,9 +432,8 @@ public class XPath {
     }
 
     /**
-     * Get the children of an Element with the specified name. This is similar to
-     * Element.getChildren(String name) except that it doesn't care about the namespace of the
-     * children.
+     * Get the children of an Element with the specified name. This is similar to Element.getChildren(String name)
+     * except that it doesn't care about the namespace of the children.
      */
     private static List<Element> getNamedChildren(Element parent, String name) throws JDOMException {
         List<Element> children = new ArrayList<Element>();
@@ -460,8 +454,8 @@ public class XPath {
     }
 
     /**
-     * If the parent has other children with the same name, this returns the index of the specified
-     * child (origin 1). If the child is uniquely named, this returns -1.
+     * If the parent has other children with the same name, this returns the index of the specified child (origin 1). If
+     * the child is uniquely named, this returns -1.
      */
     private static int computeTwinIndex(Element parent, Element child) throws JDOMException {
         int index = -1;

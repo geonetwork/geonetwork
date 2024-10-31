@@ -329,11 +329,13 @@ public final class Xml {
     //            transFact.setAttribute(FeatureKeys.VERSION_WARNING, false);
     //            transFact.setAttribute(FeatureKeys.LINE_NUMBERING, true);
     //            transFact.setAttribute(FeatureKeys.PRE_EVALUATE_DOC_FUNCTION, true);
-    //            transFact.setAttribute(FeatureKeys.RECOVERY_POLICY, Configuration.RECOVER_SILENTLY);
+    //            transFact.setAttribute(FeatureKeys.RECOVERY_POLICY,
+    // Configuration.RECOVER_SILENTLY);
     //            // Add the following to get timing info on xslt transformations
     //            //transFact.setAttribute(FeatureKeys.TIMING,true);
     //        } catch (IllegalArgumentException e) {
-    //            Log.warning(Log.ENGINE, "WARNING: transformerfactory doesnt like saxon attributes!",
+    //            Log.warning(Log.ENGINE, "WARNING: transformerfactory doesnt like saxon
+    // attributes!",
     // e);
     //        } finally {
     //            Transformer t = transFact.newTransformer(xslt);
@@ -361,8 +363,8 @@ public final class Xml {
     /**
      * Transforms an xml tree putting the result to a stream with optional parameters.
      *
-     * <p>Add a geonet-force-xml parameter to force the formatting to be xml. The preferred method is
-     * to define it using xsl:output.
+     * <p>Add a geonet-force-xml parameter to force the formatting to be xml. The preferred method is to define it using
+     * xsl:output.
      */
     //    public static void
     //    transform(Element xml, Path styleSheetPath, Result result, Map<String, Object> params)
@@ -413,9 +415,8 @@ public final class Xml {
     // --------------------------------------------------------------------------
 
     /**
-     * Clears the cache used in the stylesheet transformer factory. This will only work for the
-     * GeoNetwork Caching stylesheet transformer factory. This is a no-op for other transformer
-     * factories.
+     * Clears the cache used in the stylesheet transformer factory. This will only work for the GeoNetwork Caching
+     * stylesheet transformer factory. This is a no-op for other transformer factories.
      */
     //    public static void clearTransformerFactoryStylesheetCache() {
     //        TransformerFactory transFact = TransformerFactory.newInstance();
@@ -425,10 +426,7 @@ public final class Xml {
     //    }
     // --------------------------------------------------------------------------
 
-    /**
-     * Transform an xml tree to PDF using XSL-FOP     * putting the result to a stream (uses a
-     * stylesheet on disk)
-     */
+    /** Transform an xml tree to PDF using XSL-FOP     * putting the result to a stream (uses a stylesheet on disk) */
 
     //    public static Path transformFOP(Path uploadDir, Element xml, String styleSheetPath)
     //        throws Exception {
@@ -683,9 +681,8 @@ public final class Xml {
     // ---------------------------------------------------------------------------
 
     /**
-     * Search in metadata all matching element for the filter and return a list of uuid separated by
-     * or to be used in a search on uuid. Extract uuid from matched element if elementName is null or
-     * from the elementName child.
+     * Search in metadata all matching element for the filter and return a list of uuid separated by or to be used in a
+     * search on uuid. Extract uuid from matched element if elementName is null or from the elementName child.
      *
      * @param elementFilter Filter to get element descendants
      * @param elementName Child element to get value from. If null, filtered element value is returned
@@ -701,9 +698,8 @@ public final class Xml {
     }
 
     /**
-     * Search in metadata all matching element for the filter and return a list of uuid separated by
-     * or to be used in a search on uuid. Extract uuid from matched element if elementName is null or
-     * from the elementName child.
+     * Search in metadata all matching element for the filter and return a list of uuid separated by or to be used in a
+     * search on uuid. Extract uuid from matched element if elementName is null or from the elementName child.
      *
      * @param elementFilter Filter to get element descendants
      * @param elementName Child element to get value from. If null, filtered element value is returned
@@ -759,15 +755,14 @@ public final class Xml {
     //        Schema schema = getSchemaFromPath(schemaPath);
     //        Element xsdErrors = validateRealGuts(schema, xml, eh, null);
     //        if (xsdErrors != null) {
-    //            throw new XSDValidationErrorEx("XSD Validation error(s):\n" + getString(xsdErrors),
+    //            throw new XSDValidationErrorEx("XSD Validation error(s):\n" +
+    // getString(xsdErrors),
     // xsdErrors);
     //        }
     //    }
 
     // ---------------------------------------------------------------------------
-    /**
-     * Validates an xml document with respect to schemaLocation hints using supplied error handler.
-     */
+    /** Validates an xml document with respect to schemaLocation hints using supplied error handler. */
     //    public static Element validateInfo(Element xml, XmlErrorHandler eh, String schemaName)
     // throws Exception {
     //        Schema schema = factory().newSchema();
@@ -776,10 +771,10 @@ public final class Xml {
 
     // ---------------------------------------------------------------------------
     /**
-     * Validates an xml document with respect to an xml schema described by .xsd file path using
-     * supplied error handler.
+     * Validates an xml document with respect to an xml schema described by .xsd file path using supplied error handler.
      */
-    //    public static Element validateInfo(Path schemaPath, Element xml, XmlErrorHandler eh, String
+    //    public static Element validateInfo(Path schemaPath, Element xml, XmlErrorHandler eh,
+    // String
     // schemaName) throws Exception {
     //        Schema schema = getSchemaFromPath(schemaPath);
     //        return validateRealGuts(schema, xml, eh, schemaName);
@@ -934,9 +929,9 @@ public final class Xml {
     }
 
     /**
-     * return true if the String passed in is something like XML Check for XML header first. Then use
-     * a Regular expression to see if it starts and ends with the same element or it's a self-closing
-     * element. Regex can be slow on large document.
+     * return true if the String passed in is something like XML Check for XML header first. Then use a Regular
+     * expression to see if it starts and ends with the same element or it's a self-closing element. Regex can be slow
+     * on large document.
      *
      * @param inXMLStr a string that might be XML
      * @return true of the string is XML, false otherwise

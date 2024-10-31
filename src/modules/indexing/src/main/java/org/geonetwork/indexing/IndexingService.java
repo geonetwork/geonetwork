@@ -147,7 +147,8 @@ public class IndexingService {
                                             // log.atDebug().log(
                                             //   objectMapper
                                             //     .writerWithDefaultPrettyPrinter()
-                                            //     .writeValueAsString(indexRecords.getIndexRecord())
+                                            //
+                                            // .writeValueAsString(indexRecords.getIndexRecord())
                                             // );
                                             sendToIndex(indexRecords);
                                             m.forEach(entityManager::detach);

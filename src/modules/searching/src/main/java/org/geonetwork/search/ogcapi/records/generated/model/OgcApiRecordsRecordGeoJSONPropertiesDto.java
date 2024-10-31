@@ -174,9 +174,8 @@ public class OgcApiRecordsRecordGeoJSONPropertiesDto {
     }
 
     /**
-     * The nature or genre of the resource. The value should be a code, convenient for filtering
-     * records. Where available, a link to the canonical URI of the record type resource will be added
-     * to the 'links' property.
+     * The nature or genre of the resource. The value should be a code, convenient for filtering records. Where
+     * available, a link to the canonical URI of the record type resource will be added to the 'links' property.
      *
      * @return type
      */
@@ -261,8 +260,8 @@ public class OgcApiRecordsRecordGeoJSONPropertiesDto {
     }
 
     /**
-     * The topic or topics of the resource. Typically represented using free-form keywords, tags, key
-     * phrases, or classification codes.
+     * The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or
+     * classification codes.
      *
      * @return keywords
      */
@@ -500,8 +499,8 @@ public class OgcApiRecordsRecordGeoJSONPropertiesDto {
     }
 
     /**
-     * A list of contacts qualified by their role(s) in association to the record or the resource
-     * described by the record.
+     * A list of contacts qualified by their role(s) in association to the record or the resource described by the
+     * record.
      *
      * @return contacts
      */
@@ -552,8 +551,7 @@ public class OgcApiRecordsRecordGeoJSONPropertiesDto {
     }
 
     /**
-     * A statement that concerns all rights not addressed by the license such as a copyright
-     * statement.
+     * A statement that concerns all rights not addressed by the license such as a copyright statement.
      *
      * @return rights
      */
@@ -676,9 +674,7 @@ public class OgcApiRecordsRecordGeoJSONPropertiesDto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

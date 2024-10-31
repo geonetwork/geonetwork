@@ -53,10 +53,7 @@ public class ProcessManager {
         return processes;
     }
 
-    /**
-     * Executes a process with the provided parameters and returns the Spring Batch execution
-     * identifier.
-     */
+    /** Executes a process with the provided parameters and returns the Spring Batch execution identifier. */
     public Long execute(IProcess process, ProcessDetails processDetails)
             throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException,
                     JobParametersInvalidException, JobRestartException {

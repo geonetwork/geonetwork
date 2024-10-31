@@ -83,10 +83,10 @@ public class SchemaSuggestions {
     }
 
     /**
-     * Return true if parent element is defined in suggestion file and check that suggested elements
-     * are valid children of current element. <br>
-     * For example, gmd:extent could have suggestions as a child of gmd:identificationInfo or as a
-     * child of gmd:EX_TemporalExtent.
+     * Return true if parent element is defined in suggestion file and check that suggested elements are valid children
+     * of current element. <br>
+     * For example, gmd:extent could have suggestions as a child of gmd:identificationInfo or as a child of
+     * gmd:EX_TemporalExtent.
      *
      * @return true if having suggestion for at least one of its child elements.
      */

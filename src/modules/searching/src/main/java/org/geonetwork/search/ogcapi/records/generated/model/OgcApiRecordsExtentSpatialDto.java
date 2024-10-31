@@ -60,11 +60,11 @@ public class OgcApiRecordsExtentSpatialDto {
     }
 
     /**
-     * One or more bounding boxes that describe the spatial extent of the dataset. In the Core only a
-     * single bounding box is supported. Extensions may support additional areas. The first bounding
-     * box describes the overall spatial extent of the data. All subsequent bounding boxes describe
-     * more precise bounding boxes, e.g., to identify clusters of data. Clients only interested in the
-     * overall spatial extent will only need to access the first bounding box in the array.
+     * One or more bounding boxes that describe the spatial extent of the dataset. In the Core only a single bounding
+     * box is supported. Extensions may support additional areas. The first bounding box describes the overall spatial
+     * extent of the data. All subsequent bounding boxes describe more precise bounding boxes, e.g., to identify
+     * clusters of data. Clients only interested in the overall spatial extent will only need to access the first
+     * bounding box in the array.
      *
      * @return bbox
      */
@@ -97,11 +97,10 @@ public class OgcApiRecordsExtentSpatialDto {
     }
 
     /**
-     * Coordinate reference system of the coordinates in the spatial extent (property `bbox`). The
-     * default reference system is WGS 84 longitude/latitude. In the Core the only other supported
-     * coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height for coordinates
-     * with height. Extensions may support additional coordinate reference systems and add additional
-     * enum values.
+     * Coordinate reference system of the coordinates in the spatial extent (property `bbox`). The default reference
+     * system is WGS 84 longitude/latitude. In the Core the only other supported coordinate reference system is WGS 84
+     * longitude/latitude/ellipsoidal height for coordinates with height. Extensions may support additional coordinate
+     * reference systems and add additional enum values.
      *
      * @return crs
      */
@@ -154,9 +153,7 @@ public class OgcApiRecordsExtentSpatialDto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";
@@ -171,11 +168,10 @@ public class OgcApiRecordsExtentSpatialDto {
     }
 
     /**
-     * Coordinate reference system of the coordinates in the spatial extent (property `bbox`). The
-     * default reference system is WGS 84 longitude/latitude. In the Core the only other supported
-     * coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height for coordinates
-     * with height. Extensions may support additional coordinate reference systems and add additional
-     * enum values.
+     * Coordinate reference system of the coordinates in the spatial extent (property `bbox`). The default reference
+     * system is WGS 84 longitude/latitude. In the Core the only other supported coordinate reference system is WGS 84
+     * longitude/latitude/ellipsoidal height for coordinates with height. Extensions may support additional coordinate
+     * reference systems and add additional enum values.
      */
     public enum CrsEnum {
         _1_3_CRS84("http://www.opengis.net/def/crs/OGC/1.3/CRS84"),

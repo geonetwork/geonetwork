@@ -50,19 +50,14 @@ public class XmlResolver extends XMLCatalogResolver {
     // --------------------------------------------------------------------------
 
     /**
-     * Resolves any public and system ids as well as URIs from the catalog - also retrieves any
-     * external references using Jeeves XmlRequest so that config'd proxy details can be used on the
-     * http connection.
+     * Resolves any public and system ids as well as URIs from the catalog - also retrieves any external references
+     * using Jeeves XmlRequest so that config'd proxy details can be used on the http connection.
      *
      * @param type the type of the resource being resolved (usually XML schema)
-     * @param namespaceURI the namespace of the resource being resolved, or <code>null</code> if none
-     *     was supplied
-     * @param publicId the public identifier of the resource being resolved, or <code>null</code> if
-     *     none was supplied
-     * @param systemId the system identifier of the resource being resolved, or <code>null</code> if
-     *     none was supplied
-     * @param baseURI the absolute base URI of the resource being parsed, or <code>null</code> if
-     *     there is no base URI
+     * @param namespaceURI the namespace of the resource being resolved, or <code>null</code> if none was supplied
+     * @param publicId the public identifier of the resource being resolved, or <code>null</code> if none was supplied
+     * @param systemId the system identifier of the resource being resolved, or <code>null</code> if none was supplied
+     * @param baseURI the absolute base URI of the resource being parsed, or <code>null</code> if there is no base URI
      */
     @Override
     public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemId, String baseURI) {
@@ -169,7 +164,8 @@ public class XmlResolver extends XMLCatalogResolver {
             //                    xml.setProxyHost(proxyParams.proxyHost);
             //                    xml.setProxyPort(proxyParams.proxyPort);
             //                    if (proxyParams.useProxyAuth) {
-            //                        xml.setProxyCredentials(proxyParams.username, proxyParams.password);
+            //                        xml.setProxyCredentials(proxyParams.username,
+            // proxyParams.password);
             //                    }
             //                }
             //
@@ -181,7 +177,8 @@ public class XmlResolver extends XMLCatalogResolver {
             //                        log.debug("Retrieved: \n" + Xml.getString(elResult));
             //                    }
             //                } catch (Exception e) {
-            //                    log.error("Request on " + externalRef + " failed." + e.getMessage());
+            //                    log.error("Request on " + externalRef + " failed." +
+            // e.getMessage());
             //                }
             //            }
 

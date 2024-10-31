@@ -18,8 +18,8 @@ import java.util.Objects;
 import lombok.NoArgsConstructor;
 
 /**
- * Object whose keys are metadata domain names. The empty string is a valid metadata domain name,
- * and is used for the default domain.
+ * Object whose keys are metadata domain names. The empty string is a valid metadata domain name, and is used for the
+ * default domain.
  */
 @Schema(
         name = "metadata",
@@ -36,14 +36,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GdalMetadataDto {
     /**
-     * A container for additional, undeclared properties. This is a holder for any undeclared
-     * properties as specified with the 'additionalProperties' keyword in the OAS document.
+     * A container for additional, undeclared properties. This is a holder for any undeclared properties as specified
+     * with the 'additionalProperties' keyword in the OAS document.
      */
     private Map<String, Object> additionalProperties;
 
     /**
-     * Set the additional (undeclared) property with the specified name and value. If the property
-     * does not already exist, create it otherwise replace it.
+     * Set the additional (undeclared) property with the specified name and value. If the property does not already
+     * exist, create it otherwise replace it.
      */
     @JsonAnySetter
     public GdalMetadataDto putAdditionalProperty(String key, Object value) {
@@ -96,9 +96,7 @@ public class GdalMetadataDto {
         return sb.toString();
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

@@ -211,10 +211,7 @@ public class MetadataSchema {
 
     // ---------------------------------------------------------------------------
 
-    /**
-     * A simple type is a type that has no children and no attributes (but can have restrictions on
-     * its value)
-     */
+    /** A simple type is a type that has no children and no attributes (but can have restrictions on its value) */
     public boolean isSimpleElement(String elem, String parent) throws Exception {
         String type = getElementType(elem, parent);
         return type != null && !hmTypes.containsKey(type);
@@ -374,7 +371,8 @@ public class MetadataSchema {
                     try (OutputStream schematronXsl = Files.newOutputStream(schematronXslFilePath)) {
                         Element schematronRule = Xml.loadFile(schemaSchematronDir.resolve(rule));
                         // Expand schematron abstract rules
-                        // TODO           Element schematronExpandXml = Xml.transform(schematronRule,
+                        // TODO           Element schematronExpandXml =
+                        // Xml.transform(schematronRule,
                         // schematronExpandFile);
                         //            Xml.transform(schematronExpandXml, schematronCompilationFile,
                         // schematronXsl);
@@ -403,8 +401,8 @@ public class MetadataSchema {
     }
 
     /**
-     * Compile and register all schematron rules available for current schema. Schematron rules files
-     * are in schema schematron directory and start with "schematron-rules" prefix.
+     * Compile and register all schematron rules available for current schema. Schematron rules files are in schema
+     * schematron directory and start with "schematron-rules" prefix.
      */
     public void loadSchematronRules(Path basePath) {
         // Compile schema schematron rules
@@ -535,8 +533,8 @@ public class MetadataSchema {
     }
 
     /**
-     * true if schema requires to synch the uuid column schema info with the uuid in the metadata
-     * record (updated on editing or in UFO).
+     * true if schema requires to synch the uuid column schema info with the uuid in the metadata record (updated on
+     * editing or in UFO).
      */
     public boolean isReadwriteUUID() {
         return readwriteUUID;

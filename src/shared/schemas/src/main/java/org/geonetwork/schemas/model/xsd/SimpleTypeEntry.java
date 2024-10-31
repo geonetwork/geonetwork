@@ -40,8 +40,8 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 
 /**
- * This class parses a "SimpleType" element. All attributes are ignored (a warning is logged). Only
- * the "restriction" child is recognized and extracted.
+ * This class parses a "SimpleType" element. All attributes are ignored (a warning is logged). Only the "restriction"
+ * child is recognized and extracted.
  */
 public class SimpleTypeEntry extends BaseHandler {
     public String name;
@@ -99,7 +99,8 @@ public class SimpleTypeEntry extends BaseHandler {
             } else if (elName.equals("union")) {
                 List<?> simpleTypes =
                         elChild.getChildren("simpleType", Namespace.getNamespace("http://www.w3.org/2001/XMLSchema"));
-                // Load enumeration of union of simpleType (eg. gml:TimeUnitType, gml:NilReasonEnumeration)
+                // Load enumeration of union of simpleType (eg. gml:TimeUnitType,
+                // gml:NilReasonEnumeration)
                 if (simpleTypes.size() > 0) {
                     for (Object st : simpleTypes) {
                         Element stEl = (Element) st;
@@ -119,10 +120,12 @@ public class SimpleTypeEntry extends BaseHandler {
                     }
                     // TODO : Optional pattern restriction
                 } else {
-                    // List of member types are loaded in order to retrieve type enumeration list when
+                    // List of member types are loaded in order to retrieve type enumeration list
+                    // when
                     // available (eg. gco:nilReason).
                     String memberTypes = elChild.getAttributeValue("memberTypes");
-                    // TODO : Probably member types should be handled as geonet:choose style complexElement
+                    // TODO : Probably member types should be handled as geonet:choose style
+                    // complexElement
                     if (memberTypes != null) {
                         String[] types = StringUtils.split(memberTypes, " ");
                         for (String type : types) {

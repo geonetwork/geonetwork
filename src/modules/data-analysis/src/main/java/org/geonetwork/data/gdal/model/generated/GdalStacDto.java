@@ -25,8 +25,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 /**
  * Derived from
  * https://raw.githubusercontent.com/stac-extensions/projection/main/json-schema/schema.json#/definitions/fields,
- * https://raw.githubusercontent.com/stac-extensions/eo/v1.1.0/json-schema/schema.json#/definitions/bands
- * and
+ * https://raw.githubusercontent.com/stac-extensions/eo/v1.1.0/json-schema/schema.json#/definitions/bands and
  * https://raw.githubusercontent.com/stac-extensions/eo/v1.1.0/json-schema/schema.json#/definitions/bands
  */
 @Schema(
@@ -148,8 +147,8 @@ public class GdalStacDto {
     }
 
     /**
-     * note that the order of items in proj:shape is height,width starting with GDAL 3.8.5 (previous
-     * versions ordered it wrongly as width,height)
+     * note that the order of items in proj:shape is height,width starting with GDAL 3.8.5 (previous versions ordered it
+     * wrongly as width,height)
      *
      * @return projColonShape
      */
@@ -314,9 +313,7 @@ public class GdalStacDto {
         return sb.toString();
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

@@ -332,7 +332,8 @@ public class SchemaLoader {
                     boolean choiceType = (cte.alElements.size() == 1);
                     handleRefElement(j, cte.name, choiceType, ee, mdt, mds);
 
-                    // 3. element is a local element so get type or process local complex/simpleType//    and
+                    // 3. element is a local element so get type or process local
+                    // complex/simpleType//    and
                     // add to the ListIterator if complex
                 } else if (ee.name != null) {
                     ComplexTypeEntry newCte = handleLocalElement(j, cte.name, ee, mdt, mds);

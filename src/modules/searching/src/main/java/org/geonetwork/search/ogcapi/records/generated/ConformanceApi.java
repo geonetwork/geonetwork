@@ -39,11 +39,11 @@ public interface ConformanceApi {
     }
 
     /**
-     * GET /conformance : information about specifications that this API conforms to A list of all
-     * conformance classes specified in a standard that the server conforms to.
+     * GET /conformance : information about specifications that this API conforms to A list of all conformance classes
+     * specified in a standard that the server conforms to.
      *
-     * @return The URIs of all conformance classes supported by the server. (status code 200) or A
-     *     server error occurred. (status code 500)
+     * @return The URIs of all conformance classes supported by the server. (status code 200) or A server error
+     *     occurred. (status code 500)
      */
     @Operation(
             operationId = "getConformanceDeclaration",

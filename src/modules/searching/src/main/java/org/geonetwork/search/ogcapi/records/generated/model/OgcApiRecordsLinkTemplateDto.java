@@ -153,8 +153,7 @@ public class OgcApiRecordsLinkTemplateDto {
     }
 
     /**
-     * Used to label the destination of a link such that it can be used as a human-readable
-     * identifier.
+     * Used to label the destination of a link such that it can be used as a human-readable identifier.
      *
      * @return title
      */
@@ -282,8 +281,8 @@ public class OgcApiRecordsLinkTemplateDto {
     }
 
     /**
-     * The base URI to which the variable name can be appended to retrieve the definition of the
-     * variable as a JSON Schema fragment.
+     * The base URI to which the variable name can be appended to retrieve the definition of the variable as a JSON
+     * Schema fragment.
      *
      * @return varBase
      */
@@ -309,9 +308,9 @@ public class OgcApiRecordsLinkTemplateDto {
     }
 
     /**
-     * This object contains one key per substitution variable in the templated URL. Each key defines
-     * the schema of one substitution variable using a JSON Schema fragment and can thus include
-     * things like the data type of the variable, enumerations, minimum values, maximum values, etc.
+     * This object contains one key per substitution variable in the templated URL. Each key defines the schema of one
+     * substitution variable using a JSON Schema fragment and can thus include things like the data type of the
+     * variable, enumerations, minimum values, maximum values, etc.
      *
      * @return variables
      */
@@ -396,9 +395,7 @@ public class OgcApiRecordsLinkTemplateDto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

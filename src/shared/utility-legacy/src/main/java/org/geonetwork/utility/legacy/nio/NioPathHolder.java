@@ -15,8 +15,8 @@ import java.nio.file.Paths;
 import org.xml.sax.InputSource;
 
 /**
- * Holder the information required by {@link NioPathAwareCatalogResolver} and {@link
- * NioPathAwareEntityResolver} for resolving paths.
+ * Holder the information required by {@link NioPathAwareCatalogResolver} and {@link NioPathAwareEntityResolver} for
+ * resolving paths.
  *
  * @author Jesse on 11/4/2014.
  */

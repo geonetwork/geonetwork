@@ -37,8 +37,7 @@ public class LocaleMessages {
      *
      * @param messageKey message key to use when retrieving the value from the properties file.
      * @param locale locale to use when getting the message key
-     * @param resourceBundleBeanQualifier resource bundle qualifier to use when getting
-     *     ResourceBundleMessageSource bean
+     * @param resourceBundleBeanQualifier resource bundle qualifier to use when getting ResourceBundleMessageSource bean
      * @return message
      */
     public static String getMessageForLocale(String messageKey, Locale locale, String resourceBundleBeanQualifier) {
@@ -50,10 +49,8 @@ public class LocaleMessages {
      *
      * @param messageKey message key to use when retrieving the value from the properties file.
      * @param args Argument that may be supplied to the messagekey string
-     * @param locale locale to use when getting the message key. If null then it will default to
-     *     locale context holder.
-     * @param resourceBundleBeanQualifier resource bundle qualifier to use when getting
-     *     ResourceBundleMessageSource bean
+     * @param locale locale to use when getting the message key. If null then it will default to locale context holder.
+     * @param resourceBundleBeanQualifier resource bundle qualifier to use when getting ResourceBundleMessageSource bean
      * @return message
      */
     public static String getMessageForLocale(
@@ -74,8 +71,8 @@ public class LocaleMessages {
     /**
      * Locate the ResourceBundleMessageSource bean.
      *
-     * @param resourceBundleBeanQualifier to locate the bean. Without the qualifier, it will fails
-     *     when there are multiple beans for ResourceBundleMessageSource
+     * @param resourceBundleBeanQualifier to locate the bean. Without the qualifier, it will fails when there are
+     *     multiple beans for ResourceBundleMessageSource
      * @return bean for ResourceBundleMessageSource
      */
     @SuppressWarnings("unused")

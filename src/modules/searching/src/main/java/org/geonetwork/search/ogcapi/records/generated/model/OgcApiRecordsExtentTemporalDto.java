@@ -61,12 +61,11 @@ public class OgcApiRecordsExtentTemporalDto {
     }
 
     /**
-     * One or more time intervals that describe the temporal extent of the dataset. In the Core only a
-     * single time interval is supported. Extensions may support multiple intervals. The first time
-     * interval describes the overall temporal extent of the data. All subsequent time intervals
-     * describe more precise time intervals, e.g., to identify clusters of data. Clients only
-     * interested in the overall temporal extent will only need to access the first time interval in
-     * the array (a pair of lower and upper bound instants).
+     * One or more time intervals that describe the temporal extent of the dataset. In the Core only a single time
+     * interval is supported. Extensions may support multiple intervals. The first time interval describes the overall
+     * temporal extent of the data. All subsequent time intervals describe more precise time intervals, e.g., to
+     * identify clusters of data. Clients only interested in the overall temporal extent will only need to access the
+     * first time interval in the array (a pair of lower and upper bound instants).
      *
      * @return interval
      */
@@ -100,10 +99,9 @@ public class OgcApiRecordsExtentTemporalDto {
     }
 
     /**
-     * Coordinate reference system of the coordinates in the temporal extent (property `interval`).
-     * The default reference system is the Gregorian calendar. In the Core this is the only supported
-     * temporal coordinate reference system. Extensions may support additional temporal coordinate
-     * reference systems and add additional enum values.
+     * Coordinate reference system of the coordinates in the temporal extent (property `interval`). The default
+     * reference system is the Gregorian calendar. In the Core this is the only supported temporal coordinate reference
+     * system. Extensions may support additional temporal coordinate reference systems and add additional enum values.
      *
      * @return trs
      */
@@ -156,9 +154,7 @@ public class OgcApiRecordsExtentTemporalDto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";
@@ -173,10 +169,9 @@ public class OgcApiRecordsExtentTemporalDto {
     }
 
     /**
-     * Coordinate reference system of the coordinates in the temporal extent (property `interval`).
-     * The default reference system is the Gregorian calendar. In the Core this is the only supported
-     * temporal coordinate reference system. Extensions may support additional temporal coordinate
-     * reference systems and add additional enum values.
+     * Coordinate reference system of the coordinates in the temporal extent (property `interval`). The default
+     * reference system is the Gregorian calendar. In the Core this is the only supported temporal coordinate reference
+     * system. Extensions may support additional temporal coordinate reference systems and add additional enum values.
      */
     public enum TrsEnum {
         HTTP_WWW_OPENGIS_NET_DEF_UOM_ISO_8601_0_GREGORIAN("http://www.opengis.net/def/uom/ISO-8601/0/Gregorian");

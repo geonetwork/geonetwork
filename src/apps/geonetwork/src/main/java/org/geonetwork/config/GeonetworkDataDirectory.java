@@ -25,18 +25,15 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.stereotype.Component;
 
 /**
- * The GeoNetwork data directory is the location on the file system where GeoNetwork stores all of
- * its custom configuration. This configuration defines such things as: What thesaurus is used by
- * GeoNetwork? What schema is plugged in GeoNetwork?. The data directory also contains a number of
- * support files used by GeoNetwork for various purposes (eg. Lucene index, spatial index, logos).
+ * The GeoNetwork data directory is the location on the file system where GeoNetwork stores all of its custom
+ * configuration. This configuration defines such things as: What thesaurus is used by GeoNetwork? What schema is
+ * plugged in GeoNetwork?. The data directory also contains a number of support files used by GeoNetwork for various
+ * purposes (eg. Lucene index, spatial index, logos).
  */
 @Slf4j
 @Component
 public class GeonetworkDataDirectory {
-    /**
-     * A suffix of the keys used to look up paths in system.properties or system.env or in Servlet
-     * context.
-     */
+    /** A suffix of the keys used to look up paths in system.properties or system.env or in Servlet context. */
     public static final String KEY_SUFFIX = ".dir";
 
     /** The full key of the geonetwork data directory. */
@@ -67,8 +64,8 @@ public class GeonetworkDataDirectory {
     /**
      * Check and create if needed GeoNetwork data directory.
      *
-     * <p>The data directory is the only mandatory value. If not set, the default location is {@link
-     * #getDefaultDataDir(Path)}.
+     * <p>The data directory is the only mandatory value. If not set, the default location is
+     * {@link #getDefaultDataDir(Path)}.
      *
      * <p>All properties are set using :
      *
@@ -89,7 +86,8 @@ public class GeonetworkDataDirectory {
     //      final Path webappDir,)
     //      throws IOException {
     //    if (log.isDebugEnabled()) {
-    //      log.debug(Geonet.DATA_DIRECTORY, "Check and create if needed GeoNetwork data directory");
+    //      log.debug(Geonet.DATA_DIRECTORY, "Check and create if needed GeoNetwork data
+    // directory");
     //    }
     //    this.webappDir = webappDir;
     //    final ConfigurableApplicationContext applicationContext = ApplicationContextHolder.get();
@@ -127,16 +125,13 @@ public class GeonetworkDataDirectory {
     /**
      * Determines the location of a property based on the following lookup mechanism:
      *
-     * <p>1) Java environment variable 2) Servlet context variable 3) Config.xml appHandler parameter
-     * 4) System variable
+     * <p>1) Java environment variable 2) Servlet context variable 3) Config.xml appHandler parameter 4) System variable
      *
-     * <p>For each of these, the methods checks that 1) The path exists 2) Is a directory 3) Is
-     * writable
+     * <p>For each of these, the methods checks that 1) The path exists 2) Is a directory 3) Is writable
      *
      * <p>Inspired by GeoServer mechanism.
      *
-     * @return String The absolute path to the data directory, or <code>null</code> if it could not be
-     *     found.
+     * @return String The absolute path to the data directory, or <code>null</code> if it could not be found.
      */
     private Path lookupProperty(String key) {
 
@@ -167,8 +162,10 @@ public class GeonetworkDataDirectory {
                     //        case 1:
                     //          if (jeevesServlet != null) {
                     //            value = jeevesServlet.getInitParameter(keyToUse);
-                    //            if ((value == null) && (jeevesServlet.getServletContext() != null)) {
-                    //              value = jeevesServlet.getServletContext().getInitParameter(keyToUse);
+                    //            if ((value == null) && (jeevesServlet.getServletContext() !=
+                    // null)) {
+                    //              value =
+                    // jeevesServlet.getServletContext().getInitParameter(keyToUse);
                     //            }
                     //          }
                     //          break;
@@ -176,9 +173,11 @@ public class GeonetworkDataDirectory {
                     //          value = handlerConfig.getValue(keyToUse);
                     //          break;
                     //        case 3:
-                    //          //				Environment variable names used by the utilities in the Shell and
+                    //          //				Environment variable names used by the utilities in the Shell
+                    // and
                     // Utilities
-                    //          //				volume of IEEE Std 1003.1-2001 consist solely of uppercase letters,
+                    //          //				volume of IEEE Std 1003.1-2001 consist solely of uppercase
+                    // letters,
                     // digits, and the
                     //          // '_'
                     //          //				Instead of looking for geonetwork.dir, get geonetwork_dir
@@ -521,9 +520,8 @@ public class GeonetworkDataDirectory {
     }
 
     /**
-     * Try to retrieve from system properties the variable with name <webapp.name>.key. If not set,
-     * create the resource folder using <geonetwork.dir>/folder and set the system property value.
-     * Create the folder if does not exist.
+     * Try to retrieve from system properties the variable with name <webapp.name>.key. If not set, create the resource
+     * folder using <geonetwork.dir>/folder and set the system property value. Create the folder if does not exist.
      */
     private Path setDir(
             String webappName, Path dir, String key, String handlerKey, String firstPathSeg, String... otherSegments) {
@@ -568,8 +566,7 @@ public class GeonetworkDataDirectory {
     }
 
     /**
-     * Get the root data dir for Geonetwork. Typically other "data" directories are subdirectories to
-     * this.
+     * Get the root data dir for Geonetwork. Typically other "data" directories are subdirectories to this.
      *
      * @return the root data dir for Geonetwork
      */
@@ -577,10 +574,7 @@ public class GeonetworkDataDirectory {
         return systemDataDir;
     }
 
-    /**
-     * Set the root data dir for Geonetwork. Typically other "data" directories are subdirectories to
-     * this.
-     */
+    /** Set the root data dir for Geonetwork. Typically other "data" directories are subdirectories to this. */
     public void setSystemDataDir(Path systemDataDir) {
         this.systemDataDir = systemDataDir;
     }
@@ -642,20 +636,15 @@ public class GeonetworkDataDirectory {
     }
 
     /**
-     * Get the directory that contain all the resources related to metadata (thumbnails, attachments,
-     * etc...).
+     * Get the directory that contain all the resources related to metadata (thumbnails, attachments, etc...).
      *
-     * @return the directory that contain all the resources related to metadata (thumbnails,
-     *     attachments, etc...).
+     * @return the directory that contain all the resources related to metadata (thumbnails, attachments, etc...).
      */
     public Path getMetadataDataDir() {
         return metadataDataDir;
     }
 
-    /**
-     * Set the directory that contain all the resources related to metadata (thumbnails, attachments,
-     * etc...).
-     */
+    /** Set the directory that contain all the resources related to metadata (thumbnails, attachments, etc...). */
     public void setMetadataDataDir(Path metadataDataDir) {
         this.metadataDataDir = metadataDataDir;
     }

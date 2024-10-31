@@ -29,8 +29,8 @@ import java.util.Objects;
         comments = "Generator version: 7.7.0")
 public class OgcApiRecordsSecurityRequirementDto {
     /**
-     * A container for additional, undeclared properties. This is a holder for any undeclared
-     * properties as specified with the 'additionalProperties' keyword in the OAS document.
+     * A container for additional, undeclared properties. This is a holder for any undeclared properties as specified
+     * with the 'additionalProperties' keyword in the OAS document.
      */
     private Map<String, List> additionalProperties;
 
@@ -40,8 +40,8 @@ public class OgcApiRecordsSecurityRequirementDto {
     }
 
     /**
-     * Set the additional (undeclared) property with the specified name and value. If the property
-     * does not already exist, create it otherwise replace it.
+     * Set the additional (undeclared) property with the specified name and value. If the property does not already
+     * exist, create it otherwise replace it.
      */
     @JsonAnySetter
     public OgcApiRecordsSecurityRequirementDto putAdditionalProperty(String key, List value) {
@@ -90,9 +90,7 @@ public class OgcApiRecordsSecurityRequirementDto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

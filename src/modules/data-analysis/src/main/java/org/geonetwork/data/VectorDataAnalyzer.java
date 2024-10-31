@@ -15,8 +15,8 @@ public interface VectorDataAnalyzer extends DataAnalyzer {
     /**
      * Return min/max values for the given attribute.
      *
-     * <p>Can be used to compute temporal extent for a time attribute or a vertical extent for a
-     * depth/elevation attribute.
+     * <p>Can be used to compute temporal extent for a time attribute or a vertical extent for a depth/elevation
+     * attribute.
      *
      * <pre>
      *  ogrinfo -ro -features https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2022-2023_v01_r00/Emerald_2023_SPECIES.csv -sql "SELECT MIN(DATAQUALITY) AS min, MAX(DATAQUALITY) AS max FROM Emerald_2023_SPECIES"

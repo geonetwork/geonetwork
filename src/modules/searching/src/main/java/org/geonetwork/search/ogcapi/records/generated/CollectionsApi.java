@@ -54,24 +54,21 @@ public interface CollectionsApi {
     }
 
     /**
-     * GET /collections/{catalogId} : describe the record collection with id &#x60;catalogId&#x60;
-     * Fetch a detailed description of the catalog with id &#x60;catalogId&#x60;.
+     * GET /collections/{catalogId} : describe the record collection with id &#x60;catalogId&#x60; Fetch a detailed
+     * description of the catalog with id &#x60;catalogId&#x60;.
      *
      * @param catalogId local identifier of a catalog (required)
-     * @return Information about the record collection with id &#x60;collectionId&#x60;. The response
-     *     contains a link to the items in the collection (path
-     *     &#x60;/collections/{collectionId}/items&#x60;, link relation &#x60;items&#x60;) as well as
-     *     key information about the collection. This information includes: * A local identifier for
-     *     the collection that is unique for the + catalog; * A list of coordinate reference systems
-     *     (CRS) in which geometries + may be returned by the server. The first CRS is the default +
-     *     coordinate reference system (the default is always WGS 84 with + axis order
-     *     longitude/latitude); * An optional title and description for the collection; * An optional
-     *     extent that can be used to provide an indication of + the spatial and temporal extent of
-     *     the collection - typically + derived from the data; * An optional indicator about the type
-     *     of the items in the collection + (the default value, if the indicator is not provided, is
-     *     &#39;record&#39;). (status code 200) or The requested resource does not exist on the
-     *     server. For example, a path parameter had an incorrect value. (status code 404) or A server
-     *     error occurred. (status code 500)
+     * @return Information about the record collection with id &#x60;collectionId&#x60;. The response contains a link to
+     *     the items in the collection (path &#x60;/collections/{collectionId}/items&#x60;, link relation
+     *     &#x60;items&#x60;) as well as key information about the collection. This information includes: * A local
+     *     identifier for the collection that is unique for the + catalog; * A list of coordinate reference systems
+     *     (CRS) in which geometries + may be returned by the server. The first CRS is the default + coordinate
+     *     reference system (the default is always WGS 84 with + axis order longitude/latitude); * An optional title and
+     *     description for the collection; * An optional extent that can be used to provide an indication of + the
+     *     spatial and temporal extent of the collection - typically + derived from the data; * An optional indicator
+     *     about the type of the items in the collection + (the default value, if the indicator is not provided, is
+     *     &#39;record&#39;). (status code 200) or The requested resource does not exist on the server. For example, a
+     *     path parameter had an incorrect value. (status code 404) or A server error occurred. (status code 500)
      */
     @Operation(
             operationId = "describeCollection",
@@ -343,8 +340,8 @@ public interface CollectionsApi {
     /**
      * GET /collections : the record collections Fetch list of catalogs offered by this API
      *
-     * @return Information about the list of catalogs offered by this service. (status code 200) or A
-     *     server error occurred. (status code 500)
+     * @return Information about the list of catalogs offered by this service. (status code 200) or A server error
+     *     occurred. (status code 500)
      */
     @Operation(
             operationId = "getCollections",
@@ -428,15 +425,14 @@ public interface CollectionsApi {
 
     /**
      * GET /collections/{catalogId}/items/{recordId} : fetch a single record Fetch the record with id
-     * &#x60;recordId&#x60; in the record collection with id &#x60;catalogId&#x60;. Use content
-     * negotiation to request HTML or GeoJSON.
+     * &#x60;recordId&#x60; in the record collection with id &#x60;catalogId&#x60;. Use content negotiation to request
+     * HTML or GeoJSON.
      *
      * @param catalogId local identifier of a catalog (required)
      * @param recordId local identifier of a record (required)
-     * @return Fetch the record with id &#x60;recordId&#x60; in the record collection with id
-     *     &#x60;collectionId&#x60; (status code 200) or The requested resource does not exist on the
-     *     server. For example, a path parameter had an incorrect value. (status code 404) or A server
-     *     error occurred. (status code 500)
+     * @return Fetch the record with id &#x60;recordId&#x60; in the record collection with id &#x60;collectionId&#x60;
+     *     (status code 200) or The requested resource does not exist on the server. For example, a path parameter had
+     *     an incorrect value. (status code 404) or A server error occurred. (status code 500)
      */
     @Operation(
             operationId = "getRecord",
@@ -547,83 +543,72 @@ public interface CollectionsApi {
     }
 
     /**
-     * GET /collections/{catalogId}/items : fetch records Fetch records of the record collection with
-     * id &#x60;catalogId&#x60;. Every record in a dataset belongs to a collection. A dataset may
-     * consist of multiple record collections. A record collection is often a collection of records of
-     * a similar type, based on a common schema. Use content negotiation to request HTML or GeoJSON.
+     * GET /collections/{catalogId}/items : fetch records Fetch records of the record collection with id
+     * &#x60;catalogId&#x60;. Every record in a dataset belongs to a collection. A dataset may consist of multiple
+     * record collections. A record collection is often a collection of records of a similar type, based on a common
+     * schema. Use content negotiation to request HTML or GeoJSON.
      *
      * @param catalogId local identifier of a catalog (required)
-     * @param bbox Only features that have a geometry that intersects the bounding box are selected.
-     *     The bounding box is provided as four or six numbers, depending on whether the coordinate
-     *     reference system includes a vertical axis (height or depth): * Lower left corner,
-     *     coordinate axis 1 * Lower left corner, coordinate axis 2 * Minimum value, coordinate axis 3
-     *     (optional) * Upper right corner, coordinate axis 1 * Upper right corner, coordinate axis 2
-     *     * Maximum value, coordinate axis 3 (optional) If the value consists of four numbers, the
-     *     coordinate reference system is WGS 84 longitude/latitude
-     *     (http://www.opengis.net/def/crs/OGC/1.3/CRS84) unless a different coordinate reference
-     *     system is specified in the parameter &#x60;bbox-crs&#x60;. If the value consists of six
-     *     numbers, the coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height
-     *     (http://www.opengis.net/def/crs/OGC/0/CRS84h) unless a different coordinate reference
-     *     system is specified in the parameter &#x60;bbox-crs&#x60;. The query parameter
-     *     &#x60;bbox-crs&#x60; is specified in OGC API - Features - Part 2: Coordinate Reference
-     *     Systems by Reference. For WGS 84 longitude/latitude the values are in most cases the
-     *     sequence of minimum longitude, minimum latitude, maximum longitude and maximum latitude.
-     *     However, in cases where the box spans the antimeridian the first value (west-most box edge)
-     *     is larger than the third value (east-most box edge). If the vertical axis is included, the
-     *     third and the sixth number are the bottom and the top of the 3-dimensional bounding box. If
-     *     a feature has multiple spatial geometry properties, it is the decision of the server
-     *     whether only a single spatial geometry property is used to determine the extent or all
-     *     relevant geometries. (optional)
-     * @param datetime Either a date-time or an interval. Date and time expressions adhere to RFC
-     *     3339. Intervals may be bounded or half-bounded (double-dots at start or end). Examples: * A
-     *     date-time: \&quot;2018-02-12T23:20:50Z\&quot; * A bounded interval:
+     * @param bbox Only features that have a geometry that intersects the bounding box are selected. The bounding box is
+     *     provided as four or six numbers, depending on whether the coordinate reference system includes a vertical
+     *     axis (height or depth): * Lower left corner, coordinate axis 1 * Lower left corner, coordinate axis 2 *
+     *     Minimum value, coordinate axis 3 (optional) * Upper right corner, coordinate axis 1 * Upper right corner,
+     *     coordinate axis 2 * Maximum value, coordinate axis 3 (optional) If the value consists of four numbers, the
+     *     coordinate reference system is WGS 84 longitude/latitude (http://www.opengis.net/def/crs/OGC/1.3/CRS84)
+     *     unless a different coordinate reference system is specified in the parameter &#x60;bbox-crs&#x60;. If the
+     *     value consists of six numbers, the coordinate reference system is WGS 84 longitude/latitude/ellipsoidal
+     *     height (http://www.opengis.net/def/crs/OGC/0/CRS84h) unless a different coordinate reference system is
+     *     specified in the parameter &#x60;bbox-crs&#x60;. The query parameter &#x60;bbox-crs&#x60; is specified in OGC
+     *     API - Features - Part 2: Coordinate Reference Systems by Reference. For WGS 84 longitude/latitude the values
+     *     are in most cases the sequence of minimum longitude, minimum latitude, maximum longitude and maximum
+     *     latitude. However, in cases where the box spans the antimeridian the first value (west-most box edge) is
+     *     larger than the third value (east-most box edge). If the vertical axis is included, the third and the sixth
+     *     number are the bottom and the top of the 3-dimensional bounding box. If a feature has multiple spatial
+     *     geometry properties, it is the decision of the server whether only a single spatial geometry property is used
+     *     to determine the extent or all relevant geometries. (optional)
+     * @param datetime Either a date-time or an interval. Date and time expressions adhere to RFC 3339. Intervals may be
+     *     bounded or half-bounded (double-dots at start or end). Examples: * A date-time:
+     *     \&quot;2018-02-12T23:20:50Z\&quot; * A bounded interval:
      *     \&quot;2018-02-12T00:00:00Z/2018-03-18T12:31:12Z\&quot; * Half-bounded intervals:
-     *     \&quot;2018-02-12T00:00:00Z/..\&quot; or \&quot;../2018-03-18T12:31:12Z\&quot; Only
-     *     features that have a temporal property that intersects the value of &#x60;datetime&#x60;
-     *     are selected. If a feature has multiple temporal properties, it is the decision of the
-     *     server whether only a single temporal property is used to determine the extent or all
-     *     relevant temporal properties. (optional)
-     * @param limit The optional limit parameter limits the number of items that are presented in the
-     *     response document. Only items are counted that are on the first level of the collection in
-     *     the response document. Nested objects contained within the explicitly requested items shall
-     *     not be counted. Minimum &#x3D; 1. Maximum &#x3D; 10000. Default &#x3D; 10. (optional,
-     *     default to 10)
-     * @param q The optional q parameter supports keyword searching. Only records whose text fields
-     *     contain one or more of the specified search terms are selected. The specific set of text
-     *     keys/fields/properties of a record to which the q operator is applied is up to the
-     *     description of the server. Implementations should, however, apply the q operator to the
-     *     title, description and keywords keys/fields/properties. (optional)
-     * @param type The optional type parameter supports searching by resource type. Only records whose
-     *     type, as indicated by the value of the type core queryable, is equal to one of the listed
-     *     values shall be selected. (optional)
-     * @param externalId The optional externalId parameter supports searching by an identifier that
-     *     was not assigned by the catalog (i.e. an external identifier). Only records with an
-     *     external identifer, as indicated by the value of the externalId core queryable array, that
-     *     is equal to one of the listed values shall be selected. (optional)
-     * @param ids The optional ids parameter allows a specified of records to be fetched from a
-     *     catalog using their identifiers. (optional)
-     * @param sortby Specifies a comma-separated list of property names by which the response shall be
-     *     sorted. If the property name is preceded by a plus (+) sign it indicates an ascending sort
-     *     for that property. If the property name is preceded by a minus (-) sign it indicates a
-     *     descending sort for that property. If the property is not preceded by a plus or minus, then
-     *     the default sort order implied is ascending (+). (optional)
-     * @return The response is a document consisting of records in the collection. The records
-     *     included in the response are determined by the server based on the query parameters of the
-     *     request. To support access to larger collections without overloading the client, the API
-     *     supports paged access with links to the next page, if more records are selected that the
-     *     page size. The &#x60;bbox&#x60; and &#x60;datetime&#x60; parameter can be used to select
-     *     only a subset of the records in the collection (the records that are in the bounding box or
-     *     time interval). The &#x60;bbox&#x60; parameter matches all records in the collection that
-     *     are not associated with a location, too. The &#x60;datetime&#x60; parameter matches all
-     *     records in the collection that are not associated with a time stamp or interval, too. The
-     *     &#x60;limit&#x60; parameter may be used to control the subset of the selected records that
-     *     should be returned in the response, the page size. Each page may include information about
-     *     the number of selected and returned records (&#x60;numberMatched&#x60; and
-     *     &#x60;numberReturned&#x60;) as well as links to support paging (link relation
-     *     &#x60;next&#x60;). (status code 200) or A query parameter has an invalid value. (status
-     *     code 400) or The requested resource does not exist on the server. For example, a path
-     *     parameter had an incorrect value. (status code 404) or A server error occurred. (status
-     *     code 500)
+     *     \&quot;2018-02-12T00:00:00Z/..\&quot; or \&quot;../2018-03-18T12:31:12Z\&quot; Only features that have a
+     *     temporal property that intersects the value of &#x60;datetime&#x60; are selected. If a feature has multiple
+     *     temporal properties, it is the decision of the server whether only a single temporal property is used to
+     *     determine the extent or all relevant temporal properties. (optional)
+     * @param limit The optional limit parameter limits the number of items that are presented in the response document.
+     *     Only items are counted that are on the first level of the collection in the response document. Nested objects
+     *     contained within the explicitly requested items shall not be counted. Minimum &#x3D; 1. Maximum &#x3D; 10000.
+     *     Default &#x3D; 10. (optional, default to 10)
+     * @param q The optional q parameter supports keyword searching. Only records whose text fields contain one or more
+     *     of the specified search terms are selected. The specific set of text keys/fields/properties of a record to
+     *     which the q operator is applied is up to the description of the server. Implementations should, however,
+     *     apply the q operator to the title, description and keywords keys/fields/properties. (optional)
+     * @param type The optional type parameter supports searching by resource type. Only records whose type, as
+     *     indicated by the value of the type core queryable, is equal to one of the listed values shall be selected.
+     *     (optional)
+     * @param externalId The optional externalId parameter supports searching by an identifier that was not assigned by
+     *     the catalog (i.e. an external identifier). Only records with an external identifer, as indicated by the value
+     *     of the externalId core queryable array, that is equal to one of the listed values shall be selected.
+     *     (optional)
+     * @param ids The optional ids parameter allows a specified of records to be fetched from a catalog using their
+     *     identifiers. (optional)
+     * @param sortby Specifies a comma-separated list of property names by which the response shall be sorted. If the
+     *     property name is preceded by a plus (+) sign it indicates an ascending sort for that property. If the
+     *     property name is preceded by a minus (-) sign it indicates a descending sort for that property. If the
+     *     property is not preceded by a plus or minus, then the default sort order implied is ascending (+). (optional)
+     * @return The response is a document consisting of records in the collection. The records included in the response
+     *     are determined by the server based on the query parameters of the request. To support access to larger
+     *     collections without overloading the client, the API supports paged access with links to the next page, if
+     *     more records are selected that the page size. The &#x60;bbox&#x60; and &#x60;datetime&#x60; parameter can be
+     *     used to select only a subset of the records in the collection (the records that are in the bounding box or
+     *     time interval). The &#x60;bbox&#x60; parameter matches all records in the collection that are not associated
+     *     with a location, too. The &#x60;datetime&#x60; parameter matches all records in the collection that are not
+     *     associated with a time stamp or interval, too. The &#x60;limit&#x60; parameter may be used to control the
+     *     subset of the selected records that should be returned in the response, the page size. Each page may include
+     *     information about the number of selected and returned records (&#x60;numberMatched&#x60; and
+     *     &#x60;numberReturned&#x60;) as well as links to support paging (link relation &#x60;next&#x60;). (status code
+     *     200) or A query parameter has an invalid value. (status code 400) or The requested resource does not exist on
+     *     the server. For example, a path parameter had an incorrect value. (status code 404) or A server error
+     *     occurred. (status code 500)
      */
     @Operation(
             operationId = "getRecords",
@@ -885,13 +870,13 @@ public interface CollectionsApi {
     }
 
     /**
-     * GET /collections/{catalogId}/sortables : get the list of sortable properties Fetch the list of
-     * properties which can be used to sort the getRecords response.
+     * GET /collections/{catalogId}/sortables : get the list of sortable properties Fetch the list of properties which
+     * can be used to sort the getRecords response.
      *
      * @param catalogId local identifier of a catalog (required)
-     * @return A list of properties by which the server response may be sorted. (status code 200) or
-     *     The requested resource does not exist on the server. For example, a path parameter had an
-     *     incorrect value. (status code 404) or A server error occurred. (status code 500)
+     * @return A list of properties by which the server response may be sorted. (status code 200) or The requested
+     *     resource does not exist on the server. For example, a path parameter had an incorrect value. (status code
+     *     404) or A server error occurred. (status code 500)
      */
     @Operation(
             operationId = "getSortables",

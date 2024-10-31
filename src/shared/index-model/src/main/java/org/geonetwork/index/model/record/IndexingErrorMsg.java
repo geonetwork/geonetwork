@@ -14,9 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * "indexingErrorMsg": [ { "string": "indexingErrorMsg-keywordNotFoundInThesaurus", "type":
- * "warning", "values": { "keyword": "Open Data", "thesaurus":
- * "geonetwork.thesaurus.external.theme.infraSIG" } } ],
+ * "indexingErrorMsg": [ { "string": "indexingErrorMsg-keywordNotFoundInThesaurus", "type": "warning", "values": {
+ * "keyword": "Open Data", "thesaurus": "geonetwork.thesaurus.external.theme.infraSIG" } } ],
  */
 @Data
 @NoArgsConstructor

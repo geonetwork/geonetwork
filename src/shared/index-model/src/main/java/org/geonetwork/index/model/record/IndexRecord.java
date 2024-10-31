@@ -822,8 +822,8 @@ public class IndexRecord {
     }
 
     /**
-     * Collect all other properties in proper Map fields. The getOtherProperties is used to serialize
-     * all those properties in the JSON.
+     * Collect all other properties in proper Map fields. The getOtherProperties is used to serialize all those
+     * properties in the JSON.
      */
     @JsonAnySetter
     @SuppressWarnings({"ReturnValueIgnored"})
@@ -1023,7 +1023,8 @@ public class IndexRecord {
             List<Integer> list = (List<Integer>) value;
 
             numberOfKeywordByThesaurus.put(
-                    name, list.size()); // This should not happen or indicate that a thesaurus is used 2 times in
+                    name, list.size()); // This should not happen or indicate that a thesaurus is used
+            // 2 times in
             // the same record.
         } else {
             numberOfKeywordByThesaurus.put(name, Integer.parseInt(value.toString()));

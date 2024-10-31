@@ -15,8 +15,8 @@ public class Version implements Comparable<Version> {
     private final int major, minor, micro;
 
     /**
-     * Parses a version number removing extra "-*" element and returning an integer. "2.7.0-SNAPSHOT"
-     * is returned as 270.
+     * Parses a version number removing extra "-*" element and returning an integer. "2.7.0-SNAPSHOT" is returned as
+     * 270.
      *
      * @param number The version number to parse
      * @return The version number as an integer

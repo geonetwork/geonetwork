@@ -22,10 +22,7 @@ public class SavedQuery {
     /** XPath to use for the query */
     private String xpath;
 
-    /**
-     * Optional XPath to use to identify each matching element. This is only relevant if the xpath
-     * match nodes.
-     */
+    /** Optional XPath to use to identify each matching element. This is only relevant if the xpath match nodes. */
     private String label;
 
     /** When retrieving element, any sub children to clean up ? */

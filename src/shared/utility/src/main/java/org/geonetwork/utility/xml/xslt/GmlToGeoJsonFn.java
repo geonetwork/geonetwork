@@ -40,9 +40,11 @@ public class GmlToGeoJsonFn extends ExtensionFunctionDefinition {
             public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
                 //        String gml = arguments[0].head().getStringValue();
                 //        Boolean applyPrecisionModel = arguments[1].head().effectiveBooleanValue();
-                //        Integer numberOfDecimals = Integer.valueOf(arguments[2].head().getStringValue());
+                //        Integer numberOfDecimals =
+                // Integer.valueOf(arguments[2].head().getStringValue());
                 return StringValue.makeStringValue("");
-                //        return StringValue.makeStringValue(XslUtil.gmlToGeoJson(gml,applyPrecisionModel,
+                //        return
+                // StringValue.makeStringValue(XslUtil.gmlToGeoJson(gml,applyPrecisionModel,
                 // numberOfDecimals));
             }
         };

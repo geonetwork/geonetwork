@@ -50,12 +50,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 /**
- * Class that handles all functions relating to metadata schemas. This includes
- * inserting/removing/updating metadata schemas for use in GeoNetwork as well as determining whether
- * a metadata record belongs to any of the metadata schemas known to GeoNetwork.
+ * Class that handles all functions relating to metadata schemas. This includes inserting/removing/updating metadata
+ * schemas for use in GeoNetwork as well as determining whether a metadata record belongs to any of the metadata schemas
+ * known to GeoNetwork.
  *
- * <p>The Schema class holds all information describing a schema in GeoNetwork. The SchemaManager
- * holds a map of Schema objects known to GeoNetwork.
+ * <p>The Schema class holds all information describing a schema in GeoNetwork. The SchemaManager holds a map of Schema
+ * objects known to GeoNetwork.
  */
 @Component
 @Slf4j
@@ -145,7 +145,8 @@ public class SchemaManager {
             //          // circular ref.
             //          schemaBeanIdentifier = ISO19139SchemaPlugin.IDENTIFIER + "SchemaPlugin";
             //          schemaPlugin =
-            //              (SchemaPlugin) ApplicationContextHolder.get().getBean(schemaBeanIdentifier);
+            //              (SchemaPlugin)
+            // ApplicationContextHolder.get().getBean(schemaBeanIdentifier);
             //        }
             //      }
         } catch (Exception e) {
@@ -224,7 +225,8 @@ public class SchemaManager {
 
         Element schemaPluginCatRoot = getSchemaPluginCatalogTemplate();
 
-        //    addResolverRewriteDirectives(applicationContext.getBean(GeonetworkDataDirectory.class));
+        //
+        // addResolverRewriteDirectives(applicationContext.getBean(GeonetworkDataDirectory.class));
 
         // -- check the plugin directory and add any schemas already in there
         try (DirectoryStream<Path> saSchemas = Files.newDirectoryStream(this.schemaPluginsDir)) {
@@ -506,7 +508,8 @@ public class SchemaManager {
     //    try {
     //      Schema schema = hmSchemas.get(name);
     //
-    //      if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
+    //      if (schema == null) throw new IllegalArgumentException("Schema not registered : " +
+    // name);
     //
     //      return schema.getInfo();
     //    } finally {
@@ -764,8 +767,8 @@ public class SchemaManager {
     // --------------------------------------------------------------------------
 
     /**
-     * Check that schema is present and that the record can be assigned to it - namespace of metadata
-     * schema is compared with prime namespace of metadata record.
+     * Check that schema is present and that the record can be assigned to it - namespace of metadata schema is compared
+     * with prime namespace of metadata record.
      *
      * @param md the metadata record being checked for prime namespace equality
      * @param schema the name of the metadata schema we want to test
@@ -868,8 +871,7 @@ public class SchemaManager {
     /**
      * Really add a plugin schema to the list of schemas registered here.
      *
-     * <p>name the metadata schema we want to add zipFs A filesystem (probably a ZipFileSystem) to
-     * copy files from.
+     * <p>name the metadata schema we want to add zipFs A filesystem (probably a ZipFileSystem) to copy files from.
      */
     @SuppressWarnings("unused")
     private void realAddPluginSchema() throws Exception {
@@ -896,7 +898,8 @@ public class SchemaManager {
         //      log.error(e.getMessage(), e);
         //      hmSchemas.remove(name);
         //      IO.deleteFileOrDirectory(schemaDir);
-        //      throw new OperationAbortedEx("Failed to add schema " + name + " : " + e.getMessage(),
+        //      throw new OperationAbortedEx("Failed to add schema " + name + " : " +
+        // e.getMessage(),
         // e);
         //    }
     }
@@ -939,7 +942,8 @@ public class SchemaManager {
             Xml.resetResolver();
         }
 
-        //    SchematronRepository schemaRepo = applicationContext.getBean(SchematronRepository.class);
+        //    SchematronRepository schemaRepo =
+        // applicationContext.getBean(SchematronRepository.class);
         //    SchematronCriteriaGroupRepository criteriaGroupRepository =
         //        applicationContext.getBean(SchematronCriteriaGroupRepository.class);
         MetadataSchema mds = new SchemaLoader().load(xmlSchemaFile, xmlSubstitutionsFile);
@@ -1088,9 +1092,9 @@ public class SchemaManager {
     }
 
     /**
-     * Gets the next available blank number that can be used to map the presentation xslt used by the
-     * schema (see metadata-utils.xsl and Geonet.File.METADATA_MAX_BLANKS). If the presentation xslt
-     * is already mapped then we exit early with return value -1.
+     * Gets the next available blank number that can be used to map the presentation xslt used by the schema (see
+     * metadata-utils.xsl and Geonet.File.METADATA_MAX_BLANKS). If the presentation xslt is already mapped then we exit
+     * early with return value -1.
      *
      * @param root the list of elements from the schemaplugin-uri-catalog
      * @param name the name of the schema to use
@@ -1137,8 +1141,7 @@ public class SchemaManager {
     }
 
     /**
-     * Creates a uri remap entry in the schema plugins catalog for the presentation xslt used by the
-     * schema.
+     * Creates a uri remap entry in the schema plugins catalog for the presentation xslt used by the schema.
      *
      * @param name the name of the schema to use
      * @param baseNrInt the number of the plugin schema to map the presentation xslt to
@@ -1234,8 +1237,8 @@ public class SchemaManager {
     }
 
     /**
-     * Deletes information from the schema information hashtables, the schema directory itself and the
-     * mapping for the schema presentation xslt from the schemaplugins oasis catalog.
+     * Deletes information from the schema information hashtables, the schema directory itself and the mapping for the
+     * schema presentation xslt from the schemaplugins oasis catalog.
      *
      * @param name schema name
      */
@@ -1352,7 +1355,8 @@ public class SchemaManager {
     private void checkAppSupported(Element schemaPluginCatRoot) throws Exception {
         List<String> removes = new ArrayList<>();
 
-        //    final SystemInfo systemInfo = ApplicationContextHolder.get().getBean(SystemInfo.class);
+        //    final SystemInfo systemInfo =
+        // ApplicationContextHolder.get().getBean(SystemInfo.class);
         //
         //    String version = systemInfo.getVersion();
         String version = "5.0.0";
@@ -1465,8 +1469,8 @@ public class SchemaManager {
     }
 
     /**
-     * true if schema requires to synch the uuid column schema info with the uuid in the metadata
-     * record (updated on editing or in UFO).
+     * true if schema requires to synch the uuid column schema info with the uuid in the metadata record (updated on
+     * editing or in UFO).
      */
     private boolean extractReadWriteUuid(Path xmlIdFile) throws Exception {
         Element root = Xml.loadFile(xmlIdFile);
@@ -1510,8 +1514,8 @@ public class SchemaManager {
     }
 
     /**
-     * true if schema requires to synch the uuid column schema info with the uuid in the metadata
-     * record (updated on editing or in UFO).
+     * true if schema requires to synch the uuid column schema info with the uuid in the metadata record (updated on
+     * editing or in UFO).
      */
     private Map<String, MetadataSchemaOperationFilter> extractOperationFilters(Path xmlIdFile) throws Exception {
         Element root = Xml.loadFile(xmlIdFile);
@@ -1539,8 +1543,8 @@ public class SchemaManager {
     }
 
     /**
-     * Extract schema version and uuid info from identification file and compare specified name with
-     * name in identification file.
+     * Extract schema version and uuid info from identification file and compare specified name with name in
+     * identification file.
      *
      * @param xmlIdFile name of schema XML identification file
      */
@@ -1614,8 +1618,8 @@ public class SchemaManager {
     }
 
     /**
-     * Search all available schemas for one which contains the element(s) or attributes specified in
-     * the autodetect info.
+     * Search all available schemas for one which contains the element(s) or attributes specified in the autodetect
+     * info.
      *
      * @param md the XML record whose schema we are trying to find
      */
@@ -1760,8 +1764,8 @@ public class SchemaManager {
     }
 
     /**
-     * This method searches an entire metadata file for an attribute that matches the "needle"
-     * metadata attribute arg - A matching attribute has the same name and value.
+     * This method searches an entire metadata file for an attribute that matches the "needle" metadata attribute arg -
+     * A matching attribute has the same name and value.
      *
      * @param needle the XML attribute we are trying to find
      * @param haystack the XML metadata record we are searching
@@ -1787,8 +1791,8 @@ public class SchemaManager {
     }
 
     /**
-     * This method searches all elements of a metadata for a namespace that matches the "needle"
-     * namespace arg. (Note: matching namespaces have the same URI, prefix is ignored).
+     * This method searches all elements of a metadata for a namespace that matches the "needle" namespace arg. (Note:
+     * matching namespaces have the same URI, prefix is ignored).
      *
      * @param needle the XML namespace we are trying to find
      * @param haystack the XML metadata record we are searching
@@ -1827,13 +1831,12 @@ public class SchemaManager {
     }
 
     /**
-     * This method searches an entire metadata file for an element that matches the "needle" metadata
-     * element arg - A matching element has the same name, namespace and value.
+     * This method searches an entire metadata file for an element that matches the "needle" metadata element arg - A
+     * matching element has the same name, namespace and value.
      *
      * @param needle the XML element we are trying to find
      * @param haystack the XML metadata record we are searching
-     * @param checkValue compare the value of the needle with the value of the element we find in the
-     *     md
+     * @param checkValue compare the value of the needle with the value of the element we find in the md
      */
     private boolean isMatchingElementInMetadata(Element needle, Element haystack, boolean checkValue) {
         boolean returnVal = false;
@@ -1873,8 +1876,7 @@ public class SchemaManager {
     }
 
     /**
-     * This method deletes all the files and directories inside another the schema dir and then the
-     * schema dir itself.
+     * This method deletes all the files and directories inside another the schema dir and then the schema dir itself.
      *
      * @param dir the dir whose contents are to be deleted
      */
@@ -1904,8 +1906,7 @@ public class SchemaManager {
     }
 
     /**
-     * Copy the schema.xsd file and the schema directory from the schema plugin directory to the
-     * webapp.
+     * Copy the schema.xsd file and the schema directory from the schema plugin directory to the webapp.
      *
      * @param name the name of the schema
      * @param schemaPluginDir the directory containing the schema plugin

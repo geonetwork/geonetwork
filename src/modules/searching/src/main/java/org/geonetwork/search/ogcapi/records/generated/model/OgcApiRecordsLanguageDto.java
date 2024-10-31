@@ -140,10 +140,9 @@ public class OgcApiRecordsLanguageDto {
     }
 
     /**
-     * The direction for text in this language. The default, `ltr` (left-to-right), represents the
-     * most common situation. However, care should be taken to set the value of `dir` appropriately if
-     * the language direction is not `ltr`. Other values supported are `rtl` (right-to-left), `ttb`
-     * (top-to-bottom), and `btt` (bottom-to-top).
+     * The direction for text in this language. The default, `ltr` (left-to-right), represents the most common
+     * situation. However, care should be taken to set the value of `dir` appropriately if the language direction is not
+     * `ltr`. Other values supported are `rtl` (right-to-left), `ttb` (top-to-bottom), and `btt` (bottom-to-top).
      *
      * @return dir
      */
@@ -205,9 +204,7 @@ public class OgcApiRecordsLanguageDto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";
@@ -222,10 +219,9 @@ public class OgcApiRecordsLanguageDto {
     }
 
     /**
-     * The direction for text in this language. The default, `ltr` (left-to-right), represents the
-     * most common situation. However, care should be taken to set the value of `dir` appropriately if
-     * the language direction is not `ltr`. Other values supported are `rtl` (right-to-left), `ttb`
-     * (top-to-bottom), and `btt` (bottom-to-top).
+     * The direction for text in this language. The default, `ltr` (left-to-right), represents the most common
+     * situation. However, care should be taken to set the value of `dir` appropriately if the language direction is not
+     * `ltr`. Other values supported are `rtl` (right-to-left), `ttb` (top-to-bottom), and `btt` (bottom-to-top).
      */
     public enum DirEnum {
         LTR("ltr"),

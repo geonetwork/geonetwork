@@ -14,10 +14,9 @@ import org.geonetwork.utility.legacy.io.IO;
 import org.jdom.Element;
 
 /**
- * In the case that the schema_plugins are not files (IE they are in paths like the test fixture) we
- * will add the rewrite objects in {@link org.fao.geonet.utils.nio.NioPathAwareCatalogResolver} so
- * that the resolving will still work. Normal CatalogManager can't handle java.nio.file.Path
- * objects.
+ * In the case that the schema_plugins are not files (IE they are in paths like the test fixture) we will add the
+ * rewrite objects in {@link org.fao.geonet.utils.nio.NioPathAwareCatalogResolver} so that the resolving will still
+ * work. Normal CatalogManager can't handle java.nio.file.Path objects.
  *
  * @author Jesse on 2/28/2015.
  */

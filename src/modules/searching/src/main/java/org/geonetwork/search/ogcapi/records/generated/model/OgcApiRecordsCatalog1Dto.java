@@ -283,8 +283,8 @@ public class OgcApiRecordsCatalog1Dto {
     }
 
     /**
-     * The topic or topics of the resource. Typically represented using free-form keywords, tags, key
-     * phrases, or classification codes.
+     * The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or
+     * classification codes.
      *
      * @return keywords
      */
@@ -520,8 +520,8 @@ public class OgcApiRecordsCatalog1Dto {
     }
 
     /**
-     * A list of contacts qualified by their role(s) in association to the record or the resource
-     * described by the record.
+     * A list of contacts qualified by their role(s) in association to the record or the resource described by the
+     * record.
      *
      * @return contacts
      */
@@ -572,8 +572,7 @@ public class OgcApiRecordsCatalog1Dto {
     }
 
     /**
-     * A statement that concerns all rights not addressed by the license such as a copyright
-     * statement.
+     * A statement that concerns all rights not addressed by the license such as a copyright statement.
      *
      * @return rights
      */
@@ -962,9 +961,7 @@ public class OgcApiRecordsCatalog1Dto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

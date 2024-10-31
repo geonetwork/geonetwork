@@ -57,17 +57,13 @@ public class Schema {
         this.version = version;
     }
 
-    /**
-     * Get schemaLocation = official URLs which locate xsds for the various namespaces used by this
-     * schema.
-     */
+    /** Get schemaLocation = official URLs which locate xsds for the various namespaces used by this schema. */
     public String getSchemaLocation() {
         return schemaLocation;
     }
 
     /**
-     * Set schemaLocation = official URLs which locate xsds for the various namespaces used by this
-     * schema.
+     * Set schemaLocation = official URLs which locate xsds for the various namespaces used by this schema.
      *
      * @param schemaLocation namespaces and URLs of XSDs arranged in pairs
      */
@@ -75,17 +71,13 @@ public class Schema {
         this.schemaLocation = schemaLocation;
     }
 
-    /**
-     * Get List of XML elements that describes how to detect metadata records that belong to this
-     * schema.
-     */
+    /** Get List of XML elements that describes how to detect metadata records that belong to this schema. */
     public List<Element> getAutodetectElements() {
         return autodetectElements;
     }
 
     /**
-     * Set List of XML elements that describes how to detect metadata records that belong to this
-     * schema.
+     * Set List of XML elements that describes how to detect metadata records that belong to this schema.
      *
      * @param autodetectElements List of JDOM elements
      */
@@ -94,7 +86,8 @@ public class Schema {
     }
 
     //    /**
-    //     * Get map of localized xml files describing schema elements - at present these are labels,
+    //     * Get map of localized xml files describing schema elements - at present these are
+    // labels,
     //     * codelists and strings and are hashed on the name of the localized file.
     //     */
     //    public Map<String, XmlFile> getInfo() {
@@ -102,7 +95,8 @@ public class Schema {
     //    }
     //
     //    /**
-    //     * Set map of localized xml files describing schema elements - at present these are labels,
+    //     * Set map of localized xml files describing schema elements - at present these are
+    // labels,
     //     * codelists and strings and are hashed on the name of the localized file.
     //     *
     //     * @param schemaInfo Map containing schema information for each file
@@ -112,8 +106,8 @@ public class Schema {
     //    }
 
     /**
-     * Get file system directory in which schema resides - used by methods that need to access xslt
-     * files in the schema directory.
+     * Get file system directory in which schema resides - used by methods that need to access xslt files in the schema
+     * directory.
      */
     public Path getDir() {
         return dir;
@@ -143,17 +137,13 @@ public class Schema {
         this.mds = mds;
     }
 
-    /**
-     * Get SchemaSuggestions object that describes the suggested elements for this schema (used by the
-     * editor).
-     */
+    /** Get SchemaSuggestions object that describes the suggested elements for this schema (used by the editor). */
     public SchemaSuggestions getSuggestions() {
         return sugg;
     }
 
     /**
-     * Set SchemaSuggestions object that describes the suggested elements for this schema (used by the
-     * editor).
+     * Set SchemaSuggestions object that describes the suggested elements for this schema (used by the editor).
      *
      * @param sugg the SchemaSuggestions object describing the schema suggestions
      */
@@ -176,16 +166,16 @@ public class Schema {
     }
 
     /**
-     * Get List of XML elements that describes how to convert metadata records that belong to this
-     * schema to other schemas.
+     * Get List of XML elements that describes how to convert metadata records that belong to this schema to other
+     * schemas.
      */
     public List<Element> getConversionElements() {
         return conversionElements;
     }
 
     /**
-     * Set List of XML elements that describes how to convert metadata records that belong to this
-     * schema to other schemas.
+     * Set List of XML elements that describes how to convert metadata records that belong to this schema to other
+     * schemas.
      *
      * @param conversionElements List of JDOM elements
      */
@@ -193,17 +183,13 @@ public class Schema {
         this.conversionElements = conversionElements;
     }
 
-    /**
-     * Get List of XML elements whose text values are the names of schemas that this schema depends
-     * upon.
-     */
+    /** Get List of XML elements whose text values are the names of schemas that this schema depends upon. */
     public List<Element> getDependElements() {
         return dependElements;
     }
 
     /**
-     * Set List of XML elements whose text values are the names of schemas that this schema depends
-     * upon.
+     * Set List of XML elements whose text values are the names of schemas that this schema depends upon.
      *
      * @param dependElements of JDOM elements
      */

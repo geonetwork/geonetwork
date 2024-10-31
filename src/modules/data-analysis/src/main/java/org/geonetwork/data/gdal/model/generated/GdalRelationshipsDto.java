@@ -26,14 +26,14 @@ import java.util.Objects;
         comments = "Generator version: 7.7.0")
 public class GdalRelationshipsDto {
     /**
-     * A container for additional, undeclared properties. This is a holder for any undeclared
-     * properties as specified with the 'additionalProperties' keyword in the OAS document.
+     * A container for additional, undeclared properties. This is a holder for any undeclared properties as specified
+     * with the 'additionalProperties' keyword in the OAS document.
      */
     private Map<String, GdalRelationshipDto> additionalProperties;
 
     /**
-     * Set the additional (undeclared) property with the specified name and value. If the property
-     * does not already exist, create it otherwise replace it.
+     * Set the additional (undeclared) property with the specified name and value. If the property does not already
+     * exist, create it otherwise replace it.
      */
     @JsonAnySetter
     public GdalRelationshipsDto putAdditionalProperty(String key, GdalRelationshipDto value) {
@@ -86,9 +86,7 @@ public class GdalRelationshipsDto {
         return sb.toString();
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

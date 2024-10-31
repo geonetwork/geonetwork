@@ -39,14 +39,13 @@ public interface DefaultApi {
     }
 
     /**
-     * GET / : landing page The landing page provides links to the API definition, the conformance
-     * statements and to the record collections in this dataset.
+     * GET / : landing page The landing page provides links to the API definition, the conformance statements and to the
+     * record collections in this dataset.
      *
-     * @return The landing page provides links to the API definition (link relations
-     *     &#x60;service-desc&#x60; and &#x60;service-doc&#x60;), the Conformance declaration (path
-     *     &#x60;/conformance&#x60;, link relation &#x60;conformance&#x60;), and the Record
-     *     Collections (path &#x60;/collections&#x60;, link relation &#x60;data&#x60;). (status code
-     *     200) or A server error occurred. (status code 500)
+     * @return The landing page provides links to the API definition (link relations &#x60;service-desc&#x60; and
+     *     &#x60;service-doc&#x60;), the Conformance declaration (path &#x60;/conformance&#x60;, link relation
+     *     &#x60;conformance&#x60;), and the Record Collections (path &#x60;/collections&#x60;, link relation
+     *     &#x60;data&#x60;). (status code 200) or A server error occurred. (status code 500)
      */
     @Operation(
             operationId = "getLandingPage",

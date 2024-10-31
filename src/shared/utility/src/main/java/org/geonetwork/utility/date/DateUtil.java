@@ -78,12 +78,12 @@ public class DateUtil {
     }
 
     /**
-     * Converts a given ISO date time into the form used to index in Lucene. Returns null if it gets
-     * back a ridiculous value.
+     * Converts a given ISO date time into the form used to index in Lucene. Returns null if it gets back a ridiculous
+     * value.
      *
      * @param stringToParse the string to parse.
-     * @return the parameter parsed and shown with {@code yyyy-MM-dd'T'HH:mm:ss.SSSXXX'Z'} format or
-     *     {@code null} if it can't be parsed.
+     * @return the parameter parsed and shown with {@code yyyy-MM-dd'T'HH:mm:ss.SSSXXX'Z'} format or {@code null} if it
+     *     can't be parsed.
      */
     public static String convertToIsoZuluDateTime(final String stringToParse) {
         if (StringUtils.trimToNull(stringToParse) == null) {
@@ -102,22 +102,20 @@ public class DateUtil {
     }
 
     /**
-     * Converts two ISO date times into standard form used to index in Lucene Always returns something
-     * because it is used during the indexing of the metadata record in Lucene - if exception during
-     * parsing then it is something ridiculous like JUNK value above.
+     * Converts two ISO date times into standard form used to index in Lucene Always returns something because it is
+     * used during the indexing of the metadata record in Lucene - if exception during parsing then it is something
+     * ridiculous like JUNK value above.
      *
      * @param dateTimeString a string containing a date or a date with time in ISO 8601 format.
      * @param durationOrDateTimeString a string containing datetime or a duration in ISO 8601 format
-     *     ({@code P[n]Y[n]M[n]DT[n]H[n]M[n]S or P[n]W}. For example, {@code "P3Y6M4DT12H30M5S"}
-     *     represents a duration of "three years, six months, four days, twelve hours, thirty minutes,
-     *     and five seconds").
-     * @return A date and time in ISO 8601 format or {@link DateUtil#DEFAULT_DATE_TIME} if the
-     *     parameters cannot be parsed as valid values. If {@code durationOrDateTimeString} is {@code
-     *     null} then it is ignored. If it is a duration then its value is added or subtracted to
-     *     {@code dateTimeString} and the result is concatenated to the parsed value of {@code
-     *     dateTimeString} using the {@code "|"} as separator character. If it is a dateTime string
-     *     then the result is the parsed value of {@code dateTimeString}, a {@code "|"} character and
-     *     the parsed value of {@code durationOrDateTimeString}.
+     *     ({@code P[n]Y[n]M[n]DT[n]H[n]M[n]S or P[n]W}. For example, {@code "P3Y6M4DT12H30M5S"} represents a duration
+     *     of "three years, six months, four days, twelve hours, thirty minutes, and five seconds").
+     * @return A date and time in ISO 8601 format or {@link DateUtil#DEFAULT_DATE_TIME} if the parameters cannot be
+     *     parsed as valid values. If {@code durationOrDateTimeString} is {@code null} then it is ignored. If it is a
+     *     duration then its value is added or subtracted to {@code dateTimeString} and the result is concatenated to
+     *     the parsed value of {@code dateTimeString} using the {@code "|"} as separator character. If it is a dateTime
+     *     string then the result is the parsed value of {@code dateTimeString}, a {@code "|"} character and the parsed
+     *     value of {@code durationOrDateTimeString}.
      */
     public static String parseIsoDateTimes(String dateTimeString, String durationOrDateTimeString) {
 
@@ -147,7 +145,8 @@ public class DateUtil {
             return odt;
         }
 
-        // durationOrDateTimeString can be an ISO time as for dateTimeString but also an ISO time period
+        // durationOrDateTimeString can be an ISO time as for dateTimeString but also an ISO time
+        // period
         // e.g. -P3D or P3D - if an ISO time period then it must be added to the
         // DateTime generated for dateTimeString (odt1)
         // convert everything to UTC so that we remove any timezone
@@ -188,15 +187,15 @@ public class DateUtil {
     }
 
     /**
-     * Parse the parameter and return a {@link ZonedDateTime} object. For Dates in {@code "yyyy"} or
-     * {@code "yyyy-MM"} format the dates are considered at the first instant of the year or year and
-     * month (in local time if no zone is specified).
+     * Parse the parameter and return a {@link ZonedDateTime} object. For Dates in {@code "yyyy"} or {@code "yyyy-MM"}
+     * format the dates are considered at the first instant of the year or year and month (in local time if no zone is
+     * specified).
      *
-     * @param stringToParse the string to parse. It can have multiple formats: {@link
-     *     DateTimeFormatter#BASIC_ISO_DATE}, {@link DateTimeFormatter#ISO_TIME}, {@link
-     *     DateTimeFormatter#ISO_DATE_TIME}, or {@code yyyy[-MM][-dd['T'HH[:mm[:ss[.SSS]][XXX]]]]}.
-     *     Stings in HTML format (e.g. {@code Fri Jan 01 2010 00:00:00 GMT+0100 (CET)}) are also
-     *     accepted. Also string in no ISO format (e.g. {@code yyyy[-MM][-dd][-hh:mm][Z]})
+     * @param stringToParse the string to parse. It can have multiple formats: {@link DateTimeFormatter#BASIC_ISO_DATE},
+     *     {@link DateTimeFormatter#ISO_TIME}, {@link DateTimeFormatter#ISO_DATE_TIME}, or
+     *     {@code yyyy[-MM][-dd['T'HH[:mm[:ss[.SSS]][XXX]]]]}. Stings in HTML format (e.g. {@code Fri Jan 01 2010
+     *     00:00:00 GMT+0100 (CET)}) are also accepted. Also string in no ISO format (e.g.
+     *     {@code yyyy[-MM][-dd][-hh:mm][Z]})
      * @return a {@link ZonedDateTime}.
      */
     public static ZonedDateTime parseBasicOrFullDateTime(String stringToParse) {
@@ -309,10 +308,9 @@ public class DateUtil {
     }
 
     /**
-     * Parses a time and return current date at that time. Both local and offset formats are
-     * supported, such as '10:15', '10:15:30' or '10:15:30+01:00' starting by 'T' or not. If offset is
-     * present then it is used set the date in UTC zone. If the time doesn't have an offset it is
-     * interpreted as a time in local time and converted to UTC.
+     * Parses a time and return current date at that time. Both local and offset formats are supported, such as '10:15',
+     * '10:15:30' or '10:15:30+01:00' starting by 'T' or not. If offset is present then it is used set the date in UTC
+     * zone. If the time doesn't have an offset it is interpreted as a time in local time and converted to UTC.
      *
      * @param time the string to parse
      * @return a date and time in UTC zone with date the being the current day.

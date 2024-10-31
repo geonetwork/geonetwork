@@ -28,9 +28,8 @@ import org.testcontainers.junit.jupiter.Container;
 /**
  * Integration test running with GeoNetwork 4.
  *
- * <p>Test containers are started on random port. Only service geonetwork is exposed on port 8082
- * but the port during the test is random. Use getGeoNetworkCoreUrl() to get the container URL for
- * GeoNetwork4.
+ * <p>Test containers are started on random port. Only service geonetwork is exposed on port 8082 but the port during
+ * the test is random. Use getGeoNetworkCoreUrl() to get the container URL for GeoNetwork4.
  */
 @SpringBootTest(classes = GeonetworkApplication.class)
 @AutoConfigureMockMvc

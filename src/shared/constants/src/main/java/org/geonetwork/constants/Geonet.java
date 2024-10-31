@@ -216,10 +216,7 @@ public final class Geonet {
         /** Parameter name: {@value #ABSTRACT} - Free text field that searches in the abstract */
         public static final String ABSTRACT = "abstract";
 
-        /**
-         * Parameter name: {@value #ANY} - Free text field that searches in all the text fields of a
-         * metadata record
-         */
+        /** Parameter name: {@value #ANY} - Free text field that searches in all the text fields of a metadata record */
         public static final String ANY = "any";
 
         public static final String PHRASE = "phrase";
@@ -228,59 +225,57 @@ public final class Geonet {
         public static final String ALL = "all";
 
         /**
-         * Parameter name: {@value #REGION} - Index value of a region. Used to retrieve the name and
-         * bounding box of the selected region
+         * Parameter name: {@value #REGION} - Index value of a region. Used to retrieve the name and bounding box of the
+         * selected region
          */
         public static final String REGION = "region";
 
         /**
-         * Parameter name: {@value #SOUTH_BL} - Lowest Latitude value in floating point format
-         * (geographic coordinate) Default value is {@code -90}
+         * Parameter name: {@value #SOUTH_BL} - Lowest Latitude value in floating point format (geographic coordinate)
+         * Default value is {@code -90}
          */
         public static final String SOUTH_BL = "southBL";
 
         /**
-         * Parameter name: {@value #NORTH_BL} - Highest Latitude value in floating point format
-         * (geographic coordinate) Default value is {@code 90}
+         * Parameter name: {@value #NORTH_BL} - Highest Latitude value in floating point format (geographic coordinate)
+         * Default value is {@code 90}
          */
         public static final String NORTH_BL = "northBL";
 
         /**
-         * Parameter name: {@value #EAST_BL} - Highest Longitude value in floating point format
-         * (geographic coordinate) Default value is {@code 180}
+         * Parameter name: {@value #EAST_BL} - Highest Longitude value in floating point format (geographic coordinate)
+         * Default value is {@code 180}
          */
         public static final String EAST_BL = "eastBL";
 
         /**
-         * Parameter name: {@value #WEST_BL} - Lowest Longitude value in floating point format
-         * (geographic coordinate) Default value is {@code -180}
+         * Parameter name: {@value #WEST_BL} - Lowest Longitude value in floating point format (geographic coordinate)
+         * Default value is {@code -180}
          */
         public static final String WEST_BL = "westBL";
 
         /**
-         * Parameter name: {@value #BBOX} - Boundary box in comma separated xmin,ymin,xmax,ymax format,
-         * as in OpenSearch-geo or WMS specification. A compact alternative to the four westBL, southBL,
-         * eastBL and northBL parameters.
+         * Parameter name: {@value #BBOX} - Boundary box in comma separated xmin,ymin,xmax,ymax format, as in
+         * OpenSearch-geo or WMS specification. A compact alternative to the four westBL, southBL, eastBL and northBL
+         * parameters.
          */
         public static final String BBOX = "bbox";
 
         /**
-         * Parameter name: {@value #RELATION} - Defines the type of spatial query matching used See
-         * {@link Relation} for possible values Default value is {@code {@value Relation#OVERLAPS}}
+         * Parameter name: {@value #RELATION} - Defines the type of spatial query matching used See {@link Relation} for
+         * possible values Default value is {@code {@value Relation#OVERLAPS}}
          */
         public static final String RELATION = "relation";
 
         /**
-         * Parameter name: {@value #DATE_FROM} - Start date from when the referenced resource was
-         * updated. Formatted as <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>. For
-         * example 1970-08-19T06:01:00 or 1970-08-19
+         * Parameter name: {@value #DATE_FROM} - Start date from when the referenced resource was updated. Formatted as
+         * <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>. For example 1970-08-19T06:01:00 or 1970-08-19
          */
         public static final String DATE_FROM = "dateFrom";
 
         /**
-         * Parameter name: {@value #DATE_TO} - End date until when the referenced resource was updated.
-         * Formatted as <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>. For example
-         * 2008-01-23T10:05:00 or 2008-01-23
+         * Parameter name: {@value #DATE_TO} - End date until when the referenced resource was updated. Formatted as <a
+         * href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>. For example 2008-01-23T10:05:00 or 2008-01-23
          */
         public static final String DATE_TO = "dateTo";
 
@@ -288,57 +283,55 @@ public final class Geonet {
         public static final String CATEGORY = "category";
 
         /**
-         * Parameter name: {@value #TOPIC_CAT} - Restrict search to resources that have the requested
-         * Topic Category set (ISO19115)
+         * Parameter name: {@value #TOPIC_CAT} - Restrict search to resources that have the requested Topic Category set
+         * (ISO19115)
          */
         public static final String TOPIC_CAT = "topicCat";
 
         /**
-         * Parameter name: {@value #PROTOCOL} - Searches the protocol field that's part of the online
-         * resources in ISO19115. Suggested values are those listed in the localized strings.xml files
-         * at /strings/protocolChoice/@value
+         * Parameter name: {@value #PROTOCOL} - Searches the protocol field that's part of the online resources in
+         * ISO19115. Suggested values are those listed in the localized strings.xml files at
+         * /strings/protocolChoice/@value
          */
         public static final String PROTOCOL = "protocol";
 
         /**
-         * Parameter name: {@value #DOWNLOAD} - Boolean that restricts results to those resources that
-         * have a files for download based on protocol values as defined in the Lucene indexing
-         * stylesheets. Values are {@value Text#ON} or {@value Text#OFF} (default)
+         * Parameter name: {@value #DOWNLOAD} - Boolean that restricts results to those resources that have a files for
+         * download based on protocol values as defined in the Lucene indexing stylesheets. Values are {@value Text#ON}
+         * or {@value Text#OFF} (default)
          */
         public static final String DOWNLOAD = "download";
 
         /**
-         * Parameter name: {@value #DYNAMIC} - Boolean that restricts results to those resources that
-         * have an interactive resource associated based on protocol values as defined in the Lucene
-         * indexing stylesheets. Values are {@value Text#ON} or {@value Text#OFF} (default)
+         * Parameter name: {@value #DYNAMIC} - Boolean that restricts results to those resources that have an
+         * interactive resource associated based on protocol values as defined in the Lucene indexing stylesheets.
+         * Values are {@value Text#ON} or {@value Text#OFF} (default)
          */
         public static final String DYNAMIC = "dynamic";
 
         /**
-         * Parameter name: {@value #DIGITAL} - Boolean that restricts results to those resources that
-         * describe digital data based on ISO19115 CI_PresentationFormCode codes Exact values indexed
-         * are defined in the Lucene indexing stylesheets. Values are {@value Text#ON} or {@value
-         * Text#OFF} (default)
+         * Parameter name: {@value #DIGITAL} - Boolean that restricts results to those resources that describe digital
+         * data based on ISO19115 CI_PresentationFormCode codes Exact values indexed are defined in the Lucene indexing
+         * stylesheets. Values are {@value Text#ON} or {@value Text#OFF} (default)
          */
         public static final String DIGITAL = "digital";
 
         /**
-         * Parameter name: {@value #PAPER} - Boolean that restricts results to those resources that
-         * describe Hardcopy data based on ISO19115 CI_PresentationFormCode codes Exact values indexed
-         * are defined in the Lucene indexing stylesheets. Values are {@value Text#ON} or {@value
-         * Text#OFF} (default)
+         * Parameter name: {@value #PAPER} - Boolean that restricts results to those resources that describe Hardcopy
+         * data based on ISO19115 CI_PresentationFormCode codes Exact values indexed are defined in the Lucene indexing
+         * stylesheets. Values are {@value Text#ON} or {@value Text#OFF} (default)
          */
         public static final String PAPER = "paper";
 
         /**
-         * Parameter name: {@value #SITE_ID} - Limit search results to resources that originate from the
-         * selected catalog. The Site's short name should be used as value
+         * Parameter name: {@value #SITE_ID} - Limit search results to resources that originate from the selected
+         * catalog. The Site's short name should be used as value
          */
         public static final String SITE_ID = "siteId";
 
         /**
-         * Parameter name: {@value #GROUP} - Limit search results to resources that are administered by
-         * the selected group. The group ID should be used as value
+         * Parameter name: {@value #GROUP} - Limit search results to resources that are administered by the selected
+         * group. The group ID should be used as value
          */
         public static final String GROUP = "group";
 
@@ -347,38 +340,38 @@ public final class Geonet {
         public static final String SERVERS = "servers";
 
         /**
-         * Parameter name: {@value #TEMPLATE} - Boolean that defines if normal resources are searched or
-         * templates are searched Values are {@code y} or {@code n}
+         * Parameter name: {@value #TEMPLATE} - Boolean that defines if normal resources are searched or templates are
+         * searched Values are {@code y} or {@code n}
          */
         public static final String TEMPLATE = "template";
 
         /**
-         * Parameter name: {@value #EXTENDED} - Boolean that indicates if search is done in simple or
-         * Advanced mode. Values are {@value Text#ON} or {@value Text#OFF} (default)
+         * Parameter name: {@value #EXTENDED} - Boolean that indicates if search is done in simple or Advanced mode.
+         * Values are {@value Text#ON} or {@value Text#OFF} (default)
          */
         public static final String EXTENDED = "extended";
 
         /**
-         * Parameter name: {@value #HITS_PER_PAGE} - Number of results returned by the search engine.
-         * Default is 10 results
+         * Parameter name: {@value #HITS_PER_PAGE} - Number of results returned by the search engine. Default is 10
+         * results
          */
         public static final String HITS_PER_PAGE = "hitsPerPage";
 
         /**
-         * Parameter name: {@value #MAX_RECORDS} - Number of maximum results returned by the search
-         * engine, given the from / to user provided parameters. Default is 100 results.
+         * Parameter name: {@value #MAX_RECORDS} - Number of maximum results returned by the search engine, given the
+         * from / to user provided parameters. Default is 100 results.
          */
         public static final String MAX_RECORDS = "maxRecords";
 
         /**
-         * Parameter name: {@value #ALLOW_UNBOUNDED_QUERIES} - Allow XmlSearch to return as many records
-         * as the search returns (this was the default behaviour before 3.8.x).
+         * Parameter name: {@value #ALLOW_UNBOUNDED_QUERIES} - Allow XmlSearch to return as many records as the search
+         * returns (this was the default behaviour before 3.8.x).
          */
         public static final String ALLOW_UNBOUNDED_QUERIES = "allowUnboundedQueries";
 
         /**
-         * Parameter name: {@value #SIMILARITY} - Use the Lucene FuzzyQuery. Values range from 0.0 to
-         * 1.0 and defaults to 0.8
+         * Parameter name: {@value #SIMILARITY} - Use the Lucene FuzzyQuery. Values range from 0.0 to 1.0 and defaults
+         * to 0.8
          */
         public static final String SIMILARITY = "similarity";
 
@@ -390,27 +383,24 @@ public final class Geonet {
          */
         public static final String SORT_BY = "sortBy";
 
-        /**
-         * Parameter name: {@value #SORT_ORDER} - Order results in reverse order or not false (default)
-         */
+        /** Parameter name: {@value #SORT_ORDER} - Order results in reverse order or not false (default) */
         public static final String SORT_ORDER = "sortOrder";
 
         /**
-         * Parameter name: {@value #INTERMAP} - Boolean that indicates if GUI shows the embedded
-         * InterMap (on) or defaults to the old GUI (off). Values are {@value Text#ON} (default) or
-         * {@value Text#OFF}
+         * Parameter name: {@value #INTERMAP} - Boolean that indicates if GUI shows the embedded InterMap (on) or
+         * defaults to the old GUI (off). Values are {@value Text#ON} (default) or {@value Text#OFF}
          */
         public static final String INTERMAP = "intermap";
 
         /**
-         * Parameter name: {@value #RESTORELASTSEARCH} - Text field that specified whether the last
-         * search result should be restored
+         * Parameter name: {@value #RESTORELASTSEARCH} - Text field that specified whether the last search result should
+         * be restored
          */
         public static final String RESTORELASTSEARCH = "restorelastsearch";
 
         /**
-         * Parameter name: {@value #GEOMETRY} - Used to filter results of query based on geometry
-         * Currently intersection is used to do the filtering
+         * Parameter name: {@value #GEOMETRY} - Used to filter results of query based on geometry Currently intersection
+         * is used to do the filtering
          *
          * <p>The geometry values a geometry expressed in WKT
          */
@@ -483,9 +473,7 @@ public final class Geonet {
         public static final String SCHEMAPUBLICATION_DIR = "schemaPublicationDir";
         public static final String INDEX_CONFIG_DIR = "indexConfigDir";
 
-        /**
-         * Profiles of languages for autodetection using https://code.google.com/p/language-detection/.
-         */
+        /** Profiles of languages for autodetection using https://code.google.com/p/language-detection/. */
         public static final String LANGUAGE_PROFILES_DIR = "languageProfilesDir";
 
         public static final String MAX_SUMMARY_KEYS = "maxSummaryKeys";

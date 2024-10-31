@@ -287,9 +287,8 @@ public final class IO {
     }
 
     /**
-     * Convert the URI to a URL. If the file system is not a default one the URL scheme may not be
-     * registered so we need to make the URL in such a way that the scheme is registered in its url
-     * context.
+     * Convert the URI to a URL. If the file system is not a default one the URL scheme may not be registered so we need
+     * to make the URL in such a way that the scheme is registered in its url context.
      */
     public static URL toURL(URI uri) throws MalformedURLException {
         try {

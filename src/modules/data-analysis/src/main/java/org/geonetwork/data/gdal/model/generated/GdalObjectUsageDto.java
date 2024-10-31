@@ -296,7 +296,8 @@ public class GdalObjectUsageDto {
     @Override
     public int hashCode() {
         return Objects.hash($schema, scope, area, remarks, id, ids);
-        //        $schema, scope, area, bbox, verticalExtent, temporalExtent, remarks, id, ids, usages);
+        //        $schema, scope, area, bbox, verticalExtent, temporalExtent, remarks, id, ids,
+        // usages);
     }
 
     @Override
@@ -307,8 +308,10 @@ public class GdalObjectUsageDto {
         sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
         sb.append("    area: ").append(toIndentedString(area)).append("\n");
         //    sb.append("    bbox: ").append(toIndentedString(bbox)).append("\n");
-        //    sb.append("    verticalExtent: ").append(toIndentedString(verticalExtent)).append("\n");
-        //    sb.append("    temporalExtent: ").append(toIndentedString(temporalExtent)).append("\n");
+        //    sb.append("    verticalExtent:
+        // ").append(toIndentedString(verticalExtent)).append("\n");
+        //    sb.append("    temporalExtent:
+        // ").append(toIndentedString(temporalExtent)).append("\n");
         sb.append("    remarks: ").append(toIndentedString(remarks)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    ids: ").append(toIndentedString(ids)).append("\n");
@@ -317,9 +320,7 @@ public class GdalObjectUsageDto {
         return sb.toString();
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

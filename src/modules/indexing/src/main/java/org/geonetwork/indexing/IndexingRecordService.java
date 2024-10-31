@@ -49,10 +49,9 @@ import org.springframework.stereotype.Component;
 /**
  * Indexing service.
  *
- * <p>Create index document from the database entity. The index document is created by collecting
- * all properties from the database entity. Then XSLT transformation is applied to the index
- * document (grouped by schema). If the schema starts with iso19 then a default iso.xsl conversion
- * is applied.
+ * <p>Create index document from the database entity. The index document is created by collecting all properties from
+ * the database entity. Then XSLT transformation is applied to the index document (grouped by schema). If the schema
+ * starts with iso19 then a default iso.xsl conversion is applied.
  */
 @Component
 @Slf4j
@@ -78,10 +77,7 @@ public class IndexingRecordService {
         return indexRecords;
     }
 
-    /**
-     * Collect properties from the database metadata and apply XSLT to extract fields from XML
-     * document..
-     */
+    /** Collect properties from the database metadata and apply XSLT to extract fields from XML document.. */
     public IndexRecords collectProperties(String schema, List<Metadata> schemaRecords) {
         String indexingXsltFileName = String.format("indexing/xslt/%s.xsl", schema);
         File indexingXsltFile = null;
@@ -110,13 +106,15 @@ public class IndexingRecordService {
             //        fields.put(IndexFields.DRAFT, "n");
             //        fields.put(IndexFields.INDEXING_ERROR_FIELD, true);
             //        fields.put(IndexFields.INDEXING_ERROR_MSG,
-            //          searchManager.createIndexingErrorMsgObject("indexingErrorMsg-schemaNotRegistered",
+            //
+            // searchManager.createIndexingErrorMsgObject("indexingErrorMsg-schemaNotRegistered",
             //            "error",
             //            Map.of("record", metadataId, "schema", schema)));
             //        searchManager.index(null, md, indexKey, fields, metadataType,
             //          forceRefreshReaders, indexingMode);
             //        Log.error(Geonet.DATA_MANAGER, String.format(
-            //          "Record %s / Schema '%s' is not registered in this catalog. Install it or remove
+            //          "Record %s / Schema '%s' is not registered in this catalog. Install it or
+            // remove
             // those records. Record is indexed indexing error flag.",
             //          metadataId, schema));
             //      }
@@ -138,8 +136,8 @@ public class IndexingRecordService {
     }
 
     /**
-     * Initialize an {@link IndexRecord} with all properties from the database of an {@link Metadata}
-     * and return its XML representation as string.
+     * Initialize an {@link IndexRecord} with all properties from the database of an {@link Metadata} and return its XML
+     * representation as string.
      */
     protected IndexRecord collectDbProperties(Metadata r) {
         IndexRecord.IndexRecordBuilder indexRecord = IndexRecord.builder()

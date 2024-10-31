@@ -75,9 +75,9 @@ public class Section {
     /**
      * Gets the value of the fieldOrActionOrText property.
      *
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
-     * modification you make to the returned list will be present inside the JAXB object. This is why
-     * there is not a <CODE>set</CODE> method for the fieldOrActionOrText property.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method
+     * for the fieldOrActionOrText property.
      *
      * <p>For example, to add a new item, do as follows:
      *
@@ -85,8 +85,8 @@ public class Section {
      *    getFieldOrActionOrText().add(newItem);
      * </pre>
      *
-     * <p>Objects of the following type(s) are allowed in the list {@link Field } {@link Action }
-     * {@link Text } {@link Section } {@link Fieldset }
+     * <p>Objects of the following type(s) are allowed in the list {@link Field } {@link Action } {@link Text }
+     * {@link Section } {@link Fieldset }
      */
     public List<Object> getFieldOrActionOrText() {
         if (fieldOrActionOrText == null) {

@@ -61,8 +61,7 @@ public class IndexRecordFieldNames {
     /**
      * Resource abstract.
      *
-     * <p>Keep the abstract short and use purpose and supplemental information for more detailed
-     * information.
+     * <p>Keep the abstract short and use purpose and supplemental information for more detailed information.
      */
     public static final String RESOURCE_ABSTRACT = "resourceAbstractObject";
 

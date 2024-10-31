@@ -13,8 +13,8 @@ import jakarta.xml.bind.annotation.*;
 import java.util.Objects;
 
 /**
- * The values of a metadadomain are key: string pairs, or arbitrary JSON objects for metadata domain
- * names starting with the \&quot;json:\&quot; prefix.
+ * The values of a metadadomain are key: string pairs, or arbitrary JSON objects for metadata domain names starting with
+ * the \&quot;json:\&quot; prefix.
  */
 @Schema(
         name = "metadataDomain",
@@ -54,9 +54,7 @@ public class GdalMetadataDomainDto {
         return sb.toString();
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

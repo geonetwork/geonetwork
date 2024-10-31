@@ -40,8 +40,8 @@ import org.apache.commons.lang3.StringUtils;
 public class FilePathChecker {
 
     /**
-     * Checks that a file path is not absolute path and doesn't have .. characters, throwing an
-     * exception in these cases.
+     * Checks that a file path is not absolute path and doesn't have .. characters, throwing an exception in these
+     * cases.
      */
     public static void verify(String filePath) throws IllegalArgumentException {
         if (StringUtils.isEmpty(filePath)) return;

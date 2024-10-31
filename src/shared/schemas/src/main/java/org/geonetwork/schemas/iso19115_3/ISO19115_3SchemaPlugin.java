@@ -194,7 +194,8 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
         }
 
         // For srv:operatesOn, check if the xlink:href has a url with a parameter named 'id'
-        // (aligned with the index.xsl process), as that element usually contains the reference to the
+        // (aligned with the index.xsl process), as that element usually contains the reference to
+        // the
         // metadata.
         // GeoNetwork uses uuidref to store this reference, but that's just a GeoNetwork convention.
         if (checkUuidInHref) {
@@ -287,8 +288,8 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
     }
 
     /**
-     * Remove all multingual aspect of an element. Keep the md language localized strings as default
-     * gco:CharacterString for the element.
+     * Remove all multingual aspect of an element. Keep the md language localized strings as default gco:CharacterString
+     * for the element.
      *
      * @param langs Metadata languages. The main language MUST be the first one.
      */
@@ -484,11 +485,10 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
     /**
      * Process some of the ISO elements which can have substitute.
      *
-     * <p>For example, a CharacterString can have a gmx:Anchor as a substitute to encode a text value
-     * + an extra URL. To make the transition between CharacterString and Anchor transparent, this
-     * method takes care of creating the appropriate element depending on the presence of an
-     * xlink:href attribute. If the attribute is empty, then a CharacterString is used, if a value is
-     * set, an Anchor is created.
+     * <p>For example, a CharacterString can have a gmx:Anchor as a substitute to encode a text value + an extra URL. To
+     * make the transition between CharacterString and Anchor transparent, this method takes care of creating the
+     * appropriate element depending on the presence of an xlink:href attribute. If the attribute is empty, then a
+     * CharacterString is used, if a value is set, an Anchor is created.
      *
      * @param el element to process.
      * @param attributeRef the attribute reference
@@ -541,8 +541,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
     }
 
     /**
-     * Checks if an element requires processing in {@link #processElement(Element, String, String,
-     * String)}.
+     * Checks if an element requires processing in {@link #processElement(Element, String, String, String)}.
      *
      * @param el Element to check.
      * @return boolean indicating if the element requires processing or not.
@@ -565,8 +564,8 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
     //  }
 
     /**
-     * If not empty defined if parent metadata reference should also be searched in associated
-     * resources. Define the value of associationType to use.
+     * If not empty defined if parent metadata reference should also be searched in associated resources. Define the
+     * value of associationType to use.
      */
     public String getParentAssociatedResourceType() {
         return parentAssociatedResourceType;

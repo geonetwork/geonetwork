@@ -26,9 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * The description of OpenAPI v3.0.x documents, as defined by https://spec.openapis.org/oas/v3.0.3
- */
+/** The description of OpenAPI v3.0.x documents, as defined by https://spec.openapis.org/oas/v3.0.3 */
 @Schema(
         name = "schema",
         description =
@@ -347,9 +345,7 @@ public class OgcApiRecordsSchemaDto {
         return sb;
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces (except the first line).
-     */
+    /** Convert the given object to string with each line indented by 4 spaces (except the first line). */
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

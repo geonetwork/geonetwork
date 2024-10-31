@@ -91,9 +91,7 @@ public class EditLib {
         return fragment;
     }
 
-    /**
-     * Tag the element so the metadata-edit-embedded.xsl know which element is the element for display
-     */
+    /** Tag the element so the metadata-edit-embedded.xsl know which element is the element for display */
     public static void tagForDisplay(Element elem) {
         elem.setAttribute("addedObj", "true", Edit.NAMESPACE);
     }
@@ -131,10 +129,7 @@ public class EditLib {
         fillElement(scm.getSchema(schema), scm.getSchemaSuggestions(schema), parent, md);
     }
 
-    /**
-     * Given an expanded tree, removes all info added for editing and replaces choice_elements with
-     * their children.
-     */
+    /** Given an expanded tree, removes all info added for editing and replaces choice_elements with their children. */
     @SuppressWarnings("unchecked")
     public void removeEditingInfo(Element md) {
         // --- purge geonet: attributes
@@ -208,8 +203,7 @@ public class EditLib {
     }
 
     /**
-     * Adds XML fragment to the metadata record in the last element of the type of the element in its
-     * parent.
+     * Adds XML fragment to the metadata record in the last element of the type of the element in its parent.
      *
      * @param schema The metadata schema
      * @param targetElement The element
@@ -250,7 +244,8 @@ public class EditLib {
         log.debug("#### - metadata type = {}", type);
 
         // remove everything and then, depending on removeExisting
-        // readd all children to the element and assure a correct position for the new one: at the end
+        // readd all children to the element and assure a correct position for the new one: at the
+        // end
         // of the others
         // or just add the new one
         List<Element> existingAllType = new ArrayList<Element>(targetElement.getChildren());
@@ -360,15 +355,14 @@ public class EditLib {
     }
 
     /**
-     * This does exactly the same thing as {@link #addElementOrFragmentFromXpath(Element,
-     * MetadataSchema, String, AddElemValue, boolean)} except that it is done multiple times, once for
-     * each element in the map
+     * This does exactly the same thing as {@link #addElementOrFragmentFromXpath(Element, MetadataSchema, String,
+     * AddElemValue, boolean)} except that it is done multiple times, once for each element in the map
      *
      * @param metadataRecord the record to update
      * @param xmlAndXpathInputs the xpaths and new values
      * @param metadataSchema the schema of the metadata record
-     * @param createXpathNodeIfNotExist if true then xpaths will be created if they don't indentify an
-     *     existing element or attribute. Otherwise only existing xpaths will be updated.
+     * @param createXpathNodeIfNotExist if true then xpaths will be created if they don't indentify an existing element
+     *     or attribute. Otherwise only existing xpaths will be updated.
      * @return the number of updates.
      */
     public int addElementOrFragmentFromXpaths(
@@ -427,8 +421,8 @@ public class EditLib {
     }
 
     /**
-     * Update a metadata record for the xpath/value provided. The xpath (in accordance with JDOM
-     * x-path) does not start with the root element for example:
+     * Update a metadata record for the xpath/value provided. The xpath (in accordance with JDOM x-path) does not start
+     * with the root element for example:
      *
      * <p><code><pre>
      *     &lt;gmd:MD_Metadata>
@@ -450,16 +444,15 @@ public class EditLib {
      *
      * <p>
      *
-     * <p>The value could be a String to set the value of an element or and XML fragment to be
-     * inserted for the element.
+     * <p>The value could be a String to set the value of an element or and XML fragment to be inserted for the element.
      *
-     * <p>If the xpath match an existing element, this element is updated. Only the first one is
-     * updated if more than one match.
+     * <p>If the xpath match an existing element, this element is updated. Only the first one is updated if more than
+     * one match.
      *
      * <p>
      *
-     * <p>If it does not, each missing nodes of the xpath are created and the element inserted
-     * according to the schema definition.
+     * <p>If it does not, each missing nodes of the xpath are created and the element inserted according to the schema
+     * definition.
      *
      * <p>If the end of the xpath is an attribute: <code><pre>elem/@att</pre></code>
      *
@@ -468,31 +461,30 @@ public class EditLib {
      * <p>The rules for updating a node with Xml is as follows:
      *
      * <ul>
-     *   <li>If the xml's root element is the same as the element selected by the XPATH then node is
-     *       replaced with the element. For example: <code><pre>
+     *   <li>If the xml's root element is the same as the element selected by the XPATH then node is replaced with the
+     *       element. For example: <code><pre>
      * Xpath: gmd:fileIdentifier
      * XML: &lt;gmd:fileIdentifier gco:nilReason='withheld'/>
      * Result: the gmd:fileIdentifier element in the metadata will be completely replaced with the
      * new one.  All attributes in the metadata
      *         will be lost and replaced with the attributes in the new element.
      *         </pre></code>
-     *   <li>If the xml's root element == '{@value SpecialUpdateTags#REPLACE}' (a magic tag) then the
-     *       children of that element will be replace the element selected from the metadata.
-     *   <li>If the xml's root element == '{@value SpecialUpdateTags#ADD}' (a magic tag) then the
-     *       children of that element will be added to the element selected from the metadata.
-     *   <li>If the xml's root element == '{@value SpecialUpdateTags#DELETE}' (a magic tag) then all
-     *       elements matching the XPath are deleted.
-     *   <li>If the xml's root element != the name (and namespace) of the element selected from the
-     *       metadata then the xml will replace the children of the element selected from the
-     *       metadata.
+     *   <li>If the xml's root element == '{@value SpecialUpdateTags#REPLACE}' (a magic tag) then the children of that
+     *       element will be replace the element selected from the metadata.
+     *   <li>If the xml's root element == '{@value SpecialUpdateTags#ADD}' (a magic tag) then the children of that
+     *       element will be added to the element selected from the metadata.
+     *   <li>If the xml's root element == '{@value SpecialUpdateTags#DELETE}' (a magic tag) then all elements matching
+     *       the XPath are deleted.
+     *   <li>If the xml's root element != the name (and namespace) of the element selected from the metadata then the
+     *       xml will replace the children of the element selected from the metadata.
      * </ul>
      *
      * @param metadataRecord the metadata xml to update
      * @param metadataSchema the schema of the metadata
      * @param xpathProperty the xpath to the element to update/replace/add
      * @param value the string or xmlString to add/update/replace
-     * @param createXpathNodeIfNotExist if the element identified by the xpath does not exist it will
-     *     be create when this is true
+     * @param createXpathNodeIfNotExist if the element identified by the xpath does not exist it will be create when
+     *     this is true
      * @return true if the metadata was modified
      */
     public boolean addElementOrFragmentFromXpath(
@@ -689,8 +681,7 @@ public class EditLib {
     }
 
     /**
-     * Walk the XPath and create whatever missing parent element until the end of the XPath is
-     * matched.
+     * Walk the XPath and create whatever missing parent element until the end of the XPath is matched.
      *
      * @param value The node or value to add to the XPath matched element.
      */
@@ -968,9 +959,7 @@ public class EditLib {
         }
     }
 
-    /**
-     * Removes the version of the edit session for a metadata. Used when the edit session is finished.
-     */
+    /** Removes the version of the edit session for a metadata. Used when the edit session is finished. */
     public void clearVersion(String id) {
         htVersions.remove(id);
     }
@@ -1119,7 +1108,8 @@ public class EditLib {
                             (elemType.isOrType()
                                     && ( // eg. depends on schema-suggestions.xml
                                     childHasOneSuggestion
-                                            || //   expand the only one suggestion - TODO - this needs improvements
+                                            || //   expand the only one suggestion - TODO - this
+                                            // needs improvements
                                             (childSuggestion.isEmpty()
                                                     && elemType.getElementList().contains("gco:CharacterString")))
                             //   expand element which have no suggestion
@@ -1710,14 +1700,16 @@ public class EditLib {
                             for (String chElem1 : chElems) {
                                 chElem = chElem1;
                                 if (!useSuggestion || mdSugg.isSuggested(qname, chElem)) {
-                                    // Add all substitute found in the schema or all suggested if suggestion
+                                    // Add all substitute found in the schema or all suggested if
+                                    // suggestion
                                     createAndAddChoose(child, chElem);
                                 }
                             }
                         } else {
 
                             if (!useSuggestion || mdSugg.isSuggested(qname, chElem)) {
-                                // Add all substitute found in the schema or all suggested if suggestion
+                                // Add all substitute found in the schema or all suggested if
+                                // suggestion
                                 createAndAddChoose(child, chElem);
                             }
                         }
@@ -1812,13 +1804,12 @@ public class EditLib {
     }
 
     /**
-     * If the xpath starts with the metadata root element, it's removed. Used to apply the Xpath
-     * filters as the root element should not be included.
+     * If the xpath starts with the metadata root element, it's removed. Used to apply the Xpath filters as the root
+     * element should not be included.
      *
      * <p>Example:
      *
-     * <p>/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString -->
-     * gmd:fileIdentifier/gco:CharacterString
+     * <p>/gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString --> gmd:fileIdentifier/gco:CharacterString
      */
     private String cleanRootFromXPath(String xpathProperty, Element metadataRecord) {
         if (xpathProperty.startsWith("/")) {

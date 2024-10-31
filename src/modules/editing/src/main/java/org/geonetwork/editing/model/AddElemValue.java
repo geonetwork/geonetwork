@@ -12,9 +12,7 @@ import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-/**
- * A simple container class for some add methods in {@link EditLib} Created by Jesse on 12/10/13.
- */
+/** A simple container class for some add methods in {@link EditLib} Created by Jesse on 12/10/13. */
 @Slf4j
 public class AddElemValue {
     private final String stringValue;

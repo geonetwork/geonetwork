@@ -72,7 +72,8 @@ public class BatchEditsService {
         //    DataManager dataMan = appContext.getBean(DataManager.class);
         //    SchemaManager _schemaManager = context.getBean(SchemaManager.class);
         //    AccessManager accessMan = context.getBean(AccessManager.class);
-        //    final String settingId = Settings.SYSTEM_CSW_TRANSACTION_XPATH_UPDATE_CREATE_NEW_ELEMENTS;
+        //    final String settingId =
+        // Settings.SYSTEM_CSW_TRANSACTION_XPATH_UPDATE_CREATE_NEW_ELEMENTS;
         boolean createXpathNodeIfNotExists = false;
 
         //    SimpleMetadataProcessingReport report = new SimpleMetadataProcessingReport();
@@ -90,7 +91,8 @@ public class BatchEditsService {
             Metadata record = recordList.get(0);
             if (record == null) {
                 //        report.incrementNullRecords();
-                //      } else if (!accessMan.isOwner(serviceContext, String.valueOf(record.getId()))) {
+                //      } else if (!accessMan.isOwner(serviceContext,
+                // String.valueOf(record.getId()))) {
                 //        report.addNotEditableMetadataId(record.getId());
             } else {
                 // Processing
@@ -131,7 +133,8 @@ public class BatchEditsService {
                         //            if (diffType == null) {
                         preview.addContent(metadata);
                         //            } else {
-                        //              preview.addContent(Diff.diff(original, Xml.getString(metadata),
+                        //              preview.addContent(Diff.diff(original,
+                        // Xml.getString(metadata),
                         // diffType));
                         //            }
                     } else if (metadataChanged) {
@@ -143,7 +146,8 @@ public class BatchEditsService {
                         boolean uds = updateDateStamp;
                         //            Element beforeMetadata =
                         //                dataMan.getMetadata(
-                        //                    serviceContext, String.valueOf(record.getId()), false, false,
+                        //                    serviceContext, String.valueOf(record.getId()), false,
+                        // false,
                         // false);
                         //
                         //            dataMan.updateMetadata(
@@ -160,13 +164,15 @@ public class BatchEditsService {
 
                         //            Element afterMetadata =
                         //                dataMan.getMetadata(
-                        //                    serviceContext, String.valueOf(record.getId()), false, false,
+                        //                    serviceContext, String.valueOf(record.getId()), false,
+                        // false,
                         // false);
                         //            XMLOutputter outp = new XMLOutputter();
                         //            String xmlBefore = outp.outputString(beforeMetadata);
                         //            String xmlAfter = outp.outputString(afterMetadata);
                         //            new RecordUpdatedEvent(
-                        //                    record.getId(), userSession.getUserIdAsInt(), xmlBefore, xmlAfter)
+                        //                    record.getId(), userSession.getUserIdAsInt(),
+                        // xmlBefore, xmlAfter)
                         //                .publish(appContext);
                     } else {
                         //            report.incrementUnchangedRecords();
