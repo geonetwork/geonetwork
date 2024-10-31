@@ -333,6 +333,7 @@
           <java>
             <palantirJavaFormat>
               <version>2.50.0</version>
+              <formatJavadoc>true</formatJavadoc>
             </palantirJavaFormat>
             <removeUnusedImports></removeUnusedImports>
             <!--<replaceRegex>
