@@ -14,7 +14,7 @@ package org.geonetwork.utility.xml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.HashMap;
 import org.geonetwork.GeonetworkTestingApplication;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class XsltUtilTest {
         //        be get getting the XSLTs from inside a JAR.  There were old problems where the assumption,
         //        incorrectly, was getting the XSLT from a file.
         assertEquals("jar", myxsl.getProtocol());
-        myxsl = new URL(myxsl.toString()); // be explicit about the URL
+        myxsl = (new URI(myxsl.toString())).toURL(); // be explicit about the URL
 
         var result = XsltUtil.transformXmlAsString("<dave>hi</dave>", myxsl, new HashMap<>());
 
