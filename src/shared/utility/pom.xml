@@ -63,8 +63,8 @@
       <artifactId>gn-testing</artifactId>
       <version>${project.version}</version>
       <type>test-jar</type>
-      <scope>test</scope>
       <classifier>tests</classifier>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
