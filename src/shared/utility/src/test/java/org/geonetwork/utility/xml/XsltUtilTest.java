@@ -42,7 +42,7 @@ public class XsltUtilTest {
         //        be get getting the XSLTs from inside a JAR.  There were old problems where the assumption,
         //        incorrectly, was getting the XSLT from a file.
         assertEquals("jar", myxsl.getProtocol());
-        myxsl = (new URI(myxsl.toString())).toURL(); // be explicit about the URL
+        myxsl = new URI(myxsl.toString()).toURL(); // be explicit about the URL
 
         var result = XsltUtil.transformXmlAsString("<dave>hi</dave>", myxsl, new HashMap<>());
 
