@@ -48,6 +48,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
           <execution>
+            <phase>compile</phase>
             <goals>
               <goal>test-jar</goal>
             </goals>
