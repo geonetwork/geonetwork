@@ -30,6 +30,13 @@ export function getAppConfig(): ApplicationConfiguration {
   return appConfig;
 }
 
+export function buildGn4BaseUrl(baseUrl: string): string {
+  const gn4BaseUrl = baseUrl.split('/').slice(0, -2).join('/');
+  return gn4BaseUrl.startsWith('http')
+    ? gn4BaseUrl
+    : window.location.origin + gn4BaseUrl;
+}
+
 export function loadAppConfig(environment: any) {
   if (environment.baseUrl) {
     appConfig.apiConfig = new Configuration({ basePath: environment.baseUrl });

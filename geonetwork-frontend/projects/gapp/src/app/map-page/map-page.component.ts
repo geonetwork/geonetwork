@@ -1,5 +1,5 @@
-import {Component,} from '@angular/core';
-import {Button} from 'primeng/button';
+import { Component } from '@angular/core';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'gn-map-page',

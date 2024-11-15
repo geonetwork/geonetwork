@@ -11,6 +11,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Button, ButtonDirective } from 'primeng/button';
 import {
   APPLICATION_CONFIGURATION,
+  buildGn4BaseUrl,
   GlibComponent,
   SearchAggComponent,
   SearchAggLayout,
@@ -34,6 +35,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
 import { filter } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -78,6 +80,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   pageSize = this.uiConfiguration?.mods.search.paginationInfo.hitsPerPage;
   aggregationConfig = this.uiConfiguration?.mods.search.facetConfig;
 
+  gn4baseUrl = buildGn4BaseUrl(environment.baseUrl);
+
   constructor(
     private router: Router,
     private el: ElementRef
@@ -98,7 +102,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     var s = document.createElement('script');
     s.type = 'text/javascript';
-    s.src = '/geonetwork/catalog/webcomponents/webcomponents.js';
+    s.src = this.gn4baseUrl + '/catalog/webcomponents/webcomponents.js';
     this.el.nativeElement.appendChild(s);
   }
 
