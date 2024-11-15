@@ -43,189 +43,189 @@ import org.jdom.Element;
 /** Element entry. */
 @Slf4j
 public class ElementEntry {
-  public String name;
-  public String ns;
-  public String type;
-  public int min = 1;
-  public int max = 1;
-  public String substGroup;
-  public String substGroupNS;
-  public String ref;
-  public boolean abstrElem;
-  public boolean choiceElem;
-  public boolean groupElem;
-  public boolean sequenceElem;
-  public ArrayList<ElementEntry> alContainerElems = new ArrayList<ElementEntry>();
+    public String name;
+    public String ns;
+    public String type;
+    public int min = 1;
+    public int max = 1;
+    public String substGroup;
+    public String substGroupNS;
+    public String ref;
+    public boolean abstrElem;
+    public boolean choiceElem;
+    public boolean groupElem;
+    public boolean sequenceElem;
+    public ArrayList<ElementEntry> alContainerElems = new ArrayList<ElementEntry>();
 
-  public ComplexTypeEntry complexType;
-  public SimpleTypeEntry simpleType;
+    public ComplexTypeEntry complexType;
+    public SimpleTypeEntry simpleType;
 
-  private ElementEntry() {}
+    private ElementEntry() {}
 
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
 
-  public ElementEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
-    this(new ElementInfo(el, file, targetNS, targetNSPrefix));
-  }
-
-  // ---------------------------------------------------------------------------
-
-  public ElementEntry(ElementInfo ei) {
-    ns = ei.targetNS;
-    handleAttribs(ei);
-    if (choiceElem) handleContainerChildren(ei, alContainerElems);
-    // if (groupElem) no need to do anything - read elements from group later
-    else if (sequenceElem) handleContainerChildren(ei, alContainerElems);
-    else handleChildren(ei);
-  }
-
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- API methods
-  // ---
-  // ---------------------------------------------------------------------------
-
-  public ElementEntry copy() {
-    ElementEntry ee = new ElementEntry();
-
-    ee.name = name;
-    ee.ns = ns;
-    ee.type = type;
-    ee.min = min;
-    ee.max = max;
-    ee.substGroup = substGroup;
-    ee.substGroupNS = substGroupNS;
-    ee.ref = ref;
-    ee.abstrElem = abstrElem;
-
-    ee.complexType = complexType;
-    ee.simpleType = simpleType;
-    ee.choiceElem = choiceElem;
-    ee.groupElem = groupElem;
-    ee.sequenceElem = sequenceElem;
-    ee.alContainerElems = alContainerElems;
-
-    return ee;
-  }
-
-  @Override
-  public String toString() {
-    return "ElementEntry name: "
-        + name
-        + " ref: "
-        + ref
-        + " type: "
-        + type
-        + " abstract: "
-        + abstrElem
-        + " choice: "
-        + choiceElem
-        + " group: "
-        + groupElem
-        + " sequence: "
-        + sequenceElem;
-  }
-
-  private void handleAttribs(ElementInfo ei) {
-    if (ei.element.getName().equals("choice")) choiceElem = true;
-    else if (ei.element.getName().equals("group")) groupElem = true;
-    else if (ei.element.getName().equals("sequence")) sequenceElem = true;
-
-    @SuppressWarnings("unchecked")
-    List<Attribute> attrs = ei.element.getAttributes();
-
-    for (Attribute at : attrs) {
-      String attrName = at.getName();
-      String value = at.getValue();
-
-      if (attrName.equals("name")) {
-        name = at.getValue();
-        if ((name.indexOf(':') == -1) && (ei.targetNSPrefix != null)) {
-          name = ei.targetNSPrefix + ":" + at.getValue();
-        }
-        // System.out.println("Doing Element "+name);
-      } else if (attrName.equals("type")) {
-        type = value;
-      } else if (attrName.equals("ref")) {
-        ref = value;
-      } else if (attrName.equals("substitutionGroup")) {
-        substGroup = value;
-      } else if (attrName.equals("abstract")) {
-        abstrElem = "true".equals(value);
-      } else if (attrName.equals("minOccurs")) {
-        min = Integer.parseInt(value);
-      } else if (attrName.equals("maxOccurs")) {
-        if (value.equals("unbounded")) {
-          max = 10000;
-        } else {
-          max = Integer.parseInt(value);
-        }
-      } else {
-        // TODO:
-        //                if (choiceElem) {
-        //                    Logger.log();
-        //                }
-        //                else if (groupElem) {
-        //                    Logger.log();
-        //                }
-        //                else if (sequenceElem) {
-        //                    Logger.log();
-        //                }
-        //                else {
-        //                    Logger.log();
-        //                }
-
-      }
+    public ElementEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
+        this(new ElementInfo(el, file, targetNS, targetNSPrefix));
     }
-  }
 
-  private void handleChildren(ElementInfo ei) {
-    @SuppressWarnings("unchecked")
-    List<Element> children = ei.element.getChildren();
+    // ---------------------------------------------------------------------------
 
-    for (Element elChild : children) {
-      String elName = elChild.getName();
-
-      if (elName.equals("complexType")) {
-        complexType = new ComplexTypeEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
-      } else if (elName.equals("simpleType")) {
-        simpleType = new SimpleTypeEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
-        if (simpleType.name == null) {
-          simpleType.name = name + "HASHS";
-        }
-        //            } else if (elName.equals("key")) {
-        //            } else if (elName.equals("annotation")) {
-      }
+    public ElementEntry(ElementInfo ei) {
+        ns = ei.targetNS;
+        handleAttribs(ei);
+        if (choiceElem) handleContainerChildren(ei, alContainerElems);
+        // if (groupElem) no need to do anything - read elements from group later
+        else if (sequenceElem) handleContainerChildren(ei, alContainerElems);
+        else handleChildren(ei);
     }
-  }
 
-  private void handleContainerChildren(ElementInfo ei, List<ElementEntry> elements) {
-    @SuppressWarnings("unchecked")
-    List<Element> children = ei.element.getChildren();
+    // ---------------------------------------------------------------------------
+    // ---
+    // --- API methods
+    // ---
+    // ---------------------------------------------------------------------------
 
-    for (Element elChild : children) {
+    public ElementEntry copy() {
+        ElementEntry ee = new ElementEntry();
 
-      if (groupElem) {
-        log.warn(
-            Geonet.SCHEMA_MANAGER,
-            "WARNING found element children for group in element " + name + " " + ref);
-      }
-      String elName = elChild.getName();
+        ee.name = name;
+        ee.ns = ns;
+        ee.type = type;
+        ee.min = min;
+        ee.max = max;
+        ee.substGroup = substGroup;
+        ee.substGroupNS = substGroupNS;
+        ee.ref = ref;
+        ee.abstrElem = abstrElem;
 
-      if (elName.equals("annotation")) {
+        ee.complexType = complexType;
+        ee.simpleType = simpleType;
+        ee.choiceElem = choiceElem;
+        ee.groupElem = groupElem;
+        ee.sequenceElem = sequenceElem;
+        ee.alContainerElems = alContainerElems;
+
+        return ee;
+    }
+
+    @Override
+    public String toString() {
+        return "ElementEntry name: "
+                + name
+                + " ref: "
+                + ref
+                + " type: "
+                + type
+                + " abstract: "
+                + abstrElem
+                + " choice: "
+                + choiceElem
+                + " group: "
+                + groupElem
+                + " sequence: "
+                + sequenceElem;
+    }
+
+    private void handleAttribs(ElementInfo ei) {
+        if (ei.element.getName().equals("choice")) choiceElem = true;
+        else if (ei.element.getName().equals("group")) groupElem = true;
+        else if (ei.element.getName().equals("sequence")) sequenceElem = true;
+
         @SuppressWarnings("unchecked")
-        List<Element> appinfo = elChild.getChildren();
-        for (Element elElem : appinfo) {
-          if (elElem.getName().equals("appinfo")) {
-            name = elElem.getText();
-          }
+        List<Attribute> attrs = ei.element.getAttributes();
+
+        for (Attribute at : attrs) {
+            String attrName = at.getName();
+            String value = at.getValue();
+
+            if (attrName.equals("name")) {
+                name = at.getValue();
+                if ((name.indexOf(':') == -1) && (ei.targetNSPrefix != null)) {
+                    name = ei.targetNSPrefix + ":" + at.getValue();
+                }
+                // System.out.println("Doing Element "+name);
+            } else if (attrName.equals("type")) {
+                type = value;
+            } else if (attrName.equals("ref")) {
+                ref = value;
+            } else if (attrName.equals("substitutionGroup")) {
+                substGroup = value;
+            } else if (attrName.equals("abstract")) {
+                abstrElem = "true".equals(value);
+            } else if (attrName.equals("minOccurs")) {
+                min = Integer.parseInt(value);
+            } else if (attrName.equals("maxOccurs")) {
+                if (value.equals("unbounded")) {
+                    max = 10000;
+                } else {
+                    max = Integer.parseInt(value);
+                }
+            } else {
+                // TODO:
+                //                if (choiceElem) {
+                //                    Logger.log();
+                //                }
+                //                else if (groupElem) {
+                //                    Logger.log();
+                //                }
+                //                else if (sequenceElem) {
+                //                    Logger.log();
+                //                }
+                //                else {
+                //                    Logger.log();
+                //                }
+
+            }
         }
-      } else if (elName.equals("element")
-          || elName.equals("choice")
-          || elName.equals("sequence")
-          || elName.equals("group")) {
-        elements.add(new ElementEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix));
-      }
     }
-  }
+
+    private void handleChildren(ElementInfo ei) {
+        @SuppressWarnings("unchecked")
+        List<Element> children = ei.element.getChildren();
+
+        for (Element elChild : children) {
+            String elName = elChild.getName();
+
+            if (elName.equals("complexType")) {
+                complexType = new ComplexTypeEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
+            } else if (elName.equals("simpleType")) {
+                simpleType = new SimpleTypeEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
+                if (simpleType.name == null) {
+                    simpleType.name = name + "HASHS";
+                }
+                //            } else if (elName.equals("key")) {
+                //            } else if (elName.equals("annotation")) {
+            }
+        }
+    }
+
+    private void handleContainerChildren(ElementInfo ei, List<ElementEntry> elements) {
+        @SuppressWarnings("unchecked")
+        List<Element> children = ei.element.getChildren();
+
+        for (Element elChild : children) {
+
+            if (groupElem) {
+                log.warn(
+                        Geonet.SCHEMA_MANAGER,
+                        "WARNING found element children for group in element " + name + " " + ref);
+            }
+            String elName = elChild.getName();
+
+            if (elName.equals("annotation")) {
+                @SuppressWarnings("unchecked")
+                List<Element> appinfo = elChild.getChildren();
+                for (Element elElem : appinfo) {
+                    if (elElem.getName().equals("appinfo")) {
+                        name = elElem.getText();
+                    }
+                }
+            } else if (elName.equals("element")
+                    || elName.equals("choice")
+                    || elName.equals("sequence")
+                    || elName.equals("group")) {
+                elements.add(new ElementEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix));
+            }
+        }
+    }
 }

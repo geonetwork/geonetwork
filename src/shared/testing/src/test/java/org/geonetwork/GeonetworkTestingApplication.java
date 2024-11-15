@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = {"org.geonetwork"})
 public class GeonetworkTestingApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(GeonetworkTestingApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(GeonetworkTestingApplication.class, args);
+    }
 }

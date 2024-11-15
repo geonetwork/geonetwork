@@ -10,11 +10,11 @@ import java.util.List;
 import org.springframework.batch.core.Job;
 
 public interface IProcess {
-  String getName();
+    String getName();
 
-  List<ProcessParameter> getParameters();
+    List<ProcessParameter> getParameters();
 
-  /** Spring Batch */
-  @JsonIgnore
-  Job getJob();
+    /** Spring Batch */
+    @JsonIgnore
+    Job getJob();
 }

@@ -13,29 +13,29 @@ import org.geonetwork.data.model.DatasetInfo;
 
 /** Data analyzer provides information about a data file. */
 public interface DataAnalyzer {
-  String getName();
+    String getName();
 
-  String getVersion();
+    String getVersion();
 
-  List<DataFormat> getFormats();
+    List<DataFormat> getFormats();
 
-  String getStatus();
+    String getStatus();
 
-  /**
-   * Return a list of layers.
-   *
-   * <pre>
-   *   ogrinfo -ro  https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2022-2023_v01_r00/Emerald_2023_SPECIES.csv
-   * </pre>
-   */
-  List<String> getDatasourceLayers(String dataSource);
+    /**
+     * Return a list of layers.
+     *
+     * <pre>
+     *   ogrinfo -ro  https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2022-2023_v01_r00/Emerald_2023_SPECIES.csv
+     * </pre>
+     */
+    List<String> getDatasourceLayers(String dataSource);
 
-  /**
-   * Return information about the layer.
-   *
-   * <pre>
-   *   ogrinfo -ro -json https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2022-2023_v01_r00/Emerald_2023_SPECIES.csv Emerald_2023_SPECIES
-   * </pre>
-   */
-  Optional<DatasetInfo> getLayerProperties(String dataSource, String layer);
+    /**
+     * Return information about the layer.
+     *
+     * <pre>
+     *   ogrinfo -ro -json https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2022-2023_v01_r00/Emerald_2023_SPECIES.csv Emerald_2023_SPECIES
+     * </pre>
+     */
+    Optional<DatasetInfo> getLayerProperties(String dataSource, String layer);
 }

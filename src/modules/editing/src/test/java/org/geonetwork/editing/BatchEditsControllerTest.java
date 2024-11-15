@@ -35,48 +35,46 @@ import org.springframework.mock.web.MockHttpServletRequest;
 @SpringBootTest(classes = {TestConfiguration.class, BatchEditsService.class, SchemaManager.class})
 class BatchEditsControllerTest {
 
-  @MockBean private MetadataRepository metadataRepository;
+    @MockBean
+    private MetadataRepository metadataRepository;
 
-  @Autowired BatchEditsService batchEditService;
+    @Autowired
+    BatchEditsService batchEditService;
 
-  @Test
-  void previewBatchEdit_withValidInputs_returnsPreview() throws Exception {
-    String[] uuids = {"uuid1"};
-    BatchEditParameter[] edits = {
-      new BatchEditParameter(
-          "mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString",
-          """
+    @Test
+    void previewBatchEdit_withValidInputs_returnsPreview() throws Exception {
+        String[] uuids = {"uuid1"};
+        BatchEditParameter[] edits = {
+            new BatchEditParameter(
+                    "mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString",
+                    """
 <gn_create>LAYER NAME</gn_create>
 """,
-          null)
-    };
-    MockHttpServletRequest request = new MockHttpServletRequest();
+                    null)
+        };
+        MockHttpServletRequest request = new MockHttpServletRequest();
 
-    Metadata metadata = new Metadata();
-    metadata.setUuid("uuid1");
-    metadata.setSchemaid("iso19115-3.2018");
-    metadata.setData(
-        "<mdb:MD_Metadata xmlns:mdb=\"http://standards.iso.org/iso/19115/-3/mdb/2.0\"/>");
-    when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
+        Metadata metadata = new Metadata();
+        metadata.setUuid("uuid1");
+        metadata.setSchemaid("iso19115-3.2018");
+        metadata.setData("<mdb:MD_Metadata xmlns:mdb=\"http://standards.iso.org/iso/19115/-3/mdb/2.0\"/>");
+        when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
 
-    String result =
-        Xml.getString(
-            batchEditService.applyBatchEdits(uuids, null, false, edits, request, true).two());
+        String result = Xml.getString(batchEditService
+                .applyBatchEdits(uuids, null, false, edits, request, true)
+                .two());
 
-    Processor proc = new Processor(false);
-    XPathCompiler xpath = proc.newXPathCompiler();
-    XdmNode xmlDocument =
-        proc.newDocumentBuilder().build(new StreamSource(new StringReader(result)));
-    String query =
-        ".//mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString";
-    ISO19139SchemaPlugin.allNamespaces.forEach(
-        (ns) -> xpath.declareNamespace(ns.getPrefix(), ns.getURI()));
-    ISO19115_3SchemaPlugin.allNamespaces.forEach(
-        (ns) -> xpath.declareNamespace(ns.getPrefix(), ns.getURI()));
-    XPathExecutable exe = xpath.compile(query);
-    XPathSelector selector = exe.load();
-    selector.setContextItem(xmlDocument);
-    XdmValue nodeSet = selector.evaluate();
-    assertEquals("LAYER NAME", nodeSet.itemAt(0).getStringValue());
-  }
+        Processor proc = new Processor(false);
+        XPathCompiler xpath = proc.newXPathCompiler();
+        XdmNode xmlDocument = proc.newDocumentBuilder().build(new StreamSource(new StringReader(result)));
+        String query =
+                ".//mdb:MD_Metadata/mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString";
+        ISO19139SchemaPlugin.allNamespaces.forEach((ns) -> xpath.declareNamespace(ns.getPrefix(), ns.getURI()));
+        ISO19115_3SchemaPlugin.allNamespaces.forEach((ns) -> xpath.declareNamespace(ns.getPrefix(), ns.getURI()));
+        XPathExecutable exe = xpath.compile(query);
+        XPathSelector selector = exe.load();
+        selector.setContextItem(xmlDocument);
+        XdmValue nodeSet = selector.evaluate();
+        assertEquals("LAYER NAME", nodeSet.itemAt(0).getStringValue());
+    }
 }

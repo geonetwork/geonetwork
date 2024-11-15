@@ -18,24 +18,23 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 /** Integration test running with Elasticsearch */
 @Testcontainers
 public class ElasticsearchBasedIntegrationTest {
-  @Container
-  protected static ElasticsearchContainer elasticsearchContainer =
-      new ElasticsearchTestContainer()
-          .withEnv("xpack.security.enabled", "false")
-          .withExposedPorts(9211);
+    @Container
+    protected static ElasticsearchContainer elasticsearchContainer = new ElasticsearchTestContainer()
+            .withEnv("xpack.security.enabled", "false")
+            .withExposedPorts(9211);
 
-  @BeforeAll
-  static void setUp() {
-    elasticsearchContainer.start();
-  }
+    @BeforeAll
+    static void setUp() {
+        elasticsearchContainer.start();
+    }
 
-  @BeforeEach
-  void testIsContainerRunning() {
-    assertTrue(elasticsearchContainer.isRunning());
-  }
+    @BeforeEach
+    void testIsContainerRunning() {
+        assertTrue(elasticsearchContainer.isRunning());
+    }
 
-  @AfterAll
-  static void destroy() {
-    elasticsearchContainer.stop();
-  }
+    @AfterAll
+    static void destroy() {
+        elasticsearchContainer.stop();
+    }
 }

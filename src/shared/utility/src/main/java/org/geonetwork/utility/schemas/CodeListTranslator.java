@@ -26,41 +26,39 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CodeListTranslator {
-  private final Map<String, Codelists> codelists = new HashMap<>();
+    private final Map<String, Codelists> codelists = new HashMap<>();
 
-  /** Get the translation of a code. */
-  @Cacheable(cacheNames = "schema-codelists")
-  public String getTranslation(String codeListNameOrAlias, String code, String language) {
-    loadTranslations("iso19115-3.2018", language);
+    /** Get the translation of a code. */
+    @Cacheable(cacheNames = "schema-codelists")
+    public String getTranslation(String codeListNameOrAlias, String code, String language) {
+        loadTranslations("iso19115-3.2018", language);
 
-    return Optional.ofNullable(this.codelists.get(language))
-        .orElse(Codelists.builder().codelist(Collections.emptyList()).build())
-        .getCodelist()
-        .stream()
-        .filter(
-            codelist ->
-                codeListNameOrAlias.equals(codelist.getName())
-                    || codeListNameOrAlias.equals(codelist.getAlias()))
-        .flatMap(codelist -> codelist.getEntry().stream())
-        .filter(entry -> entry.getCode().equals(code))
-        .findFirst()
-        .map(Entry::getLabel)
-        .orElse("");
-  }
-
-  private void loadTranslations(String schema, String language) {
-    if (this.codelists.containsKey(language)) {
-      return;
+        return Optional.ofNullable(this.codelists.get(language))
+                .orElse(Codelists.builder().codelist(Collections.emptyList()).build())
+                .getCodelist()
+                .stream()
+                .filter(codelist -> codeListNameOrAlias.equals(codelist.getName())
+                        || codeListNameOrAlias.equals(codelist.getAlias()))
+                .flatMap(codelist -> codelist.getEntry().stream())
+                .filter(entry -> entry.getCode().equals(code))
+                .findFirst()
+                .map(Entry::getLabel)
+                .orElse("");
     }
-    XmlMapper xmlMapper = new XmlMapper();
-    try (InputStream translationFile =
-        new ClassPathResource(String.format("schemas/%s/loc/%s/codelists.xml", schema, language))
-            .getInputStream()) {
-      if (translationFile != null) {
-        this.codelists.put(language, xmlMapper.readValue(translationFile, Codelists.class));
-      }
-    } catch (IOException e) {
-      //      System.out.println(e.getMessage());
+
+    private void loadTranslations(String schema, String language) {
+        if (this.codelists.containsKey(language)) {
+            return;
+        }
+        XmlMapper xmlMapper = new XmlMapper();
+        try (InputStream translationFile = new ClassPathResource(
+                        String.format("schemas/%s/loc/%s/codelists.xml", schema, language))
+                .getInputStream()) {
+            if (translationFile != null) {
+                this.codelists.put(language, xmlMapper.readValue(translationFile, Codelists.class));
+            }
+        } catch (IOException e) {
+            //      System.out.println(e.getMessage());
+        }
     }
-  }
 }

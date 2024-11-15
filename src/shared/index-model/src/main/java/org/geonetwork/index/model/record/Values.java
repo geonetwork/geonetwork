@@ -18,6 +18,9 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Values {
 
-  @XmlElement private final List<String> values = new ArrayList<>();
-  @XmlElement private String key;
+    @XmlElement
+    private final List<String> values = new ArrayList<>();
+
+    @XmlElement
+    private String key;
 }

@@ -11,45 +11,45 @@ import jakarta.annotation.Generated;
 
 /** Gets or Sets fieldSubType */
 @Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-09-13T15:07:19.066965162+02:00[Europe/Paris]",
-    comments = "Generator version: 7.7.0")
+        value = "org.openapitools.codegen.languages.SpringCodegen",
+        date = "2024-09-13T15:07:19.066965162+02:00[Europe/Paris]",
+        comments = "Generator version: 7.7.0")
 public enum GdalFieldSubTypeDto {
-  NONE("None"),
+    NONE("None"),
 
-  BOOLEAN("Boolean"),
+    BOOLEAN("Boolean"),
 
-  INT16("Int16"),
+    INT16("Int16"),
 
-  FLOAT32("Float32"),
+    FLOAT32("Float32"),
 
-  JSON("JSON"),
+    JSON("JSON"),
 
-  UUID("UUID");
+    UUID("UUID");
 
-  private String value;
+    private String value;
 
-  GdalFieldSubTypeDto(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
-  public static GdalFieldSubTypeDto fromValue(String value) {
-    for (GdalFieldSubTypeDto b : GdalFieldSubTypeDto.values()) {
-      if (b.value.equals(value)) {
-        return b;
-      }
+    GdalFieldSubTypeDto(String value) {
+        this.value = value;
     }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
-  }
+
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static GdalFieldSubTypeDto fromValue(String value) {
+        for (GdalFieldSubTypeDto b : GdalFieldSubTypeDto.values()) {
+            if (b.value.equals(value)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
 }

@@ -24,28 +24,27 @@ import org.hibernate.Hibernate;
 @Setter
 @Embeddable
 public class UseraddressId implements Serializable {
-  private static final long serialVersionUID = -1334938307141570863L;
+    private static final long serialVersionUID = -1334938307141570863L;
 
-  @NotNull
-  @Column(name = "userid", nullable = false)
-  private Integer userid;
+    @NotNull
+    @Column(name = "userid", nullable = false)
+    private Integer userid;
 
-  @NotNull
-  @Column(name = "addressid", nullable = false)
-  private Integer addressid;
+    @NotNull
+    @Column(name = "addressid", nullable = false)
+    private Integer addressid;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    if (!UseraddressId.class.isInstance(o)) return false;
-    UseraddressId entity = (UseraddressId) o;
-    return Objects.equals(this.userid, entity.userid)
-        && Objects.equals(this.addressid, entity.addressid);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (!UseraddressId.class.isInstance(o)) return false;
+        UseraddressId entity = (UseraddressId) o;
+        return Objects.equals(this.userid, entity.userid) && Objects.equals(this.addressid, entity.addressid);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(userid, addressid);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(userid, addressid);
+    }
 }

@@ -25,10 +25,10 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Measure {
-  private String name;
-  private String description;
-  private String date;
-  private String value;
-  private String type;
-  private String unit;
+    private String name;
+    private String description;
+    private String date;
+    private String value;
+    private String type;
+    private String unit;
 }

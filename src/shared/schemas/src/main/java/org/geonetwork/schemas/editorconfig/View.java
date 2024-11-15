@@ -48,212 +48,212 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"tab", "flatModeExceptions", "thesaurusList"})
+        name = "",
+        propOrder = {"tab", "flatModeExceptions", "thesaurusList"})
 @XmlRootElement(name = "view")
 public class View {
 
-  @XmlElement(required = true)
-  protected List<Tab> tab;
+    @XmlElement(required = true)
+    protected List<Tab> tab;
 
-  protected FlatModeExceptions flatModeExceptions;
-  protected ThesaurusList thesaurusList;
+    protected FlatModeExceptions flatModeExceptions;
+    protected ThesaurusList thesaurusList;
 
-  @XmlAttribute(name = "name", required = true)
-  protected String name;
+    @XmlAttribute(name = "name", required = true)
+    protected String name;
 
-  @XmlAttribute(name = "disabled")
-  protected Boolean disabled;
+    @XmlAttribute(name = "disabled")
+    protected Boolean disabled;
 
-  @XmlAttribute(name = "upAndDownControlHidden")
-  protected Boolean upAndDownControlHidden;
+    @XmlAttribute(name = "upAndDownControlHidden")
+    protected Boolean upAndDownControlHidden;
 
-  @XmlAttribute(name = "displayIfRecord")
-  @XmlSchemaType(name = "anySimpleType")
-  protected String displayIfRecord;
+    @XmlAttribute(name = "displayIfRecord")
+    @XmlSchemaType(name = "anySimpleType")
+    protected String displayIfRecord;
 
-  @XmlAttribute(name = "displayIfServiceInfo")
-  @XmlSchemaType(name = "anySimpleType")
-  protected String displayIfServiceInfo;
+    @XmlAttribute(name = "displayIfServiceInfo")
+    @XmlSchemaType(name = "anySimpleType")
+    protected String displayIfServiceInfo;
 
-  @XmlAttribute(name = "hideTimeInCalendar")
-  protected Boolean hideTimeInCalendar;
+    @XmlAttribute(name = "hideTimeInCalendar")
+    protected Boolean hideTimeInCalendar;
 
-  /**
-   * A tab is composed of a set of elements. Gets the value of the tab property.
-   *
-   * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
-   * modification you make to the returned list will be present inside the JAXB object. This is why
-   * there is not a <CODE>set</CODE> method for the tab property.
-   *
-   * <p>For example, to add a new item, do as follows:
-   *
-   * <pre>
-   *    getTab().add(newItem);
-   * </pre>
-   *
-   * <p>Objects of the following type(s) are allowed in the list {@link Tab }
-   */
-  public List<Tab> getTab() {
-    if (tab == null) {
-      tab = new ArrayList<Tab>();
+    /**
+     * A tab is composed of a set of elements. Gets the value of the tab property.
+     *
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method
+     * for the tab property.
+     *
+     * <p>For example, to add a new item, do as follows:
+     *
+     * <pre>
+     *    getTab().add(newItem);
+     * </pre>
+     *
+     * <p>Objects of the following type(s) are allowed in the list {@link Tab }
+     */
+    public List<Tab> getTab() {
+        if (tab == null) {
+            tab = new ArrayList<Tab>();
+        }
+        return this.tab;
     }
-    return this.tab;
-  }
 
-  /**
-   * Gets the value of the flatModeExceptions property.
-   *
-   * @return possible object is {@link FlatModeExceptions }
-   */
-  public FlatModeExceptions getFlatModeExceptions() {
-    return flatModeExceptions;
-  }
-
-  /**
-   * Sets the value of the flatModeExceptions property.
-   *
-   * @param value allowed object is {@link FlatModeExceptions }
-   */
-  public void setFlatModeExceptions(FlatModeExceptions value) {
-    this.flatModeExceptions = value;
-  }
-
-  /**
-   * Gets the value of the thesaurusList property.
-   *
-   * @return possible object is {@link ThesaurusList }
-   */
-  public ThesaurusList getThesaurusList() {
-    return thesaurusList;
-  }
-
-  /**
-   * Sets the value of the thesaurusList property.
-   *
-   * @param value allowed object is {@link ThesaurusList }
-   */
-  public void setThesaurusList(ThesaurusList value) {
-    this.thesaurusList = value;
-  }
-
-  /**
-   * Gets the value of the name property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * Sets the value of the name property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setName(String value) {
-    this.name = value;
-  }
-
-  /**
-   * Gets the value of the disabled property.
-   *
-   * @return possible object is {@link Boolean }
-   */
-  public boolean isDisabled() {
-    if (disabled == null) {
-      return true;
-    } else {
-      return disabled;
+    /**
+     * Gets the value of the flatModeExceptions property.
+     *
+     * @return possible object is {@link FlatModeExceptions }
+     */
+    public FlatModeExceptions getFlatModeExceptions() {
+        return flatModeExceptions;
     }
-  }
 
-  /**
-   * Sets the value of the disabled property.
-   *
-   * @param value allowed object is {@link Boolean }
-   */
-  public void setDisabled(Boolean value) {
-    this.disabled = value;
-  }
-
-  /**
-   * Gets the value of the upAndDownControlHidden property.
-   *
-   * @return possible object is {@link Boolean }
-   */
-  public boolean isUpAndDownControlHidden() {
-    if (upAndDownControlHidden == null) {
-      return true;
-    } else {
-      return upAndDownControlHidden;
+    /**
+     * Sets the value of the flatModeExceptions property.
+     *
+     * @param value allowed object is {@link FlatModeExceptions }
+     */
+    public void setFlatModeExceptions(FlatModeExceptions value) {
+        this.flatModeExceptions = value;
     }
-  }
 
-  /**
-   * Sets the value of the upAndDownControlHidden property.
-   *
-   * @param value allowed object is {@link Boolean }
-   */
-  public void setUpAndDownControlHidden(Boolean value) {
-    this.upAndDownControlHidden = value;
-  }
-
-  /**
-   * Gets the value of the displayIfRecord property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getDisplayIfRecord() {
-    return displayIfRecord;
-  }
-
-  /**
-   * Sets the value of the displayIfRecord property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setDisplayIfRecord(String value) {
-    this.displayIfRecord = value;
-  }
-
-  /**
-   * Gets the value of the displayIfServiceInfo property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getDisplayIfServiceInfo() {
-    return displayIfServiceInfo;
-  }
-
-  /**
-   * Sets the value of the displayIfServiceInfo property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setDisplayIfServiceInfo(String value) {
-    this.displayIfServiceInfo = value;
-  }
-
-  /**
-   * Gets the value of the hideTimeInCalendar property.
-   *
-   * @return possible object is {@link Boolean }
-   */
-  public boolean isHideTimeInCalendar() {
-    if (hideTimeInCalendar == null) {
-      return true;
-    } else {
-      return hideTimeInCalendar;
+    /**
+     * Gets the value of the thesaurusList property.
+     *
+     * @return possible object is {@link ThesaurusList }
+     */
+    public ThesaurusList getThesaurusList() {
+        return thesaurusList;
     }
-  }
 
-  /**
-   * Sets the value of the hideTimeInCalendar property.
-   *
-   * @param value allowed object is {@link Boolean }
-   */
-  public void setHideTimeInCalendar(Boolean value) {
-    this.hideTimeInCalendar = value;
-  }
+    /**
+     * Sets the value of the thesaurusList property.
+     *
+     * @param value allowed object is {@link ThesaurusList }
+     */
+    public void setThesaurusList(ThesaurusList value) {
+        this.thesaurusList = value;
+    }
+
+    /**
+     * Gets the value of the name property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the value of the name property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
+
+    /**
+     * Gets the value of the disabled property.
+     *
+     * @return possible object is {@link Boolean }
+     */
+    public boolean isDisabled() {
+        if (disabled == null) {
+            return true;
+        } else {
+            return disabled;
+        }
+    }
+
+    /**
+     * Sets the value of the disabled property.
+     *
+     * @param value allowed object is {@link Boolean }
+     */
+    public void setDisabled(Boolean value) {
+        this.disabled = value;
+    }
+
+    /**
+     * Gets the value of the upAndDownControlHidden property.
+     *
+     * @return possible object is {@link Boolean }
+     */
+    public boolean isUpAndDownControlHidden() {
+        if (upAndDownControlHidden == null) {
+            return true;
+        } else {
+            return upAndDownControlHidden;
+        }
+    }
+
+    /**
+     * Sets the value of the upAndDownControlHidden property.
+     *
+     * @param value allowed object is {@link Boolean }
+     */
+    public void setUpAndDownControlHidden(Boolean value) {
+        this.upAndDownControlHidden = value;
+    }
+
+    /**
+     * Gets the value of the displayIfRecord property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getDisplayIfRecord() {
+        return displayIfRecord;
+    }
+
+    /**
+     * Sets the value of the displayIfRecord property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setDisplayIfRecord(String value) {
+        this.displayIfRecord = value;
+    }
+
+    /**
+     * Gets the value of the displayIfServiceInfo property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getDisplayIfServiceInfo() {
+        return displayIfServiceInfo;
+    }
+
+    /**
+     * Sets the value of the displayIfServiceInfo property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setDisplayIfServiceInfo(String value) {
+        this.displayIfServiceInfo = value;
+    }
+
+    /**
+     * Gets the value of the hideTimeInCalendar property.
+     *
+     * @return possible object is {@link Boolean }
+     */
+    public boolean isHideTimeInCalendar() {
+        if (hideTimeInCalendar == null) {
+            return true;
+        } else {
+            return hideTimeInCalendar;
+        }
+    }
+
+    /**
+     * Sets the value of the hideTimeInCalendar property.
+     *
+     * @param value allowed object is {@link Boolean }
+     */
+    public void setHideTimeInCalendar(Boolean value) {
+        this.hideTimeInCalendar = value;
+    }
 }

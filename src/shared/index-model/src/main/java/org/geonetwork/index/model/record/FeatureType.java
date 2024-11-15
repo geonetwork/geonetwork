@@ -21,14 +21,14 @@ import lombok.Singular;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class FeatureType {
-  String typeName;
-  String definition;
-  String code;
-  String isAbstract;
-  String aliases;
+    String typeName;
+    String definition;
+    String code;
+    String isAbstract;
+    String aliases;
 
-  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  @JacksonXmlElementWrapper(useWrapping = false)
-  @Singular("attributeTable")
-  List<AttributeTable> attributeTable;
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @Singular("attributeTable")
+    List<AttributeTable> attributeTable;
 }

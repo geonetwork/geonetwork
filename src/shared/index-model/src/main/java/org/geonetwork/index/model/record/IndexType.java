@@ -8,6 +8,6 @@ package org.geonetwork.index.model.record;
 
 /** Index type. */
 public enum IndexType {
-  RECORDS,
-  FEATURES
+    RECORDS,
+    FEATURES
 }

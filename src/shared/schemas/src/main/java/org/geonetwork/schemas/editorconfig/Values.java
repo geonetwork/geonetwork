@@ -35,55 +35,55 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"key"})
+        name = "",
+        propOrder = {"key"})
 @XmlRootElement(name = "values")
 public class Values {
 
-  @XmlElement(required = true)
-  protected List<Key> key;
+    @XmlElement(required = true)
+    protected List<Key> key;
 
-  @XmlAttribute(name = "readonlyIf")
-  @XmlSchemaType(name = "anySimpleType")
-  protected String readonlyIf;
+    @XmlAttribute(name = "readonlyIf")
+    @XmlSchemaType(name = "anySimpleType")
+    protected String readonlyIf;
 
-  /**
-   * Gets the value of the key property.
-   *
-   * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
-   * modification you make to the returned list will be present inside the JAXB object. This is why
-   * there is not a <CODE>set</CODE> method for the key property.
-   *
-   * <p>For example, to add a new item, do as follows:
-   *
-   * <pre>
-   *    getKey().add(newItem);
-   * </pre>
-   *
-   * <p>Objects of the following type(s) are allowed in the list {@link Key }
-   */
-  public List<Key> getKey() {
-    if (key == null) {
-      key = new ArrayList<Key>();
+    /**
+     * Gets the value of the key property.
+     *
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method
+     * for the key property.
+     *
+     * <p>For example, to add a new item, do as follows:
+     *
+     * <pre>
+     *    getKey().add(newItem);
+     * </pre>
+     *
+     * <p>Objects of the following type(s) are allowed in the list {@link Key }
+     */
+    public List<Key> getKey() {
+        if (key == null) {
+            key = new ArrayList<Key>();
+        }
+        return this.key;
     }
-    return this.key;
-  }
 
-  /**
-   * Gets the value of the readonlyIf property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getReadonlyIf() {
-    return readonlyIf;
-  }
+    /**
+     * Gets the value of the readonlyIf property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getReadonlyIf() {
+        return readonlyIf;
+    }
 
-  /**
-   * Sets the value of the readonlyIf property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setReadonlyIf(String value) {
-    this.readonlyIf = value;
-  }
+    /**
+     * Sets the value of the readonlyIf property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setReadonlyIf(String value) {
+        this.readonlyIf = value;
+    }
 }

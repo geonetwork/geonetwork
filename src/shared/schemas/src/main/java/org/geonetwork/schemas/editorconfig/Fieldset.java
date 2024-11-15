@@ -33,50 +33,50 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"field"})
+        name = "",
+        propOrder = {"field"})
 @XmlRootElement(name = "fieldset")
 public class Fieldset {
 
-  @XmlElement(required = true)
-  protected Field field;
+    @XmlElement(required = true)
+    protected Field field;
 
-  @XmlAttribute(name = "name", required = true)
-  protected String name;
+    @XmlAttribute(name = "name", required = true)
+    protected String name;
 
-  /**
-   * Gets the value of the field property.
-   *
-   * @return possible object is {@link Field }
-   */
-  public Field getField() {
-    return field;
-  }
+    /**
+     * Gets the value of the field property.
+     *
+     * @return possible object is {@link Field }
+     */
+    public Field getField() {
+        return field;
+    }
 
-  /**
-   * Sets the value of the field property.
-   *
-   * @param value allowed object is {@link Field }
-   */
-  public void setField(Field value) {
-    this.field = value;
-  }
+    /**
+     * Sets the value of the field property.
+     *
+     * @param value allowed object is {@link Field }
+     */
+    public void setField(Field value) {
+        this.field = value;
+    }
 
-  /**
-   * Gets the value of the name property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getName() {
-    return name;
-  }
+    /**
+     * Gets the value of the name property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getName() {
+        return name;
+    }
 
-  /**
-   * Sets the value of the name property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setName(String value) {
-    this.name = value;
-  }
+    /**
+     * Sets the value of the name property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
 }

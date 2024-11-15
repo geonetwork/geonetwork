@@ -23,10 +23,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "group_category")
 public class GroupCategory {
-  @SequenceGenerator(
-      name = "group_category_id_gen",
-      sequenceName = "address_id_seq",
-      allocationSize = 1)
-  @EmbeddedId
-  private GroupCategoryId id;
+    @SequenceGenerator(name = "group_category_id_gen", sequenceName = "address_id_seq", allocationSize = 1)
+    @EmbeddedId
+    private GroupCategoryId id;
 }

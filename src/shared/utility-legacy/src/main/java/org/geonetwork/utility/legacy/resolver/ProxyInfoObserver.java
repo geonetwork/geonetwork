@@ -6,5 +6,5 @@
 package org.geonetwork.utility.legacy.resolver;
 
 interface ProxyInfoObserver {
-  public void update(ProxyInfo proxyInfo);
+    public void update(ProxyInfo proxyInfo);
 }

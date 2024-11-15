@@ -323,19 +323,19 @@
         -->
         <executions>
           <execution>
+            <phase>validate</phase>
             <goals>
-              <goal>check</goal>
+              <goal>apply</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
           <!--ratchetFrom>origin/main</ratchetFrom-->
           <java>
-            <googleJavaFormat>
-              <style>GOOGLE</style>
-              <reflowLongStrings>true</reflowLongStrings>
+            <palantirJavaFormat>
+              <version>2.50.0</version>
               <formatJavadoc>true</formatJavadoc>
-            </googleJavaFormat>
+            </palantirJavaFormat>
             <removeUnusedImports></removeUnusedImports>
             <!--<replaceRegex>
               <name>Remove wildcard imports</name>
@@ -437,7 +437,7 @@
           </execution>
         </executions>
       </plugin>
-      -->
+  -->
     </plugins>
   </build>
 

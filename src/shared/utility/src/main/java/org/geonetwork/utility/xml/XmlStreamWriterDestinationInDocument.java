@@ -16,25 +16,24 @@ import net.sf.saxon.stax.XMLStreamWriterDestination;
 /** Stream writer. */
 public class XmlStreamWriterDestinationInDocument extends XMLStreamWriterDestination {
 
-  /**
-   * Create an XMLStreamWriterDestination based on a supplied XMLStreamWriter.
-   *
-   * @param writer the supplied XmlStreamWriter
-   */
-  public XmlStreamWriterDestinationInDocument(XMLStreamWriter writer) {
-    super(writer);
-  }
+    /**
+     * Create an XMLStreamWriterDestination based on a supplied XMLStreamWriter.
+     *
+     * @param writer the supplied XmlStreamWriter
+     */
+    public XmlStreamWriterDestinationInDocument(XMLStreamWriter writer) {
+        super(writer);
+    }
 
-  @Override
-  public Receiver getReceiver(PipelineConfiguration pipe, SerializationProperties params)
-      throws SaxonApiException {
-    Receiver r = new ReceiverToXmlStreamWriteInDocument(getXMLStreamWriter());
-    r.setPipelineConfiguration(pipe);
-    return r;
-  }
+    @Override
+    public Receiver getReceiver(PipelineConfiguration pipe, SerializationProperties params) throws SaxonApiException {
+        Receiver r = new ReceiverToXmlStreamWriteInDocument(getXMLStreamWriter());
+        r.setPipelineConfiguration(pipe);
+        return r;
+    }
 
-  @Override
-  public void close() throws SaxonApiException {
-    // Not my responsibility to close the writer.
-  }
+    @Override
+    public void close() throws SaxonApiException {
+        // Not my responsibility to close the writer.
+    }
 }

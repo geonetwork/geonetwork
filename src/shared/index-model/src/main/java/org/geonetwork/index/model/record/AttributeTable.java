@@ -23,16 +23,16 @@ import lombok.Singular;
 @RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AttributeTable {
-  String name;
-  String definition;
-  String code;
-  String link;
-  String type;
+    String name;
+    String definition;
+    String code;
+    String link;
+    String type;
 
-  String cardinality;
+    String cardinality;
 
-  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  @JacksonXmlElementWrapper(useWrapping = false)
-  @Singular
-  List<CodeListValue> values;
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @Singular
+    List<CodeListValue> values;
 }

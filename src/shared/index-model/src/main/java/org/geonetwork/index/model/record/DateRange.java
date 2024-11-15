@@ -12,6 +12,6 @@ import lombok.Data;
 @Data
 public class DateRange {
 
-  private String gte;
-  private String lte;
+    private String gte;
+    private String lte;
 }

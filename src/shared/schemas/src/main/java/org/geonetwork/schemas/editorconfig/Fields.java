@@ -32,33 +32,33 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"_for"})
+        name = "",
+        propOrder = {"_for"})
 @XmlRootElement(name = "fields")
 public class Fields {
 
-  @XmlElement(name = "for", required = true)
-  protected List<For> _for;
+    @XmlElement(name = "for", required = true)
+    protected List<For> _for;
 
-  /**
-   * Gets the value of the for property.
-   *
-   * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
-   * modification you make to the returned list will be present inside the JAXB object. This is why
-   * there is not a <CODE>set</CODE> method for the for property.
-   *
-   * <p>For example, to add a new item, do as follows:
-   *
-   * <pre>
-   *    getFor().add(newItem);
-   * </pre>
-   *
-   * <p>Objects of the following type(s) are allowed in the list {@link For }
-   */
-  public List<For> getFor() {
-    if (_for == null) {
-      _for = new ArrayList<For>();
+    /**
+     * Gets the value of the for property.
+     *
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method
+     * for the for property.
+     *
+     * <p>For example, to add a new item, do as follows:
+     *
+     * <pre>
+     *    getFor().add(newItem);
+     * </pre>
+     *
+     * <p>Objects of the following type(s) are allowed in the list {@link For }
+     */
+    public List<For> getFor() {
+        if (_for == null) {
+            _for = new ArrayList<For>();
+        }
+        return this._for;
     }
-    return this._for;
-  }
 }

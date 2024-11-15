@@ -21,30 +21,30 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class HttpProxyConfigurationTest {
 
-  @Autowired private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-  @Test
-  void testUniversalProxyRoute() throws Exception {
-    try {
-      mockMvc.perform(delete("/api/proxy?url=http://localhost:81"));
-    } catch (Exception e) {
-      assertEquals(
-          "Request processing failed: org.springframework.web.client.HttpClientErrorException:"
-              + " 400 Invalid method value: DELETE in X-METHOD header.",
-          e.getMessage());
+    @Test
+    void testUniversalProxyRoute() throws Exception {
+        try {
+            mockMvc.perform(delete("/api/proxy?url=http://localhost:81"));
+        } catch (Exception e) {
+            assertEquals(
+                    "Request processing failed: org.springframework.web.client.HttpClientErrorException:"
+                            + " 400 Invalid method value: DELETE in X-METHOD header.",
+                    e.getMessage());
+        }
+
+        try {
+            mockMvc.perform(get("/api/proxy?url=http://localhost:81"));
+        } catch (Exception e) {
+            assertEquals(
+                    "Request processing failed: org.springframework.web.client.HttpClientErrorException:"
+                            + " 400 Invalid port value: 81",
+                    e.getMessage());
+        }
+
+        mockMvc.perform(get("/api/proxy?url=https://geonetwork-opensource.org/"))
+                .andExpect(status().isOk());
     }
-
-    try {
-      mockMvc.perform(get("/api/proxy?url=http://localhost:81"));
-    } catch (Exception e) {
-      assertEquals(
-          "Request processing failed: org.springframework.web.client.HttpClientErrorException:"
-              + " 400 Invalid port value: 81",
-          e.getMessage());
-    }
-
-    mockMvc
-        .perform(get("/api/proxy?url=https://geonetwork-opensource.org/"))
-        .andExpect(status().isOk());
-  }
 }

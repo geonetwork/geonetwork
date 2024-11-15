@@ -19,33 +19,29 @@ import org.springframework.context.annotation.Configuration;
 /** OpenAPI configuration. */
 @Configuration
 public class OpenApiConfiguration {
-  @Value("${geonetwork.openapi.url:'http://localhost:7979'}")
-  private String serverUrl;
+    @Value("${geonetwork.openapi.url:'http://localhost:7979'}")
+    private String serverUrl;
 
-  /** OpenAPI configuration. */
-  @Bean
-  public OpenAPI myOpenApi() {
-    Server server = new Server();
-    server.setUrl(serverUrl);
+    /** OpenAPI configuration. */
+    @Bean
+    public OpenAPI myOpenApi() {
+        Server server = new Server();
+        server.setUrl(serverUrl);
 
-    Contact contact = new Contact();
-    contact.setEmail("geonetwork-users@lists.sourceforge.net");
-    contact.setName("GeoNetwork opensource");
-    contact.setUrl("https://geonetwork-opensource.org/");
+        Contact contact = new Contact();
+        contact.setEmail("geonetwork-users@lists.sourceforge.net");
+        contact.setName("GeoNetwork opensource");
+        contact.setUrl("https://geonetwork-opensource.org/");
 
-    License license =
-        new License()
-            .name("GPL 2.0")
-            .url("https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html");
+        License license = new License().name("GPL 2.0").url("https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html");
 
-    Info info =
-        new Info()
-            .title("GeoNetwork API")
-            .version("5.0.0")
-            .contact(contact)
-            .description("This API exposes endpoints to GeoNetwork API.")
-            .license(license);
+        Info info = new Info()
+                .title("GeoNetwork API")
+                .version("5.0.0")
+                .contact(contact)
+                .description("This API exposes endpoints to GeoNetwork API.")
+                .license(license);
 
-    return new OpenAPI().info(info).servers(List.of(server));
-  }
+        return new OpenAPI().info(info).servers(List.of(server));
+    }
 }

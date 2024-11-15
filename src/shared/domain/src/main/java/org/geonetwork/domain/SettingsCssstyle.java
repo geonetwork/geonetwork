@@ -24,12 +24,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "settings_cssstyle")
 public class SettingsCssstyle {
-  @Id
-  @Size(max = 255)
-  @Column(name = "variable", nullable = false)
-  private String variable;
+    @Id
+    @Size(max = 255)
+    @Column(name = "variable", nullable = false)
+    private String variable;
 
-  @Size(max = 255)
-  @Column(name = "\"value\"")
-  private String value;
+    @Size(max = 255)
+    @Column(name = "\"value\"")
+    private String value;
 }

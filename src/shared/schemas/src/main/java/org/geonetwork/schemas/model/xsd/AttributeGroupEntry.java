@@ -41,73 +41,72 @@ import org.jdom.Element;
 // ==============================================================================
 
 public class AttributeGroupEntry {
-  public String name;
-  public String ref;
+    public String name;
+    public String ref;
 
-  public ArrayList<AttributeEntry> alAttrs = new ArrayList<AttributeEntry>();
-  public ArrayList<AttributeGroupEntry> alAttrGrps = new ArrayList<AttributeGroupEntry>();
+    public ArrayList<AttributeEntry> alAttrs = new ArrayList<AttributeEntry>();
+    public ArrayList<AttributeGroupEntry> alAttrGrps = new ArrayList<AttributeGroupEntry>();
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Constructor
-  // ---
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // ---
+    // --- Constructor
+    // ---
+    // ---------------------------------------------------------------------------
 
-  public AttributeGroupEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
-    this(new ElementInfo(el, file, targetNS, targetNSPrefix));
-  }
+    public AttributeGroupEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
+        this(new ElementInfo(el, file, targetNS, targetNSPrefix));
+    }
 
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
 
-  public AttributeGroupEntry(ElementInfo ei) {
-    handleAttribs(ei);
-    handleChildren(ei);
-  }
+    public AttributeGroupEntry(ElementInfo ei) {
+        handleAttribs(ei);
+        handleChildren(ei);
+    }
 
-  // ---------------------------------------------------------------------------
-  // ---
-  // --- Private methods
-  // ---
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // ---
+    // --- Private methods
+    // ---
+    // ---------------------------------------------------------------------------
 
-  private void handleAttribs(ElementInfo ei) {
-    @SuppressWarnings("unchecked")
-    List<Attribute> attribs = ei.element.getAttributes();
+    private void handleAttribs(ElementInfo ei) {
+        @SuppressWarnings("unchecked")
+        List<Attribute> attribs = ei.element.getAttributes();
 
-    for (Attribute at : attribs) {
+        for (Attribute at : attribs) {
 
-      String attrName = at.getName();
-      if (attrName.equals("name")) {
-        name = at.getValue();
-        if (ei.targetNSPrefix != null) {
-          name = ei.targetNSPrefix + ":" + name;
+            String attrName = at.getName();
+            if (attrName.equals("name")) {
+                name = at.getValue();
+                if (ei.targetNSPrefix != null) {
+                    name = ei.targetNSPrefix + ":" + name;
+                }
+
+                // System.out.println("-- name is "+name);
+            } else if (attrName.equals("ref")) {
+                ref = at.getValue();
+            }
         }
-
-        // System.out.println("-- name is "+name);
-      } else if (attrName.equals("ref")) {
-        ref = at.getValue();
-      }
     }
-  }
 
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
 
-  private void handleChildren(ElementInfo ei) {
-    @SuppressWarnings("unchecked")
-    List<Element> children = ei.element.getChildren();
+    private void handleChildren(ElementInfo ei) {
+        @SuppressWarnings("unchecked")
+        List<Element> children = ei.element.getChildren();
 
-    for (Element elChild : children) {
-      String elName = elChild.getName();
+        for (Element elChild : children) {
+            String elName = elChild.getName();
 
-      if (elName.equals("attribute")) {
-        AttributeEntry at = new AttributeEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
-        alAttrs.add(at);
-      } else if (elName.equals("attributeGroup")) {
-        AttributeGroupEntry age =
-            new AttributeGroupEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
-        alAttrGrps.add(age);
-      } else if (elName.equals("annotation")) {
-      }
+            if (elName.equals("attribute")) {
+                AttributeEntry at = new AttributeEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
+                alAttrs.add(at);
+            } else if (elName.equals("attributeGroup")) {
+                AttributeGroupEntry age = new AttributeGroupEntry(elChild, ei.file, ei.targetNS, ei.targetNSPrefix);
+                alAttrGrps.add(age);
+            } else if (elName.equals("annotation")) {
+            }
+        }
     }
-  }
 }

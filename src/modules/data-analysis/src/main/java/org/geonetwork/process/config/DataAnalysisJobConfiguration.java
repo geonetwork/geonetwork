@@ -25,38 +25,38 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 public class DataAnalysisJobConfiguration extends DefaultBatchConfiguration {
 
-  @Bean
-  public Job dataAnalysisProcessJob(
-      JobRepository jobRepository,
-      PlatformTransactionManager transactionManager,
-      GdalDataAnalyzer dataAnalyzer,
-      DataAnalysisProcess dataAnalysisProcess) {
-    return new JobBuilder(dataAnalysisProcess.getName() + "Job", jobRepository)
-        .incrementer(new RunIdIncrementer())
-        .start(process(jobRepository, transactionManager, dataAnalyzer, dataAnalysisProcess))
-        .build();
-  }
+    @Bean
+    public Job dataAnalysisProcessJob(
+            JobRepository jobRepository,
+            PlatformTransactionManager transactionManager,
+            GdalDataAnalyzer dataAnalyzer,
+            DataAnalysisProcess dataAnalysisProcess) {
+        return new JobBuilder(dataAnalysisProcess.getName() + "Job", jobRepository)
+                .incrementer(new RunIdIncrementer())
+                .start(process(jobRepository, transactionManager, dataAnalyzer, dataAnalysisProcess))
+                .build();
+    }
 
-  @Bean
-  protected Step process(
-      JobRepository jobRepository,
-      PlatformTransactionManager transactionManager,
-      GdalDataAnalyzer dataAnalyzer,
-      DataAnalysisProcess dataAnalysisProcess) {
-    return new StepBuilder(dataAnalysisProcess + "Step", jobRepository)
-        .tasklet(datasetAnalysisTasklet(dataAnalyzer), transactionManager)
-        .taskExecutor(getTaskExecutor())
-        .build();
-  }
+    @Bean
+    protected Step process(
+            JobRepository jobRepository,
+            PlatformTransactionManager transactionManager,
+            GdalDataAnalyzer dataAnalyzer,
+            DataAnalysisProcess dataAnalysisProcess) {
+        return new StepBuilder(dataAnalysisProcess + "Step", jobRepository)
+                .tasklet(datasetAnalysisTasklet(dataAnalyzer), transactionManager)
+                .taskExecutor(getTaskExecutor())
+                .build();
+    }
 
-  @Bean
-  public DatasetAnalysisTasklet datasetAnalysisTasklet(GdalDataAnalyzer dataAnalyzer) {
-    return new DatasetAnalysisTasklet(dataAnalyzer);
-  }
+    @Bean
+    public DatasetAnalysisTasklet datasetAnalysisTasklet(GdalDataAnalyzer dataAnalyzer) {
+        return new DatasetAnalysisTasklet(dataAnalyzer);
+    }
 
-  @Override
-  protected TaskExecutor getTaskExecutor() {
-    // Run tasks asynch
-    return new SimpleAsyncTaskExecutor();
-  }
+    @Override
+    protected TaskExecutor getTaskExecutor() {
+        // Run tasks asynch
+        return new SimpleAsyncTaskExecutor();
+    }
 }

@@ -10,5 +10,5 @@ import org.geonetwork.data.model.RasterInfo;
 
 /** Raster data analyzer provides information about a raster data file. */
 public interface RasterDataAnalyzer extends DataAnalyzer {
-  Optional<RasterInfo> getRasterProperties(String rasterSource);
+    Optional<RasterInfo> getRasterProperties(String rasterSource);
 }

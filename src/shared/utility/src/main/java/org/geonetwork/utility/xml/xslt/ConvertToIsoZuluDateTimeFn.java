@@ -19,33 +19,33 @@ import org.geonetwork.utility.date.DateUtil;
 
 /** Extension function to convert a date to ISO Zulu date time. */
 public class ConvertToIsoZuluDateTimeFn extends ExtensionFunctionDefinition {
-  @Override
-  public StructuredQName getFunctionQName() {
-    return new StructuredQName(XslFn.PREFIX, XslFn.URI, "convertToISOZuluDateTime");
-  }
+    @Override
+    public StructuredQName getFunctionQName() {
+        return new StructuredQName(XslFn.PREFIX, XslFn.URI, "convertToISOZuluDateTime");
+    }
 
-  @Override
-  public SequenceType[] getArgumentTypes() {
-    return new SequenceType[] {SequenceType.SINGLE_STRING};
-  }
+    @Override
+    public SequenceType[] getArgumentTypes() {
+        return new SequenceType[] {SequenceType.SINGLE_STRING};
+    }
 
-  @Override
-  public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
-    return SequenceType.SINGLE_STRING;
-  }
+    @Override
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
+        return SequenceType.SINGLE_STRING;
+    }
 
-  @Override
-  public ExtensionFunctionCall makeCallExpression() {
-    return new ExtensionFunctionCall() {
-      @Override
-      public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
-        Item head = arguments[0].head();
-        String date = "";
-        if (head != null) {
-          date = head.getStringValue();
-        }
-        return StringValue.makeStringValue(DateUtil.convertToIsoZuluDateTime(date));
-      }
-    };
-  }
+    @Override
+    public ExtensionFunctionCall makeCallExpression() {
+        return new ExtensionFunctionCall() {
+            @Override
+            public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                Item head = arguments[0].head();
+                String date = "";
+                if (head != null) {
+                    date = head.getStringValue();
+                }
+                return StringValue.makeStringValue(DateUtil.convertToIsoZuluDateTime(date));
+            }
+        };
+    }
 }

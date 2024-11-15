@@ -14,5 +14,5 @@ import org.geonetwork.data.model.DatasetInfo;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class DataAnalysisProcessReport extends ProcessReport {
-  private DatasetInfo result;
+    private DatasetInfo result;
 }

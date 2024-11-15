@@ -39,105 +39,105 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j()
 public class ProxyInfo {
 
-  /** Active readers count */
-  private static int activeReaders = 0;
+    /** Active readers count */
+    private static int activeReaders = 0;
 
-  /** Active writers count */
-  private static int activeWriters = 0;
+    /** Active writers count */
+    private static int activeWriters = 0;
 
-  private final ProxyParams proxyParams = new ProxyParams();
-  private List<ProxyInfoObserver> observers = new ArrayList<ProxyInfoObserver>();
+    private final ProxyParams proxyParams = new ProxyParams();
+    private List<ProxyInfoObserver> observers = new ArrayList<ProxyInfoObserver>();
 
-  public ProxyInfo() {}
+    public ProxyInfo() {}
 
-  public void addObserver(ProxyInfoObserver o) {
-    observers.add(o);
-  }
+    public void addObserver(ProxyInfoObserver o) {
+        observers.add(o);
+    }
 
-  public void removeObserver(ProxyInfoObserver o) {
-    observers.remove(o);
-  }
+    public void removeObserver(ProxyInfoObserver o) {
+        observers.remove(o);
+    }
 
-  public void setProxyInfo(String host, int port, String username, String password) {
+    public void setProxyInfo(String host, int port, String username, String password) {
 
-    beforeWrite();
-    proxyParams.useProxy = false;
-    if (host != null) {
-      if (host.trim().length() != 0 && port != 0) {
-        proxyParams.proxyHost = host;
-        proxyParams.proxyPort = port;
-        proxyParams.useProxy = true;
+        beforeWrite();
+        proxyParams.useProxy = false;
+        if (host != null) {
+            if (host.trim().length() != 0 && port != 0) {
+                proxyParams.proxyHost = host;
+                proxyParams.proxyPort = port;
+                proxyParams.useProxy = true;
 
-        proxyParams.useProxyAuth = false;
-        if (username != null) {
-          if (username.trim().length() != 0) {
-            proxyParams.username = username;
-            proxyParams.password = password;
-            proxyParams.useProxyAuth = true;
-          }
+                proxyParams.useProxyAuth = false;
+                if (username != null) {
+                    if (username.trim().length() != 0) {
+                        proxyParams.username = username;
+                        proxyParams.password = password;
+                        proxyParams.useProxyAuth = true;
+                    }
+                }
+            }
         }
-      }
+        afterWrite();
+
+        beforeRead();
+        notifyAllObservers();
+        afterRead();
     }
-    afterWrite();
 
-    beforeRead();
-    notifyAllObservers();
-    afterRead();
-  }
+    public void notifyAllObservers() {
+        // -- notify all observers that proxy info has changed
 
-  public void notifyAllObservers() {
-    // -- notify all observers that proxy info has changed
-
-    Iterator<ProxyInfoObserver> i = observers.iterator();
-    while (i.hasNext()) {
-      ProxyInfoObserver o = (ProxyInfoObserver) i.next();
-      o.update(this);
+        Iterator<ProxyInfoObserver> i = observers.iterator();
+        while (i.hasNext()) {
+            ProxyInfoObserver o = (ProxyInfoObserver) i.next();
+            o.update(this);
+        }
     }
-  }
 
-  public ProxyParams getProxyParams() {
+    public ProxyParams getProxyParams() {
 
-    beforeRead();
-    try {
-      return proxyParams;
-    } finally {
-      afterRead();
+        beforeRead();
+        try {
+            return proxyParams;
+        } finally {
+            afterRead();
+        }
     }
-  }
 
-  /** Invoked just before reading, waits until reading is allowed. */
-  private synchronized void beforeRead() {
-    while (activeWriters > 0) {
-      try {
-        wait();
-      } catch (InterruptedException iex) {
-        log.debug("Interrupted", iex);
-      }
+    /** Invoked just before reading, waits until reading is allowed. */
+    private synchronized void beforeRead() {
+        while (activeWriters > 0) {
+            try {
+                wait();
+            } catch (InterruptedException iex) {
+                log.debug("Interrupted", iex);
+            }
+        }
+        ++activeReaders;
     }
-    ++activeReaders;
-  }
 
-  /** Invoked just after reading. */
-  private synchronized void afterRead() {
-    --activeReaders;
-    notifyAll();
-  }
-
-  /** Invoked just before writing, waits until writing is allowed. */
-  private synchronized void beforeWrite() {
-    while (activeReaders > 0 || activeWriters > 0) {
-      try {
-        wait();
-      } catch (InterruptedException iex) {
-        log.debug("Interrupted", iex);
-      }
+    /** Invoked just after reading. */
+    private synchronized void afterRead() {
+        --activeReaders;
+        notifyAll();
     }
-    ++activeWriters;
-  }
 
-  /** Invoked just after writing. */
-  private synchronized void afterWrite() {
-    --activeWriters;
-    notifyAll();
-  }
+    /** Invoked just before writing, waits until writing is allowed. */
+    private synchronized void beforeWrite() {
+        while (activeReaders > 0 || activeWriters > 0) {
+            try {
+                wait();
+            } catch (InterruptedException iex) {
+                log.debug("Interrupted", iex);
+            }
+        }
+        ++activeWriters;
+    }
+
+    /** Invoked just after writing. */
+    private synchronized void afterWrite() {
+        --activeWriters;
+        notifyAll();
+    }
 }

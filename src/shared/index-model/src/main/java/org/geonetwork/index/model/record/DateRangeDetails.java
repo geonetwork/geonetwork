@@ -12,6 +12,6 @@ import lombok.Data;
 @Data
 public class DateRangeDetails {
 
-  private DateRangeDetailsInfo start;
-  private DateRangeDetailsInfo end;
+    private DateRangeDetailsInfo start;
+    private DateRangeDetailsInfo end;
 }

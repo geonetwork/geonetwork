@@ -38,60 +38,60 @@ import java.util.List;
 import org.jdom.Element;
 
 public class SimpleContentEntry {
-  public String base;
+    public String base;
 
-  public ArrayList<AttributeEntry> alAttribs = new ArrayList<AttributeEntry>();
-  public List<String> alAttribGroups = new ArrayList<String>();
-  public boolean restriction = false;
+    public ArrayList<AttributeEntry> alAttribs = new ArrayList<AttributeEntry>();
+    public List<String> alAttribGroups = new ArrayList<String>();
+    public boolean restriction = false;
 
-  public SimpleContentEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
-    this(new ElementInfo(el, file, targetNS, targetNSPrefix));
-  }
-
-  public SimpleContentEntry(ElementInfo ei) {
-    handleAttribs(ei);
-    handleChildren(ei);
-  }
-
-  @SuppressWarnings("unused")
-  private void handleAttribs(ElementInfo ei) {
-    // TODO; handle attributes
-  }
-
-  private void handleChildren(ElementInfo ei) {
-    @SuppressWarnings("unchecked")
-    List<Element> children = ei.element.getChildren();
-
-    for (Element elChild : children) {
-
-      if (elChild.getName().equals("extension")) {
-        handleExtension(elChild, ei);
-      } else if (elChild.getName().equals("restriction")) {
-        handleExtension(elChild, ei);
-      }
+    public SimpleContentEntry(Element el, Path file, String targetNS, String targetNSPrefix) {
+        this(new ElementInfo(el, file, targetNS, targetNSPrefix));
     }
-  }
 
-  private void handleExtension(Element el, ElementInfo ei) {
-    restriction = false;
-    base = el.getAttributeValue("base");
-    @SuppressWarnings("unchecked")
-    List<Element> extension = el.getChildren();
-    for (Element elExt : extension) {
-      String elName = elExt.getName();
+    public SimpleContentEntry(ElementInfo ei) {
+        handleAttribs(ei);
+        handleChildren(ei);
+    }
 
-      if (elName.equals("attribute")) {
-        alAttribs.add(new AttributeEntry(elExt, ei.file, ei.targetNS, ei.targetNSPrefix));
-      } else if (elName.equals("attributeGroup")) {
-        String attribGroup = elExt.getAttributeValue("ref");
+    @SuppressWarnings("unused")
+    private void handleAttribs(ElementInfo ei) {
+        // TODO; handle attributes
+    }
 
-        if (attribGroup == null) {
-          throw new IllegalArgumentException(
-              "'ref' is null for element in <attributeGroup> of SimpleContent with extension base "
-                  + base);
+    private void handleChildren(ElementInfo ei) {
+        @SuppressWarnings("unchecked")
+        List<Element> children = ei.element.getChildren();
+
+        for (Element elChild : children) {
+
+            if (elChild.getName().equals("extension")) {
+                handleExtension(elChild, ei);
+            } else if (elChild.getName().equals("restriction")) {
+                handleExtension(elChild, ei);
+            }
         }
-        alAttribGroups.add(attribGroup);
-      }
     }
-  }
+
+    private void handleExtension(Element el, ElementInfo ei) {
+        restriction = false;
+        base = el.getAttributeValue("base");
+        @SuppressWarnings("unchecked")
+        List<Element> extension = el.getChildren();
+        for (Element elExt : extension) {
+            String elName = elExt.getName();
+
+            if (elName.equals("attribute")) {
+                alAttribs.add(new AttributeEntry(elExt, ei.file, ei.targetNS, ei.targetNSPrefix));
+            } else if (elName.equals("attributeGroup")) {
+                String attribGroup = elExt.getAttributeValue("ref");
+
+                if (attribGroup == null) {
+                    throw new IllegalArgumentException(
+                            "'ref' is null for element in <attributeGroup> of SimpleContent with extension base "
+                                    + base);
+                }
+                alAttribGroups.add(attribGroup);
+            }
+        }
+    }
 }

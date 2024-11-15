@@ -13,5 +13,5 @@ import lombok.Data;
 @Data
 @Builder
 public class RasterBand implements Serializable {
-  private Integer band;
+    private Integer band;
 }

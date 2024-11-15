@@ -11,5 +11,5 @@ import org.geonetwork.domain.MetadatacategId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MetadatacategRepository extends JpaRepository<Metadatacateg, MetadatacategId> {
-  List<Metadatacateg> findAllByIdMetadataid(Integer metadataId);
+    List<Metadatacateg> findAllByIdMetadataid(Integer metadataId);
 }

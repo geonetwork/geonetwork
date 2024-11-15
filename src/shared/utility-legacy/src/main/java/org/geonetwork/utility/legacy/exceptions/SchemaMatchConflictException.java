@@ -29,14 +29,14 @@
 package org.geonetwork.utility.legacy.exceptions;
 
 public class SchemaMatchConflictException extends RuntimeException {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  public SchemaMatchConflictException(String name) {
-    this(name, null);
-  }
+    public SchemaMatchConflictException(String name) {
+        this(name, null);
+    }
 
-  public SchemaMatchConflictException(String name, Object value) {
+    public SchemaMatchConflictException(String name, Object value) {
 
-    //        id = "schema-match-conflict";
-  }
+        //        id = "schema-match-conflict";
+    }
 }

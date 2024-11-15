@@ -33,80 +33,73 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/search")
 public class SearchController {
 
-  private final IndexClient client;
-  private final Counter searchCounter;
+    private final IndexClient client;
+    private final Counter searchCounter;
 
-  @Autowired
-  public SearchController(IndexClient client, MeterRegistry meterRegistry) {
-    this.client = client;
-    searchCounter = meterRegistry.counter("gn.search.count");
-  }
-
-  /** Search. */
-  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getQuery(
-      @RequestParam(defaultValue = "", required = false) String q,
-      @RequestParam(defaultValue = "0", required = false) Integer from,
-      @RequestParam(defaultValue = "10", required = false) Integer size)
-      throws IOException {
-    SearchRequest searchRequest =
-        SearchRequest.of(
-            s ->
-                s.index(client.getIndexRecordName())
-                    .q(q)
-                    .size(size)
-                    .from(from)
-                    .trackTotalHits(tth -> tth.enabled(true)));
-    SearchResponse<IndexRecord> searchResponse = runSearch(searchRequest);
-    return JsonpUtils.toJsonString(searchResponse, new JacksonJsonpMapper());
-  }
-
-  /** Search using POST. */
-  @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public String query(
-      @RequestParam(defaultValue = SelectionManager.SELECTION_METADATA) String bucket,
-      @Parameter(
-              description = "Type of related resource. If none, no associated resource returned.",
-              required = false)
-          @RequestParam(name = "relatedType", defaultValue = "")
-          RelatedItemType[] relatedTypes,
-      @RequestBody String jsonSearchRequest)
-      throws IOException {
-    SearchRequest searchRequest =
-        SearchRequest.of(
-            b ->
-                b.index(client.getIndexRecordName()).withJson(new StringReader(jsonSearchRequest)));
-    SearchResponse<IndexRecord> searchResponse = runSearch(searchRequest);
-    return JsonpUtils.toJsonString(searchResponse, new JacksonJsonpMapper());
-  }
-
-  /** Get a document from the index. */
-  @GetMapping(path = "doc/{uuid:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public IndexRecord getIndexDocument(@PathVariable String uuid) throws Exception {
-    SearchRequest searchRequest =
-        SearchRequest.of(
-            s ->
-                s.index(client.getIndexRecordName())
-                    .query(q -> q.match(m -> m.field("_id").query(uuid)))
-                    .size(1)
-                    .from(0)
-                    .trackTotalHits(tth -> tth.enabled(true)));
-    SearchResponse<IndexRecord> searchResponse = runSearch(searchRequest);
-
-    if ((searchResponse.hits().total() != null ? searchResponse.hits().total().value() : 0) == 1) {
-      return searchResponse.hits().hits().getFirst().source();
-    } else {
-      throw new Exception(
-          String.format("Index document %s not found or not shared with you.", uuid));
+    @Autowired
+    public SearchController(IndexClient client, MeterRegistry meterRegistry) {
+        this.client = client;
+        searchCounter = meterRegistry.counter("gn.search.count");
     }
-  }
 
-  private SearchResponse<IndexRecord> runSearch(SearchRequest searchRequest) throws IOException {
-    searchRequest = SearchUtils.buildRequestWithPermissionFilter(searchRequest);
-    SearchResponse<IndexRecord> searchResponse =
-        client.getEsClient().search(searchRequest, IndexRecord.class);
-    searchCounter.increment();
-    // TODO: Not supported ? return searchResponse;
-    return searchResponse;
-  }
+    /** Search. */
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getQuery(
+            @RequestParam(defaultValue = "", required = false) String q,
+            @RequestParam(defaultValue = "0", required = false) Integer from,
+            @RequestParam(defaultValue = "10", required = false) Integer size)
+            throws IOException {
+        SearchRequest searchRequest = SearchRequest.of(s -> s.index(client.getIndexRecordName())
+                .q(q)
+                .size(size)
+                .from(from)
+                .trackTotalHits(tth -> tth.enabled(true)));
+        SearchResponse<IndexRecord> searchResponse = runSearch(searchRequest);
+        return JsonpUtils.toJsonString(searchResponse, new JacksonJsonpMapper());
+    }
+
+    /** Search using POST. */
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public String query(
+            @RequestParam(defaultValue = SelectionManager.SELECTION_METADATA) String bucket,
+            @Parameter(
+                            description = "Type of related resource. If none, no associated resource returned.",
+                            required = false)
+                    @RequestParam(name = "relatedType", defaultValue = "")
+                    RelatedItemType[] relatedTypes,
+            @RequestBody String jsonSearchRequest)
+            throws IOException {
+        SearchRequest searchRequest = SearchRequest.of(
+                b -> b.index(client.getIndexRecordName()).withJson(new StringReader(jsonSearchRequest)));
+        SearchResponse<IndexRecord> searchResponse = runSearch(searchRequest);
+        return JsonpUtils.toJsonString(searchResponse, new JacksonJsonpMapper());
+    }
+
+    /** Get a document from the index. */
+    @GetMapping(path = "doc/{uuid:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public IndexRecord getIndexDocument(@PathVariable String uuid) throws Exception {
+        SearchRequest searchRequest = SearchRequest.of(s -> s.index(client.getIndexRecordName())
+                .query(q -> q.match(m -> m.field("_id").query(uuid)))
+                .size(1)
+                .from(0)
+                .trackTotalHits(tth -> tth.enabled(true)));
+        SearchResponse<IndexRecord> searchResponse = runSearch(searchRequest);
+
+        if ((searchResponse.hits().total() != null
+                        ? searchResponse.hits().total().value()
+                        : 0)
+                == 1) {
+            return searchResponse.hits().hits().getFirst().source();
+        } else {
+            throw new Exception(String.format("Index document %s not found or not shared with you.", uuid));
+        }
+    }
+
+    private SearchResponse<IndexRecord> runSearch(SearchRequest searchRequest) throws IOException {
+        searchRequest = SearchUtils.buildRequestWithPermissionFilter(searchRequest);
+        SearchResponse<IndexRecord> searchResponse = client.getEsClient().search(searchRequest, IndexRecord.class);
+        searchCounter.increment();
+        // TODO: Not supported ? return searchResponse;
+        return searchResponse;
+    }
 }

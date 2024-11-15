@@ -36,11 +36,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MetadataAttribute {
-  public String name;
-  public String defValue;
-  public boolean required;
+    public String name;
+    public String defValue;
+    public boolean required;
 
-  public Set<String> values = new HashSet<String>();
+    public Set<String> values = new HashSet<String>();
 
-  MetadataAttribute() {}
+    MetadataAttribute() {}
 }

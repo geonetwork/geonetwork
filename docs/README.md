@@ -48,7 +48,15 @@ The full build checks spotless, sortpom, and maven license header formatting.
 
 The quality assurance checks have been broken out into different profiles so you can test just what you need to fix.
 
-* [CheckStyle](https://checkstyle.org) - code formatting
+* [Spotless](https://github.com/diffplug/spotless) - code formatting indentation
+  
+  ```
+  ./mvnw spotless:apply
+  ```
+  
+  Used to apply 120 column, lamda friendly formatting, [palantir java format](https://github.com/palantir/palantir-java-format) (an improved google-java-format). Using a tool prevents nit-picking during pull request reviews.
+
+* [CheckStyle](https://checkstyle.org) - code formatting to check naming conventions
   
   ```
   ./mvnw -DskipTests verify -Pcheckstyle
@@ -77,6 +85,8 @@ The quality assurance checks have been broken out into different profiles so you
   ```
   ./mvnw verify -Pcheck-headers
   ```
+
+* [Sort Pom](https://github.com/Ekryd/sortpom) - code formatting for pom.xml files
   
 ### Integration tests
 

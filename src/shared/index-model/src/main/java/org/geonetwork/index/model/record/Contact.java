@@ -31,23 +31,23 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Contact {
 
-  private String role;
-  private String individual;
+    private String role;
+    private String individual;
 
-  @JsonProperty(ORGANISATION_NAME)
-  @Builder.Default
-  private Map<String, String> organisation = new HashMap<>();
+    @JsonProperty(ORGANISATION_NAME)
+    @Builder.Default
+    private Map<String, String> organisation = new HashMap<>();
 
-  private String email;
-  private String logo;
-  private String phone;
-  private String address;
-  private String website;
-  private String position;
-  private String nilReason;
+    private String email;
+    private String logo;
+    private String phone;
+    private String address;
+    private String website;
+    private String position;
+    private String nilReason;
 
-  @JsonProperty(CONTACT_IDENTIFIERS)
-  @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-  @JacksonXmlElementWrapper(useWrapping = false)
-  private List<PartyIdentifier> identifier;
+    @JsonProperty(CONTACT_IDENTIFIERS)
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @JacksonXmlElementWrapper(useWrapping = false)
+    private List<PartyIdentifier> identifier;
 }

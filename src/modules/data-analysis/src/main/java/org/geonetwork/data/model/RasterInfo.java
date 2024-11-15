@@ -15,12 +15,12 @@ import lombok.Data;
 @Data
 @Builder
 public class RasterInfo implements Serializable {
-  private String description;
-  private String type;
-  private String crs;
-  private List<Double> wgs84Extent;
-  private RasterCornerCoordinates rasterCornerCoordinates;
-  private Map<String, Object> metadata;
-  private List<Integer> size;
-  private List<RasterBand> bands;
+    private String description;
+    private String type;
+    private String crs;
+    private List<Double> wgs84Extent;
+    private RasterCornerCoordinates rasterCornerCoordinates;
+    private Map<String, Object> metadata;
+    private List<Integer> size;
+    private List<RasterBand> bands;
 }

@@ -37,94 +37,94 @@ import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
 
 public class SchemaSuggestions {
-  private Map<String, Element> htFields = new LinkedHashMap<String, Element>();
+    private Map<String, Element> htFields = new LinkedHashMap<String, Element>();
 
-  public SchemaSuggestions(Path xmlSuggestFile) throws Exception {
-    Element sugg = Xml.loadFile(xmlSuggestFile);
-    // TODO: it could be good to check that suggested elements are
-    // fine for the element type
-    @SuppressWarnings("unchecked")
-    List<Element> list = sugg.getChildren();
+    public SchemaSuggestions(Path xmlSuggestFile) throws Exception {
+        Element sugg = Xml.loadFile(xmlSuggestFile);
+        // TODO: it could be good to check that suggested elements are
+        // fine for the element type
+        @SuppressWarnings("unchecked")
+        List<Element> list = sugg.getChildren();
 
-    for (Element el : list) {
-      if (el.getName().equals("field")) {
-        htFields.put(el.getAttributeValue("name"), el);
-      }
-    }
-  }
-
-  private boolean isX(String parent, String child, String what) {
-    final Element fieldEl = htFields.get(parent);
-
-    if (fieldEl == null) return false;
-
-    @SuppressWarnings("unchecked")
-    final List<Element> list = fieldEl.getChildren();
-
-    for (Element elem : list) {
-      if (elem.getName().equals(what)) {
-        String name = elem.getAttributeValue("name");
-
-        if (child.equals(name)) {
-          return true;
+        for (Element el : list) {
+            if (el.getName().equals("field")) {
+                htFields.put(el.getAttributeValue("name"), el);
+            }
         }
-      }
     }
 
-    return false;
-  }
+    private boolean isX(String parent, String child, String what) {
+        final Element fieldEl = htFields.get(parent);
 
-  public boolean isSuggested(String parent, String child) {
-    return isX(parent, child, "suggest");
-  }
+        if (fieldEl == null) return false;
 
-  public boolean isFiltered(String parent, String child) {
-    return isX(parent, child, "filter");
-  }
+        @SuppressWarnings("unchecked")
+        final List<Element> list = fieldEl.getChildren();
 
-  /**
-   * Return true if parent element is defined in suggestion file and check that suggested elements
-   * are valid children of current element. <br>
-   * For example, gmd:extent could have suggestions as a child of gmd:identificationInfo or as a
-   * child of gmd:EX_TemporalExtent.
-   *
-   * @return true if having suggestion for at least one of its child elements.
-   */
-  public boolean hasSuggestion(String parent, List<String> childElements) {
-    Element el = htFields.get(parent);
+        for (Element elem : list) {
+            if (elem.getName().equals(what)) {
+                String name = elem.getAttributeValue("name");
 
-    if (el == null) return false; // No suggestion available for element
-    else {
-      for (String child : childElements) {
-        if (isSuggested(parent, child))
-          return true; // At least one child element is suggested for this element type
-      }
-      return false;
-    }
-  }
+                if (child.equals(name)) {
+                    return true;
+                }
+            }
+        }
 
-  /**
-   * Return the list of suggestion for an element.
-   *
-   * @param elementName The name of the element
-   * @return The list of element names
-   */
-  public List<String> getSuggestedElements(String elementName) {
-    Element suggestionConfig = htFields.get(elementName);
-    List<String> suggestedElement = new ArrayList<String>();
-
-    if (suggestionConfig == null) {
-      return suggestedElement;
+        return false;
     }
 
-    for (Object object : suggestionConfig.getChildren()) {
-      Element suggestion = (Element) object;
-
-      if (suggestion.getName().equals("suggest")) {
-        String name = suggestion.getAttributeValue("name");
-        suggestedElement.add(name);
-      }
+    public boolean isSuggested(String parent, String child) {
+        return isX(parent, child, "suggest");
     }
-    return suggestedElement;
-  }
+
+    public boolean isFiltered(String parent, String child) {
+        return isX(parent, child, "filter");
+    }
+
+    /**
+     * Return true if parent element is defined in suggestion file and check that suggested elements are valid children
+     * of current element. <br>
+     * For example, gmd:extent could have suggestions as a child of gmd:identificationInfo or as a child of
+     * gmd:EX_TemporalExtent.
+     *
+     * @return true if having suggestion for at least one of its child elements.
+     */
+    public boolean hasSuggestion(String parent, List<String> childElements) {
+        Element el = htFields.get(parent);
+
+        if (el == null) return false; // No suggestion available for element
+        else {
+            for (String child : childElements) {
+                if (isSuggested(parent, child))
+                    return true; // At least one child element is suggested for this element type
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Return the list of suggestion for an element.
+     *
+     * @param elementName The name of the element
+     * @return The list of element names
+     */
+    public List<String> getSuggestedElements(String elementName) {
+        Element suggestionConfig = htFields.get(elementName);
+        List<String> suggestedElement = new ArrayList<String>();
+
+        if (suggestionConfig == null) {
+            return suggestedElement;
+        }
+
+        for (Object object : suggestionConfig.getChildren()) {
+            Element suggestion = (Element) object;
+
+            if (suggestion.getName().equals("suggest")) {
+                String name = suggestion.getAttributeValue("name");
+                suggestedElement.add(name);
+            }
+        }
+        return suggestedElement;
+    }
 }

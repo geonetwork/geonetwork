@@ -13,6 +13,6 @@ import lombok.Data;
 @Data
 public class ResourceGeometry {
 
-  private String type;
-  private List<List<Double[]>> coordinates;
+    private String type;
+    private List<List<Double[]>> coordinates;
 }

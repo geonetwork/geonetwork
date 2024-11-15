@@ -25,29 +25,29 @@ import org.hibernate.Hibernate;
 @Setter
 @Embeddable
 public class GufUserfeedbackKeywordId implements Serializable {
-  private static final long serialVersionUID = -5393683083661953275L;
+    private static final long serialVersionUID = -5393683083661953275L;
 
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "userfeedback_uuid", nullable = false)
-  private String userfeedbackUuid;
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "userfeedback_uuid", nullable = false)
+    private String userfeedbackUuid;
 
-  @NotNull
-  @Column(name = "keyword_id", nullable = false)
-  private Long keywordId;
+    @NotNull
+    @Column(name = "keyword_id", nullable = false)
+    private Long keywordId;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    if (!GufUserfeedbackKeywordId.class.isInstance(o)) return false;
-    GufUserfeedbackKeywordId entity = (GufUserfeedbackKeywordId) o;
-    return Objects.equals(this.keywordId, entity.keywordId)
-        && Objects.equals(this.userfeedbackUuid, entity.userfeedbackUuid);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (!GufUserfeedbackKeywordId.class.isInstance(o)) return false;
+        GufUserfeedbackKeywordId entity = (GufUserfeedbackKeywordId) o;
+        return Objects.equals(this.keywordId, entity.keywordId)
+                && Objects.equals(this.userfeedbackUuid, entity.userfeedbackUuid);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(keywordId, userfeedbackUuid);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(keywordId, userfeedbackUuid);
+    }
 }

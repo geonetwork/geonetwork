@@ -11,16 +11,16 @@ package org.geonetwork.utility.legacy.resolver;
  * @author Jesse on 11/28/2014.
  */
 public interface ResolverRewriteDirective {
-  /** Test if this should be applied to the href. */
-  boolean appliesTo(String href);
+    /** Test if this should be applied to the href. */
+    boolean appliesTo(String href);
 
-  /** Modify the url for locating the referenced stylesheet. */
-  String rewrite(String href);
+    /** Modify the url for locating the referenced stylesheet. */
+    String rewrite(String href);
 
-  /**
-   * Each directive must have a key that identifies the directive so that it is possible to find and
-   * replace the directive if (for example) the resource moves. An example of this is in testing.
-   * Each test might need the value to be different.
-   */
-  Object getKey();
+    /**
+     * Each directive must have a key that identifies the directive so that it is possible to find and replace the
+     * directive if (for example) the resource moves. An example of this is in testing. Each test might need the value
+     * to be different.
+     */
+    Object getKey();
 }

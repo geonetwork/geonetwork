@@ -9,6 +9,6 @@ import java.util.Map;
 import org.jdom.Namespace;
 
 public interface CSWPlugin {
-  /** Return the list of typenames and corresponding namespace for the plugin. */
-  Map<String, Namespace> getCswTypeNames();
+    /** Return the list of typenames and corresponding namespace for the plugin. */
+    Map<String, Namespace> getCswTypeNames();
 }

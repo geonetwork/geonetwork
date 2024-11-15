@@ -11,57 +11,57 @@ import jakarta.annotation.Generated;
 
 /** Gets or Sets fieldType */
 @Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-09-13T15:07:19.066965162+02:00[Europe/Paris]",
-    comments = "Generator version: 7.7.0")
+        value = "org.openapitools.codegen.languages.SpringCodegen",
+        date = "2024-09-13T15:07:19.066965162+02:00[Europe/Paris]",
+        comments = "Generator version: 7.7.0")
 public enum GdalFieldTypeDto {
-  INTEGER("Integer"),
+    INTEGER("Integer"),
 
-  INTEGER64("Integer64"),
+    INTEGER64("Integer64"),
 
-  REAL("Real"),
+    REAL("Real"),
 
-  STRING("String"),
+    STRING("String"),
 
-  BINARY("Binary"),
+    BINARY("Binary"),
 
-  INTEGER_LIST("IntegerList"),
+    INTEGER_LIST("IntegerList"),
 
-  INTEGER64_LIST("Integer64List"),
+    INTEGER64_LIST("Integer64List"),
 
-  REAL_LIST("RealList"),
+    REAL_LIST("RealList"),
 
-  STRING_LIST("StringList"),
+    STRING_LIST("StringList"),
 
-  DATE("Date"),
+    DATE("Date"),
 
-  TIME("Time"),
+    TIME("Time"),
 
-  DATE_TIME("DateTime");
+    DATE_TIME("DateTime");
 
-  private String value;
+    private String value;
 
-  GdalFieldTypeDto(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
-  public static GdalFieldTypeDto fromValue(String value) {
-    for (GdalFieldTypeDto b : GdalFieldTypeDto.values()) {
-      if (b.value.equals(value)) {
-        return b;
-      }
+    GdalFieldTypeDto(String value) {
+        this.value = value;
     }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
-  }
+
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static GdalFieldTypeDto fromValue(String value) {
+        for (GdalFieldTypeDto b : GdalFieldTypeDto.values()) {
+            if (b.value.equals(value)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
 }

@@ -18,20 +18,18 @@ import java.util.List;
 /** JSON Node tree as string deserializer. */
 public class NodeTreeAsStringDeserializer extends JsonDeserializer<List<String>> {
 
-  @Override
-  public List<String> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-    ObjectCodec oc = p.getCodec();
-    JsonNode node = oc.readTree(p);
-    List<String> geometries = new ArrayList<>();
-    if (node.isArray()) {
-      node.elements()
-          .forEachRemaining(
-              c -> {
+    @Override
+    public List<String> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        ObjectCodec oc = p.getCodec();
+        JsonNode node = oc.readTree(p);
+        List<String> geometries = new ArrayList<>();
+        if (node.isArray()) {
+            node.elements().forEachRemaining(c -> {
                 geometries.add(c.toString());
-              });
-    } else {
-      geometries.add(node.toString());
+            });
+        } else {
+            geometries.add(node.toString());
+        }
+        return geometries;
     }
-    return geometries;
-  }
 }

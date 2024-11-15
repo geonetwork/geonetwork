@@ -19,21 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/records")
 public class RecordController {
 
-  @Autowired
-  public RecordController() {}
+    @Autowired
+    public RecordController() {}
 
-  /** Search. */
-  @GetMapping(
-      path = {"/{uuid:.+}", "/{uuid:.+}/formatters/{formatterId}"},
-      produces = {
-        MediaType.APPLICATION_JSON_VALUE,
-        MediaType.APPLICATION_XML_VALUE,
-        MediaType.TEXT_HTML_VALUE,
-        MediaType.TEXT_PLAIN_VALUE
-      })
-  public String getRecord(@PathVariable String uuid, @PathVariable String formatterId)
-      throws IOException {
+    /** Search. */
+    @GetMapping(
+            path = {"/{uuid:.+}", "/{uuid:.+}/formatters/{formatterId}"},
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.TEXT_HTML_VALUE,
+                MediaType.TEXT_PLAIN_VALUE
+            })
+    public String getRecord(@PathVariable String uuid, @PathVariable String formatterId) throws IOException {
 
-    return "";
-  }
+        return "";
+    }
 }

@@ -12,46 +12,43 @@ package org.geonetwork.domain;
  * @author Jesse
  */
 public enum ReservedGroup {
-  /** The "All" group. IE the group that represents all. */
-  all(1),
-  /**
-   * The Intranet group. IE the group that represents all users within the same intranet as the
-   * geonetwork server.
-   */
-  intranet(0),
-  /** The "Guest" group. IE the group representing all users not signed in. */
-  guest(-1);
+    /** The "All" group. IE the group that represents all. */
+    all(1),
+    /** The Intranet group. IE the group that represents all users within the same intranet as the geonetwork server. */
+    intranet(0),
+    /** The "Guest" group. IE the group representing all users not signed in. */
+    guest(-1);
 
-  private final int _id;
+    private final int _id;
 
-  private ReservedGroup(int id) {
-    _id = id;
-  }
-
-  public static boolean isReserved(int grpId) {
-    for (ReservedGroup reservedGroup : values()) {
-      if (reservedGroup.getId() == grpId) {
-        return true;
-      }
+    private ReservedGroup(int id) {
+        _id = id;
     }
-    return false;
-  }
 
-  /**
-   * Get the id of the reserved group.
-   *
-   * @return the id of the reserved group.
-   */
-  public int getId() {
-    return _id;
-  }
+    public static boolean isReserved(int grpId) {
+        for (ReservedGroup reservedGroup : values()) {
+            if (reservedGroup.getId() == grpId) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-  /**
-   * Create a detached Group that represents the reserved group.
-   *
-   * @return a detached Group that represents the reserved group.
-   */
-  public Group getGroupEntityTemplate() {
-    return Group.builder().id(_id).name(name()).description(name()).build();
-  }
+    /**
+     * Get the id of the reserved group.
+     *
+     * @return the id of the reserved group.
+     */
+    public int getId() {
+        return _id;
+    }
+
+    /**
+     * Create a detached Group that represents the reserved group.
+     *
+     * @return a detached Group that represents the reserved group.
+     */
+    public Group getGroupEntityTemplate() {
+        return Group.builder().id(_id).name(name()).description(name()).build();
+    }
 }

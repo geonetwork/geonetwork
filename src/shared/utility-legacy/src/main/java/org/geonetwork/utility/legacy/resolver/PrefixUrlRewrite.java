@@ -13,28 +13,28 @@ import java.util.Objects;
  * @author Jesse on 11/28/2014.
  */
 public class PrefixUrlRewrite implements ResolverRewriteDirective {
-  private final String prefix;
-  private final String replacement;
+    private final String prefix;
+    private final String replacement;
 
-  public PrefixUrlRewrite(String prefix, String replacement) {
-    Objects.requireNonNull(prefix);
-    Objects.requireNonNull(replacement);
-    this.prefix = prefix;
-    this.replacement = replacement;
-  }
+    public PrefixUrlRewrite(String prefix, String replacement) {
+        Objects.requireNonNull(prefix);
+        Objects.requireNonNull(replacement);
+        this.prefix = prefix;
+        this.replacement = replacement;
+    }
 
-  @Override
-  public boolean appliesTo(String href) {
-    return href.startsWith(prefix);
-  }
+    @Override
+    public boolean appliesTo(String href) {
+        return href.startsWith(prefix);
+    }
 
-  @Override
-  public String rewrite(String href) {
-    return replacement + href.substring(prefix.length());
-  }
+    @Override
+    public String rewrite(String href) {
+        return replacement + href.substring(prefix.length());
+    }
 
-  @Override
-  public Object getKey() {
-    return prefix;
-  }
+    @Override
+    public Object getKey() {
+        return prefix;
+    }
 }
