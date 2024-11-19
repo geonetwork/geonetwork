@@ -3,6 +3,7 @@ import { HomePageComponent } from './home/home-page/home-page.component';
 import { SearchPageComponent } from './search/search-page/search-page.component';
 import { RecordPageComponent } from './record/record-page/record-page.component';
 import { MapPageComponent } from './map-page/map-page.component';
+import {DataUploadPageComponent} from "./data-upload-page/data-upload-page.component";
 
 export const routes: Routes = [
   { path: 'home', component: HomePageComponent },
@@ -13,4 +14,5 @@ export const routes: Routes = [
     component: RecordPageComponent,
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'dataupload', component: DataUploadPageComponent },
 ];

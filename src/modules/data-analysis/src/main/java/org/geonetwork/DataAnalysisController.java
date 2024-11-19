@@ -79,6 +79,12 @@ public class DataAnalysisController {
         }
     }
 
+    @GetMapping(path = "/layers", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Administrator')")
+    public ResponseEntity<List<String>> layers(@RequestParam String datasource) {
+        return new ResponseEntity<>(analyzer.getDatasourceLayers(datasource), HttpStatus.OK);
+    }
+
     @GetMapping(path = "/preview", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('Administrator')")
     public ResponseEntity<String> previewSynch(

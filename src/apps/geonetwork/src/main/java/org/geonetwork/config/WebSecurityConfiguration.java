@@ -9,6 +9,7 @@ package org.geonetwork.config;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import java.util.Arrays;
 import javax.crypto.spec.SecretKeySpec;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.proxy.HttpProxyPolicyAgentAuthorizationManager;
@@ -35,6 +36,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -42,12 +46,24 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfiguration {
 
     @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
             OauthAuthoritiesMapperService oauthAuthoritiesMapperService)
             throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/home", "/signin")
                         .permitAll()
                         .requestMatchers("/geonetwork/**")

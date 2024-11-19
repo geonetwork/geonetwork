@@ -61,6 +61,13 @@ export class NavigationComponent implements OnInit {
           this.router.navigate(['map'], { fragment: '/map' });
         },
       },
+      {
+        label: 'Data upload',
+        icon: 'fa fa-upload',
+        command: () => {
+          this.router.navigate(['dataupload']);
+        },
+      },
       // GN5 signin
       // {
       //   label: 'Sign in',

@@ -2,7 +2,7 @@ import { GcDataResultsTableComponent } from './components/gc-data-results-table/
 import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import {
-  DataTableComponent,
+  DataTableComponent, DataUploadComponent,
   SearchAggComponent,
   SearchBarSimpleComponent,
   SearchContextDirective,
@@ -31,6 +31,7 @@ import { SliderModule } from 'primeng/slider';
 import { GcBaseComponent } from './components/gc-base-component';
 import { GcBaseSearchComponent } from './components/gc-base-search-component';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { GcDataUploadComponent } from './components/gc-data-upload/gc-data-upload.component';
 
 const CUSTOM_ELEMENTS = [
   {
@@ -45,6 +46,10 @@ const CUSTOM_ELEMENTS = [
     component: GcSearchResultsTableComponent,
     selector: 'gc-search-results-table-component',
   },
+  {
+    component: GcDataUploadComponent,
+    selector: 'gc-data-upload-component',
+  },
 ];
 
 @NgModule({
@@ -58,6 +63,7 @@ const CUSTOM_ELEMENTS = [
     GWebcomponentsDocComponent,
     GWebcomponentsDocEmbedComponent,
     GWebcomponentConfigurationComponent,
+    GcDataUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -80,6 +86,7 @@ const CUSTOM_ELEMENTS = [
     SliderModule,
     InputSwitchModule,
     SearchBarSimpleComponent,
+    DataUploadComponent,
   ],
   bootstrap: [
     GcDataResultsTableComponent,

@@ -1,0 +1,159 @@
+<p-stepper (activeStepChange)="onStepChange($event)">
+  <p-stepperPanel header="NEW / Select a type" >
+    <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+
+      <div class="p-fluid">
+        <div>
+          <label for="template">Metadata template</label>
+          <input
+            pInputText
+            id="template"
+            aria-describedby="template-help"
+            [(ngModel)]="template" />
+          <small id="template-help">
+            Enter the metadata template UUID
+          </small>
+
+          <div>
+            <label for="datasource">Datasource</label>
+            <p-inputGroup>
+              <input
+                pInputText
+                id="datasource"
+                aria-describedby="datasource-help"
+                (change)="onDatasourceChange()"
+                [(ngModel)]="datasource" />
+              <button type="button"
+                      pButton
+                      label="Get layers"
+                      [disabled]="isFetchingLayers()"
+                      (click)="retrieveLayers()"></button>
+            </p-inputGroup>
+            <small id="datasource-help">
+              Enter the datasource URL
+            </small>
+          </div>
+
+          <p-fileUpload
+            mode="basic"
+            name="demo[]"
+            chooseIcon="pi pi-upload"
+            url="https://www.primefaces.org/cdn/api/upload.php"
+            accept="image/*" maxFileSize="1000000"
+            (onUpload)="onBasicUploadAuto($event)"
+            [auto]="true"
+            chooseLabel="Browse" />
+
+
+          @if (isFetchingLayers() ) {
+            <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+          }
+
+          @if (errorFetchingLayers() ) {
+            <p>An error ocurred retrieving dataset information. Please try later. {{errorFetchingLayers()}}</p>
+          }
+
+
+          <label for="layername">Dataset</label>
+          <p-dropdown
+            id="layername"
+            disabled="{{layers().length === 0}}"
+            [options]="layers()"
+            [(ngModel)]="layername"
+            (onChange)="onLayerChange()"
+            placeholder="Select a dataset" />
+          <small id="layername-help">
+            Select the dataset name to analyse
+          </small>
+
+        </div>
+      </div>
+
+      <div class="flex mt-2 gap-2">
+        <p-button
+          label="Next"
+          icon="fas fa-arrow-right"
+          iconPos="right"
+          (onClick)="nextCallback.emit()" />
+      </div>
+    </ng-template>
+  </p-stepperPanel>
+
+  <p-stepperPanel header="DATA / Scan & Analyse">
+    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+      <div>
+          @if (isExecutingAnalysis() ) {
+            <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+          } @else if (analysisResult()) {
+            <h2 class="pt-2 pb-2 text-lg font-semibold underline underline-offset-4">Dataset analysis result</h2>
+
+            <div class="grid grid-cols-8 gap-4">
+              <div><strong>Name</strong></div>
+              <div class="col-span-7">{{ analysisResult().layers[0].name }}</div>
+
+              <div><strong>Description</strong></div>
+              <div class="col-span-7">{{ analysisResult().description }}</div>
+
+              <div><strong>Format</strong></div>
+              <div class="col-span-7">{{ analysisResult().format }}</div>
+
+              <div><strong>Number of features</strong></div>
+              <div class="col-span-7">{{ analysisResult().layers[0].featureCount }}</div>
+
+              @if (analysisResult().layers[0].geometryFields.length > 0) {
+                <div><strong>Type</strong></div>
+                <div class="col-span-7">{{ analysisResult().layers[0].geometryFields[0].type }}</div>
+
+                <div><strong>CRS</strong></div>
+                <div class="col-span-7"><a href="http://epsg.io/{{crsCode()}}" target="_blank">EPSG:{{ crsCode() }}</a></div>
+
+                <div><strong>Extent</strong></div>
+                <div class="col-span-7">{{ analysisResult().layers[0].geometryFields[0].extent }}</div>
+              }
+
+              <div><strong>Fields</strong></div>
+              <div class="col-span-7">
+                <div class="grid grid-cols-6 gap-4">
+                  <div><strong>Name</strong></div>
+                  <div class="col-span-5"><strong>Type</strong></div>
+
+                  @for (field of analysisResult().layers[0].fields; track field) {
+                    <div>{{ field.name }}</div>
+                    <div class="col-span-5">{{ field.type }}</div>
+                  }
+                </div>
+              </div>
+
+            </div>
+          }
+      </div>
+      <div class="flex mt-2 gap-2">
+        <p-button
+          label="Back"
+          icon="fas fa-arrow-left"
+          (onClick)="prevCallback.emit()" />
+        <p-button
+          label="Next"
+          icon="fas fa-arrow-right"
+          iconPos="right"
+          (onClick)="nextCallback.emit()" />
+      </div>
+    </ng-template>
+  </p-stepperPanel>
+
+  <p-stepperPanel header="CONFIRM / Save new resource">
+    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+      <div>
+        @if (isCreatingPreview() ) {
+          <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+        } @else if (previewResult()) {
+          <pre>{{ previewResult() }}</pre>
+        }
+      </div>
+      <div class="flex mt-2 gap-2">
+        <p-button label="Back" icon="fas fa-arrow-left" (onClick)="prevCallback.emit()" />
+        <p-button label="Save" />
+      </div>
+    </ng-template>
+  </p-stepperPanel>-
+</p-stepper>
