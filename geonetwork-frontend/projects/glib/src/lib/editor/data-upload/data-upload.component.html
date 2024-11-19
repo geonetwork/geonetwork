@@ -3,7 +3,7 @@
     <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
 
       <div class="p-fluid">
-        <div>
+        <div class="mb-2">
           <label for="template">Metadata template</label>
           <input
             pInputText
@@ -13,8 +13,9 @@
           <small id="template-help">
             Enter the metadata template UUID
           </small>
+        </div>
 
-          <div>
+        <div class="mb-2">
             <label for="datasource">Datasource</label>
             <p-inputGroup>
               <input
@@ -25,35 +26,38 @@
                 [(ngModel)]="datasource" />
               <button type="button"
                       pButton
-                      label="Get layers"
+                      label="Get datasets"
                       [disabled]="isFetchingLayers()"
                       (click)="retrieveLayers()"></button>
             </p-inputGroup>
+
+            <div class="mt-2 w-64">
+              <p-fileUpload
+                mode="basic"
+                name="demo[]"
+                chooseIcon="pi pi-upload"
+                accept="image/*" maxFileSize="1000000"
+                (onUpload)="onBasicUploadAuto($event)"
+                [auto]="true"
+                chooseLabel="Browse" />
+            </div>
             <small id="datasource-help">
-              Enter the datasource URL
+              Enter the datasource URL or upload a datasource
             </small>
-          </div>
-
-          <p-fileUpload
-            mode="basic"
-            name="demo[]"
-            chooseIcon="pi pi-upload"
-            url="https://www.primefaces.org/cdn/api/upload.php"
-            accept="image/*" maxFileSize="1000000"
-            (onUpload)="onBasicUploadAuto($event)"
-            [auto]="true"
-            chooseLabel="Browse" />
-
 
           @if (isFetchingLayers() ) {
-            <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+            <div>
+              <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+            </div>
           }
 
           @if (errorFetchingLayers() ) {
-            <p>An error ocurred retrieving dataset information. Please try later. {{errorFetchingLayers()}}</p>
+            <p class="error-message">An error ocurred retrieving dataset information. Please try later.</p>
+            <small class="error-message">Error is: {{errorFetchingLayers()}}</small>
           }
+        </div>
 
-
+        <div>
           <label for="layername">Dataset</label>
           <p-dropdown
             id="layername"
@@ -65,12 +69,12 @@
           <small id="layername-help">
             Select the dataset name to analyse
           </small>
-
         </div>
       </div>
 
       <div class="flex mt-2 gap-2">
         <p-button
+          [disabled]="!isStep1Ready()"
           label="Next"
           icon="fas fa-arrow-right"
           iconPos="right"
@@ -84,6 +88,10 @@
       <div>
           @if (isExecutingAnalysis() ) {
             <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+
+          } @if (errorExecutingAnalysis() ) {
+              <p class="error-message">An error analysing the dataset information. Please try later.</p>
+              <small class="error-message">{{errorExecutingAnalysis()}}</small>
           } @else if (analysisResult()) {
             <h2 class="pt-2 pb-2 text-lg font-semibold underline underline-offset-4">Dataset analysis result</h2>
 
@@ -133,6 +141,7 @@
           icon="fas fa-arrow-left"
           (onClick)="prevCallback.emit()" />
         <p-button
+          [disabled]="!analysisResult()"
           label="Next"
           icon="fas fa-arrow-right"
           iconPos="right"
@@ -147,12 +156,12 @@
         @if (isCreatingPreview() ) {
           <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
         } @else if (previewResult()) {
-          <pre>{{ previewResult() }}</pre>
+          <pre class="h-96 overflow-y-auto">{{ previewResult() }}</pre>
         }
       </div>
       <div class="flex mt-2 gap-2">
         <p-button label="Back" icon="fas fa-arrow-left" (onClick)="prevCallback.emit()" />
-        <p-button label="Save" />
+        <p-button label="Save" [disabled]="!previewResult()"/>
       </div>
     </ng-template>
   </p-stepperPanel>-

@@ -44,6 +44,8 @@ export class DataUploadComponent {
   isExecutingAnalysis = signal(false);
   isCreatingPreview = signal(false);
   errorFetchingLayers = signal('');
+  errorExecutingAnalysis = signal('');
+  errorPreviewingAnalysis = signal('');
 
   crsCode = computed(() => {
     let output = "";
@@ -63,6 +65,7 @@ export class DataUploadComponent {
     if (step == 1) {
       if (!this.analysisResult()) {
         this.isExecutingAnalysis.set(true);
+        this.errorExecutingAnalysis.set('');
 
         const subscription = this.dataUploadService.executeAnalysis(this.datasource, this.layername).subscribe({
           next: result => {
@@ -70,6 +73,7 @@ export class DataUploadComponent {
           },
           error: error => {
             console.log(error);
+            this.errorExecutingAnalysis.set(error.errorMessage);
             this.isExecutingAnalysis.set(false);
           },
           complete: () => {
@@ -84,6 +88,7 @@ export class DataUploadComponent {
     } else if (step == 2) {
       if (!this.previewResult()) {
         this.isCreatingPreview.set(true);
+        this.errorPreviewingAnalysis.set('');
 
         const subscription = this.dataUploadService.previewAnalysis(this.template, this.datasource, this.layername).subscribe({
           next: result => {
@@ -91,6 +96,7 @@ export class DataUploadComponent {
           },
           error: error => {
             console.log(error);
+            this.errorPreviewingAnalysis.set(error.errorMessage);
             this.isCreatingPreview.set(false);
           },
           complete: () => {
@@ -112,6 +118,9 @@ export class DataUploadComponent {
     const subscription = this.dataUploadService.retrieveLayers(this.datasource).subscribe({
       next: result => {
         this.layers.set(result);
+        if (result.length > 0) {
+          this.layername = result[0];
+        }
       },
       error: error => {
         console.log(error);
@@ -145,5 +154,9 @@ export class DataUploadComponent {
 
   onBasicUploadAuto(event: FileUploadEvent) {
 
+  }
+
+  isStep1Ready(): boolean {
+    return this.template !== '' && this.datasource !== '' && this.layername !== '';
   }
 }
