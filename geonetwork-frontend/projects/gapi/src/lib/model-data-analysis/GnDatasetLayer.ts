@@ -15,15 +15,15 @@
 import { mapValues } from '../runtime';
 import type { GnDatasetLayerField } from './GnDatasetLayerField';
 import {
-    GnDatasetLayerFieldFromJSON,
-    GnDatasetLayerFieldFromJSONTyped,
-    GnDatasetLayerFieldToJSON,
+  GnDatasetLayerFieldFromJSON,
+  GnDatasetLayerFieldFromJSONTyped,
+  GnDatasetLayerFieldToJSON,
 } from './GnDatasetLayerField';
 import type { GnDatasetLayerGeomField } from './GnDatasetLayerGeomField';
 import {
-    GnDatasetLayerGeomFieldFromJSON,
-    GnDatasetLayerGeomFieldFromJSONTyped,
-    GnDatasetLayerGeomFieldToJSON,
+  GnDatasetLayerGeomFieldFromJSON,
+  GnDatasetLayerGeomFieldFromJSONTyped,
+  GnDatasetLayerGeomFieldToJSON,
 } from './GnDatasetLayerGeomField';
 
 /**
@@ -32,82 +32,102 @@ import {
  * @interface GnDatasetLayer
  */
 export interface GnDatasetLayer {
-    /**
-     *
-     * @type {string}
-     * @memberof GnDatasetLayer
-     */
-    name?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof GnDatasetLayer
-     */
-    fidColumnName?: string;
-    /**
-     *
-     * @type {number}
-     * @memberof GnDatasetLayer
-     */
-    featureCount?: number;
-    /**
-     *
-     * @type {Array<GnDatasetLayerField>}
-     * @memberof GnDatasetLayer
-     */
-    fields?: Array<GnDatasetLayerField>;
-    /**
-     *
-     * @type {Array<GnDatasetLayerGeomField>}
-     * @memberof GnDatasetLayer
-     */
-    geometryFields?: Array<GnDatasetLayerGeomField>;
-    /**
-     *
-     * @type {{ [key: string]: object; }}
-     * @memberof GnDatasetLayer
-     */
-    metadata?: { [key: string]: object; };
+  /**
+   *
+   * @type {string}
+   * @memberof GnDatasetLayer
+   */
+  name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnDatasetLayer
+   */
+  fidColumnName?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof GnDatasetLayer
+   */
+  featureCount?: number;
+  /**
+   *
+   * @type {Array<GnDatasetLayerField>}
+   * @memberof GnDatasetLayer
+   */
+  fields?: Array<GnDatasetLayerField>;
+  /**
+   *
+   * @type {Array<GnDatasetLayerGeomField>}
+   * @memberof GnDatasetLayer
+   */
+  geometryFields?: Array<GnDatasetLayerGeomField>;
+  /**
+   *
+   * @type {{ [key: string]: object; }}
+   * @memberof GnDatasetLayer
+   */
+  metadata?: { [key: string]: object };
 }
 
 /**
  * Check if a given object implements the GnDatasetLayer interface.
  */
-export function instanceOfGnDatasetLayer(value: object): value is GnDatasetLayer {
-    return true;
+export function instanceOfGnDatasetLayer(
+  value: object
+): value is GnDatasetLayer {
+  return true;
 }
 
 export function GnDatasetLayerFromJSON(json: any): GnDatasetLayer {
-    return GnDatasetLayerFromJSONTyped(json, false);
+  return GnDatasetLayerFromJSONTyped(json, false);
 }
 
-export function GnDatasetLayerFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnDatasetLayer {
-    if (json == null) {
-        return json;
-    }
-    return {
-
-        'name': json['name'] == null ? undefined : json['name'],
-        'fidColumnName': json['fidColumnName'] == null ? undefined : json['fidColumnName'],
-        'featureCount': json['featureCount'] == null ? undefined : json['featureCount'],
-        'fields': json['fields'] == null ? undefined : ((json['fields'] as Array<any>).map(GnDatasetLayerFieldFromJSON)),
-        'geometryFields': json['geometryFields'] == null ? undefined : ((json['geometryFields'] as Array<any>).map(GnDatasetLayerGeomFieldFromJSON)),
-        'metadata': json['metadata'] == null ? undefined : json['metadata'],
-    };
+export function GnDatasetLayerFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnDatasetLayer {
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json['name'] == null ? undefined : json['name'],
+    fidColumnName:
+      json['fidColumnName'] == null ? undefined : json['fidColumnName'],
+    featureCount:
+      json['featureCount'] == null ? undefined : json['featureCount'],
+    fields:
+      json['fields'] == null
+        ? undefined
+        : (json['fields'] as Array<any>).map(GnDatasetLayerFieldFromJSON),
+    geometryFields:
+      json['geometryFields'] == null
+        ? undefined
+        : (json['geometryFields'] as Array<any>).map(
+            GnDatasetLayerGeomFieldFromJSON
+          ),
+    metadata: json['metadata'] == null ? undefined : json['metadata'],
+  };
 }
 
 export function GnDatasetLayerToJSON(value?: GnDatasetLayer | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-
-        'name': value['name'],
-        'fidColumnName': value['fidColumnName'],
-        'featureCount': value['featureCount'],
-        'fields': value['fields'] == null ? undefined : ((value['fields'] as Array<any>).map(GnDatasetLayerFieldToJSON)),
-        'geometryFields': value['geometryFields'] == null ? undefined : ((value['geometryFields'] as Array<any>).map(GnDatasetLayerGeomFieldToJSON)),
-        'metadata': value['metadata'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value['name'],
+    fidColumnName: value['fidColumnName'],
+    featureCount: value['featureCount'],
+    fields:
+      value['fields'] == null
+        ? undefined
+        : (value['fields'] as Array<any>).map(GnDatasetLayerFieldToJSON),
+    geometryFields:
+      value['geometryFields'] == null
+        ? undefined
+        : (value['geometryFields'] as Array<any>).map(
+            GnDatasetLayerGeomFieldToJSON
+          ),
+    metadata: value['metadata'],
+  };
 }
-

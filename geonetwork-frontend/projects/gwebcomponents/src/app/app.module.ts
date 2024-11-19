@@ -2,7 +2,8 @@ import { GcDataResultsTableComponent } from './components/gc-data-results-table/
 import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import {
-  DataTableComponent, DataUploadComponent,
+  DataTableComponent,
+  DataUploadComponent,
   SearchAggComponent,
   SearchBarSimpleComponent,
   SearchContextDirective,

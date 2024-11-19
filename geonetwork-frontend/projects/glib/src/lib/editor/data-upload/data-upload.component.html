@@ -1,78 +1,108 @@
-<p-stepper (activeStepChange)="onStepChange($event)">
-  <p-stepperPanel header="NEW / Select a type" >
-    <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
-
-      <div class="p-fluid">
-        <div class="mb-2">
-          <label for="template">Metadata template</label>
-          <input
-            pInputText
-            id="template"
-            aria-describedby="template-help"
-            [(ngModel)]="template" />
-          <small id="template-help">
-            Enter the metadata template UUID
-          </small>
-        </div>
-
-        <div class="mb-2">
-            <label for="datasource">Datasource</label>
-            <p-inputGroup>
+<p-stepper (activeStepChange)="onStepChange($event)" class="p-10">
+  <p-stepperPanel header="Select data">
+    <ng-template
+      pTemplate="content"
+      let-nextCallback="nextCallback"
+      let-index="index">
+      <div class="flex gap-10">
+        <div class="w-1/2">
+          <div class="p-fluid">
+            <div class="mb-10">
+              <label for="template">Type</label>
               <input
                 pInputText
-                id="datasource"
-                aria-describedby="datasource-help"
-                (change)="onDatasourceChange()"
-                [(ngModel)]="datasource" />
-              <button type="button"
-                      pButton
-                      label="Get datasets"
-                      [disabled]="isFetchingLayers()"
-                      (click)="retrieveLayers()"></button>
-            </p-inputGroup>
-
-            <div class="mt-2 w-64">
-              <p-fileUpload
-                mode="basic"
-                name="demo[]"
-                chooseIcon="pi pi-upload"
-                accept="image/*" maxFileSize="1000000"
-                (onUpload)="onBasicUploadAuto($event)"
-                [auto]="true"
-                chooseLabel="Browse" />
+                id="template"
+                aria-describedby="template-help"
+                [(ngModel)]="template" />
+              <small id="template-help">
+                Type of resource to describe. Choose a template UUID
+              </small>
             </div>
-            <small id="datasource-help">
-              Enter the datasource URL or upload a datasource
-            </small>
 
-          @if (isFetchingLayers() ) {
-            <div>
-              <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+            <div class="mb-2">
+              <label for="datasource">Datasource</label>
+              <p-inputGroup>
+                <p-inputGroupAddon for="datasource"
+                  ><i class="fa fa-link"></i>URL</p-inputGroupAddon
+                >
+                <input
+                  pInputText
+                  id="datasource"
+                  aria-describedby="datasource-help"
+                  (change)="onDatasourceChange()"
+                  [(ngModel)]="datasource" />
+                <button
+                  type="button"
+                  pButton
+                  label="Find datasets"
+                  [disabled]="isFetchingLayers()"
+                  (click)="retrieveLayers()"></button>
+              </p-inputGroup>
+
+              <div class="font-bold w-full text-2xl text-center">or</div>
+              <div class="mb-10 w-full">
+                <p-fileUpload
+                  mode="basic"
+                  name="demo[]"
+                  chooseIcon="fa fa-upload"
+                  accept="image/*"
+                  maxFileSize="1000000"
+                  (onUpload)="onBasicUploadAuto($event)"
+                  [auto]="true"
+                  chooseLabel="Upload your file" />
+              </div>
+
+              @if (isFetchingLayers()) {
+                <div>
+                  <p-progressBar
+                    mode="indeterminate"
+                    [style]="{ height: '6px' }" />
+                </div>
+              }
+
+              @if (errorFetchingLayers()) {
+                <p class="error-message">
+                  An error occurred retrieving dataset information. Please try
+                  later.
+                </p>
+                <small class="error-message"
+                  >Error is: {{ errorFetchingLayers() }}</small
+                >
+              }
             </div>
-          }
 
-          @if (errorFetchingLayers() ) {
-            <p class="error-message">An error ocurred retrieving dataset information. Please try later.</p>
-            <small class="error-message">Error is: {{errorFetchingLayers()}}</small>
-          }
+            @if (layers().length > 0) {
+              <div title=" Select the dataset name to analyse">
+                <label for="layername"
+                  >{{ layers().length }} dataset(s) found</label
+                >
+                <p-dropdown
+                  id="layername"
+                  disabled="{{ layers().length === 0 }}"
+                  [options]="layers()"
+                  [(ngModel)]="layername"
+                  (onChange)="onLayerChange()"
+                  placeholder="Select a dataset" />
+              </div>
+            }
+          </div>
         </div>
+        <div class="w-1/2">
+          <h1 class="text-3xl font-bold">Upload your data</h1>
+          <span
+            >Choose a type of data to describe (eg. geospatial, tabular,
+            statistical, maps), point to the datasource URL or upload a new file
+            and select the dataset to register.</span
+          >
 
-        <div>
-          <label for="layername">Dataset</label>
-          <p-dropdown
-            id="layername"
-            disabled="{{layers().length === 0}}"
-            [options]="layers()"
-            [(ngModel)]="layername"
-            (onChange)="onLayerChange()"
-            placeholder="Select a dataset" />
-          <small id="layername-help">
-            Select the dataset name to analyse
-          </small>
+          <h2 class="font-bold mt-10">Accepted data formats:</h2>
+          CSV, Excel, GPKG, JSON, WFS
+
+          <h2 class="font-bold mt-10">Maximum file size is 100Mo</h2>
         </div>
       </div>
 
-      <div class="flex mt-2 gap-2">
+      <div class="flex mt-2 gap-2 flex-row-reverse">
         <p-button
           [disabled]="!isStep1Ready()"
           label="Next"
@@ -83,57 +113,67 @@
     </ng-template>
   </p-stepperPanel>
 
-  <p-stepperPanel header="DATA / Scan & Analyse">
-    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+  <p-stepperPanel header="Scan & Analysis">
+    <ng-template
+      pTemplate="content"
+      let-prevCallback="prevCallback"
+      let-nextCallback="nextCallback"
+      let-index="index">
       <div>
-          @if (isExecutingAnalysis() ) {
-            <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+        @if (isExecutingAnalysis()) {
+          <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
+        }
+        @if (errorExecutingAnalysis()) {
+          <p class="error-message">
+            An error analysing the dataset information. Please try later.
+          </p>
+          <small class="error-message">{{ errorExecutingAnalysis() }}</small>
+        } @else if (analysisResult()) {
+          <h2 class="pt-2 pb-2 text-2xl font-bold">
+            {{ analysisResult().layers[0].name }} dataset contains
+            {{ analysisResult().layers[0].featureCount }} features.
+          </h2>
 
-          } @if (errorExecutingAnalysis() ) {
-              <p class="error-message">An error analysing the dataset information. Please try later.</p>
-              <small class="error-message">{{errorExecutingAnalysis()}}</small>
-          } @else if (analysisResult()) {
-            <h2 class="pt-2 pb-2 text-lg font-semibold underline underline-offset-4">Dataset analysis result</h2>
+          <div class="grid grid-cols-8 gap-4">
+            <div><strong>Description</strong></div>
+            <div class="col-span-7">{{ analysisResult().description }}</div>
 
-            <div class="grid grid-cols-8 gap-4">
-              <div><strong>Name</strong></div>
-              <div class="col-span-7">{{ analysisResult().layers[0].name }}</div>
+            <div><strong>Format</strong></div>
+            <div class="col-span-7">{{ analysisResult().format }}</div>
 
-              <div><strong>Description</strong></div>
-              <div class="col-span-7">{{ analysisResult().description }}</div>
-
-              <div><strong>Format</strong></div>
-              <div class="col-span-7">{{ analysisResult().format }}</div>
-
-              <div><strong>Number of features</strong></div>
-              <div class="col-span-7">{{ analysisResult().layers[0].featureCount }}</div>
-
-              @if (analysisResult().layers[0].geometryFields.length > 0) {
-                <div><strong>Type</strong></div>
-                <div class="col-span-7">{{ analysisResult().layers[0].geometryFields[0].type }}</div>
-
-                <div><strong>CRS</strong></div>
-                <div class="col-span-7"><a href="http://epsg.io/{{crsCode()}}" target="_blank">EPSG:{{ crsCode() }}</a></div>
-
-                <div><strong>Extent</strong></div>
-                <div class="col-span-7">{{ analysisResult().layers[0].geometryFields[0].extent }}</div>
-              }
-
-              <div><strong>Fields</strong></div>
+            @if (analysisResult().layers[0].geometryFields.length > 0) {
+              <div><strong>Type</strong></div>
               <div class="col-span-7">
-                <div class="grid grid-cols-6 gap-4">
-                  <div><strong>Name</strong></div>
-                  <div class="col-span-5"><strong>Type</strong></div>
-
-                  @for (field of analysisResult().layers[0].fields; track field) {
-                    <div>{{ field.name }}</div>
-                    <div class="col-span-5">{{ field.type }}</div>
-                  }
-                </div>
+                {{ analysisResult().layers[0].geometryFields[0].type }}
               </div>
 
+              <div><strong>CRS</strong></div>
+              <div class="col-span-7">
+                <a href="http://epsg.io/{{ crsCode() }}" target="_blank"
+                  >EPSG:{{ crsCode() }}</a
+                >
+              </div>
+
+              <div><strong>Extent</strong></div>
+              <div class="col-span-7">
+                {{ analysisResult().layers[0].geometryFields[0].extent }}
+              </div>
+            }
+
+            <div><strong>Data model</strong></div>
+            <div class="col-span-7">
+              <div class="grid grid-cols-6 gap-4">
+                <div><strong>Name</strong></div>
+                <div class="col-span-5"><strong>Type</strong></div>
+
+                @for (field of analysisResult().layers[0].fields; track field) {
+                  <div>{{ field.name }}</div>
+                  <div class="col-span-5">{{ field.type }}</div>
+                }
+              </div>
             </div>
-          }
+          </div>
+        }
       </div>
       <div class="flex mt-2 gap-2">
         <p-button
@@ -150,19 +190,27 @@
     </ng-template>
   </p-stepperPanel>
 
-  <p-stepperPanel header="CONFIRM / Save new resource">
-    <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+  <p-stepperPanel header="Review and save">
+    <ng-template
+      pTemplate="content"
+      let-prevCallback="prevCallback"
+      let-index="index">
       <div>
-        @if (isCreatingPreview() ) {
-          <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+        @if (isCreatingPreview()) {
+          <p-progressSpinner
+            [style]="{ width: '30px', height: '30px' }"></p-progressSpinner>
         } @else if (previewResult()) {
           <pre class="h-96 overflow-y-auto">{{ previewResult() }}</pre>
         }
       </div>
       <div class="flex mt-2 gap-2">
-        <p-button label="Back" icon="fas fa-arrow-left" (onClick)="prevCallback.emit()" />
-        <p-button label="Save" [disabled]="!previewResult()"/>
+        <p-button
+          label="Back"
+          icon="fas fa-arrow-left"
+          (onClick)="prevCallback.emit()" />
+        <p-button label="Save" [disabled]="!previewResult()" />
       </div>
     </ng-template>
-  </p-stepperPanel>-
+  </p-stepperPanel>
+  -
 </p-stepper>

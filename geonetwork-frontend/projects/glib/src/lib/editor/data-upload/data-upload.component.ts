@@ -1,15 +1,22 @@
-import {Component, computed, DestroyRef, inject, Signal, signal} from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  Signal,
+  signal,
+} from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
-import {Button, ButtonDirective} from "primeng/button";
-import {FormsModule} from "@angular/forms";
-import {InputTextModule} from "primeng/inputtext";
-import {DataUploadService} from "./data-upload.service";
-import {GnDatasetInfo} from "gapi";
+import { Button, ButtonDirective } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { DataUploadService } from './data-upload.service';
+import { GnDatasetInfo } from 'gapi';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import {DropdownModule} from "primeng/dropdown";
-import {ProgressSpinnerModule} from "primeng/progressspinner";
-import {FileUploadEvent, FileUploadModule} from "primeng/fileupload";
+import { DropdownModule } from 'primeng/dropdown';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
 
 @Component({
   selector: 'g-data-upload',
@@ -25,19 +32,20 @@ import {FileUploadEvent, FileUploadModule} from "primeng/fileupload";
     ButtonDirective,
     DropdownModule,
     ProgressSpinnerModule,
-    FileUploadModule
+    FileUploadModule,
   ],
-  styleUrl: './data-upload.component.css'
+  styleUrl: './data-upload.component.css',
 })
 export class DataUploadComponent {
   template: string = 'd752fab9-4560-4a32-9da6-227b51fca867';
-  datasource: string = 'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv';
+  datasource: string =
+    'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv';
   layername: string = '';
 
   dataUploadService = inject(DataUploadService);
 
   previewResult = signal<string>('');
-  analysisResult= signal<GnDatasetInfo | undefined>(undefined);
+  analysisResult = signal<GnDatasetInfo | undefined>(undefined);
   layers = signal<string[]>([]);
 
   isFetchingLayers = signal(false);
@@ -48,16 +56,17 @@ export class DataUploadComponent {
   errorPreviewingAnalysis = signal('');
 
   crsCode = computed(() => {
-    let output = "";
+    let output = '';
     let datasetInfo = this.analysisResult();
     if (datasetInfo?.layers && datasetInfo.layers[0].geometryFields) {
-      let parsedValue = datasetInfo.layers[0].geometryFields[0].crs?.split(",").pop();
-      output = parsedValue ? parsedValue.replace("]]", "") : "";
+      let parsedValue = datasetInfo.layers[0].geometryFields[0].crs
+        ?.split(',')
+        .pop();
+      output = parsedValue ? parsedValue.replace(']]', '') : '';
     }
 
     return output;
   });
-
 
   private destroyRef = inject(DestroyRef);
 
@@ -67,19 +76,21 @@ export class DataUploadComponent {
         this.isExecutingAnalysis.set(true);
         this.errorExecutingAnalysis.set('');
 
-        const subscription = this.dataUploadService.executeAnalysis(this.datasource, this.layername).subscribe({
-          next: result => {
-            this.analysisResult.set(result);
-          },
-          error: error => {
-            console.log(error);
-            this.errorExecutingAnalysis.set(error.errorMessage);
-            this.isExecutingAnalysis.set(false);
-          },
-          complete: () => {
-            this.isExecutingAnalysis.set(false);
-          }
-        });
+        const subscription = this.dataUploadService
+          .executeAnalysis(this.datasource, this.layername)
+          .subscribe({
+            next: result => {
+              this.analysisResult.set(result);
+            },
+            error: error => {
+              console.log(error);
+              this.errorExecutingAnalysis.set(error.errorMessage);
+              this.isExecutingAnalysis.set(false);
+            },
+            complete: () => {
+              this.isExecutingAnalysis.set(false);
+            },
+          });
 
         this.destroyRef.onDestroy(() => {
           subscription.unsubscribe();
@@ -90,19 +101,21 @@ export class DataUploadComponent {
         this.isCreatingPreview.set(true);
         this.errorPreviewingAnalysis.set('');
 
-        const subscription = this.dataUploadService.previewAnalysis(this.template, this.datasource, this.layername).subscribe({
-          next: result => {
-            this.previewResult.set(result);
-          },
-          error: error => {
-            console.log(error);
-            this.errorPreviewingAnalysis.set(error.errorMessage);
-            this.isCreatingPreview.set(false);
-          },
-          complete: () => {
-            this.isCreatingPreview.set(false);
-          }
-        });
+        const subscription = this.dataUploadService
+          .previewAnalysis(this.template, this.datasource, this.layername)
+          .subscribe({
+            next: result => {
+              this.previewResult.set(result);
+            },
+            error: error => {
+              console.log(error);
+              this.errorPreviewingAnalysis.set(error.errorMessage);
+              this.isCreatingPreview.set(false);
+            },
+            complete: () => {
+              this.isCreatingPreview.set(false);
+            },
+          });
 
         this.destroyRef.onDestroy(() => {
           subscription.unsubscribe();
@@ -115,22 +128,24 @@ export class DataUploadComponent {
     this.isFetchingLayers.set(true);
     this.errorFetchingLayers.set('');
 
-    const subscription = this.dataUploadService.retrieveLayers(this.datasource).subscribe({
-      next: result => {
-        this.layers.set(result);
-        if (result.length > 0) {
-          this.layername = result[0];
-        }
-      },
-      error: error => {
-        console.log(error);
-        this.errorFetchingLayers.set(error.statusText);
-        this.isFetchingLayers.set(false);
-      },
-      complete: () => {
-        this.isFetchingLayers.set(false);
-      }
-    });
+    const subscription = this.dataUploadService
+      .retrieveLayers(this.datasource)
+      .subscribe({
+        next: result => {
+          this.layers.set(result);
+          if (result.length > 0) {
+            this.layername = result[0];
+          }
+        },
+        error: error => {
+          console.log(error);
+          this.errorFetchingLayers.set(error.statusText);
+          this.isFetchingLayers.set(false);
+        },
+        complete: () => {
+          this.isFetchingLayers.set(false);
+        },
+      });
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
@@ -152,11 +167,11 @@ export class DataUploadComponent {
     this.previewResult.set('');
   }
 
-  onBasicUploadAuto(event: FileUploadEvent) {
-
-  }
+  onBasicUploadAuto(event: FileUploadEvent) {}
 
   isStep1Ready(): boolean {
-    return this.template !== '' && this.datasource !== '' && this.layername !== '';
+    return (
+      this.template !== '' && this.datasource !== '' && this.layername !== ''
+    );
   }
 }

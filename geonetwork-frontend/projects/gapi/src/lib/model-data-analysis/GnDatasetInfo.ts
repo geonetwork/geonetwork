@@ -15,9 +15,9 @@
 import { mapValues } from '../runtime';
 import type { GnDatasetLayer } from './GnDatasetLayer';
 import {
-    GnDatasetLayerFromJSON,
-    GnDatasetLayerFromJSONTyped,
-    GnDatasetLayerToJSON,
+  GnDatasetLayerFromJSON,
+  GnDatasetLayerFromJSONTyped,
+  GnDatasetLayerToJSON,
 } from './GnDatasetLayer';
 
 /**
@@ -26,74 +26,81 @@ import {
  * @interface GnDatasetInfo
  */
 export interface GnDatasetInfo {
-    /**
-     *
-     * @type {string}
-     * @memberof GnDatasetInfo
-     */
-    description?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof GnDatasetInfo
-     */
-    format?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof GnDatasetInfo
-     */
-    formatDescription?: string;
-    /**
-     *
-     * @type {Array<GnDatasetLayer>}
-     * @memberof GnDatasetInfo
-     */
-    layers?: Array<GnDatasetLayer>;
-    /**
-     *
-     * @type {{ [key: string]: object; }}
-     * @memberof GnDatasetInfo
-     */
-    metadata?: { [key: string]: object; };
+  /**
+   *
+   * @type {string}
+   * @memberof GnDatasetInfo
+   */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnDatasetInfo
+   */
+  format?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnDatasetInfo
+   */
+  formatDescription?: string;
+  /**
+   *
+   * @type {Array<GnDatasetLayer>}
+   * @memberof GnDatasetInfo
+   */
+  layers?: Array<GnDatasetLayer>;
+  /**
+   *
+   * @type {{ [key: string]: object; }}
+   * @memberof GnDatasetInfo
+   */
+  metadata?: { [key: string]: object };
 }
 
 /**
  * Check if a given object implements the GnDatasetInfo interface.
  */
 export function instanceOfGnDatasetInfo(value: object): value is GnDatasetInfo {
-    return true;
+  return true;
 }
 
 export function GnDatasetInfoFromJSON(json: any): GnDatasetInfo {
-    return GnDatasetInfoFromJSONTyped(json, false);
+  return GnDatasetInfoFromJSONTyped(json, false);
 }
 
-export function GnDatasetInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnDatasetInfo {
-    if (json == null) {
-        return json;
-    }
-    return {
-
-        'description': json['description'] == null ? undefined : json['description'],
-        'format': json['format'] == null ? undefined : json['format'],
-        'formatDescription': json['formatDescription'] == null ? undefined : json['formatDescription'],
-        'layers': json['layers'] == null ? undefined : ((json['layers'] as Array<any>).map(GnDatasetLayerFromJSON)),
-        'metadata': json['metadata'] == null ? undefined : json['metadata'],
-    };
+export function GnDatasetInfoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnDatasetInfo {
+  if (json == null) {
+    return json;
+  }
+  return {
+    description: json['description'] == null ? undefined : json['description'],
+    format: json['format'] == null ? undefined : json['format'],
+    formatDescription:
+      json['formatDescription'] == null ? undefined : json['formatDescription'],
+    layers:
+      json['layers'] == null
+        ? undefined
+        : (json['layers'] as Array<any>).map(GnDatasetLayerFromJSON),
+    metadata: json['metadata'] == null ? undefined : json['metadata'],
+  };
 }
 
 export function GnDatasetInfoToJSON(value?: GnDatasetInfo | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-
-        'description': value['description'],
-        'format': value['format'],
-        'formatDescription': value['formatDescription'],
-        'layers': value['layers'] == null ? undefined : ((value['layers'] as Array<any>).map(GnDatasetLayerToJSON)),
-        'metadata': value['metadata'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    description: value['description'],
+    format: value['format'],
+    formatDescription: value['formatDescription'],
+    layers:
+      value['layers'] == null
+        ? undefined
+        : (value['layers'] as Array<any>).map(GnDatasetLayerToJSON),
+    metadata: value['metadata'],
+  };
 }
-

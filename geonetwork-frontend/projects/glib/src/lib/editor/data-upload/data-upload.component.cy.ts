@@ -1,7 +1,7 @@
-import { DataUploadComponent } from './data-upload.component'
+import { DataUploadComponent } from './data-upload.component';
 
 describe('DataUploadComponent', () => {
   it('should mount', () => {
-    cy.mount(DataUploadComponent)
-  })
-})
+    cy.mount(DataUploadComponent);
+  });
+});
