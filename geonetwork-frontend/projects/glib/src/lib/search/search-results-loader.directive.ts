@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { Dropdown } from 'primeng/dropdown';
 import { toObservable } from '@angular/core/rxjs-interop';
-import {SearchService} from "./search.service";
-import {SearchStoreType} from "./search.state";
+import { SearchService } from './search.service';
+import { SearchStoreType } from './search.state';
 
 @Directive({
   selector: '[gSearchResultsLoader]',
@@ -37,7 +37,7 @@ export class SearchResultsLoaderDirective implements OnInit {
               return {
                 label: hit._source!.resourceTitleObject!.default,
                 type: hit._source!.resourceType![0],
-                id: hit._id,
+                value: hit._id,
               };
             });
             this.dropdown.options = options;

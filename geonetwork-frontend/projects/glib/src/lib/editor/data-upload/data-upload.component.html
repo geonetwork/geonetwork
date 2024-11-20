@@ -11,14 +11,12 @@
               class="mb-10"
               gSearchContext="newDataTemplates"
               size="5"
-              filter="+isTemplate:n"
-              [sort]="[{ changeDate: 'desc' }, '_score']">
+              filter="+isTemplate:y"
+              [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]">
               <label for="template">Type</label>
 
               <p-dropdown
                 gSearchResultsLoader="newDataTemplates"
-                optionLabel="label"
-                optionValue="id"
                 [(ngModel)]="template"
                 placeholder="Select a type" />
 
@@ -26,9 +24,10 @@
                 pInputText
                 id="template"
                 aria-describedby="template-help"
+                class="hidden"
                 [(ngModel)]="template" />
               <small id="template-help">
-                Type of resource to describe. Choose a template UUID
+                Type of resource to describe. Choose a template to start.
               </small>
             </div>
 
@@ -197,10 +196,11 @@
         <p-button
           label="Back"
           icon="fas fa-arrow-left"
+          severity="secondary"
           (onClick)="prevCallback.emit()" />
         <p-button
           [disabled]="!analysisResult()"
-          label="Next"
+          label="Preview record"
           icon="fas fa-arrow-right"
           iconPos="right"
           (onClick)="nextCallback.emit()" />
@@ -224,9 +224,13 @@
       <div class="flex mt-2 gap-2">
         <p-button
           label="Back"
+          severity="secondary"
           icon="fas fa-arrow-left"
           (onClick)="prevCallback.emit()" />
-        <p-button label="Save" [disabled]="!previewResult()" />
+        <p-button
+          label="Save"
+          icon="fas fa-save"
+          [disabled]="!previewResult()" />
       </div>
     </ng-template>
   </p-stepperPanel>
