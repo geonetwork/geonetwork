@@ -3,20 +3,21 @@ import {
   computed,
   DestroyRef,
   inject,
-  Signal,
+  OnInit,
   signal,
 } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { Button, ButtonDirective } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { DataUploadService } from './data-upload.service';
+import { DatasetFormat, DataUploadService } from './data-upload.service';
 import { GnDatasetInfo } from 'gapi';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DropdownModule } from 'primeng/dropdown';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
+import { ChipModule } from 'primeng/chip';
 
 @Component({
   selector: 'g-data-upload',
@@ -33,10 +34,11 @@ import { FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
     DropdownModule,
     ProgressSpinnerModule,
     FileUploadModule,
+    ChipModule,
   ],
   styleUrl: './data-upload.component.css',
 })
-export class DataUploadComponent {
+export class DataUploadComponent implements OnInit {
   template: string = 'd752fab9-4560-4a32-9da6-227b51fca867';
   datasource: string =
     'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv';
@@ -44,6 +46,22 @@ export class DataUploadComponent {
 
   dataUploadService = inject(DataUploadService);
 
+  maxFileUploadSize = 100;
+  supportedFormats = signal<DatasetFormat[]>([]);
+  mainSupportedFormats = computed(() => {
+    const DEFAULT_FORMATS = [
+      'CSV',
+      'XLS',
+      'GeoJSON',
+      'GPKG',
+      'Parquet',
+      'SHP',
+      'WFS',
+    ];
+    return this.supportedFormats().filter(
+      f => DEFAULT_FORMATS.indexOf(f.name) !== -1
+    );
+  });
   previewResult = signal<string>('');
   analysisResult = signal<GnDatasetInfo | undefined>(undefined);
   layers = signal<string[]>([]);
@@ -69,6 +87,12 @@ export class DataUploadComponent {
   });
 
   private destroyRef = inject(DestroyRef);
+
+  ngOnInit(): void {
+    this.dataUploadService.getFormats().subscribe(r => {
+      this.supportedFormats.set(r);
+    });
+  }
 
   onStepChange(step: number) {
     if (step == 1) {

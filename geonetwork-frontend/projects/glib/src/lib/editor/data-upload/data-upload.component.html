@@ -96,16 +96,21 @@
           >
 
           <h2 class="font-bold mt-10">Accepted data formats:</h2>
-          CSV, Excel, GPKG, JSON, WFS
+          @for (format of mainSupportedFormats(); track format) {
+            <p-chip
+              [title]="format.description + ' - ' + format.dataType"
+              [label]="format.name"
+              class="mr-2"></p-chip>
+          }
 
-          <h2 class="font-bold mt-10">Maximum file size is 100Mo</h2>
+          <h2 class="font-bold mt-10">Maximum file size is 100Mo.</h2>
         </div>
       </div>
 
       <div class="flex mt-2 gap-2 flex-row-reverse">
         <p-button
           [disabled]="!isStep1Ready()"
-          label="Next"
+          label="Analyze dataset"
           icon="fas fa-arrow-right"
           iconPos="right"
           (onClick)="nextCallback.emit()" />

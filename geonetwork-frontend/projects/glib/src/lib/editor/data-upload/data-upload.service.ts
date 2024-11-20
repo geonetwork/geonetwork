@@ -3,6 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GnDatasetInfo } from 'gapi';
 
+export interface DatasetFormat {
+  name: string;
+  description: string;
+  dataType: string;
+  rwFlag: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,6 +19,10 @@ export class DataUploadService {
   private http = inject(HttpClient);
 
   constructor() {}
+
+  getFormats(): Observable<DatasetFormat[]> {
+    return this.http.get<DatasetFormat[]>(`${this.serverUrl}/formats`);
+  }
 
   previewAnalysis(
     uuid: string,
