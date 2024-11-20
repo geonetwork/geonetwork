@@ -9,6 +9,7 @@ export * from './lib/config/config.module';
 export * from './lib/auth/sign-in-form/sign-in-form.component';
 export * from './lib/language/languages-loader.directive';
 export * from './lib/search/search-context.directive';
+export * from './lib/search/search-results-loader.directive';
 export * from './lib/search/search-base/search-base.component';
 export * from './lib/search/search-query-setter.directive';
 export * from './lib/search/search-query-reset.directive';

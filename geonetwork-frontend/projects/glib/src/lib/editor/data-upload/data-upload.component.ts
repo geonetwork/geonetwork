@@ -18,6 +18,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
 import { ChipModule } from 'primeng/chip';
+import { SearchContextDirective } from '../../search/search-context.directive';
+import { LanguagesLoaderDirective } from '../../language/languages-loader.directive';
+import { SearchResultsLoaderDirective } from '../../search/search-results-loader.directive';
 
 @Component({
   selector: 'g-data-upload',
@@ -35,6 +38,9 @@ import { ChipModule } from 'primeng/chip';
     ProgressSpinnerModule,
     FileUploadModule,
     ChipModule,
+    SearchContextDirective,
+    LanguagesLoaderDirective,
+    SearchResultsLoaderDirective,
   ],
   styleUrl: './data-upload.component.css',
 })

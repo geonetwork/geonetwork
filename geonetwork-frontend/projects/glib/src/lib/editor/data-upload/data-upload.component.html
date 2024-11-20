@@ -7,8 +7,21 @@
       <div class="flex gap-10">
         <div class="w-1/2">
           <div class="p-fluid">
-            <div class="mb-10">
+            <div
+              class="mb-10"
+              gSearchContext="newDataTemplates"
+              size="5"
+              filter="+isTemplate:n"
+              [sort]="[{ changeDate: 'desc' }, '_score']">
               <label for="template">Type</label>
+
+              <p-dropdown
+                gSearchResultsLoader="newDataTemplates"
+                optionLabel="label"
+                optionValue="id"
+                [(ngModel)]="template"
+                placeholder="Select a type" />
+
               <input
                 pInputText
                 id="template"
