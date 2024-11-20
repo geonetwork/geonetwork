@@ -45,7 +45,7 @@ import { SearchResultsLoaderDirective } from '../../search/search-results-loader
   styleUrl: './data-upload.component.css',
 })
 export class DataUploadComponent implements OnInit {
-  template: string = 'd752fab9-4560-4a32-9da6-227b51fca867';
+  template: string = '';
   datasource: string =
     'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv';
   layername: string = '';

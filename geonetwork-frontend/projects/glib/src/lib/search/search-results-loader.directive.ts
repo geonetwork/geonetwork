@@ -31,7 +31,6 @@ export class SearchResultsLoaderDirective implements OnInit {
 
       runInInjectionContext(this.injector, () => {
         toObservable(this.search.response).subscribe(() => {
-          console.log(this.search.response()!.hits.hits);
           if (this.search.response() != null) {
             const options = this.search.response()!.hits.hits.map(hit => {
               return {
@@ -41,6 +40,7 @@ export class SearchResultsLoaderDirective implements OnInit {
               };
             });
             this.dropdown.options = options;
+            this.dropdown.modelValue.set(options[0].value);
           }
         });
       });
