@@ -22,6 +22,10 @@ import { SearchContextDirective } from '../../search/search-context.directive';
 import { LanguagesLoaderDirective } from '../../language/languages-loader.directive';
 import { SearchResultsLoaderDirective } from '../../search/search-results-loader.directive';
 import { TableModule } from 'primeng/table';
+import 'brace';
+import 'brace/mode/xml';
+import 'brace/theme/github';
+import { AceModule } from 'ngx-ace-wrapper';
 
 @Component({
   selector: 'g-data-upload',
@@ -43,6 +47,7 @@ import { TableModule } from 'primeng/table';
     LanguagesLoaderDirective,
     SearchResultsLoaderDirective,
     TableModule,
+    AceModule,
   ],
   styleUrl: './data-upload.component.css',
 })

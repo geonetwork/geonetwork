@@ -38,6 +38,7 @@
     "@ngrx/operators": "^18.0.2",
     "@ngrx/signals": "^18.0.2",
     "jsonpath-plus": "^9.0.0",
+    "ngx-ace-wrapper": "^17.0.0",
     "papaparse": "^5.4.1",
     "primeng": "^17.18.12",
     "rxjs": "~7.8.0",

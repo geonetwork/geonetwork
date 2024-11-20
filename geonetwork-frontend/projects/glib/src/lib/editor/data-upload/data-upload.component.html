@@ -262,8 +262,13 @@
         @if (isCreatingPreview()) {
           <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
         } @else if (previewResult()) {
-          <!--          <ace [config]="{}" [mode]="'xml'" [theme]="'github'" [(value)]="previewResult"></ace>-->
-          <pre class="h-96 overflow-y-auto">{{ previewResult() }}</pre>
+          <ace
+            style="height: 50vh"
+            [config]="{ wrap: true, tabSize: 2 }"
+            [mode]="'xml'"
+            [theme]="'github'"
+            [(value)]="previewResult"
+            [disabled]="true"></ace>
         }
       </div>
       <div class="flex mt-2 gap-2">
