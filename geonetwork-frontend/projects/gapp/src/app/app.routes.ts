@@ -13,6 +13,6 @@ export const routes: Routes = [
     path: 'metadata/:uuid',
     component: RecordPageComponent,
   },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'dataupload', component: DataUploadPageComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

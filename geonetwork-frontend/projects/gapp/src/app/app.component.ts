@@ -95,7 +95,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         )
       )
       .subscribe((event: NavigationEnd) => {
-        this.isMapRoute.set(event.url.includes('map'));
+        this.isMapRoute.set(event.url.includes('map#/map'));
       });
   }
 
