@@ -1,10 +1,4 @@
-import {
-  AggregationsAggregationContainer,
-  AggregationsTermsAggregation,
-  QueryDslFunctionScoreQuery,
-  SearchTotalHits,
-  Sort,
-} from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import {
   patchState,
   signalStore,
@@ -39,7 +33,7 @@ export const DEFAULT_PAGE_SIZE = 10;
 
 export const DEFAULT_SCORE = null;
 
-export const DEFAULT_SORT: Sort = ['_score'];
+export const DEFAULT_SORT: elasticsearch.Sort = ['_score'];
 
 const initialSearchState: Search = {
   id: '',
@@ -79,7 +73,8 @@ export const SearchStore = signalStore(
         } as SearchRequestPageParameters;
       }),
       hasMore: computed(() => {
-        let total = store.response()?.hits.total as SearchTotalHits;
+        let total = store.response()?.hits
+          .total as elasticsearch.SearchTotalHits;
         return (
           total && total.value && store.from() + store.size() < total.value
         );
@@ -89,10 +84,13 @@ export const SearchStore = signalStore(
   withMethods((store, searchService = inject(SearchService)) => ({
     init(
       searchId: string,
-      aggregationConfig: Record<string, AggregationsAggregationContainer>,
-      functionScore: QueryDslFunctionScoreQuery | null,
+      aggregationConfig: Record<
+        string,
+        elasticsearch.AggregationsAggregationContainer
+      >,
+      functionScore: elasticsearch.QueryDslFunctionScoreQuery | null,
       size: number,
-      sort: Sort,
+      sort: elasticsearch.Sort,
       filter: string
     ) {
       patchState(store, {
@@ -216,7 +214,7 @@ export const SearchStore = signalStore(
     setPageSize(pageSize: number) {
       patchState(store, { pageSize, size: pageSize });
     },
-    setSort(sort: Sort) {
+    setSort(sort: elasticsearch.Sort) {
       patchState(store, {
         sort,
         from: 0,
@@ -285,7 +283,9 @@ export const SearchStore = signalStore(
         },
       };
     },
-    getAggregationConfig(key: string): AggregationsAggregationContainer {
+    getAggregationConfig(
+      key: string
+    ): elasticsearch.AggregationsAggregationContainer {
       let configuration = store.aggregationConfig()[key];
       if (configuration) {
         return configuration;
@@ -297,7 +297,7 @@ export const SearchStore = signalStore(
     },
     getAggregationSearchField(key: string): string {
       const aggregationConfig = store.aggregationConfig()[key];
-      if (aggregationConfig as AggregationsTermsAggregation) {
+      if (aggregationConfig as elasticsearch.AggregationsTermsAggregation) {
         return aggregationConfig.terms?.field || key;
       } else {
         return key;

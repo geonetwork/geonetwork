@@ -1,11 +1,4 @@
-import {
-  AggregateName,
-  AggregationsAggregate,
-  AggregationsAggregationContainer,
-  QueryDslFunctionScoreQuery,
-  SearchResponse,
-  Sort,
-} from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import { GnIndexRecord } from 'gapi';
 
 export enum SearchFilterValueState {
@@ -40,29 +33,38 @@ export interface SearchFilterList {
 
 export interface Search {
   id: string;
-  aggregationConfig: Record<string, AggregationsAggregationContainer>;
-  functionScore: QueryDslFunctionScoreQuery | null;
+  aggregationConfig: Record<
+    string,
+    elasticsearch.AggregationsAggregationContainer
+  >;
+  functionScore: elasticsearch.QueryDslFunctionScoreQuery | null;
   isSearching?: boolean;
   isReset?: boolean;
   fullTextQuery: string;
   from: number;
   size: number;
   pageSize: number;
-  sort: Sort;
+  sort: elasticsearch.Sort;
   trackTotalHits?: boolean;
   filters: SearchFilterList;
   filter: string;
-  response: SearchResponse<GnIndexRecord> | null;
-  aggregation: Record<AggregateName, AggregationsAggregate>;
+  response: elasticsearch.SearchResponse<GnIndexRecord> | null;
+  aggregation: Record<
+    elasticsearch.AggregateName,
+    elasticsearch.AggregationsAggregate
+  >;
   error: Error | null;
 }
 
 export interface SearchFilterParameters {
   fullTextQuery: string;
   filters: SearchFilterList;
-  aggregationConfig: Record<string, AggregationsAggregationContainer>;
-  functionScore: QueryDslFunctionScoreQuery | null;
-  sort: Sort;
+  aggregationConfig: Record<
+    string,
+    elasticsearch.AggregationsAggregationContainer
+  >;
+  functionScore: elasticsearch.QueryDslFunctionScoreQuery | null;
+  sort: elasticsearch.Sort;
   filter: string;
 }
 

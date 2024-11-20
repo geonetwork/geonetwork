@@ -5,7 +5,7 @@ import {
   SearchFilterOperator,
   SearchFilterValueState,
 } from '../search.state.model';
-import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { PrimeTemplate } from 'primeng/api';
 import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
@@ -26,7 +26,8 @@ export class SearchAggDropdownComponent extends SearchBaseComponent {
   buckets = input.required<any>();
   field = input.required<string>();
   placeholder = input<string>();
-  aggregationConfig = input.required<AggregationsAggregationContainer>();
+  aggregationConfig =
+    input.required<elasticsearch.AggregationsAggregationContainer>();
 
   handleChange(event: DropdownChangeEvent) {
     if (event.value === null) {

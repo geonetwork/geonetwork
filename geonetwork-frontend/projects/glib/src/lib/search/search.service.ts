@@ -1,16 +1,13 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { SearchApi } from 'gapi';
+import { GnIndexRecord, SearchApi } from 'gapi';
 import { SearchStoreType } from './search.state';
-import {
-  QueryDslQueryContainer,
-  QueryDslTermsQueryField,
-  SearchRequest,
-} from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import {
   SearchFilterList,
   SearchRequestParameters,
 } from './search.state.model';
 import { API_CONFIGURATION } from '../config/config.loader';
+import { estypes } from '@elastic/elasticsearch';
 
 export interface SearchRegistry {
   [searchId: string]: SearchStoreType;
@@ -48,13 +45,17 @@ export class SearchService {
     this.store[searchId] = searchStore;
   }
 
-  search(searchRequestParameters: SearchRequestParameters) {
+  search(
+    searchRequestParameters: SearchRequestParameters
+  ): Promise<estypes.SearchResponse<GnIndexRecord>> {
     return this.searchApi().search({
       body: this.buildQuery(searchRequestParameters),
     });
   }
 
-  page(searchRequestParameters: SearchRequestParameters) {
+  page(
+    searchRequestParameters: SearchRequestParameters
+  ): Promise<estypes.SearchResponse<GnIndexRecord>> {
     return this.searchApi().search({
       body: this.buildPageQuery(searchRequestParameters),
     });
@@ -68,7 +69,7 @@ export class SearchService {
 
   buildQuery(parameters: SearchRequestParameters) {
     let filters: SearchFilterList = parameters.filters;
-    const clauses: QueryDslTermsQueryField =
+    const clauses: elasticsearch.QueryDslTermsQueryField =
       filters &&
       Object.entries(filters)
         .map(([field, { values }]) => {
@@ -79,7 +80,7 @@ export class SearchService {
         })
         .filter(clause => clause !== null);
 
-    let baseQuery: QueryDslQueryContainer = {
+    let baseQuery: elasticsearch.QueryDslQueryContainer = {
       bool: {
         must: [
           {
@@ -102,7 +103,7 @@ export class SearchService {
       ];
     }
 
-    let finalQuery: QueryDslQueryContainer = baseQuery;
+    let finalQuery: elasticsearch.QueryDslQueryContainer = baseQuery;
     if (parameters.functionScore) {
       finalQuery = {
         function_score: {
@@ -112,7 +113,7 @@ export class SearchService {
       };
     }
 
-    let query: SearchRequest = {
+    let query: elasticsearch.SearchRequest = {
       query: finalQuery,
       from: parameters.from,
       size: parameters.size,

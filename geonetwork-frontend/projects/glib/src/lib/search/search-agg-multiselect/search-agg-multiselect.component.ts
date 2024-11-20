@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import { MultiSelectChangeEvent, MultiSelectModule } from 'primeng/multiselect';
 import {
   SearchFilterOperator,
@@ -20,7 +20,8 @@ export class SearchAggMultiselectComponent extends SearchBaseComponent {
   buckets = input.required<any>();
   field = input.required<string>();
   placeholder = input<string>();
-  aggregationConfig = input.required<AggregationsAggregationContainer>();
+  aggregationConfig =
+    input.required<elasticsearch.AggregationsAggregationContainer>();
 
   handleMutliSelectChange(event: MultiSelectChangeEvent) {
     const isSelected =

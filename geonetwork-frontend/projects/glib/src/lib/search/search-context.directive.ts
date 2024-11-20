@@ -7,7 +7,7 @@ import {
 } from './search.state';
 import { SearchService } from './search.service';
 import { API_CONFIGURATION } from '../config/config.loader';
-import { Sort } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 
 @Directive({
   selector: '[gSearchContext]',
@@ -19,7 +19,7 @@ export class SearchContextDirective implements OnInit {
   aggregations = input<any>({});
   score = input<any>(DEFAULT_SCORE);
   size = input<number>(DEFAULT_PAGE_SIZE);
-  sort = input<Sort>(DEFAULT_SORT);
+  sort = input<elasticsearch.Sort>(DEFAULT_SORT);
   filter = input<string>('');
 
   #searchStore = inject(SearchStore);

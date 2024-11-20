@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { ChipModule } from 'primeng/chip';
-import { SearchHit } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import { GnIndexRecord } from 'gapi';
 import { RecordFieldOverviewComponent } from '../record-field-overview/record-field-overview.component';
 import {
@@ -25,7 +25,7 @@ import { RouterLink } from '@angular/router';
 })
 export class RecordViewListComponent {
   protected readonly ResourceTypeLayout = ResourceTypeLayout;
-  hit = input<SearchHit<GnIndexRecord>>();
+  hit = input<elasticsearch.SearchHit<GnIndexRecord>>();
   landingPage = input<string>('');
   landingPageLinkOn = input<string>();
   landingPageLabel = input<string>('Read more');

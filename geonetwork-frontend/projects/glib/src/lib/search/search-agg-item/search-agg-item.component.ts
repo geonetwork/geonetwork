@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { SearchAggLayout } from '../search-agg/search-agg.component';
 import { ChipModule } from 'primeng/chip';
 import { NgClass, NgOptimizedImage } from '@angular/common';
-import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
 import {
   SearchFilterValue,
   SearchFilterValueState,
@@ -12,6 +11,7 @@ import {
 import { CardModule } from 'primeng/card';
 import { SearchAggItemDecoratorComponent } from '../search-agg-item-decorator/search-agg-item-decorator.component';
 import { SearchBaseComponent } from '../search-base/search-base.component';
+import { elasticsearch } from 'gapi';
 
 @Component({
   selector: 'g-search-agg-item',
@@ -32,7 +32,8 @@ export class SearchAggItemComponent extends SearchBaseComponent {
   bucket = input.required<any>();
   field = input.required<string>();
   layout = input.required<SearchAggLayout>();
-  aggregationConfig = input.required<AggregationsAggregationContainer>();
+  aggregationConfig =
+    input.required<elasticsearch.AggregationsAggregationContainer>();
 
   onAggItemChange = output<SearchFilterValue>();
 

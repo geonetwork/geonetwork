@@ -10,7 +10,7 @@ import {
   SearchResultsTimelineComponent,
 } from 'glib';
 import { Info, Params } from '../../../../../gapi/src/lib/ui-settings';
-import { Sort } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import { CarouselModule } from 'primeng/carousel';
 
 @Component({
@@ -51,7 +51,7 @@ export class HomePageComponent implements OnInit {
 
   uiConfiguration = inject(APPLICATION_CONFIGURATION).ui;
 
-  #getSort(params: Params): Sort {
+  #getSort(params: Params): elasticsearch.Sort {
     return params.sortBy ? [{ [params.sortBy]: params.sortOrder }] : ['_score'];
   }
 

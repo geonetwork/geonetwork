@@ -262,6 +262,7 @@
         @if (isCreatingPreview()) {
           <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
         } @else if (previewResult()) {
+          <!--          <ace [config]="{}" [mode]="'xml'" [theme]="'github'" [(value)]="previewResult"></ace>-->
           <pre class="h-96 overflow-y-auto">{{ previewResult() }}</pre>
         }
       </div>

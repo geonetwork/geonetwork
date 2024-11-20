@@ -1,7 +1,7 @@
 import { SearchApi } from 'gapi';
 import { SearchService } from './search.service';
 import { SearchRequestParameters } from './search.state.model';
-import { SearchRequest } from '@elastic/elasticsearch/lib/api/types';
+import { SearchRequest } from 'gapi';
 
 export const fakeSearchService: Pick<SearchService, keyof SearchService> = {
   store: {},

@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { AsyncPipe, JsonPipe, NgClass } from '@angular/common';
-import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
@@ -78,7 +78,7 @@ export class SearchAggComponent extends SearchBaseComponent {
 
   isSupported = false;
 
-  aggregationConfig: AggregationsAggregationContainer;
+  aggregationConfig: elasticsearch.AggregationsAggregationContainer;
 
   isSupportedAndHasValue = computed(() => {
     // @ts-ignore

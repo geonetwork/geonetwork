@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import {
   SearchFilterOperator,
   SearchFilterValueState,
@@ -21,7 +21,8 @@ import {
 export class SearchAggSelectButtonComponent extends SearchBaseComponent {
   buckets = input.required<any>();
   field = input.required<string>();
-  aggregationConfig = input.required<AggregationsAggregationContainer>();
+  aggregationConfig =
+    input.required<elasticsearch.AggregationsAggregationContainer>();
 
   handleChange(event: SelectButtonOptionClickEvent) {
     const isSelected =

@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 
 @Component({
   selector: 'g-search-agg-item-decorator',
@@ -10,7 +10,8 @@ import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api
 export class SearchAggItemDecoratorComponent {
   bucket = input.required<any>();
   isActive = input<boolean>(false);
-  aggregationConfig = input.required<AggregationsAggregationContainer>();
+  aggregationConfig =
+    input.required<elasticsearch.AggregationsAggregationContainer>();
 
   icon = computed(() => {
     const decorator = this.aggregationConfig().meta?.['decorator'];

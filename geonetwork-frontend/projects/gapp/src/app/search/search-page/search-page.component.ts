@@ -16,7 +16,7 @@ import {
 import { SidebarModule } from 'primeng/sidebar';
 import { Button, ButtonDirective } from 'primeng/button';
 import { ChipsModule } from 'primeng/chips';
-import { AggregationsAggregationContainer } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
 
@@ -48,7 +48,10 @@ export class SearchPageComponent {
   protected readonly SearchAggLayout = SearchAggLayout;
   themeSidebarSelector = signal(false);
 
-  localAggregationConfig: Record<string, AggregationsAggregationContainer> = {
+  localAggregationConfig: Record<
+    string,
+    elasticsearch.AggregationsAggregationContainer
+  > = {
     resourceType: {
       terms: {
         field: 'resourceType',

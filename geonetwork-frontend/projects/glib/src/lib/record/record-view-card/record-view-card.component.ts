@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { SearchHit } from '@elastic/elasticsearch/lib/api/types';
+import { elasticsearch } from 'gapi';
 import { GnIndexRecord } from 'gapi';
 import { DatePipe } from '@angular/common';
 import { Button } from 'primeng/button';
@@ -25,7 +25,7 @@ import { UrlPlaceholderPipe } from '../../shared/url-placeholder.pipe';
   ],
 })
 export class RecordViewCardComponent {
-  hit = input<SearchHit<GnIndexRecord>>();
+  hit = input<elasticsearch.SearchHit<GnIndexRecord>>();
   landingPage = input<string>();
   landingPageLinkPath = input<string>();
   landingPageLabel = input<string>('Read more');

@@ -1,4 +1,4 @@
-import { Sort } from '@elastic/elasticsearch/lib/api/types';
+import { Sort } from './elasticsearch/types';
 
 export interface UiConfiguration {
   langDetector: LangDetector;
@@ -119,6 +119,7 @@ export interface Params {
   sortOrder: string;
   from: number;
   to: number;
+
   [key: string]: string | number;
 }
 
