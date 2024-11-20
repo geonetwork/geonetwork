@@ -4,110 +4,113 @@
       pTemplate="content"
       let-nextCallback="nextCallback"
       let-index="index">
-      <div class="flex gap-10">
-        <div class="w-1/2">
-          <div class="p-fluid">
-            <div
-              class="mb-10"
-              gSearchContext="newDataTemplates"
-              size="5"
-              filter="+isTemplate:y"
-              [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]">
-              <label for="template">Type</label>
+      <label for="template" class="text-3xl font-bold">Choose a type</label>
 
-              <p-dropdown
-                gSearchResultsLoader="newDataTemplates"
-                [(ngModel)]="template"
-                placeholder="Select a type" />
-
-              <input
-                pInputText
-                id="template"
-                aria-describedby="template-help"
-                class="hidden"
-                [(ngModel)]="template" />
-              <small id="template-help">
-                Type of resource to describe. Choose a template to start.
-              </small>
-            </div>
-
-            <div class="mb-2">
-              <label for="datasource">Datasource</label>
-              <p-inputGroup>
-                <p-inputGroupAddon for="datasource"
-                  ><i class="fa fa-link"></i>URL</p-inputGroupAddon
-                >
-                <input
-                  pInputText
-                  id="datasource"
-                  aria-describedby="datasource-help"
-                  (change)="onDatasourceChange()"
-                  [(ngModel)]="datasource" />
-                <button
-                  type="button"
-                  pButton
-                  label="Find datasets"
-                  [disabled]="isFetchingLayers()"
-                  (click)="retrieveLayers()"></button>
-              </p-inputGroup>
-
-              <div class="font-bold w-full text-2xl text-center">or</div>
-              <div class="mb-10 w-full">
-                <p-fileUpload
-                  mode="basic"
-                  name="demo[]"
-                  chooseIcon="fa fa-upload"
-                  accept="image/*"
-                  maxFileSize="1000000"
-                  (onUpload)="onBasicUploadAuto($event)"
-                  [auto]="true"
-                  chooseLabel="Upload your file" />
-              </div>
-
-              @if (isFetchingLayers()) {
-                <div>
-                  <p-progressBar
-                    mode="indeterminate"
-                    [style]="{ height: '6px' }" />
-                </div>
-              }
-
-              @if (errorFetchingLayers()) {
-                <p class="error-message">
-                  An error occurred retrieving dataset information. Please try
-                  later.
-                </p>
-                <small class="error-message"
-                  >Error is: {{ errorFetchingLayers() }}</small
-                >
-              }
-            </div>
-
-            @if (layers().length > 0) {
-              <div title=" Select the dataset name to analyse">
-                <label for="layername"
-                  >{{ layers().length }} dataset(s) found</label
-                >
-                <p-dropdown
-                  id="layername"
-                  disabled="{{ layers().length === 0 }}"
-                  [options]="layers()"
-                  [(ngModel)]="layername"
-                  (onChange)="onLayerChange()"
-                  placeholder="Select a dataset" />
-              </div>
-            }
+      <div class="grid grid-cols-2 gap-x-8 mb-10">
+        <div class="basis-1/2">
+          <div
+            gSearchContext="newDataTemplates"
+            size="5"
+            filter="+isTemplate:y"
+            [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]">
+            <p-dropdown
+              styleClass="w-full"
+              gSearchResultsLoader="newDataTemplates"
+              [(ngModel)]="template"
+              placeholder="" />
+            <input
+              pInputText
+              id="template"
+              class="hidden"
+              aria-describedby="template-help"
+              [(ngModel)]="template" />
           </div>
         </div>
-        <div class="w-1/2">
-          <h1 class="text-3xl font-bold">Upload your data</h1>
+        <div class="basis-1/2">
+          Choose a type of data to describe (eg. geospatial, tabular,
+          statistical, maps).
+        </div>
+      </div>
+
+      <label for="datasource" class="text-3xl font-bold"
+        >Upload or connect your data</label
+      >
+
+      <div class="grid grid-cols-2 gap-x-8 mb-10">
+        <div class="basis-1/2">
+          <p-inputGroup>
+            <p-inputGroupAddon>
+              <i class="fa fa-link"></i>
+              URL
+            </p-inputGroupAddon>
+            <input
+              pInputText
+              id="datasource"
+              aria-describedby="datasource-help"
+              (change)="onDatasourceChange()"
+              [(ngModel)]="datasource" />
+            <button
+              type="button"
+              pButton
+              label="Find datasets"
+              [disabled]="isFetchingLayers()"
+              (click)="retrieveLayers()"></button>
+          </p-inputGroup>
+
+          <div class="font-bold w-full text-2xl text-center">or</div>
+
+          <div class="mb-10">
+            <p-fileUpload
+              styleClass="w-full"
+              mode="basic"
+              name="demo[]"
+              chooseIcon="fa fa-upload"
+              accept="image/*"
+              maxFileSize="1000000"
+              (onUpload)="onBasicUploadAuto($event)"
+              [auto]="true"
+              chooseLabel="Upload your file" />
+          </div>
+
+          @if (isFetchingLayers()) {
+            <div>
+              <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
+            </div>
+          }
+
+          @if (errorFetchingLayers()) {
+            <p class="error-message">
+              An error occurred retrieving dataset information. Please try
+              later.
+            </p>
+            <small class="error-message"
+              >Error is: {{ errorFetchingLayers() }}</small
+            >
+          }
+
+          @if (layers().length > 0) {
+            <div title=" Select the dataset name to analyse">
+              <label for="layername" class="w-full"
+                >{{ layers().length }} dataset(s) found</label
+              >
+              <p-dropdown
+                id="layername"
+                styleClass="w-full"
+                disabled="{{ layers().length === 0 }}"
+                [options]="layers()"
+                [(ngModel)]="layername"
+                (onChange)="onLayerChange()"
+                placeholder="Select a dataset" />
+            </div>
+          }
+        </div>
+        <div class="basis-1/2">
           <span
-            >Choose a type of data to describe (eg. geospatial, tabular,
-            statistical, maps), point to the datasource URL or upload a new file
-            and select the dataset to register.</span
+            >Point to the datasource URL or upload a new file and select the
+            dataset to register.</span
           >
 
-          <h2 class="font-bold mt-10">Accepted data formats:</h2>
+          <h2 class="font-medium mt-10">Supported data formats:</h2>
           @for (format of mainSupportedFormats(); track format) {
             <p-chip
               [title]="format.description + ' - ' + format.dataType"
@@ -115,13 +118,15 @@
               class="mr-2"></p-chip>
           }
 
-          <h2 class="font-bold mt-10">Maximum file size is 100Mo.</h2>
+          <h2 class="font-medium mt-10">
+            Maximum file size is <span class="font-bold">100Mo</span>.
+          </h2>
         </div>
       </div>
 
       <div class="flex mt-2 gap-2 flex-row-reverse">
         <p-button
-          [disabled]="!isStep1Ready()"
+          [disabled]="!isDatasourceAndTemplateSelected()"
           label="Analyze dataset"
           icon="fas fa-arrow-right"
           iconPos="right"
@@ -146,32 +151,36 @@
           </p>
           <small class="error-message">{{ errorExecutingAnalysis() }}</small>
         } @else if (analysisResult()) {
-          <h2 class="pt-2 pb-2 text-2xl font-bold">
-            {{ analysisResult().layers[0].name }} dataset contains
-            {{ analysisResult().layers[0].featureCount }} features.
+          <h2 class="pt-2 pb-2 text-2xl font-medium">
+            <span class="font-bold">{{ analysisResult().layers[0].name }}</span>
+            dataset contains
+            <span class="font-bold">{{
+              analysisResult().layers[0].featureCount
+            }}</span>
+            features.
           </h2>
 
           <div class="grid grid-cols-8 gap-4">
-            <div><strong>Description</strong></div>
+            <div><strong>Source</strong></div>
             <div class="col-span-7">{{ analysisResult().description }}</div>
 
             <div><strong>Format</strong></div>
             <div class="col-span-7">{{ analysisResult().format }}</div>
 
             @if (analysisResult().layers[0].geometryFields.length > 0) {
-              <div><strong>Type</strong></div>
+              <div><strong>Geometry type</strong></div>
               <div class="col-span-7">
                 {{ analysisResult().layers[0].geometryFields[0].type }}
               </div>
 
-              <div><strong>CRS</strong></div>
+              <div><strong>Coordinate system</strong></div>
               <div class="col-span-7">
                 <a href="http://epsg.io/{{ crsCode() }}" target="_blank"
                   >EPSG:{{ crsCode() }}</a
                 >
               </div>
 
-              <div><strong>Extent</strong></div>
+              <div><strong>Spatial extent</strong></div>
               <div class="col-span-7">
                 {{ analysisResult().layers[0].geometryFields[0].extent }}
               </div>
@@ -179,15 +188,51 @@
 
             <div><strong>Data model</strong></div>
             <div class="col-span-7">
-              <div class="grid grid-cols-6 gap-4">
-                <div><strong>Name</strong></div>
-                <div class="col-span-5"><strong>Type</strong></div>
+              <p-table
+                [value]="analysisResult().layers[0].fields"
+                styleClass="w-full"
+                tableStyleClass="w-full">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Column name</th>
+                    <th>Column type</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-field>
+                  <tr>
+                    <td>{{ field.name }}</td>
+                    <td>{{ field.type }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
 
-                @for (field of analysisResult().layers[0].fields; track field) {
-                  <div>{{ field.name }}</div>
-                  <div class="col-span-5">{{ field.type }}</div>
-                }
+            @if (analysisResult().layers[0].geometryFields.length == 0) {
+              <div><strong>Spatial extent?</strong></div>
+              <div class="col-span-7">
+                <p-dropdown
+                  [options]="analysisResult().layers[0].fields"
+                  placeholder="Compute spatial extent from attribute"
+                  optionLabel="name"
+                  optionValue="name" />
               </div>
+            }
+            <div><strong>Temporal extent?</strong></div>
+            <div class="col-span-7">
+              <p-dropdown
+                [options]="analysisResult().layers[0].fields"
+                placeholder="Compute temporal extent from attribute"
+                optionLabel="name"
+                optionValue="name" />
+            </div>
+
+            <div><strong>Vertical extent?</strong></div>
+            <div class="col-span-7">
+              <p-dropdown
+                [options]="analysisResult().layers[0].fields"
+                placeholder="Compute vertical extent from attribute"
+                optionLabel="name"
+                optionValue="name" />
             </div>
           </div>
         }
@@ -215,8 +260,7 @@
       let-index="index">
       <div>
         @if (isCreatingPreview()) {
-          <p-progressSpinner
-            [style]="{ width: '30px', height: '30px' }"></p-progressSpinner>
+          <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
         } @else if (previewResult()) {
           <pre class="h-96 overflow-y-auto">{{ previewResult() }}</pre>
         }

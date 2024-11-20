@@ -21,6 +21,7 @@ import { ChipModule } from 'primeng/chip';
 import { SearchContextDirective } from '../../search/search-context.directive';
 import { LanguagesLoaderDirective } from '../../language/languages-loader.directive';
 import { SearchResultsLoaderDirective } from '../../search/search-results-loader.directive';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'g-data-upload',
@@ -41,14 +42,16 @@ import { SearchResultsLoaderDirective } from '../../search/search-results-loader
     SearchContextDirective,
     LanguagesLoaderDirective,
     SearchResultsLoaderDirective,
+    TableModule,
   ],
   styleUrl: './data-upload.component.css',
 })
 export class DataUploadComponent implements OnInit {
-  template: string = '';
-  datasource: string =
-    'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv';
-  layername: string = '';
+  template = signal('');
+  datasource = signal(
+    'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv'
+  );
+  layername = signal('');
 
   dataUploadService = inject(DataUploadService);
 
@@ -75,6 +78,15 @@ export class DataUploadComponent implements OnInit {
   isFetchingLayers = signal(false);
   isExecutingAnalysis = signal(false);
   isCreatingPreview = signal(false);
+
+  isDatasourceAndTemplateSelected = computed(() => {
+    return (
+      this.template() !== '' &&
+      this.datasource() !== '' &&
+      this.layername() !== ''
+    );
+  });
+
   errorFetchingLayers = signal('');
   errorExecutingAnalysis = signal('');
   errorPreviewingAnalysis = signal('');
@@ -107,7 +119,7 @@ export class DataUploadComponent implements OnInit {
         this.errorExecutingAnalysis.set('');
 
         const subscription = this.dataUploadService
-          .executeAnalysis(this.datasource, this.layername)
+          .executeAnalysis(this.datasource(), this.layername())
           .subscribe({
             next: result => {
               this.analysisResult.set(result);
@@ -132,7 +144,7 @@ export class DataUploadComponent implements OnInit {
         this.errorPreviewingAnalysis.set('');
 
         const subscription = this.dataUploadService
-          .previewAnalysis(this.template, this.datasource, this.layername)
+          .previewAnalysis(this.template(), this.datasource(), this.layername())
           .subscribe({
             next: result => {
               this.previewResult.set(result);
@@ -159,12 +171,12 @@ export class DataUploadComponent implements OnInit {
     this.errorFetchingLayers.set('');
 
     const subscription = this.dataUploadService
-      .retrieveLayers(this.datasource)
+      .retrieveLayers(this.datasource())
       .subscribe({
         next: result => {
           this.layers.set(result);
           if (result.length > 0) {
-            this.layername = result[0];
+            this.layername.set(result[0]);
           }
         },
         error: error => {
@@ -189,7 +201,7 @@ export class DataUploadComponent implements OnInit {
   }
 
   onDatasourceChange() {
-    this.layername = '';
+    this.layername.set('');
 
     // Reset layers and analysis values
     this.layers.set([]);
@@ -198,10 +210,4 @@ export class DataUploadComponent implements OnInit {
   }
 
   onBasicUploadAuto(event: FileUploadEvent) {}
-
-  isStep1Ready(): boolean {
-    return (
-      this.template !== '' && this.datasource !== '' && this.layername !== ''
-    );
-  }
 }

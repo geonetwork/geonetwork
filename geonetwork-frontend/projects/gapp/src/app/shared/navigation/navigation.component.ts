@@ -62,8 +62,8 @@ export class NavigationComponent implements OnInit {
         },
       },
       {
-        label: 'Data upload',
-        icon: 'fa fa-upload',
+        label: 'New record',
+        icon: 'fa fa-plus',
         command: () => {
           this.router.navigate(['dataupload']);
         },
