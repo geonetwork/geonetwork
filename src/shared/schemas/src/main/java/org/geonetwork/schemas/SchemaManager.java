@@ -193,7 +193,7 @@ public class SchemaManager {
         hmSchemas.clear();
 
         // FIXME: Should be in the data directory?
-        Path schemaPath = Path.of("/tmp/gn5-schema/");
+        Path schemaPath = Files.createTempDirectory("gn5-schema");
         Files.createDirectories(schemaPath);
         this.basePath = schemaPath; // .resolve("usedforschematronrulecompilation");
         //    this.resourcePath = resourcePath;

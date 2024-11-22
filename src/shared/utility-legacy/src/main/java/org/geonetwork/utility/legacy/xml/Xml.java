@@ -43,10 +43,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.XMLConstants;
 import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.ValidatorHandler;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.saxon.s9api.Processor;
+import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.SaxonApiException;
+import net.sf.saxon.s9api.XdmValue;
+import net.sf.saxon.s9api.Xslt30Transformer;
+import net.sf.saxon.s9api.XsltCompiler;
+import net.sf.saxon.s9api.XsltExecutable;
 import org.geonetwork.utility.legacy.exceptions.XSDValidationErrorEx;
 import org.geonetwork.utility.legacy.io.IO;
 import org.geonetwork.utility.legacy.nio.NioPathAwareEntityResolver;
@@ -54,6 +62,7 @@ import org.geonetwork.utility.legacy.nio.NioPathHolder;
 import org.geonetwork.utility.legacy.resolver.NoOpEntityResolver;
 import org.geonetwork.utility.legacy.resolver.Resolver;
 import org.geonetwork.utility.legacy.resolver.ResolverWrapper;
+import org.geonetwork.utility.xml.XsltTransformerFactory;
 import org.jdom.Attribute;
 import org.jdom.Content;
 import org.jdom.DocType;
@@ -67,6 +76,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.SAXOutputter;
 import org.jdom.output.XMLOutputter;
+import org.jdom.transform.JDOMSource;
 import org.jdom.xpath.XPath;
 
 /** General class of useful static methods. */
@@ -82,6 +92,11 @@ public final class Xml {
             "[^" + "\u0009\r\n" + "\u0020-\uD7FF" + "\uE000-\uFFFD" + "\ud800\udc00-\udbff\udfff" + "]";
 
     public static final String XML_VERSION_HEADER = "<\\?xml version=['\"]1.0['\"] encoding=['\"].*['\"]\\?>\\s*";
+
+    public static Element findRoot(Element element) {
+        if (element.isRootElement() || element.getParentElement() == null) return element;
+        return findRoot(element.getParentElement());
+    }
 
     public static SAXBuilder getSAXBuilder(boolean validate) {
         SAXBuilder builder = getSAXBuilderWithPathXMLResolver(validate, null);
@@ -247,6 +262,32 @@ public final class Xml {
         Document jdoc = builder.build(input);
 
         return (Element) jdoc.getRootElement().detach();
+    }
+
+    /** Transform JDOM document as String. */
+    public static Element transformJdomElement(Element xml, File xsltFile, Map<QName, XdmValue> xslParameters) {
+        try {
+            Source srcXml = new JDOMSource(new Document((Element) xml.detach()));
+            Processor proc = XsltTransformerFactory.getProcessor();
+            XsltCompiler compiler = proc.newXsltCompiler();
+
+            XsltExecutable xsl = compiler.compile(new StreamSource(xsltFile));
+            Xslt30Transformer transformer = xsl.load30();
+            if (xslParameters != null) {
+                transformer.setStylesheetParameters(xslParameters);
+            }
+            StringWriter stringWriter = new StringWriter();
+            //  TODO   How to directly return  JDOMResult resXml = new JDOMResult();
+            transformer.transform(srcXml, proc.newSerializer(stringWriter));
+            return Xml.loadString(stringWriter.toString(), false);
+        } catch (SaxonApiException e) {
+            log.atError().log(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (JDOMException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // --------------------------------------------------------------------------
