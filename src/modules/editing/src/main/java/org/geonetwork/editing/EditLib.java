@@ -66,7 +66,9 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.Text;
 import org.jdom.filter.ElementFilter;
+import org.springframework.stereotype.Component;
 
+@Component
 @Slf4j
 @AllArgsConstructor
 public class EditLib {
