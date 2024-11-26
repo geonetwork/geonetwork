@@ -10,24 +10,19 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geonetwork</groupId>
-    <artifactId>geonetwork</artifactId>
+    <artifactId>gn-extensions</artifactId>
     <version>5.0.0-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>gn-extensions</artifactId>
+  <artifactId>gn-ogcapi-records</artifactId>
   <packaging>pom</packaging>
-  <name>GeoNetwork modules</name>
+  <name>GeoNetwork ogcapi-records</name>
 
   <modules>
-    <module>indexing</module>
-    <module>searching</module>
-    <module>editing</module>
-    <module>data-analysis</module>
-    <module>ogcapi-records</module>
+    <module>ogcapi-records-openapi-autogen</module>
+    <module>ogcapi-records-implementation</module>
+
   </modules>
 
-  <properties>
-    <swagger.version>2.1.2</swagger.version>
-  </properties>
 </project>
