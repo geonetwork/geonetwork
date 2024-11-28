@@ -19,6 +19,7 @@
   <packaging>jar</packaging>
   <name>GeoNetwork OGCAPI-records openapi autogen</name>
   <dependencies>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>

@@ -1,5 +1,5 @@
 ### OGCAPI-Records
- 
+
 
 ogcapi-records-openapi-autogen
 ------------------------------

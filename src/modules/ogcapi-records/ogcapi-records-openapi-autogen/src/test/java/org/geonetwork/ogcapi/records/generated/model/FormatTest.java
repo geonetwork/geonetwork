@@ -3,13 +3,12 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.org.geonetwork.ogcapi.records.generated.model;
+package org.geonetwork.ogcapi.records.generated.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFormatDto;
 import org.junit.jupiter.api.Test;
 
 /** This is a trival test case that tests the JSON input/output. */

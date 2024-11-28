@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.org.geonetwork.ogcapi.records.generated.model;
+package org.geonetwork.ogcapi.records.generated.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,16 +13,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGeometryCollectionDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGeometryGeoJSONDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLineStringDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsMultiLineStringDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsMultiPointDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsMultiPolygonDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsPointDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsPolygonDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

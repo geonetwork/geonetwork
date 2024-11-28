@@ -19,6 +19,13 @@
   <description>The main GeoNetwork application</description>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-ogcapi-records-implementation</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-index-client</artifactId>
@@ -125,6 +132,7 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
     </dependency>
+
     <!-- Patched XML Resolver 1.2 from apache xml-commons - fixes problems
                with windows URLs
     <dependency>
