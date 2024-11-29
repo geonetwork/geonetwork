@@ -7,11 +7,11 @@
 package org.geonetwork.utility.xml;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.Map;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.stream.StreamSource;
@@ -36,7 +36,7 @@ public class XsltUtil {
      */
     public static <T> T transformObjectToObject(
             Object inputObject,
-            File xsltFile,
+            URL xsltFile,
             Class<T> objectClass,
             Map<QName, net.sf.saxon.s9api.XdmValue> xslParameters) {
         XmlMapper xmlMapper = new XmlMapper();
@@ -53,7 +53,7 @@ public class XsltUtil {
     /** Transform Object to String. */
     public static <T> String transformObjectToString(
             Object inputObject,
-            File xsltFile,
+            URL xsltFile,
             Class<T> objectClass,
             Map<QName, net.sf.saxon.s9api.XdmValue> xslParameters) {
         XmlMapper xmlMapper = new XmlMapper();
@@ -64,46 +64,6 @@ public class XsltUtil {
             log.atError().log(e.getMessage());
             throw new RuntimeException(e);
         }
-    }
-
-    /** Transform XML string to Object. */
-    public static <T> T transformXmlToObject(
-            String inputXmlString,
-            File xsltFile,
-            Class<T> objectClass,
-            Map<QName, net.sf.saxon.s9api.XdmValue> xslParameters) {
-        String xmlAsString = transformXmlAsString(inputXmlString, xsltFile, xslParameters);
-        XmlMapper xmlMapper = new XmlMapper();
-        try {
-            return xmlMapper.readValue(xmlAsString, objectClass);
-        } catch (Exception e) {
-            log.atError().log(e.getMessage());
-            throw new RuntimeException(e);
-        }
-        //    return null;
-        //    TransformerFactory factory = XsltTransformerFactory.get();
-        //    StreamSource xslt = new StreamSource(xsltFile);
-        //    StreamSource text = new StreamSource(new StringReader(inputXmlString));
-        //    try {
-        //      JAXBContext jaxbContext = JAXBContext.newInstance(objectClass);
-        //      JAXBResult result = new JAXBResult(jaxbContext);
-        //
-        //      Transformer transformer = factory.newTransformer(xslt);
-        //      transformer.transform(text, result);
-        //      Object o = result.getResult();
-        //      if (objectClass.isInstance(o)) {
-        //        return (T) o;
-        //      } else {
-        //        return null;
-        //      }
-        //    } catch (TransformerConfigurationException e) {
-        //      e.printStackTrace();
-        //    } catch (TransformerException e2) {
-        //      e2.printStackTrace();
-        //    } catch (JAXBException e) {
-        //      throw new RuntimeException(e);
-        //    }
-        //    return null;
     }
 
     /** Transform XML string and write result to XMLStreamWriter. */
@@ -154,12 +114,12 @@ public class XsltUtil {
 
     /** Transform XML string as String. */
     public static String transformXmlAsString(
-            String inputXmlString, File xsltFile, Map<QName, net.sf.saxon.s9api.XdmValue> xslParameters) {
+            String inputXmlString, URL xsltFile, Map<QName, net.sf.saxon.s9api.XdmValue> xslParameters) {
         try {
             Processor proc = XsltTransformerFactory.getProcessor();
             XsltCompiler compiler = proc.newXsltCompiler();
 
-            XsltExecutable xsl = compiler.compile(new StreamSource(xsltFile));
+            XsltExecutable xsl = compiler.compile(new StreamSource(xsltFile.toString()));
             Xslt30Transformer transformer = xsl.load30();
             if (xslParameters != null) {
                 transformer.setStylesheetParameters(xslParameters);

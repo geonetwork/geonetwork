@@ -10,8 +10,8 @@ import static java.util.stream.Collectors.groupingBy;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.OP_PREFIX;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.VALID;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,13 +80,13 @@ public class IndexingRecordService {
     /** Collect properties from the database metadata and apply XSLT to extract fields from XML document.. */
     public IndexRecords collectProperties(String schema, List<Metadata> schemaRecords) {
         String indexingXsltFileName = String.format("indexing/xslt/%s.xsl", schema);
-        File indexingXsltFile = null;
+        URL indexingXsltFile = null;
         try {
-            indexingXsltFile = new ClassPathResource(indexingXsltFileName).getFile();
+            indexingXsltFile = new ClassPathResource(indexingXsltFileName).getURL();
         } catch (IOException ioSchemaFileException) {
             if (schema.startsWith("iso19")) {
                 try {
-                    indexingXsltFile = new ClassPathResource("xslt/indexing/iso.xsl").getFile();
+                    indexingXsltFile = new ClassPathResource("xslt/indexing/iso.xsl").getURL();
                 } catch (IOException isoFileException) {
                     // Should not happen
                 }
