@@ -58,13 +58,18 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5432/geonetwork
+    url: jdbc:postgresql://localhost:5432/gn
     driverClassName: org.postgresql.Driver
     #    url: jdbc:h2:mem:gn5
     #    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE
     #    driverClassName: org.h2.Driver
     username: postgres
     password: postgres
+  session:
+    jdbc:
+      table-name: SPRING_SESSION
+      initialize-schema: always
+      schema: classpath:jdbc-session/schema-postgresql-jdbc.sql
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
