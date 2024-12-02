@@ -200,6 +200,11 @@
       <artifactId>spring-boot-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.session</groupId>
+      <artifactId>spring-session-jdbc</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <resources>
