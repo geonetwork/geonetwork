@@ -1,28 +1,7 @@
 <!--@defer (on viewport) {-->
 @if (search) {
-  <g-search-results-error [error]="search.error()" />
-  @if (search.response(); as response) {
-    <p-dataView #dv [value]="response.hits.hits" emptyMessage=" ">
-      <ng-template pTemplate="list" let-hits>
-        <div [class]="layoutClass()">
-          @for (hit of hits; track hit._id) {
-            @switch (layout()) {
-              @case (ResultsLayout.CARD) {
-                <g-record-view-card
-                  [hit]="hit"
-                  [landingPage]="landingPage()"
-                  [landingPageLinkPath]="landingPageLinkPath()" />
-              }
-              @default {
-                <g-record-view-list [hit]="hit" />
-              }
-            }
-          }
-        </div>
-      </ng-template>
-    </p-dataView>
-
-    @if (search.isSearching()) {
+  @if (search.isSearching()) {
+    <ng-template #defaultSearchProgressTemplate>
       @for (i of [].constructor(search.pageSize()); track $index) {
         <div class="grid gap-4 mb-2">
           <div class="flex flex-row gap-4">
@@ -37,8 +16,46 @@
           </div>
         </div>
       }
-    }
+    </ng-template>
+
+    <ng-container
+      *ngTemplateOutlet="
+        searchProgressTemplate || defaultSearchProgressTemplate;
+        context: { $implicit: search }
+      "></ng-container>
   }
+
+  @if (search.response(); as response) {
+    <ng-template #defaultSearchResultsTemplate>
+      <p-dataView #dv [value]="response.hits.hits" emptyMessage=" ">
+        <ng-template pTemplate="list" let-hits>
+          <div [class]="layoutClass()">
+            @for (hit of hits; track hit._id) {
+              @switch (layout()) {
+                @case (ResultsLayout.CARD) {
+                  <g-record-view-card
+                    [hit]="hit"
+                    [landingPage]="landingPage()"
+                    [landingPageLinkPath]="landingPageLinkPath()" />
+                }
+                @default {
+                  <g-record-view-list [hit]="hit" />
+                }
+              }
+            }
+          </div>
+        </ng-template>
+      </p-dataView>
+    </ng-template>
+
+    <ng-container
+      *ngTemplateOutlet="
+        resultsTemplate || defaultSearchResultsTemplate;
+        context: { $implicit: search }
+      "></ng-container>
+  }
+
+  <g-search-results-error [error]="search.error()" />
 }
 <!--} @placeholder {
   <p>Loading...</p>

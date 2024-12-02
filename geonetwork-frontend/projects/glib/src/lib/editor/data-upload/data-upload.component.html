@@ -1,23 +1,54 @@
-<p-stepper (activeStepChange)="onStepChange($event)" class="p-10">
-  <p-stepperPanel header="Select data">
+<p-stepper
+  (activeStepChange)="onStepChange($event)"
+  orientation="vertical"
+  class="p-10">
+  <p-stepperPanel header="Choose resource type">
     <ng-template
       pTemplate="content"
       let-nextCallback="nextCallback"
       let-index="index">
-      <label for="template" class="text-3xl font-bold">Choose a type</label>
-
-      <div class="grid grid-cols-2 gap-x-8 mb-10">
-        <div class="basis-1/2">
+      <label for="template" class="text-3xl font-bold">Describe a</label>
+      <div class="grid grid-cols-1 gap-x-8 mb-10">
+        <div class="w-full">
           <div
             gSearchContext="newDataTemplates"
             size="5"
             filter="+isTemplate:y"
             [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]">
-            <p-dropdown
-              styleClass="w-full"
-              gSearchResultsLoader="newDataTemplates"
-              [(ngModel)]="template"
-              placeholder="" />
+            <g-search-results scope="newDataTemplates">
+              <ng-template #searchProgressTemplate>
+                <p-progressBar
+                  mode="indeterminate"
+                  [style]="{ height: '6px' }" />
+              </ng-template>
+              <ng-template #resultsTemplate let-search>
+                <p-selectButton
+                  [options]="search.response().hits.hits"
+                  [(ngModel)]="template"
+                  allowEmpty="false"
+                  optionValue="_id">
+                  <ng-template pTemplate let-hit>
+                    <div
+                      class="text-2xl font-semibold line-clamp-1 break-all p-6"
+                      [attr.title]="
+                        hit._source.resourceAbstractObject?.default
+                      ">
+                      <g-record-field-resource-type
+                        [field]="hit._source.resourceType"
+                        [layout]="ResourceTypeLayout.ICON"
+                        styleClass="fa-2xl" />
+                      {{ hit._source.resourceTitleObject.default }}
+                    </div>
+                  </ng-template>
+                </p-selectButton>
+              </ng-template>
+            </g-search-results>
+
+            <!-- <p-dropdown
+               styleClass="w-full"
+               gSearchResultsLoader="newDataTemplates"
+               [(ngModel)]="template"
+               placeholder="" />-->
             <input
               pInputText
               id="template"
@@ -32,10 +63,27 @@
         </div>
       </div>
 
-      <label for="datasource" class="text-3xl font-bold"
-        >Upload or connect your data</label
-      >
-
+      <div class="flex mt-2 gap-2">
+        <p-button
+          label="Add data"
+          icon="fas fa-upload"
+          iconPos="right"
+          (onClick)="nextCallback.emit()" />
+        <p-button
+          [disabled]="!template"
+          label="Create record"
+          icon="fas fa-plus"
+          iconPos="right"
+          (onClick)="activateCallback(1)" />
+      </div>
+    </ng-template>
+  </p-stepperPanel>
+  <p-stepperPanel header="Upload or connect your data" disabled="">
+    <ng-template
+      pTemplate="content"
+      let-prevCallback="prevCallback"
+      let-nextCallback="nextCallback"
+      let-index="index">
       <div class="grid grid-cols-2 gap-x-8 mb-10">
         <div class="basis-1/2">
           <p-inputGroup>
@@ -124,7 +172,12 @@
         </div>
       </div>
 
-      <div class="flex mt-2 gap-2 flex-row-reverse">
+      <div class="flex mt-2 gap-2">
+        <p-button
+          label="Back"
+          icon="fas fa-arrow-left"
+          severity="secondary"
+          (onClick)="prevCallback.emit()" />
         <p-button
           [disabled]="!isDatasourceAndTemplateSelected()"
           label="Analyze dataset"

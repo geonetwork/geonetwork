@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Directive,
   EnvironmentInjector,
   inject,
@@ -27,10 +26,10 @@ export class SearchResultsLoaderDirective implements OnInit {
 
   public ngOnInit(): void {
     this.search = this.searchService.getSearch(this.scope());
-    if (this.dropdown) {
-      runInInjectionContext(this.injector, () => {
-        toObservable(this.search.response).subscribe(() => {
-          if (this.search.response() != null) {
+    runInInjectionContext(this.injector, () => {
+      toObservable(this.search.response).subscribe(() => {
+        if (this.search.response() != null) {
+          if (this.dropdown) {
             const options = this.search.response()!.hits.hits.map(hit => {
               return {
                 label: hit._source!.resourceTitleObject!.default,
@@ -43,8 +42,8 @@ export class SearchResultsLoaderDirective implements OnInit {
             //   this.dropdown.modelValue.set(options[0].value);
             // }
           }
-        });
+        }
       });
-    }
+    });
   }
 }

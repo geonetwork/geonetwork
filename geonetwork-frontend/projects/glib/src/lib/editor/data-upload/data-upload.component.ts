@@ -26,6 +26,13 @@ import 'brace';
 import 'brace/mode/xml';
 import 'brace/theme/github';
 import { AceModule } from 'ngx-ace-wrapper';
+import { SearchResultsComponent } from '../../search/search-results/search-results.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import {
+  RecordFieldResourceTypeComponent,
+  ResourceTypeLayout,
+} from '../../record/record-field-resource-type/record-field-resource-type.component';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'g-data-upload',
@@ -48,6 +55,10 @@ import { AceModule } from 'ngx-ace-wrapper';
     SearchResultsLoaderDirective,
     TableModule,
     AceModule,
+    SearchResultsComponent,
+    SelectButtonModule,
+    RecordFieldResourceTypeComponent,
+    CheckboxModule,
   ],
   styleUrl: './data-upload.component.css',
 })
@@ -215,4 +226,7 @@ export class DataUploadComponent implements OnInit {
   }
 
   onBasicUploadAuto(event: FileUploadEvent) {}
+
+  moveToConfirmationPanel() {}
+  protected readonly ResourceTypeLayout = ResourceTypeLayout;
 }

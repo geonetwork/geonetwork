@@ -1,7 +1,14 @@
-import { Component, input } from '@angular/core';
+import { Component, ContentChild, input, TemplateRef } from '@angular/core';
 import { SearchContextDirective } from '../search-context.directive';
 import { ButtonDirective } from 'primeng/button';
-import { AsyncPipe, DatePipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
+import {
+  AsyncPipe,
+  DatePipe,
+  JsonPipe,
+  NgForOf,
+  NgIf,
+  NgTemplateOutlet,
+} from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
 import { RouterLink } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
@@ -52,6 +59,7 @@ export enum ResultsLayout {
     FirstSentencePipe,
     RecordViewListComponent,
     RecordViewCardComponent,
+    NgTemplateOutlet,
   ],
   providers: [DatePipe],
   templateUrl: './search-results.component.html',
@@ -64,5 +72,13 @@ export class SearchResultsComponent extends SearchBaseComponent {
   layoutClass = input<string>('');
   landingPage = input<string>('');
   landingPageLinkPath = input<string>();
+
+  @ContentChild('resultsTemplate') resultsTemplate:
+    | TemplateRef<any>
+    | undefined;
+  @ContentChild('searchProgressTemplate') searchProgressTemplate:
+    | TemplateRef<any>
+    | undefined;
+
   protected readonly ResultsLayout = ResultsLayout;
 }
