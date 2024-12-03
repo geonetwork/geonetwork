@@ -7,55 +7,10 @@
       pTemplate="content"
       let-nextCallback="nextCallback"
       let-index="index">
-      <label for="template" class="text-3xl font-bold">Describe a</label>
+      <label class="text-3xl font-bold">Describe a</label>
       <div class="grid grid-cols-1 gap-x-8 mb-10">
         <div class="w-full">
-          <div
-            gSearchContext="newDataTemplates"
-            size="5"
-            filter="+isTemplate:y"
-            [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]">
-            <g-search-results scope="newDataTemplates">
-              <ng-template #searchProgressTemplate>
-                <p-progressBar
-                  mode="indeterminate"
-                  [style]="{ height: '6px' }" />
-              </ng-template>
-              <ng-template #resultsTemplate let-search>
-                <p-selectButton
-                  [options]="search.response().hits.hits"
-                  [(ngModel)]="template"
-                  allowEmpty="false"
-                  optionValue="_id">
-                  <ng-template pTemplate let-hit>
-                    <div
-                      class="text-2xl font-semibold line-clamp-1 break-all p-6"
-                      [attr.title]="
-                        hit._source.resourceAbstractObject?.default
-                      ">
-                      <g-record-field-resource-type
-                        [field]="hit._source.resourceType"
-                        [layout]="ResourceTypeLayout.ICON"
-                        styleClass="fa-2xl" />
-                      {{ hit._source.resourceTitleObject.default }}
-                    </div>
-                  </ng-template>
-                </p-selectButton>
-              </ng-template>
-            </g-search-results>
-
-            <!-- <p-dropdown
-               styleClass="w-full"
-               gSearchResultsLoader="newDataTemplates"
-               [(ngModel)]="template"
-               placeholder="" />-->
-            <input
-              pInputText
-              id="template"
-              class="hidden"
-              aria-describedby="template-help"
-              [(ngModel)]="template" />
-          </div>
+          <g-templates-selector [template]="template"></g-templates-selector>
         </div>
         <div class="basis-1/2">
           Choose a type of data to describe (eg. geospatial, tabular,
@@ -102,7 +57,7 @@
               pButton
               label="Find datasets"
               [disabled]="isFetchingLayers()"
-              (click)="retrieveLayers()"></button>
+              (click)="getLayerList()"></button>
           </p-inputGroup>
 
           <div class="font-bold w-full text-2xl text-center">or</div>
@@ -188,7 +143,7 @@
     </ng-template>
   </p-stepperPanel>
 
-  <p-stepperPanel header="Scan & Analysis">
+  <p-stepperPanel header="Data analysis summary">
     <ng-template
       pTemplate="content"
       let-prevCallback="prevCallback"
@@ -204,90 +159,8 @@
           </p>
           <small class="error-message">{{ errorExecutingAnalysis() }}</small>
         } @else if (analysisResult()) {
-          <h2 class="pt-2 pb-2 text-2xl font-medium">
-            <span class="font-bold">{{ analysisResult().layers[0].name }}</span>
-            dataset contains
-            <span class="font-bold">{{
-              analysisResult().layers[0].featureCount
-            }}</span>
-            features.
-          </h2>
-
-          <div class="grid grid-cols-8 gap-4">
-            <div><strong>Source</strong></div>
-            <div class="col-span-7">{{ analysisResult().description }}</div>
-
-            <div><strong>Format</strong></div>
-            <div class="col-span-7">{{ analysisResult().format }}</div>
-
-            @if (analysisResult().layers[0].geometryFields.length > 0) {
-              <div><strong>Geometry type</strong></div>
-              <div class="col-span-7">
-                {{ analysisResult().layers[0].geometryFields[0].type }}
-              </div>
-
-              <div><strong>Coordinate system</strong></div>
-              <div class="col-span-7">
-                <a href="http://epsg.io/{{ crsCode() }}" target="_blank"
-                  >EPSG:{{ crsCode() }}</a
-                >
-              </div>
-
-              <div><strong>Spatial extent</strong></div>
-              <div class="col-span-7">
-                {{ analysisResult().layers[0].geometryFields[0].extent }}
-              </div>
-            }
-
-            <div><strong>Data model</strong></div>
-            <div class="col-span-7">
-              <p-table
-                [value]="analysisResult().layers[0].fields"
-                styleClass="w-full"
-                tableStyleClass="w-full">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th>Column name</th>
-                    <th>Column type</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-field>
-                  <tr>
-                    <td>{{ field.name }}</td>
-                    <td>{{ field.type }}</td>
-                  </tr>
-                </ng-template>
-              </p-table>
-            </div>
-
-            @if (analysisResult().layers[0].geometryFields.length == 0) {
-              <div><strong>Spatial extent?</strong></div>
-              <div class="col-span-7">
-                <p-dropdown
-                  [options]="analysisResult().layers[0].fields"
-                  placeholder="Compute spatial extent from attribute"
-                  optionLabel="name"
-                  optionValue="name" />
-              </div>
-            }
-            <div><strong>Temporal extent?</strong></div>
-            <div class="col-span-7">
-              <p-dropdown
-                [options]="analysisResult().layers[0].fields"
-                placeholder="Compute temporal extent from attribute"
-                optionLabel="name"
-                optionValue="name" />
-            </div>
-
-            <div><strong>Vertical extent?</strong></div>
-            <div class="col-span-7">
-              <p-dropdown
-                [options]="analysisResult().layers[0].fields"
-                placeholder="Compute vertical extent from attribute"
-                optionLabel="name"
-                optionValue="name" />
-            </div>
-          </div>
+          <g-data-analysis-panel
+            [analysisResult]="analysisResult"></g-data-analysis-panel>
         }
       </div>
       <div class="flex mt-2 gap-2">

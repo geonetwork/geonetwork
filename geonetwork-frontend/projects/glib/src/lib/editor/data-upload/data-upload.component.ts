@@ -11,7 +11,7 @@ import { Button, ButtonDirective } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { DatasetFormat, DataUploadService } from './data-upload.service';
-import { GnDatasetInfo } from 'gapi';
+import { GnDatasetInfo, GnRasterInfo } from 'gapi';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DropdownModule } from 'primeng/dropdown';
@@ -33,6 +33,8 @@ import {
   ResourceTypeLayout,
 } from '../../record/record-field-resource-type/record-field-resource-type.component';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DataAnalysisPanelComponent } from '../data-analysis-panel/data-analysis-panel.component';
+import { TemplatesSelectorComponent } from '../templates-selector/templates-selector.component';
 
 @Component({
   selector: 'g-data-upload',
@@ -59,6 +61,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     SelectButtonModule,
     RecordFieldResourceTypeComponent,
     CheckboxModule,
+    DataAnalysisPanelComponent,
+    TemplatesSelectorComponent,
   ],
   styleUrl: './data-upload.component.css',
 })
@@ -82,13 +86,14 @@ export class DataUploadComponent implements OnInit {
       'Parquet',
       'SHP',
       'WFS',
+      'GTiff',
     ];
     return this.supportedFormats().filter(
       f => DEFAULT_FORMATS.indexOf(f.name) !== -1
     );
   });
   previewResult = signal<string>('');
-  analysisResult = signal<GnDatasetInfo | undefined>(undefined);
+  analysisResult = signal<GnDatasetInfo | GnRasterInfo | undefined>(undefined);
   layers = signal<string[]>([]);
 
   isFetchingLayers = signal(false);
@@ -107,16 +112,26 @@ export class DataUploadComponent implements OnInit {
   errorExecutingAnalysis = signal('');
   errorPreviewingAnalysis = signal('');
 
+  isVector = (
+    datasetInfo: GnDatasetInfo | GnRasterInfo | undefined
+  ): datasetInfo is GnDatasetInfo => {
+    return true;
+  };
+
   crsCode = computed(() => {
     let output = '';
     let datasetInfo = this.analysisResult();
-    if (datasetInfo?.layers && datasetInfo.layers[0].geometryFields) {
+    if (
+      this.isVector(datasetInfo) &&
+      datasetInfo?.layers &&
+      datasetInfo.layers[0].geometryFields
+    ) {
       let parsedValue = datasetInfo.layers[0].geometryFields[0].crs
         ?.split(',')
         .pop();
       output = parsedValue ? parsedValue.replace(']]', '') : '';
+    } else {
     }
-
     return output;
   });
 
@@ -128,61 +143,16 @@ export class DataUploadComponent implements OnInit {
     });
   }
 
+  private stepEvents: { [key: number]: Function } = {
+    2: this.getDatasetInfo.bind(this),
+    3: this.getRecordPreview.bind(this),
+  };
+
   onStepChange(step: number) {
-    if (step == 1) {
-      if (!this.analysisResult()) {
-        this.isExecutingAnalysis.set(true);
-        this.errorExecutingAnalysis.set('');
-
-        const subscription = this.dataUploadService
-          .executeAnalysis(this.datasource(), this.layername())
-          .subscribe({
-            next: result => {
-              this.analysisResult.set(result);
-            },
-            error: error => {
-              console.log(error);
-              this.errorExecutingAnalysis.set(error.errorMessage);
-              this.isExecutingAnalysis.set(false);
-            },
-            complete: () => {
-              this.isExecutingAnalysis.set(false);
-            },
-          });
-
-        this.destroyRef.onDestroy(() => {
-          subscription.unsubscribe();
-        });
-      }
-    } else if (step == 2) {
-      if (!this.previewResult()) {
-        this.isCreatingPreview.set(true);
-        this.errorPreviewingAnalysis.set('');
-
-        const subscription = this.dataUploadService
-          .previewAnalysis(this.template(), this.datasource(), this.layername())
-          .subscribe({
-            next: result => {
-              this.previewResult.set(result);
-            },
-            error: error => {
-              console.log(error);
-              this.errorPreviewingAnalysis.set(error.errorMessage);
-              this.isCreatingPreview.set(false);
-            },
-            complete: () => {
-              this.isCreatingPreview.set(false);
-            },
-          });
-
-        this.destroyRef.onDestroy(() => {
-          subscription.unsubscribe();
-        });
-      }
-    }
+    this.stepEvents[step] && this.stepEvents[step]();
   }
 
-  retrieveLayers() {
+  getLayerList() {
     this.isFetchingLayers.set(true);
     this.errorFetchingLayers.set('');
 
@@ -208,6 +178,60 @@ export class DataUploadComponent implements OnInit {
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
+  }
+
+  private getDatasetInfo() {
+    if (!this.analysisResult()) {
+      this.isExecutingAnalysis.set(true);
+      this.errorExecutingAnalysis.set('');
+
+      const subscription = this.dataUploadService
+        .executeAnalysis(this.datasource(), this.layername())
+        .subscribe({
+          next: result => {
+            this.analysisResult.set(result);
+          },
+          error: error => {
+            console.log(error);
+            this.errorExecutingAnalysis.set(error.errorMessage);
+            this.isExecutingAnalysis.set(false);
+          },
+          complete: () => {
+            this.isExecutingAnalysis.set(false);
+          },
+        });
+
+      this.destroyRef.onDestroy(() => {
+        subscription.unsubscribe();
+      });
+    }
+  }
+
+  private getRecordPreview() {
+    if (!this.previewResult()) {
+      this.isCreatingPreview.set(true);
+      this.errorPreviewingAnalysis.set('');
+
+      const subscription = this.dataUploadService
+        .previewAnalysis(this.template(), this.datasource(), this.layername())
+        .subscribe({
+          next: result => {
+            this.previewResult.set(result);
+          },
+          error: error => {
+            console.log(error);
+            this.errorPreviewingAnalysis.set(error.errorMessage);
+            this.isCreatingPreview.set(false);
+          },
+          complete: () => {
+            this.isCreatingPreview.set(false);
+          },
+        });
+
+      this.destroyRef.onDestroy(() => {
+        subscription.unsubscribe();
+      });
+    }
   }
 
   onLayerChange(): void {

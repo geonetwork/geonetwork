@@ -12,17 +12,14 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
 import type { GnDatasetLayerField } from './GnDatasetLayerField';
 import {
   GnDatasetLayerFieldFromJSON,
-  GnDatasetLayerFieldFromJSONTyped,
   GnDatasetLayerFieldToJSON,
 } from './GnDatasetLayerField';
 import type { GnDatasetLayerGeomField } from './GnDatasetLayerGeomField';
 import {
   GnDatasetLayerGeomFieldFromJSON,
-  GnDatasetLayerGeomFieldFromJSONTyped,
   GnDatasetLayerGeomFieldToJSON,
 } from './GnDatasetLayerGeomField';
 
