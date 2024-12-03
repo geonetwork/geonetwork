@@ -24,7 +24,10 @@
 
     <div class="font-medium">Spatial representation</div>
     <div class="col-span-7">
-      <i [attr.class]="isVector ? 'fa fa-fw fa-vector-square' : 'fa fa-fw fa-table-cells'"></i>
+      <i
+        [attr.class]="
+          isVector ? 'fa fa-fw fa-vector-square' : 'fa fa-fw fa-table-cells'
+        "></i>
       {{ analysisResult().dataType }}
     </div>
 
@@ -58,12 +61,9 @@
     @if (crsCode(); as crs) {
       <div class="font-medium">Coordinate system</div>
       <div class="col-span-7">
-        <a href="http://epsg.io/{{ crs }}" target="_blank">
-          EPSG:{{ crs }}
-        </a>
+        <a href="http://epsg.io/{{ crs }}" target="_blank"> EPSG:{{ crs }} </a>
       </div>
     }
-
 
     @if (isVector) {
       <div class="font-medium">Data model</div>

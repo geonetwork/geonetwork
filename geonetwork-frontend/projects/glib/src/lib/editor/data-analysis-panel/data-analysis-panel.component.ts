@@ -1,4 +1,4 @@
-import {Component, computed, Input, WritableSignal} from '@angular/core';
+import { Component, computed, Input, WritableSignal } from '@angular/core';
 import { DropdownModule } from 'primeng/dropdown';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -43,7 +43,9 @@ export class DataAnalysisPanelComponent {
     return output;
   });
   crsCode = computed(() => {
-    return this.crsDefinition() ? this.crsDefinition()?.replace(/[\s\S.]*"EPSG",([0-9]*).*/, "$1") : "";
+    return this.crsDefinition()
+      ? this.crsDefinition()?.replace(/[\s\S.]*"EPSG",([0-9]*).*/, '$1')
+      : '';
   });
 
   protected readonly GnRasterInfoDataTypeEnum = GnRasterInfoDataTypeEnum;

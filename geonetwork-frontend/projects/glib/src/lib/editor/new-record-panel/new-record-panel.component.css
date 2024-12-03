@@ -1,0 +1,11 @@
+.error-message {
+  color: red;
+}
+
+::ng-deep .p-selectbutton .p-button.p-highlight::before {
+  background-color: unset;
+}
+::ng-deep .p-selectbutton .p-button.p-highlight {
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+}

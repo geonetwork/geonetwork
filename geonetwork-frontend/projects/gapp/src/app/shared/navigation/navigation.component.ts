@@ -65,7 +65,7 @@ export class NavigationComponent implements OnInit {
         label: 'New record',
         icon: 'fa fa-plus',
         command: () => {
-          this.router.navigate(['dataupload']);
+          this.router.navigate(['new-record']);
         },
       },
       // GN5 signin

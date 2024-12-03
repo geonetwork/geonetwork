@@ -38,4 +38,6 @@ export * from './lib/record/record-view/record-view.component';
 export * from './lib/record/record-field-resource-type/record-field-resource-type.component';
 export * from './lib/record/record-field-overview/record-field-overview.component';
 export * from './lib/record/record-field-range.pipe';
+export * from './lib/editor/new-record-panel/new-record-panel.component';
+export * from './lib/editor/data-analysis-panel/data-analysis-panel.component';
 export * from './lib/editor/data-upload/data-upload.component';

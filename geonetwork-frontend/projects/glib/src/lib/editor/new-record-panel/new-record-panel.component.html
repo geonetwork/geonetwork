@@ -1,1 +1,216 @@
-<p>new-record-panel works!</p>
+<p-stepper
+  (activeStepChange)="onStepChange($event)"
+  orientation="vertical"
+  class="p-10">
+  <p-stepperPanel header="Choose resource type">
+    <ng-template
+      pTemplate="content"
+      let-nextCallback="nextCallback"
+      let-index="index">
+      <label class="text-3xl font-bold">Describe a</label>
+      <div class="grid grid-cols-1 gap-x-8 mb-10">
+        <div class="w-full">
+          <g-templates-selector [template]="template"></g-templates-selector>
+        </div>
+        <div class="basis-1/2">
+          Choose a type of data to describe (eg. geospatial, tabular,
+          statistical, maps).
+        </div>
+      </div>
+
+      <div class="flex mt-2 gap-2">
+        <p-button
+          label="Add data"
+          icon="fas fa-upload"
+          iconPos="right"
+          [disabled]="!isTemplateSelected()"
+          (onClick)="nextCallback.emit()" />
+        <p-button
+          [disabled]="!template"
+          label="Create record"
+          icon="fas fa-plus"
+          iconPos="right"
+          [disabled]="!isTemplateSelected()"
+          (onClick)="activateCallback(1)" />
+      </div>
+    </ng-template>
+  </p-stepperPanel>
+  <p-stepperPanel header="Upload or connect your data" disabled="">
+    <ng-template
+      pTemplate="content"
+      let-prevCallback="prevCallback"
+      let-nextCallback="nextCallback"
+      let-index="index">
+      <div class="grid grid-cols-2 gap-x-8 mb-10">
+        <div class="basis-1/2">
+          <p-inputGroup>
+            <p-inputGroupAddon>
+              <i class="fa fa-link"></i>
+              URL
+            </p-inputGroupAddon>
+            <input
+              pInputText
+              id="datasource"
+              aria-describedby="datasource-help"
+              (change)="onDatasourceChange()"
+              [(ngModel)]="datasource" />
+            <button
+              type="button"
+              pButton
+              label="Find datasets"
+              [disabled]="isFetchingLayers()"
+              (click)="getLayerList()"></button>
+          </p-inputGroup>
+
+          <div class="font-bold w-full text-2xl text-center">or</div>
+
+          <div class="mb-10">
+            <p-fileUpload
+              styleClass="w-full"
+              mode="basic"
+              name="demo[]"
+              chooseIcon="fa fa-upload"
+              accept="image/*"
+              maxFileSize="1000000"
+              (onUpload)="onBasicUploadAuto($event)"
+              [auto]="true"
+              chooseLabel="Upload your file" />
+          </div>
+
+          @if (isFetchingLayers()) {
+            <div>
+              <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
+            </div>
+          }
+
+          @if (errorFetchingLayers()) {
+            <p class="error-message">
+              An error occurred retrieving dataset information. Please try
+              later.
+            </p>
+            <small class="error-message"
+              >Error is: {{ errorFetchingLayers() }}</small
+            >
+          }
+
+          @if (layers().length > 0) {
+            <div title=" Select the dataset name to analyse">
+              <label for="layername" class="w-full"
+                >{{ layers().length }} dataset(s) found</label
+              >
+              <p-dropdown
+                id="layername"
+                styleClass="w-full"
+                disabled="{{ layers().length === 0 }}"
+                [options]="layers()"
+                [(ngModel)]="layername"
+                (onChange)="onLayerChange()"
+                placeholder="Select a dataset" />
+            </div>
+          }
+        </div>
+        <div class="basis-1/2">
+          <span
+            >Point to the datasource URL or upload a new file and select the
+            dataset to register.</span
+          >
+
+          <h2 class="font-medium mt-10">Supported data formats:</h2>
+          @for (format of mainSupportedFormats(); track format) {
+            <p-chip
+              [title]="format.description + ' - ' + format.dataType"
+              [label]="format.name"
+              class="mr-2"></p-chip>
+          }
+
+          <h2 class="font-medium mt-10">
+            Maximum file size is <span class="font-bold">100Mo</span>.
+          </h2>
+        </div>
+      </div>
+
+      <div class="flex mt-2 gap-2">
+        <p-button
+          label="Back"
+          icon="fas fa-arrow-left"
+          severity="secondary"
+          (onClick)="prevCallback.emit()" />
+        <p-button
+          [disabled]="!isDatasourceAndTemplateSelected()"
+          label="Analyze dataset"
+          icon="fas fa-arrow-right"
+          iconPos="right"
+          (onClick)="nextCallback.emit()" />
+      </div>
+    </ng-template>
+  </p-stepperPanel>
+
+  <p-stepperPanel header="Data analysis summary">
+    <ng-template
+      pTemplate="content"
+      let-prevCallback="prevCallback"
+      let-nextCallback="nextCallback"
+      let-index="index">
+      <div>
+        @if (isExecutingAnalysis()) {
+          <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
+        }
+        @if (errorExecutingAnalysis()) {
+          <p class="error-message">
+            An error analysing the dataset information. Please try later.
+          </p>
+          <small class="error-message">{{ errorExecutingAnalysis() }}</small>
+        } @else if (analysisResult()) {
+          <g-data-analysis-panel
+            [analysisResult]="analysisResult"></g-data-analysis-panel>
+        }
+      </div>
+      <div class="flex mt-2 gap-2">
+        <p-button
+          label="Back"
+          icon="fas fa-arrow-left"
+          severity="secondary"
+          (onClick)="prevCallback.emit()" />
+        <p-button
+          [disabled]="!analysisResult()"
+          label="Preview record"
+          icon="fas fa-arrow-right"
+          iconPos="right"
+          (onClick)="nextCallback.emit()" />
+      </div>
+    </ng-template>
+  </p-stepperPanel>
+
+  <p-stepperPanel header="Review and save">
+    <ng-template
+      pTemplate="content"
+      let-prevCallback="prevCallback"
+      let-index="index">
+      <div>
+        @if (isCreatingPreview()) {
+          <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
+        } @else if (previewResult()) {
+          <ace
+            style="height: 50vh"
+            [config]="{ wrap: true, tabSize: 2 }"
+            [mode]="'xml'"
+            [theme]="'github'"
+            [(value)]="previewResult"
+            [disabled]="true"></ace>
+        }
+      </div>
+      <div class="flex mt-2 gap-2">
+        <p-button
+          label="Back"
+          severity="secondary"
+          icon="fas fa-arrow-left"
+          (onClick)="prevCallback.emit()" />
+        <p-button
+          label="Save"
+          icon="fas fa-save"
+          [disabled]="!previewResult()" />
+      </div>
+    </ng-template>
+  </p-stepperPanel>
+  -
+</p-stepper>
