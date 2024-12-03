@@ -176,11 +176,14 @@ class GdalDataAnalyzerTest {
                         .getFile()
                         .getCanonicalPath());
 
-        assertEquals("GTiff", layerProperties.get().getType());
+        assertEquals("GTiff", layerProperties.get().getFormat());
 
         assertNotNull(layerProperties);
         assertTrue(layerProperties.get().getCrs().contains("\"EPSG\",3035"));
         // assertEquals(3035, layerProperties.get().getStac().getProjColonEpsg().get());
+        assertEquals(
+                List.of(44.265838, 39.8439013, 45.1644546, 40.5367209),
+                layerProperties.get().getWgs84Extent());
         assertEquals(
                 "7146300.0,2543100.0",
                 layerProperties.get().getRasterCornerCoordinates().getLowerLeft().stream()

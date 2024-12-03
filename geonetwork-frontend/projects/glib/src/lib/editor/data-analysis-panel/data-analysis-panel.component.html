@@ -1,0 +1,119 @@
+@if (analysisResult()) {
+  @let isVector = analysisResult().dataType === GnRasterInfoDataTypeEnum.Vector;
+  @let isRaster = analysisResult().dataType === GnRasterInfoDataTypeEnum.Raster;
+
+  <h2 class="pt-2 pb-2 text-2xl font-medium">
+    @if (isVector) {
+      <span class="font-bold">{{ analysisResult().layers[0].name }}</span>
+      dataset contains
+      <span class="font-bold">{{
+        analysisResult().layers[0].featureCount
+      }}</span>
+      features.
+    } @else if (isRaster) {
+      RASTER dataset contains {{ analysisResult().bands.length }} band(s).
+    }
+  </h2>
+
+  <div class="grid grid-cols-8 gap-4">
+    <div class="font-medium">Source</div>
+    <div class="col-span-7">{{ analysisResult().description }}</div>
+
+    <div class="font-medium">Format</div>
+    <div class="col-span-7">{{ analysisResult().format }}</div>
+
+    <div class="font-medium">Spatial representation</div>
+    <div class="col-span-7">
+      <i
+        [attr.class]="
+          isVector ? 'fa fa-fw fa-vector-square' : 'fa fa-fw fa-table-cells'
+        "></i>
+      {{ analysisResult().dataType }}
+    </div>
+
+    @if (isVector && analysisResult().layers[0].geometryFields.length > 0) {
+      <div class="font-medium">Geometry type</div>
+      <div class="col-span-7">
+        {{ analysisResult().layers[0].geometryFields[0].type }}
+      </div>
+
+      <div class="font-medium">Spatial extent</div>
+      <div class="col-span-7">
+        {{ analysisResult().layers[0].geometryFields[0].extent }}
+      </div>
+    }
+
+    @if (isRaster) {
+      @if (analysisResult().wgs84Extent) {
+        <div class="font-medium">Spatial extent</div>
+        <div class="col-span-7">
+          {{ analysisResult().wgs84Extent }}
+        </div>
+      }
+      @if (analysisResult().size) {
+        <div class="font-medium">Dimensions</div>
+        <div class="col-span-7">
+          X: {{ analysisResult().size[0] }} / Y: {{ analysisResult().size[1] }}
+        </div>
+      }
+    }
+
+    @if (crsCode(); as crs) {
+      <div class="font-medium">Coordinate system</div>
+      <div class="col-span-7">
+        <a href="http://epsg.io/{{ crs }}" target="_blank"> EPSG:{{ crs }} </a>
+      </div>
+    }
+
+    @if (isVector) {
+      <div class="font-medium">Data model</div>
+      <div class="col-span-7">
+        <p-table
+          [value]="analysisResult().layers[0].fields"
+          styleClass="w-full"
+          tableStyleClass="w-full">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Column name</th>
+              <th>Column type</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-field>
+            <tr>
+              <td>{{ field.name }}</td>
+              <td>{{ field.type }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      @if (analysisResult().layers[0].geometryFields.length == 0) {
+        <div class="font-medium">Spatial extent?</div>
+        <div class="col-span-7">
+          <p-dropdown
+            [options]="analysisResult().layers[0].fields"
+            placeholder="Compute spatial extent from attribute"
+            optionLabel="name"
+            optionValue="name" />
+        </div>
+      }
+      <div class="font-medium">Temporal extent?</div>
+      <div class="col-span-7">
+        <p-dropdown
+          [options]="analysisResult().layers[0].fields"
+          placeholder="Compute temporal extent from attribute"
+          optionLabel="name"
+          optionValue="name" />
+      </div>
+
+      <div class="font-medium">Vertical extent?</div>
+      <div class="col-span-7">
+        <p-dropdown
+          [options]="analysisResult().layers[0].fields"
+          placeholder="Compute vertical extent from attribute"
+          optionLabel="name"
+          optionValue="name" />
+      </div>
+    }
+  </div>
+}

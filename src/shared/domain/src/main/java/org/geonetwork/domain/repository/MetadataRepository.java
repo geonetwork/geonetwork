@@ -17,6 +17,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.QueryHints;
 
 public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
+    Optional<Metadata> findOneByUuid(String uuid);
+
     List<Metadata> findAllByUuidIn(List<String> uuid);
 
     Optional<Metadata> findByUuid(String uuid);

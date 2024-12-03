@@ -6,18 +6,20 @@
 
 package org.geonetwork.data.model;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-public class DatasetInfo implements Serializable {
-    private String description;
-    private String format;
-    private String formatDescription;
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class DatasetInfo extends BaseDataInfo {
+    @Builder.Default
+    private DataType dataType = DataType.VECTOR;
+
     private List<DatasetLayer> layers;
     private Map<String, Object> metadata;
 }

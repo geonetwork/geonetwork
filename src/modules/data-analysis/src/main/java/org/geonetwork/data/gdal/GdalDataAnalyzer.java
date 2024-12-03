@@ -9,6 +9,7 @@ package org.geonetwork.data.gdal;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,10 +101,19 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
     @Override
     public List<String> getDatasourceLayers(String dataSource) {
-        return GdalUtils.executeCommand(
+        Optional<List<String>> vectorLayers = GdalUtils.executeCommand(
                         buildUtilityCommand(OGR_INFO_APP), timeoutInSeconds, "-ro", buildDataSourcePath(dataSource))
-                .map(GdalUtils::parseLayers)
-                .orElse(List.of());
+                .map(GdalUtils::parseLayers);
+        if (vectorLayers.isPresent() && !vectorLayers.get().isEmpty()) {
+            return vectorLayers.get();
+        }
+        Optional<List<String>> rasterLayers = GdalUtils.executeCommand(
+                        buildUtilityCommand(GDAL_INFO_APP), timeoutInSeconds, buildDataSourcePath(dataSource))
+                .map(GdalUtils::parseRasterLayers);
+        if (rasterLayers.isPresent() && !rasterLayers.get().isEmpty()) {
+            return rasterLayers.get();
+        }
+        return List.of();
     }
 
     @Override
@@ -351,11 +361,11 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
             return RasterInfo.builder()
                     .description(raster.getDescription())
-                    .type(raster.getDriverShortName())
+                    .format(raster.getDriverShortName())
+                    .formatDescription(raster.getDriverLongName())
                     .metadata(metadataInfo)
                     .crs(raster.getCoordinateSystem().getWkt())
-                    .wgs84Extent(
-                            extent.getBbox().stream().map(Number::doubleValue).toList())
+                    .wgs84Extent(getWgs84Extent(extent))
                     .rasterCornerCoordinates(rasterCornerCoordinates)
                     .bands(raster.getBands().stream()
                             .map(b -> RasterBand.builder().build())
@@ -366,5 +376,25 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
         } catch (IOException e) {
             throw new DataAnalyzerException(json);
         }
+    }
+
+    private static List<Double> getWgs84Extent(GdalGeoJSONPolygonDto extent) {
+        if (!extent.getBbox().isEmpty()) {
+            return extent.getBbox().stream().map(Number::doubleValue).toList();
+        } else if (!extent.getCoordinates().isEmpty() && extent.getCoordinates().getFirst() != null) {
+            List<List<BigDecimal>> coordinates = extent.getCoordinates().getFirst();
+            List<Double> xCoordinates = coordinates.stream()
+                    .map(c -> c.getFirst().doubleValue())
+                    .sorted()
+                    .toList();
+            List<Double> yCoordinates = coordinates.stream()
+                    .map(c -> c.getLast().doubleValue())
+                    .sorted()
+                    .toList();
+
+            return List.of(
+                    xCoordinates.getFirst(), yCoordinates.getFirst(), xCoordinates.getLast(), yCoordinates.getLast());
+        }
+        return List.of();
     }
 }

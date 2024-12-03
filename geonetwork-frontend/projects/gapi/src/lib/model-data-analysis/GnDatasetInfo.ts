@@ -12,16 +12,10 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
 import type { GnDatasetLayer } from './GnDatasetLayer';
-import {
-  GnDatasetLayerFromJSON,
-  GnDatasetLayerFromJSONTyped,
-  GnDatasetLayerToJSON,
-} from './GnDatasetLayer';
+import { GnDatasetLayerFromJSON, GnDatasetLayerToJSON } from './GnDatasetLayer';
 
 /**
- *
  * @export
  * @interface GnDatasetInfo
  */
@@ -46,6 +40,12 @@ export interface GnDatasetInfo {
   formatDescription?: string;
   /**
    *
+   * @type {string}
+   * @memberof GnDatasetInfo
+   */
+  dataType?: GnDatasetInfoDataTypeEnum;
+  /**
+   *
    * @type {Array<GnDatasetLayer>}
    * @memberof GnDatasetInfo
    */
@@ -57,6 +57,16 @@ export interface GnDatasetInfo {
    */
   metadata?: { [key: string]: object };
 }
+
+/**
+ * @export
+ */
+export const GnDatasetInfoDataTypeEnum = {
+  Raster: 'RASTER',
+  Vector: 'VECTOR',
+} as const;
+export type GnDatasetInfoDataTypeEnum =
+  (typeof GnDatasetInfoDataTypeEnum)[keyof typeof GnDatasetInfoDataTypeEnum];
 
 /**
  * Check if a given object implements the GnDatasetInfo interface.
@@ -81,6 +91,7 @@ export function GnDatasetInfoFromJSONTyped(
     format: json['format'] == null ? undefined : json['format'],
     formatDescription:
       json['formatDescription'] == null ? undefined : json['formatDescription'],
+    dataType: json['dataType'] == null ? undefined : json['dataType'],
     layers:
       json['layers'] == null
         ? undefined
@@ -97,6 +108,7 @@ export function GnDatasetInfoToJSON(value?: GnDatasetInfo | null): any {
     description: value['description'],
     format: value['format'],
     formatDescription: value['formatDescription'],
+    dataType: value['dataType'],
     layers:
       value['layers'] == null
         ? undefined

@@ -26,6 +26,7 @@ public class GdalUtils {
 
     private static final String GDAL_FORMAT_REGEX = " +(\\w+) +-([\\w,]+)- \\(([rwvso\\+]+)\\):\\ (.*)";
     private static final String GDAL_LAYERS_REGEX = "[0-9]+: ([:\\w]+) +\\(.*\\)";
+    public static final String GDAL_DEFAULT_RASTER_LAYER = "RASTER_LAYER";
 
     protected static List<DataFormat> parseFormats(String output) {
         Pattern pattern = Pattern.compile(GDAL_FORMAT_REGEX);
@@ -41,6 +42,11 @@ public class GdalUtils {
                 .toList();
     }
 
+    /**
+     * ogrinfo return a list of layers for the datasource.
+     *
+     * <p>See <a href="https://gdal.org/en/latest/programs/ogrinfo.html">ogrinfo</a>
+     */
     protected static List<String> parseLayers(String output) {
         Pattern pattern = Pattern.compile(GDAL_LAYERS_REGEX);
         // TODO: may contains title
@@ -52,6 +58,18 @@ public class GdalUtils {
                 .filter(Matcher::matches)
                 .map(matcher -> matcher.group(1))
                 .toList();
+    }
+
+    /**
+     * GDAL info return the driver name as the first line if the file is a raster.
+     *
+     * <p>See <a href="https://gdal.org/en/latest/programs/gdalinfo.html">gdalinfo</a>
+     */
+    protected static List<String> parseRasterLayers(String output) {
+        if (output.startsWith("Driver:")) {
+            return List.of(GDAL_DEFAULT_RASTER_LAYER);
+        }
+        return List.of();
     }
 
     protected static Optional<String> execute(CommandLine command, int timeoutInSeconds) {

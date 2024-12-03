@@ -1,21 +1,23 @@
 geonetwork:
   tasks:
     data-ingester:
+# Data analyzer configuration use the batch API to inject information in the metadata.
+# * xpath should contain all element name in case the target element needs to be created.
       resources:
         - type: "dataset"
           properties:
             - name: "name"
-              help: "Set the title of the dataset if not set and not starts with 'Copy of'"
+              help: "Set the title of the dataset if not set and not starts with 'Copy of' prefix."
               context: "DatasetLayer"
               operations:
                 - schema: "iso19139"
                   operation: "gn_delete"
                   xpath: "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
-                  condition: "starts-with(./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString, 'Copy of')"
+                  condition: "starts-with(./gmd:identificationInfo/*/gmd:citation/*/gmd:title/gco:CharacterString, 'Copy of')"
                 - schema: "iso19139"
                   operation: "gn_create"
                   xpath: "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
-                  condition: "starts-with(./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString, 'Copy of')  or count(./mdb:identificationInfo/*/mri:citation/*/cit:title) = 0"
+                  condition: "starts-with(./gmd:identificationInfo/*/gmd:citation/*/gmd:title/gco:CharacterString, 'Copy of')  or count(./gmd:identificationInfo/*/gmd:citation/*/gmd:title) = 0"
                   value: "{{title}}"
 
                 - schema: "iso19115-3.2018"
@@ -40,7 +42,7 @@ geonetwork:
                   operation: "gn_create"
                   xpath: "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType"
                   value:  >
-                    <gmd:spatialRepresentationType>
+                    <gmd:spatialRepresentationType xmlns:gmd="http://www.isotc211.org/2005/gmd">
                           <gmd:MD_SpatialRepresentationTypeCode
                                 codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_SpatialRepresentationTypeCode"
                                 codeListValue="{{datasetType:-vector}}" />
@@ -66,7 +68,7 @@ geonetwork:
               operations:
                 - schema: "iso19139"
                   operation: "gn_delete"
-                  xpath: "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent[gco:nilReason='computedFromDatasource']/gmd:EX_Extent/gmd:geographicElement"
+                  xpath: "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent[@gco:nilReason='computedFromDatasource']"
                 - schema: "iso19139"
                   operation: "gn_create"
                   xpath: "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent"
@@ -96,7 +98,7 @@ geonetwork:
 
                 - schema: "iso19115-3.2018"
                   operation: "gn_delete"
-                  xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[gco:nilReason='computedFromDatasource']/gex:EX_Extent/gex:geographicElement"
+                  xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:extent[@gco:nilReason='computedFromDatasource']"
                 - schema: "iso19115-3.2018"
                   operation: "gn_create"
                   xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:extent "
@@ -105,7 +107,6 @@ geonetwork:
                                          xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
                                          xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
                                          gco:nilReason="computedFromDatasource">
-                     <gex:extent>
                        <gex:EX_Extent>
                          <gex:geographicElement>
                            <gex:EX_GeographicBoundingBox>
@@ -124,20 +125,20 @@ geonetwork:
                            </gex:EX_GeographicBoundingBox>
                          </gex:geographicElement>
                        </gex:EX_Extent>
-                     </gex:extent>
                     </mri:extent>
 
 
             - name: "vectorSpatialRepresentation"
-              # TODO: Raster support
-              help: "For each layers, set the feature count and geometry type if geometry column found."
+              help: "For each layers, set the feature count and geometry type if geometry column found (and the dataset is not a grid)."
               context: "DatasetLayer"
               operations:
                 - schema: "iso19139"
                   xpath: "gmd:spatialRepresentationInfo[@gco:nilReason = 'computedFromDatasource']"
+                  condition: "count(./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType[*/@codeListValue = 'grid']) = 0"
                   operation: "gn_delete"
                 - schema: "iso19139"
                   xpath: "gmd:spatialRepresentationInfo"
+                  condition: "count(./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType[*/@codeListValue = 'grid']) = 0"
                   operation: "gn_create"
                   value: >
                     <gmd:spatialRepresentationInfo
@@ -164,9 +165,11 @@ geonetwork:
                 - schema: "iso19115-3.2018"
                   operation: "gn_delete"
                   xpath: "mdb:spatialRepresentationInfo[@gco:nilReason = 'computedFromDatasource']"
+                  condition: "count(./mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 0"
                 - schema: "iso19115-3.2018"
                   operation: "gn_create"
                   xpath: "mdb:spatialRepresentationInfo"
+                  condition: "count(./mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 0"
                   value: >
                     <mdb:spatialRepresentationInfo xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
                                                              xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
@@ -189,16 +192,117 @@ geonetwork:
                               </mdb:spatialRepresentationInfo>
 
 
-            - name: "distributionFormat"
-              help: "Set the distribution format of the dataset based on the data analyzer driver information."
+            - name: "rasterSpatialRepresentation"
+              help: "For raster dataset, set the X and Y dimension info."
               context: "DatasetLayer"
               operations:
                 - schema: "iso19139"
                   operation: "gn_delete"
-                  xpath: "gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[*/gmd:name/*/text() ='{{formatDescription}}']"
+                  xpath: "gmd:spatialRepresentationInfo[@gco:nilReason = 'computedFromDatasource']"
+                  condition: "count(./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType[*/@codeListValue = 'grid']) = 1"
+                - schema: "iso19139"
+                  operation: "gn_create"
+                  xpath: "gmd:spatialRepresentationInfo"
+                  condition: "count(./gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType[*/@codeListValue = 'grid']) = 1"
+                  value: >
+                    <gmd:spatialRepresentationInfo
+                               xmlns:gco="http://www.isotc211.org/2005/gco"
+                               xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                               gco:nilReason="computedFromDatasource">
+                      <gmd:MD_GridSpatialRepresentation>
+                        <gmd:numberOfDimensions>
+                          <gco:Integer>2</gco:Integer>
+                        </gmd:numberOfDimensions>
+                        <gmd:axisDimensionProperties>
+                          <gmd:MD_Dimension>
+                            <gmd:dimensionName>
+                            <gmd:MD_DimensionNameTypeCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_DimensionNameTypeCode"
+                            codeListValue="column"/>
+                            </gmd:dimensionName>
+                            <gmd:dimensionSize>
+                            <gco:Integer>{{dimensionSizeX:-}}</gco:Integer>
+                            </gmd:dimensionSize>
+                          </gmd:MD_Dimension>
+                        </gmd:axisDimensionProperties>
+                        <gmd:axisDimensionProperties>
+                          <gmd:MD_Dimension>
+                            <gmd:dimensionName>
+                            <gmd:MD_DimensionNameTypeCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_DimensionNameTypeCode"
+                            codeListValue="row"/>
+                            </gmd:dimensionName>
+                            <gmd:dimensionSize>
+                            <gco:Integer>{{dimensionSizeY:-}}</gco:Integer>
+                            </gmd:dimensionSize>
+                          </gmd:MD_Dimension>
+                        </gmd:axisDimensionProperties>
+                        <gmd:cellGeometry>
+                          <gmd:MD_CellGeometryCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_CellGeometryCode"
+                        codeListValue="area"/>
+                        </gmd:cellGeometry>
+                        <gmd:transformationParameterAvailability>
+                          <gco:Boolean>true</gco:Boolean>
+                        </gmd:transformationParameterAvailability>
+                      </gmd:MD_GridSpatialRepresentation>
+                    </gmd:spatialRepresentationInfo>
+
+                - schema: "iso19115-3.2018"
+                  operation: "gn_delete"
+                  xpath: "mdb:spatialRepresentationInfo[@gco:nilReason = 'computedFromDatasource']"
+                  condition: "count(./mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 1"
+                - schema: "iso19115-3.2018"
+                  operation: "gn_create"
+                  xpath: "mdb:spatialRepresentationInfo"
+                  condition: "count(./mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 1"
+                  value: >
+                    <mdb:spatialRepresentationInfo xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
+                                                                                                                  xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
+                                                                                                                  xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                                                                                                                  gco:nilReason="computedFromDatasource">
+                      <msr:MD_GridSpatialRepresentation>
+                        <msr:numberOfDimensions>
+                          <gco:Integer>2</gco:Integer>
+                        </msr:numberOfDimensions>
+                        <msr:axisDimensionProperties>
+                          <msr:MD_Dimension>
+                            <msr:dimensionName>
+                            <msr:MD_DimensionNameTypeCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_DimensionNameTypeCode"
+                            codeListValue="column"/>
+                            </msr:dimensionName>
+                            <msr:dimensionSize>
+                            <gco:Integer>{{dimensionSizeX:-}}</gco:Integer>
+                            </msr:dimensionSize>
+                          </msr:MD_Dimension>
+                        </msr:axisDimensionProperties>
+                        <msr:axisDimensionProperties>
+                          <msr:MD_Dimension>
+                            <msr:dimensionName>
+                            <msr:MD_DimensionNameTypeCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_DimensionNameTypeCode"
+                            codeListValue="row"/>
+                            </msr:dimensionName>
+                            <msr:dimensionSize>
+                            <gco:Integer>{{dimensionSizeY:-}}</gco:Integer>
+                            </msr:dimensionSize>
+                          </msr:MD_Dimension>
+                        </msr:axisDimensionProperties>
+                        <msr:cellGeometry>
+                          <msr:MD_CellGeometryCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_CellGeometryCode"
+                        codeListValue="area"/>
+                        </msr:cellGeometry>
+                        <msr:transformationParameterAvailability>
+                          <gco:Boolean>true</gco:Boolean>
+                        </msr:transformationParameterAvailability>
+                      </msr:MD_GridSpatialRepresentation>
+                    </mdb:spatialRepresentationInfo>
+
+
+            - name: "distributionFormat"
+              help: "Set the distribution format of the dataset based on the data analyzer driver information if not already defined."
+              context: "DatasetLayer"
+              operations:
                 - schema: "iso19139"
                   operation: "gn_create"
                   xpath: "gmd:distributionInfo/gmd:MD_Distribution"
+                  condition: "count(./gmd:distributionInfo/*/gmd:distributionFormat[*/gmd:name/*/text() ='{{formatDescription}}']) = 0"
                   value:  >
                     <gmd:distributionFormat
                         xmlns:gco="http://www.isotc211.org/2005/gco"
@@ -215,11 +319,9 @@ geonetwork:
                       </gmd:distributionFormat>
 
                 - schema: "iso19115-3.2018"
-                  operation: "gn_delete"
-                  xpath: "mdb:distributionInfo/mrd:MD_Distribution/mri:distributionFormat[*/mrd:formatSpecificationCitation/*/cit:name/*/text() ='{{formatDescription}}']"
-                - schema: "iso19115-3.2018"
                   operation: "gn_create"
                   xpath: "mdb:distributionInfo/mrd:MD_Distribution"
+                  condition: "count(./mdb:distributionInfo/*/mrd:distributionFormat[*/mrd:formatSpecificationCitation/*/cit:title/*/text() ='{{formatDescription}}']) = 0"
                   value: >
                     <mrd:distributionFormat xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
                                                       xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
@@ -241,6 +343,46 @@ geonetwork:
                                 </mrd:MD_Format>
                               </mrd:distributionFormat>
 
+            - name: "distribution"
+              help: "Set an online resource pointing to the dataset if not already defined."
+              context: "DatasetLayer"
+              operations:
+                - schema: "iso19139"
+                  operation: "gn_create"
+                  xpath: "gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions"
+                  condition: "count(./gmd:distributionInfo//gmd:onLine[*/gmd:linkage/gmd:URL = '{{datasetUrl}}']) = 0"
+                  value:  >
+                     <gmd:onLine xmlns:gco="http://www.isotc211.org/2005/gco"
+                                          xmlns:gmd="http://www.isotc211.org/2005/gmd">
+                       <gmd:CI_OnlineResource>
+                         <gmd:linkage>
+                          <gmd:URL>{{datasetUrl}}</gmd:URL>
+                         </gmd:linkage>
+                         <gmd:protocol>
+                          <gco:CharacterString>WWW:DOWNLOAD:{{format:-}}</gco:CharacterString>
+                         </gmd:protocol>
+                       </gmd:CI_OnlineResource>
+                     </gmd:onLine>
+
+                - schema: "iso19115-3.2018"
+                  operation: "gn_create"
+                  xpath: "mdb:distributionInfo/mrd:MD_Distribution/mrd:transferOptions/mrd:MD_DigitalTransferOptions"
+                  condition: "count(./mdb:distributionInfo//mrd:onLine[*/cit:linkage/gco:CharacterString = '{{datasetUrl}}']) = 0"
+                  value: >
+                    <mrd:onLine xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
+                                          xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
+                                          xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
+                                          xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0"
+                                          xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0">
+                      <cit:CI_OnlineResource>
+                        <cit:linkage>
+                         <gco:CharacterString>{{datasetUrl}}</gco:CharacterString>
+                        </cit:linkage>
+                        <cit:protocol>
+                         <gco:CharacterString>WWW:DOWNLOAD:{{format:-}}</gco:CharacterString>
+                        </cit:protocol>
+                      </cit:CI_OnlineResource>
+                    </mrd:onLine>
 
             - name: "featureCatalogue"
               help: "Add feature catalogue information to the dataset if not exists."
@@ -250,7 +392,7 @@ geonetwork:
                 - schema: "iso19115-3.2018"
                   operation: "gn_create"
                   xpath: "mdb:contentInfo"
-                  condition: "count(mdb:contentInfo/*[@uuid='fc/{{featureTypeName}}']) = 0"
+                  condition: "count(mdb:contentInfo/*[@uuid='fc/{{featureTypeName}}']) = 0 and count(./mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 0"
                   value: >
                     <mrc:MD_FeatureCatalogue xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
                                                                                             xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
