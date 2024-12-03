@@ -176,7 +176,7 @@ class GdalDataAnalyzerTest {
                         .getFile()
                         .getCanonicalPath());
 
-        assertEquals("GTiff", layerProperties.get().getType());
+        assertEquals("GTiff", layerProperties.get().getFormat());
 
         assertNotNull(layerProperties);
         assertTrue(layerProperties.get().getCrs().contains("\"EPSG\",3035"));

@@ -6,17 +6,20 @@
 
 package org.geonetwork.data.model;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-public class RasterInfo implements Serializable {
-    private String description;
-    private String type;
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class RasterInfo extends BaseDataInfo {
+    @Builder.Default
+    private DataType dataType = DataType.RASTER;
+
     private String crs;
     private List<Double> wgs84Extent;
     private RasterCornerCoordinates rasterCornerCoordinates;
