@@ -112,28 +112,6 @@ export class DataUploadComponent implements OnInit {
   errorExecutingAnalysis = signal('');
   errorPreviewingAnalysis = signal('');
 
-  isVector = (
-    datasetInfo: GnDatasetInfo | GnRasterInfo | undefined
-  ): datasetInfo is GnDatasetInfo => {
-    return true;
-  };
-
-  crsCode = computed(() => {
-    let output = '';
-    let datasetInfo = this.analysisResult();
-    if (
-      this.isVector(datasetInfo) &&
-      datasetInfo?.layers &&
-      datasetInfo.layers[0].geometryFields
-    ) {
-      let parsedValue = datasetInfo.layers[0].geometryFields[0].crs
-        ?.split(',')
-        .pop();
-      output = parsedValue ? parsedValue.replace(']]', '') : '';
-    } else {
-    }
-    return output;
-  });
 
   private destroyRef = inject(DestroyRef);
 

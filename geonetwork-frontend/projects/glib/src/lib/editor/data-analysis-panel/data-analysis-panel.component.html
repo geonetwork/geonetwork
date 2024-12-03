@@ -4,7 +4,6 @@
 
   <h2 class="pt-2 pb-2 text-2xl font-medium">
     @if (isVector) {
-      <i class="fa fa-fw fa-vector-square"></i>
       <span class="font-bold">{{ analysisResult().layers[0].name }}</span>
       dataset contains
       <span class="font-bold">{{
@@ -12,7 +11,6 @@
       }}</span>
       features.
     } @else if (isRaster) {
-      <i class="fa fa-fw fa-table-cells"></i>
       RASTER dataset contains {{ analysisResult().bands.length }} band(s).
     }
   </h2>
@@ -24,17 +22,16 @@
     <div class="font-medium">Format</div>
     <div class="col-span-7">{{ analysisResult().format }}</div>
 
+    <div class="font-medium">Spatial representation</div>
+    <div class="col-span-7">
+      <i [attr.class]="isVector ? 'fa fa-fw fa-vector-square' : 'fa fa-fw fa-table-cells'"></i>
+      {{ analysisResult().dataType }}
+    </div>
+
     @if (isVector && analysisResult().layers[0].geometryFields.length > 0) {
       <div class="font-medium">Geometry type</div>
       <div class="col-span-7">
         {{ analysisResult().layers[0].geometryFields[0].type }}
-      </div>
-
-      <div class="font-medium">Coordinate system</div>
-      <div class="col-span-7">
-        <a href="http://epsg.io/{{ crsCode() }}" target="_blank"
-          >EPSG:{{ crsCode() }}</a
-        >
       </div>
 
       <div class="font-medium">Spatial extent</div>
@@ -42,6 +39,31 @@
         {{ analysisResult().layers[0].geometryFields[0].extent }}
       </div>
     }
+
+    @if (isRaster) {
+      @if (analysisResult().wgs84Extent) {
+        <div class="font-medium">Spatial extent</div>
+        <div class="col-span-7">
+          {{ analysisResult().wgs84Extent }}
+        </div>
+      }
+      @if (analysisResult().size) {
+        <div class="font-medium">Dimensions</div>
+        <div class="col-span-7">
+          X: {{ analysisResult().size[0] }} / Y: {{ analysisResult().size[1] }}
+        </div>
+      }
+    }
+
+    @if (crsCode(); as crs) {
+      <div class="font-medium">Coordinate system</div>
+      <div class="col-span-7">
+        <a href="http://epsg.io/{{ crs }}" target="_blank">
+          EPSG:{{ crs }}
+        </a>
+      </div>
+    }
+
 
     @if (isVector) {
       <div class="font-medium">Data model</div>

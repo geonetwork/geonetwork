@@ -9,6 +9,7 @@ package org.geonetwork.data.gdal;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -365,7 +366,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                     .metadata(metadataInfo)
                     .crs(raster.getCoordinateSystem().getWkt())
                     .wgs84Extent(
-                            extent.getBbox().stream().map(Number::doubleValue).toList())
+                      getWgs84Extent(extent))
                     .rasterCornerCoordinates(rasterCornerCoordinates)
                     .bands(raster.getBands().stream()
                             .map(b -> RasterBand.builder().build())
@@ -377,4 +378,21 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
             throw new DataAnalyzerException(json);
         }
     }
+
+  private static List<Double> getWgs84Extent(GdalGeoJSONPolygonDto extent) {
+    if (!extent.getBbox().isEmpty()) {
+      return extent.getBbox().stream().map(Number::doubleValue).toList();
+    } else if (!extent.getCoordinates().isEmpty() && extent.getCoordinates().getFirst() != null) {
+      List<List<BigDecimal>> coordinates = extent.getCoordinates().getFirst();
+      List<Double> xCoordinates = coordinates.stream().map(c -> c.getFirst().doubleValue()).sorted().toList();
+      List<Double> yCoordinates = coordinates.stream().map(c -> c.getLast().doubleValue()).sorted().toList();
+
+      return List.of(
+          xCoordinates.getFirst(),
+          yCoordinates.getFirst(),
+          xCoordinates.getLast(),
+          yCoordinates.getLast());
+    }
+    return List.of();
+  }
 }
