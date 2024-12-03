@@ -365,8 +365,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                     .formatDescription(raster.getDriverLongName())
                     .metadata(metadataInfo)
                     .crs(raster.getCoordinateSystem().getWkt())
-                    .wgs84Extent(
-                      getWgs84Extent(extent))
+                    .wgs84Extent(getWgs84Extent(extent))
                     .rasterCornerCoordinates(rasterCornerCoordinates)
                     .bands(raster.getBands().stream()
                             .map(b -> RasterBand.builder().build())
@@ -379,20 +378,23 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
         }
     }
 
-  private static List<Double> getWgs84Extent(GdalGeoJSONPolygonDto extent) {
-    if (!extent.getBbox().isEmpty()) {
-      return extent.getBbox().stream().map(Number::doubleValue).toList();
-    } else if (!extent.getCoordinates().isEmpty() && extent.getCoordinates().getFirst() != null) {
-      List<List<BigDecimal>> coordinates = extent.getCoordinates().getFirst();
-      List<Double> xCoordinates = coordinates.stream().map(c -> c.getFirst().doubleValue()).sorted().toList();
-      List<Double> yCoordinates = coordinates.stream().map(c -> c.getLast().doubleValue()).sorted().toList();
+    private static List<Double> getWgs84Extent(GdalGeoJSONPolygonDto extent) {
+        if (!extent.getBbox().isEmpty()) {
+            return extent.getBbox().stream().map(Number::doubleValue).toList();
+        } else if (!extent.getCoordinates().isEmpty() && extent.getCoordinates().getFirst() != null) {
+            List<List<BigDecimal>> coordinates = extent.getCoordinates().getFirst();
+            List<Double> xCoordinates = coordinates.stream()
+                    .map(c -> c.getFirst().doubleValue())
+                    .sorted()
+                    .toList();
+            List<Double> yCoordinates = coordinates.stream()
+                    .map(c -> c.getLast().doubleValue())
+                    .sorted()
+                    .toList();
 
-      return List.of(
-          xCoordinates.getFirst(),
-          yCoordinates.getFirst(),
-          xCoordinates.getLast(),
-          yCoordinates.getLast());
+            return List.of(
+                    xCoordinates.getFirst(), yCoordinates.getFirst(), xCoordinates.getLast(), yCoordinates.getLast());
+        }
+        return List.of();
     }
-    return List.of();
-  }
 }

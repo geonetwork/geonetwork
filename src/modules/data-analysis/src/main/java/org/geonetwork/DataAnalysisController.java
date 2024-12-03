@@ -26,6 +26,8 @@ import org.geonetwork.data.model.BaseDataInfo;
 import org.geonetwork.data.model.DataFormat;
 import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.data.model.RasterInfo;
+import org.geonetwork.domain.Metadata;
+import org.geonetwork.domain.repository.MetadataRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +44,8 @@ public class DataAnalysisController {
     GdalDataAnalyzer analyzer;
 
     MetadataBuilder metadataBuilder;
+
+    MetadataRepository metadataRepository;
 
     @GetMapping(path = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
     // @PreAuthorize("hasRole('Administrator')")
@@ -116,18 +120,21 @@ public class DataAnalysisController {
     // @PreAuthorize("hasRole('Administrator')")
     public ResponseEntity<String> previewSynch(
             @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer) {
+        Metadata record = metadataRepository
+                .findOneByUuid(uuid)
+                .orElseThrow(() -> new IllegalArgumentException("Metadata not found"));
         if (layer.equals(GDAL_DEFAULT_RASTER_LAYER)) {
             Optional<RasterInfo> layerProperties = analyzer.getRasterProperties(datasource);
 
             if (layerProperties.isPresent()) {
-                String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
+                String builtMetadata = metadataBuilder.buildMetadata(uuid, record.getSchemaid(), layerProperties.get());
                 return new ResponseEntity<>(builtMetadata, HttpStatus.OK);
             }
         } else {
             Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
 
             if (layerProperties.isPresent()) {
-                String builtMetadata = metadataBuilder.buildMetadata(uuid, layerProperties.get());
+                String builtMetadata = metadataBuilder.buildMetadata(uuid, record.getSchemaid(), layerProperties.get());
                 return new ResponseEntity<>(builtMetadata, HttpStatus.OK);
             }
         }

@@ -39,6 +39,7 @@ public class MetadataBuilder {
             case "name":
                 replacements.put(
                         "title",
+                        // Metadata title can be extracted from a WFS GetCapabilities layer information
                         datasetLayer
                                 .getMetadata()
                                 .getOrDefault("TITLE", datasetLayer.getName())
@@ -68,6 +69,10 @@ public class MetadataBuilder {
             case "distributionFormat":
                 replacements.put("format", datasetInfo.getFormat());
                 replacements.put("formatDescription", datasetInfo.getFormatDescription());
+                break;
+            case "distribution":
+                replacements.put("format", datasetInfo.getFormat());
+                replacements.put("datasetUrl", datasetInfo.getDescription());
                 break;
             case "featureCatalogue":
             case "featureType":
@@ -114,9 +119,19 @@ public class MetadataBuilder {
             case "spatialRepresentationType":
                 replacements.put("datasetType", "grid");
                 break;
+            case "rasterSpatialRepresentation":
+                replacements.put(
+                        "dimensionSizeX", String.valueOf(datasetInfo.getSize().get(0)));
+                replacements.put(
+                        "dimensionSizeY", String.valueOf(datasetInfo.getSize().get(1)));
+                break;
             case "distributionFormat":
                 replacements.put("format", datasetInfo.getFormat());
                 replacements.put("formatDescription", datasetInfo.getFormatDescription());
+                break;
+            case "distribution":
+                replacements.put("format", datasetInfo.getFormat());
+                replacements.put("datasetUrl", datasetInfo.getDescription());
                 break;
             default:
                 break;
@@ -129,15 +144,15 @@ public class MetadataBuilder {
         return sub.replace(template);
     }
 
-    public String buildMetadata(String uuid, BaseDataInfo datasetInfo) {
+    public String buildMetadata(String uuid, String schema, BaseDataInfo datasetInfo) {
         List<DataIngesterConfiguration.Resource.Property> properties =
                 dataIngesterConfiguration.getResources().getFirst().getProperties();
         List<BatchEditParameter> edits = new ArrayList<>();
 
         if (datasetInfo instanceof DatasetInfo vectorDataset) {
-            buildMetadataFromVectorDataset(vectorDataset, properties, edits);
+            buildMetadataFromVectorDataset(schema, vectorDataset, properties, edits);
         } else if (datasetInfo instanceof RasterInfo rasterDataset) {
-            buildMetadataFromRasterDataset(rasterDataset, properties, edits);
+            buildMetadataFromRasterDataset(schema, rasterDataset, properties, edits);
         }
         try {
             log.atDebug().log(edits.toString());
@@ -151,13 +166,14 @@ public class MetadataBuilder {
     }
 
     private void buildMetadataFromVectorDataset(
+            String schema,
             DatasetInfo datasetInfo,
             List<DataIngesterConfiguration.Resource.Property> properties,
             List<BatchEditParameter> edits) {
         properties.forEach(property -> {
             if (property.getContext().equals(DataIngesterConfiguration.Resource.Property.Context.DatasetLayer.name())) {
                 property.getOperations().forEach(operation -> {
-                    if (operation.getSchema().equals("iso19115-3.2018")) {
+                    if (operation.getSchema().equals(schema)) {
                         edits.add(new BatchEditParameter(
                                 buildForVectorLayerProperties(operation.getXpath(), property, datasetInfo),
                                 String.format(
@@ -179,7 +195,7 @@ public class MetadataBuilder {
                     .equals(DataIngesterConfiguration.Resource.Property.Context.DatasetColumns.name())) {
                 property.getOperations().forEach(operation -> {
                     datasetInfo.getLayers().getFirst().getFields().forEach(field -> {
-                        if (operation.getSchema().equals("iso19115-3.2018")) {
+                        if (operation.getSchema().equals(schema)) {
                             edits.add(new BatchEditParameter(
                                     buildForVectorLayerProperties(operation.getXpath(), property, datasetInfo),
                                     String.format(
@@ -207,13 +223,14 @@ public class MetadataBuilder {
     }
 
     private void buildMetadataFromRasterDataset(
+            String schema,
             RasterInfo rasterInfo,
             List<DataIngesterConfiguration.Resource.Property> properties,
             List<BatchEditParameter> edits) {
         properties.forEach(property -> {
             if (property.getContext().equals(DataIngesterConfiguration.Resource.Property.Context.DatasetLayer.name())) {
                 property.getOperations().forEach(operation -> {
-                    if (operation.getSchema().equals("iso19115-3.2018")) {
+                    if (operation.getSchema().equals(schema)) {
                         edits.add(new BatchEditParameter(
                                 buildForRasterLayerProperties(operation.getXpath(), property, rasterInfo),
                                 String.format(
@@ -231,35 +248,6 @@ public class MetadataBuilder {
                                 buildForRasterLayerProperties(operation.getCondition(), property, rasterInfo)));
                     }
                 });
-            } else if (property.getContext()
-                    .equals(DataIngesterConfiguration.Resource.Property.Context.DatasetColumns.name())) {
-                //            property.getOperations().forEach(operation -> {
-                //              rasterInfo.getLayers().getFirst().getFields().forEach(field -> {
-                //                    if (operation.getSchema().equals("iso19115-3.2018")) {
-                //                        edits.add(new BatchEditParameter(
-                //                                buildForLayerProperties(operation.getXpath(), property, rasterInfo),
-                //                                String.format(
-                //                                        "<%s>%s</%s>",
-                //                                        operation.getOperation(),
-                //                                        operation
-                //                                                        .getOperation()
-                //                                                        .equals(
-                //
-                // DataIngesterConfiguration.Resource.Property
-                //
-                // .Operation.OperationType.gn_delete)
-                //                                                ? ""
-                //                                                : buildForLayerColumnProperties(
-                //                                                        operation.getValue(), property, field),
-                //                                        operation.getOperation()),
-                //                                buildForLayerColumnProperties(
-                //                                        buildForLayerProperties(operation.getCondition(), property,
-                // rasterInfo),
-                //                                        property,
-                //                                        field)));
-                //                    }
-                //                });
-                //            });
             }
         });
     }

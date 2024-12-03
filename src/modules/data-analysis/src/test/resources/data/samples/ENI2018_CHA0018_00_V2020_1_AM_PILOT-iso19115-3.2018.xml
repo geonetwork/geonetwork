@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<preview>
+  <mdb:MD_Metadata xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0">
+    <mdb:spatialRepresentationInfo xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                                   xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
+                                   gco:nilReason="computedFromDatasource">
+      <msr:MD_GridSpatialRepresentation>
+        <msr:numberOfDimensions>
+          <gco:Integer>2</gco:Integer>
+        </msr:numberOfDimensions>
+        <msr:axisDimensionProperties>
+          <msr:MD_Dimension>
+            <msr:dimensionName>
+              <msr:MD_DimensionNameTypeCode
+                codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_DimensionNameTypeCode"
+                codeListValue="column"/>
+            </msr:dimensionName>
+            <msr:dimensionSize>
+              <gco:Integer>575</gco:Integer>
+            </msr:dimensionSize>
+          </msr:MD_Dimension>
+        </msr:axisDimensionProperties>
+        <msr:axisDimensionProperties>
+          <msr:MD_Dimension>
+            <msr:dimensionName>
+              <msr:MD_DimensionNameTypeCode
+                codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_DimensionNameTypeCode"
+                codeListValue="row"/>
+            </msr:dimensionName>
+            <msr:dimensionSize>
+              <gco:Integer>576</gco:Integer>
+            </msr:dimensionSize>
+          </msr:MD_Dimension>
+        </msr:axisDimensionProperties>
+        <msr:cellGeometry>
+          <msr:MD_CellGeometryCode
+            codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_CellGeometryCode"
+            codeListValue="area"/>
+        </msr:cellGeometry>
+        <msr:transformationParameterAvailability>
+          <gco:Boolean>true</gco:Boolean>
+        </msr:transformationParameterAvailability>
+      </msr:MD_GridSpatialRepresentation>
+    </mdb:spatialRepresentationInfo>
+    <mdb:identificationInfo>
+      <mri:MD_DataIdentification xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0">
+        <mri:citation>
+          <cit:CI_Citation xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0">
+            <cit:title>
+              <gco:CharacterString xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0">filename?
+              </gco:CharacterString>
+            </cit:title>
+          </cit:CI_Citation>
+        </mri:citation>
+        <mri:abstract/>
+        <mri:spatialRepresentationType xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0">
+          <mcc:MD_SpatialRepresentationTypeCode
+            codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_SpatialRepresentationTypeCode"
+            codeListValue="grid"/>
+        </mri:spatialRepresentationType>
+        <mri:extent xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                    xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0" gco:nilReason="computedFromDatasource">
+          <gex:EX_Extent>
+            <gex:geographicElement>
+              <gex:EX_GeographicBoundingBox>
+                <gex:westBoundLongitude>
+                  <gco:Decimal>44.265838</gco:Decimal>
+                </gex:westBoundLongitude>
+                <gex:eastBoundLongitude>
+                  <gco:Decimal>45.1644546</gco:Decimal>
+                </gex:eastBoundLongitude>
+                <gex:southBoundLatitude>
+                  <gco:Decimal>39.8439013</gco:Decimal>
+                </gex:southBoundLatitude>
+                <gex:northBoundLatitude>
+                  <gco:Decimal>40.5367209</gco:Decimal>
+                </gex:northBoundLatitude>
+              </gex:EX_GeographicBoundingBox>
+            </gex:geographicElement>
+          </gex:EX_Extent>
+        </mri:extent>
+      </mri:MD_DataIdentification>
+    </mdb:identificationInfo>
+    <mdb:distributionInfo>
+      <mrd:MD_Distribution xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0">
+        <mrd:distributionFormat xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
+                                xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                                xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
+                                gco:nilReason="computedFromDatasource">
+          <mrd:MD_Format>
+            <mrd:formatSpecificationCitation>
+              <cit:CI_Citation>
+                <cit:title>
+                  <gco:CharacterString>GeoTIFF</gco:CharacterString>
+                </cit:title>
+                <cit:alternateTitle>
+                  <gco:CharacterString>GTiff</gco:CharacterString>
+                </cit:alternateTitle>
+              </cit:CI_Citation>
+            </mrd:formatSpecificationCitation>
+          </mrd:MD_Format>
+        </mrd:distributionFormat>
+        <mrd:transferOptions>
+          <mrd:MD_DigitalTransferOptions>
+            <mrd:onLine xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
+                        xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                        xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0">
+              <cit:CI_OnlineResource>
+                <cit:linkage>
+                  <gco:CharacterString>/data/ENI2018_CHA0018_00_V2020_1_AM_PILOT.tif</gco:CharacterString>
+                </cit:linkage>
+                <cit:protocol>
+                  <gco:CharacterString>WWW:DOWNLOAD:GTiff</gco:CharacterString>
+                </cit:protocol>
+              </cit:CI_OnlineResource>
+            </mrd:onLine>
+          </mrd:MD_DigitalTransferOptions>
+        </mrd:transferOptions>
+      </mrd:MD_Distribution>
+    </mdb:distributionInfo>
+  </mdb:MD_Metadata>
+</preview>
