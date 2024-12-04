@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 
     (c) 2003 Open Source Geospatial Foundation - all rights reserved
@@ -6,22 +7,20 @@
 
 -->
 <preview>
-  <mdb:MD_Metadata xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
-                   xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
+  <mdb:MD_Metadata xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
+                   xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
                    xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
+                   xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1" xmlns:gml="http://www.opengis.net/gml/3.2"
                    xmlns:lan="http://standards.iso.org/iso/19115/-3/lan/1.0"
                    xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0"
                    xmlns:mco="http://standards.iso.org/iso/19115/-3/mco/1.0"
+                   xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
                    xmlns:mmi="http://standards.iso.org/iso/19115/-3/mmi/1.0"
+                   xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
                    xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0"
-                   xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0"
                    xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0"
                    xmlns:mrl="http://standards.iso.org/iso/19115/-3/mrl/2.0"
-                   xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0"
-                   xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
-                   xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
-                   xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
-                   xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1" xmlns:gml="http://www.opengis.net/gml/3.2">
+                   xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0">
     <mdb:metadataIdentifier>
       <mcc:MD_Identifier>
         <mcc:code>
@@ -264,32 +263,30 @@
           </gex:EX_Extent>
         </mri:extent>
         <mri:extent gco:nilReason="computedFromDatasource">
-          <gex:extent>
-            <gex:EX_Extent>
-              <gex:geographicElement>
-                <gex:EX_GeographicBoundingBox>
-                  <gex:westBoundLongitude>
-                    <gco:Decimal>-61.805814108435243</gco:Decimal>
-                  </gex:westBoundLongitude>
-                  <gex:eastBoundLongitude>
-                    <gco:Decimal>34.605668981354938</gco:Decimal>
-                  </gex:eastBoundLongitude>
-                  <gex:southBoundLatitude>
-                    <gco:Decimal>4.2138689443886506</gco:Decimal>
-                  </gex:southBoundLatitude>
-                  <gex:northBoundLatitude>
-                    <gco:Decimal>65.90833200184602</gco:Decimal>
-                  </gex:northBoundLatitude>
-                </gex:EX_GeographicBoundingBox>
-              </gex:geographicElement>
-            </gex:EX_Extent>
-          </gex:extent>
+          <gex:EX_Extent>
+            <gex:geographicElement>
+              <gex:EX_GeographicBoundingBox>
+                <gex:westBoundLongitude>
+                  <gco:Decimal>-61.805814108435243</gco:Decimal>
+                </gex:westBoundLongitude>
+                <gex:eastBoundLongitude>
+                  <gco:Decimal>34.605668981354938</gco:Decimal>
+                </gex:eastBoundLongitude>
+                <gex:southBoundLatitude>
+                  <gco:Decimal>4.2138689443886506</gco:Decimal>
+                </gex:southBoundLatitude>
+                <gex:northBoundLatitude>
+                  <gco:Decimal>65.90833200184602</gco:Decimal>
+                </gex:northBoundLatitude>
+              </gex:EX_GeographicBoundingBox>
+            </gex:geographicElement>
+          </gex:EX_Extent>
         </mri:extent>
         <mri:resourceMaintenance>
           <mmi:MD_MaintenanceInformation>
             <mmi:maintenanceAndUpdateFrequency>
-              <mmi:MD_MaintenanceFrequencyCode codeListValue="asNeeded"
-                                               codeList="./resources/codeList.xml#MD_MaintenanceFrequencyCode"/>
+              <mmi:MD_MaintenanceFrequencyCode codeList="./resources/codeList.xml#MD_MaintenanceFrequencyCode"
+                                               codeListValue="asNeeded"/>
             </mmi:maintenanceAndUpdateFrequency>
           </mmi:MD_MaintenanceInformation>
         </mri:resourceMaintenance>
@@ -299,7 +296,7 @@
               <gco:CharacterString/>
             </mri:keyword>
             <mri:type>
-              <mri:MD_KeywordTypeCode codeListValue="theme" codeList="./resources/codeList.xml#MD_KeywordTypeCode"/>
+              <mri:MD_KeywordTypeCode codeList="./resources/codeList.xml#MD_KeywordTypeCode" codeListValue="theme"/>
             </mri:type>
           </mri:MD_Keywords>
         </mri:descriptiveKeywords>
@@ -309,18 +306,18 @@
               <gco:CharacterString>World</gco:CharacterString>
             </mri:keyword>
             <mri:type>
-              <mri:MD_KeywordTypeCode codeListValue="place" codeList="./resources/codeList.xml#MD_KeywordTypeCode"/>
+              <mri:MD_KeywordTypeCode codeList="./resources/codeList.xml#MD_KeywordTypeCode" codeListValue="place"/>
             </mri:type>
           </mri:MD_Keywords>
         </mri:descriptiveKeywords>
         <mri:resourceConstraints>
           <mco:MD_LegalConstraints>
             <mco:accessConstraints>
-              <mco:MD_RestrictionCode codeListValue="copyright" codeList="./resources/codeList.xml#MD_RestrictionCode"/>
+              <mco:MD_RestrictionCode codeList="./resources/codeList.xml#MD_RestrictionCode" codeListValue="copyright"/>
             </mco:accessConstraints>
             <mco:useConstraints>
-              <mco:MD_RestrictionCode codeListValue="otherRestrictions"
-                                      codeList="./resources/codeList.xml#MD_RestrictionCode"/>
+              <mco:MD_RestrictionCode codeList="./resources/codeList.xml#MD_RestrictionCode"
+                                      codeListValue="otherRestrictions"/>
             </mco:useConstraints>
             <mco:otherConstraints>
               <gco:CharacterString/>
@@ -343,7 +340,7 @@
       </mri:MD_DataIdentification>
     </mdb:identificationInfo>
     <mdb:contentInfo>
-      <mrc:MD_FeatureCatalogue uuid="fc/CEEUBG100kV2_1">
+      <mrc:MD_FeatureCatalogue xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0" uuid="fc/CEEUBG100kV2_1">
         <mrc:featureCatalogue>
           <gfc:FC_FeatureCatalogue>
             <cat:name>
@@ -566,6 +563,18 @@
       <mrd:MD_Distribution>
         <mrd:transferOptions>
           <mrd:MD_DigitalTransferOptions/>
+          <mrd:MD_DigitalTransferOptions>
+            <mrd:onLine xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0">
+              <cit:CI_OnlineResource>
+                <cit:linkage>
+                  <gco:CharacterString>/data/CEEUBG100kV2_1.shp</gco:CharacterString>
+                </cit:linkage>
+                <cit:protocol>
+                  <gco:CharacterString>WWW:DOWNLOAD:ESRI Shapefile</gco:CharacterString>
+                </cit:protocol>
+              </cit:CI_OnlineResource>
+            </mrd:onLine>
+          </mrd:MD_DigitalTransferOptions>
         </mrd:transferOptions>
       </mrd:MD_Distribution>
       <mrd:MD_Distribution>
