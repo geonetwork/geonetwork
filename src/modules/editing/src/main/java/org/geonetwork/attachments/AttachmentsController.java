@@ -159,7 +159,7 @@ public class AttachmentsController {
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Delete a metadata resource")
-    @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     @DeleteMapping(value = "/{resourceId:.+}")
     @ApiResponses(
             value = {
@@ -188,7 +188,7 @@ public class AttachmentsController {
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Delete all uploaded metadata resources")
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     @ApiResponses(
             value = {
                 @ApiResponse(
@@ -215,8 +215,8 @@ public class AttachmentsController {
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Create a new resource for a given metadata")
-    @PreAuthorize("hasAuthority('Editor')")
-    @PostMapping(consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('Editor')")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(
             value = {
@@ -243,7 +243,7 @@ public class AttachmentsController {
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Create a new resource from a URL for a given metadata")
-    @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("('Editor')")
     @PutMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(
@@ -273,7 +273,7 @@ public class AttachmentsController {
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Update the metadata resource visibility")
-    @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     @ApiResponses(
             value = {
                 @ApiResponse(responseCode = "201", description = "Attachment visibility updated."),
