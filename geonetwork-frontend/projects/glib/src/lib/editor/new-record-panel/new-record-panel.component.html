@@ -26,12 +26,11 @@
           [disabled]="!isTemplateSelected()"
           (onClick)="nextCallback.emit()" />
         <p-button
-          [disabled]="!template"
-          label="Create record"
+          label="Edit record"
           icon="fas fa-plus"
           iconPos="right"
           [disabled]="!isTemplateSelected()"
-          (onClick)="activateCallback(1)" />
+          (onClick)="editRecord()" />
       </div>
     </ng-template>
   </p-stepperPanel>
