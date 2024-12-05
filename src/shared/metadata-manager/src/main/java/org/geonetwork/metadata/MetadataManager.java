@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.Operation;
 import org.geonetwork.domain.Operationallowed;
@@ -16,22 +18,19 @@ import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.domain.repository.OperationRepository;
 import org.geonetwork.domain.repository.OperationallowedRepository;
+import org.geonetwork.utility.date.ISODate;
+import org.geonetwork.utility.legacy.xml.Xml;
+import org.jdom.Element;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
+@Slf4j
+@AllArgsConstructor
 public class MetadataManager implements IMetadataManager {
     private final MetadataRepository metadataRepository;
     private final OperationRepository operationRepository;
     private final OperationallowedRepository operationallowedRepository;
-
-    MetadataManager(
-            final MetadataRepository metadataRepository,
-            final OperationRepository operationRepository,
-            final OperationallowedRepository operationallowedRepository) {
-        this.metadataRepository = metadataRepository;
-        this.operationRepository = operationRepository;
-        this.operationallowedRepository = operationallowedRepository;
-    }
 
     @Override
     public Metadata findMetadataById(int metadataId) throws MetadataNotFoundException {
@@ -53,6 +52,85 @@ public class MetadataManager implements IMetadataManager {
         } else {
             throw new MetadataNotFoundException(String.format("Metadata with uuid '%s' not found", uuid));
         }
+    }
+
+    @Override
+    public Metadata update(
+            int metadataId, Element xml, boolean validate, boolean ufo, String changeDate, boolean updateDateStamp)
+            throws MetadataNotFoundException {
+        Metadata metadataEntity = findMetadataById(metadataId);
+        String schema = metadataEntity.getSchemaid();
+
+        // TODO: Extract UUID from XML
+        //  uuidBeforeUfo = findUuid(metadataXml, schema, metadata);
+        // TODO: Check if already used?
+        //  metadataUtils.checkMetadataWithSameUuidExist(uuid, metadataEntity.getId());
+        // In this case, UFO is mandatory. Should we always use UFO?
+
+        if (updateDateStamp) {
+            if (StringUtils.hasText(changeDate)) {
+                // TODO changeDate = new ISODate().toString();
+                metadataEntity.setChangedate(new ISODate().getDateAndTimeUtc());
+            } else {
+                metadataEntity.setChangedate(new ISODate(changeDate).getDateAndTimeUtc());
+            }
+        }
+
+        String uuidBeforeUfo = null;
+        if (ufo) {
+            // TODO: uuidBeforeUfo = findUuid(metadataXml, schema, metadata);
+            uuidBeforeUfo = metadataEntity.getUuid();
+
+            xml = updateFixedInfo(schema, Optional.of(metadataEntity.getId()), uuidBeforeUfo, xml, updateDateStamp);
+        }
+
+        // --- force namespace prefix for iso19139 metadata
+        // TODO setNamespacePrefixUsingSchemas(schema, metadataXml);
+
+        // --- write metadata to dbms
+        metadataEntity.setData(Xml.getString(xml));
+
+        //        TODO if (newUuid != null) {
+        //            metadataEntity.setUuid(newUuid);
+        //        }
+
+        //      try {
+        // --- do the validation last - it throws exceptions
+        // TODO
+        //  if (session != null && validate) {
+        //          metadataValidator.doValidate(session, schema, metadataId, metadataXml, lang, false);
+        //        }
+        //      } finally {
+        //        TODO if (indexingMode != IndexingMode.none) {
+        //          // Delete old record if UUID changed
+        //          if (uuidBeforeUfo != null && !uuidBeforeUfo.equals(uuid)) {
+        //            getSearchManager().delete(String.format("+uuid:\"%s\"", uuidBeforeUfo));
+        //          }
+        //          metadataIndexer.indexMetadata(metadataId, true, indexingMode);
+        //        }
+        //      }
+
+        //		  TODO: TODOES Searhc for related records with an XLink pointing to this subtemplate
+        //        if (metadata.getDataInfo().getType() == MetadataType.SUB_TEMPLATE) {
+        //            MetaSearcher searcher = searcherForReferencingMetadata(context, metadata);
+        //            Map<Integer, AbstractMetadata> result = ((LuceneSearcher) searcher).getAllMdInfo(context, 500);
+        //            for (Integer id : result.keySet()) {
+        //                IndexingList list = context.getBean(IndexingList.class);
+        //                list.add(id);
+        //            }
+        //        }
+
+        log.trace("Finishing update of record with id {}", metadataId);
+
+        // Return an up to date metadata record
+        metadataRepository.save(metadataEntity);
+        return metadataEntity;
+    }
+
+    public Element updateFixedInfo(
+            String schema, Optional<Integer> integer, String uuid, Element md, boolean updateDatestamp) {
+        // TODO
+        return md;
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.util.List;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.Operation;
 import org.geonetwork.domain.Operationallowed;
+import org.jdom.Element;
 
 public interface IMetadataManager {
     /**
@@ -30,6 +31,10 @@ public interface IMetadataManager {
      * @throws MetadataNotFoundException if there is no metadata with the provided identifier.
      */
     Metadata findMetadataByUuid(String uuid, boolean approved) throws MetadataNotFoundException;
+
+    Metadata update(
+            int metadataId, Element xml, boolean validate, boolean ufo, String changeDate, boolean updateDateStamp)
+            throws MetadataNotFoundException;
 
     List<Operation> getAvailableMetadataOperations();
 

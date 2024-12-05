@@ -20,6 +20,7 @@ import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
+import org.geonetwork.editing.BatchEditMode;
 import org.geonetwork.editing.BatchEditsService;
 import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.utility.legacy.xml.Xml;
@@ -88,7 +89,8 @@ class MetadataBuilderTest {
         metadata.setData(template);
         when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
 
-        String builtMetadata = metadataBuilder.buildMetadata(uuid, metadata.getSchemaid(), layerProperties.get());
+        String builtMetadata = metadataBuilder.buildMetadata(
+                uuid, metadata.getSchemaid(), layerProperties.get(), BatchEditMode.PREVIEW);
         String expected = Files.readString(
                 Path.of(new ClassPathResource("data/samples/test_data_analysis_injected_in_template.xml").getURI()));
 
@@ -128,7 +130,8 @@ class MetadataBuilderTest {
                 metadata.getSchemaid(),
                 layerFile.endsWith(".shp")
                         ? analyzer.getLayerProperties(filePath, layerName).get()
-                        : analyzer.getRasterProperties(filePath).get());
+                        : analyzer.getRasterProperties(filePath).get(),
+                BatchEditMode.PREVIEW);
         String expected = IOUtils.toString(
                 new ClassPathResource(String.format("data/samples/%s-%s.xml", layerName, schema)).getInputStream());
 
@@ -148,7 +151,8 @@ class MetadataBuilderTest {
                 metadata.getSchemaid(),
                 layerFile.endsWith(".shp")
                         ? analyzer.getLayerProperties(filePath, layerName).get()
-                        : analyzer.getRasterProperties(filePath).get());
+                        : analyzer.getRasterProperties(filePath).get(),
+                BatchEditMode.PREVIEW);
 
         diff = DiffBuilder.compare(Input.fromString(expected))
                 .withTest(Input.fromString(metadataAfterReapplyingAnalysis))

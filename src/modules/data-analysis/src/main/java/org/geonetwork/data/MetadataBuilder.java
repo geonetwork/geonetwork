@@ -19,6 +19,7 @@ import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.data.model.DatasetLayer;
 import org.geonetwork.data.model.DatasetLayerField;
 import org.geonetwork.data.model.RasterInfo;
+import org.geonetwork.editing.BatchEditMode;
 import org.geonetwork.editing.BatchEditsService;
 import org.geonetwork.editing.model.BatchEditParameter;
 import org.geonetwork.utility.legacy.xml.Xml;
@@ -144,7 +145,7 @@ public class MetadataBuilder {
         return sub.replace(template);
     }
 
-    public String buildMetadata(String uuid, String schema, BaseDataInfo datasetInfo) {
+    public String buildMetadata(String uuid, String schema, BaseDataInfo datasetInfo, BatchEditMode batchEditMode) {
         List<DataIngesterConfiguration.Resource.Property> properties =
                 dataIngesterConfiguration.getResources().getFirst().getProperties();
         List<BatchEditParameter> edits = new ArrayList<>();
@@ -158,7 +159,12 @@ public class MetadataBuilder {
             log.atDebug().log(edits.toString());
             return Xml.getString(batchEditsService
                     .applyBatchEdits(
-                            new String[] {uuid}, null, false, edits.toArray(new BatchEditParameter[0]), null, true)
+                            new String[] {uuid},
+                            null,
+                            false,
+                            edits.toArray(new BatchEditParameter[0]),
+                            null,
+                            batchEditMode)
                     .two());
         } catch (Exception e) {
             throw new RuntimeException(e);

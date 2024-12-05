@@ -27,11 +27,17 @@ import org.geonetwork.data.model.DataFormat;
 import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.data.model.RasterInfo;
 import org.geonetwork.domain.Metadata;
-import org.geonetwork.domain.repository.MetadataRepository;
+import org.geonetwork.editing.BatchEditMode;
+import org.geonetwork.metadata.MetadataManager;
+import org.geonetwork.metadata.MetadataNotFoundException;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,22 +51,21 @@ public class DataAnalysisController {
 
     MetadataBuilder metadataBuilder;
 
-    MetadataRepository metadataRepository;
+    MetadataManager metadataManager;
 
     @GetMapping(path = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
-    // @PreAuthorize("hasRole('Administrator')")
     public String status() {
         return analyzer.getStatus();
     }
 
     @GetMapping(path = "/formats", produces = MediaType.APPLICATION_JSON_VALUE)
-    // @PreAuthorize("hasRole('Administrator')")
+    //@PreAuthorize("hasRole('Editor')")
     public List<DataFormat> formats() {
         return analyzer.getFormats();
     }
 
     @GetMapping(path = "/attribute/statistics", produces = MediaType.APPLICATION_JSON_VALUE)
-    // @PreAuthorize("hasRole('Administrator')")
+    //@PreAuthorize("hasRole('Editor')")
     public List<AttributeStatistics> attributeStatistics(
             @RequestParam String datasource, @RequestParam String layer, @RequestParam String attribute) {
 
@@ -68,7 +73,7 @@ public class DataAnalysisController {
     }
 
     @GetMapping(path = "/attribute/codelist", produces = MediaType.APPLICATION_JSON_VALUE)
-    // @PreAuthorize("hasRole('Administrator')")
+    //@PreAuthorize("hasRole('Editor')")
     public List<Object> attributeCodelist(
             @RequestParam String datasource,
             @RequestParam String layer,
@@ -90,7 +95,7 @@ public class DataAnalysisController {
                                     schema = @Schema(oneOf = {DatasetInfo.class, RasterInfo.class}))
                         }),
             })
-    // @PreAuthorize("hasRole('Administrator')")
+    //@PreAuthorize("hasRole('Editor')")
     public ResponseEntity<BaseDataInfo> analysisSynch(@RequestParam String datasource, @RequestParam String layer) {
         try {
             Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
@@ -111,33 +116,54 @@ public class DataAnalysisController {
     }
 
     @GetMapping(path = "/layers", produces = MediaType.APPLICATION_JSON_VALUE)
-    // @PreAuthorize("hasRole('Administrator')")
+    //@PreAuthorize("hasRole('Editor')")
     public ResponseEntity<List<String>> layers(@RequestParam String datasource) {
         return new ResponseEntity<>(analyzer.getDatasourceLayers(datasource), HttpStatus.OK);
     }
 
     @GetMapping(path = "/preview", produces = MediaType.APPLICATION_JSON_VALUE)
-    // @PreAuthorize("hasRole('Administrator')")
-    public ResponseEntity<String> previewSynch(
-            @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer) {
-        Metadata record = metadataRepository
-                .findOneByUuid(uuid)
-                .orElseThrow(() -> new IllegalArgumentException("Metadata not found"));
+    //@PreAuthorize("hasRole('Editor')")
+    public ResponseEntity<String> previewDataAnalysisOnRecord(
+            @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer)
+            throws MetadataNotFoundException {
+        Metadata record = metadataManager.findMetadataByUuid(uuid, false);
+        BatchEditMode editMode = BatchEditMode.PREVIEW;
+        ResponseEntity<String> builtMetadata = applyDataAnalysisOnRecord(uuid, datasource, layer, record, editMode);
+        if (builtMetadata != null) return builtMetadata;
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping(path = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@PreAuthorize("hasRole('Editor')")
+    public ResponseEntity<String> applyDataAnalysisOnRecord(
+            @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer)
+            throws MetadataNotFoundException {
+        Metadata record = metadataManager.findMetadataByUuid(uuid, false);
+        BatchEditMode editMode = BatchEditMode.SAVE;
+        ResponseEntity<String> builtMetadata = applyDataAnalysisOnRecord(uuid, datasource, layer, record, editMode);
+        if (builtMetadata != null) return builtMetadata;
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    private @Nullable ResponseEntity<String> applyDataAnalysisOnRecord(
+            String uuid, String datasource, String layer, Metadata record, BatchEditMode editMode) {
         if (layer.equals(GDAL_DEFAULT_RASTER_LAYER)) {
             Optional<RasterInfo> layerProperties = analyzer.getRasterProperties(datasource);
 
             if (layerProperties.isPresent()) {
-                String builtMetadata = metadataBuilder.buildMetadata(uuid, record.getSchemaid(), layerProperties.get());
+                String builtMetadata =
+                        metadataBuilder.buildMetadata(uuid, record.getSchemaid(), layerProperties.get(), editMode);
                 return new ResponseEntity<>(builtMetadata, HttpStatus.OK);
             }
         } else {
             Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
 
             if (layerProperties.isPresent()) {
-                String builtMetadata = metadataBuilder.buildMetadata(uuid, record.getSchemaid(), layerProperties.get());
+                String builtMetadata =
+                        metadataBuilder.buildMetadata(uuid, record.getSchemaid(), layerProperties.get(), editMode);
                 return new ResponseEntity<>(builtMetadata, HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return null;
     }
 }

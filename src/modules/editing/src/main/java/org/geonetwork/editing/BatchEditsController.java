@@ -76,9 +76,8 @@ public class BatchEditsController {
                     BatchEditParameter[] edits,
             HttpServletRequest request)
             throws Exception {
-        boolean previewOnly = true;
         return Xml.getString(batchEditService
-                .applyBatchEdits(uuids, bucket, false, edits, request, previewOnly)
+                .applyBatchEdits(uuids, bucket, false, edits, request, BatchEditMode.PREVIEW)
                 .two());
     }
 
@@ -144,7 +143,7 @@ public class BatchEditsController {
         // TODO: Return a report
         // TODO: Make it asynch
         return batchEditService
-                .applyBatchEdits(uuids, bucket, updateDateStamp, edits, request, false)
+                .applyBatchEdits(uuids, bucket, updateDateStamp, edits, request, BatchEditMode.SAVE)
                 .one();
     }
 }
