@@ -14,13 +14,18 @@
     <version>5.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>gn-constants</artifactId>
-  <name>GeoNetwork constants</name>
+  <artifactId>gn-security</artifactId>
+  <name>GeoNetwork security</name>
 
   <dependencies>
     <dependency>
-      <groupId>org.jdom</groupId>
-      <artifactId>jdom</artifactId>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-domain</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 </project>

@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.user;
+package org.geonetwork.security.user;
 
 public class UserNotFoundException extends Exception {
     public UserNotFoundException() {

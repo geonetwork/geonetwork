@@ -45,8 +45,7 @@ public class BatchEditsService {
             throw new IllegalArgumentException("At least one edit must be defined.");
         }
 
-        //        ServiceContext serviceContext = ApiUtils.createServiceContext(request);
-        //        UserUtil.checkUserProfileLevel(serviceContext.getUserSession(), settingManager,
+        // TODO:      UserUtil.checkUserProfileLevel(serviceContext.getUserSession(), settingManager,
         // roleHierarchy, Settings.METADATA_BATCH_EDITING_ACCESS_LEVEL, Profile.Editor, "batch edit
         // metadata");
         final Set<String> setOfUuidsToEdit;

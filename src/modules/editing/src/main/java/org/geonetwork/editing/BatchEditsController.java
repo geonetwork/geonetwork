@@ -55,8 +55,7 @@ public class BatchEditsController {
                 @ApiResponse(responseCode = "200", description = API_OP_BATCH_PREVIEW_RESPONSE),
                 @ApiResponse(responseCode = "403", description = API_RESPONSE_NOT_ALLOWED_CAN_EDIT)
             })
-    @PreAuthorize("hasAuthority('Editor')")
-    //    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("@securityService.hasMetadataBatchEditingAccessLevel()")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String previewBatchEdit(
@@ -73,7 +72,6 @@ public class BatchEditsController {
             //            required = false
             //        )
             //            DiffType diffType,
-
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = API_OP_BATCH_BODY) @RequestBody
                     BatchEditParameter[] edits,
             HttpServletRequest request)
@@ -95,7 +93,7 @@ public class BatchEditsController {
                 @ApiResponse(responseCode = "201", description = "Return a report of what has been done."),
                 @ApiResponse(responseCode = "403", description = API_RESPONSE_NOT_ALLOWED_CAN_EDIT)
             })
-    @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("@securityService.hasMetadataBatchEditingAccessLevel()")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Object batchEdit(

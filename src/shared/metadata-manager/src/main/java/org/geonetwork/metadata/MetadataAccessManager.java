@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.Operation;
 import org.geonetwork.domain.Profile;
@@ -17,25 +18,17 @@ import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.Usergroup;
 import org.geonetwork.security.AuthenticationFacade;
-import org.geonetwork.user.UserManager;
+import org.geonetwork.security.user.UserManager;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
+@AllArgsConstructor
 public class MetadataAccessManager implements IMetadataAccessManager {
 
     private final MetadataManager metadataManager;
     private final UserManager userManager;
     private final AuthenticationFacade authenticationFacade;
-
-    public MetadataAccessManager(
-            final MetadataManager metadataManager,
-            final UserManager userManager,
-            final AuthenticationFacade authenticationFacade) {
-        this.metadataManager = metadataManager;
-        this.userManager = userManager;
-        this.authenticationFacade = authenticationFacade;
-    }
 
     /**
      * Returns true if, and only if, at least one of these conditions is satisfied:
