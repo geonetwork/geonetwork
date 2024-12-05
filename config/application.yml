@@ -1,5 +1,6 @@
 geonetwork:
-  core:
+  url: http://localhost:7979
+  4:
     url: http://localhost:8080/geonetwork
   index:
     url: http://localhost:9200
@@ -91,13 +92,19 @@ spring:
       mvc:
         routes:
           - id: geonetwork_proxy_redirect
-            uri: ${geonetwork.openapi.url}
+            uri: ${geonetwork.url}
             predicates:
               - Path=/geonetwork/proxy
             filters:
               - RewritePath=/geonetwork/(?<url>.*), /api/$\{url}
+          - id: geonetwork4_api_migrated
+            uri: ${geonetwork.url}
+            predicates:
+              - Path=/geonetwork/srv/api/records/*/attachments/**
+            filters:
+              - RewritePath=/geonetwork/srv/api/records/(?<uuid>.+)/attachments(?<segment>.*), /api/records/$\{uuid}/attachments$\{segment}
           - id: geonetwork_route
-            uri: ${geonetwork.core.url}
+            uri: ${geonetwork.4.url}
             predicates:
               - Path=/geonetwork/**
   batch:

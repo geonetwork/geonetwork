@@ -50,7 +50,7 @@ public class FilesystemStore extends AbstractStore {
     public static final String DEFAULT_FILTER = "*.*";
 
     // TODO: Use settingManager.getNodeURL()?
-    @Value("${geonetwork.core.url}")
+    @Value("${geonetwork.url}")
     private String baseUrl;
 
     public FilesystemStore(
