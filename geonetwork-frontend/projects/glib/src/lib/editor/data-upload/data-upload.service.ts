@@ -34,6 +34,16 @@ export class DataUploadService {
       { responseType: 'text' }
     );
   }
+  applyAnalysis(
+    uuid: string,
+    datasource: string,
+    layer: string
+  ): Observable<any> {
+    return this.http.post(
+      `${this.serverUrl}/save?uuid=${uuid}&datasource=${datasource}&layer=${layer}`,
+      { responseType: 'text' }
+    );
+  }
 
   executeAnalysis(
     datasource: string,

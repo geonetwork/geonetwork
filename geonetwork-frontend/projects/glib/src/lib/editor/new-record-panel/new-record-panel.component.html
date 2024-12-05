@@ -207,7 +207,8 @@
         <p-button
           label="Save"
           icon="fas fa-save"
-          [disabled]="!previewResult()" />
+          [disabled]="!previewResult()"
+          (onClick)="applyAnalysisToRecord()" />
       </div>
     </ng-template>
   </p-stepperPanel>
