@@ -175,7 +175,7 @@ public class Gn4SecurityHeaderAppender {
      * parallel (by spring gateway)
      *
      * @param gn4AuthHeaderName name of the header to set with security info
-     * @return ew request that has the gn4AuthHeaderName (with json security info)
+     * @return new request that has the gn4AuthHeaderName (with json security info)
      */
     public static Function<ServerRequest, ServerRequest> addGn4SecurityHeader_(String gn4AuthHeaderName) {
         return request -> {
