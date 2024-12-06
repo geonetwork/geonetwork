@@ -14,8 +14,8 @@ import org.geonetwork.domain.Profile;
 @Setter
 public class UserGroupProfile {
 
-    public Profile profile;
-    public String groupName;
+    private Profile profile;
+    private String groupName;
 
     public UserGroupProfile(String groupName, int profileId) {
         this.groupName = groupName;
