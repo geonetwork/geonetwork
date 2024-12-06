@@ -12,8 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.Getter;
-import lombok.Setter;
 import org.geonetwork.domain.Profile;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -22,9 +20,9 @@ import org.springframework.security.core.GrantedAuthority;
  * userGroupProfiles ("groupname:profile"). Determines the "max" profile for the generic user.profile.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Getter
-@Setter
 public class Gn4SecurityToken {
+    @SuppressWarnings("UnusedVariable")
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
     @JsonProperty
     private String username;
 
@@ -53,7 +51,7 @@ public class Gn4SecurityToken {
         this.username = username;
         if (roles != null) {
             this.userGroupProfile = roles.stream()
-                    .map(x -> x.groupName + ":" + x.profile.toString())
+                    .map(x -> x.getGroupName() + ":" + x.getProfile().toString())
                     .collect(Collectors.toList());
         }
         var profile = getBestMainProfile(authorities);
