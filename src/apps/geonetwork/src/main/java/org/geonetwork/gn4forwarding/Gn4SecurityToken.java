@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.Setter;
 import org.geonetwork.domain.Profile;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -20,6 +22,8 @@ import org.springframework.security.core.GrantedAuthority;
  * userGroupProfiles ("groupname:profile"). Determines the "max" profile for the generic user.profile.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Getter
+@Setter
 public class Gn4SecurityToken {
     @JsonProperty
     private String username;
@@ -63,8 +67,8 @@ public class Gn4SecurityToken {
      * given a set of authorities (from spring security auth), find the "biggest" GN4/GN5 profile. global biggest =
      * Administrator
      *
-     * @param authorities
-     * @return
+     * @param authorities - from GN Security Content ()
+     * @return highest profile found (or RegisteredUser)
      */
     private String getBestMainProfile(Collection<? extends GrantedAuthority> authorities) {
         if (authorities == null || authorities.isEmpty()) {
@@ -84,8 +88,8 @@ public class Gn4SecurityToken {
         if (profiles.isEmpty()) {
             return "RegisteredUser";
         }
-        var result =
-                profiles.stream().map(x -> x.ordinal()).min(Integer::compare).get();
+        @SuppressWarnings("EnumOrdinal")
+        var result = profiles.stream().map(Enum::ordinal).min(Integer::compare).get();
         return Profile.values()[result].name();
     }
 }

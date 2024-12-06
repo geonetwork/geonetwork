@@ -111,8 +111,8 @@ public class SimpleGn4SecurityHeaderAppender {
      * this will handle the debugging for one-request-at-a-time. In general oneRequestAtATime will be false and this
      * will not by synchronized. However, during debugging, it can be nice to do the requests one-by-one.
      *
-     * @param gn4AuthHeaderName
-     * @return
+     * @param gn4AuthHeaderName name of the header to set in the GN4 request
+     * @return new request that has the gn4AuthHeaderName (with json security info - JUST USERNAME)
      */
     public static Function<ServerRequest, ServerRequest> addSimpleGn4SecurityHeader_(String gn4AuthHeaderName) {
         return request -> {
@@ -127,10 +127,10 @@ public class SimpleGn4SecurityHeaderAppender {
     }
 
     /**
-     * for spring framework
+     * For spring framework.
      *
-     * @param gn4AuthHeaderName
-     * @return
+     * @param gn4AuthHeaderName name of the header to set in the GN4 request
+     * @return for spring to identify in application.yaml for the gateway (filters)
      */
     @Shortcut
     public static HandlerFilterFunction<ServerResponse, ServerResponse> addSimpleGn4SecurityHeader(
