@@ -8,11 +8,11 @@ package org.geonetwork.gn4forwarding;
 import org.springframework.cloud.gateway.server.mvc.filter.SimpleFilterSupplier;
 import org.springframework.context.annotation.Configuration;
 
-/** supplier class for Gn4SecurityHeaderAppender See spring documentation */
+/** supplier class for SimpleGn4SecurityHeaderAppender2Supplier See spring documentation */
 @Configuration
-public class Gn4SecurityHeaderAppenderSupplier extends SimpleFilterSupplier {
+public class SimpleJwtGn4SecurityHeaderAppenderSupplier extends SimpleFilterSupplier {
 
-    public Gn4SecurityHeaderAppenderSupplier() {
-        super(Gn4SecurityHeaderAppender.class);
+    public SimpleJwtGn4SecurityHeaderAppenderSupplier() {
+        super(SimpleJwtGn4SecurityHeaderAppender.class);
     }
 }
