@@ -10,6 +10,7 @@ import static org.springframework.web.servlet.function.HandlerFilterFunction.ofR
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Map;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.server.mvc.common.Shortcut;
 import org.springframework.web.servlet.function.HandlerFilterFunction;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.function.ServerResponse;
  *
  * <p>example: {"username":"dave"}
  */
+@Slf4j
 public class SimpleGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAppender {
 
     /**
@@ -27,7 +29,7 @@ public class SimpleGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAp
      *
      * @param token - gn5 security summary (i.e. username)
      * @param config - not required (cf SimpleJwtGn4SecurityHeaderAppender)
-     * @return
+     * @return encoded token (to be attached to header)
      */
     @Override
     protected String encodeToken(Gn4SecurityToken token, Map config) {
@@ -36,7 +38,7 @@ public class SimpleGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAp
         try {
             tokenJSON = objectMapper.writeValueAsString(token);
         } catch (JsonProcessingException e) {
-            logger.error("couldnt convert token to json", e);
+            log.error("couldnt convert token to json", e);
         }
         return tokenJSON;
     }
