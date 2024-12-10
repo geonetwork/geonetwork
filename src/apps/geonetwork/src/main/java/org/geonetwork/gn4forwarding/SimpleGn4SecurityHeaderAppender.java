@@ -18,7 +18,7 @@ import org.springframework.web.servlet.function.ServerResponse;
 /**
  * Appends (to a header) the security info (JUST username) as a JSON object.
  *
- * example:  {"username":"dave"}
+ * <p>example: {"username":"dave"}
  */
 public class SimpleGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAppender {
 

@@ -18,7 +18,7 @@ import org.springframework.web.servlet.function.ServerResponse;
 /**
  * Appends (to a header) the security info (JUST username) as a signed JWT.
  *
- * example:  {"username":"dave"} -> JWT -> SIGNED JWT
+ * <p>example: {"username":"dave"} -> JWT -> SIGNED JWT
  */
 public class SimpleJwtGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAppender {
 
