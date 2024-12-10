@@ -37,6 +37,9 @@ import org.apache.commons.io.IOUtils;
  */
 public class JwtSigning {
 
+    public static final String ISSUER = "http://gn5.geonetwork.org";
+    public static final String AUDIENCE = "g4.from.g5.proxy";
+
     public static PrivateKey getPrivateKey(String url) throws Exception {
         String privateKeyBase64;
         try (var stream = new URL(url).openStream()) {
@@ -55,20 +58,6 @@ public class JwtSigning {
         return privateKey;
     }
 
-    //  public static PublicKey getPublicKey(String url) throws Exception {
-    //
-    //    if (publicKeyBase64.startsWith("-----BEGIN CERTIFICATE-----")) {
-    //      publicKeyBase64 = publicKeyBase64.replace("-----BEGIN CERTIFICATE-----", "");
-    //      publicKeyBase64 = publicKeyBase64.replace("-----END CERTIFICATE-----", "");
-    //      publicKeyBase64 = publicKeyBase64.trim();
-    //    }
-    //    publicKeyBase64 = publicKeyBase64.replace("\n", "").trim();
-    //    byte[] publicKeyDecoded = Base64.getDecoder().decode(publicKeyBase64);
-    //    X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(publicKeyDecoded);
-    //    KeyFactory kf = KeyFactory.getInstance("RSA");
-    //    return kf.generatePublic(x509EncodedKeySpec);
-    //  }
-
     public static PublicKey getPublicKey(String url) throws Exception {
         CertificateFactory f = CertificateFactory.getInstance("X.509");
         X509Certificate certificate;
@@ -85,8 +74,8 @@ public class JwtSigning {
 
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(securityInfo.getUsername())
-                .issuer("http://gn5.geonetwork.org")
-                .audience("g4.from.g5.proxy")
+                .issuer(ISSUER)
+                .audience(AUDIENCE)
                 .expirationTime(new Date(new Date().getTime() + 60 * 1000))
                 .claim("username", securityInfo.getUsername())
                 .claim("userGroupProfile", securityInfo.getUserGroupProfile())

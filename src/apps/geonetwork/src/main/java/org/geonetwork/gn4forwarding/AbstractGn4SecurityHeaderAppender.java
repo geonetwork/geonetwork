@@ -10,8 +10,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -27,20 +28,18 @@ import org.springframework.web.servlet.function.ServerRequest;
  * oneRequestAtATime - true = only allow one request at a time (useful for debugging). default = false 3. anything else
  * needed for the filter
  */
+@Slf4j
 public abstract class AbstractGn4SecurityHeaderAppender {
-
-    protected final org.slf4j.Logger logger = LoggerFactory.getLogger(AbstractGn4SecurityHeaderAppender.class);
-
-    // for oneRequestAtATime synchronization
-    private static final Object LOCK = new Object();
 
     // json
     public static final ObjectMapper objectMapper = new ObjectMapper();
+    // for oneRequestAtATime synchronization
+    private static final Object LOCK = new Object();
 
     /**
      * main entry for the GN5->GN4 security token. JUST USERNAME
      *
-     * @param request incomming gn4 request
+     * @param request incoming gn4 request
      * @param config info about this filter (from application.yml)
      * @return new request that has the gn4AuthHeaderName (with json security info - JUST USERNAME)
      */
@@ -48,22 +47,24 @@ public abstract class AbstractGn4SecurityHeaderAppender {
         log1(request);
         if (!config.containsKey("headerName") || ((String) config.get("headerName")).isEmpty()) {
             var e = new RuntimeException("Missing required parameter 'headerName'");
-            logger.error("bad AbstractGn4SecurityHeaderAppender config", e);
+            log.error("bad AbstractGn4SecurityHeaderAppender config", e);
             throw e;
         }
 
         var gn4AuthHeaderName = (String) config.get("headerName");
 
-        // remove the output header (or its a MAJOR security problem)
+        // remove the output header (or it's a MAJOR security problem)
         var changedRequest = ServerRequest.from(request).headers(new Consumer<HttpHeaders>() {
-            // security - remove this incoming header or it will be trusted in GN4!!
+            // security - remove this incoming header, or it could be trusted in GN4!!
             @Override
             public void accept(HttpHeaders httpHeaders) {
                 httpHeaders.remove(gn4AuthHeaderName);
             }
         });
 
-        var user = getUser(request);
+        var gn5Session = request.session();
+        SecurityContext securityContext = (SecurityContextImpl) gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
+        var user = getUser(securityContext);
         if (user == null) {
             return changedRequest.build();
         }
@@ -84,14 +85,12 @@ public abstract class AbstractGn4SecurityHeaderAppender {
     protected abstract String encodeToken(Gn4SecurityToken token, Map config);
 
     /**
-     * Gets the User from the gn5 request.
+     * Gets the User from the gn5 request (security context "SPRING_SECURITY_CONTEXT" attribute).
      *
-     * @param request request that will be proxied to gn4
+     * @param securityContext from request (SPRING_SECURITY_CONTEXT attribute) that will be proxied to gn4
      * @return null or the User
      */
-    private User getUser(ServerRequest request) {
-        var gn5Session = request.session();
-        SecurityContextImpl securityContext = (SecurityContextImpl) gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
+    public User getUser(SecurityContext securityContext) {
         if (securityContext == null) {
             // no security context - let GN4 create it own
             return null;
@@ -138,40 +137,42 @@ public abstract class AbstractGn4SecurityHeaderAppender {
     // ------------------ debugging info -------------------
 
     /**
-     * logs the incomming requests (GN5 that's going to GN4). Logs as trace
+     * logs the incoming requests (GN5 that's going to GN4). Logs as trace
      *
-     * @param request - incomming gn5 request
+     * @param request - incoming gn5 request
      */
     public void log1(ServerRequest request) {
-        if (!logger.isTraceEnabled()) {
+        if (!log.isTraceEnabled()) {
             return;
         }
-        logger.trace("addGn4SecurityHeader: start");
-        logger.trace("addGn4SecurityHeader: incoming GN5 URL:" + request.uri());
+        log.trace("addGn4SecurityHeader: start");
+        log.trace("addGn4SecurityHeader: incoming GN5 URL:{}", request.uri());
 
         var gn5Session = request.session();
         if (gn5Session != null) {
-            logger.trace("addGn4SecurityHeader: has  GN5 session, id=" + gn5Session.getId());
+            log.trace("addGn4SecurityHeader: has  GN5 session, id={}", gn5Session.getId());
             // logger.trace("addGn4SecurityHeader: has  GN5 session, base64 decoded id="+
             //       new String(Base64.getDecoder().decode(gn5Session.getId())));
-            logger.trace("addGn4SecurityHeader: session has attributes: "
-                    + String.join(",", Collections.list(gn5Session.getAttributeNames())));
+            log.trace(
+                    "addGn4SecurityHeader: session has attributes: {}",
+                    String.join(",", Collections.list(gn5Session.getAttributeNames())));
             if (gn5Session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
-                logger.trace("addGn4SecurityHeader: GN5 has security context!");
+                log.trace("addGn4SecurityHeader: GN5 has security context!");
                 SecurityContextImpl securityContext =
                         (SecurityContextImpl) gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
                 var auth = securityContext.getAuthentication();
                 if (auth != null) {
                     User user = (User) auth.getPrincipal();
-                    logger.trace("addGn4SecurityHeader: GN5 security context authentication type: "
-                            + auth.getClass().getSimpleName());
-                    logger.trace("addGn4SecurityHeader: GN5 principle username=" + user.getUsername());
+                    log.trace(
+                            "addGn4SecurityHeader: GN5 security context authentication type: {}",
+                            auth.getClass().getSimpleName());
+                    log.trace("addGn4SecurityHeader: GN5 principle username={}", user.getUsername());
                     var authorities = auth.getAuthorities();
                     var authoritiesNames =
                             authorities.stream().map(x -> x.getAuthority()).collect(Collectors.toList());
-                    logger.trace("addGn4SecurityHeader: GN5 authorities:" + String.join(",", authoritiesNames));
+                    log.trace("addGn4SecurityHeader: GN5 authorities:{}", String.join(",", authoritiesNames));
                 } else {
-                    logger.trace("addGn4SecurityHeader: GN5 security context has NO authentication!");
+                    log.trace("addGn4SecurityHeader: GN5 security context has NO authentication!");
                 }
             }
         }

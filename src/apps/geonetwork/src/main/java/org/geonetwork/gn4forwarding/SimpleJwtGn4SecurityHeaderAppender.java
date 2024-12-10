@@ -10,6 +10,7 @@ import static org.springframework.web.servlet.function.HandlerFilterFunction.ofR
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Map;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.server.mvc.common.Shortcut;
 import org.springframework.web.servlet.function.HandlerFilterFunction;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.function.ServerResponse;
  *
  * <p>example: {"username":"dave"} -> JWT -> SIGNED JWT
  */
+@Slf4j
 public class SimpleJwtGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAppender {
 
     /**
@@ -39,7 +41,7 @@ public class SimpleJwtGn4SecurityHeaderAppender extends AbstractGn4SecurityHeade
         try {
             jwt = JwtSigning.createJWT(privateKeyUrl, token, keyId);
         } catch (Exception e) {
-            logger.error("couldnt create JWT", e);
+            log.error("couldnt create JWT", e);
             throw new RuntimeException(e);
         }
         return jwt;
