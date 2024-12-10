@@ -16,40 +16,49 @@ import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 
 /**
- * Appends (to a header) the security info (JUST username) as a JSON object.
+ * Appends (to a header) the security info (JUST username) as a signed JWT.
  *
- * example:  {"username":"dave"}
+ * example:  {"username":"dave"} -> JWT -> SIGNED JWT
  */
-public class SimpleGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAppender {
+public class SimpleJwtGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAppender {
 
     /**
-     * encodes the security token as JSON.
+     * Encodes the token as signed JWT.
      *
-     * @param token - gn5 security summary (i.e. username)
-     * @param config - not required (cf SimpleJwtGn4SecurityHeaderAppender)
+     * <p>config.privateKeyUrl - URL for the private key (for signing) config.keyId -keyId for the private key
+     *
+     * @param token security info (i.e. username)
+     * @param config filter config (see above).
      * @return
      */
     @Override
     protected String encodeToken(Gn4SecurityToken token, Map config) {
-        // convert to JSON
-        String tokenJSON = "";
+        String jwt;
+        var privateKeyUrl = (String) config.get("privateKeyUrl");
+        var keyId = (String) config.get("keyId");
         try {
-            tokenJSON = objectMapper.writeValueAsString(token);
-        } catch (JsonProcessingException e) {
-            logger.error("couldnt convert token to json", e);
+            jwt = JwtSigning.createJWT(privateKeyUrl, token, keyId);
+        } catch (Exception e) {
+            logger.error("couldnt create JWT", e);
+            throw new RuntimeException(e);
         }
-        return tokenJSON;
+        return jwt;
     }
 
     /**
-     * For spring framework.
+     * For spring framework. The name of this function is the name of filter used in application.yml. Make sure this is
+     * annotated with @Shortcut
      *
-     * @param headerName name of the header to set
+     * @param headerName name of the header to send to GN5
+     * @param privateKeyUrl URL for the private key (for signing)
+     * @param keyId keyId for the private key
      * @return for spring to identify in application.yaml for the gateway (filters)
      */
     @Shortcut
-    public static HandlerFilterFunction<ServerResponse, ServerResponse> addSimpleGn4SecurityHeader2(String headerName) {
-        return ofRequestProcessor(internalExecute("{ \"headerName\" : \"" + headerName + " }"));
+    public static HandlerFilterFunction<ServerResponse, ServerResponse> addSimpleJwtGn4SecurityHeader2(
+            String headerName, String privateKeyUrl, String keyId) {
+        return ofRequestProcessor(internalExecute("{ \"headerName\" : \"" + headerName + "\", \"privateKeyUrl\" : \""
+                + privateKeyUrl + "\",\"keyId\": \"" + keyId + "\"}"));
     }
 
     /**
@@ -67,7 +76,7 @@ public class SimpleGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAp
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-            var object = new SimpleGn4SecurityHeaderAppender();
+            var object = new SimpleJwtGn4SecurityHeaderAppender();
             return object.execute(request, config);
         };
     }
