@@ -17,8 +17,9 @@ requests to a GN4 instance (connected to the same DB and Elastic Index) for proc
 
 3. Configure GN4 with JWT Headers Security and add the GN5 `application.yml` `cloud: gateway: mvc:` filter.
 
-    a) [Simple Authentication](auth-json.md) <br>
-    b) [JWT-Based Authentication](auth-jwt.md)
+    a) [JWT-Based Authentication](auth-jwt.md) - recommended for most installations <br>
+    b) [Simple Authentication](auth-json.md) - easier to configure, but GN4 must **not** be accessible via the internet or intranet.<br>
+ 
 
 You will manage users in the GN database.
 
@@ -42,6 +43,8 @@ Typically, you would use the standard username/password authentication thats bui
             clientId:  ...from your GitHub application...
             clientSecret: ...from your GitHub application...
 ```
+
+One the main GN5 (http://localhost:7979) click "GitHub" and you will be redirected for GitHub's authentication.
 
 Once the user logs into GN5, it will create a user in the database.  The username will either be their email (if they have configured GitHub to have their email address public) or their GitHub username.
 
