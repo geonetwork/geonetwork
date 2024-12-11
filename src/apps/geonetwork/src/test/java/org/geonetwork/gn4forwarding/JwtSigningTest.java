@@ -53,7 +53,7 @@ public class JwtSigningTest {
     /**
      * make sure you can read the private and public keys.
      *
-     * @throws Exception
+     * @throws Exception error - test fail
      */
     @Test
     public void readKeys() throws Exception {
@@ -79,7 +79,7 @@ public class JwtSigningTest {
     /**
      * tests signing, content of the JWT and makes sure that the signing can be verified.
      *
-     * @throws Exception
+     * @throws Exception error - test fail
      */
     @Test
     public void testSigning() throws Exception {

@@ -31,7 +31,7 @@ public class SimpleJwtGn4SecurityHeaderAppender extends AbstractGn4SecurityHeade
      *
      * @param token security info (i.e. username)
      * @param config filter config (see above).
-     * @return
+     * @return string to attach to header
      */
     @Override
     protected String encodeToken(Gn4SecurityToken token, Map config) {

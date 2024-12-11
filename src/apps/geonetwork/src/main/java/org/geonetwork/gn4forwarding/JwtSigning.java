@@ -11,13 +11,15 @@ import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import java.net.URL;
+import java.net.URI;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
 import org.apache.commons.io.IOUtils;
@@ -42,7 +44,7 @@ public class JwtSigning {
 
     public static PrivateKey getPrivateKey(String url) throws Exception {
         String privateKeyBase64;
-        try (var stream = new URL(url).openStream()) {
+        try (var stream = new URI(url).toURL().openStream()) {
             privateKeyBase64 = IOUtils.toString(stream);
         }
         if (privateKeyBase64.startsWith("-----BEGIN PRIVATE KEY-----")) {
@@ -61,7 +63,7 @@ public class JwtSigning {
     public static PublicKey getPublicKey(String url) throws Exception {
         CertificateFactory f = CertificateFactory.getInstance("X.509");
         X509Certificate certificate;
-        try (var stream = new URL(url).openStream()) {
+        try (var stream = new URI(url).toURL().openStream()) {
             certificate = (X509Certificate) f.generateCertificate(stream);
         }
         return certificate.getPublicKey();
@@ -72,13 +74,15 @@ public class JwtSigning {
 
         JWSSigner signer = new RSASSASigner(privateKey);
 
+        var expire = Instant.now().plus(1, ChronoUnit.HOURS);
+
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(securityInfo.getUsername())
                 .issuer(ISSUER)
                 .audience(AUDIENCE)
-                .expirationTime(new Date(new Date().getTime() + 60 * 1000))
+                .expirationTime(Date.from(expire))
                 .claim("username", securityInfo.getUsername())
-                .claim("userGroupProfile", securityInfo.getUserGroupProfile())
+                // .claim("userGroupProfile", securityInfo.getUserGroupProfile())
                 .build();
 
         SignedJWT signedJWT = new SignedJWT(
