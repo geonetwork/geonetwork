@@ -21,7 +21,7 @@ public class SimpleJwtGn4SecurityHeaderAppenderTest {
         var encoder = new SimpleJwtGn4SecurityHeaderAppender();
 
         var token = new Gn4SecurityToken("testcase_dave");
-        var config = new HashMap();
+        var config = new HashMap<String, String>();
         config.put("privateKeyUrl", "my privateKeyUrl");
         config.put("keyId", "my keyId");
 
