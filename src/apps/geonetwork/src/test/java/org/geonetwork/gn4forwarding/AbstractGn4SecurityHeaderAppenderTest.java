@@ -56,7 +56,7 @@ public class AbstractGn4SecurityHeaderAppenderTest {
      * correct username (from the mocked request) 3. verifies that the token is set on the correct header in the new
      * request
      *
-     * @throws Exception
+     * @throws Exception error - test fail
      */
     @Test
     public void testToken() throws Exception {
@@ -70,7 +70,7 @@ public class AbstractGn4SecurityHeaderAppenderTest {
         };
 
         var request = mockServerRequest();
-        var config = new HashMap();
+        var config = new HashMap<String, String>();
         config.put("headerName", "testcaseheadername");
 
         var newrequest = abstractGn4SecurityHeaderAppender.execute_impl(request, config);
@@ -84,7 +84,7 @@ public class AbstractGn4SecurityHeaderAppenderTest {
     /**
      * This tests to make sure the security header is removed for incoming requests.
      *
-     * @throws Exception
+     * @throws Exception error - test fail
      */
     @Test
     public void testMaliciousHeader() throws Exception {
@@ -98,7 +98,7 @@ public class AbstractGn4SecurityHeaderAppenderTest {
         };
 
         var request = mockServerRequestMalicious();
-        var config = new HashMap();
+        var config = new HashMap<String, String>();
         config.put("headerName", "testcaseheadername");
 
         assertFalse(request.headers().header("testcaseheadername").isEmpty());
@@ -113,8 +113,8 @@ public class AbstractGn4SecurityHeaderAppenderTest {
     /**
      * creates a mock request with a User (username = "testcase_dave").
      *
-     * @return
-     * @throws Exception
+     * @return mocked request GN5 user "testcase_dave"
+     * @throws Exception error - test fail
      */
     public ServerRequest mockServerRequest() throws Exception {
         var authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
@@ -145,8 +145,8 @@ public class AbstractGn4SecurityHeaderAppenderTest {
      * creates a mock request without a user, but with the security header already set. This is a bit complex because we
      * need to add the header (not easy) as well as keep the session.
      *
-     * @return
-     * @throws Exception
+     * @return mocked request with illegal header from user
+     * @throws Exception error - test fail
      */
     public ServerRequest mockServerRequestMalicious() throws Exception {
 

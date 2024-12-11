@@ -7,14 +7,10 @@ package org.geonetwork.gn4forwarding;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
-import org.geonetwork.domain.Profile;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
@@ -30,9 +26,6 @@ public class Gn4SecurityToken {
     @JsonProperty
     private String username;
 
-    @JsonProperty
-    private List<String> userGroupProfile;
-
     /**
      * just puts in the username
      *
@@ -47,51 +40,9 @@ public class Gn4SecurityToken {
      * the "generic" user profile
      *
      * @param username GN4 username
-     * @param authorities authorities (from GN5 or external service)
-     * @param roles group-profile info
      */
     public Gn4SecurityToken(
             String username, Collection<? extends GrantedAuthority> authorities, List<UserGroupProfile> roles) {
         this.username = username;
-        if (roles != null) {
-            this.userGroupProfile = roles.stream()
-                    .map(x -> x.getGroupName() + ":" + x.getProfile().toString())
-                    .collect(Collectors.toList());
-        }
-        var profile = getBestMainProfile(authorities);
-        if (userGroupProfile == null) {
-            userGroupProfile = new ArrayList<>();
-        }
-        userGroupProfile.add(profile);
-    }
-
-    /**
-     * given a set of authorities (from spring security auth), find the "biggest" GN4/GN5 profile. global biggest =
-     * Administrator
-     *
-     * @param authorities - from GN Security Content ()
-     * @return highest profile found (or RegisteredUser)
-     */
-    private String getBestMainProfile(Collection<? extends GrantedAuthority> authorities) {
-        if (authorities == null || authorities.isEmpty()) {
-            return "RegisteredUser";
-        }
-        var profiles = authorities.stream()
-                .map(x -> {
-                    var roleName = x.getAuthority();
-                    if (roleName.startsWith("ROLE_")) {
-                        roleName = roleName.substring("ROLE_".length());
-                    }
-                    var profile = Profile.findProfileIgnoreCase(roleName);
-                    return profile;
-                })
-                .filter(Objects::nonNull)
-                .toList();
-        if (profiles.isEmpty()) {
-            return "RegisteredUser";
-        }
-        @SuppressWarnings("EnumOrdinal")
-        var result = profiles.stream().map(Enum::ordinal).min(Integer::compare).get();
-        return Profile.values()[result].name();
     }
 }
