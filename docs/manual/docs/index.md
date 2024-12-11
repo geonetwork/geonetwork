@@ -13,5 +13,5 @@ Welcome to GeoNetwork 5.
 
     ---
 
-    Authentication passing between GN5 and GN5 via the proxy gateway.
+    Integrating GN5 and GN4 via the proxy gateway.
 </div>
