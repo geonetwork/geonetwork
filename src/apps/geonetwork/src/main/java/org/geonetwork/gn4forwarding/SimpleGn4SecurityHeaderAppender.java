@@ -50,7 +50,7 @@ public class SimpleGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAp
      * @return for spring to identify in application.yaml for the gateway (filters)
      */
     @Shortcut
-    public static HandlerFilterFunction<ServerResponse, ServerResponse> addSimpleGn4SecurityHeader2(String headerName) {
+    public static HandlerFilterFunction<ServerResponse, ServerResponse> addSimpleGn4SecurityHeader(String headerName) {
         return ofRequestProcessor(internalExecute("{ \"headerName\" : \"" + headerName + " }"));
     }
 
