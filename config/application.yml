@@ -58,7 +58,7 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5432/geonetwork
+    url: jdbc:postgresql://localhost:5432/gn
     driverClassName: org.postgresql.Driver
     #    url: jdbc:h2:mem:gn5
     #    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE
@@ -74,8 +74,8 @@ spring:
       client:
         registration:
           github:
-            clientId: github-client-id
-            clientSecret: github-client-secret
+            clientId: Ov23lidxNBZqAc6AcGe6
+            clientSecret: 71d2ec9ac2ff0b6b1ad9aaab43bd00e3b0c57286
   #          custom:
   #            client-id: custom-client-id
   #            client-secret: custom-client-secret
