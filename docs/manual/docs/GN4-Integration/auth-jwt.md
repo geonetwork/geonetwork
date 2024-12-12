@@ -28,6 +28,12 @@ This will generate:
 
 The standard way of handling JWT signature validation is to use a JWK Set.  This is fairly easy to do.
 
+> [!WARNING]  
+> If you get an error like `ParseException: Missing required "keys" member` then you've likely
+> forgotten to do the last step (impeding your JWK into another JSON file) that turns the
+> generated JWK into a JWK Set.
+
+
 1. Use [https://jwkset.com/generate](https://jwkset.com/generate) to convert your `certificate_pub.crt` to a JWK.<br>
   a. copy the text from `certificate_pub.crt` into the first section - "`PEM encoded key or certificate`" <br>
   b. choose a `Key ID` (you'll need this, below)<br>
@@ -68,6 +74,10 @@ c) Name of the `Key ID` (from above)
 ### Configure GN4
 
 Sent environment variables like this;
+
+> [!WARNING]
+> If you are getting errors (especially about the JWT not being valid), the most likely
+> issue is with these settings.  Please double check them.
 
 ```
 JWTHEADERS_ValidateTokenAudienceClaimValue=g4.from.g5.proxy
