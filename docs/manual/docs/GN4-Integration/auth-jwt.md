@@ -111,7 +111,7 @@ NOTE: see below if you are using a file instead of a https location
 
 This is the meaning of the other configuration options:
 
-`JWTHEADERS_UserNameFormat=JWT` -- expect indentity information to be in a JWT
+`JWTHEADERS_UserNameFormat=JWT` -- expect identity information to be in a JWT
 
 `JWTHEADERS_UserNameJsonPath=username` -- json path (inside the JWT payload) of the username
 `JWTHEADERS_ValidateTokenAgainstURL=false` -- do not validate the token against the IDP
