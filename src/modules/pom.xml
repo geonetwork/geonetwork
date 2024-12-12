@@ -23,6 +23,7 @@
     <module>indexing</module>
     <module>searching</module>
     <module>editing</module>
+    <module>formatting</module>
     <module>data-analysis</module>
   </modules>
 </project>
