@@ -100,6 +100,8 @@ spring:
             uri: ${geonetwork.core.url}
             predicates:
               - Path=/geonetwork/**
+            filters:
+              - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
     jdbc:
       initialize-schema: always
