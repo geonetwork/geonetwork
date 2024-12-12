@@ -57,7 +57,7 @@ public class SimpleJwtGn4SecurityHeaderAppender extends AbstractGn4SecurityHeade
      * @return for spring to identify in application.yaml for the gateway (filters)
      */
     @Shortcut
-    public static HandlerFilterFunction<ServerResponse, ServerResponse> addSimpleJwtGn4SecurityHeader2(
+    public static HandlerFilterFunction<ServerResponse, ServerResponse> addSimpleJwtGn4SecurityHeader(
             String headerName, String privateKeyUrl, String keyId) {
         return ofRequestProcessor(internalExecute("{ \"headerName\" : \"" + headerName + "\", \"privateKeyUrl\" : \""
                 + privateKeyUrl + "\",\"keyId\": \"" + keyId + "\"}"));
