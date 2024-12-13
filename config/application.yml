@@ -101,7 +101,7 @@ spring:
             predicates:
               - Path=/geonetwork/**
             filters:
-              #- addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
+              - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
     jdbc:
       initialize-schema: always
