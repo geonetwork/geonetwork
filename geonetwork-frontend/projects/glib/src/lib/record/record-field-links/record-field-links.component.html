@@ -1,4 +1,4 @@
-@for (link of field(); track $index) {
+<!--@for (link of links(); track $index) {
   <div class="mb-2">
     <a
       class="text-blue-500 underline"
@@ -6,7 +6,48 @@
       title="{{ link.descriptionObject?.default }}"
       target="_blank"
       rel="noopener noreferrer">
+
+
       {{ link.nameObject?.default }}
     </a>
+  </div>
+}-->
+
+@for (section of linksBySections() | keyvalue; track $index) {
+  <h1 class="text-xl font-semibold border-b-4">{{ section.key }}</h1>
+  <div class="grid gap-2">
+    @for (link of section.value; track link) {
+      <div class="my-4 flex">
+        <div class="basis-1/4">
+          <p-badge [value]="link.protocol" severity="info"></p-badge>
+        </div>
+        <div class="basis-1/2">
+          <a
+            class="text-blue-500 underline"
+            [attr.href]="link.urlObject.default"
+            title="{{ link.descriptionObject?.default }}"
+            target="_blank"
+            rel="noopener noreferrer">
+            {{ link.nameObject?.default }}
+          </a>
+
+          @if (link.descriptionObject?.default) {
+            <p class="text-gray-500">
+              {{ link.descriptionObject?.default }}
+            </p>
+          }
+        </div>
+        <div class="basis-1/4">
+          @if (link.protocol.startsWith('OGC:WMS')) {
+            <p-button
+              styleClass="block w-full"
+              icon="fa fa-map"
+              (click)="addWmsLayers([link])"
+              [label]="'Add to map'">
+            </p-button>
+          }
+        </div>
+      </div>
+    }
   </div>
 }

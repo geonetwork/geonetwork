@@ -92,7 +92,7 @@
                   @default {
                     @if (col.field.startsWith('link')) {
                       <g-record-field-links
-                        [field]="hit._source | gJsonpath: col.field" />
+                        [links]="hit._source | gJsonpath: col.field" />
                     } @else if (col.field.startsWith('th_')) {
                       <g-record-field-keywords
                         [field]="hit._source | gJsonpath: col.field" />

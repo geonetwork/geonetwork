@@ -23,18 +23,29 @@
         </div>
         <div class="">
           <p class="line-clamp-2">
-            <!-- {{
-              hit._source.resourceAbstractObject?.default
-                | firstSentence
-            }}-->
+            {{ hit._source.resourceAbstractObject?.default | firstSentence }}
           </p>
           <div>
+            <g-record-field-keywords [field]="hit._source.tag" limit="3" />
+
             @for (range of hit._source.resourceTemporalDateRange; track range) {
               <p-chip
                 class="pr-2"
                 icon="fa fa-calendar"
                 label="{{ range | gRecordFieldRange: 'YYYY-MM-dd' }}">
               </p-chip>
+            }
+          </div>
+          <div>
+            @for (link of hit._source.link; track $index) {
+              @if (link.protocol.startsWith('OGC:WMS')) {
+                <p-button
+                  icon="fa fa-map"
+                  size="small"
+                  (onClick)="addWmsLayers([link]); $event.preventDefault()"
+                  [title]="'Add to map (' + link.nameObject?.default + ')'">
+                </p-button>
+              }
             }
           </div>
         </div>

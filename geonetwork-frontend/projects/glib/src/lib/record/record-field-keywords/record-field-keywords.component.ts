@@ -10,4 +10,5 @@ import { ChipModule } from 'primeng/chip';
 })
 export class RecordFieldKeywordsComponent {
   field = input<any[] | null>();
+  limit = input<number | undefined>();
 }

@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { ChipModule } from 'primeng/chip';
 import { elasticsearch } from 'gapi';
 import { GnIndexRecord } from 'gapi';
@@ -9,6 +9,10 @@ import {
 } from '../record-field-resource-type/record-field-resource-type.component';
 import { RecordFieldRange } from '../record-field-range.pipe';
 import { RouterLink } from '@angular/router';
+import { FirstSentencePipe } from '../../shared/first-sentence.pipe';
+import { RecordFieldKeywordsComponent } from '../record-field-keywords/record-field-keywords.component';
+import { Button } from 'primeng/button';
+import { Gn4MapService } from '../../shared/gn4-map.service';
 
 @Component({
   selector: 'g-record-view-list',
@@ -19,6 +23,9 @@ import { RouterLink } from '@angular/router';
     RouterLink,
     RecordFieldResourceTypeComponent,
     RecordFieldRange,
+    FirstSentencePipe,
+    RecordFieldKeywordsComponent,
+    Button,
   ],
   templateUrl: './record-view-list.component.html',
   styleUrl: './record-view-list.component.css',
@@ -29,4 +36,6 @@ export class RecordViewListComponent {
   landingPage = input<string>('');
   landingPageLinkOn = input<string>();
   landingPageLabel = input<string>('Read more');
+  gn4MapService = inject(Gn4MapService);
+  addWmsLayers = this.gn4MapService.addWmsLayers;
 }

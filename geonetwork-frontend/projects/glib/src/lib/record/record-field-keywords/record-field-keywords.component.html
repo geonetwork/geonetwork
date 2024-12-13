@@ -1,3 +1,3 @@
-@for (keyword of field(); track $index) {
+@for (keyword of field()?.slice(0, limit()); track $index) {
   <p-chip [label]="keyword.default" styleClass="m-1" />
 }
