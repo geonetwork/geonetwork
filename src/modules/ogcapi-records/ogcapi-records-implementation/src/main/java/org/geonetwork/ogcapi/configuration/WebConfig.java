@@ -19,7 +19,11 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-/** configuration for the Spring Boot app. */
+/**
+ * configuration for the Spring Boot app.
+ *
+ * <p>This contains some beans and some overrides for setting up spring.
+ */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 

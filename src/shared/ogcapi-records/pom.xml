@@ -11,24 +11,18 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geonetwork</groupId>
-    <artifactId>gn-ogcapi-records</artifactId>
+    <artifactId>gn-shared</artifactId>
     <version>5.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>gn-ogcapi-records-implementation</artifactId>
+  <artifactId>ogcapi-records-shared</artifactId>
   <packaging>jar</packaging>
-  <name>GeoNetwork OGCAPI-records openapi implementation</name>
+  <name>GeoNetwork OGCAPI-records openapi shared services</name>
   <dependencies>
 
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-ogcapi-records-openapi-autogen</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.geonetwork</groupId>
-      <artifactId>ogcapi-records-shared</artifactId>
       <version>${project.version}</version>
     </dependency>
 

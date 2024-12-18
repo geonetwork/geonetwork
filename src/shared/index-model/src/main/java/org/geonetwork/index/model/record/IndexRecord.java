@@ -687,9 +687,17 @@ public class IndexRecord {
     private List<String> shapes;
 
     @JsonProperty(IndexRecordFieldNames.GEOM)
-    @JsonDeserialize(using = NodeTreeAsStringDeserializer.class)
-    @JsonSerialize(using = StringAsNodeTreeSerializer.class)
-    private List<String> geometries;
+    //    @JsonDeserialize(using = NodeTreeAsStringDeserializer.class)
+    //    @JsonSerialize(using = StringAsNodeTreeSerializer.class)
+    // items this will be like:
+    // {
+    //    "type":"MultiPolygon",
+    //    "coordinates": <deep nesting of Double array>
+    // }
+    // NOTE: nesting of the coordinate array is variable - highest for multi-polygons
+    // NOTE: not sure if GeometryCollections are supported in the index...
+    // NOTE: also see the OgcApiRecords for the GeoJson Geometries.
+    private List<Map> geometries;
 
     @JsonProperty(IndexRecordFieldNames.SERVICE_TYPE)
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -951,59 +959,67 @@ public class IndexRecord {
         }
     }
 
+    Contact contactFromMap(Map<String, Object> contactInfo) {
+        Contact.ContactBuilder c = Contact.builder()
+                .role(contactInfo.get("role").toString())
+                .email(contactInfo.get("email").toString())
+                .website(contactInfo.get("website").toString())
+                .logo(contactInfo.get("logo").toString())
+                .individual(contactInfo.get("individual").toString())
+                .position(contactInfo.get("position").toString())
+                .phone(contactInfo.get("phone").toString())
+                .address(contactInfo.get("address").toString());
+
+        if (contactInfo.get("organisationObject") instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, String> map = (Map<String, String>) contactInfo.get("organisationObject");
+            c.organisation(map);
+        }
+        if (contactInfo.get("nilReason") != null) {
+            c.nilReason(contactInfo.get("nilReason").toString());
+        }
+
+        Object identifiers = contactInfo.get("identifiers");
+        List<Map<String, String>> listOfPartyIdentifier = new ArrayList<>();
+        if (identifiers instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, String> map = (Map<String, String>) identifiers;
+            listOfPartyIdentifier = List.of(map);
+        } else if (identifiers instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<Map<String, String>> list = (List<Map<String, String>>) identifiers;
+
+            listOfPartyIdentifier = list;
+        }
+        if (!listOfPartyIdentifier.isEmpty()) {
+            c.identifier(listOfPartyIdentifier.stream()
+                    .map(identifierProperties -> PartyIdentifier.builder()
+                            .code(identifierProperties.get("code"))
+                            .codeSpace(identifierProperties.get("codeSpace"))
+                            .link(identifierProperties.get("link"))
+                            .build())
+                    .toList());
+        }
+        return c.build();
+    }
+
     private void handleContactByRoleProperties(
             Map<String, List<Contact>> contactByRoleList, String name, Object value) {
         List<Contact> resourceByRole = contactByRoleList.computeIfAbsent(name, k -> new ArrayList<>());
         if (value instanceof List) {
             @SuppressWarnings("unchecked")
-            List<Contact> list = (List<Contact>) value;
+            List<Contact> list = ((List) value)
+                    .stream()
+                            .map(x -> (x instanceof Contact) ? (Contact) x : contactFromMap((Map<String, Object>) x))
+                            .toList();
+
             resourceByRole.addAll(list);
         } else if (value instanceof Map) {
             @SuppressWarnings("unchecked")
             Map<String, Object> contactInfo = (Map<String, Object>) value;
 
-            Contact.ContactBuilder c = Contact.builder()
-                    .role(contactInfo.get("role").toString())
-                    .email(contactInfo.get("email").toString())
-                    .website(contactInfo.get("website").toString())
-                    .logo(contactInfo.get("logo").toString())
-                    .individual(contactInfo.get("individual").toString())
-                    .position(contactInfo.get("position").toString())
-                    .phone(contactInfo.get("phone").toString())
-                    .address(contactInfo.get("address").toString());
-
-            if (contactInfo.get("organisationObject") instanceof Map) {
-                @SuppressWarnings("unchecked")
-                Map<String, String> map = (Map<String, String>) contactInfo.get("organisationObject");
-                c.organisation(map);
-            }
-            if (contactInfo.get("nilReason") != null) {
-                c.nilReason(contactInfo.get("nilReason").toString());
-            }
-
-            Object identifiers = contactInfo.get("identifiers");
-            List<Map<String, String>> listOfPartyIdentifier = new ArrayList<>();
-            if (identifiers instanceof Map) {
-                @SuppressWarnings("unchecked")
-                Map<String, String> map = (Map<String, String>) identifiers;
-                listOfPartyIdentifier = List.of(map);
-            } else if (identifiers instanceof List) {
-                @SuppressWarnings("unchecked")
-                List<Map<String, String>> list = (List<Map<String, String>>) identifiers;
-
-                listOfPartyIdentifier = list;
-            }
-            if (!listOfPartyIdentifier.isEmpty()) {
-                c.identifier(listOfPartyIdentifier.stream()
-                        .map(identifierProperties -> PartyIdentifier.builder()
-                                .code(identifierProperties.get("code"))
-                                .codeSpace(identifierProperties.get("codeSpace"))
-                                .link(identifierProperties.get("link"))
-                                .build())
-                        .toList());
-            }
-
-            resourceByRole.add(c.build());
+            var contact = contactFromMap(contactInfo);
+            resourceByRole.add(contact);
         } else {
             resourceByRole.add((Contact) value);
         }

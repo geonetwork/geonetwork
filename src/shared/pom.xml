@@ -31,5 +31,7 @@
     <module>index-client</module>
     <module>index-model</module>
     <module>process-manager</module>
+    <module>ogcapi-records</module>
+
   </modules>
 </project>
