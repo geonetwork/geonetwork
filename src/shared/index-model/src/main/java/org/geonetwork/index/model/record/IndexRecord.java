@@ -138,6 +138,7 @@ public class IndexRecord {
      *             "link": "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations"
      * </pre>
      */
+
     @JsonIgnore
     @Singular("constraints")
     final Map<String, List<Map<String, String>>> constraints = new HashMap<>();
@@ -277,9 +278,10 @@ public class IndexRecord {
      * <pre>
      *     resourceTitleObject: {
      *         default: "Organisation de la protection civile dans
-     *         le canton de Fribourg - Organisation des Zivilschutzes im Kanton Freiburg",
-     *             langfre: "Organisation de la protection civile dans le canton de Fribourg
-     *             - Organisation des Zivilschutzes im Kanton Freiburg"
+     *                    le canton de Fribourg - Organisation des Zivilschutzes im Kanton Freiburg",
+     *         langfre: "Organisation de la protection civile dans le canton de Fribourg
+     *                   - Organisation des Zivilschutzes im Kanton Freiburg"
+     *    }
      * </pre>
      */
     @JsonProperty(IndexRecordFieldNames.RESOURCE_TITLE)
@@ -379,7 +381,11 @@ public class IndexRecord {
     // eg. iso19139
     private String documentStandard;
 
-    // eg. ISO 19119/2005
+    //eg "iso19139"
+    private String schema;
+
+
+  // eg. ISO 19119/2005
     @JsonProperty(IndexRecordFieldNames.STANDARD_NAME)
     private Map<String, String> standardName;
 
