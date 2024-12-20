@@ -51,7 +51,7 @@ public class SimpleGn4SecurityHeaderAppender extends AbstractGn4SecurityHeaderAp
      */
     @Shortcut
     public static HandlerFilterFunction<ServerResponse, ServerResponse> addSimpleGn4SecurityHeader(String headerName) {
-        return ofRequestProcessor(internalExecute("{ \"headerName\" : \"" + headerName + " }"));
+        return ofRequestProcessor(internalExecute("{ \"headerName\" : \"" + headerName + "\" }"));
     }
 
     /**
