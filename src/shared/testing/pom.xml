@@ -53,6 +53,10 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <forceCreation>true</forceCreation>
+          <skip>false</skip>
+        </configuration>
       </plugin>
     </plugins>
   </build>

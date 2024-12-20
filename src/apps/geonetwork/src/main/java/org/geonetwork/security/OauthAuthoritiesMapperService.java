@@ -40,8 +40,13 @@ public class OauthAuthoritiesMapperService {
                     // Handle OIDC user authority
                 } else if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
                     Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
-                    String email = userAttributes.get("email").toString();
-                    Optional<User> oauthUser = userRepository.findOptionalByEmail(email);
+                    // in github, emails are typically hidden, so this will be null and cause issues...
+                    String email = userAttributes.get("email") != null
+                            ? userAttributes.get("email").toString()
+                            : null;
+
+                    Optional<User> oauthUser =
+                            (email == null) ? Optional.empty() : userRepository.findOptionalByEmail(email);
 
                     User user = oauthUser
                             .map(existingUser -> {
@@ -67,7 +72,7 @@ public class OauthAuthoritiesMapperService {
                                                 .toString())
                                         .surname("")
                                         .authtype(authority.getAuthority())
-                                        .email(Set.of(email))
+                                        .email(email == null ? null : Set.of(email))
                                         .organisation(Optional.ofNullable(userAttributes.get("company"))
                                                 .orElse("")
                                                 .toString())
