@@ -27,16 +27,6 @@
       <Bug pattern="EI_EXPOSE_REP"/>
     </Or>
   </Match>
-  <Match>
-    <Package name="org.geonetwork.data.gdal.model.generated"/>
-    <Or>
-      <Bug pattern="EI_EXPOSE_REP2"/>
-      <Bug pattern="EI_EXPOSE_REP"/>
-      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-      <Bug pattern="SA_FIELD_SELF_ASSIGNMENT"/>
-      <Bug pattern="UR_UNINIT_READ"/>
-    </Or>
-  </Match>
   <!--
   https://jpa-buddy.com/blog/hopefully-the-final-article-about-equals-and-hashcode-for-jpa-entities-with-db-generated-ids/
   -->

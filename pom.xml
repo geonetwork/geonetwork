@@ -305,7 +305,6 @@
                 <exclude>src/*/resources/schemas/iso19139/schema2007/**</exclude>
                 <exclude>src/*/resources/schemas/iso19139/schema/**</exclude>
                 <exclude>src/*/resources/schemas/iso19115-3.2018/schema/**</exclude>
-                <exclude>geonetwork-frontend/**</exclude>
               </excludes>
             </licenseSet>
           </licenseSets>
@@ -364,39 +363,6 @@
           <verifyFailOn>strict</verifyFailOn>
         </configuration>
       </plugin>
-
-      <!--<plugin>
-        <groupId>org.openapitools</groupId>
-        <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>7.7.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputSpec>${project.basedir}/src/test/resources/data/schema/gdal-model.openapi.json</inputSpec>
-              <generatorName>spring</generatorName>
-              <generateAliasAsModel>true</generateAliasAsModel>
-              <modelNamePrefix>Gdal</modelNamePrefix>
-              <modelNameSuffix>Dto</modelNameSuffix>
-              <modelNameMappings></modelNameMappings>
-              <skipValidateSpec>true</skipValidateSpec>
-              <configOptions>
-                <sourceFolder>src/gen/java/main</sourceFolder>
-                <useSpringBoot3>true</useSpringBoot3>
-                <generateBuilders>true</generateBuilders>
-                <annotationLibrary>swagger2</annotationLibrary>
-                <withXml>true</withXml>
-                <useOptional>false</useOptional>
-                <apiPackage>org.geonetwork.data.gdal.model.generated</apiPackage>
-                <modelPackage>org.geonetwork.data.gdal.model.generated</modelPackage>
-              </configOptions>
-              <additionalProperties></additionalProperties>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>-->
 
       <!--
         See https://openapi-generator.tech/docs/generators/spring

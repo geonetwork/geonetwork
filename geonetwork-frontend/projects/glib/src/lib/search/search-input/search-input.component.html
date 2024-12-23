@@ -1,9 +1,0 @@
-@if (search) {
-  <input
-    type="text"
-    pInputText
-    [class]="styleClass()"
-    placeholder="Search ..."
-    [ngModel]="search.fullTextQuery()"
-    (ngModelChange)="search.setFullTextQuery($event)" />
-}
