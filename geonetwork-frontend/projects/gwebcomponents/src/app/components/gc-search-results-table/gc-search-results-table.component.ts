@@ -1,16 +1,28 @@
 import { Component, Input, signal, ViewEncapsulation } from '@angular/core';
 import { DefaultConfig } from 'gapi';
-import { API_CONFIGURATION, SearchAggLayout, SearchService } from 'glib';
+import {
+  API_CONFIGURATION,
+  SearchAggLayout,
+  SearchBarSimpleComponent,
+  SearchContextDirective,
+  SearchResultsTableComponent,
+  SearchService,
+} from 'glib';
 import { GcBaseSearchComponent } from '../gc-base-search-component';
 
 @Component({
   selector: 'gc-search-results-table',
   templateUrl: './gc-search-results-table.component.html',
   styleUrl: './gc-search-results-table.component.css',
-  encapsulation: ViewEncapsulation.ShadowDom,
+  // FIXME encapsulation: ViewEncapsulation.ShadowDom,
   providers: [
     { provide: API_CONFIGURATION, useValue: signal(DefaultConfig) },
     SearchService,
+  ],
+  imports: [
+    SearchBarSimpleComponent,
+    SearchContextDirective,
+    SearchResultsTableComponent,
   ],
 })
 export class GcSearchResultsTableComponent extends GcBaseSearchComponent {

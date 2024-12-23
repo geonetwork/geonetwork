@@ -9,7 +9,6 @@ import { AppModule } from './app.module';
   standalone: true,
   imports: [PanelMenuModule, AppModule, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
   title = 'Webcomponents demo';

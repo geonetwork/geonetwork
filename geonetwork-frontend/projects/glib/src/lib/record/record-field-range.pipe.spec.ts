@@ -1,8 +1,8 @@
-import { RecordFieldRangePipe } from './record-field-range.pipe';
+import { RecordFieldRange } from 'glib';
 
 describe('RecordFieldRangePipe', () => {
   it('create an instance', () => {
-    const pipe = new RecordFieldRangePipe();
+    const pipe = new RecordFieldRange();
     expect(pipe).toBeTruthy();
   });
 });

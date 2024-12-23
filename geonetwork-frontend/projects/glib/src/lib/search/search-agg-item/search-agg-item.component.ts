@@ -3,7 +3,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { SearchAggLayout } from '../search-agg/search-agg.component';
 import { ChipModule } from 'primeng/chip';
-import { NgClass, NgOptimizedImage } from '@angular/common';
 import {
   SearchFilterValue,
   SearchFilterValueState,
@@ -20,13 +19,10 @@ import { elasticsearch } from 'gapi';
     CheckboxModule,
     FormsModule,
     ChipModule,
-    NgClass,
     CardModule,
-    NgOptimizedImage,
     SearchAggItemDecoratorComponent,
   ],
   templateUrl: './search-agg-item.component.html',
-  styleUrl: './search-agg-item.component.css',
 })
 export class SearchAggItemComponent extends SearchBaseComponent {
   bucket = input.required<any>();

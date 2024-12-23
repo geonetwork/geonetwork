@@ -29,39 +29,40 @@
       scope="main" />
   </div>
 </div>
-
-@for (infoPanel of panels(); track $index) {
-  @switch (infoPanel.type) {
-    @case ('search') {
-      <div
-        class="w-screen"
-        gSearchContext="highlights-{{ $index }}"
-        [filter]="infoPanel.filter"
-        [size]="infoPanel.size"
-        [sort]="infoPanel.sort">
+<div class="grid grid-cols-1 gap-8">
+  @for (infoPanel of panels(); track $index) {
+    @switch (infoPanel.type) {
+      @case ('search') {
         <div
-          class="my-8 p-8 text-white bg-gray-800 bg-blend-overlay"
-          gSearchResultsFirstOverviewAsBackground="highlights-{{ $index }}">
-          <h1 class="font-bold text-3xl mb-8">
-            {{ infoPanel.title }}
-          </h1>
-          @if (infoPanel.description) {
-            <p class="mb-8">
-              {{ infoPanel.description }}
-            </p>
-          }
-          <g-search-results-carousel
-            scope="highlights-{{ $index }}"
-            [numVisible]="4" />
+          class="w-full"
+          gSearchContext="highlights-{{ $index }}"
+          [filter]="infoPanel.filter"
+          [size]="infoPanel.size"
+          [sort]="infoPanel.sort">
+          <div
+            class="my-8 p-8 text-white bg-gray-800 bg-blend-overlay"
+            gSearchResultsFirstOverviewAsBackground="highlights-{{ $index }}">
+            <h1 class="font-bold text-3xl mb-8">
+              {{ infoPanel.title }}
+            </h1>
+            @if (infoPanel.description) {
+              <p class="mb-8">
+                {{ infoPanel.description }}
+              </p>
+            }
+            <g-search-results-carousel
+              scope="highlights-{{ $index }}"
+              [numVisible]="4" />
+          </div>
         </div>
-      </div>
-    }
-    @case ('Comments') {
-      <div class="w-screen">
-        <div class="my-8 p-8 text-white bg-gray-800 bg-blend-overlay">
-          <h1 class="font-bold text-3xl mb-8">Comments</h1>
+      }
+      @case ('Comments') {
+        <div class="w-full">
+          <div class="my-8 p-8 text-white bg-gray-800 bg-blend-overlay">
+            <h1 class="font-bold text-3xl mb-8">Comments</h1>
+          </div>
         </div>
-      </div>
+      }
     }
   }
-}
+</div>

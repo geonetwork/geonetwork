@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  computed,
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   inject,
@@ -8,22 +9,12 @@ import {
   signal,
 } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { Button, ButtonDirective } from 'primeng/button';
 import {
+  API_CONFIGURATION,
   APPLICATION_CONFIGURATION,
   buildGn4BaseUrl,
-  GlibComponent,
-  SearchAggComponent,
   SearchAggLayout,
-  SearchAggsContainerComponent,
   SearchContextDirective,
-  SearchInputComponent,
-  SearchPagingComponent,
-  SearchPagingMoreButtonComponent,
-  SearchQueryResetDirective,
-  SearchQuerySetterDirective,
-  SearchResultsComponent,
-  SearchResultsTimelineComponent,
   SearchService,
 } from 'glib';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -34,8 +25,16 @@ import { ScrollTopModule } from 'primeng/scrolltop';
 import { SidebarModule } from 'primeng/sidebar';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
-import { filter } from 'rxjs';
+import { filter, of } from 'rxjs';
 import { environment } from '../environments/environment';
+import { Drawer } from 'primeng/drawer';
+import { Menu } from 'primeng/menu';
+import { AppMenuComponent } from './shared/app-menu/app-menu.component';
+import { Menubar } from 'primeng/menubar';
+import { NgOptimizedImage } from '@angular/common';
+import { Button } from 'primeng/button';
+import { Avatar } from 'primeng/avatar';
+import { CatalogAvatarComponent } from './shared/catalog-avatar/catalog-avatar.component';
 
 @Component({
   selector: 'app-root',
@@ -43,19 +42,7 @@ import { environment } from '../environments/environment';
   providers: [SearchService],
   imports: [
     RouterOutlet,
-    Button,
-    GlibComponent,
-    SearchAggsContainerComponent,
-    SearchAggComponent,
-    SearchResultsComponent,
-    SearchResultsTimelineComponent,
-    SearchQuerySetterDirective,
-    SearchQueryResetDirective,
-    SearchPagingComponent,
-    SearchPagingMoreButtonComponent,
-    SearchInputComponent,
     InputGroupModule,
-    ButtonDirective,
     InputGroupAddonModule,
     InputTextModule,
     SearchContextDirective,
@@ -64,9 +51,16 @@ import { environment } from '../environments/environment';
     SidebarModule,
     HeaderComponent,
     NavigationComponent,
+    Drawer,
+    Menu,
+    AppMenuComponent,
+    Menubar,
+    NgOptimizedImage,
+    Button,
+    Avatar,
+    CatalogAvatarComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent implements OnInit, AfterViewInit {
@@ -95,7 +89,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         )
       )
       .subscribe((event: NavigationEnd) => {
-        this.isMapRoute.set(event.url.includes('map#/map'));
+        this.isMapRoute.set(event.url.includes('/map'));
       });
   }
 

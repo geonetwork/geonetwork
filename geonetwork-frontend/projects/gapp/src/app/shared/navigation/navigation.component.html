@@ -1,8 +1,53 @@
-<p-menubar [model]="items">
+<p-menubar styleClass="w-full">
+  <ng-template pTemplate="start">
+    <div class="">
+      <p-drawer [(visible)]="visible" header="My GeoNetwork">
+        <gn-app-menu></gn-app-menu>
+      </p-drawer>
+      <p-button
+        (click)="visible = true"
+        icon="fa fa-bars"
+        class="block lg:hidden" />
+    </div>
+
+    <div class="mx-6 w-full">
+      <p-inputGroup styleClass=" w-full">
+        <input
+          gSearchQuerySetter="main"
+          pInputText
+          [pAutoFocus]="true"
+          placeholder="Search ..."
+          (keyup)="setRouteToSearch()"
+          class="w-full p-4" />
+        <button icon="fa fa-search" pButton routerLink="/search"></button>
+      </p-inputGroup>
+    </div>
+  </ng-template>
+
   <ng-template pTemplate="end">
     <div class="flex gap-2">
-      <g-sign-in-form />
-      <p-dropdown gLanguagesLoader (onChange)="setLanguage($event)" />
+      <g-sign-in-status-menu />
+      <p-button icon="fa fa-cog" (click)="op.toggle($event)">
+        <p-popover #op>
+          <div class="grid gap-4">
+            <div>
+              <p-select
+                placeholder="Choose a language"
+                title="Choose a language"
+                class="w-full"
+                dropdownIcon="fa fa-language"
+                gLanguagesLoader
+                (onChange)="setLanguage($event)" />
+            </div>
+            <div>
+              <p-button
+                severity="secondary"
+                (click)="toggleTheme()"
+                [icon]="darkMode() ? 'fa fa-sun' : 'fa fa-moon'"></p-button>
+            </div>
+          </div>
+        </p-popover>
+      </p-button>
     </div>
   </ng-template>
 </p-menubar>

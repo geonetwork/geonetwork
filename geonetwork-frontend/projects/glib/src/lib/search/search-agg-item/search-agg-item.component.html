@@ -22,8 +22,8 @@
       (keydown)="switchValue()"
       [styleClass]="
         isActive()
-          ? 'border-l-8 -left-8  border-indigo-500'
-          : 'border-l-8 -left-8 border-transparent hover:border-indigo-500'
+          ? 'border-l-8 -left-8  border-primary-500'
+          : 'border-l-8 -left-8 border-transparent hover:border-primary-500'
       ">
       <ng-template pTemplate="header">
         <g-search-agg-item-decorator
@@ -40,7 +40,10 @@
         [value]="isActive()"
         [binary]="true"
         (ngModelChange)="handleCheck($event)"
-        [label]="bucket().key + ' (' + bucket().doc_count + ')'" />
+        [inputId]="'gn-agg-item-' + field() + '-' + bucket().key" />
+      <label [for]="'gn-agg-item-' + field() + '-' + bucket().key" class="ml-2">
+        {{ bucket().key + ' (' + bucket().doc_count + ')' }}
+      </label>
     </div>
   }
 }

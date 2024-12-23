@@ -1,9 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
-import { LanguagesLoaderDirective, SignInFormComponent } from 'glib';
+import {
+  AppStore,
+  LanguagesLoaderDirective,
+  SearchQuerySetterDirective,
+  SignInStatusMenuComponent,
+} from 'glib';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -11,12 +16,18 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ChipModule } from 'primeng/chip';
-import { AppStore } from 'glib';
+import { Select } from 'primeng/select';
+import { Button, ButtonDirective } from 'primeng/button';
+import { Popover } from 'primeng/popover';
+import { Drawer } from 'primeng/drawer';
+import { Menu } from 'primeng/menu';
+import { AutoFocus } from 'primeng/autofocus';
+import { NgTemplateOutlet } from '@angular/common';
+import { AppMenuComponent } from '../app-menu/app-menu.component';
 
 @Component({
   selector: 'gn-navigation',
   templateUrl: './navigation.component.html',
-  styleUrl: './navigation.component.css',
   standalone: true,
   imports: [
     MenubarModule,
@@ -29,55 +40,45 @@ import { AppStore } from 'glib';
     FormsModule,
     OverlayPanelModule,
     ChipModule,
-    SignInFormComponent,
+    Select,
+    SignInStatusMenuComponent,
+    Button,
+    Popover,
+    Drawer,
+    Menu,
+    ButtonDirective,
+    SearchQuerySetterDirective,
+    AutoFocus,
+    RouterLink,
+    NgTemplateOutlet,
+    AppMenuComponent,
   ],
 })
 export class NavigationComponent implements OnInit {
-  items: MenuItem[];
   readonly app = inject(AppStore);
 
   router = inject(Router);
 
-  ngOnInit() {
-    this.items = [
-      {
-        label: 'Home',
-        icon: 'fa fa-home',
-        command: () => {
-          this.router.navigate(['home']);
-        },
-      },
-      {
-        label: 'Search',
-        icon: 'fa fa-search',
-        command: () => {
-          this.router.navigate(['search']);
-        },
-      },
-      {
-        label: 'Map',
-        icon: 'fa fa-map',
-        command: () => {
-          this.router.navigate(['map'], { fragment: '/map' });
-        },
-      },
-      {
-        label: 'New record',
-        icon: 'fa fa-plus',
-        command: () => {
-          this.router.navigate(['new-record']);
-        },
-      },
-      // GN5 signin
-      // {
-      //   label: 'Sign in',
-      //   icon: 'fa fa-sign-in',
-      //   url: '/signin',
-      // },
-    ];
-  }
+  ngOnInit() {}
 
   setLanguage(event: DropdownChangeEvent) {
     this.app.setLanguage(event.value.code);
+  }
+
+  darkMode = signal(false);
+
+  primaryColor = signal('#007bff');
+
+  toggleTheme() {
+    const element = document.querySelector('html');
+    element!.classList.toggle('gn-app-dark');
+    this.darkMode.set(element!.classList.contains('gn-app-dark'));
+  }
+
+  setRouteToSearch() {
+    if (this.router.url === '/search') {
+      return;
+    }
+    this.router.navigate(['/search']);
   }
 }

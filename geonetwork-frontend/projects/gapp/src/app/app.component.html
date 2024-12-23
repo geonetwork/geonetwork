@@ -5,24 +5,31 @@
   [score]="scoreConfig"
   [aggregations]="aggregationConfig">
   <gn-header></gn-header>
-  <gn-navigation></gn-navigation>
 
-  <div>
-    <router-outlet></router-outlet>
+  <div class="flex">
+    <div class="w-[120px] hidden lg:block">
+      <gn-catalog-avatar class="sticky top-0 z-20"></gn-catalog-avatar>
+      <gn-app-menu iconMode="true"></gn-app-menu>
+    </div>
+    <div class="w-full">
+      <gn-navigation class="sticky top-0 z-20"></gn-navigation>
 
-    <gn-app
-      class="clear-both flex-grow w-full"
-      [class.hidden]="!isMapRoute()"
-      config='{"mods": {
+      <router-outlet></router-outlet>
+
+      <gn-app-frame
+        style="height: calc(100dvh - 120px); width: 100%; border: 0px"
+        class="clear-both flex-grow inline-block overflow-hidden"
+        [class.hidden]="!isMapRoute()"
+        config='{"mods": {
                       "global": {"hotkeys": false},
                       "home": {"enabled": false},
                       "search": {"enabled": false},
                       "footer": {"enabled": false},
                       "header": {"enabled": false}
                       }}'
-      portal="srv"
-      [attr.url]="gn4baseUrl"></gn-app>
-
+        portal="srv"
+        [attr.url]="gn4baseUrl"></gn-app-frame>
+    </div>
     <p-scrollTop />
   </div>
 </div>

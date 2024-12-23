@@ -17,7 +17,6 @@ import { CarouselModule } from 'primeng/carousel';
   selector: 'gn-home-page',
   templateUrl: './home-page.component.html',
   standalone: true,
-  styleUrl: './home-page.component.css',
   imports: [
     SearchContextDirective,
     SearchAggComponent,

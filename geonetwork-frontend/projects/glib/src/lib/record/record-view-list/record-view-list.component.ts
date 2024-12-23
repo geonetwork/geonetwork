@@ -28,7 +28,6 @@ import { Gn4MapService } from '../../shared/gn4-map.service';
     Button,
   ],
   templateUrl: './record-view-list.component.html',
-  styleUrl: './record-view-list.component.css',
 })
 export class RecordViewListComponent {
   protected readonly ResourceTypeLayout = ResourceTypeLayout;

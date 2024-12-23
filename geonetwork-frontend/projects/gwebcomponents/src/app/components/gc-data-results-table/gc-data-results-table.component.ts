@@ -9,12 +9,14 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Configuration } from 'gapi';
+import { DataTableComponent } from 'glib';
 
 @Component({
   selector: 'gc-data-results-table',
   templateUrl: './gc-data-results-table.component.html',
   styleUrl: './gc-data-results-table.component.css',
-  encapsulation: ViewEncapsulation.ShadowDom,
+  // FIXME encapsulation: ViewEncapsulation.ShadowDom,
+  imports: [DataTableComponent],
 })
 export class GcDataResultsTableComponent implements OnInit, OnChanges {
   @Input() source = '';

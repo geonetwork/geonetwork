@@ -11,8 +11,8 @@ export class AuthService {
 
   signIn(username: string, password: string) {
     return this.http.post(
-      '/geonetwork/signin',
-      `username=${username}&password=${password}&_csrf=437b0875-db73-4785-8ad3-1b7919c7f0da`,
+      '/api/user/signin',
+      `username=${username}&password=${password}`,
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -22,6 +22,6 @@ export class AuthService {
   }
 
   signOut() {
-    return this.http.get('/geonetwork/signout');
+    return this.http.get('/api/user/signout');
   }
 }

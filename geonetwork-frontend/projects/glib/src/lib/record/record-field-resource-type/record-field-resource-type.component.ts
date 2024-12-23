@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
-import { JsonPipe } from '@angular/common';
 
 export enum ResourceTypeLayout {
   BADGE = 'badge',
@@ -47,9 +46,8 @@ type ResourceTypeLayoutValues = keyof typeof ResourceTypeLayout;
 @Component({
   selector: 'g-record-field-resource-type',
   templateUrl: './record-field-resource-type.component.html',
-  styleUrl: './record-field-resource-type.component.css',
   standalone: true,
-  imports: [BadgeModule, JsonPipe],
+  imports: [BadgeModule],
 })
 export class RecordFieldResourceTypeComponent {
   field = input<string[] | null>();

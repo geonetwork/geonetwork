@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   OnInit,
   signal,
@@ -36,6 +37,7 @@ import { TemplatesSelectorComponent } from '../templates-selector/templates-sele
 import { PrimeTemplate } from 'primeng/api';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { API_CONFIGURATION } from '../../config/config.loader';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'g-new-record-panel',
@@ -56,12 +58,14 @@ import { API_CONFIGURATION } from '../../config/config.loader';
     ProgressBarModule,
     StepperModule,
     TemplatesSelectorComponent,
+    Select,
   ],
   templateUrl: './new-record-panel.component.html',
   styleUrl: './new-record-panel.component.css',
 })
 export class NewRecordPanelComponent implements OnInit {
   template = signal('');
+  activeStep = signal(1);
   newRecordId = signal('');
   datasource = signal(
     'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv'
@@ -122,19 +126,22 @@ export class NewRecordPanelComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  ngOnInit(): void {
-    this.dataUploadService.getFormats().subscribe(r => {
-      this.supportedFormats.set(r);
-    });
-  }
-
   private stepEvents: { [key: number]: Function } = {
     2: this.getDatasetInfo.bind(this),
     3: this.getRecordPreview.bind(this),
   };
 
-  onStepChange(step: number) {
-    this.stepEvents[step] && this.stepEvents[step]();
+  constructor() {
+    effect(() => {
+      this.stepEvents[this.activeStep()] &&
+        this.stepEvents[this.activeStep()]();
+    });
+  }
+
+  ngOnInit(): void {
+    this.dataUploadService.getFormats().subscribe(r => {
+      this.supportedFormats.set(r);
+    });
   }
 
   editRecord() {

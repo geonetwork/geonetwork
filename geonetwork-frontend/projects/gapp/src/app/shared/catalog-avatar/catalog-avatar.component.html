@@ -1,0 +1,14 @@
+<div class="w-full h-[60px] flex items-center">
+  @if (siteInformation(); as info) {
+    <p class="text-center w-full">
+      <a routerLink="/home">
+        <p-avatar
+          [label]="info['node/name'].slice(0, 1)"
+          size="large"
+          shape="circle"
+          [title]="info['node/name']" />
+        <!--          <img [src]="siteLogoUrl" />-->
+      </a>
+    </p>
+  }
+</div>

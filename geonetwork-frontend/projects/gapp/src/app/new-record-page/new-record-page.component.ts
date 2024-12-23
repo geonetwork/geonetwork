@@ -6,6 +6,5 @@ import { NewRecordPanelComponent } from 'glib';
   templateUrl: './new-record-page.component.html',
   standalone: true,
   imports: [NewRecordPanelComponent],
-  styleUrl: './new-record-page.component.css',
 })
 export class NewRecordPageComponent {}

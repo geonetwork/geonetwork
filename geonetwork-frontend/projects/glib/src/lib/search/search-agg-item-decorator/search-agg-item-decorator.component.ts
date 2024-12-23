@@ -4,7 +4,6 @@ import { elasticsearch } from 'gapi';
 @Component({
   selector: 'g-search-agg-item-decorator',
   templateUrl: './search-agg-item-decorator.component.html',
-  styleUrl: './search-agg-item-decorator.component.css',
   standalone: true,
 })
 export class SearchAggItemDecoratorComponent {

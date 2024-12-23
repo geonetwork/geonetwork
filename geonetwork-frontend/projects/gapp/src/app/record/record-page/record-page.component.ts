@@ -7,8 +7,7 @@ import { Location } from '@angular/common';
   selector: 'gn-record-page',
   templateUrl: './record-page.component.html',
   standalone: true,
-  styleUrl: './record-page.component.css',
-  imports: [RecordViewComponent, RouterLink],
+  imports: [RecordViewComponent],
 })
 export class RecordPageComponent implements OnInit {
   router = inject(Router);

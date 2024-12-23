@@ -1,6 +1,10 @@
 @if (isSupportedAndHasValue()) {
   @if (isLabelDisplayedValue()) {
-    <div class="font-bold mb-2 border-b-2">{{ aggregation() }}</div>
+    <div
+      class="text-wrap break-words font-bold mb-2 border-b-2"
+      style="overflow-wrap: anywhere">
+      {{ aggregation() }}
+    </div>
   }
 
   <div [ngClass]="cssClass()">

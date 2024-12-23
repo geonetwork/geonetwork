@@ -4,6 +4,9 @@ import {
   API_CONFIGURATION,
   ResultsLayout,
   SearchAggLayout,
+  SearchBarSimpleComponent,
+  SearchContextDirective,
+  SearchResultsComponent,
   SearchService,
 } from 'glib';
 import { GcBaseSearchComponent } from '../gc-base-search-component';
@@ -12,10 +15,15 @@ import { GcBaseSearchComponent } from '../gc-base-search-component';
   selector: 'gc-search',
   templateUrl: './gc-search.component.html',
   styleUrl: './gc-search.component.css',
-  encapsulation: ViewEncapsulation.ShadowDom,
+  // FIXME encapsulation: ViewEncapsulation.ShadowDom,
   providers: [
     { provide: API_CONFIGURATION, useValue: signal(DefaultConfig) },
     SearchService,
+  ],
+  imports: [
+    SearchContextDirective,
+    SearchBarSimpleComponent,
+    SearchResultsComponent,
   ],
 })
 export class GcSearchComponent extends GcBaseSearchComponent {

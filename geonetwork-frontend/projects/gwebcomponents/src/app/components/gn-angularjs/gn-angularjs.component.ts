@@ -2,17 +2,20 @@ import {
   AfterViewInit,
   Component,
   computed,
+  CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   input,
   Input,
   OnInit,
 } from '@angular/core';
 import { buildGn4BaseUrl } from 'glib';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'g-gn-angularjs',
   templateUrl: './gn-angularjs.component.html',
-  styleUrl: './gn-angularjs.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [Button],
 })
 export class GnAngularjsComponent implements OnInit, AfterViewInit {
   gn4baseApiUrl = input<string>();

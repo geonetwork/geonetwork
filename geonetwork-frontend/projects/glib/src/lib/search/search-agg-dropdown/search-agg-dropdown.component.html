@@ -1,4 +1,4 @@
-<p-dropdown
+<p-select
   (onChange)="handleChange($event)"
   [filter]="buckets().length > 10"
   [showClear]="true"
@@ -17,4 +17,4 @@
       <div>{{ bucket.key }} ({{ bucket.doc_count }})</div>
     </div>
   </ng-template>
-</p-dropdown>
+</p-select>

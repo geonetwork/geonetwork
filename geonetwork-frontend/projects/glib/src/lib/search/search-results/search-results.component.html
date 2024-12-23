@@ -28,7 +28,7 @@
   @if (search.response(); as response) {
     <ng-template #defaultSearchResultsTemplate>
       <p-dataView #dv [value]="response.hits.hits" emptyMessage=" ">
-        <ng-template pTemplate="list" let-hits>
+        <ng-template #list let-hits>
           <div [class]="layoutClass()">
             @for (hit of hits; track hit._id) {
               @switch (layout()) {

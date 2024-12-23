@@ -1,7 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { Button, ButtonDirective } from 'primeng/button';
+import { Component, inject, output } from '@angular/core';
+import { Button } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
-import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,28 +11,28 @@ import { AppStore } from '../../app.state';
   selector: 'g-sign-in-form',
   standalone: true,
   imports: [
-    Button,
     ChipModule,
-    OverlayPanelModule,
     InputGroupModule,
     InputGroupAddonModule,
     InputTextModule,
     FormsModule,
-    ButtonDirective,
+    Button,
   ],
   templateUrl: './sign-in-form.component.html',
-  styleUrl: './sign-in-form.component.css',
 })
 export class SignInFormComponent {
+  onSignIn = output<void>();
+
   readonly app = inject(AppStore);
 
   username: string = '';
   password: string = '';
 
-  signIn(op: OverlayPanel) {
+  signIn() {
     this.app.signIn(this.username, this.password);
     // TODO: Handle failure
     this.#cleanup();
+    this.onSignIn && this.onSignIn.emit();
   }
 
   #cleanup() {

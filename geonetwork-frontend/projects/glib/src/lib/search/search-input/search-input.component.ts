@@ -8,7 +8,6 @@ import { SearchBaseComponent } from '../search-base/search-base.component';
   standalone: true,
   imports: [FormsModule, InputTextModule],
   templateUrl: './search-input.component.html',
-  styleUrl: './search-input.component.css',
 })
 export class SearchInputComponent extends SearchBaseComponent {
   styleClass = input<string>('');

@@ -7,7 +7,6 @@ import { SearchBaseComponent } from '../search-base/search-base.component';
   standalone: true,
   imports: [PaginatorModule],
   templateUrl: './search-paging.component.html',
-  styleUrl: './search-paging.component.css',
 })
 export class SearchPagingComponent extends SearchBaseComponent {
   onPageChange($event: PaginatorState) {

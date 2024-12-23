@@ -90,7 +90,7 @@
       @if (analysisResult().layers[0].geometryFields.length == 0) {
         <div class="font-medium">Spatial extent?</div>
         <div class="col-span-7">
-          <p-dropdown
+          <p-select
             [options]="analysisResult().layers[0].fields"
             placeholder="Compute spatial extent from attribute"
             optionLabel="name"
@@ -99,7 +99,7 @@
       }
       <div class="font-medium">Temporal extent?</div>
       <div class="col-span-7">
-        <p-dropdown
+        <p-select
           [options]="analysisResult().layers[0].fields"
           placeholder="Compute temporal extent from attribute"
           optionLabel="name"
@@ -108,7 +108,7 @@
 
       <div class="font-medium">Vertical extent?</div>
       <div class="col-span-7">
-        <p-dropdown
+        <p-select
           [options]="analysisResult().layers[0].fields"
           placeholder="Compute vertical extent from attribute"
           optionLabel="name"

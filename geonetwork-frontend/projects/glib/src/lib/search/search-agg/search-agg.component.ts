@@ -1,9 +1,8 @@
 import { Component, computed, input } from '@angular/core';
-import { AsyncPipe, JsonPipe, NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { elasticsearch } from 'gapi';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
-import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { SearchAggItemComponent } from '../search-agg-item/search-agg-item.component';
 import {
   SearchFilterOperator,
@@ -33,11 +32,8 @@ type SearchAggLayoutValues = keyof typeof SearchAggLayout;
   selector: 'g-search-agg',
   standalone: true,
   imports: [
-    JsonPipe,
-    AsyncPipe,
     CheckboxModule,
     FormsModule,
-    TriStateCheckboxModule,
     SearchAggItemComponent,
     NgClass,
     ChipModule,
@@ -48,7 +44,6 @@ type SearchAggLayoutValues = keyof typeof SearchAggLayout;
     SearchAggDropdownComponent,
   ],
   templateUrl: './search-agg.component.html',
-  styleUrl: './search-agg.component.css',
 })
 export class SearchAggComponent extends SearchBaseComponent {
   aggregation = input.required<string>();

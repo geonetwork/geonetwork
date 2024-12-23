@@ -1,4 +1,4 @@
-import { FirstSentencePipe } from './first-phrase.pipe';
+import { FirstSentencePipe } from './first-sentence.pipe';
 
 describe('FirstPhrasePipe', () => {
   it('create an instance', () => {

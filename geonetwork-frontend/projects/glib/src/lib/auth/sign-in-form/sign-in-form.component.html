@@ -1,60 +1,55 @@
-@if (app.authenticated()) {
-  <p-chip styleClass="pl-0 pr-3">
-    <span
-      class="bg-primary border-circle w-2rem h-2rem flex align-items-center justify-content-center">
-      {{ app.user().username[0].toUpperCase() }}
-    </span>
-    <span class="ml-2 font-medium" data-cy="gUserInfo">
-      {{ app.user().username }}
-    </span>
-  </p-chip>
-
-  <button
-    type="button"
-    pButton
-    icon="fa fa-right-from-bracket"
-    data-cy="gSignOutButton"
-    (click)="app.signOut()"></button>
-} @else {
-  <p-button
-    (onClick)="op.toggle($event)"
-    icon="fa fa-right-to-bracket"
-    title="Sign in" />
-}
-<p-overlayPanel #op>
-  <form name="gSignInForm">
-    <p-inputGroup>
-      <p-inputGroupAddon>
-        <i class="fa fa-user"></i>
-      </p-inputGroupAddon>
+<form name="gSignInForm">
+  <div class="surface-card p-4 shadow-2 border-round w-full">
+    <div class="text-center mb-5">
+      <div class="text-900 text-3xl font-medium mb-3">Welcome</div>
+      <span class="text-600 font-medium line-height-3"
+        >Don't have an account?</span
+      >
+      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
+        >Create today!</a
+      >
+    </div>
+    <div>
+      <label for="username" class="block text-900 font-medium mb-2"
+        >User name</label
+      >
       <input
         pInputText
-        placeholder="Username"
+        id="username"
+        class="w-full mb-3"
+        placeholder="User name or email address"
         [(ngModel)]="username"
         name="username"
+        [autofocus]="true"
         required
         minlength="4"
-        (keyup.enter)="signIn(op); op.hide()" />
-    </p-inputGroup>
-    <p-inputGroup>
-      <p-inputGroupAddon>
-        <i class="fa fa-lock"></i>
-      </p-inputGroupAddon>
+        (keyup.enter)="signIn()" />
+      <label for="password" class="block text-900 font-medium mb-2"
+        >Password</label
+      >
       <input
+        id="password"
         pInputText
+        class="w-full mb-3"
         placeholder="Password"
         type="password"
         [(ngModel)]="password"
         name="password"
         required
         minlength="4"
-        (keyup.enter)="signIn(op); op.hide()" />
-      <button
-        type="button"
-        pButton
+        (keyup.enter)="signIn()" />
+      <div class="flex align-items-center justify-content-between mb-6">
+        <a
+          class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
+          >Forgot password?</a
+        >
+      </div>
+      <p-button
+        class="w-full"
         icon="fa fa-right-to-bracket"
+        label="Sign In"
         [disabled]="username.length === 0 || password.length === 0"
-        (click)="signIn(op); op.hide()"></button>
-    </p-inputGroup>
-  </form>
-</p-overlayPanel>
+        (click)="signIn()"></p-button>
+    </div>
+  </div>
+</form>

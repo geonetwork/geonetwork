@@ -3,7 +3,7 @@ describe('Search Page Test', () => {
     cy.visit('/');
 
     cy.get('gn-navigation').first().as('navigationMenu');
-    cy.get('gn-navigation p-dropdown[glanguagesloader]')
+    cy.get('gn-navigation p-select[glanguagesloader]')
       .first()
       .as('languageDropdown');
     cy.get('gn-navigation g-sign-in-form').first().as('signInForm');

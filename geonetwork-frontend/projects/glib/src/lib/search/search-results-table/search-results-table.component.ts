@@ -2,8 +2,7 @@ import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SearchBaseComponent } from '../search-base/search-base.component';
 import { TableModule, TablePageEvent } from 'primeng/table';
-import { Button } from 'primeng/button';
-import { JsonPipe, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { GJsonpathPipe } from '../../shared/g-jsonpath.pipe';
 import { RecordFieldOverviewComponent } from '../../record/record-field-overview/record-field-overview.component';
 import {
@@ -31,12 +30,9 @@ interface Column {
 @Component({
   selector: 'g-search-results-table',
   templateUrl: './search-results-table.component.html',
-  styleUrl: './search-results-table.component.css',
   standalone: true,
   imports: [
     TableModule,
-    Button,
-    JsonPipe,
     GJsonpathPipe,
     RecordFieldOverviewComponent,
     NgTemplateOutlet,

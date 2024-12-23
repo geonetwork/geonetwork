@@ -13,7 +13,7 @@
         [(ngModel)]="template"
         allowEmpty="false"
         optionValue="_id">
-        <ng-template pTemplate let-hit>
+        <ng-template #item let-hit>
           <div
             class="text-2xl font-semibold line-clamp-1 break-all p-6"
             [attr.title]="hit._source.resourceAbstractObject?.default">

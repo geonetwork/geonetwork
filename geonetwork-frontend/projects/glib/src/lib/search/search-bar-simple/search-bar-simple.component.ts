@@ -11,7 +11,6 @@ import {
   standalone: true,
   imports: [SearchAggComponent, SearchInputComponent],
   templateUrl: './search-bar-simple.component.html',
-  styleUrl: './search-bar-simple.component.css',
 })
 export class SearchBarSimpleComponent extends SearchBaseComponent {
   fullTextSearchEnabled = input(true);

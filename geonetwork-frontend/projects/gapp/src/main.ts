@@ -9,6 +9,7 @@ import {
 import {
   API_CONFIGURATION,
   APPLICATION_CONFIGURATION,
+  GeoNetworkTheme,
   loadAppConfig,
 } from 'glib';
 import { provideRouter } from '@angular/router';
@@ -17,6 +18,8 @@ import { routes } from './app/app.routes';
 import { environment } from './environments/environment';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
 
 if (environment.production) {
   enableProdMode();
@@ -37,6 +40,14 @@ loadAppConfig(environment).then((config: any) => {
       provideRouter(routes),
       provideAnimations(),
       provideHttpClient(),
+      providePrimeNG({
+        theme: {
+          preset: GeoNetworkTheme,
+          options: {
+            darkModeSelector: '.gn-app-dark',
+          },
+        },
+      }),
     ],
   };
 

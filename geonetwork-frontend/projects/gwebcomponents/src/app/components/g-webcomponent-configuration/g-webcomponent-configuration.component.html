@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
       <label for="apiUrl">Select a catalogue</label>
-      <p-dropdown
+      <p-select
         styleClass="w-full mb-4"
         [options]="apiUrlList"
         optionValue="url"
@@ -115,7 +115,7 @@
 
     <div class="flex flex-col gap-2">
       <label for="selectionMode">Selection mode</label>
-      <p-dropdown
+      <p-select
         styleClass="w-full mb-4"
         [options]="selectionModeList"
         optionValue="type"

@@ -3,13 +3,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { GnDatasetInfo, GnRasterInfo, GnRasterInfoDataTypeEnum } from 'gapi';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'g-data-analysis-panel',
   standalone: true,
-  imports: [DropdownModule, PrimeTemplate, TableModule],
+  imports: [DropdownModule, PrimeTemplate, TableModule, Select],
   templateUrl: './data-analysis-panel.component.html',
-  styleUrl: './data-analysis-panel.component.css',
 })
 export class DataAnalysisPanelComponent {
   @Input() analysisResult!: WritableSignal<

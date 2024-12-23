@@ -10,6 +10,7 @@ import {
 } from '../../record/record-field-resource-type/record-field-resource-type.component';
 import { SearchContextDirective } from '../../search/search-context.directive';
 import { SearchResultsComponent } from '../../search/search-results/search-results.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'g-templates-selector',
@@ -23,9 +24,9 @@ import { SearchResultsComponent } from '../../search/search-results/search-resul
     SearchContextDirective,
     SearchResultsComponent,
     SelectButtonModule,
+    JsonPipe,
   ],
   templateUrl: './templates-selector.component.html',
-  styleUrl: './templates-selector.component.css',
 })
 export class TemplatesSelectorComponent {
   @Input() template!: WritableSignal<string>;

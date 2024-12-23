@@ -11,9 +11,8 @@ import { Gn4MapService } from '../../shared/gn4-map.service';
 @Component({
   selector: 'g-record-field-links',
   templateUrl: './record-field-links.component.html',
-  styleUrl: './record-field-links.component.css',
   standalone: true,
-  imports: [JsonPipe, KeyValuePipe, Button, BadgeModule],
+  imports: [KeyValuePipe, Button, BadgeModule],
 })
 export class RecordFieldLinksComponent {
   links = input<GnLink[] | null>();

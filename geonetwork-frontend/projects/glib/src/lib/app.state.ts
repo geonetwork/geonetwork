@@ -46,7 +46,7 @@ export const AppStore = signalStore(
         patchState(store, { authenticationFailure: false });
         return authService.signIn(username, password).subscribe({
           next: response => {
-            this.loadUserInfo();
+            return this.loadUserInfo();
           },
           error: error => {
             console.log(error);
@@ -54,7 +54,7 @@ export const AppStore = signalStore(
               authenticationFailure: error.url.indexOf('failure=true') !== -1,
             });
             if (!store.authenticationFailure()) {
-              this.loadUserInfo();
+              return this.loadUserInfo();
             }
           },
         });
@@ -72,6 +72,7 @@ export const AppStore = signalStore(
       loadUserInfo() {
         new MeApi(apiConfiguration()).getMe().then(user => {
           patchState(store, { user });
+          return user;
         });
       },
     })

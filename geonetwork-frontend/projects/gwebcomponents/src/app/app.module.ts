@@ -54,18 +54,7 @@ const CUSTOM_ELEMENTS = [
 ];
 
 @NgModule({
-  declarations: [
-    GcBaseComponent,
-    GcBaseSearchComponent,
-    GcDataResultsTableComponent,
-    GcSearchComponent,
-    GcSearchResultsTableComponent,
-    GnAngularjsComponent,
-    GWebcomponentsDocComponent,
-    GWebcomponentsDocEmbedComponent,
-    GWebcomponentConfigurationComponent,
-    GcDataUploadComponent,
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     DataTableComponent,
@@ -89,16 +78,8 @@ const CUSTOM_ELEMENTS = [
     SearchBarSimpleComponent,
     DataUploadComponent,
   ],
-  bootstrap: [
-    GcDataResultsTableComponent,
-    GcSearchComponent,
-    GcSearchResultsTableComponent,
-  ],
-  exports: [
-    GcDataResultsTableComponent,
-    GcSearchComponent,
-    GcSearchResultsTableComponent,
-  ],
+  bootstrap: [],
+  exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {

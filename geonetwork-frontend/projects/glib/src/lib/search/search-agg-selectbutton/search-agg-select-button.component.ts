@@ -15,7 +15,6 @@ import {
   selector: 'g-search-agg-select-button',
   templateUrl: './search-agg-select-button.component.html',
   standalone: true,
-  styleUrl: './search-agg-select-button.component.css',
   imports: [SearchAggItemDecoratorComponent, SelectButtonModule],
 })
 export class SearchAggSelectButtonComponent extends SearchBaseComponent {

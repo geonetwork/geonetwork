@@ -6,7 +6,6 @@ import { Button } from 'primeng/button';
 @Component({
   selector: 'g-data-table',
   templateUrl: './data-table.component.html',
-  styleUrl: './data-table.component.css',
   standalone: true,
   imports: [TableModule, Button],
 })

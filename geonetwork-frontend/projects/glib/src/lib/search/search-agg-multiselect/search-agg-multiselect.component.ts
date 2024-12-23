@@ -13,7 +13,6 @@ import { DropdownModule } from 'primeng/dropdown';
   selector: 'g-search-agg-multiselect',
   templateUrl: './search-agg-multiselect.component.html',
   standalone: true,
-  styleUrl: './search-agg-multiselect.component.css',
   imports: [MultiSelectModule, SearchAggItemDecoratorComponent, DropdownModule],
 })
 export class SearchAggMultiselectComponent extends SearchBaseComponent {

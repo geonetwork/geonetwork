@@ -1,0 +1,3792 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "GeoNetwork API",
+    "description": "This API exposes endpoints to GeoNetwork API.",
+    "contact": {
+      "name": "GeoNetwork opensource",
+      "url": "https://geonetwork-opensource.org/",
+      "email": "geonetwork-users@lists.sourceforge.net"
+    },
+    "license": {
+      "name": "GPL 2.0",
+      "url": "https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html"
+    },
+    "version": "5.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:7979"
+    }
+  ],
+  "tags": [
+    {
+      "name": "API_CLASS_RECORD_TAG",
+      "description": "API_CLASS_RECORD_OPS"
+    }
+  ],
+  "paths": {
+    "/api/process": {
+      "get": {
+        "tags": [
+          "process-controller"
+        ],
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IProcess"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "process-controller"
+        ],
+        "operationId": "execute",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessDetails"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search": {
+      "get": {
+        "tags": [
+          "search-controller"
+        ],
+        "operationId": "getQuery",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "search-controller"
+        ],
+        "operationId": "query",
+        "parameters": [
+          {
+            "name": "bucket",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "metadata"
+            }
+          },
+          {
+            "name": "relatedType",
+            "in": "query",
+            "description": "Type of related resource. If none, no associated resource returned.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RelatedItemType"
+              },
+              "default": []
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/editing/batchediting/preview": {
+      "post": {
+        "tags": [
+          "API_CLASS_RECORD_TAG"
+        ],
+        "summary": "Preview edits made by XPath expressions.",
+        "operationId": "previewBatchEdit",
+        "parameters": [
+          {
+            "name": "uuids",
+            "in": "query",
+            "description": "ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "bucket",
+            "in": "query",
+            "description": "ApiParams.API_PARAM_BUCKET_NAME",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BatchEditParameter"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "403": {
+            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed records.",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ogcapi/records/conformance": {
+      "get": {
+        "tags": [
+          "OGC API Records"
+        ],
+        "summary": "information about specifications that this API conforms to",
+        "description": "A list of all conformance classes specified in a standard that the server conforms to.",
+        "operationId": "getConformanceDeclaration",
+        "responses": {
+          "200": {
+            "description": "The URIs of all conformance classes supported by the server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsConfClassesDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsConfClassesDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "A server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ogcapi/records/collections": {
+      "get": {
+        "tags": [
+          "OGC API Records"
+        ],
+        "summary": "the record collections",
+        "description": "Fetch list of catalogs offered by this API",
+        "operationId": "getCollections",
+        "responses": {
+          "200": {
+            "description": "Information about the list of catalogs offered by this service.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsGetCollections200ResponseDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsGetCollections200ResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "A server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ogcapi/records/collections/{catalogId}": {
+      "get": {
+        "tags": [
+          "OGC API Records"
+        ],
+        "summary": "describe the record collection with id `catalogId`",
+        "description": "Fetch a detailed description of the catalog with id `catalogId`.",
+        "operationId": "describeCollection",
+        "parameters": [
+          {
+            "name": "catalogId",
+            "in": "path",
+            "description": "local identifier of a catalog",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Information about the record collection with id `collectionId`.  The response contains a link to the items in the collection (path `/collections/{collectionId}/items`, link relation `items`) as well as key information about the collection. This information includes:  * A local identifier for the collection that is unique for the +   catalog; * A list of coordinate reference systems (CRS) in which geometries +   may be returned by the server. The first CRS is the default +   coordinate reference system (the default is always WGS 84 with +   axis order longitude/latitude); * An optional title and description for the collection; * An optional extent that can be used to provide an indication of +   the spatial and temporal extent of the collection - typically +   derived from the data; * An optional indicator about the type of the items in the collection +   (the default value, if the indicator is not provided, is 'record').",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsCatalog1Dto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsCatalog1Dto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource does not exist on the server. For example, a path parameter had an incorrect value.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "A server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ogcapi/records/collections/{catalogId}/sortables": {
+      "get": {
+        "tags": [
+          "OGC API Records"
+        ],
+        "summary": "get the list of sortable properties",
+        "description": "Fetch the list of properties which can be used to sort the getRecords response.",
+        "operationId": "getSortables",
+        "parameters": [
+          {
+            "name": "catalogId",
+            "in": "path",
+            "description": "local identifier of a catalog",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of properties by which the server response may be sorted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/schema"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/schema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource does not exist on the server. For example, a path parameter had an incorrect value.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "A server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ogcapi/records/collections/{catalogId}/items": {
+      "get": {
+        "tags": [
+          "OGC API Records"
+        ],
+        "summary": "fetch records",
+        "description": "Fetch records of the record collection with id `catalogId`.  Every record in a dataset belongs to a collection. A dataset may consist of multiple record collections. A record collection is often a collection of records of a similar type, based on a common schema.  Use content negotiation to request HTML or GeoJSON.",
+        "operationId": "getRecords",
+        "parameters": [
+          {
+            "name": "catalogId",
+            "in": "path",
+            "description": "local identifier of a catalog",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bbox",
+            "in": "query",
+            "description": "Only features that have a geometry that intersects the bounding box are selected. The bounding box is provided as four or six numbers, depending on whether the coordinate reference system includes a vertical axis (height or depth):  * Lower left corner, coordinate axis 1 * Lower left corner, coordinate axis 2 * Minimum value, coordinate axis 3 (optional) * Upper right corner, coordinate axis 1 * Upper right corner, coordinate axis 2 * Maximum value, coordinate axis 3 (optional)  If the value consists of four numbers, the coordinate reference system is WGS 84 longitude/latitude (http://www.opengis.net/def/crs/OGC/1.3/CRS84) unless a different coordinate reference system is specified in the parameter `bbox-crs`.  If the value consists of six numbers, the coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height (http://www.opengis.net/def/crs/OGC/0/CRS84h) unless a different coordinate reference system is specified in the parameter `bbox-crs`.  The query parameter `bbox-crs` is specified in OGC API - Features - Part 2: Coordinate Reference Systems by Reference.  For WGS 84 longitude/latitude the values are in most cases the sequence of minimum longitude, minimum latitude, maximum longitude and maximum latitude. However, in cases where the box spans the antimeridian the first value (west-most box edge) is larger than the third value (east-most box edge).  If the vertical axis is included, the third and the sixth number are the bottom and the top of the 3-dimensional bounding box.  If a feature has multiple spatial geometry properties, it is the decision of the server whether only a single spatial geometry property is used to determine the extent or all relevant geometries.",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/GetRecordsBboxDto"
+            }
+          },
+          {
+            "name": "datetime",
+            "in": "query",
+            "description": "Either a date-time or an interval. Date and time expressions adhere to RFC 3339. Intervals may be bounded or half-bounded (double-dots at start or end).  Examples:  * A date-time: \"2018-02-12T23:20:50Z\" * A bounded interval: \"2018-02-12T00:00:00Z/2018-03-18T12:31:12Z\" * Half-bounded intervals: \"2018-02-12T00:00:00Z/..\" or \"../2018-03-18T12:31:12Z\"  Only features that have a temporal property that intersects the value of `datetime` are selected.  If a feature has multiple temporal properties, it is the decision of the server whether only a single temporal property is used to determine the extent or all relevant temporal properties.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The optional limit parameter limits the number of items that are presented in the response document.  Only items are counted that are on the first level of the collection in the response document. Nested objects contained within the explicitly requested items shall not be counted.  Minimum = 1. Maximum = 10000. Default = 10.",
+            "required": false,
+            "schema": {
+              "maximum": 10000,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "The optional q parameter supports keyword searching.  Only records whose text fields contain one or more of the specified search terms are selected.  The specific set of text keys/fields/properties of a record to which the q operator is applied is up to the description of the server.   Implementations should, however, apply the q operator to the title, description and keywords keys/fields/properties.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "The optional type parameter supports searching by resource type.  Only records whose type, as indicated by the value of the type core queryable, is equal to one of the listed values shall be selected.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "The optional externalId parameter supports searching by an identifier that was not assigned by the catalog (i.e. an external identifier). Only records with an external identifer, as indicated by the value of the externalId core queryable array, that is equal to one of the listed values shall be selected.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "The optional ids parameter allows a specified of records to be fetched from a catalog using their identifiers.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sortby",
+            "in": "query",
+            "description": "Specifies a comma-separated list of property names by which the response shall be sorted.  If the property name is preceded by a plus (+) sign it indicates an ascending sort for that property.  If the property name is preceded by a minus (-) sign it indicates a descending sort for that property.  If the property is not preceded by a plus or minus, then the default sort order implied is ascending (+).",
+            "required": false,
+            "schema": {
+              "maxItems": 2147483647,
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The response is a document consisting of records in the collection. The records included in the response are determined by the server based on the query parameters of the request. To support access to larger collections without overloading the client, the API supports paged access with links to the next page, if more records are selected that the page size. The `bbox` and `datetime` parameter can be used to select only a subset of the records in the collection (the records that are in the bounding box or time interval). The `bbox` parameter matches all records in the collection that are not associated with a location, too. The `datetime` parameter matches all records in the collection that are not associated with a time stamp or interval, too. The `limit` parameter may be used to control the subset of the selected records that should be returned in the response, the page size. Each page may include information about the number of selected and returned records (`numberMatched` and `numberReturned`) as well as links to support paging (link relation `next`).",
+            "content": {
+              "application/geo+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsGetRecords200ResponseDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsGetRecords200ResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsGetRecords200ResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A query parameter has an invalid value.",
+            "content": {
+              "application/geo+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource does not exist on the server. For example, a path parameter had an incorrect value.",
+            "content": {
+              "application/geo+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "A server error occurred.",
+            "content": {
+              "application/geo+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ogcapi/records/collections/{catalogId}/items/{recordId}": {
+      "get": {
+        "tags": [
+          "OGC API Records"
+        ],
+        "summary": "fetch a single record",
+        "description": "Fetch the record with id `recordId` in the record collection with id `catalogId`.  Use content negotiation to request HTML or GeoJSON.",
+        "operationId": "getRecord",
+        "parameters": [
+          {
+            "name": "catalogId",
+            "in": "path",
+            "description": "local identifier of a catalog",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "recordId",
+            "in": "path",
+            "description": "local identifier of a record",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetch the record with id `recordId` in the record collection with id `collectionId`",
+            "content": {
+              "application/geo+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource does not exist on the server. For example, a path parameter had an incorrect value.",
+            "content": {
+              "application/geo+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "A server error occurred.",
+            "content": {
+              "application/geo+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ogcapi/records/": {
+      "get": {
+        "tags": [
+          "OGC API Records"
+        ],
+        "summary": "landing page",
+        "description": "The landing page provides links to the API definition, the conformance statements and to the record collections in this dataset.",
+        "operationId": "getLandingPage",
+        "responses": {
+          "200": {
+            "description": "The landing page provides links to the API definition (link relations `service-desc` and `service-doc`), the Conformance declaration (path `/conformance`, link relation `conformance`), and the Record Collections (path `/collections`, link relation `data`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsLandingPageDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsLandingPageDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "A server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/token": {
+      "get": {
+        "tags": [
+          "me-api"
+        ],
+        "operationId": "getToken",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search/doc/{uuid}": {
+      "get": {
+        "tags": [
+          "search-controller"
+        ],
+        "operationId": "getIndexDocument",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexRecord"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/records/{uuid}/formatters/{formatterId}": {
+      "get": {
+        "tags": [
+          "record-controller"
+        ],
+        "operationId": "getRecord_1",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "formatterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/records/{uuid}": {
+      "get": {
+        "tags": [
+          "record-controller"
+        ],
+        "operationId": "getRecord_2",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/process/status/{executionJobId}": {
+      "get": {
+        "tags": [
+          "process-controller"
+        ],
+        "operationId": "analysisExecutionStatus",
+        "parameters": [
+          {
+            "name": "executionJobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "COMPLETED",
+                    "STARTING",
+                    "STARTED",
+                    "STOPPING",
+                    "STOPPED",
+                    "FAILED",
+                    "ABANDONED",
+                    "UNKNOWN"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/process/result/{executionJobId}": {
+      "get": {
+        "tags": [
+          "process-controller"
+        ],
+        "operationId": "analysisExecutionResult",
+        "parameters": [
+          {
+            "name": "executionJobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessReport"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me": {
+      "get": {
+        "tags": [
+          "me-api"
+        ],
+        "operationId": "user",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/indexing/setup": {
+      "get": {
+        "tags": [
+          "indexing-controller"
+        ],
+        "operationId": "setupIndex",
+        "parameters": [
+          {
+            "name": "dropIfExists",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/indexing/index": {
+      "get": {
+        "tags": [
+          "indexing-controller"
+        ],
+        "operationId": "indexRecords",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/status": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "status",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/preview": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "previewSynch",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/layers": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "layers",
+        "parameters": [
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/formats": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "formats",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataFormat"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/execute": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "analysisSynch",
+        "parameters": [
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analysis executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DatasetInfo"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RasterInfo"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/attribute/statistics": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "attributeStatistics",
+        "parameters": [
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attribute",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttributeStatistics"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/attribute/codelist": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "attributeCodelist",
+        "parameters": [
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attribute",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProcessDetails": {
+        "type": "object",
+        "properties": {
+          "process": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RelatedItemType": {
+        "type": "string",
+        "enum": [
+          "children",
+          "parent",
+          "brothersAndSisters",
+          "siblings",
+          "associated",
+          "services",
+          "datasets",
+          "fcats",
+          "hasfeaturecats",
+          "sources",
+          "hassources"
+        ]
+      },
+      "BatchEditParameter": {
+        "required": [
+          "value",
+          "xpath"
+        ],
+        "type": "object",
+        "properties": {
+          "xpath": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "condition": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "edit"
+        }
+      },
+      "OgcApiRecordsConfClassesDto": {
+        "required": [
+          "conformsTo"
+        ],
+        "type": "object",
+        "properties": {
+          "conformsTo": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "xml": {
+                "name": "conformsTo"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsConfClassesDto"
+        }
+      },
+      "OgcApiRecordsExceptionDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsExceptionDto"
+        }
+      },
+      "OgcApiRecordsGetCollections200ResponseDto": {
+        "required": [
+          "collections",
+          "links"
+        ],
+        "type": "object",
+        "properties": {
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkDto"
+            }
+          },
+          "collections": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "linkTemplates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkTemplateDto"
+            }
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsGetCollections200ResponseDto"
+        }
+      },
+      "OgcApiRecordsLinkDto": {
+        "required": [
+          "href",
+          "rel"
+        ],
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://data.example.com/buildings/123"
+          },
+          "rel": {
+            "type": "string",
+            "example": "alternate"
+          },
+          "type": {
+            "type": "string",
+            "example": "application/geo+json"
+          },
+          "hreflang": {
+            "type": "string",
+            "example": "en"
+          },
+          "title": {
+            "type": "string",
+            "example": "Trierer Strasse 70, 53115 Bonn"
+          },
+          "length": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsLinkDto"
+        }
+      },
+      "OgcApiRecordsLinkTemplateDto": {
+        "required": [
+          "uriTemplate"
+        ],
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string",
+            "description": "The type or semantics of the relation.",
+            "example": "alternate"
+          },
+          "type": {
+            "type": "string",
+            "description": "A hint indicating what the media type of the result of dereferencing the link should be.",
+            "example": "application/geo+json"
+          },
+          "hreflang": {
+            "type": "string",
+            "description": "A hint indicating what the language of the result of dereferencing the link should be.",
+            "example": "en"
+          },
+          "title": {
+            "type": "string",
+            "description": "Used to label the destination of a link such that it can be used as a human-readable identifier.",
+            "example": "Trierer Strasse 70, 53115 Bonn"
+          },
+          "length": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "created": {
+            "type": "string",
+            "description": "Date of creation of the resource pointed to by the link.",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "description": "Most recent date on which the resource pointed to by the link was changed.",
+            "format": "date-time"
+          },
+          "uriTemplate": {
+            "type": "string",
+            "description": "Supplies a resolvable URI to a remote resource (or resource fragment).",
+            "example": "http://data.example.com/buildings/(building-id}"
+          },
+          "varBase": {
+            "type": "string",
+            "description": "The base URI to which the variable name can be appended to retrieve the definition of the variable as a JSON Schema fragment."
+          },
+          "variables": {
+            "type": "object",
+            "description": "This object contains one key per substitution variable in the templated URL.  Each key defines the schema of one substitution variable using a JSON Schema fragment and can thus include things like the data type of the variable, enumerations, minimum values, maximum values, etc."
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsLinkTemplateDto"
+        }
+      },
+      "OgcApiRecordsCatalog1AllOfItemTypeDto": {
+        "type": "object",
+        "xml": {
+          "name": "OgcApiRecordsCatalog1AllOfItemTypeDto"
+        }
+      },
+      "OgcApiRecordsCatalog1Dto": {
+        "required": [
+          "id",
+          "links",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "conformsTo": {
+            "type": "array",
+            "description": "The extensions/conformance classes used in this record.",
+            "items": {
+              "type": "string",
+              "description": "The extensions/conformance classes used in this record.",
+              "xml": {
+                "name": "conformsTo"
+              }
+            }
+          },
+          "created": {
+            "type": "string",
+            "description": "The date this record was created in the server.",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "description": "The most recent date on which the record was changed.",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Catalog"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "A human-readable name given to the resource."
+          },
+          "description": {
+            "type": "string",
+            "description": "A free-text account of the resource."
+          },
+          "keywords": {
+            "type": "array",
+            "description": "The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or classification codes.",
+            "items": {
+              "type": "string",
+              "description": "The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or classification codes.",
+              "xml": {
+                "name": "keywords"
+              }
+            }
+          },
+          "themes": {
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "type": "array",
+            "description": "A knowledge organization system used to classify the resource.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsThemeDto"
+            }
+          },
+          "language": {
+            "$ref": "#/components/schemas/language"
+          },
+          "languages": {
+            "type": "array",
+            "description": "This list of languages in which this record is available.",
+            "items": {
+              "$ref": "#/components/schemas/language"
+            }
+          },
+          "resourceLanguages": {
+            "type": "array",
+            "description": "The list of languages in which the resource described by this record is available.",
+            "items": {
+              "$ref": "#/components/schemas/language"
+            }
+          },
+          "externalIds": {
+            "type": "array",
+            "description": "An identifier for the resource assigned by an external (to the catalog) entity.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto"
+            }
+          },
+          "formats": {
+            "type": "array",
+            "description": "A list of available distributions of the resource.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsFormatDto"
+            }
+          },
+          "contacts": {
+            "type": "array",
+            "description": "A list of contacts qualified by their role(s) in association to the record or the resource described by the record.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsContactDto"
+            }
+          },
+          "license": {
+            "$ref": "#/components/schemas/OgcApiRecordsLicenseDto"
+          },
+          "rights": {
+            "type": "string",
+            "description": "A statement that concerns all rights not addressed by the license such as a copyright statement."
+          },
+          "id": {
+            "type": "string",
+            "description": "The identifier of the catalog."
+          },
+          "itemType": {
+            "$ref": "#/components/schemas/OgcApiRecordsCatalog1AllOfItemTypeDto"
+          },
+          "extent": {
+            "$ref": "#/components/schemas/extent"
+          },
+          "crs": {
+            "type": "array",
+            "description": "The list of supported coordinate reference systems.",
+            "items": {
+              "type": "string",
+              "description": "The list of supported coordinate reference systems.",
+              "xml": {
+                "name": "crs"
+              }
+            }
+          },
+          "recordsArrayName": {
+            "type": "string"
+          },
+          "records": {
+            "type": "array",
+            "description": "An array of records that are part of this catalog that are encoded in-line with the catalog.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONDto"
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkBaseDto"
+            }
+          },
+          "linkTemplates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkTemplateDto"
+            }
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsCatalog1Dto"
+        }
+      },
+      "OgcApiRecordsContactDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "description": "A list of contacts qualified by their role(s) in association to the record or the resource described by the record.",
+        "xml": {
+          "name": "OgcApiRecordsContactDto"
+        }
+      },
+      "OgcApiRecordsExtentSpatialBboxInnerDto": {
+        "type": "object",
+        "description": "One or more bounding boxes that describe the spatial extent of the dataset. In the Core only a single bounding box is supported.  Extensions may support additional areas. The first bounding box describes the overall spatial extent of the data. All subsequent bounding boxes describe more precise bounding boxes, e.g., to identify clusters of data. Clients only interested in the overall spatial extent will only need to access the first bounding box in the array.",
+        "xml": {
+          "name": "OgcApiRecordsExtentSpatialBboxInnerDto"
+        }
+      },
+      "OgcApiRecordsFormatDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          }
+        },
+        "description": "A list of available distributions of the resource.",
+        "xml": {
+          "name": "OgcApiRecordsFormatDto"
+        }
+      },
+      "OgcApiRecordsLicenseDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsLicenseDto"
+        }
+      },
+      "OgcApiRecordsLinkBaseDto": {
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string",
+            "description": "The type or semantics of the relation.",
+            "example": "alternate"
+          },
+          "type": {
+            "type": "string",
+            "description": "A hint indicating what the media type of the result of dereferencing the link should be.",
+            "example": "application/geo+json"
+          },
+          "hreflang": {
+            "type": "string",
+            "description": "A hint indicating what the language of the result of dereferencing the link should be.",
+            "example": "en"
+          },
+          "title": {
+            "type": "string",
+            "description": "Used to label the destination of a link such that it can be used as a human-readable identifier.",
+            "example": "Trierer Strasse 70, 53115 Bonn"
+          },
+          "length": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "created": {
+            "type": "string",
+            "description": "Date of creation of the resource pointed to by the link.",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "description": "Most recent date on which the resource pointed to by the link was changed.",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsLinkBaseDto"
+        }
+      },
+      "OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "scheme": {
+            "type": "string",
+            "description": "A reference to an authority or identifier for a knowledge organization system from which the external identifier was obtained. It is recommended that the identifier be a resolvable URI."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the identifier."
+          }
+        },
+        "description": "An identifier for the resource assigned by an external (to the catalog) entity.",
+        "xml": {
+          "name": "OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto"
+        }
+      },
+      "OgcApiRecordsRecordGeoJSONDto": {
+        "required": [
+          "geometry",
+          "id",
+          "properties",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "A unique identifier of the catalog record."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Feature"
+            ]
+          },
+          "time": {
+            "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONTimeDto"
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONGeometryDto"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONPropertiesDto"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkBaseDto"
+            }
+          },
+          "linkTemplates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkTemplateDto"
+            }
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsRecordGeoJSONDto"
+        }
+      },
+      "OgcApiRecordsRecordGeoJSONGeometryDto": {
+        "type": "object",
+        "xml": {
+          "name": "OgcApiRecordsRecordGeoJSONGeometryDto"
+        }
+      },
+      "OgcApiRecordsRecordGeoJSONPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "conformsTo": {
+            "type": "array",
+            "description": "The extensions/conformance classes used in this record.",
+            "items": {
+              "type": "string",
+              "description": "The extensions/conformance classes used in this record.",
+              "xml": {
+                "name": "conformsTo"
+              }
+            }
+          },
+          "created": {
+            "type": "string",
+            "description": "The date this record was created in the server.",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "description": "The most recent date on which the record was changed.",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "string",
+            "description": "The nature or genre of the resource. The value should be a code, convenient for filtering records. Where available, a link to the canonical URI of the record type resource will be added to the 'links' property."
+          },
+          "title": {
+            "type": "string",
+            "description": "A human-readable name given to the resource."
+          },
+          "description": {
+            "type": "string",
+            "description": "A free-text account of the resource."
+          },
+          "keywords": {
+            "type": "array",
+            "description": "The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or classification codes.",
+            "items": {
+              "type": "string",
+              "description": "The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or classification codes.",
+              "xml": {
+                "name": "keywords"
+              }
+            }
+          },
+          "themes": {
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "type": "array",
+            "description": "A knowledge organization system used to classify the resource.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsThemeDto"
+            }
+          },
+          "language": {
+            "$ref": "#/components/schemas/language"
+          },
+          "languages": {
+            "type": "array",
+            "description": "This list of languages in which this record is available.",
+            "items": {
+              "$ref": "#/components/schemas/language"
+            }
+          },
+          "resourceLanguages": {
+            "type": "array",
+            "description": "The list of languages in which the resource described by this record is available.",
+            "items": {
+              "$ref": "#/components/schemas/language"
+            }
+          },
+          "externalIds": {
+            "type": "array",
+            "description": "An identifier for the resource assigned by an external (to the catalog) entity.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto"
+            }
+          },
+          "formats": {
+            "type": "array",
+            "description": "A list of available distributions of the resource.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsFormatDto"
+            }
+          },
+          "contacts": {
+            "type": "array",
+            "description": "A list of contacts qualified by their role(s) in association to the record or the resource described by the record.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsContactDto"
+            }
+          },
+          "license": {
+            "$ref": "#/components/schemas/OgcApiRecordsLicenseDto"
+          },
+          "rights": {
+            "type": "string",
+            "description": "A statement that concerns all rights not addressed by the license such as a copyright statement."
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsRecordGeoJSONPropertiesDto"
+        }
+      },
+      "OgcApiRecordsRecordGeoJSONTimeDto": {
+        "type": "object",
+        "xml": {
+          "name": "OgcApiRecordsRecordGeoJSONTimeDto"
+        }
+      },
+      "OgcApiRecordsThemeConceptsInnerDto": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An identifier for the concept."
+          },
+          "title": {
+            "type": "string",
+            "description": "A human readable title for the concept."
+          },
+          "description": {
+            "type": "string",
+            "description": "A human readable description for the concept."
+          },
+          "url": {
+            "type": "string",
+            "description": "A URI providing further description of the concept.",
+            "format": "uri"
+          }
+        },
+        "description": "One or more entity/concept identifiers from this knowledge system. it is recommended that a resolvable URI be used for each entity/concept identifier.",
+        "xml": {
+          "name": "OgcApiRecordsThemeConceptsInnerDto"
+        }
+      },
+      "OgcApiRecordsThemeDto": {
+        "required": [
+          "concepts",
+          "scheme"
+        ],
+        "type": "object",
+        "properties": {
+          "concepts": {
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "type": "array",
+            "description": "One or more entity/concept identifiers from this knowledge system. it is recommended that a resolvable URI be used for each entity/concept identifier.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsThemeConceptsInnerDto"
+            }
+          },
+          "scheme": {
+            "type": "string",
+            "description": "An identifier for the knowledge organization system used to classify the resource.  It is recommended that the identifier be a resolvable URI.  The list of schemes used in a searchable catalog can be determined by inspecting the server's OpenAPI document or, if the server implements CQL2, by exposing a queryable (e.g. named `scheme`) and enumerating the list of schemes in the queryable's schema definition."
+          }
+        },
+        "description": "A knowledge organization system used to classify the resource.",
+        "xml": {
+          "name": "OgcApiRecordsThemeDto"
+        }
+      },
+      "extent": {
+        "type": "object",
+        "properties": {
+          "spatial": {
+            "$ref": "#/components/schemas/extent_spatial"
+          },
+          "temporal": {
+            "$ref": "#/components/schemas/extent_temporal"
+          }
+        },
+        "description": "The extent of the features in the collection. In the Core only spatial and temporal extents are specified. Extensions may add additional members to represent other extents, for example, thermal or pressure ranges.  An array of extents is provided for each extent type (spatial, temporal). The first item in the array describes the overall extent of the data. All subsequent items describe more precise extents, e.g., to identify clusters of data. Clients only interested in the overall extent will only need to access the first extent in the array.",
+        "xml": {
+          "name": "OgcApiRecordsExtentDto"
+        }
+      },
+      "extent_spatial": {
+        "type": "object",
+        "properties": {
+          "bbox": {
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "type": "array",
+            "description": "One or more bounding boxes that describe the spatial extent of the dataset. In the Core only a single bounding box is supported.  Extensions may support additional areas. The first bounding box describes the overall spatial extent of the data. All subsequent bounding boxes describe more precise bounding boxes, e.g., to identify clusters of data. Clients only interested in the overall spatial extent will only need to access the first bounding box in the array.",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsExtentSpatialBboxInnerDto"
+            }
+          },
+          "crs": {
+            "type": "string",
+            "description": "Coordinate reference system of the coordinates in the spatial extent (property `bbox`). The default reference system is WGS 84 longitude/latitude. In the Core the only other supported coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height for coordinates with height. Extensions may support additional coordinate reference systems and add additional enum values.",
+            "enum": [
+              "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+              "http://www.opengis.net/def/crs/OGC/0/CRS84h"
+            ]
+          }
+        },
+        "description": "The spatial extent of the features in the collection.",
+        "xml": {
+          "name": "OgcApiRecordsExtentSpatialDto"
+        }
+      },
+      "extent_temporal": {
+        "type": "object",
+        "properties": {
+          "interval": {
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "type": "array",
+            "description": "One or more time intervals that describe the temporal extent of the dataset. In the Core only a single time interval is supported.  Extensions may support multiple intervals. The first time interval describes the overall temporal extent of the data. All subsequent time intervals describe more precise time intervals, e.g., to identify clusters of data. Clients only interested in the overall temporal extent will only need to access the first time interval in the array (a pair of lower and upper bound instants).",
+            "items": {
+              "type": "array",
+              "description": "One or more time intervals that describe the temporal extent of the dataset. In the Core only a single time interval is supported.  Extensions may support multiple intervals. The first time interval describes the overall temporal extent of the data. All subsequent time intervals describe more precise time intervals, e.g., to identify clusters of data. Clients only interested in the overall temporal extent will only need to access the first time interval in the array (a pair of lower and upper bound instants).",
+              "xml": {
+                "name": "interval"
+              },
+              "items": {
+                "type": "string",
+                "description": "One or more time intervals that describe the temporal extent of the dataset. In the Core only a single time interval is supported.  Extensions may support multiple intervals. The first time interval describes the overall temporal extent of the data. All subsequent time intervals describe more precise time intervals, e.g., to identify clusters of data. Clients only interested in the overall temporal extent will only need to access the first time interval in the array (a pair of lower and upper bound instants).",
+                "format": "date-time",
+                "xml": {
+                  "name": "interval"
+                }
+              }
+            }
+          },
+          "trs": {
+            "type": "string",
+            "description": "Coordinate reference system of the coordinates in the temporal extent (property `interval`). The default reference system is the Gregorian calendar. In the Core this is the only supported temporal coordinate reference system. Extensions may support additional temporal coordinate reference systems and add additional enum values.",
+            "enum": [
+              "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
+            ]
+          }
+        },
+        "description": "The temporal extent of the features in the collection.",
+        "xml": {
+          "name": "OgcApiRecordsExtentTemporalDto"
+        }
+      },
+      "language": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The language tag as per RFC-5646.",
+            "example": "el"
+          },
+          "name": {
+            "maxLength": 2147483647,
+            "minLength": 1,
+            "type": "string",
+            "description": "The untranslated name of of the language.",
+            "example": "Ελληνικά"
+          },
+          "alternate": {
+            "type": "string",
+            "description": "The name of the language in another well-understood language, usually English.",
+            "example": "Greek"
+          },
+          "dir": {
+            "type": "string",
+            "description": "The direction for text in this language. The default, `ltr` (left-to-right), represents the most common situation. However, care should be taken to set the value of `dir` appropriately if the language direction is not `ltr`. Other values supported are `rtl` (right-to-left), `ttb` (top-to-bottom), and `btt` (bottom-to-top).",
+            "enum": [
+              "ltr",
+              "rtl",
+              "ttb",
+              "btt"
+            ]
+          }
+        },
+        "description": "The language used for textual values in this record.",
+        "xml": {
+          "name": "OgcApiRecordsLanguageDto"
+        }
+      },
+      "OgcApiRecordsComponentsDto": {
+        "type": "object",
+        "properties": {
+          "schemas": {
+            "type": "object"
+          },
+          "responses": {
+            "type": "object"
+          },
+          "parameters": {
+            "type": "object"
+          },
+          "examples": {
+            "type": "object"
+          },
+          "requestBodies": {
+            "type": "object"
+          },
+          "headers": {
+            "type": "object"
+          },
+          "securitySchemes": {
+            "type": "object"
+          },
+          "links": {
+            "type": "object"
+          },
+          "callbacks": {
+            "type": "object"
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsComponentsDto"
+        }
+      },
+      "OgcApiRecordsExternalDocumentationDto": {
+        "required": [
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsExternalDocumentationDto"
+        }
+      },
+      "OgcApiRecordsInfoDto": {
+        "required": [
+          "title",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "termsOfService": {
+            "type": "string"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/OgcApiRecordsContactDto"
+          },
+          "license": {
+            "$ref": "#/components/schemas/OgcApiRecordsLicenseDto"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsInfoDto"
+        }
+      },
+      "OgcApiRecordsSecurityRequirementDto": {
+        "type": "object",
+        "xml": {
+          "name": "OgcApiRecordsSecurityRequirementDto"
+        }
+      },
+      "OgcApiRecordsServerDto": {
+        "required": [
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "variables": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/OgcApiRecordsServerVariableDto"
+            }
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsServerDto"
+        }
+      },
+      "OgcApiRecordsServerVariableDto": {
+        "required": [
+          "default"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "default": {
+            "type": "string"
+          },
+          "enum": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "xml": {
+                "name": "enum"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsServerVariableDto"
+        }
+      },
+      "OgcApiRecordsTagDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "externalDocs": {
+            "$ref": "#/components/schemas/OgcApiRecordsExternalDocumentationDto"
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsTagDto"
+        }
+      },
+      "schema": {
+        "required": [
+          "info",
+          "openapi",
+          "paths"
+        ],
+        "type": "object",
+        "properties": {
+          "openapi": {
+            "pattern": "^3\\.0\\.\\d(-.+)?$",
+            "type": "string"
+          },
+          "info": {
+            "$ref": "#/components/schemas/OgcApiRecordsInfoDto"
+          },
+          "externalDocs": {
+            "$ref": "#/components/schemas/OgcApiRecordsExternalDocumentationDto"
+          },
+          "servers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsServerDto"
+            }
+          },
+          "security": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsSecurityRequirementDto"
+            }
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsTagDto"
+            }
+          },
+          "paths": {
+            "type": "object"
+          },
+          "components": {
+            "$ref": "#/components/schemas/OgcApiRecordsComponentsDto"
+          }
+        },
+        "description": "The description of OpenAPI v3.0.x documents, as defined by https://spec.openapis.org/oas/v3.0.3",
+        "xml": {
+          "name": "OgcApiRecordsSchemaDto"
+        }
+      },
+      "OgcApiRecordsGetRecords200ResponseDto": {
+        "required": [
+          "features",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "FeatureCollection"
+            ]
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONDto"
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkDto"
+            }
+          },
+          "timeStamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numberMatched": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberReturned": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "linkTemplates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkTemplateDto"
+            }
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsGetRecords200ResponseDto"
+        }
+      },
+      "GetRecordsBboxDto": {
+        "type": "object",
+        "xml": {
+          "name": "GetRecordsBboxDto"
+        }
+      },
+      "OgcApiRecordsLandingPageDto": {
+        "required": [
+          "links"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Buildings in Bonn"
+          },
+          "description": {
+            "type": "string",
+            "example": "Access to data about buildings in the city of Bonn via a Web API that conforms to the OGC API Features specification."
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkDto"
+            }
+          },
+          "linkTemplates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OgcApiRecordsLinkTemplateDto"
+            }
+          }
+        },
+        "xml": {
+          "name": "OgcApiRecordsLandingPageDto"
+        }
+      },
+      "AttributeTable": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "cardinality": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodeListValue"
+            }
+          }
+        }
+      },
+      "CodeListValue": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "individual": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "logo": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "nilReason": {
+            "type": "string"
+          },
+          "organisationObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "identifiers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartyIdentifier"
+            }
+          }
+        }
+      },
+      "CrsDetails": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "codeSpace": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      },
+      "DateRange": {
+        "type": "object",
+        "properties": {
+          "gte": {
+            "type": "string"
+          },
+          "lte": {
+            "type": "string"
+          }
+        }
+      },
+      "DateRangeDetails": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "$ref": "#/components/schemas/DateRangeDetailsInfo"
+          },
+          "end": {
+            "$ref": "#/components/schemas/DateRangeDetailsInfo"
+          }
+        }
+      },
+      "DateRangeDetailsInfo": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "frame": {
+            "type": "string"
+          },
+          "calendarEraName": {
+            "type": "string"
+          },
+          "indeterminatePosition": {
+            "type": "string"
+          }
+        }
+      },
+      "FeatureType": {
+        "type": "object",
+        "properties": {
+          "typeName": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "isAbstract": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "string"
+          },
+          "attributeTable": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttributeTable"
+            }
+          }
+        }
+      },
+      "IndexRecord": {
+        "type": "object",
+        "properties": {
+          "docType": {
+            "type": "string",
+            "enum": [
+              "metadata",
+              "features"
+            ]
+          },
+          "document": {
+            "type": "string"
+          },
+          "metadataIdentifier": {
+            "type": "string"
+          },
+          "standardNameObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "standardVersionObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "indexingDate": {
+            "type": "string"
+          },
+          "dateStamp": {
+            "type": "string"
+          },
+          "mainLanguage": {
+            "type": "string"
+          },
+          "resourceType": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "resourceTypeNameObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "resourceTitleObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "resourceAltTitleObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "resourceDate": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceDate"
+            }
+          },
+          "resourceTemporalDateRange": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DateRange"
+            }
+          },
+          "resourceIdentifier": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceIdentifier"
+            }
+          },
+          "resourceAbstractObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "supplementalInformationObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "purposeObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "tag": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "isOpenData": {
+            "type": "boolean"
+          },
+          "allKeywords": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Thesaurus"
+            }
+          },
+          "resolutionDistance": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "resolutionScaleDenominator": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          "extentIdentifierObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "extentDescriptionObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "shape": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "shapeParsingError": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "geom": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "resourceTemporalExtentDateRange": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DateRange"
+            }
+          },
+          "resourceTemporalExtentDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DateRangeDetails"
+            }
+          },
+          "resourceVerticalRange": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VerticalRange"
+            }
+          },
+          "coordinateSystem": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "crsDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CrsDetails"
+            }
+          },
+          "featureTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeatureType"
+            }
+          },
+          "link": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
+          },
+          "lineageObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "hassource": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recordLink": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordLink"
+            }
+          },
+          "sourceDescriptionObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "processSteps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessStep"
+            }
+          },
+          "measure": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Measure"
+            }
+          },
+          "format": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "orderingInstructionsObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "recordGroup": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "parentUuid": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recordOwner": {
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "harvesterUuid": {
+            "type": "string"
+          },
+          "groupPublishedId": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "popularity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userinfo": {
+            "type": "string"
+          },
+          "isPublishedToAll": {
+            "type": "boolean"
+          },
+          "draft": {
+            "type": "string"
+          },
+          "changeDate": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createDate": {
+            "type": "string"
+          },
+          "isPublishedToIntranet": {
+            "type": "boolean"
+          },
+          "valid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isTemplate": {
+            "type": "string"
+          },
+          "feedbackCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isHarvested": {
+            "type": "boolean"
+          },
+          "userSavedCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sourceCatalogue": {
+            "type": "string"
+          },
+          "overview": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Overview"
+            }
+          },
+          "documentStandard": {
+            "type": "string"
+          },
+          "root": {
+            "type": "string"
+          },
+          "indexingErrorMsg": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndexingErrorMsg"
+            }
+          },
+          "owner": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "groupOwner": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "logo": {
+            "type": "string"
+          },
+          "otherLanguage": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "otherLanguageId": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "resourceEdition": {
+            "type": "string"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "licenseObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "maintenance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Maintenance"
+            }
+          },
+          "resourceCreditObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "cat": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mdStatus": {
+            "type": "string"
+          },
+          "isPublishedToGuest": {
+            "type": "boolean"
+          },
+          "groupPublished": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hasxlinks": {
+            "type": "boolean"
+          },
+          "inspireConformResource": {
+            "type": "boolean"
+          },
+          "valid_inspire": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "inspireReportUrl": {
+            "type": "string"
+          },
+          "inspireValidationDate": {
+            "type": "string"
+          },
+          "resourceLanguage": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "OrgObject": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "recordOperateOn": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "agg_associated": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "childUuid": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "linkUrl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "linkProtocol": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "serviceType": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "serviceTypeVersion": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "specificationConformance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpecificationConformance"
+            }
+          },
+          "hasfeaturecat": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "IndexingErrorMsg": {
+        "type": "object",
+        "properties": {
+          "string": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "values": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Keyword": {
+        "type": "object"
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "protocol": {
+            "type": "string"
+          },
+          "function": {
+            "type": "string"
+          },
+          "applicationProfile": {
+            "type": "string"
+          },
+          "group": {
+            "type": "string"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "nilReason": {
+            "type": "string"
+          },
+          "hash": {
+            "type": "string"
+          },
+          "idx": {
+            "type": "string"
+          },
+          "urlObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "nameObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "descriptionObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Maintenance": {
+        "type": "object",
+        "properties": {
+          "frequency": {
+            "type": "string"
+          },
+          "nextUpdateDate": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "userDefinedFrequency": {
+            "type": "string"
+          },
+          "noteObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Measure": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          }
+        }
+      },
+      "Overview": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "nameObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PartyIdentifier": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "codeSpace": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          }
+        }
+      },
+      "ProcessStep": {
+        "type": "object",
+        "properties": {
+          "descriptionObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "date": {
+            "type": "string"
+          },
+          "source": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessStepSource"
+            }
+          },
+          "processor": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Contact"
+            }
+          }
+        }
+      },
+      "ProcessStepSource": {
+        "type": "object",
+        "properties": {
+          "descriptionObject": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RecordLink": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "remote",
+              "catalog"
+            ]
+          },
+          "to": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "associationType": {
+            "type": "string"
+          },
+          "initiativeType": {
+            "type": "string"
+          }
+        }
+      },
+      "ResourceDate": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        }
+      },
+      "ResourceIdentifier": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "codeSpace": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          }
+        }
+      },
+      "SpecificationConformance": {
+        "type": "object",
+        "properties": {
+          "link": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "pass": {
+            "type": "string"
+          }
+        }
+      },
+      "Thesaurus": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "multilingualTitle": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "theme": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Keyword"
+            }
+          }
+        }
+      },
+      "VerticalRange": {
+        "type": "object",
+        "properties": {
+          "gte": {
+            "type": "number",
+            "format": "double"
+          },
+          "lte": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "type": "string"
+          }
+        }
+      },
+      "IProcess": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessParameter"
+            }
+          }
+        }
+      },
+      "ProcessParameter": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "ProcessReport": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "errorMessage": {
+            "type": "string"
+          }
+        }
+      },
+      "DataFormat": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "rwFlag": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "DatasetInfo": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          },
+          "formatDescription": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string",
+            "enum": [
+              "RASTER",
+              "VECTOR"
+            ]
+          },
+          "layers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetLayer"
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "DatasetLayer": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "fidColumnName": {
+            "type": "string"
+          },
+          "featureCount": {
+            "type": "number"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetLayerField"
+            }
+          },
+          "geometryFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetLayerGeomField"
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "DatasetLayerField": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "defaultValue": {
+            "type": "string"
+          }
+        }
+      },
+      "DatasetLayerGeomField": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "defaultValue": {
+            "type": "string"
+          },
+          "extent": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "crs": {
+            "type": "string"
+          }
+        }
+      },
+      "RasterBand": {
+        "type": "object",
+        "properties": {
+          "band": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "RasterCornerCoordinates": {
+        "type": "object",
+        "properties": {
+          "upperLeft": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "upperRight": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "lowerLeft": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "lowerRight": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "center": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "RasterInfo": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          },
+          "formatDescription": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string",
+            "enum": [
+              "RASTER",
+              "VECTOR"
+            ]
+          },
+          "crs": {
+            "type": "string"
+          },
+          "wgs84Extent": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          "rasterCornerCoordinates": {
+            "$ref": "#/components/schemas/RasterCornerCoordinates"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "size": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "bands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RasterBand"
+            }
+          }
+        }
+      },
+      "AttributeStatistics": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "statistics": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  }
+}

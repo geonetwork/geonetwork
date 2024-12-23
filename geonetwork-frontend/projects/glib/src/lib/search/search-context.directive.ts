@@ -28,30 +28,18 @@ export class SearchContextDirective implements OnInit {
 
   constructor() {
     // On API configuration change, reset the search
-    effect(
-      () => {
-        this.#apiConfiguration() && this.#searchStore.reset();
-      },
-      { allowSignalWrites: true }
-    );
-    effect(
-      () => {
-        this.filter() && this.#searchStore.setFilter(this.filter());
-      },
-      { allowSignalWrites: true }
-    );
-    effect(
-      () => {
-        this.size() && this.#searchStore.setPageSize(this.size());
-      },
-      { allowSignalWrites: true }
-    );
-    effect(
-      () => {
-        this.sort() && this.#searchStore.setSort(this.sort());
-      },
-      { allowSignalWrites: true }
-    );
+    effect(() => {
+      this.#apiConfiguration() && this.#searchStore.reset();
+    });
+    effect(() => {
+      this.filter() && this.#searchStore.setFilter(this.filter());
+    });
+    effect(() => {
+      this.size() && this.#searchStore.setPageSize(this.size());
+    });
+    effect(() => {
+      this.sort() && this.#searchStore.setSort(this.sort());
+    });
   }
 
   ngOnInit(): void {

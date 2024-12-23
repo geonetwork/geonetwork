@@ -1,9 +1,21 @@
 import { Component, computed, input, OnInit, signal } from '@angular/core';
 import {
+  AutoComplete,
   AutoCompleteCompleteEvent,
   AutoCompleteSelectEvent,
 } from 'primeng/autocomplete';
 import { GnIndexRecordToJSON } from 'gapi';
+import { Fieldset } from 'primeng/fieldset';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputText } from 'primeng/inputtext';
+import { InputSwitch } from 'primeng/inputswitch';
+import { GcDataResultsTableComponent } from '../gc-data-results-table/gc-data-results-table.component';
+import { GWebcomponentsDocEmbedComponent } from '../g-webcomponents-doc-embed/g-webcomponents-doc-embed.component';
+import { GWebcomponentConfigurationComponent } from '../g-webcomponent-configuration/g-webcomponent-configuration.component';
+import { GcSearchComponent } from '../gc-search-results/gc-search.component';
+import { GcSearchResultsTableComponent } from '../gc-search-results-table/gc-search-results-table.component';
+import { Select } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
 
 interface field {
   label: string;
@@ -49,7 +61,20 @@ export const CSV_SOURCE_FILE_LIST = [
 @Component({
   selector: 'g-webcomponents-doc',
   templateUrl: './g-webcomponents-doc.component.html',
-  styleUrl: './g-webcomponents-doc.component.css',
+  imports: [
+    Fieldset,
+    DropdownModule,
+    InputText,
+    InputSwitch,
+    GcDataResultsTableComponent,
+    GWebcomponentsDocEmbedComponent,
+    GWebcomponentConfigurationComponent,
+    GcSearchComponent,
+    AutoComplete,
+    GcSearchResultsTableComponent,
+    Select,
+    FormsModule,
+  ],
 })
 export class GWebcomponentsDocComponent implements OnInit {
   webcomponentId = input('');

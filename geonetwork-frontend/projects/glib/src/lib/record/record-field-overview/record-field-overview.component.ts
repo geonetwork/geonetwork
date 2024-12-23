@@ -6,7 +6,6 @@ import { GnOverview } from 'gapi';
 @Component({
   selector: 'g-record-field-overview',
   templateUrl: './record-field-overview.component.html',
-  styleUrl: './record-field-overview.component.css',
   standalone: true,
   imports: [ImageModule, GalleriaModule],
 })

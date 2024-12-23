@@ -172,7 +172,7 @@ export const SearchStore = signalStore(
       return filter?.values[value];
     },
     addFilter(newFilter: SearchFilter, replaceFilter: boolean = false) {
-      const filters = store.filters();
+      const filters = JSON.parse(JSON.stringify(store.filters()));
       const existingFilter = filters[newFilter.field];
       if (existingFilter && !replaceFilter) {
         existingFilter.values = {
@@ -189,7 +189,7 @@ export const SearchStore = signalStore(
       }));
     },
     removeFilter(field: string) {
-      const filters = store.filters();
+      const filters = JSON.parse(JSON.stringify(store.filters()));
       delete filters[field];
       patchState(store, state => ({
         from: 0,
@@ -198,7 +198,7 @@ export const SearchStore = signalStore(
       }));
     },
     removeFilterValue(field: string, value: string) {
-      const filters = store.filters();
+      const filters = JSON.parse(JSON.stringify(store.filters()));
       const existingFilter = filters[field];
       if (existingFilter) {
         delete existingFilter.values[value];
@@ -225,7 +225,7 @@ export const SearchStore = signalStore(
       patchState(store, { from: store.from() + store.size() });
     },
     setPage(from: number, size: number) {
-      let response = store.response();
+      let response = JSON.parse(JSON.stringify(store.response()));
       if (response) {
         response.hits.hits = [];
       }
@@ -255,7 +255,7 @@ export const SearchStore = signalStore(
             tap(console.log),
             tapResponse({
               next: newHits => {
-                let response = store.response();
+                let response = JSON.parse(JSON.stringify(store.response()));
                 if (response) {
                   response.hits.hits = response.hits.hits.concat(
                     newHits.hits.hits
@@ -286,12 +286,18 @@ export const SearchStore = signalStore(
     getAggregationConfig(
       key: string
     ): elasticsearch.AggregationsAggregationContainer {
+      let aggregationConfiguration = JSON.parse(
+        JSON.stringify(store.aggregationConfig())
+      );
       let configuration = store.aggregationConfig()[key];
       if (configuration) {
         return configuration;
       } else {
         let newConfiguration = this.buildDefaultAggregationConfig(key);
-        store.aggregationConfig()[key] = newConfiguration;
+        aggregationConfiguration[key] = newConfiguration;
+        patchState(store, {
+          aggregationConfig: aggregationConfiguration,
+        });
         return newConfiguration;
       }
     },

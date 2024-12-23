@@ -17,74 +17,94 @@
     <div class="basis-1/3"></div>
   </div>
 
-  <p-tabView>
-    <p-tabPanel>
-      <ng-template pTemplate="header">
-        <div class="flex align-items-center gap-2">
-          <i class="fa fa-info"></i>
-          <span class="font-bold white-space-nowrap m-0"> Information </span>
+  <p-fieldset>
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <i class="fa fa-info"></i>
+        <span class="font-bold white-space-nowrap m-0"> Information </span>
+      </div>
+    </ng-template>
+    <div class="flex gap-4">
+      <div class="basis-2/3">
+        <div class="shadow-lg p-4">
+          {{ record.resourceAbstractObject?.default }}
         </div>
-      </ng-template>
-      <div class="flex gap-4">
-        <div class="basis-2/3">
-          <div class="shadow-lg p-4">
-            {{ record.resourceAbstractObject?.default }}
-          </div>
 
-          <div class="shadow-lg p-4">
-            <g-record-field-keywords [field]="record.tag" />
-          </div>
-
-          <p-accordion [multiple]="true" [activeIndex]="[0]">
-            <p-accordionTab header="Licenses and use constraints">
-              <p></p>
-            </p-accordionTab>
-            <p-accordionTab header="Technical information">
-              <p></p>
-            </p-accordionTab>
-            <p-accordionTab header="Extents">
-              <p></p>
-            </p-accordionTab>
-            <p-accordionTab header="Lineage">
-              <p></p>
-            </p-accordionTab>
-          </p-accordion>
+        <div class="shadow-lg p-4">
+          <g-record-field-keywords [field]="record.tag" />
         </div>
-        <div class="basis-1/3">
-          <div class="shadow-lg p-4 aspect-square">
-            <g-record-field-overview [field]="record.overview" />
-          </div>
+
+        <p-accordion [multiple]="true" [activeIndex]="[0]">
+          <p-accordion-panel value="0">
+            <p-accordion-header
+              >Licenses and use constraints
+            </p-accordion-header>
+            <p-accordion-content><p></p></p-accordion-content>
+          </p-accordion-panel>
+          <p-accordion-panel value="1">
+            <p-accordion-header>Technical information</p-accordion-header>
+            <p-accordion-content
+              ><p>
+                Coordinate system:
+
+                @for (crs of record.coordinateSystem; track $index) {
+                  {{ crs | json }}
+                }
+              </p></p-accordion-content
+            >
+          </p-accordion-panel>
+          <p-accordion-panel value="2">
+            <p-accordion-header>Extents</p-accordion-header>
+            <p-accordion-content
+              ><p>
+                {{ record.geom | json }}
+              </p></p-accordion-content
+            >
+          </p-accordion-panel>
+          <p-accordion-panel value="3">
+            <p-accordion-header>Lineage</p-accordion-header>
+            <p-accordion-content
+              ><p>
+                {{ record.lineageObject?.default }}
+              </p></p-accordion-content
+            >
+          </p-accordion-panel>
+        </p-accordion>
+      </div>
+      <div class="basis-1/3">
+        <div class="shadow-lg p-4 aspect-square">
+          <g-record-field-overview [field]="record.overview" />
         </div>
       </div>
-    </p-tabPanel>
-    <p-tabPanel>
-      <ng-template pTemplate="header">
-        <div class="flex align-items-center gap-2">
-          <i class="fa fa-database"></i>
-          <span class="font-bold white-space-nowrap m-0"> Preview </span>
-        </div>
-      </ng-template>
-      <p></p>
-    </p-tabPanel>
-    <p-tabPanel>
-      <ng-template pTemplate="header">
-        <div class="flex align-items-center gap-2">
-          <i class="fa fa-download"></i>
-          <span class="font-bold white-space-nowrap m-0"> Distribution </span>
-        </div>
-      </ng-template>
-      <p>
-        <g-record-field-links [links]="record.link" />
-      </p>
-    </p-tabPanel>
-    <p-tabPanel>
-      <ng-template pTemplate="header">
-        <div class="flex align-items-center gap-2">
-          <i class="fa fa-table"></i>
-          <span class="font-bold white-space-nowrap m-0"> Model </span>
-        </div>
-      </ng-template>
-      <p></p>
-    </p-tabPanel>
-  </p-tabView>
+    </div>
+  </p-fieldset>
+  <p-fieldset>
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <i class="fa fa-database"></i>
+        <span class="font-bold white-space-nowrap m-0"> Preview </span>
+      </div>
+    </ng-template>
+    <p></p>
+  </p-fieldset>
+  <p-fieldset>
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <i class="fa fa-download"></i>
+        <span class="font-bold white-space-nowrap m-0"> Distribution </span>
+      </div>
+    </ng-template>
+    <p>
+      <g-record-field-links [links]="record.link" />
+    </p>
+  </p-fieldset>
+  <p-fieldset>
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <i class="fa fa-table"></i>
+        <span class="font-bold white-space-nowrap m-0"> Model </span>
+      </div>
+    </ng-template>
+    <p></p>
+  </p-fieldset>
 }

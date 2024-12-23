@@ -7,7 +7,6 @@ import { SearchBaseComponent } from '../search-base/search-base.component';
   standalone: true,
   imports: [Button],
   templateUrl: './search-paging-more-button.component.html',
-  styleUrl: './search-paging-more-button.component.css',
 })
 export class SearchPagingMoreButtonComponent extends SearchBaseComponent {
   size = input<number>();

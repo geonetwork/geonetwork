@@ -5,6 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './data-upload.component.html',
   standalone: true,
   imports: [],
-  styleUrl: './data-upload.component.css',
 })
 export class DataUploadComponent {}

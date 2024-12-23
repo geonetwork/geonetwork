@@ -5,8 +5,6 @@ import {
   SearchAggLayout,
   SearchAggRefreshPolicy,
   SearchAggsContainerComponent,
-  SearchContextDirective,
-  SearchInputComponent,
   SearchPagingComponent,
   SearchPagingMoreButtonComponent,
   SearchQueryResetDirective,
@@ -15,22 +13,21 @@ import {
 } from 'glib';
 import { SidebarModule } from 'primeng/sidebar';
 import { Button, ButtonDirective } from 'primeng/button';
-import { ChipsModule } from 'primeng/chips';
 import { elasticsearch } from 'gapi';
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
+import { InputText } from 'primeng/inputtext';
+import { AutoFocus } from 'primeng/autofocus';
 
 @Component({
   selector: 'gn-search-page',
   templateUrl: './search-page.component.html',
   standalone: true,
-  styleUrl: './search-page.component.css',
   imports: [
     InputGroupModule,
     SidebarModule,
     Button,
     SearchQuerySetterDirective,
-    ChipsModule,
     ButtonDirective,
     SearchAggComponent,
     SearchQueryResetDirective,
@@ -38,10 +35,10 @@ import { AvatarModule } from 'primeng/avatar';
     SearchPagingComponent,
     SearchResultsComponent,
     SearchPagingMoreButtonComponent,
-    SearchContextDirective,
-    SearchInputComponent,
     PanelModule,
     AvatarModule,
+    InputText,
+    AutoFocus,
   ],
 })
 export class SearchPageComponent {
