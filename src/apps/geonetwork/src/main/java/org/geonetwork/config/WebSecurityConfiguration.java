@@ -50,7 +50,6 @@ public class WebSecurityConfiguration {
                 .oauth2Login(oauth -> oauth.permitAll()
                         .userInfoEndpoint(userInfo -> userInfo.userAuthoritiesMapper(
                                 oauthAuthoritiesMapperService.userOauthAuthoritiesMapper())))
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
                 .formLogin(form -> form.loginPage("/signin")
                         .loginProcessingUrl("/api/user/signin")
                         .defaultSuccessUrl("/home", true)
