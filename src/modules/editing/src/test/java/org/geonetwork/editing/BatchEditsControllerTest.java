@@ -61,7 +61,7 @@ class BatchEditsControllerTest {
         when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
 
         String result = Xml.getString(batchEditService
-                .applyBatchEdits(uuids, null, false, edits, request, true)
+                .applyBatchEdits(uuids, null, false, edits, request, BatchEditMode.PREVIEW)
                 .two());
 
         Processor proc = new Processor(false);
