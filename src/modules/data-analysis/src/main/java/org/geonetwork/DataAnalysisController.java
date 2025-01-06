@@ -37,7 +37,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,13 +58,13 @@ public class DataAnalysisController {
     }
 
     @GetMapping(path = "/formats", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     public List<DataFormat> formats() {
         return analyzer.getFormats();
     }
 
     @GetMapping(path = "/attribute/statistics", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     public List<AttributeStatistics> attributeStatistics(
             @RequestParam String datasource, @RequestParam String layer, @RequestParam String attribute) {
 
@@ -73,7 +72,7 @@ public class DataAnalysisController {
     }
 
     @GetMapping(path = "/attribute/codelist", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     public List<Object> attributeCodelist(
             @RequestParam String datasource,
             @RequestParam String layer,
@@ -95,7 +94,7 @@ public class DataAnalysisController {
                                     schema = @Schema(oneOf = {DatasetInfo.class, RasterInfo.class}))
                         }),
             })
-    //@PreAuthorize("hasRole('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<BaseDataInfo> analysisSynch(@RequestParam String datasource, @RequestParam String layer) {
         try {
             Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
@@ -116,13 +115,13 @@ public class DataAnalysisController {
     }
 
     @GetMapping(path = "/layers", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<List<String>> layers(@RequestParam String datasource) {
         return new ResponseEntity<>(analyzer.getDatasourceLayers(datasource), HttpStatus.OK);
     }
 
     @GetMapping(path = "/preview", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<String> previewDataAnalysisOnRecord(
             @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer)
             throws MetadataNotFoundException {
@@ -134,7 +133,7 @@ public class DataAnalysisController {
     }
 
     @PostMapping(path = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<String> applyDataAnalysisOnRecord(
             @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer)
             throws MetadataNotFoundException {

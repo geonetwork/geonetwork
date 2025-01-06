@@ -31,17 +31,17 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
-      <artifactId>gn-data-analysis</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geonetwork</groupId>
       <artifactId>gn-indexing</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-searching</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-data-analysis</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

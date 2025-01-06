@@ -27,14 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @AllArgsConstructor
 public class MeApi {
-    JwtService jwtService;
-
-    @GetMapping("/token")
-    @PreAuthorize("authenticated")
-    public String getToken(Authentication authentication) {
-        String token = jwtService.generateToken(authentication);
-        return token;
-    }
 
     /** Get user details. */
     @GetMapping("/me")
