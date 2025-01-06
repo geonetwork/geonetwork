@@ -14,7 +14,8 @@ export interface DatasetFormat {
   providedIn: 'root',
 })
 export class DataUploadService {
-  private serverUrl = 'http://localhost:7979/api/data/analysis';
+  // TODO: Create OpenAPI client for GN5
+  private serverUrl = '/api/data/analysis';
 
   private http = inject(HttpClient);
 
