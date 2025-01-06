@@ -1,4 +1,4 @@
-@if (search.response()) {
+@if (search.response() && search.response()?.hits.total.value > 0) {
   <p-paginator
     (onPageChange)="onPageChange($event)"
     [first]="search.from()"

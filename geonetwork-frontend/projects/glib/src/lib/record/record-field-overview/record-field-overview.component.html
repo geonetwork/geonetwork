@@ -31,9 +31,12 @@
 
 <ng-template #overview let-overview>
   <p-image
+    #image
     [preview]="preview()"
     [imageClass]="'w-full h-full m-w-full ' + styleClass()"
     [styleClass]="'w-full h-full'"
     [src]="overview.url"
+    [hidden]="image.hidden"
+    (onImageError)="image.hidden = true"
     [title]="overview.nameObject?.default || 'overview'"></p-image>
 </ng-template>

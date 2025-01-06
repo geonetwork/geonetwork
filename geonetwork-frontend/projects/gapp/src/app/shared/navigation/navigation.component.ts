@@ -1,12 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import {
   AppStore,
   LanguagesLoaderDirective,
-  SearchQuerySetterDirective,
+  SearchInputComponent,
   SignInStatusMenuComponent,
 } from 'glib';
 import { SpeedDialModule } from 'primeng/speeddial';
@@ -17,13 +16,11 @@ import { FormsModule } from '@angular/forms';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ChipModule } from 'primeng/chip';
 import { Select } from 'primeng/select';
-import { Button, ButtonDirective } from 'primeng/button';
+import { Button } from 'primeng/button';
 import { Popover } from 'primeng/popover';
 import { Drawer } from 'primeng/drawer';
-import { Menu } from 'primeng/menu';
-import { AutoFocus } from 'primeng/autofocus';
-import { NgTemplateOutlet } from '@angular/common';
 import { AppMenuComponent } from '../app-menu/app-menu.component';
+import { CatalogAvatarComponent } from '../catalog-avatar/catalog-avatar.component';
 
 @Component({
   selector: 'gn-navigation',
@@ -45,13 +42,9 @@ import { AppMenuComponent } from '../app-menu/app-menu.component';
     Button,
     Popover,
     Drawer,
-    Menu,
-    ButtonDirective,
-    SearchQuerySetterDirective,
-    AutoFocus,
-    RouterLink,
-    NgTemplateOutlet,
     AppMenuComponent,
+    SearchInputComponent,
+    CatalogAvatarComponent,
   ],
 })
 export class NavigationComponent implements OnInit {
@@ -75,7 +68,7 @@ export class NavigationComponent implements OnInit {
     this.darkMode.set(element!.classList.contains('gn-app-dark'));
   }
 
-  setRouteToSearch() {
+  setRouteToSearch(searchText: string) {
     if (this.router.url === '/search') {
       return;
     }

@@ -1,9 +1,26 @@
 @if (search) {
-  <input
-    type="text"
-    pInputText
-    [class]="styleClass()"
-    placeholder="Search ..."
-    [ngModel]="search.fullTextQuery()"
-    (ngModelChange)="search.setFullTextQuery($event)" />
+  <p-inputgroup styleClass="w-full" [title]="placeholder()">
+    <p-inputgroup-addon>
+      <p-button
+        severity="secondary"
+        icon="fa fa-search"
+        (click)="onModelChange(search.fullTextQuery())">
+      </p-button>
+    </p-inputgroup-addon>
+    <input
+      type="text"
+      pInputText
+      [pAutoFocus]="autofocus()"
+      [class]="styleClass()"
+      [placeholder]="placeholder()"
+      [ngModel]="search.fullTextQuery()"
+      (ngModelChange)="onModelChange($event)" />
+    <p-inputgroup-addon>
+      <p-button
+        icon="fa fa-times"
+        severity="secondary"
+        [title]="'Reset search'"
+        (click)="search.reset()"></p-button>
+    </p-inputgroup-addon>
+  </p-inputgroup>
 }

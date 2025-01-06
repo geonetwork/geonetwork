@@ -1,5 +1,9 @@
 <p-menubar styleClass="w-full">
   <ng-template pTemplate="start">
+    <div class="w-[120px] hidden lg:block">
+      <gn-catalog-avatar></gn-catalog-avatar>
+    </div>
+
     <div class="">
       <p-drawer [(visible)]="visible" header="My GeoNetwork">
         <gn-app-menu></gn-app-menu>
@@ -11,16 +15,11 @@
     </div>
 
     <div class="mx-6 w-full">
-      <p-inputGroup styleClass=" w-full">
-        <input
-          gSearchQuerySetter="main"
-          pInputText
-          [pAutoFocus]="true"
-          placeholder="Search ..."
-          (keyup)="setRouteToSearch()"
-          class="w-full p-4" />
-        <button icon="fa fa-search" pButton routerLink="/search"></button>
-      </p-inputGroup>
+      <g-search-input
+        scope="main"
+        [autofocus]="true"
+        styleClass="w-full p-4"
+        (onSearch)="setRouteToSearch($event)"></g-search-input>
     </div>
   </ng-template>
 

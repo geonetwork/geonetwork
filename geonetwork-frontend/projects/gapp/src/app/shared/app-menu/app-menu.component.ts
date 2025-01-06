@@ -26,13 +26,13 @@ export class AppMenuComponent implements OnInit {
   items: MenuItem[];
 
   listOfMenu: { [key: string]: MenuItem } = {
-    // home: {
-    //   label: 'Home',
-    //   icon: 'fa fa-home',
-    //   command: () => {
-    //     this.router.navigate(['home']);
-    //   },
-    // },
+    home: {
+      label: 'Discover',
+      icon: 'fa fa-compass',
+      command: () => {
+        this.router.navigate(['home']);
+      },
+    },
     search: {
       label: 'Search',
       icon: 'fa fa-search',

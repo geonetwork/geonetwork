@@ -1,10 +1,19 @@
-import { Component, computed, input } from '@angular/core';
+import {
+  Component,
+  computed,
+  EventEmitter,
+  input,
+  Output,
+  output,
+  OutputEmitterRef,
+} from '@angular/core';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { elasticsearch } from 'gapi';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { SearchAggItemComponent } from '../search-agg-item/search-agg-item.component';
 import {
+  SearchFilter,
   SearchFilterOperator,
   SearchFilterValue,
   SearchFilterValueState,
@@ -50,6 +59,8 @@ export class SearchAggComponent extends SearchBaseComponent {
   layout = input<SearchAggLayout>();
   placeholder = input<string>();
   isLabelDisplayed = input<boolean | undefined>();
+  @Output()
+  onItemSelected = new EventEmitter<SearchFilter>();
 
   isLabelDisplayedValue = computed(() => {
     if (this.isLabelDisplayed() === false) {
@@ -126,6 +137,16 @@ export class SearchAggComponent extends SearchBaseComponent {
   filter(filterValue: SearchFilterValue) {
     const value = Object.keys(filterValue)[0];
     const state = filterValue[value];
+
+    if (this.onItemSelected.observed) {
+      this.onItemSelected.emit({
+        field: this.searchField,
+        values: { [value]: state },
+        operator: SearchFilterOperator.OR,
+      });
+      return;
+    }
+
     // TODO: NOT and tri-state checkbox?
     if (state == SearchFilterValueState.OFF || state === null)
       this.search.removeFilterValue(this.searchField, value);

@@ -16,7 +16,6 @@ import { RecordFieldKeywordsComponent } from '../record-field-keywords/record-fi
 import { AccordionModule } from 'primeng/accordion';
 import { RecordFieldLinksComponent } from '../record-field-links/record-field-links.component';
 import { Fieldset } from 'primeng/fieldset';
-import { RecordFieldResourceTypeComponent } from '../record-field-resource-type/record-field-resource-type.component';
 
 @Component({
   selector: 'g-record-view',
@@ -30,7 +29,6 @@ import { RecordFieldResourceTypeComponent } from '../record-field-resource-type/
     AccordionModule,
     RecordFieldLinksComponent,
     Fieldset,
-    RecordFieldResourceTypeComponent,
     JsonPipe,
   ],
 })

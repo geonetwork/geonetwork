@@ -9,7 +9,7 @@ import {
 @Component({
   selector: 'g-search-bar-simple',
   standalone: true,
-  imports: [SearchAggComponent, SearchInputComponent],
+  imports: [SearchInputComponent, SearchAggComponent],
   templateUrl: './search-bar-simple.component.html',
 })
 export class SearchBarSimpleComponent extends SearchBaseComponent {

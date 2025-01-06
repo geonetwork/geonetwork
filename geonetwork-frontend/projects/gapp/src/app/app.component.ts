@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  computed,
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   inject,
@@ -10,7 +9,6 @@ import {
 } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import {
-  API_CONFIGURATION,
   APPLICATION_CONFIGURATION,
   buildGn4BaseUrl,
   SearchAggLayout,
@@ -25,16 +23,9 @@ import { ScrollTopModule } from 'primeng/scrolltop';
 import { SidebarModule } from 'primeng/sidebar';
 import { HeaderComponent } from './shared/header/header.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
-import { filter, of } from 'rxjs';
+import { filter } from 'rxjs';
 import { environment } from '../environments/environment';
-import { Drawer } from 'primeng/drawer';
-import { Menu } from 'primeng/menu';
 import { AppMenuComponent } from './shared/app-menu/app-menu.component';
-import { Menubar } from 'primeng/menubar';
-import { NgOptimizedImage } from '@angular/common';
-import { Button } from 'primeng/button';
-import { Avatar } from 'primeng/avatar';
-import { CatalogAvatarComponent } from './shared/catalog-avatar/catalog-avatar.component';
 
 @Component({
   selector: 'app-root',
@@ -51,14 +42,7 @@ import { CatalogAvatarComponent } from './shared/catalog-avatar/catalog-avatar.c
     SidebarModule,
     HeaderComponent,
     NavigationComponent,
-    Drawer,
-    Menu,
     AppMenuComponent,
-    Menubar,
-    NgOptimizedImage,
-    Button,
-    Avatar,
-    CatalogAvatarComponent,
   ],
   templateUrl: './app.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

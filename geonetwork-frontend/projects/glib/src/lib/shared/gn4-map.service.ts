@@ -13,7 +13,6 @@ interface Gn4MapCommand {
 export class Gn4MapService {
   router = inject(Router);
 
-
   addWmsLayers = (links: GnLink[]) => {
     const command = links
       .filter(link => link.urlObject)

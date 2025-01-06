@@ -11,6 +11,7 @@ export * from './lib/auth/sign-in-form/sign-in-form.component';
 export * from './lib/auth/sign-in-status-menu/sign-in-status-menu.component';
 export * from './lib/auth/user-badge/user-badge.component';
 export * from './lib/language/languages-loader.directive';
+export * from './lib/router/default-routing.service';
 export * from './lib/search/search-context.directive';
 export * from './lib/search/search-results-loader.directive';
 export * from './lib/search/search-base/search-base.component';

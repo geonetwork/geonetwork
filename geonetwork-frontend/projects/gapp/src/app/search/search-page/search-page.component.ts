@@ -1,23 +1,25 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { InputGroupModule } from 'primeng/inputgroup';
 import {
   SearchAggComponent,
   SearchAggLayout,
   SearchAggRefreshPolicy,
   SearchAggsContainerComponent,
+  SearchFilterOperator,
+  SearchFilterValueState,
   SearchPagingComponent,
   SearchPagingMoreButtonComponent,
   SearchQueryResetDirective,
-  SearchQuerySetterDirective,
   SearchResultsComponent,
+  SearchService,
+  SearchStoreType,
 } from 'glib';
 import { SidebarModule } from 'primeng/sidebar';
-import { Button, ButtonDirective } from 'primeng/button';
+import { Button } from 'primeng/button';
 import { elasticsearch } from 'gapi';
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
-import { InputText } from 'primeng/inputtext';
-import { AutoFocus } from 'primeng/autofocus';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'gn-search-page',
@@ -27,8 +29,6 @@ import { AutoFocus } from 'primeng/autofocus';
     InputGroupModule,
     SidebarModule,
     Button,
-    SearchQuerySetterDirective,
-    ButtonDirective,
     SearchAggComponent,
     SearchQueryResetDirective,
     SearchAggsContainerComponent,
@@ -37,11 +37,17 @@ import { AutoFocus } from 'primeng/autofocus';
     SearchPagingMoreButtonComponent,
     PanelModule,
     AvatarModule,
-    InputText,
-    AutoFocus,
   ],
 })
-export class SearchPageComponent {
+export class SearchPageComponent implements OnInit {
+  activeRoute = inject(ActivatedRoute);
+  searchService = inject(SearchService);
+  search: SearchStoreType;
+
+  ngOnInit() {
+    this.search = this.searchService.getSearch('main');
+  }
+
   protected readonly SearchAggLayout = SearchAggLayout;
   themeSidebarSelector = signal(false);
 

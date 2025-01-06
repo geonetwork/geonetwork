@@ -16,6 +16,7 @@ import { elasticsearch } from 'gapi';
 })
 export class SearchContextDirective implements OnInit {
   scope = input<string>('', { alias: 'gSearchContext' });
+  routing = input<boolean>(false);
   aggregations = input<any>({});
   score = input<any>(DEFAULT_SCORE);
   size = input<number>(DEFAULT_PAGE_SIZE);
@@ -49,7 +50,8 @@ export class SearchContextDirective implements OnInit {
       this.score(),
       this.size(),
       this.sort(),
-      this.filter()
+      this.filter(),
+      this.routing()
     );
     this.#searchService.register(this.scope(), this.#searchStore);
   }

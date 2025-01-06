@@ -1,19 +1,21 @@
 <div
   gSearchContext="main"
+  [routing]="true"
   filter="+isTemplate:n"
   [size]="pageSize"
   [score]="scoreConfig"
   [aggregations]="aggregationConfig">
   <gn-header></gn-header>
 
+  <gn-navigation class="sticky top-0 z-20"></gn-navigation>
+
   <div class="flex">
-    <div class="w-[120px] hidden lg:block">
-      <gn-catalog-avatar class="sticky top-0 z-20"></gn-catalog-avatar>
-      <gn-app-menu iconMode="true"></gn-app-menu>
+    <div class="w-[130px] hidden lg:block relative">
+      <div class="fixed top-24 left-0">
+        <gn-app-menu iconMode="true"></gn-app-menu>
+      </div>
     </div>
     <div class="w-full">
-      <gn-navigation class="sticky top-0 z-20"></gn-navigation>
-
       <router-outlet></router-outlet>
 
       <gn-app-frame

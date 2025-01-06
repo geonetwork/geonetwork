@@ -122,6 +122,7 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
               prefix: 'fa fa-2x pull-left gn-icon-',
             },
             orderByTranslation: true,
+            refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
           },
         },
         // 'OrgForResource': {
@@ -142,6 +143,7 @@ export const DEFAULT_UI_CONFIGURATION: UiConfiguration = {
               type: 'icon',
               prefix: 'fa fa-2x pull-left gn-icon-',
             },
+            refreshPolicy: SearchAggRefreshPolicy.NO_REFRESH,
           },
         },
       },

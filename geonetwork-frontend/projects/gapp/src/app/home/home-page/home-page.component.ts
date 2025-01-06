@@ -2,16 +2,18 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   APPLICATION_CONFIGURATION,
   DEFAULT_PAGE_SIZE,
+  DefaultRoutingService,
   SearchAggComponent,
   SearchAggLayout,
   SearchContextDirective,
+  SearchFilter,
   SearchResultsCarouselComponent,
   SearchResultsFirstOverviewAsBackgroundDirective,
   SearchResultsTimelineComponent,
 } from 'glib';
-import { Info, Params } from '../../../../../gapi/src/lib/ui-settings';
-import { elasticsearch } from 'gapi';
+import { elasticsearch, Info, Params } from 'gapi';
 import { CarouselModule } from 'primeng/carousel';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'gn-home-page',
@@ -24,10 +26,13 @@ import { CarouselModule } from 'primeng/carousel';
     SearchResultsCarouselComponent,
     SearchResultsFirstOverviewAsBackgroundDirective,
     CarouselModule,
+    Button,
   ],
 })
 export class HomePageComponent implements OnInit {
   panels = signal<Info[]>([]);
+
+  router = inject(DefaultRoutingService);
 
   ngOnInit(): void {
     this.panels.set(
@@ -42,7 +47,7 @@ export class HomePageComponent implements OnInit {
         } else {
           return info;
         }
-      }) as Info[]
+      }) as Info[],
     );
   }
 
@@ -66,5 +71,9 @@ export class HomePageComponent implements OnInit {
       }
       return acc;
     }, '');
+  }
+
+  routeToSearch($event: SearchFilter) {
+    this.router.search($event);
   }
 }

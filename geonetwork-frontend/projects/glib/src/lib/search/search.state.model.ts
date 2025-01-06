@@ -54,6 +54,7 @@ export interface Search {
     elasticsearch.AggregationsAggregate
   >;
   error: Error | null;
+  routing: boolean;
 }
 
 export interface SearchFilterParameters {
