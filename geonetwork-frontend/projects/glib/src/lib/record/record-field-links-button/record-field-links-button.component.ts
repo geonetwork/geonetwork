@@ -2,14 +2,12 @@ import { Component, computed, inject, input, Input } from '@angular/core';
 import { GnLink, LinkActionTypes, LinkTypes } from 'gapi';
 import { Button } from 'primeng/button';
 import { Gn4MapService } from '../../shared/gn4-map.service';
-import { APPLICATION_CONFIGURATION } from 'glib';
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import { Toast } from 'primeng/toast';
 import { Menu } from 'primeng/menu';
 import { MenuItem, MessageService, PrimeTemplate } from 'primeng/api';
 import { RecordLinkService } from '../record-link.service';
 import { RecordLinkActionIconPipe } from '../record-link-action-icon.pipe';
-import { SplitButton } from 'primeng/splitbutton';
 
 @Component({
   selector: 'g-record-field-links-button',

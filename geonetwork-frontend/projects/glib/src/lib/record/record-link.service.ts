@@ -1,8 +1,8 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { Gn4MapService } from '../shared/gn4-map.service';
 import { GnLink, LinkActionTypes, LinkTypes } from 'gapi';
-import { APPLICATION_CONFIGURATION } from 'glib';
 import { ConfigService } from '../shared/config.service';
+import { APPLICATION_CONFIGURATION } from '../config/config.loader';
 
 interface LinkType {
   icon: string;
