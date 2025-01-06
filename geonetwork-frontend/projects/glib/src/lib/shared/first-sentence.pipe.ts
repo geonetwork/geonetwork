@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class FirstSentencePipe implements PipeTransform {
-  transform(text: string): string {
-    return text?.replace(/^((?:.*?)[.?!])\s.*/, '$1');
+  transform(text: string | undefined): string {
+    return text?.replace(/^((?:.*?)[.?!])\s.*/, '$1') || '';
   }
 }

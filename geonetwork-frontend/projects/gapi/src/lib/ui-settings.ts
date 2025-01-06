@@ -219,12 +219,16 @@ export interface Grid {
   related: string[];
 }
 
-export interface LinkTypes {
-  links: string[];
-  downloads: string[];
-  layers: string[];
-  maps: string[];
+export enum LinkActionTypes {
+  layers = 'layers',
+  maps = 'maps',
+  links = 'links',
+  downloads = 'downloads',
 }
+
+export type LinkTypes = {
+  [key in keyof typeof LinkActionTypes]?: string[];
+};
 
 export interface Usersearches {
   enabled: boolean;

@@ -8,6 +8,8 @@
   @tailwind utilities;
 }
 
-.fa {
+.fa,
+.fa-stack {
   line-height: unset;
+  height: unset;
 }

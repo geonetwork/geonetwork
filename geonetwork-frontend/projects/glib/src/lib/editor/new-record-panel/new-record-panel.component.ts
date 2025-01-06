@@ -272,7 +272,7 @@ export class NewRecordPanelComponent implements OnInit {
     }
   }
 
-  private applyAnalysisToRecord() {
+  applyAnalysisToRecord() {
     // TODO: Apply to new record, not the template
     const subscription = this.dataUploadService
       .applyAnalysis(this.template(), this.datasource(), this.layername())

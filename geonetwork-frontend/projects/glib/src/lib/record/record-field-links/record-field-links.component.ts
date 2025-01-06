@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { APPLICATION_CONFIGURATION } from '../../config/config.loader';
 import { BadgeModule } from 'primeng/badge';
 import { Gn4MapService } from '../../shared/gn4-map.service';
+import { RecordLinkService } from '../record-link.service';
 
 @Component({
   selector: 'g-record-field-links',
@@ -24,34 +25,10 @@ export class RecordFieldLinksComponent {
 
   router = inject(Router);
   gn4MapService = inject(Gn4MapService);
+  distributionService = inject(RecordLinkService);
 
-  // sections: [
-  //   {
-  //     filter:
-  //       'protocol:OGC:WMS|OGC:WMTS|ESRI:.*|atom.*|REST|OGC API Maps|OGC API Records',
-  //     title: 'API',
-  //   },
   linksBySections = computed(() => {
-    const linksBySections: { [key: string]: GnLink[] } = {};
-    if (!this.links()) {
-      return linksBySections;
-    }
-
-    this.distributionConfig?.sections.map(section => {
-      let sectionFilter = this.configService.parseFilterExpression(
-        section.filter
-      );
-
-      for (const link of this.links()!) {
-        if (this.configService.testExpressionFilters(sectionFilter, link)) {
-          if (!linksBySections[section.title]) {
-            linksBySections[section.title] = [];
-          }
-          linksBySections[section.title]!.push(link);
-        }
-      }
-    });
-    return linksBySections;
+    return this.distributionService.linksBySections(this.links());
   });
 
   addWmsLayers = this.gn4MapService.addWmsLayers;

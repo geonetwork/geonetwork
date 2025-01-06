@@ -13,7 +13,18 @@ interface Gn4MapCommand {
 export class Gn4MapService {
   router = inject(Router);
 
-  addWmsLayers = (links: GnLink[]) => {
+  addMap = (link: GnLink) => {
+    if (link.urlObject) {
+      this.applyCommand(`map=${encodeURIComponent(link.urlObject.default)}`);
+    } else {
+      console.warn('Map link is missing url pointing to a map context.', link);
+    }
+  };
+
+  addWmsLayers = (links: GnLink | GnLink[]) => {
+    if (!Array.isArray(links)) {
+      links = [links];
+    }
     const command = links
       .filter(link => link.urlObject)
       .map(link => {
@@ -27,29 +38,26 @@ export class Gn4MapService {
       });
 
     if (command.length > 0) {
-      // window.location.replace('map#/map?add=' + JSON.stringify(command));
-      const webcomponent = document.getElementsByTagName('gn-app-frame')[0];
-      const url = webcomponent.getAttribute('url') || '';
-      const config = webcomponent.getAttribute('config') || '';
-      const language = webcomponent.getAttribute('language') || 'eng';
-      webcomponent.shadowRoot?.children[0].setAttribute(
-        'src',
-        url +
-          '/srv/eng/catalog.search?uiconfig=' +
-          encodeURIComponent(config.trim()) +
-          '#/map?add=' +
-          JSON.stringify(command)
-      );
-      this.router.navigate(['/map']);
+      const commandParameter = 'add=' + JSON.stringify(command);
+      this.applyCommand(commandParameter);
     } else {
       links.forEach(link => {
         if (!link.urlObject) {
-          console.warn('Link is missing url or name object', link);
+          console.warn('Add layer link is missing url or name object', link);
         }
       });
     }
   };
 
-  // TODO: Add Map
-  // window.location.href = 'map#/map?map=' + encodeURI(mapUrl);
+  applyCommand = (command: string) => {
+    const webcomponent = document.getElementsByTagName('gn-app-frame')[0];
+    const url = webcomponent.getAttribute('url') || '';
+    const config = webcomponent.getAttribute('config') || '';
+    const language = webcomponent.getAttribute('language') || 'eng';
+    webcomponent.shadowRoot?.children[0].setAttribute(
+      'src',
+      `${url}/srv/${language}/catalog.search?uiconfig=${encodeURIComponent(config.trim())}#/map?${command}`
+    );
+    this.router.navigate(['/map']);
+  };
 }

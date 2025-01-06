@@ -1,10 +1,8 @@
 @if (hit(); as hit) {
   <div
-    class="grid gap-4 mb-2 rounded-lg border-l-8 -left-8 border-transparent hover:border-primary-500">
-    <a
-      class="flex flex-row gap-4"
-      routerLink="/metadata/{{ hit._id }}"
-      title="{{ hit._source.resourceAbstractObject?.default }}">
+    class="grid gap-4 mb-2 rounded-lg border-l-8 -left-8 border-transparent hover:border-primary-500"
+    title="{{ hit._source.resourceAbstractObject?.default | firstSentence }}">
+    <div class="flex flex-row gap-4">
       <div class="flex-none w-48 h-48 relative border border-gray-300">
         <g-record-field-overview
           [field]="hit._source.overview?.[0]"
@@ -15,41 +13,33 @@
           [layout]="ResourceTypeLayout.ICON_WITH_BADGE"
           class="absolute bottom-0 left-0 m-2" />
       </div>
-      <div class="flex-grow">
-        <div
-          class="text-2xl font-semibold line-clamp-1"
-          title="{{ hit._source.resourceTitleObject?.default }}">
-          {{ hit._source.resourceTitleObject?.default }}
-        </div>
-        <div class="">
-          <p class="line-clamp-2">
-            {{ hit._source.resourceAbstractObject?.default | firstSentence }}
-          </p>
-          <div>
-            <g-record-field-keywords [field]="hit._source.tag" limit="3" />
+      <div class="flex-grow flex flex-col">
+        <a class="flex-grow" routerLink="/metadata/{{ hit._id }}">
+          <div
+            class="text-2xl font-semibold line-clamp-1"
+            title="{{ hit._source.resourceTitleObject?.default }}">
+            {{ hit._source.resourceTitleObject?.default }}
+          </div>
+          <div class="">
+            <div>
+              <g-record-field-keywords [field]="hit._source.tag" limit="3" />
 
-            @for (range of hit._source.resourceTemporalDateRange; track range) {
-              <p-chip
-                class="pr-2"
-                icon="fa fa-calendar"
-                label="{{ range | gRecordFieldRange: 'YYYY-MM-dd' }}">
-              </p-chip>
-            }
-          </div>
-          <div>
-            @for (link of hit._source.link; track $index) {
-              @if (link.protocol.startsWith('OGC:WMS')) {
-                <p-button
-                  icon="fa fa-map"
-                  size="small"
-                  (onClick)="addWmsLayers([link]); $event.preventDefault()"
-                  [title]="'Add to map (' + link.nameObject?.default + ')'">
-                </p-button>
+              @for (
+                range of hit._source.resourceTemporalDateRange;
+                track range
+              ) {
+                <p-chip
+                  class="pr-2"
+                  icon="fa fa-calendar"
+                  label="{{ range | gRecordFieldRange: 'YYYY-MM-dd' }}">
+                </p-chip>
               }
-            }
+            </div>
           </div>
-        </div>
+        </a>
+        <g-record-field-links-button
+          [links]="hit._source.link"></g-record-field-links-button>
       </div>
-    </a>
+    </div>
   </div>
 }

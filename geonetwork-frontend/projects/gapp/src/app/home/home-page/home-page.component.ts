@@ -47,7 +47,7 @@ export class HomePageComponent implements OnInit {
         } else {
           return info;
         }
-      }) as Info[],
+      }) as Info[]
     );
   }
 

@@ -1,0 +1,50 @@
+@for (type of linksBySections() | keyvalue; track type.key) {
+  <ng-template #linkButton let-link>
+    @let action = getLinkAction(link.value, link.type);
+    @if (action) {
+      <p-button
+        [icon]="'fa ' + (link.type | gRecordLinkActionIcon)"
+        class="mr-2"
+        (onClick)="action(link.value)"
+        [title]="link.type + ' - ' + link.value.nameObject?.default + ''">
+      </p-button>
+    } @else {
+      <a
+        class="mr-2 p-button p-button-icon-only"
+        [attr.href]="link.value.urlObject.default"
+        title="{{ link.value.nameObject?.default }}"
+        target="_blank"
+        rel="noopener noreferrer">
+        <i [attr.class]="'fa ' + (link.type | gRecordLinkActionIcon)"></i>
+      </a>
+    }
+  </ng-template>
+
+  @switch (type.value.length) {
+    @case (1) {
+      <ng-container
+        *ngTemplateOutlet="
+          linkButton;
+          context: { $implicit: { value: type.value[0], type: type.key } }
+        "></ng-container>
+    }
+    @default {
+      <p-toast></p-toast>
+      <p-menu
+        #menu
+        [model]="buildMenuItems(type.value, type.key)"
+        [popup]="true"></p-menu>
+      <p-button
+        [title]="type.key"
+        class="mr-2"
+        (click)="menu.toggle($event); $event.preventDefault()">
+        <ng-template #icon>
+          <span class="fa-stack">
+            <i [class]="'fa ' + (type.key | gRecordLinkActionIcon)"></i>
+            <i class="fa fa-ellipsis-v"></i>
+          </span>
+        </ng-template>
+      </p-button>
+    }
+  }
+}

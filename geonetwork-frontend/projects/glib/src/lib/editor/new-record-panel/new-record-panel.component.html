@@ -65,7 +65,7 @@
             <div class="font-bold w-full text-2xl text-center">or</div>
 
             <div class="mb-10">
-              <p-fileUpload
+              <p-fileupload
                 styleClass="w-full"
                 mode="basic"
                 name="demo[]"
@@ -74,7 +74,7 @@
                 maxFileSize="1000000"
                 (onUpload)="onBasicUploadAuto($event)"
                 [auto]="true"
-                chooseLabel="Upload your file" />
+                chooseLabel="Upload your file"></p-fileupload>
             </div>
 
             @if (isFetchingLayers()) {

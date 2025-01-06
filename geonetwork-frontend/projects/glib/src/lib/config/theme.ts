@@ -23,7 +23,7 @@ export const GeoNetworkTheme = definePreset(Aura, {
     colorScheme: {
       light: {
         primary: {
-          color: '{zinc.950}',
+          color: '{zinc.500}',
           inverseColor: '#ffffff',
           hoverColor: '{zinc.900}',
           activeColor: '{zinc.800}',

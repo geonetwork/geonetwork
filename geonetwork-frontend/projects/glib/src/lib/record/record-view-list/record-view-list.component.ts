@@ -13,6 +13,7 @@ import { FirstSentencePipe } from '../../shared/first-sentence.pipe';
 import { RecordFieldKeywordsComponent } from '../record-field-keywords/record-field-keywords.component';
 import { Button } from 'primeng/button';
 import { Gn4MapService } from '../../shared/gn4-map.service';
+import { RecordFieldLinksButtonComponent } from '../record-field-links-button/record-field-links-button.component';
 
 @Component({
   selector: 'g-record-view-list',
@@ -25,7 +26,7 @@ import { Gn4MapService } from '../../shared/gn4-map.service';
     RecordFieldRange,
     FirstSentencePipe,
     RecordFieldKeywordsComponent,
-    Button,
+    RecordFieldLinksButtonComponent,
   ],
   templateUrl: './record-view-list.component.html',
 })
@@ -35,6 +36,4 @@ export class RecordViewListComponent {
   landingPage = input<string>('');
   landingPageLinkOn = input<string>();
   landingPageLabel = input<string>('Read more');
-  gn4MapService = inject(Gn4MapService);
-  addWmsLayers = this.gn4MapService.addWmsLayers;
 }
