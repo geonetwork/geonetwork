@@ -127,8 +127,8 @@ export class NewRecordPanelComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   private stepEvents: { [key: number]: Function } = {
-    2: this.getDatasetInfo.bind(this),
-    3: this.getRecordPreview.bind(this),
+    3: this.getDatasetInfo.bind(this),
+    4: this.getRecordPreview.bind(this),
   };
 
   constructor() {
