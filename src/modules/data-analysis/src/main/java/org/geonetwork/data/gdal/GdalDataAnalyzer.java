@@ -52,7 +52,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
     public GdalDataAnalyzer(
             @Value("${geonetwork.data.analyzer.gdal.command:}") String command,
-            @Value("${geonetwork.data.analyzer.gdal.baseDir:}") String baseDir,
+            @Value("${geonetwork.directory.data:}") String baseDir,
             @Value("${geonetwork.data.analyzer.gdal.mountPoint:}") String mountPoint,
             @Value("${geonetwork.data.analyzer.gdal.processTimeoutInSeconds:60}") int processTimeoutInSeconds) {
         this.command = command;
@@ -195,8 +195,11 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     }
 
     private String buildDataSourcePath(String dataSource) {
-        // TODO: Only applies to file system data sources
-        return mountPoint.isEmpty() ? dataSource : dataSource.replace(baseDir, mountPoint);
+        // TODO: Connect to data directory
+        return mountPoint.isEmpty()
+                        || dataSource.matches("(?i)^(http|wfs|vis|db|/vsizip//vsicurl/http|/vsicurl/http).*")
+                ? dataSource
+                : dataSource.replace(baseDir, mountPoint);
     }
 
     private CommandLine buildUtilityCommand(String utility) {
