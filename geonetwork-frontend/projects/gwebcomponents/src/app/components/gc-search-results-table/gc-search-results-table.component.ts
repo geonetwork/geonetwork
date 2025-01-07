@@ -14,7 +14,7 @@ import { GcBaseSearchComponent } from '../gc-base-search-component';
   selector: 'gc-search-results-table',
   templateUrl: './gc-search-results-table.component.html',
   styleUrl: './gc-search-results-table.component.css',
-  // FIXME encapsulation: ViewEncapsulation.ShadowDom,
+  // encapsulation: ViewEncapsulation.ShadowDom,
   providers: [
     { provide: API_CONFIGURATION, useValue: signal(DefaultConfig) },
     SearchService,

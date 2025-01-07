@@ -15,7 +15,7 @@ import { DataTableComponent } from 'glib';
   selector: 'gc-data-results-table',
   templateUrl: './gc-data-results-table.component.html',
   styleUrl: './gc-data-results-table.component.css',
-  // FIXME encapsulation: ViewEncapsulation.ShadowDom,
+  // encapsulation: ViewEncapsulation.ShadowDom,
   imports: [DataTableComponent],
 })
 export class GcDataResultsTableComponent implements OnInit, OnChanges {

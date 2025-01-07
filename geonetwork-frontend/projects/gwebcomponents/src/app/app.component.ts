@@ -47,6 +47,13 @@ export class AppComponent implements OnInit {
               this.router.navigate(['webcomponents', 'gc-data-results-table']);
             },
           },
+          {
+            label: 'New record',
+            icon: 'fa fa-plus',
+            command: () => {
+              this.router.navigate(['webcomponents', 'gc-new-record-panel']);
+            },
+          },
         ],
       },
       {

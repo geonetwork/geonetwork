@@ -4,6 +4,7 @@ import { createCustomElement } from '@angular/elements';
 import {
   DataTableComponent,
   DataUploadComponent,
+  NewRecordPanelComponent,
   SearchAggComponent,
   SearchBarSimpleComponent,
   SearchContextDirective,
@@ -23,16 +24,10 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { GnAngularjsComponent } from './components/gn-angularjs/gn-angularjs.component';
-import { GWebcomponentsDocComponent } from './components/g-webcomponents-doc/g-webcomponents-doc.component';
-import { GWebcomponentsDocEmbedComponent } from './components/g-webcomponents-doc-embed/g-webcomponents-doc-embed.component';
 import { Button } from 'primeng/button';
-import { GWebcomponentConfigurationComponent } from './components/g-webcomponent-configuration/g-webcomponent-configuration.component';
 import { SliderModule } from 'primeng/slider';
-import { GcBaseComponent } from './components/gc-base-component';
-import { GcBaseSearchComponent } from './components/gc-base-search-component';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { GcDataUploadComponent } from './components/gc-data-upload/gc-data-upload.component';
+import { GcNewRecordPanelComponent } from './components/gc-new-record-panel/gc-new-record-panel.component';
 
 const CUSTOM_ELEMENTS = [
   {
@@ -48,8 +43,8 @@ const CUSTOM_ELEMENTS = [
     selector: 'gc-search-results-table-component',
   },
   {
-    component: GcDataUploadComponent,
-    selector: 'gc-data-upload-component',
+    component: GcNewRecordPanelComponent,
+    selector: 'gc-new-record-panel-component',
   },
 ];
 
@@ -77,6 +72,7 @@ const CUSTOM_ELEMENTS = [
     InputSwitchModule,
     SearchBarSimpleComponent,
     DataUploadComponent,
+    NewRecordPanelComponent,
   ],
   bootstrap: [],
   exports: [],
@@ -84,6 +80,7 @@ const CUSTOM_ELEMENTS = [
 })
 export class AppModule {
   constructor(private injector: Injector) {
+    console.log(CUSTOM_ELEMENTS.length + ' components to create...');
     CUSTOM_ELEMENTS.forEach(({ component, selector }) => {
       const el = createCustomElement(component, { injector });
       customElements.define(selector, el);

@@ -7,3 +7,9 @@
   @tailwind components;
   @tailwind utilities;
 }
+
+.fa,
+.fa-stack {
+  line-height: unset;
+  height: unset;
+}
