@@ -1,7 +1,7 @@
 <p-selectButton
   (onOptionClick)="handleChange($event)"
   [options]="buckets()"
-  [multiple]="true">
+  [multiple]="multiple()">
   <ng-template let-bucket pTemplate="item">
     <div class="flex align-items-center gap-2">
       <g-search-agg-item-decorator

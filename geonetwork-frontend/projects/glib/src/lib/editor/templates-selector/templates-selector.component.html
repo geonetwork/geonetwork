@@ -1,6 +1,6 @@
 <div
   gSearchContext="newDataTemplates"
-  size="5"
+  size="10"
   filter="+isTemplate:y"
   [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]">
   <g-search-results scope="newDataTemplates">
@@ -8,7 +8,15 @@
       <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
     </ng-template>
     <ng-template #resultsTemplate let-search>
+      <!--<g-search-agg
+        aggregation="resourceType"
+        [isLabelDisplayed]="false"
+        [layout]="SearchAggLayout.SELECT_BUTTON"
+        scope="newDataTemplates"/>-->
+
       <p-selectButton
+        class="flex-col"
+        styleClass="w-full"
         [options]="search.response().hits.hits"
         [(ngModel)]="template"
         allowEmpty="false"
@@ -16,7 +24,8 @@
         <ng-template #item let-hit>
           <div
             class="text-2xl font-semibold line-clamp-1 break-all p-6"
-            [attr.title]="hit._source.resourceAbstractObject?.default">
+            [attr.id]="'gn-record-' + hit._id"
+            [attr.title]="hit._source.resourceTitleObject?.default">
             <g-record-field-resource-type
               [field]="hit._source.resourceType"
               [layout]="ResourceTypeLayout.ICON"

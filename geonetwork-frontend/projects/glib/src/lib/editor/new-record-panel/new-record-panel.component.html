@@ -22,12 +22,14 @@
             label="Add data"
             icon="fas fa-upload"
             iconPos="right"
+            data-cy="gn-new-record-button-step-data"
             [disabled]="!isTemplateSelected()"
             (onClick)="activateCallback(2)" />
           <p-button
             label="Edit record"
             icon="fas fa-plus"
             iconPos="right"
+            data-cy="gn-new-record-button-edit"
             [disabled]="!isTemplateSelected()"
             (onClick)="editRecord()" />
         </div>

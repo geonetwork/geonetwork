@@ -20,6 +20,7 @@ import {
 export class SearchAggSelectButtonComponent extends SearchBaseComponent {
   buckets = input.required<any>();
   field = input.required<string>();
+  multiple = input(true);
   aggregationConfig =
     input.required<elasticsearch.AggregationsAggregationContainer>();
 
@@ -27,15 +28,18 @@ export class SearchAggSelectButtonComponent extends SearchBaseComponent {
     const isSelected =
       this.search.isFilterActive(this.field(), event.option.key) ===
       SearchFilterValueState.ON;
-    this.search.addFilter({
-      field: this.field(),
-      values: {
-        [event.option.key]: isSelected
-          ? SearchFilterValueState.OFF
-          : SearchFilterValueState.ON,
+    this.search.addFilter(
+      {
+        field: this.field(),
+        values: {
+          [event.option.key]: isSelected
+            ? SearchFilterValueState.OFF
+            : SearchFilterValueState.ON,
+        },
+        operator: SearchFilterOperator.OR,
       },
-      operator: SearchFilterOperator.OR,
-    });
+      !this.multiple()
+    );
   }
 
   protected readonly SearchFilterValueState = SearchFilterValueState;

@@ -1,4 +1,4 @@
-import { RecordFieldRange } from "./record-field-range.pipe";
+import { RecordFieldRange } from './record-field-range.pipe';
 
 describe('RecordFieldRangePipe', () => {
   it('create an instance', () => {

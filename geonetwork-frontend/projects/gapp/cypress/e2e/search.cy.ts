@@ -1,8 +1,11 @@
 describe('Search Page Test', () => {
   beforeEach(() => {
     cy.visit('/search');
-    cy.get('input[gsearchquerysetter = "main"]').first().as('searchInput');
+    cy.get('gn-navigation input').first().as('searchInput');
     cy.get('g-search-results[scope = "main"]').first().as('searchResults');
+    cy.intercept('/geonetwork/srv/api/search/records/_search').as(
+      'searchApiCall'
+    );
   });
 
   describe('Search Page', () => {
@@ -13,14 +16,6 @@ describe('Search Page Test', () => {
       cy.get('g-search-paging[scope = "main"] .p-paginator-current')
         .first()
         .should('contain.text', 'Showing 1 to 7 ');
-
-      cy.get('@searchInput')
-        .focus()
-        .invoke('val', 'africa')
-        .trigger('keyup', { keypress: 17 })
-        .then(() => {
-          cy.get('@searchResults').find('a').should('have.length', 1);
-        });
 
       cy.get(
         'g-search-agg[data-cy="agg-cl_maintenanceAndUpdateFrequency.key"]'
@@ -33,7 +28,10 @@ describe('Search Page Test', () => {
       cy.get('@searchInput')
         .type('africa')
         .then(() => {
-          cy.get('@searchResults').find('a').should('have.length', 1);
+          cy.wait('@searchApiCall');
+          cy.get('@searchResults')
+            .find('g-record-view-list')
+            .should('have.length', 1);
         });
     });
 
@@ -41,7 +39,10 @@ describe('Search Page Test', () => {
       cy.get('@searchInput')
         .type('zzyyxx')
         .then(() => {
-          cy.get('@searchResults').find('a').should('have.length', 0);
+          cy.wait('@searchApiCall');
+          cy.get('@searchResults')
+            .find('g-record-view-list')
+            .should('have.length', 0);
         });
     });
 
@@ -62,7 +63,9 @@ describe('Search Page Test', () => {
         .find('input[type=checkbox]')
         .click({ force: true })
         .then(() => {
-          cy.get('@searchResults').find('a').should('have.length', aggCount);
+          cy.get('@searchResults')
+            .find('g-record-view-list')
+            .should('have.length', aggCount);
         });
 
       cy.get('g-search-agg[data-cy="agg-cl_maintenanceAndUpdateFrequency.key"]')

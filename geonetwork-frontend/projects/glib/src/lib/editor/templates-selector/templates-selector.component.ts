@@ -9,6 +9,7 @@ import {
 } from '../../record/record-field-resource-type/record-field-resource-type.component';
 import { SearchContextDirective } from '../../search/search-context.directive';
 import { SearchResultsComponent } from '../../search/search-results/search-results.component';
+import { SearchAggComponent, SearchAggLayout } from 'glib';
 
 @Component({
   selector: 'g-templates-selector',
@@ -21,6 +22,7 @@ import { SearchResultsComponent } from '../../search/search-results/search-resul
     SearchContextDirective,
     SearchResultsComponent,
     SelectButtonModule,
+    SearchAggComponent,
   ],
   templateUrl: './templates-selector.component.html',
 })
@@ -28,4 +30,5 @@ export class TemplatesSelectorComponent {
   @Input() template!: WritableSignal<string>;
 
   protected readonly ResourceTypeLayout = ResourceTypeLayout;
+  protected readonly SearchAggLayout = SearchAggLayout;
 }
