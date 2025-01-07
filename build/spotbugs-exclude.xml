@@ -21,6 +21,30 @@
 <FindBugsFilter>
   <!-- Q: Is generated model restricted to trusted code? -->
   <Match>
+    <Class name="org.geonetwork.ogcapi.service.dataaccess.simpleobjects.CatalogInfo"/>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+      <Bug pattern="EI_EXPOSE_REP"/>
+    </Or>
+  </Match>
+
+  <Match>
+    <Package name="org.geonetwork.ogcapi.records.generated.model"/>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+      <Bug pattern="EI_EXPOSE_REP"/>
+    </Or>
+  </Match>
+  <Match>
+    <Class name="org.geonetwork.ogcapi.records.generated.ApiUtil"/>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+      <Bug pattern="EI_EXPOSE_REP"/>
+      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Or>
+  </Match>
+
+  <Match>
     <Package name="org.geonetwork.search.ogcapi.records.generated.model"/>
     <Or>
       <Bug pattern="EI_EXPOSE_REP2"/>

@@ -28,6 +28,12 @@
 
     <dependency>
       <groupId>org.geonetwork</groupId>
+      <artifactId>ogcapi-records-shared</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geonetwork</groupId>
       <artifactId>gn-index-client</artifactId>
       <version>${project.version}</version>
     </dependency>

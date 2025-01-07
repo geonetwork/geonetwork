@@ -19,6 +19,17 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLanguageDto;
 /** This converts an ElasticIndex (i.e. Elastic JSON Index Record) to the OGCAPI-Records Catalog. */
 public class ElasticIndex2Catalog {
 
+    /**
+     * given an elastic index multilingual property like;
+     *
+     * <p>"pointOfContactOrgForResourceObject": { "default": "GeoCat Canada Ltd", "langeng": "GeoCat Canada Ltd" }
+     *
+     * <p>Return the correct language string.
+     *
+     * @param multiLingual elastic index multilingual property
+     * @param lang3iso language (From request) - 3 letter iso lang value (i.e. 'eng')
+     * @return the correct language string, or default.
+     */
     public static String getLangString(Map<String, String> multiLingual, String lang3iso) {
         if (multiLingual == null || multiLingual.isEmpty()) {
             return null;
@@ -44,9 +55,17 @@ public class ElasticIndex2Catalog {
         return multiLingual.get(multiLingual.keySet().iterator().next()); // first one is the best guess...
     }
 
-    public static OgcApiRecordsCatalogDto injectLinkedServiceRecordInfo(IndexRecord indexRecord, String lang3iso) {
+    /**
+     * convert an elastic json index record to an OGCAPI-records OgcApiCatalog object.
+     *
+     * @param indexRecord from elastic
+     * @param lang3iso language (From request) - 3 letter iso lang value (i.e. 'eng')
+     * @return converted IndexRecord To OgcApiCatalog object
+     */
+    public static OgcApiRecordsCatalogDto convertIndexRecordToOgcApiCatalog(IndexRecord indexRecord, String lang3iso) {
         var result = new OgcApiRecordsCatalogDto();
-        injectLinkedServiceRecordInfo(indexRecord, result, lang3iso);
+
+        injectLinkedServiceRecordInfo(result, indexRecord, lang3iso);
         return result;
     }
 
@@ -55,10 +74,10 @@ public class ElasticIndex2Catalog {
      *
      * @param indexRecord Parsed JSON of the linked Service record (GN's DB "source" "serviceRecord")
      * @param catalog collection metadata we've gathered so far (usually not much)
-     * @param lang3iso
+     * @param lang3iso language (From request) - 3 letter iso lang value (i.e. 'eng')
      */
     public static void injectLinkedServiceRecordInfo(
-            IndexRecord indexRecord, OgcApiRecordsCatalogDto catalog, String lang3iso) {
+            OgcApiRecordsCatalogDto catalog, IndexRecord indexRecord, String lang3iso) {
         if (indexRecord == null) {
             return; // nothing to do
         }
@@ -146,6 +165,7 @@ public class ElasticIndex2Catalog {
         var rights = indexRecord.getOtherProperties().get("MD_LegalConstraintsUseLimitationObject");
         if (rights != null) {
             if (rights instanceof List) {
+                @SuppressWarnings("unchecked")
                 var rightsList = (List<Map>) rights;
                 if (!rightsList.isEmpty()
                         && rightsList.get(0) != null
@@ -155,7 +175,6 @@ public class ElasticIndex2Catalog {
             }
         }
 
-        catalog.setId(indexRecord.getUuid());
         catalog.setItemType(List.of(OgcApiRecordsCatalogDto.ItemTypeEnum.RECORD));
         catalog.setType(OgcApiRecordsCatalogDto.TypeEnum.CATALOG);
 

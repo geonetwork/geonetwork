@@ -36,6 +36,7 @@ public class OgcApiRecordsSpecExamplesTest {
 
     public void doTest(String fname, Class clazz) throws IOException {
         String json = readResource("ogcapi_records_spec_examples/" + fname);
+        @SuppressWarnings("unchecked")
         var obj = mapper.readValue(json, clazz);
         var json2 = mapper.writeValueAsString(obj);
 

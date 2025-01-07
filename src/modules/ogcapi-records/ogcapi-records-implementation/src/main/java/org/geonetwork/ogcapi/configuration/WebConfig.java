@@ -30,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer
-                .favorPathExtension(false)
+                // .favorPathExtension(false)
                 .favorParameter(true)
                 .parameterName("f")
                 .ignoreAcceptHeader(true)

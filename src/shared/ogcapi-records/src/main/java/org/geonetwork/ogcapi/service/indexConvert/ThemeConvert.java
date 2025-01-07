@@ -18,8 +18,17 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsThemeConceptsI
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsThemeDto;
 import org.springframework.util.StringUtils;
 
+/** converts elastic json index records (`allKeywords`) to ogcapi theme */
 public class ThemeConvert {
 
+    /**
+     * converts the elastic index record (`allKeywords`) to an ogcapi-record theme.
+     *
+     * @param map elastic index record (`allKeywords` node)
+     * @param lang3iso language (From request) - 3 letter iso lang value (i.e. 'eng')
+     * @return ogcapi-record theme
+     * @throws URISyntaxException bad uri in the thesaurus
+     */
     public static List<OgcApiRecordsThemeDto> convert(Map<String, Thesaurus> map, String lang3iso)
             throws URISyntaxException {
         if (map == null) {

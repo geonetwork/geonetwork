@@ -47,8 +47,6 @@ public class ContactConvertTest {
         assertEquals("testcase-role", contacts.get(0).getRoles().get(1));
 
         assertEquals("default org", contacts.get(0).getOrganization());
-
-        int t = 0;
     }
 
     @Test

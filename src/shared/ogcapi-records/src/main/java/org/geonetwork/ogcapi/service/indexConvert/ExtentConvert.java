@@ -21,8 +21,15 @@ import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsExtentSpatialDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsExtentTemporalDto;
 
+/** handles converting the extent from the elastic json index to ogcapi-record format. */
 public class ExtentConvert {
 
+    /**
+     * given an elastic json index record, create an ogcapi spatial extent (or null).
+     *
+     * @param indexRecord elastic json index record
+     * @return ogcapi spatial extent (or null).
+     */
     public static OgcApiRecordsExtentSpatialDto convertSpatialExtent(IndexRecord indexRecord) {
         var geometries = indexRecord.getGeometries();
         if (geometries == null || geometries.isEmpty()) {
@@ -34,7 +41,7 @@ public class ExtentConvert {
         var bbox = BBox.join(bboxes);
 
         List<List<BigDecimal>> bbox_ogc = new ArrayList<List<BigDecimal>>();
-        var bbox_ogc_inner = new ArrayList();
+        var bbox_ogc_inner = new ArrayList<BigDecimal>();
         bbox_ogc_inner.add(new BigDecimal(bbox.xmin));
         bbox_ogc_inner.add(new BigDecimal(bbox.ymin));
         bbox_ogc_inner.add(new BigDecimal(bbox.xmax));
@@ -47,6 +54,12 @@ public class ExtentConvert {
         return result;
     }
 
+    /**
+     * given an elastic index record, create an ogcapi-records temporal extent.
+     *
+     * @param indexRecord elastic index record
+     * @return ogcapi-records temporal extent
+     */
     public static OgcApiRecordsExtentTemporalDto convertTemporalExtent(IndexRecord indexRecord) {
         var dateRanges = indexRecord.getResourceTemporalDateRange();
         if (dateRanges == null || dateRanges.isEmpty()) {
@@ -70,12 +83,25 @@ public class ExtentConvert {
         return result;
     }
 
+    /**
+     * simple date compare
+     *
+     * @param d1 date1
+     * @param d2 date2
+     * @return comparison between the two
+     */
     public static int compareDate(String d1, String d2) {
         var i1 = Instant.parse(d1);
         var i2 = Instant.parse(d2);
         return i1.compareTo(i2);
     }
 
+    /**
+     * given some date ranges, create a single date range that encompasses them all.
+     *
+     * @param dates list of dateranges
+     * @return single date range that encompasses them all (or null)
+     */
     public static DateRange computeDateRange(List<DateRange> dates) {
         if (dates == null || dates.isEmpty()) {
             return null;
@@ -103,6 +129,7 @@ public class ExtentConvert {
         return dateRange;
     }
 
+    /** internal class just o make things easier for elastic/ogcapi geometries and bounding boxes. */
     @Getter
     @Setter
     public static class BBox {
@@ -126,6 +153,12 @@ public class ExtentConvert {
             this.ymax = ymax;
         }
 
+        /**
+         * merge 2 bboxes
+         *
+         * @param other other bbox
+         * @return bbox that encloses both
+         */
         public static BBox join(List other) {
             var result = new BBox();
             for (Object box : other) {
@@ -138,8 +171,9 @@ public class ExtentConvert {
          * Build BBOX from simple list of coordinates. first ordinate -> X 2nd ordinate -> Y
          *
          * @param listCoordinates - [ [1,2], [3,4], ..]
-         * @return
+         * @return BBOX
          */
+        @SuppressWarnings("unchecked")
         public static BBox buildFromSimpleListCoords(List listCoordinates) {
             var result = new BBox();
             List<List<Number>> coordinateList = (List<List<Number>>) listCoordinates;
@@ -165,8 +199,9 @@ public class ExtentConvert {
          * <p>{ "type": "Polygon", "coordinates": [ [ [-17, -34], [51, -34], [51, 38], [-17, 38], [-17, -34] ] ] }
          *
          * @param nestedListCoordinates either a list of list of Double, or a more deeply nested list.
-         * @return
+         * @return bbox
          */
+        @SuppressWarnings("unchecked")
         public static BBox build(List nestedListCoordinates) {
             if (nestedListCoordinates == null || nestedListCoordinates.isEmpty()) {
                 return new BBox();
@@ -190,6 +225,12 @@ public class ExtentConvert {
             return join(items);
         }
 
+        /**
+         * build a bbox from an GeoJson geometry node.
+         *
+         * @param map GeoJson node for the geometry
+         * @return bbox that encloses it
+         */
         public static BBox build(Map map) {
             if (map == null
                     || !map.containsKey("type")
@@ -197,14 +238,16 @@ public class ExtentConvert {
                     || !(map.get("coordinates") instanceof List coordinates)) {
                 return null;
             }
-            double xmin = Double.MAX_VALUE;
-            double ymin = Double.MAX_VALUE;
-            double xmax = Double.MIN_VALUE;
-            double ymax = Double.MIN_VALUE;
 
             return build(coordinates);
         }
 
+        /**
+         * join 2 bboxes together
+         *
+         * @param other the other bbox
+         * @return bbox that encloses the 2 bboxes.
+         */
         public BBox join(BBox other) {
             return new BBox(
                     Math.min(xmin, other.xmin),

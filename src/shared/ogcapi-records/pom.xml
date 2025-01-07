@@ -21,6 +21,12 @@
   <dependencies>
 
     <dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
+      <version>8.11.3</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-ogcapi-records-openapi-autogen</artifactId>
       <version>${project.version}</version>

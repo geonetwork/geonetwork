@@ -28,8 +28,6 @@ public class ThemeConvertTest {
         assertEquals(2, result.get(0).getConcepts().size());
         assertEquals("k1 default", result.get(0).getConcepts().get(0).getId());
         assertEquals("k2 default", result.get(0).getConcepts().get(1).getId());
-
-        int t = 0;
     }
 
     @Test

@@ -32,14 +32,15 @@ public class OgcApiRecordsExtraExamplesTest {
 
     public void doTest(String fname, Class clazz) throws IOException {
         String json = OgcApiRecordsSpecExamplesTest.readResource("ogcapi_records_extra_examples/" + fname);
+        @SuppressWarnings("unchecked")
         var obj = mapper.readValue(json, clazz);
         var json2 = mapper.writeValueAsString(obj);
-
         assertEquals(json, json2);
     }
 
     public Object doTest1(String fname, Class clazz) throws IOException {
         String json = OgcApiRecordsSpecExamplesTest.readResource("ogcapi_records_extra_examples/" + fname);
+        @SuppressWarnings("unchecked")
         var obj = mapper.readValue(json, clazz);
         var json2 = mapper.writeValueAsString(obj);
 

@@ -125,6 +125,16 @@ paths:
           $ref: 'responses/NotAcceptable.yaml'
         '5XX':
           $ref: 'responses/ServerError.yaml'
+  '/collections/{catalogId}/queryables':
+    get:
+      tags:
+        - Collection
+      operationId: getQueryables
+      parameters:
+        - $ref: 'parameters/catalogId.yaml'
+      responses:
+        '200':
+          $ref: 'responses/jsonSchemaResponse.yaml'
   '/collections/{catalogId}/sortables':
     get:
       tags:
@@ -166,6 +176,7 @@ paths:
         - $ref: 'parameters/bbox.yaml'
         - $ref: 'https://schemas.opengis.net/ogcapi/features/part1/1.0/openapi/parameters/datetime.yaml'
         - $ref: 'https://schemas.opengis.net/ogcapi/features/part1/1.0/openapi/parameters/limit.yaml'
+        - $ref: 'parameters/offset.yaml'
         - $ref: 'parameters/catalogId.yaml'
         - $ref: 'parameters/q.yaml'
         - $ref: 'parameters/type.yaml'

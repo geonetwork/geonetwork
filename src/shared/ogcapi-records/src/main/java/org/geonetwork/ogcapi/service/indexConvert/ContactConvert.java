@@ -20,8 +20,16 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsEmailDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsPhoneDto;
 
+/** converts GN Index Record Contacts to OGCAPI contacts. */
 public class ContactConvert {
 
+    /**
+     * converts GN Index Record Contacts to OGCAPI contacts.
+     *
+     * @param contacts GN Index Record Contacts
+     * @param lang3iso language (From request) - 3 letter iso lang value (i.e. 'eng')
+     * @return OGCAPI OGCAPI contacts
+     */
     public static List<OgcApiRecordsContactDto> convert(Map<String, List<Contact>> contacts, String lang3iso) {
         var result = contacts.entrySet().stream()
                 .map(x -> convert(x.getKey(), x.getValue(), lang3iso))
@@ -30,10 +38,26 @@ public class ContactConvert {
         return result.stream().filter(x -> !isBlank(x.getName())).toList();
     }
 
+    /**
+     * given a role and a list of contacts, create OGCAPI contacts (with the correct role).
+     *
+     * @param role what role the contact is
+     * @param contacts set of contacts
+     * @param lang3iso language (From request) - 3 letter iso lang value (i.e. 'eng')
+     * @return OGCAPI contacts
+     */
     public static List<OgcApiRecordsContactDto> convert(String role, List<Contact> contacts, String lang3iso) {
         return contacts.stream().map(x -> convert(role, x, lang3iso)).toList();
     }
 
+    /**
+     * Given a role and an elastic contact, convert to OGCAPI contact
+     *
+     * @param role role this contact is
+     * @param contact elastic contact
+     * @param lang3iso language (From request) - 3 letter iso lang value (i.e. 'eng')
+     * @return converted to OGCAPI contact
+     */
     public static OgcApiRecordsContactDto convert(String role, Contact contact, String lang3iso) {
         var result = new OgcApiRecordsContactDto();
 

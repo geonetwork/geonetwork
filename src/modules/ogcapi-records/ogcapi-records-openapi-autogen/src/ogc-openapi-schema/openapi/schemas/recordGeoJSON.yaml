@@ -30,6 +30,10 @@ properties:
       The extensions/conformance classes used in this record.
     items:
       type: string
+  metadataRecordText:
+    description:
+      Underlying record stored in GeoNetwork (often XML).
+    type: string
   properties:
     allOf:
       - $ref: 'recordCommonProperties.yaml'

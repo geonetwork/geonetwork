@@ -6,19 +6,14 @@
 package org.geonetwork.ogcapi.service.dataaccess.simpleobjects;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.geonetwork.domain.Source;
 import org.geonetwork.index.model.record.IndexRecord;
 
 /** Information about a catalog - the underlying DB Source, and the linked Elastic Index Record (if available). */
 @Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+// NOTE: see the spotbugs excludes for this class (EI_EXPOSE_REP2 and EI_EXPOSE_REP)
 public class CatalogInfo {
 
     private Source source;

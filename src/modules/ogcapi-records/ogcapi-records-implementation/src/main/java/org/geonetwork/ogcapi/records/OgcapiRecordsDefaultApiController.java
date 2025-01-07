@@ -6,8 +6,10 @@
 package org.geonetwork.ogcapi.records;
 
 import java.util.Optional;
+import lombok.SneakyThrows;
 import org.geonetwork.ogcapi.records.generated.DefaultApi;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto;
+import org.geonetwork.ogcapi.service.ogcapi.OgcApiCollectionsApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +19,15 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 @RestController
 @RequestMapping("/ogcapi-records")
-public class OgcapiRecordsApiController implements DefaultApi {
+public class OgcapiRecordsDefaultApiController implements DefaultApi {
 
     private final NativeWebRequest request;
+    private final OgcApiCollectionsApi collectionsApi;
 
     @Autowired
-    public OgcapiRecordsApiController(NativeWebRequest request) {
+    public OgcapiRecordsDefaultApiController(NativeWebRequest request, OgcApiCollectionsApi collectionsApi) {
         this.request = request;
+        this.collectionsApi = collectionsApi;
     }
 
     @Override
@@ -31,12 +35,10 @@ public class OgcapiRecordsApiController implements DefaultApi {
         return Optional.ofNullable(request);
     }
 
+    @Override
+    @SneakyThrows
     public ResponseEntity<OgcApiRecordsLandingPageDto> getLandingPage() {
-
-        var result = new OgcApiRecordsLandingPageDto();
-        // result.title("my title");
-        result.description("my description");
-
+        var result = collectionsApi.getLandingPage();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

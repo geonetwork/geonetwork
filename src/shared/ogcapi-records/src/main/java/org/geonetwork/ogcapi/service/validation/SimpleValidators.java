@@ -9,6 +9,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.text.MessageFormat;
 
+/** simple validation */
 public class SimpleValidators {
 
     /**
