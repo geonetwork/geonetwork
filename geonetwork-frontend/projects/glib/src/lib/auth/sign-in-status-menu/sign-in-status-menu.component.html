@@ -1,17 +1,17 @@
 @if (app.authenticated()) {
   <g-user-badge />
 
-  <button
-    type="button"
-    pButton
-    pButtonIcon="fa fa-right-from-bracket"
+  <p-button
+    title="Sign out"
+    icon="fa fa-right-from-bracket"
     data-cy="gSignOutButton"
-    (click)="app.signOut()"></button>
+    (click)="app.signOut()" />
 } @else {
   <p-button
-    (onClick)="op.toggle($event)"
+    title="Sign in"
     icon="fa fa-right-to-bracket"
-    title="Sign in" />
+    data-cy="gSignInButton"
+    (onClick)="op.toggle($event)" />
 }
 <p-popover #op styleClass="">
   <g-sign-in-form (onSignIn)="op.hide()" />
