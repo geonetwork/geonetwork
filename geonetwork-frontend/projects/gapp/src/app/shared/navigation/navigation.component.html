@@ -1,6 +1,6 @@
 <p-menubar styleClass="w-full">
   <ng-template pTemplate="start">
-    <div class="w-[120px] hidden lg:block">
+    <div class="w-[145px] hidden lg:block">
       <gn-catalog-avatar></gn-catalog-avatar>
     </div>
 
@@ -26,27 +26,30 @@
   <ng-template pTemplate="end">
     <div class="flex gap-2">
       <g-sign-in-status-menu />
-      <p-button icon="fa fa-cog" (click)="op.toggle($event)">
-        <p-popover #op>
-          <div class="grid gap-4">
-            <div>
-              <p-select
-                placeholder="Choose a language"
-                title="Choose a language"
-                class="w-full"
-                dropdownIcon="fa fa-language"
-                gLanguagesLoader
-                (onChange)="setLanguage($event)" />
+
+      @if (router.url !== '/signin') {
+        <p-button icon="fa fa-cog" (click)="op.toggle($event)">
+          <p-popover #op>
+            <div class="grid gap-4">
+              <div>
+                <p-select
+                  placeholder="Choose a language"
+                  title="Choose a language"
+                  class="w-full"
+                  dropdownIcon="fa fa-language"
+                  gLanguagesLoader
+                  (onChange)="setLanguage($event)" />
+              </div>
+              <div>
+                <p-button
+                  severity="secondary"
+                  (click)="toggleTheme()"
+                  [icon]="darkMode() ? 'fa fa-sun' : 'fa fa-moon'"></p-button>
+              </div>
             </div>
-            <div>
-              <p-button
-                severity="secondary"
-                (click)="toggleTheme()"
-                [icon]="darkMode() ? 'fa fa-sun' : 'fa fa-moon'"></p-button>
-            </div>
-          </div>
-        </p-popover>
-      </p-button>
+          </p-popover>
+        </p-button>
+      }
     </div>
   </ng-template>
 </p-menubar>

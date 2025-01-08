@@ -22,24 +22,36 @@ export class SearchAggMultiselectComponent extends SearchBaseComponent {
   aggregationConfig =
     input.required<elasticsearch.AggregationsAggregationContainer>();
 
-  handleMutliSelectChange(event: MultiSelectChangeEvent) {
+  handleMultiSelectChange(event: MultiSelectChangeEvent) {
     const isSelected =
+      event.itemValue &&
       event.value.find((item: any) => {
         return item.key === event.itemValue.key;
       }) !== undefined;
 
+    const values: { [key: string]: SearchFilterValueState } = {};
+    if (event.itemValue) {
+      values[event.itemValue.key] = isSelected
+        ? SearchFilterValueState.ON
+        : SearchFilterValueState.OFF;
+    } else if (event.value.length > 0) {
+      event.value.forEach((item: any) => {
+        values[item.key] = SearchFilterValueState.ON;
+      });
+    } else {
+      // No items selected
+      this.search.removeFilter(this.field());
+      return;
+    }
+
     this.search.addFilter({
       field: this.field(),
-      values: {
-        [event.itemValue.key]: isSelected
-          ? SearchFilterValueState.ON
-          : SearchFilterValueState.OFF,
-      },
+      values: values,
       operator: SearchFilterOperator.OR,
     });
   }
 
-  handleMutliSelectClear() {
+  handleMultiSelectClear() {
     this.search.removeFilter(this.field());
   }
 }

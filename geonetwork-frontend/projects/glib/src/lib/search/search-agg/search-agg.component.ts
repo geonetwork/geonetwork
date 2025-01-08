@@ -1,13 +1,12 @@
 import {
   Component,
   computed,
+  ContentChild,
   EventEmitter,
   input,
   Output,
-  output,
-  OutputEmitterRef,
+  TemplateRef,
 } from '@angular/core';
-import { AsyncPipe, NgClass } from '@angular/common';
 import { elasticsearch } from 'gapi';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +23,7 @@ import { SearchAggMultiselectComponent } from '../search-agg-multiselect/search-
 import { SearchBaseComponent } from '../search-base/search-base.component';
 import { SearchAggSelectButtonComponent } from '../search-agg-selectbutton/search-agg-select-button.component';
 import { SearchAggDropdownComponent } from '../search-agg-dropdown/search-agg-dropdown.component';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 export enum SearchAggLayout {
   CHECKBOX = 'checkbox',
@@ -51,6 +51,7 @@ type SearchAggLayoutValues = keyof typeof SearchAggLayout;
     SearchAggMultiselectComponent,
     SearchAggSelectButtonComponent,
     SearchAggDropdownComponent,
+    NgTemplateOutlet,
   ],
   templateUrl: './search-agg.component.html',
 })
@@ -59,8 +60,14 @@ export class SearchAggComponent extends SearchBaseComponent {
   layout = input<SearchAggLayout>();
   placeholder = input<string>();
   isLabelDisplayed = input<boolean | undefined>();
+
   @Output()
   onItemSelected = new EventEmitter<SearchFilter>();
+
+  @ContentChild('labelTemplate') labelTemplate: TemplateRef<any> | undefined;
+  @ContentChild('aggregationTemplate') aggregationTemplate:
+    | TemplateRef<any>
+    | undefined;
 
   isLabelDisplayedValue = computed(() => {
     if (this.isLabelDisplayed() === false) {

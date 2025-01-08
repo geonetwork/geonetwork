@@ -168,9 +168,9 @@ export class NewRecordPanelComponent implements OnInit {
       .create(createRequest, {
         headers: {
           // TODO: remove this? Header should be set in the gapi?
-          'X-XSRF-TOKEN': 'c6e73fb8-0803-4f25-b515-d0a21bab9b0c',
-          Accept: 'application/json', // Accept could be all?
-          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': 'bc0e37f3-22c3-42c7-9a41-35f13ea51140',
+          Accept: 'application/json',
+          'Content-type': 'application/json',
         },
       })
       .then(

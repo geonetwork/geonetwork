@@ -12,7 +12,7 @@ export const DEFAULT_SPACE = 'srv';
 
 export const API_CONFIGURATION = new InjectionToken<
   WritableSignal<Configuration>
->('api.baseUrl');
+>('GeoNetwork 4 API configuration');
 
 export const APPLICATION_CONFIGURATION =
   new InjectionToken<ApplicationConfiguration>('app.config');

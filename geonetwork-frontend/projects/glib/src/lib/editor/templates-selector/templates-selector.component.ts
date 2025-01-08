@@ -1,4 +1,4 @@
-import { Component, Input, WritableSignal } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -9,7 +9,10 @@ import {
 } from '../../record/record-field-resource-type/record-field-resource-type.component';
 import { SearchContextDirective } from '../../search/search-context.directive';
 import { SearchResultsComponent } from '../../search/search-results/search-results.component';
-import { SearchAggComponent, SearchAggLayout } from '../../search/search-agg/search-agg.component';
+import {
+  SearchAggComponent,
+  SearchAggLayout,
+} from '../../search/search-agg/search-agg.component';
 
 @Component({
   selector: 'g-templates-selector',
@@ -27,7 +30,8 @@ import { SearchAggComponent, SearchAggLayout } from '../../search/search-agg/sea
   templateUrl: './templates-selector.component.html',
 })
 export class TemplatesSelectorComponent {
-  @Input() template!: WritableSignal<string>;
+  template = model<string>();
+  templateType = model<string>();
 
   protected readonly ResourceTypeLayout = ResourceTypeLayout;
   protected readonly SearchAggLayout = SearchAggLayout;

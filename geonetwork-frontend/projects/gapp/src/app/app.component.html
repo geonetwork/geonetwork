@@ -10,27 +10,29 @@
   <gn-navigation class="sticky top-0 z-20"></gn-navigation>
 
   <div class="flex">
-    <div class="w-[130px] hidden lg:block relative">
-      <div class="fixed top-24 left-0">
+    <div class="w-[145px] hidden lg:block relative">
+      <div class="fixed top-18 left-0">
         <gn-app-menu iconMode="true"></gn-app-menu>
       </div>
     </div>
     <div class="w-full">
       <router-outlet></router-outlet>
 
-      <gn-app-frame
-        style="height: calc(100dvh - 80px); width: 100%; border: 0"
-        class="clear-both flex-grow inline-block overflow-hidden"
-        [class.hidden]="!isMapRoute()"
-        config='{"mods": {
-                      "global": {"hotkeys": false},
-                      "home": {"enabled": false},
-                      "search": {"enabled": false},
-                      "footer": {"enabled": false},
-                      "header": {"enabled": false}
-                      }}'
-        portal="srv"
-        [attr.url]="gn4baseUrl"></gn-app-frame>
+      @if (uiConfiguration?.mods?.map?.enabled || false) {
+        <gn-app-frame
+          style="height: calc(100dvh - 90px); width: 100%; border: 0"
+          class="clear-both flex-grow inline-block overflow-hidden"
+          [class.hidden]="!isMapRoute()"
+          config='{"mods": {
+                        "global": {"hotkeys": false},
+                        "home": {"enabled": false},
+                        "search": {"enabled": false},
+                        "footer": {"enabled": false},
+                        "header": {"enabled": false}
+                        }}'
+          portal="srv"
+          [attr.url]="gn4baseUrl"></gn-app-frame>
+      }
     </div>
     <p-scrollTop />
   </div>

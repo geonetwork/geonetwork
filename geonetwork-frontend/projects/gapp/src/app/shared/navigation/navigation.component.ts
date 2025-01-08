@@ -21,6 +21,7 @@ import { Popover } from 'primeng/popover';
 import { Drawer } from 'primeng/drawer';
 import { AppMenuComponent } from '../app-menu/app-menu.component';
 import { CatalogAvatarComponent } from '../catalog-avatar/catalog-avatar.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'gn-navigation',

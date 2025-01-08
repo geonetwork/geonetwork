@@ -1,5 +1,6 @@
 <form name="gSignInForm">
-  <div class="surface-card p-4 shadow-2 border-round w-full">
+  <div
+    class="container mx-auto p-4 shadow-2 border-round w-full max-w-sm justify-self-auto">
     <div class="text-center mb-5">
       <div class="text-900 text-3xl font-medium mb-3">Welcome</div>
       <span class="text-600 font-medium line-height-3"
@@ -50,6 +51,12 @@
         label="Sign In"
         [disabled]="username.length === 0 || password.length === 0"
         (click)="signIn()"></p-button>
+
+      @if (app.authenticationFailure()) {
+        <p-message styleClass="mt-3" severity="error" icon="fa fa-user-slash"
+          >Invalid username or password</p-message
+        >
+      }
     </div>
   </div>
 </form>

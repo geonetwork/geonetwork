@@ -1,49 +1,64 @@
 @if (isSupportedAndHasValue()) {
-  @if (isLabelDisplayedValue()) {
-    <div
-      class="text-wrap break-words font-bold mb-2 border-b-2"
-      style="overflow-wrap: anywhere">
-      {{ aggregation() }}
-    </div>
-  }
+  <ng-template #defaultLabelTemplate>
+    @if (isLabelDisplayedValue()) {
+      <div
+        class="text-wrap break-words font-bold mb-2 border-b-2"
+        style="overflow-wrap: anywhere">
+        {{ aggregation() }}
+      </div>
+    }
+  </ng-template>
 
-  <div [ngClass]="cssClass()">
-    @switch (currentLayout()) {
-      @case (SearchAggLayout.MULTISELECT) {
-        <g-search-agg-multiselect
-          [scope]="scope()"
-          [buckets]="agg().buckets"
-          [field]="searchField"
-          [placeholder]="placeholder()"
-          [aggregationConfig]="aggregationConfig" />
-      }
-      @case (SearchAggLayout.DROPDOWN) {
-        <g-search-agg-dropdown
-          [scope]="scope()"
-          [buckets]="agg().buckets"
-          [field]="searchField"
-          [placeholder]="placeholder()"
-          [aggregationConfig]="aggregationConfig" />
-      }
-      @case (SearchAggLayout.SELECT_BUTTON) {
-        <g-search-agg-select-button
-          [scope]="scope()"
-          [buckets]="agg().buckets"
-          [field]="searchField"
-          [multiple]="false"
-          [aggregationConfig]="aggregationConfig" />
-      }
-      @default {
-        @for (bucket of agg().buckets; track bucket.key) {
-          <g-search-agg-item
+  <ng-template #defaultAggregationTemplate>
+    <div [ngClass]="cssClass()">
+      @switch (currentLayout()) {
+        @case (SearchAggLayout.MULTISELECT) {
+          <g-search-agg-multiselect
             [scope]="scope()"
-            [bucket]="bucket"
+            [buckets]="agg().buckets"
             [field]="searchField"
-            [layout]="currentLayout()"
-            [aggregationConfig]="aggregationConfig"
-            (onAggItemChange)="filter($event)" />
+            [placeholder]="placeholder()"
+            [aggregationConfig]="aggregationConfig" />
+        }
+        @case (SearchAggLayout.DROPDOWN) {
+          <g-search-agg-dropdown
+            [scope]="scope()"
+            [buckets]="agg().buckets"
+            [field]="searchField"
+            [placeholder]="placeholder()"
+            [aggregationConfig]="aggregationConfig" />
+        }
+        @case (SearchAggLayout.SELECT_BUTTON) {
+          <g-search-agg-select-button
+            [scope]="scope()"
+            [buckets]="agg().buckets"
+            [field]="searchField"
+            [multiple]="false"
+            [aggregationConfig]="aggregationConfig" />
+        }
+        @default {
+          @for (bucket of agg().buckets; track bucket.key) {
+            <g-search-agg-item
+              [scope]="scope()"
+              [bucket]="bucket"
+              [field]="searchField"
+              [layout]="currentLayout()"
+              [aggregationConfig]="aggregationConfig"
+              (onAggItemChange)="filter($event)" />
+          }
         }
       }
-    }
-  </div>
+    </div>
+  </ng-template>
+
+  <ng-container
+    *ngTemplateOutlet="
+      labelTemplate || defaultLabelTemplate;
+      context: { $implicit: this }
+    "></ng-container>
+  <ng-container
+    *ngTemplateOutlet="
+      aggregationTemplate || defaultAggregationTemplate;
+      context: { $implicit: this }
+    "></ng-container>
 }

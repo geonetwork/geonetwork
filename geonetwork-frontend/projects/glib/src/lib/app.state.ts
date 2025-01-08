@@ -14,13 +14,13 @@ import { AuthService } from './auth/auth.service';
 export interface GappState {
   language: string;
   user: any;
-  authenticationFailure: boolean;
+  authenticationFailure: boolean | undefined;
 }
 
 const initialAppState: GappState = {
   language: 'en',
   user: {},
-  authenticationFailure: false,
+  authenticationFailure: undefined,
 };
 
 export const AppStore = signalStore(
@@ -43,15 +43,16 @@ export const AppStore = signalStore(
         patchState(store, { language: iso2letterCode });
       },
       signIn(username: string, password: string) {
-        patchState(store, { authenticationFailure: false });
+        patchState(store, { authenticationFailure: undefined });
         return authService.signIn(username, password).subscribe({
           next: response => {
+            patchState(store, { authenticationFailure: false });
             return this.loadUserInfo();
           },
           error: error => {
             console.log(error);
             patchState(store, {
-              authenticationFailure: error.url.indexOf('failure=true') !== -1,
+              authenticationFailure: error.url.indexOf('signin?error') !== -1,
             });
             if (!store.authenticationFailure()) {
               return this.loadUserInfo();

@@ -1,18 +1,5 @@
-<p-menu [model]="items" styleClass="border-0">
-  <ng-template #item let-item>
-    <a
-      pRipple
-      class="flex items-center p-menu-item-link my-4"
-      [title]="item.label"
-      [class.flex-col]="iconMode()"
-      [class.text-center]="iconMode()">
-      @if (iconMode()) {
-        <div [class]="item.icon" class="fa-2x w-full"></div>
-        <p class="w-full">{{ item.label }}</p>
-      } @else {
-        <span [class]="item.icon"></span>
-        <span class="ml-2">{{ item.label }}</span>
-      }
-    </a>
-  </ng-template>
+<p-menu
+  [model]="items()"
+  styleClass="border-0"
+  [attr.class]="iconMode() ? 'gn-icon-menu' : ''">
 </p-menu>
