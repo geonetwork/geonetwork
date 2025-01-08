@@ -9,7 +9,7 @@ import {
 } from '../../record/record-field-resource-type/record-field-resource-type.component';
 import { SearchContextDirective } from '../../search/search-context.directive';
 import { SearchResultsComponent } from '../../search/search-results/search-results.component';
-import { SearchAggComponent, SearchAggLayout } from 'glib';
+import { SearchAggComponent, SearchAggLayout } from '../../search/search-agg/search-agg.component';
 
 @Component({
   selector: 'g-templates-selector',
