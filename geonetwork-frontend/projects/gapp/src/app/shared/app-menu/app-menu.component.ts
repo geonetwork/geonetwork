@@ -84,7 +84,7 @@ export class AppMenuComponent implements OnInit {
         icon: 'fa-cogs',
         iconClass: this.iconClass(),
         visible: this.app.authenticated(),
-        url: 'ch/geonetwork/srv/eng/admin.console',
+        url: '/geonetwork/srv/eng/admin.console',
       },
     };
     const newItems: MenuItem[] = [];
