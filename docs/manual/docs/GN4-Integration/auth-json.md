@@ -19,7 +19,7 @@ In `application.yml` (cloud: gateway: mvc), add the "filters" (at the bottom):
             filters:
               - RewritePath=/geonetwork/(?<url>.*), /api/$\{url}
           - id: geonetwork_route
-            uri: ${geonetwork.core.url}
+            uri: ${geonetwork.url}
             predicates:
               - Path=/geonetwork/**
             filters:

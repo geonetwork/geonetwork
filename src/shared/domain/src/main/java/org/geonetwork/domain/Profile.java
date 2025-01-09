@@ -13,18 +13,21 @@ import java.util.stream.Collectors;
 
 /** The enumeration of profiles available */
 public enum Profile {
-    Administrator,
-    UserAdmin(Administrator),
-    Reviewer(UserAdmin),
-    Editor(Reviewer),
-    RegisteredUser(Editor),
-    Guest(RegisteredUser),
-    Monitor(Administrator);
+    Administrator(0),
+    UserAdmin(1, Administrator),
+    Reviewer(2, UserAdmin),
+    Editor(3, Reviewer),
+    RegisteredUser(4, Editor),
+    Guest(5, RegisteredUser),
+    Monitor(6, Administrator);
+
+    private final int id;
 
     @SuppressWarnings("ImmutableEnumChecker")
     private final Set<Profile> parents;
 
-    Profile(Profile... parents) {
+    Profile(int id, Profile... parents) {
+        this.id = id;
         this.parents = Set.of(parents);
     }
 
@@ -60,6 +63,10 @@ public enum Profile {
         all.add(this);
         getParents().forEach(parent -> all.addAll(parent.getAll()));
         return all;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Set<String> getAllNames() {
