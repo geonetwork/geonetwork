@@ -5,6 +5,9 @@
  */
 package org.geonetwork.attachments;
 
+import static org.geonetwork.constants.ApiParams.API_CLASS_RECORD_OPS;
+import static org.geonetwork.constants.ApiParams.API_CLASS_RECORD_TAG;
+
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,7 +53,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping(value = {"/api/records/{metadataUuid}/attachments"})
-@Tag(name = "API_CLASS_RECORD_TAG", description = "API_CLASS_RECORD_OPS")
+@Tag(name = API_CLASS_RECORD_TAG, description = API_CLASS_RECORD_OPS)
 @RestController
 @RequiredArgsConstructor
 public class AttachmentsController {
