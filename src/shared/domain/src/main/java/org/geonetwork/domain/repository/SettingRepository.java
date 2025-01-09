@@ -5,7 +5,10 @@
  */
 package org.geonetwork.domain.repository;
 
+import java.util.Optional;
 import org.geonetwork.domain.Setting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SettingRepository extends JpaRepository<Setting, String> {}
+public interface SettingRepository extends JpaRepository<Setting, String> {
+    Optional<Setting> findByName(String name);
+}
