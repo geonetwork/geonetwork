@@ -57,7 +57,10 @@
                   },
                 }"
                 [link]="true"
-                >More {{ infoPanel.title }} ></p-button
+                icon="fa fa-chevron-right"
+                iconPos="right"
+                [label]="'More ' + infoPanel.title"
+              ></p-button
               >
             </div>
             @if (infoPanel.description) {
