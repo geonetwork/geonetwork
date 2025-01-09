@@ -37,7 +37,7 @@
     </p-step-panel>
   </p-step-item>
   <p-step-item [value]="2">
-    <p-step>Upload or connect your data</p-step>
+    <p-step [disabled]="!isTemplateSelected()">Upload or connect your data</p-step>
     <p-step-panel>
       <ng-template
         pTemplate="content"
@@ -68,16 +68,6 @@
             <div class="font-bold w-full text-2xl text-center">or</div>
 
             <div class="mb-10">
-              <!--<p-fileupload
-                styleClass="w-full"
-                [customUpload]="true"
-                (onSelect)="onAttachmentSelected($event)"
-                (uploadHandler)="onAttachmentHandled($event)"
-                name="demo[]"
-                chooseIcon="fa fa-upload"
-                accept="text/*,image/*"
-                maxFileSize="1000000"
-                chooseLabel="Upload your file"></p-fileupload>-->
               <p-fileupload
                 styleClass="w-full"
                 [customUpload]="true"
@@ -86,11 +76,17 @@
                 (onRemove)="onRemove($event)"
                 (onClear)="onClear($event)"
                 name="demo[]"
-                chooseIcon="fa fa-upload"
+                chooseIcon="fa fa-folder"
+                chooseLabel="Select your file"
+                uploadLabel="Upload"
                 accept="text/*,image/*"
-                maxFileSize="1000000"
-                chooseLabel="Select your file"></p-fileupload>
+                maxFileSize="1000000">
+                <ng-template #empty>
+                  <div>Drag and drop files to here to upload.</div>
+                </ng-template>
+              </p-fileupload>
             </div>
+
 
             @if (isFetchingLayers()) {
               <div>
@@ -163,7 +159,7 @@
     </p-step-panel>
   </p-step-item>
   <p-step-item [value]="3">
-    <p-step>Data analysis summary</p-step>
+    <p-step [disabled]="!(isTemplateSelected() && isDatasourceAndTemplateSelected())">Data analysis summary</p-step>
     <p-step-panel>
       <ng-template
         pTemplate="content"
@@ -200,7 +196,7 @@
     </p-step-panel>
   </p-step-item>
   <p-step-item [value]="4">
-    <p-step>Review and save</p-step>
+    <p-step [disabled]="!(isTemplateSelected() && isDatasourceAndTemplateSelected() && analysisResult())">Review and save</p-step>
     <p-step-panel>
       <ng-template
         pTemplate="content"
