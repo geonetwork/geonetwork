@@ -27,29 +27,28 @@
     <div class="flex gap-2">
       <g-sign-in-status-menu />
 
-      @if (router.url !== '/signin') {
-        <p-button icon="fa fa-cog" (click)="op.toggle($event)">
-          <p-popover #op>
-            <div class="grid gap-4">
-              <div>
-                <p-select
-                  placeholder="Choose a language"
-                  title="Choose a language"
-                  class="w-full"
-                  dropdownIcon="fa fa-language"
-                  gLanguagesLoader
-                  (onChange)="setLanguage($event)" />
-              </div>
-              <div>
-                <p-button
-                  severity="secondary"
-                  (click)="toggleTheme()"
-                  [icon]="darkMode() ? 'fa fa-sun' : 'fa fa-moon'"></p-button>
-              </div>
+      <p-button [icon]="'fa fa-cog'" (click)="op.toggle($event)">
+        <p-popover #op>
+          <div class="grid gap-4">
+            <div>
+              <p-select
+                placeholder="Choose a language"
+                title="Choose a language"
+                class="w-full"
+                dropdownIcon="fa fa-language"
+                gLanguagesLoader
+                (onChange)="setLanguage($event)" />
             </div>
-          </p-popover>
-        </p-button>
-      }
+            <div>
+              <p-button
+                severity="secondary"
+                (click)="toggleTheme()"
+                [icon]="darkMode() ? 'fa fa-sun' : 'fa fa-moon'">
+              </p-button>
+            </div>
+          </div>
+        </p-popover>
+      </p-button>
     </div>
   </ng-template>
 </p-menubar>

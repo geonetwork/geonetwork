@@ -7,11 +7,13 @@
     data-cy="gSignOutButton"
     (click)="app.signOut()" />
 } @else {
-  <p-button
-    title="Sign in"
-    icon="fa fa-right-to-bracket"
-    data-cy="gSignInButton"
-    (onClick)="op.toggle($event)" />
+  @if (router.url !== '/signin') {
+    <p-button
+      title="Sign in"
+      icon="fa fa-right-to-bracket"
+      data-cy="gSignInButton"
+      (onClick)="op.toggle($event)" />
+  }
 }
 <p-popover #op styleClass="">
   <g-sign-in-form (onSignIn)="op.hide()" />

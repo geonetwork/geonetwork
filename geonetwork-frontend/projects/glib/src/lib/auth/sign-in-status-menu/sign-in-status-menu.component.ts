@@ -4,6 +4,7 @@ import { Popover } from 'primeng/popover';
 import { UserBadgeComponent } from '../user-badge/user-badge.component';
 import { SignInFormComponent } from '../sign-in-form/sign-in-form.component';
 import { AppStore } from '../../app.state';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'g-sign-in-status-menu',
@@ -12,4 +13,5 @@ import { AppStore } from '../../app.state';
 })
 export class SignInStatusMenuComponent {
   readonly app = inject(AppStore);
+  router = inject(Router);
 }
