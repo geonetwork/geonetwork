@@ -17,6 +17,7 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
+import org.geonetwork.data.gdal.GdalOverviewBuilder;
 import org.geonetwork.data.model.AttributeStatistics;
 import org.geonetwork.data.model.BaseDataInfo;
 import org.geonetwork.data.model.DataFormat;
@@ -49,6 +50,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class DataAnalysisController {
 
     GdalDataAnalyzer analyzer;
+
+    GdalOverviewBuilder overviewBuilder;
 
     MetadataBuilder metadataBuilder;
 
@@ -204,7 +207,8 @@ public class DataAnalysisController {
             throws MetadataNotFoundException {
         Metadata metadataRecord = metadataManager.findMetadataByUuid(uuid, false);
         BatchEditMode editMode = BatchEditMode.PREVIEW;
-        ResponseEntity<String> builtMetadata = applyDataAnalysisOnRecord(uuid, datasource, layer, metadataRecord, editMode);
+        ResponseEntity<String> builtMetadata =
+                applyDataAnalysisOnRecord(uuid, datasource, layer, metadataRecord, editMode);
         if (builtMetadata != null) return builtMetadata;
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -216,7 +220,8 @@ public class DataAnalysisController {
             throws MetadataNotFoundException {
         Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(uuid, false);
         BatchEditMode editMode = BatchEditMode.SAVE;
-        ResponseEntity<String> builtMetadata = applyDataAnalysisOnRecord(metadataRecord.getUuid(), datasource, layer, metadataRecord, editMode);
+        ResponseEntity<String> builtMetadata =
+                applyDataAnalysisOnRecord(metadataRecord.getUuid(), datasource, layer, metadataRecord, editMode);
         if (builtMetadata != null) return builtMetadata;
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -224,18 +229,17 @@ public class DataAnalysisController {
     @PostMapping(path = "/applyForMetadataResource", produces = MediaType.TEXT_PLAIN_VALUE)
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<String> applyDataAnalysisOnRecordForMetadataResource(
-        @RequestParam String uuid,
-        @RequestParam MetadataResourceVisibility visibility,
-        @RequestParam String datasource,
-        @RequestParam boolean approved,
-        @RequestParam String layer)
-        throws MetadataNotFoundException {
+            @RequestParam String uuid,
+            @RequestParam MetadataResourceVisibility visibility,
+            @RequestParam String datasource,
+            @RequestParam boolean approved,
+            @RequestParam String layer)
+            throws MetadataNotFoundException {
         Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(uuid, false);
 
         String datasourceToUse;
         try {
-            Store.ResourceHolder resourceHolder =
-                metadataStore.getResource(uuid, visibility, datasource, approved);
+            Store.ResourceHolder resourceHolder = metadataStore.getResource(uuid, visibility, datasource, approved);
 
             datasourceToUse = resourceHolder.getPath().toString();
         } catch (ResourceNotFoundException ex) {
@@ -245,7 +249,8 @@ public class DataAnalysisController {
         }
 
         BatchEditMode editMode = BatchEditMode.SAVE;
-        ResponseEntity<String> builtMetadata = applyDataAnalysisOnRecord(metadataRecord.getUuid(), datasourceToUse, layer, metadataRecord, editMode);
+        ResponseEntity<String> builtMetadata =
+                applyDataAnalysisOnRecord(metadataRecord.getUuid(), datasourceToUse, layer, metadataRecord, editMode);
         if (builtMetadata != null) return builtMetadata;
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -256,16 +261,16 @@ public class DataAnalysisController {
             Optional<RasterInfo> layerProperties = analyzer.getRasterProperties(datasource);
 
             if (layerProperties.isPresent()) {
-                String builtMetadata =
-                        metadataBuilder.buildMetadata(uuid, metadataRecord.getSchemaid(), layerProperties.get(), editMode);
+                String builtMetadata = metadataBuilder.buildMetadata(
+                        uuid, metadataRecord.getSchemaid(), layerProperties.get(), editMode);
                 return new ResponseEntity<>(builtMetadata, HttpStatus.OK);
             }
         } else {
             Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
 
             if (layerProperties.isPresent()) {
-                String builtMetadata =
-                        metadataBuilder.buildMetadata(uuid, metadataRecord.getSchemaid(), layerProperties.get(), editMode);
+                String builtMetadata = metadataBuilder.buildMetadata(
+                        uuid, metadataRecord.getSchemaid(), layerProperties.get(), editMode);
                 return new ResponseEntity<>(builtMetadata, HttpStatus.OK);
             }
         }
@@ -289,5 +294,22 @@ public class DataAnalysisController {
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(path = "/overview", produces = MediaType.IMAGE_PNG_VALUE)
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Overview built successfully",
+                        content = {@Content(mediaType = MediaType.IMAGE_PNG_VALUE)}),
+            })
+    @PreAuthorize("hasRole('Editor')")
+    public ResponseEntity<byte[]> buildOverview(@RequestParam String datasource, @RequestParam String layer) {
+        try {
+            return ResponseEntity.ok().body(overviewBuilder.buildOverview(datasource, layer));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

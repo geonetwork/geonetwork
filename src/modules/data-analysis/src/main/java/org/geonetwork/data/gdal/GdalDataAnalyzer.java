@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.StringUtils;
@@ -45,9 +46,14 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
     public static final String OGR_INFO_APP = "ogrinfo";
     public static final String GDAL_INFO_APP = "gdalinfo";
+    public static final String GDAL_RASTERIZE_APP = "gdal_rasterize";
+    public static final String GDAL_TRANSLATE_APP = "gdal_translate";
+
     private String command;
     private String baseDir;
     private String mountPoint;
+
+    @Getter
     private int timeoutInSeconds = 60;
 
     /**
@@ -85,14 +91,13 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     @Override
     public String getVersion() {
         Optional<String> version = GdalUtils.execute(getVersionCommand(), timeoutInSeconds);
-        if (version.isPresent()) {
-            if (!isValidVersion(version.get())) {
-                throw new RuntimeException("GDAL version is not supported. JSON output is available since version 3.7");
-            }
-            return version.get();
-        } else {
+        if (version.isEmpty()) {
             throw new RuntimeException("GDAL version not found");
         }
+        if (!isValidVersion(version.get())) {
+            throw new RuntimeException("GDAL version is not supported. JSON output is available since version 3.7");
+        }
+        return version.get();
     }
 
     @Override
@@ -189,6 +194,15 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                 .orElse(List.of());
     }
 
+    public boolean isRasterLayer(String datasource) {
+        try {
+            getRasterProperties(datasource);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @Override
     public Object getFeatures(String dataSource, String layer, int limit) {
         return null;
@@ -202,7 +216,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
         return buildUtilityCommand(utility).addArgument("--formats");
     }
 
-    private String buildDataSourcePath(String dataSource) {
+    protected String buildDataSourcePath(String dataSource) {
         // TODO: Connect to data directory
         return mountPoint.isEmpty()
                         || dataSource.matches("(?i)^(http|wfs|vis|db|/vsizip//vsicurl/http|/vsicurl/http).*")
@@ -210,7 +224,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                 : dataSource.replace(baseDir, mountPoint);
     }
 
-    private CommandLine buildUtilityCommand(String utility) {
+    protected CommandLine buildUtilityCommand(String utility) {
         if (command.isEmpty()) {
             return new CommandLine(utility);
         } else {
