@@ -25,10 +25,13 @@ import {
   PutResourceRequest,
   AnalysisSynchMetadataResourceRequest,
   AnalysisSynchRequest,
-  ApplyDataAnalysisOnRecordRequest, ApplyDataAnalysisOnRecordForMetadataResourceRequest,
-  LayersMetadataResourceRequest, LayersMetadataResourceVisibilityEnum,
-  LayersRequest, PreviewDataAnalysisOnRecordForMetadataResourceRequest,
-  PreviewDataAnalysisOnRecordRequest
+  ApplyDataAnalysisOnRecordRequest,
+  ApplyDataAnalysisOnRecordForMetadataResourceRequest,
+  LayersMetadataResourceRequest,
+  LayersMetadataResourceVisibilityEnum,
+  LayersRequest,
+  PreviewDataAnalysisOnRecordForMetadataResourceRequest,
+  PreviewDataAnalysisOnRecordRequest,
 } from 'g5api';
 
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -39,7 +42,7 @@ import {
   FileSelectEvent,
   FileUploadEvent,
   FileUploadHandlerEvent,
-  FileUploadModule
+  FileUploadModule,
 } from 'primeng/fileupload';
 import { ChipModule } from 'primeng/chip';
 import 'brace';
@@ -51,7 +54,10 @@ import { DataAnalysisPanelComponent } from '../data-analysis-panel/data-analysis
 import { TemplatesSelectorComponent } from '../templates-selector/templates-selector.component';
 import { PrimeTemplate } from 'primeng/api';
 import { ProgressBarModule } from 'primeng/progressbar';
-import {API5_CONFIGURATION, API_CONFIGURATION} from '../../config/config.loader';
+import {
+  API5_CONFIGURATION,
+  API_CONFIGURATION,
+} from '../../config/config.loader';
 import { Select } from 'primeng/select';
 
 @Component({
@@ -119,8 +125,8 @@ export class NewRecordPanelComponent implements OnInit {
       'GTiff',
     ];
 
-    return this.supportedFormats().filter(
-      f => f.name ? DEFAULT_FORMATS.indexOf(f.name) !== -1 : false
+    return this.supportedFormats().filter(f =>
+      f.name ? DEFAULT_FORMATS.indexOf(f.name) !== -1 : false
     );
   });
   previewResult = signal<string>('');
@@ -135,9 +141,11 @@ export class NewRecordPanelComponent implements OnInit {
   isTemplateSelected = computed(() => {
     return this.template() !== '';
   });
+
   isRecordCreated = computed(() => {
     return this.newRecordId() !== '';
   });
+
   isDatasourceAndTemplateSelected = computed(() => {
     return (
       this.template() !== '' &&
@@ -147,7 +155,7 @@ export class NewRecordPanelComponent implements OnInit {
   });
 
   isDatasourceFileSelected = computed(() => {
-    return this.datasourceFile() !== ''
+    return this.datasourceFile() !== '';
   });
 
   errorFetchingLayers = signal('');
@@ -170,14 +178,15 @@ export class NewRecordPanelComponent implements OnInit {
   ngOnInit(): void {
     // Retrieve the dataset formats supported
     this.dataAnalysisApi()
-      .formats().then(
+      .formats()
+      .then(
         response => {
           this.supportedFormats.set(response);
         },
-      error => {
-        console.error(error);
-      }
-    );
+        error => {
+          console.error(error);
+        }
+      );
   }
 
   editRecord() {
@@ -204,7 +213,7 @@ export class NewRecordPanelComponent implements OnInit {
       .create(createRequest, {
         headers: {
           // TODO: remove this? Header should be set in the gapi?
-          'X-XSRF-TOKEN': '17666fa5-607b-41d1-92ed-e1819c7da3b6',
+          'X-XSRF-TOKEN': 'bc0e37f3-22c3-42c7-9a41-35f13ea51140',
           Accept: 'application/json', // Accept could be all?
           'Content-Type': 'application/json',
         },
@@ -234,10 +243,11 @@ export class NewRecordPanelComponent implements OnInit {
     this.errorFetchingLayers.set('');
 
     const layersRequest: LayersRequest = {
-      datasource: this.datasource()
-    }
+      datasource: this.datasource(),
+    };
 
-    this.dataAnalysisApi().layers(layersRequest)
+    this.dataAnalysisApi()
+      .layers(layersRequest)
       .then(
         response => {
           this.layers.set(response);
@@ -251,7 +261,7 @@ export class NewRecordPanelComponent implements OnInit {
           this.errorFetchingLayers.set(error.statusText);
           this.isFetchingLayers.set(false);
         }
-    );
+      );
   }
 
   /**
@@ -265,10 +275,11 @@ export class NewRecordPanelComponent implements OnInit {
       metadataUuid: this.newRecordId(),
       datasource: this.datasourceFile(),
       visibility: LayersMetadataResourceVisibilityEnum.Public,
-      approved: true
-    }
+      approved: true,
+    };
 
-    this.dataAnalysisApi().layersMetadataResource(layersRequest)
+    this.dataAnalysisApi()
+      .layersMetadataResource(layersRequest)
       .then(
         response => {
           this.layers.set(response);
@@ -294,12 +305,14 @@ export class NewRecordPanelComponent implements OnInit {
         // Process dataset from external URL
         const analysisRequest: AnalysisSynchRequest = {
           datasource: this.datasource(),
-          layer: this.layername()
-        }
+          layer: this.layername(),
+        };
 
-        this.dataAnalysisApi().analysisSynch(analysisRequest)
+        this.dataAnalysisApi()
+          .analysisSynch(analysisRequest)
           .then(
             response => {
+              console.log(response);
               this.analysisResult.set(response);
               this.isExecutingAnalysis.set(false);
             },
@@ -316,10 +329,11 @@ export class NewRecordPanelComponent implements OnInit {
           datasource: this.datasourceFile(),
           visibility: LayersMetadataResourceVisibilityEnum.Public,
           approved: true,
-          layer: this.layername()
-        }
+          layer: this.layername(),
+        };
 
-        this.dataAnalysisApi().analysisSynchMetadataResource(analysisRequest)
+        this.dataAnalysisApi()
+          .analysisSynchMetadataResource(analysisRequest)
           .then(
             response => {
               this.analysisResult.set(response);
@@ -332,8 +346,13 @@ export class NewRecordPanelComponent implements OnInit {
             }
           );
       }
-
     }
+  }
+
+  buildOverview() {
+    // TODO: need progress indicator
+    // TODO: do not try on tabular data
+    return `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasource())}&layer=${this.layername()}`;
   }
 
   private getRecordPreview() {
@@ -346,10 +365,11 @@ export class NewRecordPanelComponent implements OnInit {
         const previewAnalysisRequest: PreviewDataAnalysisOnRecordRequest = {
           uuid: this.template(),
           datasource: this.datasource(),
-          layer: this.layername()
-        }
+          layer: this.layername(),
+        };
 
-        this.dataAnalysisApi().previewDataAnalysisOnRecord(previewAnalysisRequest)
+        this.dataAnalysisApi()
+          .previewDataAnalysisOnRecord(previewAnalysisRequest)
           .then(
             response => {
               this.previewResult.set(response);
@@ -361,18 +381,21 @@ export class NewRecordPanelComponent implements OnInit {
               this.isCreatingPreview.set(false);
             }
           );
-
       } else {
         // Process uploaded dataset to a new metadata
-        const previewAnalysisRequest: PreviewDataAnalysisOnRecordForMetadataResourceRequest = {
-          metadataUuid: this.newRecordId(),
-          datasource: this.datasourceFile(),
-          visibility: LayersMetadataResourceVisibilityEnum.Public,
-          approved: true,
-          layer: this.layername()
-        }
+        const previewAnalysisRequest: PreviewDataAnalysisOnRecordForMetadataResourceRequest =
+          {
+            metadataUuid: this.newRecordId(),
+            datasource: this.datasourceFile(),
+            visibility: LayersMetadataResourceVisibilityEnum.Public,
+            approved: true,
+            layer: this.layername(),
+          };
 
-        this.dataAnalysisApi().previewDataAnalysisOnRecordForMetadataResource(previewAnalysisRequest)
+        this.dataAnalysisApi()
+          .previewDataAnalysisOnRecordForMetadataResource(
+            previewAnalysisRequest
+          )
           .then(
             response => {
               this.previewResult.set(response);
@@ -385,7 +408,6 @@ export class NewRecordPanelComponent implements OnInit {
             }
           );
       }
-
     }
   }
 
@@ -394,10 +416,11 @@ export class NewRecordPanelComponent implements OnInit {
       const analysisRequest: ApplyDataAnalysisOnRecordRequest = {
         uuid: this.newRecordId(),
         datasource: this.datasource(),
-        layer: this.layername()
-      }
+        layer: this.layername(),
+      };
 
-      this.dataAnalysisApi().applyDataAnalysisOnRecord(analysisRequest)
+      this.dataAnalysisApi()
+        .applyDataAnalysisOnRecord(analysisRequest)
         .then(
           response => {
             location.replace(
@@ -409,15 +432,17 @@ export class NewRecordPanelComponent implements OnInit {
           }
         );
     } else {
-      const analysisRequest: ApplyDataAnalysisOnRecordForMetadataResourceRequest = {
-        uuid: this.newRecordId(),
-        datasource: this.datasourceFile(),
-        visibility: LayersMetadataResourceVisibilityEnum.Public,
-        approved: true,
-        layer: this.layername()
-      }
+      const analysisRequest: ApplyDataAnalysisOnRecordForMetadataResourceRequest =
+        {
+          uuid: this.newRecordId(),
+          datasource: this.datasourceFile(),
+          visibility: LayersMetadataResourceVisibilityEnum.Public,
+          approved: true,
+          layer: this.layername(),
+        };
 
-      this.dataAnalysisApi().applyDataAnalysisOnRecordForMetadataResource(analysisRequest)
+      this.dataAnalysisApi()
+        .applyDataAnalysisOnRecordForMetadataResource(analysisRequest)
         .then(
           response => {
             location.replace(
@@ -453,7 +478,7 @@ export class NewRecordPanelComponent implements OnInit {
   }
 
   onUploadHandler(event: FileUploadHandlerEvent) {
-    console.log('selected attachment file:', event.files)
+    console.log('selected attachment file:', event.files);
 
     if (!this.newRecordId()) {
       return;
@@ -462,9 +487,10 @@ export class NewRecordPanelComponent implements OnInit {
     const putResourceRequest: PutResourceRequest = {
       metadataUuid: this.newRecordId(),
       file: event.files[0],
-    }
+    };
 
-    this.recordsDataStoreApi().putResource(putResourceRequest)
+    this.recordsDataStoreApi()
+      .putResource(putResourceRequest)
       .then(
         response => {
           if (response.filename) {
@@ -479,13 +505,13 @@ export class NewRecordPanelComponent implements OnInit {
   }
 
   onRemove(event: FileRemoveEvent) {
-    console.log("onRemove")
+    console.log('onRemove');
     console.log(event);
     this.onDatasourceChange();
   }
 
   onClear(event: any) {
-    console.log("onClear")
+    console.log('onClear');
     console.log(event);
     this.onDatasourceChange();
   }

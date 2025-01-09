@@ -11,7 +11,7 @@
       }}</span>
       features.
     } @else if (isRaster) {
-      RASTER dataset contains {{ analysisResult().bands.length }} band(s).
+      RASTER dataset contains {{ analysisResult().bands?.length }} band(s).
     }
   </h2>
 
@@ -31,7 +31,7 @@
       {{ analysisResult().dataType }}
     </div>
 
-    @if (isVector && analysisResult().layers[0].geometryFields.length > 0) {
+    @if (isVector && analysisResult().layers[0].geometryFields?.length > 0) {
       <div class="font-medium">Geometry type</div>
       <div class="col-span-7">
         {{ analysisResult().layers[0].geometryFields[0].type }}
@@ -87,6 +87,14 @@
         </p-table>
       </div>
 
+      @if (isRaster) {
+        @if (analysisResult().metadata) {
+          <div class="font-medium">Temporal extent</div>
+          <div class="col-span-7">
+            {{ analysisResult().metadata | json }}
+          </div>
+        }
+      }
       @if (analysisResult().layers[0].geometryFields.length == 0) {
         <div class="font-medium">Spatial extent?</div>
         <div class="col-span-7">

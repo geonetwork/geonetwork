@@ -1,3 +1,10 @@
+<p-button
+  label="Cancel"
+  icon="fa fa-xmark"
+  severity="danger"
+  [outlined]="true"
+  class="float-end m-4" />
+
 <p-stepper [(value)]="activeStep" class="p-10">
   <p-step-item [value]="1">
     <p-step>Choose resource type</p-step>
@@ -37,7 +44,9 @@
     </p-step-panel>
   </p-step-item>
   <p-step-item [value]="2">
-    <p-step [disabled]="!isTemplateSelected()">Upload or connect your data</p-step>
+    <p-step [disabled]="!isTemplateSelected()"
+      >Upload or connect your data</p-step
+    >
     <p-step-panel>
       <ng-template
         pTemplate="content"
@@ -86,7 +95,6 @@
                 </ng-template>
               </p-fileupload>
             </div>
-
 
             @if (isFetchingLayers()) {
               <div>
@@ -159,7 +167,10 @@
     </p-step-panel>
   </p-step-item>
   <p-step-item [value]="3">
-    <p-step [disabled]="!(isTemplateSelected() && isDatasourceAndTemplateSelected())">Data analysis summary</p-step>
+    <p-step
+      [disabled]="!(isTemplateSelected() && isDatasourceAndTemplateSelected())"
+      >Data analysis summary</p-step
+    >
     <p-step-panel>
       <ng-template
         pTemplate="content"
@@ -187,7 +198,7 @@
             (onClick)="activateCallback(2)" />
           <p-button
             [disabled]="!analysisResult()"
-            label="Preview record"
+            label="Build overview"
             icon="fas fa-arrow-right"
             iconPos="right"
             (onClick)="activateCallback(4)" />
@@ -196,7 +207,51 @@
     </p-step-panel>
   </p-step-item>
   <p-step-item [value]="4">
-    <p-step [disabled]="!(isTemplateSelected() && isDatasourceAndTemplateSelected() && analysisResult())">Review and save</p-step>
+    <p-step
+      [disabled]="
+        !(
+          isTemplateSelected() &&
+          isDatasourceAndTemplateSelected() &&
+          analysisResult()
+        )
+      "
+      >Build overview</p-step
+    >
+    <p-step-panel>
+      <ng-template
+        pTemplate="content"
+        let-activateCallback="activateCallback"
+        let-index="index">
+        <div>
+          <img [src]="buildOverview()" class="max-w-full" />
+        </div>
+        <div class="flex mt-2 gap-2">
+          <p-button
+            label="Back"
+            icon="fas fa-arrow-left"
+            severity="secondary"
+            (onClick)="activateCallback(3)" />
+          <p-button
+            [disabled]="!analysisResult()"
+            label="Preview record"
+            icon="fas fa-arrow-right"
+            iconPos="right"
+            (onClick)="activateCallback(5)" />
+        </div>
+      </ng-template>
+    </p-step-panel>
+  </p-step-item>
+  <p-step-item [value]="5">
+    <p-step
+      [disabled]="
+        !(
+          isTemplateSelected() &&
+          isDatasourceAndTemplateSelected() &&
+          analysisResult()
+        )
+      "
+      >Review and save</p-step
+    >
     <p-step-panel>
       <ng-template
         pTemplate="content"

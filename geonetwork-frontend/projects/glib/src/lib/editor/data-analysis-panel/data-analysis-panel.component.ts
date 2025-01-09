@@ -4,11 +4,12 @@ import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { GnDatasetInfo, GnRasterInfo, GnRasterInfoDataTypeEnum } from 'gapi';
 import { Select } from 'primeng/select';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'g-data-analysis-panel',
   standalone: true,
-  imports: [DropdownModule, PrimeTemplate, TableModule, Select],
+  imports: [DropdownModule, PrimeTemplate, TableModule, Select, JsonPipe],
   templateUrl: './data-analysis-panel.component.html',
 })
 export class DataAnalysisPanelComponent {
