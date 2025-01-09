@@ -37,6 +37,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { SearchRouteService } from './search-route.service';
+import { AppStore } from '../app.state';
 
 export const DEFAULT_PAGE_SIZE = 10;
 
@@ -66,6 +67,7 @@ const initialSearchState: Search = {
 export const SearchStore = signalStore(
   withState(initialSearchState),
   withProps(({ response }) => ({
+    appStore: inject(AppStore),
     router: inject(Router),
     location: inject(Location),
     response$: toObservable(response),
@@ -384,7 +386,12 @@ export const SearchStore = signalStore(
       searchFilterParameters,
       paging,
       searchRequestPageParameters,
+      appStore,
+      reset
     }) {
+      toObservable(appStore.authenticated).subscribe(() => {
+        reset();
+      } );
       search(searchFilterParameters);
       paging(searchRequestPageParameters);
     },
