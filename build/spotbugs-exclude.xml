@@ -103,6 +103,12 @@
     </Or>
   </Match>
   <Match>
+    <Package name="org.geonetwork.utility.date"/>
+    <Or>
+      <Bug pattern="CT_CONSTRUCTOR_THROW"/>
+    </Or>
+  </Match>
+  <Match>
     <Package name="org.geonetwork.utility.legacy.io"/>
     <Or>
       <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
