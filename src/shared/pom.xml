@@ -26,6 +26,7 @@
     <module>domain</module>
     <module>utility</module>
     <module>utility-legacy</module>
+    <module>security</module>
     <module>schemas-model</module>
     <module>schemas</module>
     <module>index-client</module>
