@@ -29,6 +29,14 @@
   </Match>
 
   <Match>
+    <Class name="org.geonetwork.ogcapi.service.links.MediaTypeAndName"/>
+    <Or>
+      <Bug pattern="EI_EXPOSE_REP2"/>
+      <Bug pattern="EI_EXPOSE_REP"/>
+    </Or>
+  </Match>
+
+  <Match>
     <Package name="org.geonetwork.ogcapi.records.generated.model"/>
     <Or>
       <Bug pattern="EI_EXPOSE_REP2"/>

@@ -131,12 +131,20 @@
       "description": "Organization associated with this resource.",
       "x-gn-elastic": [
         {
-          "elasticPath": "OrgForResourceObject.default",
+          "elasticPath": "OrgForResourceObject.default.text",
           "elasticColumnType": "TEXT"
         },
         {
-          "elasticPath": "OrgForResourceObject.lang${lang3iso}",
+          "elasticPath": "OrgForResourceObject.lang${lang3iso}.text",
           "elasticColumnType": "TEXT"
+        },
+        {
+          "elasticPath": "OrgForResourceObject.default",
+          "elasticColumnType": "KEYWORD"
+        },
+        {
+          "elasticPath": "OrgForResourceObject.lang${lang3iso}",
+          "elasticColumnType": "KEYWORD"
         }
       ]
     },
@@ -217,6 +225,14 @@
           "elasticPath": "tag.lang${lang3iso}",
           "elasticColumnType": "KEYWORD",
           "elasticColumnFormat": "LOWERCASE"
+        },
+        {
+          "elasticPath": "tag.default.text",
+          "elasticColumnType": "TEXT"
+        },
+        {
+          "elasticPath": "tag.lang${lang3iso}.text",
+          "elasticColumnType": "TEXT"
         }
       ]
     },
@@ -226,11 +242,19 @@
       "description": "A knowledge organization system used to classify the resource described by this resource.",
       "x-gn-elastic": [
         {
-          "elasticPath": "allKeywords.*.keywords.default",
+          "elasticPath": "th_*.default",
+          "elasticColumnType": "KEYWORD"
+        },
+        {
+          "elasticPath": "th_*.lang${lang3iso}",
+          "elasticColumnType": "KEYWORD"
+        },
+        {
+          "elasticPath": "th_*.default.text",
           "elasticColumnType": "TEXT"
         },
         {
-          "elasticPath": "allKeywords.*.keywords.lang${lang3iso}",
+          "elasticPath": "th_*.lang${lang3iso}.text",
           "elasticColumnType": "TEXT"
         }
       ]
@@ -240,6 +264,16 @@
       "type": "string",
       "description": "A list of contacts qualified by their role(s) in association to the record or the resource described by this record.",
       "x-gn-elastic": [
+        {
+          "elasticPath": "contactForResource.organisationObject.default.text",
+          "elasticColumnType": "TEXT",
+          "elasticQueryType": "NESTED"
+        },
+        {
+          "elasticPath": "contactForResource.organisationObject.lang${lang3iso}.text",
+          "elasticColumnType": "TEXT",
+          "elasticQueryType": "NESTED"
+        },
         {
           "elasticPath": "contactForResource.organisationObject.default",
           "elasticColumnType": "TEXT",
@@ -266,12 +300,22 @@
           "elasticQueryType": "NESTED"
         },
         {
+          "elasticPath": "contactForResource.email.text",
+          "elasticColumnType": "TEXT",
+          "elasticQueryType": "NESTED"
+        },
+        {
           "elasticPath": "contactForResource.website",
           "elasticColumnType": "TEXT",
           "elasticQueryType": "NESTED"
         },
         {
           "elasticPath": "contactForResource.individual",
+          "elasticColumnType": "KEYWORD",
+          "elasticQueryType": "NESTED"
+        },
+        {
+          "elasticPath": "contactForResource.individual.text",
           "elasticColumnType": "TEXT",
           "elasticQueryType": "NESTED"
         },
@@ -282,51 +326,6 @@
         },
         {
           "elasticPath": "contactForResource.phone",
-          "elasticColumnType": "TEXT",
-          "elasticQueryType": "NESTED"
-        },
-        {
-          "elasticPath": "contact.organisationObject.default",
-          "elasticColumnType": "TEXT",
-          "elasticQueryType": "NESTED"
-        },
-        {
-          "elasticPath": "contact.organisationObject.lang${lang3iso}",
-          "elasticColumnType": "TEXT",
-          "elasticQueryType": "NESTED"
-        },
-        {
-          "elasticPath": "contact.address",
-          "elasticColumnType": "TEXT",
-          "elasticQueryType": "NESTED"
-        },
-        {
-          "elasticPath": "contact.role",
-          "elasticColumnType": "TEXT",
-          "elasticQueryType": "NESTED"
-        },
-        {
-          "elasticPath": "contact.email",
-          "elasticColumnType": "KEYWORD",
-          "elasticQueryType": "NESTED"
-        },
-        {
-          "elasticPath": "contact.website",
-          "elasticColumnType": "TEXT",
-          "elasticQueryType": "NESTED"
-        },
-        {
-          "elasticPath": "contact.individual",
-          "elasticColumnType": "TEXT",
-          "elasticQueryType": "NESTED"
-        },
-        {
-          "elasticPath": "contact.position",
-          "elasticColumnType": "TEXT",
-          "elasticQueryType": "NESTED"
-        },
-        {
-          "elasticPath": "contact.phone",
           "elasticColumnType": "TEXT",
           "elasticQueryType": "NESTED"
         }

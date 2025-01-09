@@ -5,7 +5,6 @@
  */
 package org.geonetwork.ogcapi.records;
 
-import java.util.Optional;
 import lombok.SneakyThrows;
 import org.geonetwork.ogcapi.records.generated.DefaultApi;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto;
@@ -17,28 +16,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import java.util.Optional;
+
+/**
+ * implements the landing page (/) endpoint
+ */
 @RestController
 @RequestMapping("/ogcapi-records")
 public class OgcapiRecordsDefaultApiController implements DefaultApi {
 
-    private final NativeWebRequest request;
-    private final OgcApiCollectionsApi collectionsApi;
+  private final NativeWebRequest request;
+  private final OgcApiCollectionsApi collectionsApi;
 
-    @Autowired
-    public OgcapiRecordsDefaultApiController(NativeWebRequest request, OgcApiCollectionsApi collectionsApi) {
-        this.request = request;
-        this.collectionsApi = collectionsApi;
-    }
+  @Autowired
+  public OgcapiRecordsDefaultApiController(NativeWebRequest request, OgcApiCollectionsApi collectionsApi) {
+    this.request = request;
+    this.collectionsApi = collectionsApi;
+  }
 
-    @Override
-    public Optional<NativeWebRequest> getRequest() {
-        return Optional.ofNullable(request);
-    }
+  @Override
+  public Optional<NativeWebRequest> getRequest() {
+    return Optional.ofNullable(request);
+  }
 
-    @Override
-    @SneakyThrows
-    public ResponseEntity<OgcApiRecordsLandingPageDto> getLandingPage() {
-        var result = collectionsApi.getLandingPage();
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+  @Override
+  @SneakyThrows
+  public ResponseEntity<OgcApiRecordsLandingPageDto> getLandingPage() {
+    var result = collectionsApi.getLandingPage(getRequest().get());
+    return new ResponseEntity<>(result, HttpStatus.OK);
+  }
 }

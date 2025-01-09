@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.ogcapi.service;
+package org.geonetwork.ogcapi.service.configuration;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 /** simple configuration for searching in ogcapi-records. From gn-microservices. */
 @Configuration
 @ConfigurationProperties(prefix = "geonetwork.openapi-records.search")
-public class SearchConfiguration {
+public class OgcApiSearchConfiguration {
 
     String queryFilter;
 

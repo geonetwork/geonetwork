@@ -11,8 +11,12 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto
 import org.geonetwork.ogcapi.service.dataaccess.CatalogApi;
 import org.geonetwork.ogcapi.service.dataaccess.simpleobjects.CatalogInfo;
 import org.geonetwork.ogcapi.service.indexConvert.ElasticIndex2Catalog;
+import org.geonetwork.ogcapi.service.links.CollectionPageLinks;
+import org.geonetwork.ogcapi.service.links.CollectionsPageLinks;
+import org.geonetwork.ogcapi.service.links.LandingPageLinks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.NativeWebRequest;
 
 /**
  * High level implementation for the OgcApiCollectionsApi endpoints. The controller is responsible for the web-details,
@@ -24,6 +28,18 @@ public class OgcApiCollectionsApi {
     @Autowired
     CatalogApi catalogApi;
 
+    @Autowired
+    LandingPageLinks landingPageLinks;
+
+    @Autowired
+    CollectionsPageLinks collectionsPageLinks;
+
+    @Autowired
+    CollectionPageLinks collectionPageLinks;
+
+    @Autowired
+    private NativeWebRequest nativeWebRequest;
+
     public OgcApiCollectionsApi() {}
 
     /**
@@ -32,7 +48,7 @@ public class OgcApiCollectionsApi {
      * @return OgcApiRecordsLandingPageDto
      * @throws Exception bad config
      */
-    public OgcApiRecordsLandingPageDto getLandingPage() throws Exception {
+    public OgcApiRecordsLandingPageDto getLandingPage(NativeWebRequest nativeWebRequest) throws Exception {
         var uuid = catalogApi.getMainPortalUUID();
         if (uuid == null) {
             throw new Exception("no main portal found in DB table source");
@@ -42,6 +58,9 @@ public class OgcApiCollectionsApi {
         result.description(collectionInfo.getDescription()).title(collectionInfo.getTitle());
 
         result.setCatalogInfo(collectionInfo);
+
+        landingPageLinks.addLinks(nativeWebRequest, uuid, result);
+
         return result;
     }
 
@@ -55,7 +74,9 @@ public class OgcApiCollectionsApi {
     public OgcApiRecordsCatalogDto describeCollection(String catalogId) throws Exception {
         var info = catalogApi.getPortalInfo(catalogId);
 
-        return catalogInfoToOgcApiRecordsCatalogDto(info);
+        var result = catalogInfoToOgcApiRecordsCatalogDto(info);
+        collectionPageLinks.addLinks(nativeWebRequest, result);
+        return result;
     }
 
     /**
@@ -64,7 +85,7 @@ public class OgcApiCollectionsApi {
      * @param info CatalogInfo (DB `source` table + elastic json index record)
      * @return OgcApiRecordsCatalogDto
      */
-    public OgcApiRecordsCatalogDto catalogInfoToOgcApiRecordsCatalogDto(CatalogInfo info) {
+    protected OgcApiRecordsCatalogDto catalogInfoToOgcApiRecordsCatalogDto(CatalogInfo info) {
         OgcApiRecordsCatalogDto result = new OgcApiRecordsCatalogDto();
         result.setId(info.getSource().getUuid());
         result.setTitle(info.getSource().getName());
@@ -89,6 +110,8 @@ public class OgcApiCollectionsApi {
 
         var result = new OgcApiRecordsGetCollections200ResponseDto();
         result.setCollections(collections);
+
+        collectionsPageLinks.addLinks(nativeWebRequest, result);
         return result;
     }
 }

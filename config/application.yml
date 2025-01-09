@@ -1,5 +1,37 @@
 geonetwork:
   openapi-records:
+    links:
+      #where is GN5?
+      # should end in "/"
+      ogcApiRecordsBaseUrl: 'http://localhost:7979/ogcapi-records/'
+      #how to link to GN (can be either GN4 or GN5's GN4 proxy)
+      # should end in "/"
+      gnBaseUrl: 'http://localhost:7979/geonetwork/'
+      landingpage:
+        formats:
+          - json
+          - html
+      conformance:
+        formats:
+          - json
+          - html
+      collections:
+        formats:
+          - json
+          - html
+      collection:
+        formats:
+          - json
+          - html
+      queryables:
+        formats:
+          - json
+      items:
+        formats:
+          - geojson
+      item:
+        formats:
+          - geojson
     search:
       queryFilter: '+isTemplate:n'
       queryBase: '(any.\*:(${any}) OR resourceTitleObject.\*:(${any})^2)'

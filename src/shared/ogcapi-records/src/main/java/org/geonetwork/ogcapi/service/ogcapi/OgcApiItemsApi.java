@@ -17,10 +17,13 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSOND
 import org.geonetwork.ogcapi.service.dataaccess.CatalogApi;
 import org.geonetwork.ogcapi.service.dataaccess.SimpleElastic;
 import org.geonetwork.ogcapi.service.indexConvert.OgcApiGeoJsonConverter;
+import org.geonetwork.ogcapi.service.links.ItemPageLinks;
+import org.geonetwork.ogcapi.service.links.ItemsPageLinks;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.geonetwork.ogcapi.service.search.RecordsEsQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.NativeWebRequest;
 
 /** High level implementation for the ogcapi-records "Items" endpoints. */
 @Component
@@ -38,8 +41,17 @@ public class OgcApiItemsApi {
     @Autowired
     private OgcApiGeoJsonConverter geoJsonConverter;
 
+    @Autowired
+    private ItemsPageLinks itemsPageLinks;
+
+    @Autowired
+    private ItemPageLinks itemPageLinks;
+
+    @Autowired
+    private NativeWebRequest nativeWebRequest;
+
     /**
-     * gets a record in a collection
+     * gets a record in a collection. collections/{collectionid}/items/{itemid} endpoint
      *
      * @param collectionId which collection (not needed)
      * @param recordId which record
@@ -51,11 +63,13 @@ public class OgcApiItemsApi {
             throws NotFoundException, IOException {
         var recordIndexRecord = simpleElastic.getOne(recordId);
         var result = geoJsonConverter.convert(recordIndexRecord, null);
+
+        itemPageLinks.addLinks(nativeWebRequest, collectionId, result);
         return result;
     }
 
     /**
-     * given an OGCAPI-records query, execute and return the results.
+     * given an OGCAPI-records query, execute and return the results. collections/{collectionid}/items endpoint
      *
      * @param ogcApiQuery query from user
      * @return set of GeoJson features
@@ -73,6 +87,7 @@ public class OgcApiItemsApi {
         response.numberMatched((int) totalNumHits);
         response.numberReturned(features.size());
         response.setTimeStamp(OffsetDateTime.now(ZoneId.of("UTC")));
+        itemsPageLinks.addLinks(nativeWebRequest, ogcApiQuery.getCollectionId(), response, ogcApiQuery);
         return response;
     }
 
@@ -87,16 +102,6 @@ public class OgcApiItemsApi {
         var source = catalogApi.getSource(ogcApiQuery.getCollectionId());
         String collectionFilter = catalogApi.retrieveCollectionFilter(source);
 
-        //        SearchResponse<IndexRecord> searchResponse = simpleElastic
-        //                .getClient()
-        //                .getEsClient()
-        //                .search(
-        //                        s -> {
-        //                            recordsEsQueryBuilder.buildQuery(s, ogcApiQuery, collectionFilter, Set.of("*"));
-        //                            s.index(simpleElastic.getRecordIndexName());
-        //                            return s;
-        //                        },
-        //                        IndexRecord.class);
         SearchResponse<IndexRecord> searchResponse = simpleElastic.search(
                 s -> {
                     recordsEsQueryBuilder.buildQuery(s, ogcApiQuery, collectionFilter, Set.of("*"));

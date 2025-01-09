@@ -340,7 +340,7 @@ public class QueryToElastic {
         var userSearchTerm2 = userSearchTerm.replaceAll("\"", "");
         var path = gnElasticPath.getElasticPath().replace("${lang3iso}", lang3iso);
 
-        return TermsQuery.of(tq -> tq.field(path).terms(t -> t.value(Arrays.asList(FieldValue.of(userSearchTerm2)))))
+        return TermsQuery.of(tq -> tq.field(path).terms(t -> t.value(List.of(FieldValue.of(userSearchTerm2)))))
                 ._toQuery();
     }
 

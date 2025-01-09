@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.geometry.Rectangle;
-import org.geonetwork.ogcapi.service.SearchConfiguration;
+import org.geonetwork.ogcapi.service.configuration.OgcApiSearchConfiguration;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -69,9 +69,9 @@ public class RecordsEsQueryBuilder {
     QueryToElastic queryToElastic;
 
     @Autowired
-    private SearchConfiguration configuration;
+    private OgcApiSearchConfiguration configuration;
 
-    public RecordsEsQueryBuilder(SearchConfiguration configuration) {
+    public RecordsEsQueryBuilder(OgcApiSearchConfiguration configuration) {
         this.configuration = configuration;
     }
 

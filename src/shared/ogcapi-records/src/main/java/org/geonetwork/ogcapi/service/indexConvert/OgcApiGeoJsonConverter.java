@@ -32,6 +32,52 @@ public class OgcApiGeoJsonConverter {
     MetadataRepository metadataRepository;
 
     /**
+     * builder to construct a polygon from a bounding box.
+     *
+     * @param bbox bounding box - xmin, ymin, xmax, ymax
+     * @return GeoJsonPolygon with a rectangular polygon representing the bounding box.
+     */
+    public static OgcApiRecordsPolygonDto fromBBox(List<List<BigDecimal>> bbox) {
+        var result = new OgcApiRecordsPolygonDto();
+
+        List<List<List<BigDecimal>>> coords = new ArrayList<List<List<BigDecimal>>>();
+        var coords_1 = new ArrayList<List<BigDecimal>>();
+        coords.add(coords_1);
+        var coords_2 = new ArrayList<BigDecimal>();
+        // xmin, ymin
+        coords_2.add(bbox.get(0).get(0));
+        coords_2.add(bbox.get(0).get(1));
+        coords_1.add(coords_2);
+
+        // xmax, ymin
+        coords_2 = new ArrayList<BigDecimal>();
+        coords_2.add(bbox.get(0).get(2));
+        coords_2.add(bbox.get(0).get(1));
+        coords_1.add(coords_2);
+
+        // xmax, ymax
+        coords_2 = new ArrayList<BigDecimal>();
+        coords_2.add(bbox.get(0).get(2));
+        coords_2.add(bbox.get(0).get(3));
+        coords_1.add(coords_2);
+
+        // xmin, ymax
+        coords_2 = new ArrayList<BigDecimal>();
+        coords_2.add(bbox.get(0).get(0));
+        coords_2.add(bbox.get(0).get(3));
+        coords_1.add(coords_2);
+
+        // xmin, ymin
+        coords_2 = new ArrayList<BigDecimal>();
+        coords_2.add(bbox.get(0).get(0));
+        coords_2.add(bbox.get(0).get(1));
+        coords_1.add(coords_2);
+
+        result.setCoordinates(coords);
+        return result;
+    }
+
+    /**
      * converts an IndexRecord (elastic Index Json Record) to a OgcApiGeoJsonRecord.
      *
      * @param elasticIndexJsonRecord IndexRecord from Elastic
@@ -107,52 +153,6 @@ public class OgcApiGeoJsonConverter {
         }
 
         result.setProperties(properties);
-        return result;
-    }
-
-    /**
-     * builder to construct a polygon from a bounding box.
-     *
-     * @param bbox bounding box - xmin, ymin, xmax, ymax
-     * @return GeoJsonPolygon with a rectangular polygon representing the bounding box.
-     */
-    public static OgcApiRecordsPolygonDto fromBBox(List<List<BigDecimal>> bbox) {
-        var result = new OgcApiRecordsPolygonDto();
-
-        List<List<List<BigDecimal>>> coords = new ArrayList<List<List<BigDecimal>>>();
-        var coords_1 = new ArrayList<List<BigDecimal>>();
-        coords.add(coords_1);
-        var coords_2 = new ArrayList<BigDecimal>();
-        // xmin, ymin
-        coords_2.add(bbox.get(0).get(0));
-        coords_2.add(bbox.get(0).get(1));
-        coords_1.add(coords_2);
-
-        // xmax, ymin
-        coords_2 = new ArrayList<BigDecimal>();
-        coords_2.add(bbox.get(0).get(2));
-        coords_2.add(bbox.get(0).get(1));
-        coords_1.add(coords_2);
-
-        // xmax, ymax
-        coords_2 = new ArrayList<BigDecimal>();
-        coords_2.add(bbox.get(0).get(2));
-        coords_2.add(bbox.get(0).get(3));
-        coords_1.add(coords_2);
-
-        // xmin, ymax
-        coords_2 = new ArrayList<BigDecimal>();
-        coords_2.add(bbox.get(0).get(0));
-        coords_2.add(bbox.get(0).get(3));
-        coords_1.add(coords_2);
-
-        // xmin, ymin
-        coords_2 = new ArrayList<BigDecimal>();
-        coords_2.add(bbox.get(0).get(0));
-        coords_2.add(bbox.get(0).get(1));
-        coords_1.add(coords_2);
-
-        result.setCoordinates(coords);
         return result;
     }
 }

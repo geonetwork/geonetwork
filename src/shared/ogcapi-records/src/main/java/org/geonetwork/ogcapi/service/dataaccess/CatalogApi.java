@@ -22,11 +22,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CatalogApi {
 
-    private SourceRepository sourceRepository;
+    private final SourceRepository sourceRepository;
 
-    private SimpleElastic simpleElastic;
+    private final SimpleElastic simpleElastic;
 
-    private SettingRepository settingRepository;
+    private final SettingRepository settingRepository;
 
     @Autowired
     public CatalogApi(
