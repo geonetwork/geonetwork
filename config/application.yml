@@ -1,6 +1,5 @@
 geonetwork:
-  core:
-    url: http://localhost:8080/geonetwork
+  url: http://localhost:8080/geonetwork
   index:
     url: http://localhost:9200
     indexPrefix: gn5-
@@ -81,7 +80,7 @@ spring:
             filters:
               - RewritePath=/geonetwork/(?<url>.*), /api/$\{url}
           - id: geonetwork_route
-            uri: ${geonetwork.core.url}
+            uri: ${geonetwork.url}
             predicates:
               - Path=/geonetwork/**
             filters:
