@@ -54,29 +54,42 @@
                 pInputText
                 id="datasource"
                 aria-describedby="datasource-help"
+                [disabled]="isDatasourceFileSelected()"
                 (change)="onDatasourceChange()"
                 [(ngModel)]="datasource" />
               <button
                 type="button"
                 pButton
                 label="Find datasets"
-                [disabled]="isFetchingLayers()"
+                [disabled]="isFetchingLayers() || isDatasourceFileSelected()"
                 (click)="getLayerList()"></button>
             </p-inputGroup>
 
             <div class="font-bold w-full text-2xl text-center">or</div>
 
             <div class="mb-10">
-              <p-fileupload
+              <!--<p-fileupload
                 styleClass="w-full"
-                mode="basic"
+                [customUpload]="true"
+                (onSelect)="onAttachmentSelected($event)"
+                (uploadHandler)="onAttachmentHandled($event)"
                 name="demo[]"
                 chooseIcon="fa fa-upload"
-                accept="image/*"
+                accept="text/*,image/*"
                 maxFileSize="1000000"
-                (onUpload)="onBasicUploadAuto($event)"
-                [auto]="true"
-                chooseLabel="Upload your file"></p-fileupload>
+                chooseLabel="Upload your file"></p-fileupload>-->
+              <p-fileupload
+                styleClass="w-full"
+                [customUpload]="true"
+                (onSelect)="onAttachmentSelected($event)"
+                (uploadHandler)="onUploadHandler($event)"
+                (onRemove)="onRemove($event)"
+                (onClear)="onClear($event)"
+                name="demo[]"
+                chooseIcon="fa fa-upload"
+                accept="text/*,image/*"
+                maxFileSize="1000000"
+                chooseLabel="Select your file"></p-fileupload>
             </div>
 
             @if (isFetchingLayers()) {

@@ -21,11 +21,409 @@
   ],
   "tags": [
     {
-      "name": "API_CLASS_RECORD_TAG",
-      "description": "API_CLASS_RECORD_OPS"
+      "name": "records",
+      "description": "Metadata record operations"
+    },
+    {
+      "name": "records",
+      "description": "All operations related to metadata records.\n"
     }
   ],
   "paths": {
+    "/api/records/{metadataUuid}/attachments": {
+      "get": {
+        "tags": [
+          "records"
+        ],
+        "summary": "List all metadata attachments",
+        "description": "\u003Ca href='https://docs.geonetwork-opensource.org/latest/user-guide/associating-resources/using-filestore/'\u003EMore info\u003C/a\u003E",
+        "operationId": "getAllResources",
+        "parameters": [
+          {
+            "name": "metadataUuid",
+            "in": "path",
+            "description": "The metadata UUID or internal identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "43d7c186-2187-4bcd-8843-41e575a5ef56"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "name",
+              "enum": [
+                "type",
+                "name"
+              ]
+            },
+            "example": "type"
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "description": "Use approved version or not",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "example": true
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "*.*"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the record attachments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetadataResource"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_VIEW",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetadataResource"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "records"
+        ],
+        "summary": "Create a new resource from a URL for a given metadata",
+        "operationId": "putResourceFromURL",
+        "parameters": [
+          {
+            "name": "metadataUuid",
+            "in": "path",
+            "description": "The metadata UUID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "43d7c186-2187-4bcd-8843-41e575a5ef56"
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "description": "The sharing policy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "public",
+              "enum": [
+                "public",
+                "private"
+              ]
+            },
+            "example": "public"
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "description": "The URL to load in the store",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "url"
+            }
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "description": "Use approved version or not",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "example": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Attachment added.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataResource"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataResource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "records"
+        ],
+        "summary": "Create a new resource for a given metadata",
+        "operationId": "putResource",
+        "parameters": [
+          {
+            "name": "metadataUuid",
+            "in": "path",
+            "description": "The metadata UUID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "43d7c186-2187-4bcd-8843-41e575a5ef56"
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "description": "The sharing policy",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "public",
+              "enum": [
+                "public",
+                "private"
+              ]
+            },
+            "example": "public"
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "description": "Use approved version or not",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "example": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "description": "The file to upload",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "403": {
+            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataResource"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Attachment uploaded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataResource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "records"
+        ],
+        "summary": "Delete all uploaded metadata resources",
+        "operationId": "delResources",
+        "parameters": [
+          {
+            "name": "metadataUuid",
+            "in": "path",
+            "description": "The metadata UUID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "43d7c186-2187-4bcd-8843-41e575a5ef56"
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "description": "Use approved version or not",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "example": true
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT"
+          },
+          "204": {
+            "description": "Attachment added."
+          }
+        }
+      }
+    },
+    "/api/records/batchediting": {
+      "put": {
+        "tags": [
+          "records"
+        ],
+        "summary": "Batch edit one or more records",
+        "description": "Batch editing API allows to apply multiple edits to one or more record.\n\n**Warning: You can break things here. When defining xpath and using delete or replace mode,\nbe sure to test on a single record before applying changes to a lot of records.\nIf needed, back up your record first and use the preview mode to check the processing.**\n\nChanges are defined on a per standard basis so it is recommended to apply changes\non records which are encoded using the same standard.\n\nWhen applying changes, user privileges apply, so if the user cannot edit a selected record,\nbatch edits will not be applied to that record.\n\nThis operations applies the `update-fixed-info.xsl` transformation for the metadata schema and\n updates the change date if the parameter `updateDateStamp` is set to `true`.\n\n## Changes with GeoNetwork 4\n\n* `diffType` not yet supported.\n\n```\n",
+        "operationId": "batchEdit",
+        "parameters": [
+          {
+            "name": "uuids",
+            "in": "query",
+            "description": "Record UUIDs. If null current selection is used.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "bucket",
+            "in": "query",
+            "description": "Selection bucket name (not supported in GeoNetwork 5)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updateDateStamp",
+            "in": "query",
+            "description": "If true updates the record date stamp with the current time of the operation.\nDate stamp element in each standards can be different. eg. In ISO19139 it is `gmd:dateStamp`,\nin ISO19115-3 it is the revision date of the metadata.\n",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The edits to apply to the records. The body is a list of `BatchEditParameter` objects.\nXML snippet MUST declare namespace they are using to be valid.\n",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BatchEditParameter"
+                }
+              },
+              "examples": {
+                "ISO19139 / Remove all online resources having a protocol 'OGC:WMS'.": {
+                  "description": "ISO19139 / Remove all online resources having a protocol 'OGC:WMS'.",
+                  "value": [
+                    {
+                      "xpath": ".//gmd:onLine[*/gmd:protocol/*/text() = 'OGC:WMS']",
+                      "value": "\u003Cgn_delete\u003E\u003C/gn_delete\u003E"
+                    }
+                  ]
+                },
+                "ISO19139 / Add a new keyword section.": {
+                  "description": "ISO19139 / Add a new keyword section.",
+                  "value": [
+                    {
+                      "xpath": "/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords",
+                      "value": "\u003Cgn_add\u003E\u003Cgmd:descriptiveKeywords xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\"\u003E\u003Cgmd:MD_Keywords\u003E\u003Cgmd:keyword\u003E\u003Cgco:CharacterString\u003EWaste water\u003C/gco:CharacterString\u003E\u003C/gmd:keyword\u003E\u003Cgmd:type\u003E\u003Cgmd:MD_KeywordTypeCode codeList=\"./resources/codeList.xml#MD_KeywordTypeCode\" codeListValue=\"theme\"/\u003E\u003C/gmd:type\u003E\u003C/gmd:MD_Keywords\u003E\u003C/gmd:descriptiveKeywords\u003E\u003C/gn_add\u003E"
+                    }
+                  ]
+                },
+                "ISO19139 / Replace a keyword.": {
+                  "description": "ISO19139 / Replace a keyword.",
+                  "value": [
+                    {
+                      "xpath": ".//gmd:keyword/gco:CharacterString[text() = 'wastewater']",
+                      "value": "\u003Cgn_replace\u003EWaste water\u003C/gn_replace\u003E"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "403": {
+            "description": "Operation not allowed. User needs to be able to edit the resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Return a report of what has been done.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/process": {
       "get": {
         "tags": [
@@ -181,18 +579,19 @@
         }
       }
     },
-    "/api/editing/batchediting/preview": {
+    "/api/records/batchediting/preview": {
       "post": {
         "tags": [
-          "API_CLASS_RECORD_TAG"
+          "records"
         ],
-        "summary": "Preview edits made by XPath expressions.",
+        "summary": "Preview batch editing results.",
+        "description": "Batch editing API allows to apply multiple edits to one or more record.\n\n**Warning: You can break things here. When defining xpath and using delete or replace mode,\nbe sure to test on a single record before applying changes to a lot of records.\nIf needed, back up your record first and use the preview mode to check the processing.**\n\nChanges are defined on a per standard basis so it is recommended to apply changes\non records which are encoded using the same standard.\n\nWhen applying changes, user privileges apply, so if the user cannot edit a selected record,\nbatch edits will not be applied to that record.\n\nThis operations applies the `update-fixed-info.xsl` transformation for the metadata schema and\n updates the change date if the parameter `updateDateStamp` is set to `true`.\n\n## Changes with GeoNetwork 4\n\n* `diffType` not yet supported.\n\n```\n",
         "operationId": "previewBatchEdit",
         "parameters": [
           {
             "name": "uuids",
             "in": "query",
-            "description": "ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION",
+            "description": "Record UUIDs. If null current selection is used.",
             "required": false,
             "schema": {
               "type": "array",
@@ -204,7 +603,7 @@
           {
             "name": "bucket",
             "in": "query",
-            "description": "ApiParams.API_PARAM_BUCKET_NAME",
+            "description": "Selection bucket name (not supported in GeoNetwork 5)",
             "required": false,
             "schema": {
               "type": "string"
@@ -212,6 +611,7 @@
           }
         ],
         "requestBody": {
+          "description": "The edits to apply to the records. The body is a list of `BatchEditParameter` objects.\nXML snippet MUST declare namespace they are using to be valid.\n",
           "content": {
             "application/json": {
               "schema": {
@@ -226,7 +626,7 @@
         },
         "responses": {
           "403": {
-            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT",
+            "description": "Operation not allowed. User needs to be able to edit the resource.",
             "content": {
               "application/xml": {
                 "schema": {
@@ -236,11 +636,303 @@
             }
           },
           "200": {
-            "description": "Processed records.",
+            "description": "In preview mode, the response is an XML document with the modified records.\n\n```xml\n\u003Cpreview\u003E\n    \u003Cgmd:MD_Metadata ...\n    \u003Cgmd:MD_Metadata ...\n\u003C/preview\u003E\n```\n",
             "content": {
               "application/xml": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/apply": {
+      "post": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "applyDataAnalysisOnRecord",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/applyForMetadataResource": {
+      "post": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "applyDataAnalysisOnRecordForMetadataResource",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "public",
+                "private"
+              ]
+            }
+          },
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/records/{metadataUuid}/attachments/{resourceId}": {
+      "get": {
+        "tags": [
+          "records"
+        ],
+        "summary": "Get a metadata resource",
+        "operationId": "getResource",
+        "parameters": [
+          {
+            "name": "resourceId",
+            "in": "path",
+            "description": "The resource identifier (ie. filename)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "description": "Use approved version or not",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "example": true
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size (only applies to images). From 1px to 2048px.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 200
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Record attachment.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Operation not allowed. User needs to be able to download the resource."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "records"
+        ],
+        "summary": "Delete a metadata resource",
+        "operationId": "delResource",
+        "parameters": [
+          {
+            "name": "metadataUuid",
+            "in": "path",
+            "description": "The metadata UUID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "43d7c186-2187-4bcd-8843-41e575a5ef56"
+          },
+          {
+            "name": "resourceId",
+            "in": "path",
+            "description": "The resource identifier (ie. filename)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "description": "Use approved version or not",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "example": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Attachment visibility removed."
+          },
+          "403": {
+            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "records"
+        ],
+        "summary": "Update the metadata resource visibility",
+        "operationId": "patchResource",
+        "parameters": [
+          {
+            "name": "metadataUuid",
+            "in": "path",
+            "description": "The metadata UUID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "43d7c186-2187-4bcd-8843-41e575a5ef56"
+          },
+          {
+            "name": "resourceId",
+            "in": "path",
+            "description": "The resource identifier (ie. filename)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "description": "The visibility",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "public",
+                "private"
+              ]
+            },
+            "example": "public"
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "description": "Use approved version or not",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "example": true
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataResource"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Attachment visibility updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataResource"
                 }
               }
             }
@@ -798,26 +1490,6 @@
         }
       }
     },
-    "/api/token": {
-      "get": {
-        "tags": [
-          "me-api"
-        ],
-        "operationId": "getToken",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/search/doc/{uuid}": {
       "get": {
         "tags": [
@@ -1131,7 +1803,7 @@
         "tags": [
           "data-analysis-controller"
         ],
-        "operationId": "previewSynch",
+        "operationId": "previewDataAnalysisOnRecord",
         "parameters": [
           {
             "name": "uuid",
@@ -1162,7 +1834,73 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/previewForMetadataResource": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "previewDataAnalysisOnRecordForMetadataResource",
+        "parameters": [
+          {
+            "name": "metadataUuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "public",
+                "private"
+              ]
+            }
+          },
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }
@@ -1185,6 +1923,67 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/layersMetadataResource": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "layersMetadataResource",
+        "parameters": [
+          {
+            "name": "metadataUuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "public",
+                "private"
+              ]
+            }
+          },
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -1241,6 +2040,79 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analysis executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DatasetInfo"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RasterInfo"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/data/analysis/executeMetadataResource": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "analysisSynchMetadataResource",
+        "parameters": [
+          {
+            "name": "metadataUuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "public",
+                "private"
+              ]
+            }
+          },
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -1385,6 +2257,91 @@
   },
   "components": {
     "schemas": {
+      "MetadataResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "version": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "metadataResourceExternalManagementProperties": {
+            "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
+          },
+          "lastModification": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadataUuid": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "public",
+              "private"
+            ]
+          },
+          "filename": {
+            "type": "string"
+          },
+          "approved": {
+            "type": "boolean"
+          },
+          "metadataId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "MetadataResourceExternalManagementProperties": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "validationStatus": {
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "VALID",
+              "INCOMPLETE"
+            ]
+          }
+        }
+      },
+      "BatchEditParameter": {
+        "required": [
+          "value",
+          "xpath"
+        ],
+        "type": "object",
+        "properties": {
+          "xpath": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "condition": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "edit"
+        }
+      },
       "ProcessDetails": {
         "type": "object",
         "properties": {
@@ -1414,27 +2371,6 @@
           "sources",
           "hassources"
         ]
-      },
-      "BatchEditParameter": {
-        "required": [
-          "value",
-          "xpath"
-        ],
-        "type": "object",
-        "properties": {
-          "xpath": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          },
-          "condition": {
-            "type": "string"
-          }
-        },
-        "xml": {
-          "name": "edit"
-        }
       },
       "OgcApiRecordsConfClassesDto": {
         "required": [

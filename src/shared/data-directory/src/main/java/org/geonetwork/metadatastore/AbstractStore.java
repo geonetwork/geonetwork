@@ -34,7 +34,7 @@ public abstract class AbstractStore implements Store {
     protected final IMetadataAccessManager metadataAccessManager;
     protected final DataDirectory dataDirectory;
 
-    public AbstractStore(
+    protected AbstractStore(
             final IMetadataManager metadataManager,
             final IMetadataAccessManager metadataAccessManager,
             final DataDirectory dataDirectory) {
@@ -73,15 +73,8 @@ public abstract class AbstractStore implements Store {
     }
 
     protected int getAndCheckMetadataId(String metadataUuid, Boolean approved) throws MetadataNotFoundException {
-        final Metadata metadata = this.metadataManager.findMetadataByUuid(metadataUuid, approved);
+        final Metadata metadata = this.metadataManager.findMetadataByUuidOrId(metadataUuid, approved);
         return metadata.getId();
-
-        /*if (approved) {
-            metadata = _appContext.getBean(MetadataRepository.class).findOneByUuid(metadataUuid);
-        } else {
-            metadata = _appContext.getBean(IMetadataUtils.class).findOneByUuid(metadataUuid);
-        }*/
-
     }
 
     protected int canEdit(String metadataUuid, Boolean approved) throws Exception {

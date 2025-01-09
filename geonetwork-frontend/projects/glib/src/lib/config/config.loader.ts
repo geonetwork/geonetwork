@@ -1,10 +1,12 @@
 import { Configuration, DefaultConfig, UiApi, UiConfiguration } from 'gapi';
+import { Configuration as Gn5Configuration } from 'g5api';
 import { DEFAULT_UI_CONFIGURATION, MISSING_CONFIG_ERROR } from './constants';
 import { InjectionToken, WritableSignal } from '@angular/core';
 
 export interface ApplicationConfiguration {
   ui: UiConfiguration | undefined;
   apiConfig: Configuration | undefined;
+  api5Config: Configuration | undefined;
   space: string;
 }
 
@@ -14,12 +16,17 @@ export const API_CONFIGURATION = new InjectionToken<
   WritableSignal<Configuration>
 >('GeoNetwork 4 API configuration');
 
+export const API5_CONFIGURATION = new InjectionToken<
+  WritableSignal<Gn5Configuration>
+>('GeoNetwork 5 API configuration');
+
 export const APPLICATION_CONFIGURATION =
   new InjectionToken<ApplicationConfiguration>('app.config');
 
 let appConfig: ApplicationConfiguration = {
   ui: undefined,
   apiConfig: undefined,
+  api5Config: undefined,
   space: DEFAULT_SPACE,
 };
 
@@ -40,8 +47,10 @@ export function buildGn4BaseUrl(baseUrl: string): string {
 export function loadAppConfig(environment: any) {
   if (environment.baseUrl) {
     appConfig.apiConfig = new Configuration({ basePath: environment.baseUrl });
+    appConfig.api5Config = new Configuration({ basePath: environment.baseUrlGn5Api });
   } else {
     appConfig.apiConfig = DefaultConfig;
+    appConfig.api5Config = DefaultConfig;
   }
 
   return new UiApi(appConfig.apiConfig)

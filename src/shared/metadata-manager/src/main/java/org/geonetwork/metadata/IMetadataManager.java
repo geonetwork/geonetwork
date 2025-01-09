@@ -32,6 +32,17 @@ public interface IMetadataManager {
      */
     Metadata findMetadataByUuid(String uuid, boolean approved) throws MetadataNotFoundException;
 
+    /**
+     * Searches a metadata by the metadata uuid or internal identifier.
+     *
+     * @param metadataUuidOrId the metadata uuid or internal identifier.
+     * @param approved Only used when providing the metadata uuid, to retrieve the approved or non-aproved version when
+     *     the metadata workflow is enabled.
+     * @return the metadata record.
+     * @throws MetadataNotFoundException if there is no metadata with the provided identifier.
+     */
+    Metadata findMetadataByUuidOrId(String metadataUuidOrId, boolean approved) throws MetadataNotFoundException;
+
     Metadata update(
             int metadataId, Element xml, boolean validate, boolean ufo, String changeDate, boolean updateDateStamp)
             throws MetadataNotFoundException;

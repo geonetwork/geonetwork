@@ -50,6 +50,14 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     private String mountPoint;
     private int timeoutInSeconds = 60;
 
+    /**
+     * GdalDataAnalyzer constructor.
+     *
+     * @param command Command to execute the GDAL process.
+     * @param baseDir GeoNetwork data directory.
+     * @param mountPoint GeoNetwork data directory mount path (required when running GDAL in Docker).
+     * @param processTimeoutInSeconds Max number of seconds to wait for the GDAL process to finish.
+     */
     public GdalDataAnalyzer(
             @Value("${geonetwork.data.analyzer.gdal.command:}") String command,
             @Value("${geonetwork.directory.data:}") String baseDir,
@@ -136,7 +144,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                         timeoutInSeconds,
                         "-json",
                         buildDataSourcePath(rasterSource))
-                .map(output -> parseRasterInfo(output));
+                .map(this::parseRasterInfo);
     }
 
     @Override

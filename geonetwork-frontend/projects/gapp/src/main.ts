@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {
   API_CONFIGURATION,
+  API5_CONFIGURATION,
   APPLICATION_CONFIGURATION,
   GeoNetworkTheme,
   loadAppConfig,
@@ -30,6 +31,7 @@ loadAppConfig(environment).then((config: any) => {
     providers: [
       { provide: APPLICATION_CONFIGURATION, useValue: config },
       { provide: API_CONFIGURATION, useValue: signal(config.apiConfig) },
+      { provide: API5_CONFIGURATION, useValue: signal(config.api5Config) },
       {
         provide: DATE_PIPE_DEFAULT_OPTIONS,
         useValue: {

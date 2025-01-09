@@ -10,6 +10,9 @@
       "gapi": [
         "./dist/gapi"
       ],
+      "g5api": [
+        "./dist/g5api"
+      ],
       "glib": [
 //        "./dist/glib"
         "./projects/glib/src/public-api"

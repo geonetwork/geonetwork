@@ -26,6 +26,29 @@
         }
       }
     },
+    "g5api": {
+      "projectType": "library",
+      "root": "projects/g5api",
+      "sourceRoot": "projects/g5api/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/g5api/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/g5api/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/g5api/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
+    },
     "glib": {
       "projectType": "library",
       "root": "projects/glib",

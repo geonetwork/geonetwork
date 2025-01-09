@@ -19,20 +19,20 @@ public interface Store {
     /**
      * Retrieve all resources for a metadata. The list of resources depends on current user privileges.
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param sort Sort by resource name or sharing policy {@link Sort}
      * @param filter a {@link java.nio.file.Files#newDirectoryStream(Path)} GLOB expression} to filter resources eg.
      *     *.{png|jpg}
      * @param approved Return the approved version or not
      * @return A list of resources
      */
-    List<MetadataResource> getResources(String metadataUuid, Sort sort, String filter, Boolean approved)
+    List<MetadataResource> getResources(String metadataUuidOrId, Sort sort, String filter, Boolean approved)
             throws Exception;
 
     /**
      * Retrieve all resources for a metadata having a specific sharing policy
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param metadataResourceVisibility The type of sharing policy {@link MetadataResourceVisibility}
      * @param filter a {@link java.nio.file.Files#newDirectoryStream(Path) GLOB expression} to filter resources eg.
      *     *.{png|jpg}
@@ -40,19 +40,22 @@ public interface Store {
      * @return A list of resources
      */
     List<MetadataResource> getResources(
-            String metadataUuid, MetadataResourceVisibility metadataResourceVisibility, String filter, Boolean approved)
+            String metadataUuidOrId,
+            MetadataResourceVisibility metadataResourceVisibility,
+            String filter,
+            Boolean approved)
             throws Exception;
 
     /**
      * Retrieve a metadata resource path.
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param metadataResourceVisibility The type of sharing policy {@link MetadataResourceVisibility}
      * @param resourceId The resource identifier of its filename
      * @return The resource
      */
     ResourceHolder getResource(
-            String metadataUuid,
+            String metadataUuidOrId,
             MetadataResourceVisibility metadataResourceVisibility,
             String resourceId,
             Boolean approved)
@@ -61,29 +64,29 @@ public interface Store {
     /**
      * Retrieve a metadata resource path.
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param resourceId The resource identifier
      * @param approved Return the approved version or not
      * @return The resource
      */
-    ResourceHolder getResource(String metadataUuid, String resourceId, Boolean approved) throws Exception;
+    ResourceHolder getResource(String metadataUuidOrId, String resourceId, Boolean approved) throws Exception;
 
     /** Retrieve a metadata resource path (for internal use eg. indexing) */
     ResourceHolder getResourceInternal(
-            String metadataUuid, final MetadataResourceVisibility visibility, String resourceId, Boolean approved)
+            String metadataUuidOrId, final MetadataResourceVisibility visibility, String resourceId, Boolean approved)
             throws Exception;
 
     /**
      * Add a new resource from a file.
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param file The resource file
      * @param metadataResourceVisibility The type of sharing policy {@link MetadataResourceVisibility}
      * @param approved Put the approved version or not
      * @return The resource description
      */
     MetadataResource putResource(
-            String metadataUuid,
+            String metadataUuidOrId,
             MultipartFile file,
             MetadataResourceVisibility metadataResourceVisibility,
             Boolean approved)
@@ -92,7 +95,7 @@ public interface Store {
     /**
      * Add a new resource from a file.
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param filename The resource filename
      * @param is The input stream
      * @param changeDate The optional change date
@@ -101,7 +104,7 @@ public interface Store {
      * @return The resource description
      */
     MetadataResource putResource(
-            String metadataUuid,
+            String metadataUuidOrId,
             String filename,
             InputStream is,
             @Nullable Date changeDate,
@@ -112,39 +115,45 @@ public interface Store {
     /**
      * Add a new resource from a local file path.
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param filePath The resource local filepath
      * @param metadataResourceVisibility The type of sharing policy {@link MetadataResourceVisibility}
      * @param approved Return the approved version or not
      * @return The resource description
      */
     MetadataResource putResource(
-            String metadataUuid, Path filePath, MetadataResourceVisibility metadataResourceVisibility, Boolean approved)
+            String metadataUuidOrId,
+            Path filePath,
+            MetadataResourceVisibility metadataResourceVisibility,
+            Boolean approved)
             throws Exception;
 
     /**
      * Add a new resource from a URL.
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param fileUrl The resource file URL
      * @param metadataResourceVisibility The type of sharing policy {@link MetadataResourceVisibility}
      * @param approved Return the approved version or not
      * @return The resource description
      */
     MetadataResource putResource(
-            String metadataUuid, URL fileUrl, MetadataResourceVisibility metadataResourceVisibility, Boolean approved)
+            String metadataUuidOrId,
+            URL fileUrl,
+            MetadataResourceVisibility metadataResourceVisibility,
+            Boolean approved)
             throws Exception;
 
     /**
      * Change the resource sharing policy
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param resourceId The resource identifier
      * @param metadataResourceVisibility The type of sharing policy {@link MetadataResourceVisibility}
      * @param approved Return the approved version or not
      */
     MetadataResource patchResourceStatus(
-            String metadataUuid,
+            String metadataUuidOrId,
             String resourceId,
             MetadataResourceVisibility metadataResourceVisibility,
             Boolean approved)
@@ -160,22 +169,22 @@ public interface Store {
     /**
      * Delete a resource from the metadata store
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param resourceId The resource identifier
      * @param approved Return the approved version or not
      */
-    String delResource(String metadataUuid, String resourceId, Boolean approved) throws Exception;
+    String delResource(String metadataUuidOrId, String resourceId, Boolean approved) throws Exception;
 
     /**
      * Delete a resource from the metadata store
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param metadataResourceVisibility The type of sharing policy {@link MetadataResourceVisibility}
      * @param resourceId The resource identifier
      * @param approved Return the approved version or not
      */
     String delResource(
-            String metadataUuid,
+            String metadataUuidOrId,
             MetadataResourceVisibility metadataResourceVisibility,
             String resourceId,
             Boolean approved)
@@ -184,22 +193,22 @@ public interface Store {
     /**
      * Get the resource description.
      *
-     * @param metadataUuid The metadata UUID
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
      * @param visibility The type of sharing policy {@link MetadataResourceVisibility}
      * @param filename The filename
      * @return The description or null if the file doesn't exist
      */
     MetadataResource getResourceDescription(
-            String metadataUuid, MetadataResourceVisibility visibility, String filename, Boolean approved)
+            String metadataUuidOrId, MetadataResourceVisibility visibility, String filename, Boolean approved)
             throws Exception;
 
     /**
      * Get the resource container description.
      *
-     * @param metadataUuid The metadata UUID
-     * @return The container description or null if the metadata uuid does doesn't exist
+     * @param metadataUuidOrId The metadata UUID or the internal identifier
+     * @return The container description or null if The metadata UUID or the internal identifier does doesn't exist
      */
-    MetadataResourceContainer getResourceContainerDescription(final String metadataUuid, Boolean approved)
+    MetadataResourceContainer getResourceContainerDescription(final String metadataUuidOrId, Boolean approved)
             throws Exception;
 
     /**

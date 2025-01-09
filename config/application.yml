@@ -21,7 +21,7 @@ geonetwork:
     # Elasticsearch Bulk Async API
     asynchronous: false
   directory:
-    data: /data/dev/gn/5/web/src/main/webapp/WEB-INF/data/data
+    data: /private/tmp/core-geonetwork-main/web/src/main/webapp/WEB-INF/data/data
   data:
     analyzer:
       gdal:
@@ -57,7 +57,7 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5432/geonetwork
+    url: jdbc:postgresql://localhost:5432/geonetwork5
     driverClassName: org.postgresql.Driver
     #    url: jdbc:h2:mem:gn5
     #    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE

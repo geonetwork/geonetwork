@@ -12,20 +12,35 @@ import { Button, ButtonDirective } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import {
-  DatasetFormat,
-  DataUploadService,
-} from '../data-upload/data-upload.service';
-import {
   CreateMetadataTypeEnum,
   CreateRequest,
   GnDatasetInfo,
   GnRasterInfo,
   RecordsApi,
 } from 'gapi';
+import {
+  DataAnalysisControllerApi,
+  DataFormat,
+  RecordsApi as RecordsApi5,
+  PutResourceRequest,
+  AnalysisSynchMetadataResourceRequest,
+  AnalysisSynchRequest,
+  ApplyDataAnalysisOnRecordRequest, ApplyDataAnalysisOnRecordForMetadataResourceRequest,
+  LayersMetadataResourceRequest, LayersMetadataResourceVisibilityEnum,
+  LayersRequest, PreviewDataAnalysisOnRecordForMetadataResourceRequest,
+  PreviewDataAnalysisOnRecordRequest
+} from 'g5api';
+
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DropdownModule } from 'primeng/dropdown';
-import { FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
+import {
+  FileRemoveEvent,
+  FileSelectEvent,
+  FileUploadEvent,
+  FileUploadHandlerEvent,
+  FileUploadModule
+} from 'primeng/fileupload';
 import { ChipModule } from 'primeng/chip';
 import 'brace';
 import 'brace/mode/xml';
@@ -36,7 +51,7 @@ import { DataAnalysisPanelComponent } from '../data-analysis-panel/data-analysis
 import { TemplatesSelectorComponent } from '../templates-selector/templates-selector.component';
 import { PrimeTemplate } from 'primeng/api';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { API_CONFIGURATION } from '../../config/config.loader';
+import {API5_CONFIGURATION, API_CONFIGURATION} from '../../config/config.loader';
 import { Select } from 'primeng/select';
 
 @Component({
@@ -67,15 +82,31 @@ export class NewRecordPanelComponent implements OnInit {
   template = signal('');
   activeStep = signal(1);
   newRecordId = signal('');
+  //newRecordUuid = signal('');
   datasource = signal(
     'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv'
   );
+  datasourceFile = signal('');
   layername = signal('');
 
-  dataUploadService = inject(DataUploadService);
+  api5Configuration = inject(API5_CONFIGURATION);
+  apiConfiguration = inject(API_CONFIGURATION);
+
+  dataAnalysisApi = computed(() => {
+    return new DataAnalysisControllerApi(this.api5Configuration());
+  });
+
+  recordsDataStoreApi = computed(() => {
+    return new RecordsApi5(this.api5Configuration());
+  });
+
+  recordsApi = computed(() => {
+    return new RecordsApi(this.apiConfiguration());
+  });
 
   maxFileUploadSize = 100;
-  supportedFormats = signal<DatasetFormat[]>([]);
+  /* Dataset supported formats */
+  supportedFormats = signal<DataFormat[]>([]);
   mainSupportedFormats = computed(() => {
     const DEFAULT_FORMATS = [
       'CSV',
@@ -87,8 +118,9 @@ export class NewRecordPanelComponent implements OnInit {
       'WFS',
       'GTiff',
     ];
+
     return this.supportedFormats().filter(
-      f => DEFAULT_FORMATS.indexOf(f.name) !== -1
+      f => f.name ? DEFAULT_FORMATS.indexOf(f.name) !== -1 : false
     );
   });
   previewResult = signal<string>('');
@@ -114,19 +146,16 @@ export class NewRecordPanelComponent implements OnInit {
     );
   });
 
+  isDatasourceFileSelected = computed(() => {
+    return this.datasourceFile() !== ''
+  });
+
   errorFetchingLayers = signal('');
   errorExecutingAnalysis = signal('');
   errorPreviewingAnalysis = signal('');
 
-  apiConfiguration = inject(API_CONFIGURATION);
-
-  recordsApi = computed(() => {
-    return new RecordsApi(this.apiConfiguration());
-  });
-
-  private destroyRef = inject(DestroyRef);
-
   private stepEvents: { [key: number]: Function } = {
+    2: this.editRecord.bind(this),
     3: this.getDatasetInfo.bind(this),
     4: this.getRecordPreview.bind(this),
   };
@@ -139,20 +168,27 @@ export class NewRecordPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataUploadService.getFormats().subscribe(r => {
-      this.supportedFormats.set(r);
-    });
+    // Retrieve the dataset formats supported
+    this.dataAnalysisApi()
+      .formats().then(
+        response => {
+          this.supportedFormats.set(response);
+        },
+      error => {
+        console.error(error);
+      }
+    );
   }
 
   editRecord() {
-    this.createRecord(true);
+    this.createRecord(false);
   }
 
   createRecord(redirectToEditor: boolean) {
     if (!this.isTemplateSelected()) {
       return;
     }
-    if (this.newRecordId()) {
+    if (this.isRecordCreated()) {
       return;
     }
 
@@ -168,9 +204,9 @@ export class NewRecordPanelComponent implements OnInit {
       .create(createRequest, {
         headers: {
           // TODO: remove this? Header should be set in the gapi?
-          'X-XSRF-TOKEN': 'bc0e37f3-22c3-42c7-9a41-35f13ea51140',
-          Accept: 'application/json',
-          'Content-type': 'application/json',
+          'X-XSRF-TOKEN': '17666fa5-607b-41d1-92ed-e1819c7da3b6',
+          Accept: 'application/json', // Accept could be all?
+          'Content-Type': 'application/json',
         },
       })
       .then(
@@ -190,32 +226,63 @@ export class NewRecordPanelComponent implements OnInit {
       );
   }
 
+  /**
+   * Retrieves the layers list for a remote datasource.
+   */
   getLayerList() {
     this.isFetchingLayers.set(true);
     this.errorFetchingLayers.set('');
 
-    const subscription = this.dataUploadService
-      .retrieveLayers(this.datasource())
-      .subscribe({
-        next: result => {
-          this.layers.set(result);
-          if (result.length > 0) {
-            this.layername.set(result[0]);
+    const layersRequest: LayersRequest = {
+      datasource: this.datasource()
+    }
+
+    this.dataAnalysisApi().layers(layersRequest)
+      .then(
+        response => {
+          this.layers.set(response);
+          if (response.length > 0) {
+            this.layername.set(response[0]);
           }
+          this.isFetchingLayers.set(false);
         },
-        error: error => {
+        error => {
           console.log(error);
           this.errorFetchingLayers.set(error.statusText);
           this.isFetchingLayers.set(false);
-        },
-        complete: () => {
+        }
+    );
+  }
+
+  /**
+   * Retrieves the layers list for a datasource uploaded to a metadata.
+   */
+  private getLayerListForMetadataResource() {
+    this.isFetchingLayers.set(true);
+    this.errorFetchingLayers.set('');
+
+    const layersRequest: LayersMetadataResourceRequest = {
+      metadataUuid: this.newRecordId(),
+      datasource: this.datasourceFile(),
+      visibility: LayersMetadataResourceVisibilityEnum.Public,
+      approved: true
+    }
+
+    this.dataAnalysisApi().layersMetadataResource(layersRequest)
+      .then(
+        response => {
+          this.layers.set(response);
+          if (response.length > 0) {
+            this.layername.set(response[0]);
+          }
           this.isFetchingLayers.set(false);
         },
-      });
-
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
-    });
+        error => {
+          console.log(error);
+          this.errorFetchingLayers.set(error.statusText);
+          this.isFetchingLayers.set(false);
+        }
+      );
   }
 
   private getDatasetInfo() {
@@ -223,25 +290,49 @@ export class NewRecordPanelComponent implements OnInit {
       this.isExecutingAnalysis.set(true);
       this.errorExecutingAnalysis.set('');
 
-      const subscription = this.dataUploadService
-        .executeAnalysis(this.datasource(), this.layername())
-        .subscribe({
-          next: result => {
-            this.analysisResult.set(result);
-          },
-          error: error => {
-            console.log(error);
-            this.errorExecutingAnalysis.set(error.errorMessage);
-            this.isExecutingAnalysis.set(false);
-          },
-          complete: () => {
-            this.isExecutingAnalysis.set(false);
-          },
-        });
+      if (!this.datasourceFile()) {
+        // Process dataset from external URL
+        const analysisRequest: AnalysisSynchRequest = {
+          datasource: this.datasource(),
+          layer: this.layername()
+        }
 
-      this.destroyRef.onDestroy(() => {
-        subscription.unsubscribe();
-      });
+        this.dataAnalysisApi().analysisSynch(analysisRequest)
+          .then(
+            response => {
+              this.analysisResult.set(response);
+              this.isExecutingAnalysis.set(false);
+            },
+            error => {
+              console.log(error);
+              this.errorExecutingAnalysis.set(error.errorMessage);
+              this.isExecutingAnalysis.set(false);
+            }
+          );
+      } else {
+        // Process uploaded dataset to a new metadata
+        const analysisRequest: AnalysisSynchMetadataResourceRequest = {
+          metadataUuid: this.newRecordId(),
+          datasource: this.datasourceFile(),
+          visibility: LayersMetadataResourceVisibilityEnum.Public,
+          approved: true,
+          layer: this.layername()
+        }
+
+        this.dataAnalysisApi().analysisSynchMetadataResource(analysisRequest)
+          .then(
+            response => {
+              this.analysisResult.set(response);
+              this.isExecutingAnalysis.set(false);
+            },
+            error => {
+              console.log(error);
+              this.errorExecutingAnalysis.set(error.errorMessage);
+              this.isExecutingAnalysis.set(false);
+            }
+          );
+      }
+
     }
   }
 
@@ -250,41 +341,94 @@ export class NewRecordPanelComponent implements OnInit {
       this.isCreatingPreview.set(true);
       this.errorPreviewingAnalysis.set('');
 
-      const subscription = this.dataUploadService
-        .previewAnalysis(this.template(), this.datasource(), this.layername())
-        .subscribe({
-          next: result => {
-            this.previewResult.set(result);
-          },
-          error: error => {
-            console.log(error);
-            this.errorPreviewingAnalysis.set(error.errorMessage);
-            this.isCreatingPreview.set(false);
-          },
-          complete: () => {
-            this.isCreatingPreview.set(false);
-          },
-        });
+      if (!this.datasourceFile()) {
+        // Process dataset from external URL
+        const previewAnalysisRequest: PreviewDataAnalysisOnRecordRequest = {
+          uuid: this.template(),
+          datasource: this.datasource(),
+          layer: this.layername()
+        }
 
-      this.destroyRef.onDestroy(() => {
-        subscription.unsubscribe();
-      });
+        this.dataAnalysisApi().previewDataAnalysisOnRecord(previewAnalysisRequest)
+          .then(
+            response => {
+              this.previewResult.set(response);
+              this.isCreatingPreview.set(false);
+            },
+            error => {
+              console.log(error);
+              this.errorPreviewingAnalysis.set(error.errorMessage);
+              this.isCreatingPreview.set(false);
+            }
+          );
+
+      } else {
+        // Process uploaded dataset to a new metadata
+        const previewAnalysisRequest: PreviewDataAnalysisOnRecordForMetadataResourceRequest = {
+          metadataUuid: this.newRecordId(),
+          datasource: this.datasourceFile(),
+          visibility: LayersMetadataResourceVisibilityEnum.Public,
+          approved: true,
+          layer: this.layername()
+        }
+
+        this.dataAnalysisApi().previewDataAnalysisOnRecordForMetadataResource(previewAnalysisRequest)
+          .then(
+            response => {
+              this.previewResult.set(response);
+              this.isCreatingPreview.set(false);
+            },
+            error => {
+              console.log(error);
+              this.errorPreviewingAnalysis.set(error.errorMessage);
+              this.isCreatingPreview.set(false);
+            }
+          );
+      }
+
     }
   }
 
   applyAnalysisToRecord() {
-    // TODO: Apply to new record, not the template
-    const subscription = this.dataUploadService
-      .applyAnalysis(this.template(), this.datasource(), this.layername())
-      .subscribe({
-        next: result => {
-          // TODO : redirect to editor
-        },
-        error: error => {
-          console.log(error);
-        },
-        complete: () => {},
-      });
+    if (!this.datasourceFile()) {
+      const analysisRequest: ApplyDataAnalysisOnRecordRequest = {
+        uuid: this.newRecordId(),
+        datasource: this.datasource(),
+        layer: this.layername()
+      }
+
+      this.dataAnalysisApi().applyDataAnalysisOnRecord(analysisRequest)
+        .then(
+          response => {
+            location.replace(
+              `/geonetwork/srv/eng/catalog.edit#/metadata/${this.newRecordId()}`
+            );
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    } else {
+      const analysisRequest: ApplyDataAnalysisOnRecordForMetadataResourceRequest = {
+        uuid: this.newRecordId(),
+        datasource: this.datasourceFile(),
+        visibility: LayersMetadataResourceVisibilityEnum.Public,
+        approved: true,
+        layer: this.layername()
+      }
+
+      this.dataAnalysisApi().applyDataAnalysisOnRecordForMetadataResource(analysisRequest)
+        .then(
+          response => {
+            location.replace(
+              `/geonetwork/srv/eng/catalog.edit#/metadata/${this.newRecordId()}`
+            );
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    }
   }
 
   onLayerChange(): void {
@@ -296,14 +440,55 @@ export class NewRecordPanelComponent implements OnInit {
   onDatasourceChange() {
     this.layername.set('');
 
+    this.datasourceFile.set('');
+
     // Reset layers and analysis values
     this.layers.set([]);
     this.analysisResult.set(undefined);
     this.previewResult.set('');
   }
 
-  onBasicUploadAuto(event: FileUploadEvent) {}
+  onAttachmentSelected(event: FileSelectEvent) {
+    this.onDatasourceChange();
+  }
 
+  onUploadHandler(event: FileUploadHandlerEvent) {
+    console.log('selected attachment file:', event.files)
+
+    if (!this.newRecordId()) {
+      return;
+    }
+
+    const putResourceRequest: PutResourceRequest = {
+      metadataUuid: this.newRecordId(),
+      file: event.files[0],
+    }
+
+    this.recordsDataStoreApi().putResource(putResourceRequest)
+      .then(
+        response => {
+          if (response.filename) {
+            this.datasourceFile.set(response.filename);
+            this.getLayerListForMetadataResource();
+          }
+        },
+        error => {
+          console.error(error);
+        }
+      );
+  }
+
+  onRemove(event: FileRemoveEvent) {
+    console.log("onRemove")
+    console.log(event);
+    this.onDatasourceChange();
+  }
+
+  onClear(event: any) {
+    console.log("onClear")
+    console.log(event);
+    this.onDatasourceChange();
+  }
   moveToConfirmationPanel() {}
 
   protected readonly ResourceTypeLayout = ResourceTypeLayout;

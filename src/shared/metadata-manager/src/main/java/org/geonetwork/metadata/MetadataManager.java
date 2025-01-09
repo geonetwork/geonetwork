@@ -18,6 +18,7 @@ import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.domain.repository.OperationRepository;
 import org.geonetwork.domain.repository.OperationallowedRepository;
+import org.geonetwork.utility.TypeUtil;
 import org.geonetwork.utility.date.ISODate;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
@@ -51,6 +52,15 @@ public class MetadataManager implements IMetadataManager {
             return metadataOpt.get();
         } else {
             throw new MetadataNotFoundException(String.format("Metadata with uuid '%s' not found", uuid));
+        }
+    }
+
+    @Override
+    public Metadata findMetadataByUuidOrId(String metadataUuidOrId, boolean approved) throws MetadataNotFoundException {
+        if (TypeUtil.isInteger(metadataUuidOrId)) {
+            return findMetadataById(Integer.parseInt(metadataUuidOrId));
+        } else {
+            return findMetadataByUuid(metadataUuidOrId, approved);
         }
     }
 
