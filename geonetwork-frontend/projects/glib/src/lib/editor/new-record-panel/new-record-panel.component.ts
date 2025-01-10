@@ -1,11 +1,11 @@
 import {
   Component,
   computed,
-  DestroyRef,
   effect,
   inject,
   OnInit,
   signal,
+  ViewChild,
 } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { Button, ButtonDirective } from 'primeng/button';
@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import {
   CreateMetadataTypeEnum,
   CreateRequest,
+  DeleteRecordRequest,
   GnDatasetInfo,
   GnRasterInfo,
   RecordsApi,
@@ -23,6 +24,7 @@ import {
   DataFormat,
   RecordsApi as RecordsApi5,
   PutResourceRequest,
+  GetAllResourcesRequest,
   AnalysisSynchMetadataResourceRequest,
   AnalysisSynchRequest,
   ApplyDataAnalysisOnRecordRequest,
@@ -32,6 +34,7 @@ import {
   LayersRequest,
   PreviewDataAnalysisOnRecordForMetadataResourceRequest,
   PreviewDataAnalysisOnRecordRequest,
+  MetadataResource,
 } from 'g5api';
 
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -59,6 +62,8 @@ import {
   API_CONFIGURATION,
 } from '../../config/config.loader';
 import { Select } from 'primeng/select';
+import { Listbox, ListboxChangeEvent } from 'primeng/listbox';
+import { Message } from 'primeng/message';
 
 @Component({
   selector: 'g-new-record-panel',
@@ -80,11 +85,15 @@ import { Select } from 'primeng/select';
     StepperModule,
     TemplatesSelectorComponent,
     Select,
+    Listbox,
+    Message,
   ],
   templateUrl: './new-record-panel.component.html',
   styleUrl: './new-record-panel.component.css',
 })
 export class NewRecordPanelComponent implements OnInit {
+  @ViewChild('fileUpload', { static: false }) fileUpload: any;
+
   template = signal('');
   activeStep = signal(1);
   newRecordId = signal('');
@@ -94,6 +103,9 @@ export class NewRecordPanelComponent implements OnInit {
   );
   datasourceFile = signal('');
   layername = signal('');
+  metadataFiles = signal<MetadataResource[]>([]);
+
+  errorMessage = signal('');
 
   api5Configuration = inject(API5_CONFIGURATION);
   apiConfiguration = inject(API_CONFIGURATION);
@@ -184,7 +196,13 @@ export class NewRecordPanelComponent implements OnInit {
           this.supportedFormats.set(response);
         },
         error => {
-          console.error(error);
+          console.log(
+            'Error retrieving the dataset formats supported: ' + error.response
+          );
+          this.errorMessage.set(
+            'Error retrieving the dataset formats supported: ' +
+              error.response.statusText
+          );
         }
       );
   }
@@ -193,6 +211,11 @@ export class NewRecordPanelComponent implements OnInit {
     this.createRecord(false);
   }
 
+  /**
+   * Creates a new metadata record.
+   *
+   * @param redirectToEditor if true, opens the metadata editor with the new metadata.
+   */
   createRecord(redirectToEditor: boolean) {
     if (!this.isTemplateSelected()) {
       return;
@@ -213,7 +236,7 @@ export class NewRecordPanelComponent implements OnInit {
       .create(createRequest, {
         headers: {
           // TODO: remove this? Header should be set in the gapi?
-          'X-XSRF-TOKEN': 'bc0e37f3-22c3-42c7-9a41-35f13ea51140',
+          'X-XSRF-TOKEN': '17666fa5-607b-41d1-92ed-e1819c7da3b6',
           Accept: 'application/json', // Accept could be all?
           'Content-Type': 'application/json',
         },
@@ -229,7 +252,12 @@ export class NewRecordPanelComponent implements OnInit {
           }
         },
         error => {
-          console.error(error);
+          console.log(
+            'Error creating the metadata record: ' + error.response.statusText
+          );
+          this.errorMessage.set(
+            'Error creating the metadata record: ' + error.response.statusText
+          );
           this.isCreatingRecord.set(false);
         }
       );
@@ -257,7 +285,9 @@ export class NewRecordPanelComponent implements OnInit {
           this.isFetchingLayers.set(false);
         },
         error => {
-          console.log(error);
+          console.log(
+            'Error retrieving the dataset layers: ' + error.response.statusText
+          );
           this.errorFetchingLayers.set(error.statusText);
           this.isFetchingLayers.set(false);
         }
@@ -268,6 +298,10 @@ export class NewRecordPanelComponent implements OnInit {
    * Retrieves the layers list for a datasource uploaded to a metadata.
    */
   private getLayerListForMetadataResource() {
+    if (!this.datasourceFile()) {
+      return;
+    }
+
     this.isFetchingLayers.set(true);
     this.errorFetchingLayers.set('');
 
@@ -289,13 +323,18 @@ export class NewRecordPanelComponent implements OnInit {
           this.isFetchingLayers.set(false);
         },
         error => {
-          console.log(error);
+          console.log(
+            'Error retrieving the dataset layers: ' + error.response.statusText
+          );
           this.errorFetchingLayers.set(error.statusText);
           this.isFetchingLayers.set(false);
         }
       );
   }
 
+  /**
+   * Analyses the selected dataset, returning the related information.
+   */
   private getDatasetInfo() {
     if (!this.analysisResult()) {
       this.isExecutingAnalysis.set(true);
@@ -317,7 +356,9 @@ export class NewRecordPanelComponent implements OnInit {
               this.isExecutingAnalysis.set(false);
             },
             error => {
-              console.log(error);
+              console.log(
+                'Error processing the dataset: ' + error.response.statusText
+              );
               this.errorExecutingAnalysis.set(error.errorMessage);
               this.isExecutingAnalysis.set(false);
             }
@@ -340,7 +381,9 @@ export class NewRecordPanelComponent implements OnInit {
               this.isExecutingAnalysis.set(false);
             },
             error => {
-              console.log(error);
+              console.log(
+                'Error processing the dataset: ' + error.response.statusText
+              );
               this.errorExecutingAnalysis.set(error.errorMessage);
               this.isExecutingAnalysis.set(false);
             }
@@ -355,6 +398,9 @@ export class NewRecordPanelComponent implements OnInit {
     return `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasource())}&layer=${this.layername()}`;
   }
 
+  /**
+   * Previews the metadata record with the dataset analysis result.
+   */
   private getRecordPreview() {
     if (!this.previewResult()) {
       this.isCreatingPreview.set(true);
@@ -376,7 +422,10 @@ export class NewRecordPanelComponent implements OnInit {
               this.isCreatingPreview.set(false);
             },
             error => {
-              console.log(error);
+              console.log(
+                'Error previewing metadata dataset analysis: ' +
+                  error.response.statusText
+              );
               this.errorPreviewingAnalysis.set(error.errorMessage);
               this.isCreatingPreview.set(false);
             }
@@ -402,7 +451,10 @@ export class NewRecordPanelComponent implements OnInit {
               this.isCreatingPreview.set(false);
             },
             error => {
-              console.log(error);
+              console.log(
+                'Error previewing metadata dataset analysis: ' +
+                  error.response.statusText
+              );
               this.errorPreviewingAnalysis.set(error.errorMessage);
               this.isCreatingPreview.set(false);
             }
@@ -411,6 +463,9 @@ export class NewRecordPanelComponent implements OnInit {
     }
   }
 
+  /**
+   * Updates the metadata record with the dataset analysis result.
+   */
   applyAnalysisToRecord() {
     if (!this.datasourceFile()) {
       const analysisRequest: ApplyDataAnalysisOnRecordRequest = {
@@ -428,7 +483,14 @@ export class NewRecordPanelComponent implements OnInit {
             );
           },
           error => {
-            console.log(error);
+            console.log(
+              'Error updating metadata record with the dataset analysis: ' +
+                error.response.statusText
+            );
+            this.errorMessage.set(
+              'Error updating metadata record with the dataset analysis: ' +
+                error.response.statusText
+            );
           }
         );
     } else {
@@ -450,7 +512,14 @@ export class NewRecordPanelComponent implements OnInit {
             );
           },
           error => {
-            console.log(error);
+            console.log(
+              'Error updating metadata record with the dataset analysis: ' +
+                error.response.statusText
+            );
+            this.errorMessage.set(
+              'Error updating metadata record with the dataset analysis: ' +
+                error.response.statusText
+            );
           }
         );
     }
@@ -464,7 +533,6 @@ export class NewRecordPanelComponent implements OnInit {
 
   onDatasourceChange() {
     this.layername.set('');
-
     this.datasourceFile.set('');
 
     // Reset layers and analysis values
@@ -473,49 +541,135 @@ export class NewRecordPanelComponent implements OnInit {
     this.previewResult.set('');
   }
 
+  /**
+   * Resets the form.
+   */
+  resetForm() {
+    this.template.set('');
+    this.newRecordId.set('');
+    this.onDatasourceChange();
+
+    this.activeStep.set(1);
+  }
+
   onAttachmentSelected(event: FileSelectEvent) {
     this.onDatasourceChange();
   }
 
+  /**
+   * Event triggered to upload the selected files to the metadata.
+   *
+   */
   onUploadHandler(event: FileUploadHandlerEvent) {
-    console.log('selected attachment file:', event.files);
-
     if (!this.newRecordId()) {
       return;
     }
 
-    const putResourceRequest: PutResourceRequest = {
-      metadataUuid: this.newRecordId(),
-      file: event.files[0],
-    };
+    for (let i = 0; i < event.files.length; i++) {
+      const putResourceRequest: PutResourceRequest = {
+        metadataUuid: this.newRecordId(),
+        file: event.files[i],
+      };
 
-    this.recordsDataStoreApi()
-      .putResource(putResourceRequest)
-      .then(
-        response => {
-          if (response.filename) {
-            this.datasourceFile.set(response.filename);
-            this.getLayerListForMetadataResource();
+      this.recordsDataStoreApi()
+        .putResource(putResourceRequest)
+        .then(
+          response => {
+            this.retrieveMetadataFiles();
+          },
+          error => {
+            console.log(
+              'Error uploading file to metadata: ' + error.response.statusText
+            );
+            this.errorMessage.set(
+              'Error uploading file to metadata: ' + error.response.statusText
+            );
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        );
+    }
+
+    this.fileUpload.clear();
   }
 
   onRemove(event: FileRemoveEvent) {
-    console.log('onRemove');
-    console.log(event);
     this.onDatasourceChange();
   }
 
   onClear(event: any) {
-    console.log('onClear');
-    console.log(event);
     this.onDatasourceChange();
   }
+
+  /**
+   * Event triggered when selecting a metadata file dataset to extract the list of layers available to process.
+   *
+   */
+  onMetadataFileSelectedChange($event: ListboxChangeEvent) {
+    if ($event.value) {
+      this.datasourceFile.set($event.value);
+      this.getLayerListForMetadataResource();
+    } else {
+      this.onDatasourceChange();
+    }
+  }
+
+  /**
+   * Event triggered to cancel the data analysis process.
+   *
+   * It resets the form and removes the related metadata.
+   */
+  onNewRecordCancel() {
+    if (this.isRecordCreated()) {
+      const deleteRecordRequest: DeleteRecordRequest = {
+        metadataUuid: this.newRecordId(),
+      };
+
+      this.recordsApi()
+        .deleteRecord(deleteRecordRequest, {
+          headers: {
+            // TODO: remove this? Header should be set in the gapi?
+            'X-XSRF-TOKEN': '17666fa5-607b-41d1-92ed-e1819c7da3b6',
+          },
+        })
+        .then(
+          response => {
+            this.resetForm();
+          },
+          error => {
+            console.log(
+              'Error deleting the metadata: ' + error.response.statusText
+            );
+            this.errorMessage.set(
+              'Error deleting the metadata: ' + error.response.statusText
+            );
+          }
+        );
+    } else {
+      this.resetForm();
+    }
+  }
+
   moveToConfirmationPanel() {}
 
+  private retrieveMetadataFiles(): void {
+    const getAllResourcesRequest: GetAllResourcesRequest = {
+      metadataUuid: this.newRecordId(),
+    };
+
+    this.recordsDataStoreApi()
+      .getAllResources(getAllResourcesRequest)
+      .then(
+        response => {
+          this.metadataFiles.set(response);
+        },
+        error => {
+          console.log(
+            'Error retrieving the metadata files: ' + error.response.statusText
+          );
+          this.errorMessage.set(
+            'Error retrieving the metadata files: ' + error.response.statusText
+          );
+        }
+      );
+  }
   protected readonly ResourceTypeLayout = ResourceTypeLayout;
 }

@@ -1,9 +1,17 @@
 <p-button
+  [disabled]="!template()"
   label="Cancel"
   icon="fa fa-xmark"
   severity="danger"
+  (onClick)="onNewRecordCancel()"
   [outlined]="true"
   class="float-end m-4" />
+
+@if (errorMessage()) {
+  <div class="float-end m-4">
+    <p-message severity="error" closable>{{ errorMessage() }}</p-message>
+  </div>
+}
 
 <p-stepper [(value)]="activeStep" class="p-10">
   <p-step-item [value]="1">
@@ -78,6 +86,7 @@
 
             <div class="mb-10">
               <p-fileupload
+                #fileUpload
                 styleClass="w-full"
                 [customUpload]="true"
                 (onSelect)="onAttachmentSelected($event)"
@@ -89,6 +98,7 @@
                 chooseLabel="Select your file"
                 uploadLabel="Upload"
                 accept="text/*,image/*"
+                multiple="true"
                 maxFileSize="1000000">
                 <ng-template #empty>
                   <div>Drag and drop files to here to upload.</div>
@@ -112,6 +122,19 @@
               <small class="error-message"
                 >Error is: {{ errorFetchingLayers() }}</small
               >
+            }
+
+            @if (metadataFiles().length > 0) {
+              <div class="mb-10">
+                <div class="w-full">
+                  Select the metadata dataset file to process
+                </div>
+                <p-listbox
+                  [options]="metadataFiles()"
+                  (onChange)="onMetadataFileSelectedChange($event)"
+                  optionLabel="filename"
+                  optionValue="filename" />
+              </div>
             }
 
             @if (layers().length > 0) {
