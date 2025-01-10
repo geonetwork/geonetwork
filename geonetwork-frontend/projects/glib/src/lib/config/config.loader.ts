@@ -47,7 +47,9 @@ export function buildGn4BaseUrl(baseUrl: string): string {
 export function loadAppConfig(environment: any) {
   if (environment.baseUrl) {
     appConfig.apiConfig = new Configuration({ basePath: environment.baseUrl });
-    appConfig.api5Config = new Configuration({ basePath: environment.baseUrlGn5Api });
+    appConfig.api5Config = new Configuration({
+      basePath: environment.baseUrlGn5Api,
+    });
   } else {
     appConfig.apiConfig = DefaultConfig;
     appConfig.api5Config = DefaultConfig;

@@ -387,11 +387,11 @@ export const SearchStore = signalStore(
       paging,
       searchRequestPageParameters,
       appStore,
-      reset
+      reset,
     }) {
       toObservable(appStore.authenticated).subscribe(() => {
         reset();
-      } );
+      });
       search(searchFilterParameters);
       paging(searchRequestPageParameters);
     },
