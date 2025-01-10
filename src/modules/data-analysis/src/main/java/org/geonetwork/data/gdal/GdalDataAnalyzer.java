@@ -217,11 +217,14 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     }
 
     protected String buildDataSourcePath(String dataSource) {
-        // TODO: Connect to data directory
         return mountPoint.isEmpty()
                         || dataSource.matches("(?i)^(http|wfs|vis|db|/vsizip//vsicurl/http|/vsicurl/http).*")
                 ? dataSource
                 : dataSource.replace(baseDir, mountPoint);
+    }
+
+    protected String buildDataSourceTempPath(String dataSource, String tempDir) {
+        return mountPoint.isEmpty() ? dataSource : dataSource.replace(tempDir, mountPoint);
     }
 
     protected CommandLine buildUtilityCommand(String utility) {

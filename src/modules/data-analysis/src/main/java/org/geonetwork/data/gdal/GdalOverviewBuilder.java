@@ -5,6 +5,7 @@
  */
 package org.geonetwork.data.gdal;
 
+import static org.geonetwork.constants.Geonet.TMP_FOLDER_PREFIX;
 import static org.geonetwork.data.gdal.GdalDataAnalyzer.GDAL_RASTERIZE_APP;
 import static org.geonetwork.data.gdal.GdalDataAnalyzer.GDAL_TRANSLATE_APP;
 
@@ -16,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.CommandLine;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileSystemUtils;
 
 @Component
 @Slf4j
@@ -35,7 +37,8 @@ public class GdalOverviewBuilder {
 
     /** gdal_translate CCM.tif CCM.png */
     private byte[] buildRasterOverview(String datasource, String layer) throws IOException {
-        Path tempFile = Files.createTempFile("gn-overview" + layer, ".png");
+        Path tempDirectory = Files.createTempDirectory(TMP_FOLDER_PREFIX);
+        Path tempFile = Files.createTempFile(tempDirectory, "gn-overview" + layer, ".png");
         byte[] imageBytes;
         try {
             GdalUtils.execute(
@@ -45,15 +48,16 @@ public class GdalOverviewBuilder {
                             .addArgument(String.format("%d", IMAGE_WIDTH))
                             .addArgument("0")
                             .addArgument(gdalDataAnalyzer.buildDataSourcePath(datasource))
-                            .addArgument(tempFile.toFile().getCanonicalPath()),
+                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(
+                                    tempFile.toFile().getCanonicalPath(),
+                                    tempDirectory.toFile().getParent())),
                     gdalDataAnalyzer.getTimeoutInSeconds());
 
             imageBytes = Files.readAllBytes(tempFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            Files.deleteIfExists(Paths.get(tempFile + ".aux.xml"));
-            Files.deleteIfExists(tempFile);
+            FileSystemUtils.deleteRecursively(tempDirectory);
         }
         return imageBytes;
     }
@@ -63,7 +67,8 @@ public class GdalOverviewBuilder {
      * gdal_translate CCM.tif CCM.png
      */
     public byte[] buildVectorOverview(String datasource, String layer) throws IOException {
-        Path tempFile = Files.createTempFile("gn-overview" + layer, ".tif");
+        Path tempDirectory = Files.createTempDirectory(TMP_FOLDER_PREFIX);
+        Path tempFile = Files.createTempFile(tempDirectory, "gn-overview" + layer, ".tif");
         String temporaryTiffFile = tempFile.toFile().getCanonicalPath();
         String temporaryPngFile = temporaryTiffFile.replace(".tif", ".png");
         byte[] imageBytes;
@@ -89,23 +94,24 @@ public class GdalOverviewBuilder {
                             .addArgument("-l")
                             .addArgument(layer)
                             .addArgument(gdalDataAnalyzer.buildDataSourcePath(datasource))
-                            .addArgument(temporaryTiffFile),
+                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(
+                                    temporaryTiffFile, tempDirectory.toFile().getParent())),
                     gdalDataAnalyzer.getTimeoutInSeconds());
 
             GdalUtils.execute(
                     new CommandLine(gdalDataAnalyzer.buildUtilityCommand(GDAL_TRANSLATE_APP))
                             .addArgument("-q")
-                            .addArgument(temporaryTiffFile)
-                            .addArgument(temporaryPngFile),
+                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(
+                                    temporaryTiffFile, tempDirectory.toFile().getParent()))
+                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(
+                                    temporaryPngFile, tempDirectory.toFile().getParent())),
                     gdalDataAnalyzer.getTimeoutInSeconds());
 
             imageBytes = Files.readAllBytes(Paths.get(temporaryPngFile));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            Files.deleteIfExists(Paths.get(temporaryPngFile + ".aux.xml"));
-            Files.deleteIfExists(Paths.get(temporaryPngFile));
-            Files.deleteIfExists(tempFile);
+            FileSystemUtils.deleteRecursively(tempDirectory);
         }
         return imageBytes;
     }

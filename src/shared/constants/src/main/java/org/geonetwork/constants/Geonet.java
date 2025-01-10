@@ -34,6 +34,8 @@ import org.jdom.Namespace;
 /** TODO javadoc. */
 public final class Geonet {
 
+    public static final String TMP_FOLDER_PREFIX = "gn-";
+
     public static final String CONTEXT_NAME = "contextName";
     // TODO make this configurable
     public static final String DEFAULT_LANGUAGE = "eng";
