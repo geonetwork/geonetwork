@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.geonetwork.data.model.BaseDataInfo;
 import org.geonetwork.data.model.DatasetInfo;
@@ -141,6 +142,7 @@ public class MetadataBuilder {
     }
 
     private String buildWithPropertySubstitutions(String template, Map<String, String> replacements) {
+        replacements.forEach((key, value) -> replacements.put(key, StringEscapeUtils.escapeXml11(value)));
         StringSubstitutor sub = new StringSubstitutor(replacements, "{{", "}}");
         return sub.replace(template);
     }
