@@ -363,7 +363,7 @@ export class NewRecordPanelComponent implements OnInit {
       if (!this.datasourceFile()) {
         // Process dataset from external URL
         const previewAnalysisRequest: PreviewDataAnalysisOnRecordRequest = {
-          uuid: this.template(),
+          uuid: this.newRecordId(),
           datasource: this.datasource(),
           layer: this.layername(),
         };

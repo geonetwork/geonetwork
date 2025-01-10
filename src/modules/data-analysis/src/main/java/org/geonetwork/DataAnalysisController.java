@@ -205,10 +205,10 @@ public class DataAnalysisController {
     public ResponseEntity<String> previewDataAnalysisOnRecord(
             @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer)
             throws MetadataNotFoundException {
-        Metadata metadataRecord = metadataManager.findMetadataByUuid(uuid, false);
+        Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(uuid, false);
         BatchEditMode editMode = BatchEditMode.PREVIEW;
         ResponseEntity<String> builtMetadata =
-                applyDataAnalysisOnRecord(uuid, datasource, layer, metadataRecord, editMode);
+                applyDataAnalysisOnRecord(metadataRecord.getUuid(), datasource, layer, metadataRecord, editMode);
         if (builtMetadata != null) return builtMetadata;
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
