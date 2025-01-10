@@ -20,8 +20,11 @@ import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
+import org.geonetwork.domain.repository.OperationRepository;
+import org.geonetwork.domain.repository.OperationallowedRepository;
 import org.geonetwork.editing.BatchEditMode;
 import org.geonetwork.editing.BatchEditsService;
+import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
@@ -47,7 +50,7 @@ import org.xmlunit.diff.Diff;
 import org.xmlunit.diff.ElementSelectors;
 
 @ExtendWith(SpringExtension.class)
-@Import({MetadataBuilder.class, BatchEditsService.class, SchemaManager.class})
+@Import({MetadataBuilder.class, MetadataManager.class, BatchEditsService.class, SchemaManager.class})
 @EnableConfigurationProperties({DataIngesterConfiguration.class})
 @ActiveProfiles({"prod", "test"})
 @SpringBootTest(classes = {TestConfiguration.class})
@@ -58,6 +61,12 @@ class MetadataBuilderTest {
 
     @MockBean
     private MetadataRepository metadataRepository;
+
+    @MockBean
+    private OperationRepository operationRepository;
+
+    @MockBean
+    private OperationallowedRepository operationallowedRepository;
 
     private GdalDataAnalyzer analyzer;
 
@@ -88,6 +97,7 @@ class MetadataBuilderTest {
         metadata.setSchemaid("iso19115-3.2018");
         metadata.setData(template);
         when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
+        when(metadataRepository.findByUuid("uuid1")).thenReturn(Optional.of(metadata));
 
         String builtMetadata = metadataBuilder.buildMetadata(
                 uuid, metadata.getSchemaid(), layerProperties.get(), BatchEditMode.PREVIEW);
@@ -124,6 +134,7 @@ class MetadataBuilderTest {
         metadata.setSchemaid(schema);
         metadata.setData(xml);
         when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
+        when(metadataRepository.findByUuid("uuid1")).thenReturn(Optional.of(metadata));
 
         String builtMetadata = metadataBuilder.buildMetadata(
                 uuid,

@@ -62,15 +62,12 @@ public class BatchEditParameter implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Editing xpath ");
-        sb.append(this.xpath);
+        StringBuilder sb = new StringBuilder("XPath: ");
+        sb.append(this.xpath).append(System.lineSeparator());
         if (StringUtils.isNotEmpty(this.value)) {
-            sb.append(", searching for ");
-            sb.append(this.value);
+            sb.append("XML or value: ").append(this.value).append(System.lineSeparator());
         }
-        sb.append(".");
-        sb.append(" Check expression: ");
-        sb.append(this.condition);
+        sb.append("Condition: ").append(this.condition).append(System.lineSeparator());
         return sb.toString();
     }
 }
