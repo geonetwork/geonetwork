@@ -15,33 +15,33 @@
 import { mapValues } from '../runtime';
 import type { GnOgcApiRecordsServerDto } from './GnGnOgcApiRecordsServerDto';
 import {
-    GnOgcApiRecordsServerDtoFromJSON,
-    GnOgcApiRecordsServerDtoFromJSONTyped,
-    GnOgcApiRecordsServerDtoToJSON,
+  GnOgcApiRecordsServerDtoFromJSON,
+  GnOgcApiRecordsServerDtoFromJSONTyped,
+  GnOgcApiRecordsServerDtoToJSON,
 } from './GnGnOgcApiRecordsServerDto';
 import type { GnOgcApiRecordsComponentsDto } from './GnGnOgcApiRecordsComponentsDto';
 import {
-    GnOgcApiRecordsComponentsDtoFromJSON,
-    GnOgcApiRecordsComponentsDtoFromJSONTyped,
-    GnOgcApiRecordsComponentsDtoToJSON,
+  GnOgcApiRecordsComponentsDtoFromJSON,
+  GnOgcApiRecordsComponentsDtoFromJSONTyped,
+  GnOgcApiRecordsComponentsDtoToJSON,
 } from './GnGnOgcApiRecordsComponentsDto';
 import type { GnOgcApiRecordsInfoDto } from './GnGnOgcApiRecordsInfoDto';
 import {
-    GnOgcApiRecordsInfoDtoFromJSON,
-    GnOgcApiRecordsInfoDtoFromJSONTyped,
-    GnOgcApiRecordsInfoDtoToJSON,
+  GnOgcApiRecordsInfoDtoFromJSON,
+  GnOgcApiRecordsInfoDtoFromJSONTyped,
+  GnOgcApiRecordsInfoDtoToJSON,
 } from './GnGnOgcApiRecordsInfoDto';
 import type { GnOgcApiRecordsTagDto } from './GnGnOgcApiRecordsTagDto';
 import {
-    GnOgcApiRecordsTagDtoFromJSON,
-    GnOgcApiRecordsTagDtoFromJSONTyped,
-    GnOgcApiRecordsTagDtoToJSON,
+  GnOgcApiRecordsTagDtoFromJSON,
+  GnOgcApiRecordsTagDtoFromJSONTyped,
+  GnOgcApiRecordsTagDtoToJSON,
 } from './GnGnOgcApiRecordsTagDto';
 import type { GnOgcApiRecordsExternalDocumentationDto } from './GnGnOgcApiRecordsExternalDocumentationDto';
 import {
-    GnOgcApiRecordsExternalDocumentationDtoFromJSON,
-    GnOgcApiRecordsExternalDocumentationDtoFromJSONTyped,
-    GnOgcApiRecordsExternalDocumentationDtoToJSON,
+  GnOgcApiRecordsExternalDocumentationDtoFromJSON,
+  GnOgcApiRecordsExternalDocumentationDtoFromJSONTyped,
+  GnOgcApiRecordsExternalDocumentationDtoToJSON,
 } from './GnGnOgcApiRecordsExternalDocumentationDto';
 
 /**
@@ -50,101 +50,125 @@ import {
  * @interface GnSchema
  */
 export interface GnSchema {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnSchema
-     */
-    openapi: string;
-    /**
-     * 
-     * @type {GnOgcApiRecordsInfoDto}
-     * @memberof GnSchema
-     */
-    info: GnOgcApiRecordsInfoDto;
-    /**
-     * 
-     * @type {GnOgcApiRecordsExternalDocumentationDto}
-     * @memberof GnSchema
-     */
-    externalDocs?: GnOgcApiRecordsExternalDocumentationDto;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsServerDto>}
-     * @memberof GnSchema
-     */
-    servers?: Array<GnOgcApiRecordsServerDto>;
-    /**
-     * 
-     * @type {Array<object>}
-     * @memberof GnSchema
-     */
-    security?: Array<object>;
-    /**
-     * 
-     * @type {Set<GnOgcApiRecordsTagDto>}
-     * @memberof GnSchema
-     */
-    tags?: Set<GnOgcApiRecordsTagDto>;
-    /**
-     * 
-     * @type {object}
-     * @memberof GnSchema
-     */
-    paths: object;
-    /**
-     * 
-     * @type {GnOgcApiRecordsComponentsDto}
-     * @memberof GnSchema
-     */
-    components?: GnOgcApiRecordsComponentsDto;
+  /**
+   *
+   * @type {string}
+   * @memberof GnSchema
+   */
+  openapi: string;
+  /**
+   *
+   * @type {GnOgcApiRecordsInfoDto}
+   * @memberof GnSchema
+   */
+  info: GnOgcApiRecordsInfoDto;
+  /**
+   *
+   * @type {GnOgcApiRecordsExternalDocumentationDto}
+   * @memberof GnSchema
+   */
+  externalDocs?: GnOgcApiRecordsExternalDocumentationDto;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsServerDto>}
+   * @memberof GnSchema
+   */
+  servers?: Array<GnOgcApiRecordsServerDto>;
+  /**
+   *
+   * @type {Array<object>}
+   * @memberof GnSchema
+   */
+  security?: Array<object>;
+  /**
+   *
+   * @type {Set<GnOgcApiRecordsTagDto>}
+   * @memberof GnSchema
+   */
+  tags?: Set<GnOgcApiRecordsTagDto>;
+  /**
+   *
+   * @type {object}
+   * @memberof GnSchema
+   */
+  paths: object;
+  /**
+   *
+   * @type {GnOgcApiRecordsComponentsDto}
+   * @memberof GnSchema
+   */
+  components?: GnOgcApiRecordsComponentsDto;
 }
 
 /**
  * Check if a given object implements the GnSchema interface.
  */
 export function instanceOfGnSchema(value: object): value is GnSchema {
-    if (!('openapi' in value) || value['openapi'] === undefined) return false;
-    if (!('info' in value) || value['info'] === undefined) return false;
-    if (!('paths' in value) || value['paths'] === undefined) return false;
-    return true;
+  if (!('openapi' in value) || value['openapi'] === undefined) return false;
+  if (!('info' in value) || value['info'] === undefined) return false;
+  if (!('paths' in value) || value['paths'] === undefined) return false;
+  return true;
 }
 
 export function GnSchemaFromJSON(json: any): GnSchema {
-    return GnSchemaFromJSONTyped(json, false);
+  return GnSchemaFromJSONTyped(json, false);
 }
 
-export function GnSchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnSchema {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'openapi': json['openapi'],
-        'info': GnOgcApiRecordsInfoDtoFromJSON(json['info']),
-        'externalDocs': json['externalDocs'] == null ? undefined : GnOgcApiRecordsExternalDocumentationDtoFromJSON(json['externalDocs']),
-        'servers': json['servers'] == null ? undefined : ((json['servers'] as Array<any>).map(GnOgcApiRecordsServerDtoFromJSON)),
-        'security': json['security'] == null ? undefined : json['security'],
-        'tags': json['tags'] == null ? undefined : (new Set((json['tags'] as Array<any>).map(GnOgcApiRecordsTagDtoFromJSON))),
-        'paths': json['paths'],
-        'components': json['components'] == null ? undefined : GnOgcApiRecordsComponentsDtoFromJSON(json['components']),
-    };
+export function GnSchemaFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnSchema {
+  if (json == null) {
+    return json;
+  }
+  return {
+    openapi: json['openapi'],
+    info: GnOgcApiRecordsInfoDtoFromJSON(json['info']),
+    externalDocs:
+      json['externalDocs'] == null
+        ? undefined
+        : GnOgcApiRecordsExternalDocumentationDtoFromJSON(json['externalDocs']),
+    servers:
+      json['servers'] == null
+        ? undefined
+        : (json['servers'] as Array<any>).map(GnOgcApiRecordsServerDtoFromJSON),
+    security: json['security'] == null ? undefined : json['security'],
+    tags:
+      json['tags'] == null
+        ? undefined
+        : new Set(
+            (json['tags'] as Array<any>).map(GnOgcApiRecordsTagDtoFromJSON)
+          ),
+    paths: json['paths'],
+    components:
+      json['components'] == null
+        ? undefined
+        : GnOgcApiRecordsComponentsDtoFromJSON(json['components']),
+  };
 }
 
 export function GnSchemaToJSON(value?: GnSchema | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'openapi': value['openapi'],
-        'info': GnOgcApiRecordsInfoDtoToJSON(value['info']),
-        'externalDocs': GnOgcApiRecordsExternalDocumentationDtoToJSON(value['externalDocs']),
-        'servers': value['servers'] == null ? undefined : ((value['servers'] as Array<any>).map(GnOgcApiRecordsServerDtoToJSON)),
-        'security': value['security'],
-        'tags': value['tags'] == null ? undefined : (Array.from(value['tags'] as Set<any>).map(GnOgcApiRecordsTagDtoToJSON)),
-        'paths': value['paths'],
-        'components': GnOgcApiRecordsComponentsDtoToJSON(value['components']),
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    openapi: value['openapi'],
+    info: GnOgcApiRecordsInfoDtoToJSON(value['info']),
+    externalDocs: GnOgcApiRecordsExternalDocumentationDtoToJSON(
+      value['externalDocs']
+    ),
+    servers:
+      value['servers'] == null
+        ? undefined
+        : (value['servers'] as Array<any>).map(GnOgcApiRecordsServerDtoToJSON),
+    security: value['security'],
+    tags:
+      value['tags'] == null
+        ? undefined
+        : Array.from(value['tags'] as Set<any>).map(
+            GnOgcApiRecordsTagDtoToJSON
+          ),
+    paths: value['paths'],
+    components: GnOgcApiRecordsComponentsDtoToJSON(value['components']),
+  };
 }
-

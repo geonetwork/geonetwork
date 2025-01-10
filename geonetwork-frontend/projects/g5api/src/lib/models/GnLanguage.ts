@@ -19,80 +19,79 @@ import { mapValues } from '../runtime';
  * @interface GnLanguage
  */
 export interface GnLanguage {
-    /**
-     * The language tag as per RFC-5646.
-     * @type {string}
-     * @memberof GnLanguage
-     */
-    code: string;
-    /**
-     * The untranslated name of of the language.
-     * @type {string}
-     * @memberof GnLanguage
-     */
-    name?: string;
-    /**
-     * The name of the language in another well-understood language, usually English.
-     * @type {string}
-     * @memberof GnLanguage
-     */
-    alternate?: string;
-    /**
-     * The direction for text in this language. The default, `ltr` (left-to-right), represents the most common situation. However, care should be taken to set the value of `dir` appropriately if the language direction is not `ltr`. Other values supported are `rtl` (right-to-left), `ttb` (top-to-bottom), and `btt` (bottom-to-top).
-     * @type {string}
-     * @memberof GnLanguage
-     */
-    dir?: GnLanguageDirEnum;
+  /**
+   * The language tag as per RFC-5646.
+   * @type {string}
+   * @memberof GnLanguage
+   */
+  code: string;
+  /**
+   * The untranslated name of of the language.
+   * @type {string}
+   * @memberof GnLanguage
+   */
+  name?: string;
+  /**
+   * The name of the language in another well-understood language, usually English.
+   * @type {string}
+   * @memberof GnLanguage
+   */
+  alternate?: string;
+  /**
+   * The direction for text in this language. The default, `ltr` (left-to-right), represents the most common situation. However, care should be taken to set the value of `dir` appropriately if the language direction is not `ltr`. Other values supported are `rtl` (right-to-left), `ttb` (top-to-bottom), and `btt` (bottom-to-top).
+   * @type {string}
+   * @memberof GnLanguage
+   */
+  dir?: GnLanguageDirEnum;
 }
-
 
 /**
  * @export
  */
 export const GnLanguageDirEnum = {
-    Ltr: 'ltr',
-    Rtl: 'rtl',
-    Ttb: 'ttb',
-    Btt: 'btt'
+  Ltr: 'ltr',
+  Rtl: 'rtl',
+  Ttb: 'ttb',
+  Btt: 'btt',
 } as const;
-export type GnLanguageDirEnum = typeof GnLanguageDirEnum[keyof typeof GnLanguageDirEnum];
-
+export type GnLanguageDirEnum =
+  (typeof GnLanguageDirEnum)[keyof typeof GnLanguageDirEnum];
 
 /**
  * Check if a given object implements the GnLanguage interface.
  */
 export function instanceOfGnLanguage(value: object): value is GnLanguage {
-    if (!('code' in value) || value['code'] === undefined) return false;
-    return true;
+  if (!('code' in value) || value['code'] === undefined) return false;
+  return true;
 }
 
 export function GnLanguageFromJSON(json: any): GnLanguage {
-    return GnLanguageFromJSONTyped(json, false);
+  return GnLanguageFromJSONTyped(json, false);
 }
 
-export function GnLanguageFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnLanguage {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'code': json['code'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'alternate': json['alternate'] == null ? undefined : json['alternate'],
-        'dir': json['dir'] == null ? undefined : json['dir'],
-    };
+export function GnLanguageFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnLanguage {
+  if (json == null) {
+    return json;
+  }
+  return {
+    code: json['code'],
+    name: json['name'] == null ? undefined : json['name'],
+    alternate: json['alternate'] == null ? undefined : json['alternate'],
+    dir: json['dir'] == null ? undefined : json['dir'],
+  };
 }
 
 export function GnLanguageToJSON(value?: GnLanguage | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'code': value['code'],
-        'name': value['name'],
-        'alternate': value['alternate'],
-        'dir': value['dir'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    code: value['code'],
+    name: value['name'],
+    alternate: value['alternate'],
+    dir: value['dir'],
+  };
 }
-

@@ -14,120 +14,129 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsLinkTemplateDto
  */
 export interface GnOgcApiRecordsLinkTemplateDto {
-    /**
-     * The type or semantics of the relation.
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    rel?: string;
-    /**
-     * A hint indicating what the media type of the result of dereferencing the link should be.
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    type?: string;
-    /**
-     * A hint indicating what the language of the result of dereferencing the link should be.
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    hreflang?: string;
-    /**
-     * Used to label the destination of a link such that it can be used as a human-readable identifier.
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    title?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    length?: number;
-    /**
-     * Date of creation of the resource pointed to by the link.
-     * @type {Date}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    created?: Date;
-    /**
-     * Most recent date on which the resource pointed to by the link was changed.
-     * @type {Date}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    updated?: Date;
-    /**
-     * Supplies a resolvable URI to a remote resource (or resource fragment).
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    uriTemplate: string;
-    /**
-     * The base URI to which the variable name can be appended to retrieve the definition of the variable as a JSON Schema fragment.
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    varBase?: string;
-    /**
-     * This object contains one key per substitution variable in the templated URL.  Each key defines the schema of one substitution variable using a JSON Schema fragment and can thus include things like the data type of the variable, enumerations, minimum values, maximum values, etc.
-     * @type {object}
-     * @memberof GnOgcApiRecordsLinkTemplateDto
-     */
-    variables?: object;
+  /**
+   * The type or semantics of the relation.
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  rel?: string;
+  /**
+   * A hint indicating what the media type of the result of dereferencing the link should be.
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  type?: string;
+  /**
+   * A hint indicating what the language of the result of dereferencing the link should be.
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  hreflang?: string;
+  /**
+   * Used to label the destination of a link such that it can be used as a human-readable identifier.
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  title?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  length?: number;
+  /**
+   * Date of creation of the resource pointed to by the link.
+   * @type {Date}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  created?: Date;
+  /**
+   * Most recent date on which the resource pointed to by the link was changed.
+   * @type {Date}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  updated?: Date;
+  /**
+   * Supplies a resolvable URI to a remote resource (or resource fragment).
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  uriTemplate: string;
+  /**
+   * The base URI to which the variable name can be appended to retrieve the definition of the variable as a JSON Schema fragment.
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  varBase?: string;
+  /**
+   * This object contains one key per substitution variable in the templated URL.  Each key defines the schema of one substitution variable using a JSON Schema fragment and can thus include things like the data type of the variable, enumerations, minimum values, maximum values, etc.
+   * @type {object}
+   * @memberof GnOgcApiRecordsLinkTemplateDto
+   */
+  variables?: object;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsLinkTemplateDto interface.
  */
-export function instanceOfGnOgcApiRecordsLinkTemplateDto(value: object): value is GnOgcApiRecordsLinkTemplateDto {
-    if (!('uriTemplate' in value) || value['uriTemplate'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsLinkTemplateDto(
+  value: object
+): value is GnOgcApiRecordsLinkTemplateDto {
+  if (!('uriTemplate' in value) || value['uriTemplate'] === undefined)
+    return false;
+  return true;
 }
 
-export function GnOgcApiRecordsLinkTemplateDtoFromJSON(json: any): GnOgcApiRecordsLinkTemplateDto {
-    return GnOgcApiRecordsLinkTemplateDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsLinkTemplateDtoFromJSON(
+  json: any
+): GnOgcApiRecordsLinkTemplateDto {
+  return GnOgcApiRecordsLinkTemplateDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsLinkTemplateDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsLinkTemplateDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'rel': json['rel'] == null ? undefined : json['rel'],
-        'type': json['type'] == null ? undefined : json['type'],
-        'hreflang': json['hreflang'] == null ? undefined : json['hreflang'],
-        'title': json['title'] == null ? undefined : json['title'],
-        'length': json['length'] == null ? undefined : json['length'],
-        'created': json['created'] == null ? undefined : (new Date(json['created'])),
-        'updated': json['updated'] == null ? undefined : (new Date(json['updated'])),
-        'uriTemplate': json['uriTemplate'],
-        'varBase': json['varBase'] == null ? undefined : json['varBase'],
-        'variables': json['variables'] == null ? undefined : json['variables'],
-    };
+export function GnOgcApiRecordsLinkTemplateDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsLinkTemplateDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    rel: json['rel'] == null ? undefined : json['rel'],
+    type: json['type'] == null ? undefined : json['type'],
+    hreflang: json['hreflang'] == null ? undefined : json['hreflang'],
+    title: json['title'] == null ? undefined : json['title'],
+    length: json['length'] == null ? undefined : json['length'],
+    created: json['created'] == null ? undefined : new Date(json['created']),
+    updated: json['updated'] == null ? undefined : new Date(json['updated']),
+    uriTemplate: json['uriTemplate'],
+    varBase: json['varBase'] == null ? undefined : json['varBase'],
+    variables: json['variables'] == null ? undefined : json['variables'],
+  };
 }
 
-export function GnOgcApiRecordsLinkTemplateDtoToJSON(value?: GnOgcApiRecordsLinkTemplateDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'rel': value['rel'],
-        'type': value['type'],
-        'hreflang': value['hreflang'],
-        'title': value['title'],
-        'length': value['length'],
-        'created': value['created'] == null ? undefined : ((value['created']).toISOString()),
-        'updated': value['updated'] == null ? undefined : ((value['updated']).toISOString()),
-        'uriTemplate': value['uriTemplate'],
-        'varBase': value['varBase'],
-        'variables': value['variables'],
-    };
+export function GnOgcApiRecordsLinkTemplateDtoToJSON(
+  value?: GnOgcApiRecordsLinkTemplateDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    rel: value['rel'],
+    type: value['type'],
+    hreflang: value['hreflang'],
+    title: value['title'],
+    length: value['length'],
+    created:
+      value['created'] == null ? undefined : value['created'].toISOString(),
+    updated:
+      value['updated'] == null ? undefined : value['updated'].toISOString(),
+    uriTemplate: value['uriTemplate'],
+    varBase: value['varBase'],
+    variables: value['variables'],
+  };
 }
-

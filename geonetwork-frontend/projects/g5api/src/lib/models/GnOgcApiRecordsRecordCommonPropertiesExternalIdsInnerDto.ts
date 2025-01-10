@@ -19,51 +19,60 @@ import { mapValues } from '../runtime';
  * @interface GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
  */
 export interface GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
-    /**
-     * A reference to an authority or identifier for a knowledge organization system from which the external identifier was obtained. It is recommended that the identifier be a resolvable URI.
-     * @type {string}
-     * @memberof GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
-     */
-    scheme?: string;
-    /**
-     * The value of the identifier.
-     * @type {string}
-     * @memberof GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
-     */
-    value: string;
+  /**
+   * A reference to an authority or identifier for a knowledge organization system from which the external identifier was obtained. It is recommended that the identifier be a resolvable URI.
+   * @type {string}
+   * @memberof GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
+   */
+  scheme?: string;
+  /**
+   * The value of the identifier.
+   * @type {string}
+   * @memberof GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
+   */
+  value: string;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto interface.
  */
-export function instanceOfGnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto(value: object): value is GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
-    if (!('value' in value) || value['value'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto(
+  value: object
+): value is GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
+  if (!('value' in value) || value['value'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON(json: any): GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
-    return GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON(
+  json: any
+): GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
+  return GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped(
+    json,
+    false
+  );
 }
 
-export function GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'scheme': json['scheme'] == null ? undefined : json['scheme'],
-        'value': json['value'],
-    };
+export function GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    scheme: json['scheme'] == null ? undefined : json['scheme'],
+    value: json['value'],
+  };
 }
 
-export function GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON(value?: GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'scheme': value['scheme'],
-        'value': value['value'],
-    };
+export function GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON(
+  value?: GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    scheme: value['scheme'],
+    value: value['value'],
+  };
 }
-

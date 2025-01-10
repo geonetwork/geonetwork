@@ -14,89 +14,95 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsLinkDto
  */
 export interface GnOgcApiRecordsLinkDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkDto
-     */
-    href: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkDto
-     */
-    rel: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkDto
-     */
-    type?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkDto
-     */
-    hreflang?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsLinkDto
-     */
-    title?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GnOgcApiRecordsLinkDto
-     */
-    length?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkDto
+   */
+  href: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkDto
+   */
+  rel: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkDto
+   */
+  type?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkDto
+   */
+  hreflang?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsLinkDto
+   */
+  title?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof GnOgcApiRecordsLinkDto
+   */
+  length?: number;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsLinkDto interface.
  */
-export function instanceOfGnOgcApiRecordsLinkDto(value: object): value is GnOgcApiRecordsLinkDto {
-    if (!('href' in value) || value['href'] === undefined) return false;
-    if (!('rel' in value) || value['rel'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsLinkDto(
+  value: object
+): value is GnOgcApiRecordsLinkDto {
+  if (!('href' in value) || value['href'] === undefined) return false;
+  if (!('rel' in value) || value['rel'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsLinkDtoFromJSON(json: any): GnOgcApiRecordsLinkDto {
-    return GnOgcApiRecordsLinkDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsLinkDtoFromJSON(
+  json: any
+): GnOgcApiRecordsLinkDto {
+  return GnOgcApiRecordsLinkDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsLinkDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsLinkDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'href': json['href'],
-        'rel': json['rel'],
-        'type': json['type'] == null ? undefined : json['type'],
-        'hreflang': json['hreflang'] == null ? undefined : json['hreflang'],
-        'title': json['title'] == null ? undefined : json['title'],
-        'length': json['length'] == null ? undefined : json['length'],
-    };
+export function GnOgcApiRecordsLinkDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsLinkDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    href: json['href'],
+    rel: json['rel'],
+    type: json['type'] == null ? undefined : json['type'],
+    hreflang: json['hreflang'] == null ? undefined : json['hreflang'],
+    title: json['title'] == null ? undefined : json['title'],
+    length: json['length'] == null ? undefined : json['length'],
+  };
 }
 
-export function GnOgcApiRecordsLinkDtoToJSON(value?: GnOgcApiRecordsLinkDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'href': value['href'],
-        'rel': value['rel'],
-        'type': value['type'],
-        'hreflang': value['hreflang'],
-        'title': value['title'],
-        'length': value['length'],
-    };
+export function GnOgcApiRecordsLinkDtoToJSON(
+  value?: GnOgcApiRecordsLinkDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    href: value['href'],
+    rel: value['rel'],
+    type: value['type'],
+    hreflang: value['hreflang'],
+    title: value['title'],
+    length: value['length'],
+  };
 }
-

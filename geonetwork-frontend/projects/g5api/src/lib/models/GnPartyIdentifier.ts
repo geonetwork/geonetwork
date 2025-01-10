@@ -14,63 +14,65 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnPartyIdentifier
  */
 export interface GnPartyIdentifier {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnPartyIdentifier
-     */
-    code?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnPartyIdentifier
-     */
-    codeSpace?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnPartyIdentifier
-     */
-    link?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnPartyIdentifier
+   */
+  code?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnPartyIdentifier
+   */
+  codeSpace?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnPartyIdentifier
+   */
+  link?: string;
 }
 
 /**
  * Check if a given object implements the GnPartyIdentifier interface.
  */
-export function instanceOfGnPartyIdentifier(value: object): value is GnPartyIdentifier {
-    return true;
+export function instanceOfGnPartyIdentifier(
+  value: object
+): value is GnPartyIdentifier {
+  return true;
 }
 
 export function GnPartyIdentifierFromJSON(json: any): GnPartyIdentifier {
-    return GnPartyIdentifierFromJSONTyped(json, false);
+  return GnPartyIdentifierFromJSONTyped(json, false);
 }
 
-export function GnPartyIdentifierFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnPartyIdentifier {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'code': json['code'] == null ? undefined : json['code'],
-        'codeSpace': json['codeSpace'] == null ? undefined : json['codeSpace'],
-        'link': json['link'] == null ? undefined : json['link'],
-    };
+export function GnPartyIdentifierFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnPartyIdentifier {
+  if (json == null) {
+    return json;
+  }
+  return {
+    code: json['code'] == null ? undefined : json['code'],
+    codeSpace: json['codeSpace'] == null ? undefined : json['codeSpace'],
+    link: json['link'] == null ? undefined : json['link'],
+  };
 }
 
 export function GnPartyIdentifierToJSON(value?: GnPartyIdentifier | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'code': value['code'],
-        'codeSpace': value['codeSpace'],
-        'link': value['link'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    code: value['code'],
+    codeSpace: value['codeSpace'],
+    link: value['link'],
+  };
 }
-

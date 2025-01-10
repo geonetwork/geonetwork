@@ -14,55 +14,59 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnProcessParameter
  */
 export interface GnProcessParameter {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnProcessParameter
-     */
-    name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnProcessParameter
-     */
-    type?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnProcessParameter
+   */
+  name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnProcessParameter
+   */
+  type?: string;
 }
 
 /**
  * Check if a given object implements the GnProcessParameter interface.
  */
-export function instanceOfGnProcessParameter(value: object): value is GnProcessParameter {
-    return true;
+export function instanceOfGnProcessParameter(
+  value: object
+): value is GnProcessParameter {
+  return true;
 }
 
 export function GnProcessParameterFromJSON(json: any): GnProcessParameter {
-    return GnProcessParameterFromJSONTyped(json, false);
+  return GnProcessParameterFromJSONTyped(json, false);
 }
 
-export function GnProcessParameterFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnProcessParameter {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'name': json['name'] == null ? undefined : json['name'],
-        'type': json['type'] == null ? undefined : json['type'],
-    };
+export function GnProcessParameterFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnProcessParameter {
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json['name'] == null ? undefined : json['name'],
+    type: json['type'] == null ? undefined : json['type'],
+  };
 }
 
-export function GnProcessParameterToJSON(value?: GnProcessParameter | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'name': value['name'],
-        'type': value['type'],
-    };
+export function GnProcessParameterToJSON(
+  value?: GnProcessParameter | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value['name'],
+    type: value['type'],
+  };
 }
-

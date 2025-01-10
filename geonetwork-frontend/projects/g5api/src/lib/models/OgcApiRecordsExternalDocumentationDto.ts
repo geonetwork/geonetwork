@@ -14,56 +14,62 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface OgcApiRecordsExternalDocumentationDto
  */
 export interface OgcApiRecordsExternalDocumentationDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsExternalDocumentationDto
-     */
-    description?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsExternalDocumentationDto
-     */
-    url: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsExternalDocumentationDto
+   */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsExternalDocumentationDto
+   */
+  url: string;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsExternalDocumentationDto interface.
  */
-export function instanceOfOgcApiRecordsExternalDocumentationDto(value: object): value is OgcApiRecordsExternalDocumentationDto {
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfOgcApiRecordsExternalDocumentationDto(
+  value: object
+): value is OgcApiRecordsExternalDocumentationDto {
+  if (!('url' in value) || value['url'] === undefined) return false;
+  return true;
 }
 
-export function OgcApiRecordsExternalDocumentationDtoFromJSON(json: any): OgcApiRecordsExternalDocumentationDto {
-    return OgcApiRecordsExternalDocumentationDtoFromJSONTyped(json, false);
+export function OgcApiRecordsExternalDocumentationDtoFromJSON(
+  json: any
+): OgcApiRecordsExternalDocumentationDto {
+  return OgcApiRecordsExternalDocumentationDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsExternalDocumentationDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsExternalDocumentationDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'description': json['description'] == null ? undefined : json['description'],
-        'url': json['url'],
-    };
+export function OgcApiRecordsExternalDocumentationDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OgcApiRecordsExternalDocumentationDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    description: json['description'] == null ? undefined : json['description'],
+    url: json['url'],
+  };
 }
 
-export function OgcApiRecordsExternalDocumentationDtoToJSON(value?: OgcApiRecordsExternalDocumentationDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'description': value['description'],
-        'url': value['url'],
-    };
+export function OgcApiRecordsExternalDocumentationDtoToJSON(
+  value?: OgcApiRecordsExternalDocumentationDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    description: value['description'],
+    url: value['url'],
+  };
 }
-

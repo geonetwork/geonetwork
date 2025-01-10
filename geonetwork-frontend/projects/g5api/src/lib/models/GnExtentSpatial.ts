@@ -19,61 +19,62 @@ import { mapValues } from '../runtime';
  * @interface GnExtentSpatial
  */
 export interface GnExtentSpatial {
-    /**
-     * One or more bounding boxes that describe the spatial extent of the dataset. In the Core only a single bounding box is supported.  Extensions may support additional areas. The first bounding box describes the overall spatial extent of the data. All subsequent bounding boxes describe more precise bounding boxes, e.g., to identify clusters of data. Clients only interested in the overall spatial extent will only need to access the first bounding box in the array.
-     * @type {Array<object>}
-     * @memberof GnExtentSpatial
-     */
-    bbox?: Array<object>;
-    /**
-     * Coordinate reference system of the coordinates in the spatial extent (property `bbox`). The default reference system is WGS 84 longitude/latitude. In the Core the only other supported coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height for coordinates with height. Extensions may support additional coordinate reference systems and add additional enum values.
-     * @type {string}
-     * @memberof GnExtentSpatial
-     */
-    crs?: GnExtentSpatialCrsEnum;
+  /**
+   * One or more bounding boxes that describe the spatial extent of the dataset. In the Core only a single bounding box is supported.  Extensions may support additional areas. The first bounding box describes the overall spatial extent of the data. All subsequent bounding boxes describe more precise bounding boxes, e.g., to identify clusters of data. Clients only interested in the overall spatial extent will only need to access the first bounding box in the array.
+   * @type {Array<object>}
+   * @memberof GnExtentSpatial
+   */
+  bbox?: Array<object>;
+  /**
+   * Coordinate reference system of the coordinates in the spatial extent (property `bbox`). The default reference system is WGS 84 longitude/latitude. In the Core the only other supported coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height for coordinates with height. Extensions may support additional coordinate reference systems and add additional enum values.
+   * @type {string}
+   * @memberof GnExtentSpatial
+   */
+  crs?: GnExtentSpatialCrsEnum;
 }
-
 
 /**
  * @export
  */
 export const GnExtentSpatialCrsEnum = {
-    _13Crs84: 'http://www.opengis.net/def/crs/OGC/1.3/CRS84',
-    _0Crs84h: 'http://www.opengis.net/def/crs/OGC/0/CRS84h'
+  _13Crs84: 'http://www.opengis.net/def/crs/OGC/1.3/CRS84',
+  _0Crs84h: 'http://www.opengis.net/def/crs/OGC/0/CRS84h',
 } as const;
-export type GnExtentSpatialCrsEnum = typeof GnExtentSpatialCrsEnum[keyof typeof GnExtentSpatialCrsEnum];
-
+export type GnExtentSpatialCrsEnum =
+  (typeof GnExtentSpatialCrsEnum)[keyof typeof GnExtentSpatialCrsEnum];
 
 /**
  * Check if a given object implements the GnExtentSpatial interface.
  */
-export function instanceOfGnExtentSpatial(value: object): value is GnExtentSpatial {
-    return true;
+export function instanceOfGnExtentSpatial(
+  value: object
+): value is GnExtentSpatial {
+  return true;
 }
 
 export function GnExtentSpatialFromJSON(json: any): GnExtentSpatial {
-    return GnExtentSpatialFromJSONTyped(json, false);
+  return GnExtentSpatialFromJSONTyped(json, false);
 }
 
-export function GnExtentSpatialFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnExtentSpatial {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'bbox': json['bbox'] == null ? undefined : json['bbox'],
-        'crs': json['crs'] == null ? undefined : json['crs'],
-    };
+export function GnExtentSpatialFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnExtentSpatial {
+  if (json == null) {
+    return json;
+  }
+  return {
+    bbox: json['bbox'] == null ? undefined : json['bbox'],
+    crs: json['crs'] == null ? undefined : json['crs'],
+  };
 }
 
 export function GnExtentSpatialToJSON(value?: GnExtentSpatial | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'bbox': value['bbox'],
-        'crs': value['crs'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    bbox: value['bbox'],
+    crs: value['crs'],
+  };
 }
-

@@ -15,83 +15,96 @@
 import { mapValues } from '../runtime';
 import type { GnContact } from './GnGnContact';
 import {
-    GnContactFromJSON,
-    GnContactFromJSONTyped,
-    GnContactToJSON,
+  GnContactFromJSON,
+  GnContactFromJSONTyped,
+  GnContactToJSON,
 } from './GnGnContact';
 import type { GnProcessStepSource } from './GnGnProcessStepSource';
 import {
-    GnProcessStepSourceFromJSON,
-    GnProcessStepSourceFromJSONTyped,
-    GnProcessStepSourceToJSON,
+  GnProcessStepSourceFromJSON,
+  GnProcessStepSourceFromJSONTyped,
+  GnProcessStepSourceToJSON,
 } from './GnGnProcessStepSource';
 
 /**
- * 
+ *
  * @export
  * @interface GnProcessStep
  */
 export interface GnProcessStep {
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof GnProcessStep
-     */
-    descriptionObject?: { [key: string]: string; };
-    /**
-     * 
-     * @type {string}
-     * @memberof GnProcessStep
-     */
-    date?: string;
-    /**
-     * 
-     * @type {Array<GnProcessStepSource>}
-     * @memberof GnProcessStep
-     */
-    source?: Array<GnProcessStepSource>;
-    /**
-     * 
-     * @type {Array<GnContact>}
-     * @memberof GnProcessStep
-     */
-    processor?: Array<GnContact>;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof GnProcessStep
+   */
+  descriptionObject?: { [key: string]: string };
+  /**
+   *
+   * @type {string}
+   * @memberof GnProcessStep
+   */
+  date?: string;
+  /**
+   *
+   * @type {Array<GnProcessStepSource>}
+   * @memberof GnProcessStep
+   */
+  source?: Array<GnProcessStepSource>;
+  /**
+   *
+   * @type {Array<GnContact>}
+   * @memberof GnProcessStep
+   */
+  processor?: Array<GnContact>;
 }
 
 /**
  * Check if a given object implements the GnProcessStep interface.
  */
 export function instanceOfGnProcessStep(value: object): value is GnProcessStep {
-    return true;
+  return true;
 }
 
 export function GnProcessStepFromJSON(json: any): GnProcessStep {
-    return GnProcessStepFromJSONTyped(json, false);
+  return GnProcessStepFromJSONTyped(json, false);
 }
 
-export function GnProcessStepFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnProcessStep {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'descriptionObject': json['descriptionObject'] == null ? undefined : json['descriptionObject'],
-        'date': json['date'] == null ? undefined : json['date'],
-        'source': json['source'] == null ? undefined : ((json['source'] as Array<any>).map(GnProcessStepSourceFromJSON)),
-        'processor': json['processor'] == null ? undefined : ((json['processor'] as Array<any>).map(GnContactFromJSON)),
-    };
+export function GnProcessStepFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnProcessStep {
+  if (json == null) {
+    return json;
+  }
+  return {
+    descriptionObject:
+      json['descriptionObject'] == null ? undefined : json['descriptionObject'],
+    date: json['date'] == null ? undefined : json['date'],
+    source:
+      json['source'] == null
+        ? undefined
+        : (json['source'] as Array<any>).map(GnProcessStepSourceFromJSON),
+    processor:
+      json['processor'] == null
+        ? undefined
+        : (json['processor'] as Array<any>).map(GnContactFromJSON),
+  };
 }
 
 export function GnProcessStepToJSON(value?: GnProcessStep | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'descriptionObject': value['descriptionObject'],
-        'date': value['date'],
-        'source': value['source'] == null ? undefined : ((value['source'] as Array<any>).map(GnProcessStepSourceToJSON)),
-        'processor': value['processor'] == null ? undefined : ((value['processor'] as Array<any>).map(GnContactToJSON)),
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    descriptionObject: value['descriptionObject'],
+    date: value['date'],
+    source:
+      value['source'] == null
+        ? undefined
+        : (value['source'] as Array<any>).map(GnProcessStepSourceToJSON),
+    processor:
+      value['processor'] == null
+        ? undefined
+        : (value['processor'] as Array<any>).map(GnContactToJSON),
+  };
 }
-

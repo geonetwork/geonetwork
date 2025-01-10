@@ -14,55 +14,61 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnAttributeStatistics
  */
 export interface GnAttributeStatistics {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnAttributeStatistics
-     */
-    name?: string;
-    /**
-     * 
-     * @type {{ [key: string]: object; }}
-     * @memberof GnAttributeStatistics
-     */
-    statistics?: { [key: string]: object; };
+  /**
+   *
+   * @type {string}
+   * @memberof GnAttributeStatistics
+   */
+  name?: string;
+  /**
+   *
+   * @type {{ [key: string]: object; }}
+   * @memberof GnAttributeStatistics
+   */
+  statistics?: { [key: string]: object };
 }
 
 /**
  * Check if a given object implements the GnAttributeStatistics interface.
  */
-export function instanceOfGnAttributeStatistics(value: object): value is GnAttributeStatistics {
-    return true;
+export function instanceOfGnAttributeStatistics(
+  value: object
+): value is GnAttributeStatistics {
+  return true;
 }
 
-export function GnAttributeStatisticsFromJSON(json: any): GnAttributeStatistics {
-    return GnAttributeStatisticsFromJSONTyped(json, false);
+export function GnAttributeStatisticsFromJSON(
+  json: any
+): GnAttributeStatistics {
+  return GnAttributeStatisticsFromJSONTyped(json, false);
 }
 
-export function GnAttributeStatisticsFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnAttributeStatistics {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'name': json['name'] == null ? undefined : json['name'],
-        'statistics': json['statistics'] == null ? undefined : json['statistics'],
-    };
+export function GnAttributeStatisticsFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnAttributeStatistics {
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json['name'] == null ? undefined : json['name'],
+    statistics: json['statistics'] == null ? undefined : json['statistics'],
+  };
 }
 
-export function GnAttributeStatisticsToJSON(value?: GnAttributeStatistics | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'name': value['name'],
-        'statistics': value['statistics'],
-    };
+export function GnAttributeStatisticsToJSON(
+  value?: GnAttributeStatistics | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value['name'],
+    statistics: value['statistics'],
+  };
 }
-

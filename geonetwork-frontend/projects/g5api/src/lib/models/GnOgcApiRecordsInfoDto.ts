@@ -15,101 +15,114 @@
 import { mapValues } from '../runtime';
 import type { GnOgcApiRecordsLicenseDto } from './GnGnOgcApiRecordsLicenseDto';
 import {
-    GnOgcApiRecordsLicenseDtoFromJSON,
-    GnOgcApiRecordsLicenseDtoFromJSONTyped,
-    GnOgcApiRecordsLicenseDtoToJSON,
+  GnOgcApiRecordsLicenseDtoFromJSON,
+  GnOgcApiRecordsLicenseDtoFromJSONTyped,
+  GnOgcApiRecordsLicenseDtoToJSON,
 } from './GnGnOgcApiRecordsLicenseDto';
 import type { GnOgcApiRecordsContactDto } from './GnGnOgcApiRecordsContactDto';
 import {
-    GnOgcApiRecordsContactDtoFromJSON,
-    GnOgcApiRecordsContactDtoFromJSONTyped,
-    GnOgcApiRecordsContactDtoToJSON,
+  GnOgcApiRecordsContactDtoFromJSON,
+  GnOgcApiRecordsContactDtoFromJSONTyped,
+  GnOgcApiRecordsContactDtoToJSON,
 } from './GnGnOgcApiRecordsContactDto';
 
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsInfoDto
  */
 export interface GnOgcApiRecordsInfoDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsInfoDto
-     */
-    title: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsInfoDto
-     */
-    description?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsInfoDto
-     */
-    termsOfService?: string;
-    /**
-     * 
-     * @type {GnOgcApiRecordsContactDto}
-     * @memberof GnOgcApiRecordsInfoDto
-     */
-    contact?: GnOgcApiRecordsContactDto;
-    /**
-     * 
-     * @type {GnOgcApiRecordsLicenseDto}
-     * @memberof GnOgcApiRecordsInfoDto
-     */
-    license?: GnOgcApiRecordsLicenseDto;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsInfoDto
-     */
-    version: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsInfoDto
+   */
+  title: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsInfoDto
+   */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsInfoDto
+   */
+  termsOfService?: string;
+  /**
+   *
+   * @type {GnOgcApiRecordsContactDto}
+   * @memberof GnOgcApiRecordsInfoDto
+   */
+  contact?: GnOgcApiRecordsContactDto;
+  /**
+   *
+   * @type {GnOgcApiRecordsLicenseDto}
+   * @memberof GnOgcApiRecordsInfoDto
+   */
+  license?: GnOgcApiRecordsLicenseDto;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsInfoDto
+   */
+  version: string;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsInfoDto interface.
  */
-export function instanceOfGnOgcApiRecordsInfoDto(value: object): value is GnOgcApiRecordsInfoDto {
-    if (!('title' in value) || value['title'] === undefined) return false;
-    if (!('version' in value) || value['version'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsInfoDto(
+  value: object
+): value is GnOgcApiRecordsInfoDto {
+  if (!('title' in value) || value['title'] === undefined) return false;
+  if (!('version' in value) || value['version'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsInfoDtoFromJSON(json: any): GnOgcApiRecordsInfoDto {
-    return GnOgcApiRecordsInfoDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsInfoDtoFromJSON(
+  json: any
+): GnOgcApiRecordsInfoDto {
+  return GnOgcApiRecordsInfoDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsInfoDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsInfoDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'title': json['title'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'termsOfService': json['termsOfService'] == null ? undefined : json['termsOfService'],
-        'contact': json['contact'] == null ? undefined : GnOgcApiRecordsContactDtoFromJSON(json['contact']),
-        'license': json['license'] == null ? undefined : GnOgcApiRecordsLicenseDtoFromJSON(json['license']),
-        'version': json['version'],
-    };
+export function GnOgcApiRecordsInfoDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsInfoDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    title: json['title'],
+    description: json['description'] == null ? undefined : json['description'],
+    termsOfService:
+      json['termsOfService'] == null ? undefined : json['termsOfService'],
+    contact:
+      json['contact'] == null
+        ? undefined
+        : GnOgcApiRecordsContactDtoFromJSON(json['contact']),
+    license:
+      json['license'] == null
+        ? undefined
+        : GnOgcApiRecordsLicenseDtoFromJSON(json['license']),
+    version: json['version'],
+  };
 }
 
-export function GnOgcApiRecordsInfoDtoToJSON(value?: GnOgcApiRecordsInfoDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'title': value['title'],
-        'description': value['description'],
-        'termsOfService': value['termsOfService'],
-        'contact': GnOgcApiRecordsContactDtoToJSON(value['contact']),
-        'license': GnOgcApiRecordsLicenseDtoToJSON(value['license']),
-        'version': value['version'],
-    };
+export function GnOgcApiRecordsInfoDtoToJSON(
+  value?: GnOgcApiRecordsInfoDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    title: value['title'],
+    description: value['description'],
+    termsOfService: value['termsOfService'],
+    contact: GnOgcApiRecordsContactDtoToJSON(value['contact']),
+    license: GnOgcApiRecordsLicenseDtoToJSON(value['license']),
+    version: value['version'],
+  };
 }
-

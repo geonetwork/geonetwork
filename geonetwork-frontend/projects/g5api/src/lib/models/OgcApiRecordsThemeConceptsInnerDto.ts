@@ -19,67 +19,73 @@ import { mapValues } from '../runtime';
  * @interface OgcApiRecordsThemeConceptsInnerDto
  */
 export interface OgcApiRecordsThemeConceptsInnerDto {
-    /**
-     * An identifier for the concept.
-     * @type {string}
-     * @memberof OgcApiRecordsThemeConceptsInnerDto
-     */
-    id: string;
-    /**
-     * A human readable title for the concept.
-     * @type {string}
-     * @memberof OgcApiRecordsThemeConceptsInnerDto
-     */
-    title?: string;
-    /**
-     * A human readable description for the concept.
-     * @type {string}
-     * @memberof OgcApiRecordsThemeConceptsInnerDto
-     */
-    description?: string;
-    /**
-     * A URI providing further description of the concept.
-     * @type {string}
-     * @memberof OgcApiRecordsThemeConceptsInnerDto
-     */
-    url?: string;
+  /**
+   * An identifier for the concept.
+   * @type {string}
+   * @memberof OgcApiRecordsThemeConceptsInnerDto
+   */
+  id: string;
+  /**
+   * A human readable title for the concept.
+   * @type {string}
+   * @memberof OgcApiRecordsThemeConceptsInnerDto
+   */
+  title?: string;
+  /**
+   * A human readable description for the concept.
+   * @type {string}
+   * @memberof OgcApiRecordsThemeConceptsInnerDto
+   */
+  description?: string;
+  /**
+   * A URI providing further description of the concept.
+   * @type {string}
+   * @memberof OgcApiRecordsThemeConceptsInnerDto
+   */
+  url?: string;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsThemeConceptsInnerDto interface.
  */
-export function instanceOfOgcApiRecordsThemeConceptsInnerDto(value: object): value is OgcApiRecordsThemeConceptsInnerDto {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    return true;
+export function instanceOfOgcApiRecordsThemeConceptsInnerDto(
+  value: object
+): value is OgcApiRecordsThemeConceptsInnerDto {
+  if (!('id' in value) || value['id'] === undefined) return false;
+  return true;
 }
 
-export function OgcApiRecordsThemeConceptsInnerDtoFromJSON(json: any): OgcApiRecordsThemeConceptsInnerDto {
-    return OgcApiRecordsThemeConceptsInnerDtoFromJSONTyped(json, false);
+export function OgcApiRecordsThemeConceptsInnerDtoFromJSON(
+  json: any
+): OgcApiRecordsThemeConceptsInnerDto {
+  return OgcApiRecordsThemeConceptsInnerDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsThemeConceptsInnerDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsThemeConceptsInnerDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'id': json['id'],
-        'title': json['title'] == null ? undefined : json['title'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'url': json['url'] == null ? undefined : json['url'],
-    };
+export function OgcApiRecordsThemeConceptsInnerDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OgcApiRecordsThemeConceptsInnerDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    id: json['id'],
+    title: json['title'] == null ? undefined : json['title'],
+    description: json['description'] == null ? undefined : json['description'],
+    url: json['url'] == null ? undefined : json['url'],
+  };
 }
 
-export function OgcApiRecordsThemeConceptsInnerDtoToJSON(value?: OgcApiRecordsThemeConceptsInnerDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'id': value['id'],
-        'title': value['title'],
-        'description': value['description'],
-        'url': value['url'],
-    };
+export function OgcApiRecordsThemeConceptsInnerDtoToJSON(
+  value?: OgcApiRecordsThemeConceptsInnerDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    id: value['id'],
+    title: value['title'],
+    description: value['description'],
+    url: value['url'],
+  };
 }
-

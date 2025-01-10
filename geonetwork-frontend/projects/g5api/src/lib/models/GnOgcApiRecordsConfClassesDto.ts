@@ -14,48 +14,55 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsConfClassesDto
  */
 export interface GnOgcApiRecordsConfClassesDto {
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GnOgcApiRecordsConfClassesDto
-     */
-    conformsTo: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof GnOgcApiRecordsConfClassesDto
+   */
+  conformsTo: Array<string>;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsConfClassesDto interface.
  */
-export function instanceOfGnOgcApiRecordsConfClassesDto(value: object): value is GnOgcApiRecordsConfClassesDto {
-    if (!('conformsTo' in value) || value['conformsTo'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsConfClassesDto(
+  value: object
+): value is GnOgcApiRecordsConfClassesDto {
+  if (!('conformsTo' in value) || value['conformsTo'] === undefined)
+    return false;
+  return true;
 }
 
-export function GnOgcApiRecordsConfClassesDtoFromJSON(json: any): GnOgcApiRecordsConfClassesDto {
-    return GnOgcApiRecordsConfClassesDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsConfClassesDtoFromJSON(
+  json: any
+): GnOgcApiRecordsConfClassesDto {
+  return GnOgcApiRecordsConfClassesDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsConfClassesDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsConfClassesDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'conformsTo': json['conformsTo'],
-    };
+export function GnOgcApiRecordsConfClassesDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsConfClassesDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    conformsTo: json['conformsTo'],
+  };
 }
 
-export function GnOgcApiRecordsConfClassesDtoToJSON(value?: GnOgcApiRecordsConfClassesDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'conformsTo': value['conformsTo'],
-    };
+export function GnOgcApiRecordsConfClassesDtoToJSON(
+  value?: GnOgcApiRecordsConfClassesDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    conformsTo: value['conformsTo'],
+  };
 }
-

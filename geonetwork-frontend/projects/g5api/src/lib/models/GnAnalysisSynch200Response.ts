@@ -14,56 +14,62 @@
 
 import type { GnDatasetInfo } from './GnDatasetInfo';
 import {
-    instanceOfGnDatasetInfo,
-    GnDatasetInfoFromJSON,
-    GnDatasetInfoFromJSONTyped,
-    GnDatasetInfoToJSON,
+  instanceOfGnDatasetInfo,
+  GnDatasetInfoFromJSON,
+  GnDatasetInfoFromJSONTyped,
+  GnDatasetInfoToJSON,
 } from './GnDatasetInfo';
 import type { GnRasterInfo } from './GnRasterInfo';
 import {
-    instanceOfGnRasterInfo,
-    GnRasterInfoFromJSON,
-    GnRasterInfoFromJSONTyped,
-    GnRasterInfoToJSON,
+  instanceOfGnRasterInfo,
+  GnRasterInfoFromJSON,
+  GnRasterInfoFromJSONTyped,
+  GnRasterInfoToJSON,
 } from './GnRasterInfo';
 
 /**
  * @type GnAnalysisSynch200Response
- * 
+ *
  * @export
  */
 export type GnAnalysisSynch200Response = GnDatasetInfo | GnRasterInfo;
 
-export function GnAnalysisSynch200ResponseFromJSON(json: any): GnAnalysisSynch200Response {
-    return GnAnalysisSynch200ResponseFromJSONTyped(json, false);
+export function GnAnalysisSynch200ResponseFromJSON(
+  json: any
+): GnAnalysisSynch200Response {
+  return GnAnalysisSynch200ResponseFromJSONTyped(json, false);
 }
 
-export function GnAnalysisSynch200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnAnalysisSynch200Response {
-    if (json == null) {
-        return json;
-    }
-    if (instanceOfGnDatasetInfo(json)) {
-        return GnDatasetInfoFromJSONTyped(json, true);
-    }
-    if (instanceOfGnRasterInfo(json)) {
-        return GnRasterInfoFromJSONTyped(json, true);
-    }
+export function GnAnalysisSynch200ResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnAnalysisSynch200Response {
+  if (json == null) {
+    return json;
+  }
+  if (instanceOfGnDatasetInfo(json)) {
+    return GnDatasetInfoFromJSONTyped(json, true);
+  }
+  if (instanceOfGnRasterInfo(json)) {
+    return GnRasterInfoFromJSONTyped(json, true);
+  }
 
-    return {} as any;
+  return {} as any;
 }
 
-export function GnAnalysisSynch200ResponseToJSON(value?: GnAnalysisSynch200Response | null): any {
-    if (value == null) {
-        return value;
-    }
+export function GnAnalysisSynch200ResponseToJSON(
+  value?: GnAnalysisSynch200Response | null
+): any {
+  if (value == null) {
+    return value;
+  }
 
-    if (instanceOfGnDatasetInfo(value)) {
-        return GnDatasetInfoToJSON(value as GnDatasetInfo);
-    }
-    if (instanceOfGnRasterInfo(value)) {
-        return GnRasterInfoToJSON(value as GnRasterInfo);
-    }
+  if (instanceOfGnDatasetInfo(value)) {
+    return GnDatasetInfoToJSON(value as GnDatasetInfo);
+  }
+  if (instanceOfGnRasterInfo(value)) {
+    return GnRasterInfoToJSON(value as GnRasterInfo);
+  }
 
-    return {};
+  return {};
 }
-

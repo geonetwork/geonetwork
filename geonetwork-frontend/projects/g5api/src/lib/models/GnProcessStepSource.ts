@@ -14,47 +14,52 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnProcessStepSource
  */
 export interface GnProcessStepSource {
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof GnProcessStepSource
-     */
-    descriptionObject?: { [key: string]: string; };
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof GnProcessStepSource
+   */
+  descriptionObject?: { [key: string]: string };
 }
 
 /**
  * Check if a given object implements the GnProcessStepSource interface.
  */
-export function instanceOfGnProcessStepSource(value: object): value is GnProcessStepSource {
-    return true;
+export function instanceOfGnProcessStepSource(
+  value: object
+): value is GnProcessStepSource {
+  return true;
 }
 
 export function GnProcessStepSourceFromJSON(json: any): GnProcessStepSource {
-    return GnProcessStepSourceFromJSONTyped(json, false);
+  return GnProcessStepSourceFromJSONTyped(json, false);
 }
 
-export function GnProcessStepSourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnProcessStepSource {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'descriptionObject': json['descriptionObject'] == null ? undefined : json['descriptionObject'],
-    };
+export function GnProcessStepSourceFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnProcessStepSource {
+  if (json == null) {
+    return json;
+  }
+  return {
+    descriptionObject:
+      json['descriptionObject'] == null ? undefined : json['descriptionObject'],
+  };
 }
 
-export function GnProcessStepSourceToJSON(value?: GnProcessStepSource | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'descriptionObject': value['descriptionObject'],
-    };
+export function GnProcessStepSourceToJSON(
+  value?: GnProcessStepSource | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    descriptionObject: value['descriptionObject'],
+  };
 }
-

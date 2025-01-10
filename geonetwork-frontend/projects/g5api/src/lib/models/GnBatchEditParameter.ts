@@ -14,65 +14,69 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnBatchEditParameter
  */
 export interface GnBatchEditParameter {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnBatchEditParameter
-     */
-    xpath: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnBatchEditParameter
-     */
-    value: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnBatchEditParameter
-     */
-    condition?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnBatchEditParameter
+   */
+  xpath: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnBatchEditParameter
+   */
+  value: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnBatchEditParameter
+   */
+  condition?: string;
 }
 
 /**
  * Check if a given object implements the GnBatchEditParameter interface.
  */
-export function instanceOfGnBatchEditParameter(value: object): value is GnBatchEditParameter {
-    if (!('xpath' in value) || value['xpath'] === undefined) return false;
-    if (!('value' in value) || value['value'] === undefined) return false;
-    return true;
+export function instanceOfGnBatchEditParameter(
+  value: object
+): value is GnBatchEditParameter {
+  if (!('xpath' in value) || value['xpath'] === undefined) return false;
+  if (!('value' in value) || value['value'] === undefined) return false;
+  return true;
 }
 
 export function GnBatchEditParameterFromJSON(json: any): GnBatchEditParameter {
-    return GnBatchEditParameterFromJSONTyped(json, false);
+  return GnBatchEditParameterFromJSONTyped(json, false);
 }
 
-export function GnBatchEditParameterFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnBatchEditParameter {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'xpath': json['xpath'],
-        'value': json['value'],
-        'condition': json['condition'] == null ? undefined : json['condition'],
-    };
+export function GnBatchEditParameterFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnBatchEditParameter {
+  if (json == null) {
+    return json;
+  }
+  return {
+    xpath: json['xpath'],
+    value: json['value'],
+    condition: json['condition'] == null ? undefined : json['condition'],
+  };
 }
 
-export function GnBatchEditParameterToJSON(value?: GnBatchEditParameter | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'xpath': value['xpath'],
-        'value': value['value'],
-        'condition': value['condition'],
-    };
+export function GnBatchEditParameterToJSON(
+  value?: GnBatchEditParameter | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    xpath: value['xpath'],
+    value: value['value'],
+    condition: value['condition'],
+  };
 }
-

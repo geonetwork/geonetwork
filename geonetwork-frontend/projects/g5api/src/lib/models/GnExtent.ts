@@ -15,15 +15,15 @@
 import { mapValues } from '../runtime';
 import type { GnExtentSpatial } from './GnGnExtentSpatial';
 import {
-    GnExtentSpatialFromJSON,
-    GnExtentSpatialFromJSONTyped,
-    GnExtentSpatialToJSON,
+  GnExtentSpatialFromJSON,
+  GnExtentSpatialFromJSONTyped,
+  GnExtentSpatialToJSON,
 } from './GnGnExtentSpatial';
 import type { GnExtentTemporal } from './GnGnExtentTemporal';
 import {
-    GnExtentTemporalFromJSON,
-    GnExtentTemporalFromJSONTyped,
-    GnExtentTemporalToJSON,
+  GnExtentTemporalFromJSON,
+  GnExtentTemporalFromJSONTyped,
+  GnExtentTemporalToJSON,
 } from './GnGnExtentTemporal';
 
 /**
@@ -32,50 +32,56 @@ import {
  * @interface GnExtent
  */
 export interface GnExtent {
-    /**
-     * 
-     * @type {GnExtentSpatial}
-     * @memberof GnExtent
-     */
-    spatial?: GnExtentSpatial;
-    /**
-     * 
-     * @type {GnExtentTemporal}
-     * @memberof GnExtent
-     */
-    temporal?: GnExtentTemporal;
+  /**
+   *
+   * @type {GnExtentSpatial}
+   * @memberof GnExtent
+   */
+  spatial?: GnExtentSpatial;
+  /**
+   *
+   * @type {GnExtentTemporal}
+   * @memberof GnExtent
+   */
+  temporal?: GnExtentTemporal;
 }
 
 /**
  * Check if a given object implements the GnExtent interface.
  */
 export function instanceOfGnExtent(value: object): value is GnExtent {
-    return true;
+  return true;
 }
 
 export function GnExtentFromJSON(json: any): GnExtent {
-    return GnExtentFromJSONTyped(json, false);
+  return GnExtentFromJSONTyped(json, false);
 }
 
-export function GnExtentFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnExtent {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'spatial': json['spatial'] == null ? undefined : GnExtentSpatialFromJSON(json['spatial']),
-        'temporal': json['temporal'] == null ? undefined : GnExtentTemporalFromJSON(json['temporal']),
-    };
+export function GnExtentFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnExtent {
+  if (json == null) {
+    return json;
+  }
+  return {
+    spatial:
+      json['spatial'] == null
+        ? undefined
+        : GnExtentSpatialFromJSON(json['spatial']),
+    temporal:
+      json['temporal'] == null
+        ? undefined
+        : GnExtentTemporalFromJSON(json['temporal']),
+  };
 }
 
 export function GnExtentToJSON(value?: GnExtent | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'spatial': GnExtentSpatialToJSON(value['spatial']),
-        'temporal': GnExtentTemporalToJSON(value['temporal']),
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    spatial: GnExtentSpatialToJSON(value['spatial']),
+    temporal: GnExtentTemporalToJSON(value['temporal']),
+  };
 }
-

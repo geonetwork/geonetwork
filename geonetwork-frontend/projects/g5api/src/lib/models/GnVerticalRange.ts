@@ -14,63 +14,65 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnVerticalRange
  */
 export interface GnVerticalRange {
-    /**
-     * 
-     * @type {number}
-     * @memberof GnVerticalRange
-     */
-    gte?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GnVerticalRange
-     */
-    lte?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnVerticalRange
-     */
-    unit?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof GnVerticalRange
+   */
+  gte?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof GnVerticalRange
+   */
+  lte?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof GnVerticalRange
+   */
+  unit?: string;
 }
 
 /**
  * Check if a given object implements the GnVerticalRange interface.
  */
-export function instanceOfGnVerticalRange(value: object): value is GnVerticalRange {
-    return true;
+export function instanceOfGnVerticalRange(
+  value: object
+): value is GnVerticalRange {
+  return true;
 }
 
 export function GnVerticalRangeFromJSON(json: any): GnVerticalRange {
-    return GnVerticalRangeFromJSONTyped(json, false);
+  return GnVerticalRangeFromJSONTyped(json, false);
 }
 
-export function GnVerticalRangeFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnVerticalRange {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'gte': json['gte'] == null ? undefined : json['gte'],
-        'lte': json['lte'] == null ? undefined : json['lte'],
-        'unit': json['unit'] == null ? undefined : json['unit'],
-    };
+export function GnVerticalRangeFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnVerticalRange {
+  if (json == null) {
+    return json;
+  }
+  return {
+    gte: json['gte'] == null ? undefined : json['gte'],
+    lte: json['lte'] == null ? undefined : json['lte'],
+    unit: json['unit'] == null ? undefined : json['unit'],
+  };
 }
 
 export function GnVerticalRangeToJSON(value?: GnVerticalRange | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'gte': value['gte'],
-        'lte': value['lte'],
-        'unit': value['unit'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    gte: value['gte'],
+    lte: value['lte'],
+    unit: value['unit'],
+  };
 }
-

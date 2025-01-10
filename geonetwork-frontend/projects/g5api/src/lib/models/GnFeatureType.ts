@@ -15,93 +15,99 @@
 import { mapValues } from '../runtime';
 import type { GnAttributeTable } from './GnGnAttributeTable';
 import {
-    GnAttributeTableFromJSON,
-    GnAttributeTableFromJSONTyped,
-    GnAttributeTableToJSON,
+  GnAttributeTableFromJSON,
+  GnAttributeTableFromJSONTyped,
+  GnAttributeTableToJSON,
 } from './GnGnAttributeTable';
 
 /**
- * 
+ *
  * @export
  * @interface GnFeatureType
  */
 export interface GnFeatureType {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnFeatureType
-     */
-    typeName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnFeatureType
-     */
-    definition?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnFeatureType
-     */
-    code?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnFeatureType
-     */
-    isAbstract?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnFeatureType
-     */
-    aliases?: string;
-    /**
-     * 
-     * @type {Array<GnAttributeTable>}
-     * @memberof GnFeatureType
-     */
-    attributeTable?: Array<GnAttributeTable>;
+  /**
+   *
+   * @type {string}
+   * @memberof GnFeatureType
+   */
+  typeName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnFeatureType
+   */
+  definition?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnFeatureType
+   */
+  code?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnFeatureType
+   */
+  isAbstract?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnFeatureType
+   */
+  aliases?: string;
+  /**
+   *
+   * @type {Array<GnAttributeTable>}
+   * @memberof GnFeatureType
+   */
+  attributeTable?: Array<GnAttributeTable>;
 }
 
 /**
  * Check if a given object implements the GnFeatureType interface.
  */
 export function instanceOfGnFeatureType(value: object): value is GnFeatureType {
-    return true;
+  return true;
 }
 
 export function GnFeatureTypeFromJSON(json: any): GnFeatureType {
-    return GnFeatureTypeFromJSONTyped(json, false);
+  return GnFeatureTypeFromJSONTyped(json, false);
 }
 
-export function GnFeatureTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnFeatureType {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'typeName': json['typeName'] == null ? undefined : json['typeName'],
-        'definition': json['definition'] == null ? undefined : json['definition'],
-        'code': json['code'] == null ? undefined : json['code'],
-        'isAbstract': json['isAbstract'] == null ? undefined : json['isAbstract'],
-        'aliases': json['aliases'] == null ? undefined : json['aliases'],
-        'attributeTable': json['attributeTable'] == null ? undefined : ((json['attributeTable'] as Array<any>).map(GnAttributeTableFromJSON)),
-    };
+export function GnFeatureTypeFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnFeatureType {
+  if (json == null) {
+    return json;
+  }
+  return {
+    typeName: json['typeName'] == null ? undefined : json['typeName'],
+    definition: json['definition'] == null ? undefined : json['definition'],
+    code: json['code'] == null ? undefined : json['code'],
+    isAbstract: json['isAbstract'] == null ? undefined : json['isAbstract'],
+    aliases: json['aliases'] == null ? undefined : json['aliases'],
+    attributeTable:
+      json['attributeTable'] == null
+        ? undefined
+        : (json['attributeTable'] as Array<any>).map(GnAttributeTableFromJSON),
+  };
 }
 
 export function GnFeatureTypeToJSON(value?: GnFeatureType | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'typeName': value['typeName'],
-        'definition': value['definition'],
-        'code': value['code'],
-        'isAbstract': value['isAbstract'],
-        'aliases': value['aliases'],
-        'attributeTable': value['attributeTable'] == null ? undefined : ((value['attributeTable'] as Array<any>).map(GnAttributeTableToJSON)),
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    typeName: value['typeName'],
+    definition: value['definition'],
+    code: value['code'],
+    isAbstract: value['isAbstract'],
+    aliases: value['aliases'],
+    attributeTable:
+      value['attributeTable'] == null
+        ? undefined
+        : (value['attributeTable'] as Array<any>).map(GnAttributeTableToJSON),
+  };
 }
-

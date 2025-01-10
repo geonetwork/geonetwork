@@ -19,50 +19,56 @@ import { mapValues } from '../runtime';
  * @interface OgcApiRecordsFormatDto
  */
 export interface OgcApiRecordsFormatDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsFormatDto
-     */
-    name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsFormatDto
-     */
-    mediaType?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsFormatDto
+   */
+  name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsFormatDto
+   */
+  mediaType?: string;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsFormatDto interface.
  */
-export function instanceOfOgcApiRecordsFormatDto(value: object): value is OgcApiRecordsFormatDto {
-    return true;
+export function instanceOfOgcApiRecordsFormatDto(
+  value: object
+): value is OgcApiRecordsFormatDto {
+  return true;
 }
 
-export function OgcApiRecordsFormatDtoFromJSON(json: any): OgcApiRecordsFormatDto {
-    return OgcApiRecordsFormatDtoFromJSONTyped(json, false);
+export function OgcApiRecordsFormatDtoFromJSON(
+  json: any
+): OgcApiRecordsFormatDto {
+  return OgcApiRecordsFormatDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsFormatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsFormatDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'name': json['name'] == null ? undefined : json['name'],
-        'mediaType': json['mediaType'] == null ? undefined : json['mediaType'],
-    };
+export function OgcApiRecordsFormatDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OgcApiRecordsFormatDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json['name'] == null ? undefined : json['name'],
+    mediaType: json['mediaType'] == null ? undefined : json['mediaType'],
+  };
 }
 
-export function OgcApiRecordsFormatDtoToJSON(value?: OgcApiRecordsFormatDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'name': value['name'],
-        'mediaType': value['mediaType'],
-    };
+export function OgcApiRecordsFormatDtoToJSON(
+  value?: OgcApiRecordsFormatDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value['name'],
+    mediaType: value['mediaType'],
+  };
 }
-

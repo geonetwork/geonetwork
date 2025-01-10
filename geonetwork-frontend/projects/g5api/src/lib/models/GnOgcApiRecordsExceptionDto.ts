@@ -14,56 +14,62 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsExceptionDto
  */
 export interface GnOgcApiRecordsExceptionDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsExceptionDto
-     */
-    code: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsExceptionDto
-     */
-    description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsExceptionDto
+   */
+  code: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsExceptionDto
+   */
+  description?: string;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsExceptionDto interface.
  */
-export function instanceOfGnOgcApiRecordsExceptionDto(value: object): value is GnOgcApiRecordsExceptionDto {
-    if (!('code' in value) || value['code'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsExceptionDto(
+  value: object
+): value is GnOgcApiRecordsExceptionDto {
+  if (!('code' in value) || value['code'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsExceptionDtoFromJSON(json: any): GnOgcApiRecordsExceptionDto {
-    return GnOgcApiRecordsExceptionDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsExceptionDtoFromJSON(
+  json: any
+): GnOgcApiRecordsExceptionDto {
+  return GnOgcApiRecordsExceptionDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsExceptionDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsExceptionDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'code': json['code'],
-        'description': json['description'] == null ? undefined : json['description'],
-    };
+export function GnOgcApiRecordsExceptionDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsExceptionDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    code: json['code'],
+    description: json['description'] == null ? undefined : json['description'],
+  };
 }
 
-export function GnOgcApiRecordsExceptionDtoToJSON(value?: GnOgcApiRecordsExceptionDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'code': value['code'],
-        'description': value['description'],
-    };
+export function GnOgcApiRecordsExceptionDtoToJSON(
+  value?: GnOgcApiRecordsExceptionDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    code: value['code'],
+    description: value['description'],
+  };
 }
-

@@ -19,58 +19,64 @@ import { mapValues } from '../runtime';
  * @interface GnOgcApiRecordsContactDto
  */
 export interface GnOgcApiRecordsContactDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsContactDto
-     */
-    name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsContactDto
-     */
-    url?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsContactDto
-     */
-    email?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsContactDto
+   */
+  name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsContactDto
+   */
+  url?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsContactDto
+   */
+  email?: string;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsContactDto interface.
  */
-export function instanceOfGnOgcApiRecordsContactDto(value: object): value is GnOgcApiRecordsContactDto {
-    return true;
+export function instanceOfGnOgcApiRecordsContactDto(
+  value: object
+): value is GnOgcApiRecordsContactDto {
+  return true;
 }
 
-export function GnOgcApiRecordsContactDtoFromJSON(json: any): GnOgcApiRecordsContactDto {
-    return GnOgcApiRecordsContactDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsContactDtoFromJSON(
+  json: any
+): GnOgcApiRecordsContactDto {
+  return GnOgcApiRecordsContactDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsContactDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsContactDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'name': json['name'] == null ? undefined : json['name'],
-        'url': json['url'] == null ? undefined : json['url'],
-        'email': json['email'] == null ? undefined : json['email'],
-    };
+export function GnOgcApiRecordsContactDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsContactDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json['name'] == null ? undefined : json['name'],
+    url: json['url'] == null ? undefined : json['url'],
+    email: json['email'] == null ? undefined : json['email'],
+  };
 }
 
-export function GnOgcApiRecordsContactDtoToJSON(value?: GnOgcApiRecordsContactDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'name': value['name'],
-        'url': value['url'],
-        'email': value['email'],
-    };
+export function GnOgcApiRecordsContactDtoToJSON(
+  value?: GnOgcApiRecordsContactDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value['name'],
+    url: value['url'],
+    email: value['email'],
+  };
 }
-

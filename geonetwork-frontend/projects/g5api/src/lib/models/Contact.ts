@@ -15,133 +15,142 @@
 import { mapValues } from '../runtime';
 import type { PartyIdentifier } from './PartyIdentifier';
 import {
-    PartyIdentifierFromJSON,
-    PartyIdentifierFromJSONTyped,
-    PartyIdentifierToJSON,
+  PartyIdentifierFromJSON,
+  PartyIdentifierFromJSONTyped,
+  PartyIdentifierToJSON,
 } from './PartyIdentifier';
 
 /**
- * 
+ *
  * @export
  * @interface Contact
  */
 export interface Contact {
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    role?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    individual?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    email?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    logo?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    phone?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    address?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    website?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    position?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    nilReason?: string;
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof Contact
-     */
-    organisationObject?: { [key: string]: string; };
-    /**
-     * 
-     * @type {Array<PartyIdentifier>}
-     * @memberof Contact
-     */
-    identifiers?: Array<PartyIdentifier>;
+  /**
+   *
+   * @type {string}
+   * @memberof Contact
+   */
+  role?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Contact
+   */
+  individual?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Contact
+   */
+  email?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Contact
+   */
+  logo?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Contact
+   */
+  phone?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Contact
+   */
+  address?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Contact
+   */
+  website?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Contact
+   */
+  position?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Contact
+   */
+  nilReason?: string;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof Contact
+   */
+  organisationObject?: { [key: string]: string };
+  /**
+   *
+   * @type {Array<PartyIdentifier>}
+   * @memberof Contact
+   */
+  identifiers?: Array<PartyIdentifier>;
 }
 
 /**
  * Check if a given object implements the Contact interface.
  */
 export function instanceOfContact(value: object): value is Contact {
-    return true;
+  return true;
 }
 
 export function ContactFromJSON(json: any): Contact {
-    return ContactFromJSONTyped(json, false);
+  return ContactFromJSONTyped(json, false);
 }
 
-export function ContactFromJSONTyped(json: any, ignoreDiscriminator: boolean): Contact {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'role': json['role'] == null ? undefined : json['role'],
-        'individual': json['individual'] == null ? undefined : json['individual'],
-        'email': json['email'] == null ? undefined : json['email'],
-        'logo': json['logo'] == null ? undefined : json['logo'],
-        'phone': json['phone'] == null ? undefined : json['phone'],
-        'address': json['address'] == null ? undefined : json['address'],
-        'website': json['website'] == null ? undefined : json['website'],
-        'position': json['position'] == null ? undefined : json['position'],
-        'nilReason': json['nilReason'] == null ? undefined : json['nilReason'],
-        'organisationObject': json['organisationObject'] == null ? undefined : json['organisationObject'],
-        'identifiers': json['identifiers'] == null ? undefined : ((json['identifiers'] as Array<any>).map(PartyIdentifierFromJSON)),
-    };
+export function ContactFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): Contact {
+  if (json == null) {
+    return json;
+  }
+  return {
+    role: json['role'] == null ? undefined : json['role'],
+    individual: json['individual'] == null ? undefined : json['individual'],
+    email: json['email'] == null ? undefined : json['email'],
+    logo: json['logo'] == null ? undefined : json['logo'],
+    phone: json['phone'] == null ? undefined : json['phone'],
+    address: json['address'] == null ? undefined : json['address'],
+    website: json['website'] == null ? undefined : json['website'],
+    position: json['position'] == null ? undefined : json['position'],
+    nilReason: json['nilReason'] == null ? undefined : json['nilReason'],
+    organisationObject:
+      json['organisationObject'] == null
+        ? undefined
+        : json['organisationObject'],
+    identifiers:
+      json['identifiers'] == null
+        ? undefined
+        : (json['identifiers'] as Array<any>).map(PartyIdentifierFromJSON),
+  };
 }
 
 export function ContactToJSON(value?: Contact | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'role': value['role'],
-        'individual': value['individual'],
-        'email': value['email'],
-        'logo': value['logo'],
-        'phone': value['phone'],
-        'address': value['address'],
-        'website': value['website'],
-        'position': value['position'],
-        'nilReason': value['nilReason'],
-        'organisationObject': value['organisationObject'],
-        'identifiers': value['identifiers'] == null ? undefined : ((value['identifiers'] as Array<any>).map(PartyIdentifierToJSON)),
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    role: value['role'],
+    individual: value['individual'],
+    email: value['email'],
+    logo: value['logo'],
+    phone: value['phone'],
+    address: value['address'],
+    website: value['website'],
+    position: value['position'],
+    nilReason: value['nilReason'],
+    organisationObject: value['organisationObject'],
+    identifiers:
+      value['identifiers'] == null
+        ? undefined
+        : (value['identifiers'] as Array<any>).map(PartyIdentifierToJSON),
+  };
 }
-

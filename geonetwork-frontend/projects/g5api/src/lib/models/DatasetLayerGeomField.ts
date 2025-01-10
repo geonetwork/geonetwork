@@ -14,87 +14,94 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface DatasetLayerGeomField
  */
 export interface DatasetLayerGeomField {
-    /**
-     * 
-     * @type {string}
-     * @memberof DatasetLayerGeomField
-     */
-    name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DatasetLayerGeomField
-     */
-    type?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DatasetLayerGeomField
-     */
-    nullable?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DatasetLayerGeomField
-     */
-    defaultValue?: string;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof DatasetLayerGeomField
-     */
-    extent?: Array<number>;
-    /**
-     * 
-     * @type {string}
-     * @memberof DatasetLayerGeomField
-     */
-    crs?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DatasetLayerGeomField
+   */
+  name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DatasetLayerGeomField
+   */
+  type?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DatasetLayerGeomField
+   */
+  nullable?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof DatasetLayerGeomField
+   */
+  defaultValue?: string;
+  /**
+   *
+   * @type {Array<number>}
+   * @memberof DatasetLayerGeomField
+   */
+  extent?: Array<number>;
+  /**
+   *
+   * @type {string}
+   * @memberof DatasetLayerGeomField
+   */
+  crs?: string;
 }
 
 /**
  * Check if a given object implements the DatasetLayerGeomField interface.
  */
-export function instanceOfDatasetLayerGeomField(value: object): value is DatasetLayerGeomField {
-    return true;
+export function instanceOfDatasetLayerGeomField(
+  value: object
+): value is DatasetLayerGeomField {
+  return true;
 }
 
-export function DatasetLayerGeomFieldFromJSON(json: any): DatasetLayerGeomField {
-    return DatasetLayerGeomFieldFromJSONTyped(json, false);
+export function DatasetLayerGeomFieldFromJSON(
+  json: any
+): DatasetLayerGeomField {
+  return DatasetLayerGeomFieldFromJSONTyped(json, false);
 }
 
-export function DatasetLayerGeomFieldFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetLayerGeomField {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'name': json['name'] == null ? undefined : json['name'],
-        'type': json['type'] == null ? undefined : json['type'],
-        'nullable': json['nullable'] == null ? undefined : json['nullable'],
-        'defaultValue': json['defaultValue'] == null ? undefined : json['defaultValue'],
-        'extent': json['extent'] == null ? undefined : json['extent'],
-        'crs': json['crs'] == null ? undefined : json['crs'],
-    };
+export function DatasetLayerGeomFieldFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): DatasetLayerGeomField {
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json['name'] == null ? undefined : json['name'],
+    type: json['type'] == null ? undefined : json['type'],
+    nullable: json['nullable'] == null ? undefined : json['nullable'],
+    defaultValue:
+      json['defaultValue'] == null ? undefined : json['defaultValue'],
+    extent: json['extent'] == null ? undefined : json['extent'],
+    crs: json['crs'] == null ? undefined : json['crs'],
+  };
 }
 
-export function DatasetLayerGeomFieldToJSON(value?: DatasetLayerGeomField | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'name': value['name'],
-        'type': value['type'],
-        'nullable': value['nullable'],
-        'defaultValue': value['defaultValue'],
-        'extent': value['extent'],
-        'crs': value['crs'],
-    };
+export function DatasetLayerGeomFieldToJSON(
+  value?: DatasetLayerGeomField | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value['name'],
+    type: value['type'],
+    nullable: value['nullable'],
+    defaultValue: value['defaultValue'],
+    extent: value['extent'],
+    crs: value['crs'],
+  };
 }
-

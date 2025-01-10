@@ -14,55 +14,58 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnProcessReport
  */
 export interface GnProcessReport {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnProcessReport
-     */
-    status?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnProcessReport
-     */
-    errorMessage?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnProcessReport
+   */
+  status?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnProcessReport
+   */
+  errorMessage?: string;
 }
 
 /**
  * Check if a given object implements the GnProcessReport interface.
  */
-export function instanceOfGnProcessReport(value: object): value is GnProcessReport {
-    return true;
+export function instanceOfGnProcessReport(
+  value: object
+): value is GnProcessReport {
+  return true;
 }
 
 export function GnProcessReportFromJSON(json: any): GnProcessReport {
-    return GnProcessReportFromJSONTyped(json, false);
+  return GnProcessReportFromJSONTyped(json, false);
 }
 
-export function GnProcessReportFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnProcessReport {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'status': json['status'] == null ? undefined : json['status'],
-        'errorMessage': json['errorMessage'] == null ? undefined : json['errorMessage'],
-    };
+export function GnProcessReportFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnProcessReport {
+  if (json == null) {
+    return json;
+  }
+  return {
+    status: json['status'] == null ? undefined : json['status'],
+    errorMessage:
+      json['errorMessage'] == null ? undefined : json['errorMessage'],
+  };
 }
 
 export function GnProcessReportToJSON(value?: GnProcessReport | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'status': value['status'],
-        'errorMessage': value['errorMessage'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    status: value['status'],
+    errorMessage: value['errorMessage'],
+  };
 }
-

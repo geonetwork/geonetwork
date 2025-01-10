@@ -12,47 +12,48 @@
  * Do not edit the class manually.
  */
 
-
 /**
- * 
+ *
  * @export
  */
 export const GnRelatedItemType = {
-    Children: 'children',
-    Parent: 'parent',
-    BrothersAndSisters: 'brothersAndSisters',
-    Siblings: 'siblings',
-    Associated: 'associated',
-    Services: 'services',
-    Datasets: 'datasets',
-    Fcats: 'fcats',
-    Hasfeaturecats: 'hasfeaturecats',
-    Sources: 'sources',
-    Hassources: 'hassources'
+  Children: 'children',
+  Parent: 'parent',
+  BrothersAndSisters: 'brothersAndSisters',
+  Siblings: 'siblings',
+  Associated: 'associated',
+  Services: 'services',
+  Datasets: 'datasets',
+  Fcats: 'fcats',
+  Hasfeaturecats: 'hasfeaturecats',
+  Sources: 'sources',
+  Hassources: 'hassources',
 } as const;
-export type GnRelatedItemType = typeof GnRelatedItemType[keyof typeof GnRelatedItemType];
-
+export type GnRelatedItemType =
+  (typeof GnRelatedItemType)[keyof typeof GnRelatedItemType];
 
 export function instanceOfGnRelatedItemType(value: any): boolean {
-    for (const key in GnRelatedItemType) {
-        if (Object.prototype.hasOwnProperty.call(GnRelatedItemType, key)) {
-            if (GnRelatedItemType[key as keyof typeof GnRelatedItemType] === value) {
-                return true;
-            }
-        }
+  for (const key in GnRelatedItemType) {
+    if (Object.prototype.hasOwnProperty.call(GnRelatedItemType, key)) {
+      if (GnRelatedItemType[key as keyof typeof GnRelatedItemType] === value) {
+        return true;
+      }
     }
-    return false;
+  }
+  return false;
 }
 
 export function GnRelatedItemTypeFromJSON(json: any): GnRelatedItemType {
-    return GnRelatedItemTypeFromJSONTyped(json, false);
+  return GnRelatedItemTypeFromJSONTyped(json, false);
 }
 
-export function GnRelatedItemTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnRelatedItemType {
-    return json as GnRelatedItemType;
+export function GnRelatedItemTypeFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnRelatedItemType {
+  return json as GnRelatedItemType;
 }
 
 export function GnRelatedItemTypeToJSON(value?: GnRelatedItemType | null): any {
-    return value as any;
+  return value as any;
 }
-

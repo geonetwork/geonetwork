@@ -14,64 +14,70 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsServerVariableDto
  */
 export interface GnOgcApiRecordsServerVariableDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsServerVariableDto
-     */
-    description?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsServerVariableDto
-     */
-    _default: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GnOgcApiRecordsServerVariableDto
-     */
-    _enum?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsServerVariableDto
+   */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsServerVariableDto
+   */
+  _default: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof GnOgcApiRecordsServerVariableDto
+   */
+  _enum?: Array<string>;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsServerVariableDto interface.
  */
-export function instanceOfGnOgcApiRecordsServerVariableDto(value: object): value is GnOgcApiRecordsServerVariableDto {
-    if (!('_default' in value) || value['_default'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsServerVariableDto(
+  value: object
+): value is GnOgcApiRecordsServerVariableDto {
+  if (!('_default' in value) || value['_default'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsServerVariableDtoFromJSON(json: any): GnOgcApiRecordsServerVariableDto {
-    return GnOgcApiRecordsServerVariableDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsServerVariableDtoFromJSON(
+  json: any
+): GnOgcApiRecordsServerVariableDto {
+  return GnOgcApiRecordsServerVariableDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsServerVariableDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsServerVariableDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'description': json['description'] == null ? undefined : json['description'],
-        '_default': json['default'],
-        '_enum': json['enum'] == null ? undefined : json['enum'],
-    };
+export function GnOgcApiRecordsServerVariableDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsServerVariableDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    description: json['description'] == null ? undefined : json['description'],
+    _default: json['default'],
+    _enum: json['enum'] == null ? undefined : json['enum'],
+  };
 }
 
-export function GnOgcApiRecordsServerVariableDtoToJSON(value?: GnOgcApiRecordsServerVariableDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'description': value['description'],
-        'default': value['_default'],
-        'enum': value['_enum'],
-    };
+export function GnOgcApiRecordsServerVariableDtoToJSON(
+  value?: GnOgcApiRecordsServerVariableDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    description: value['description'],
+    default: value['_default'],
+    enum: value['_enum'],
+  };
 }
-

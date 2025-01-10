@@ -14,87 +14,87 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnMeasure
  */
 export interface GnMeasure {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnMeasure
-     */
-    name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnMeasure
-     */
-    description?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnMeasure
-     */
-    date?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnMeasure
-     */
-    value?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnMeasure
-     */
-    type?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnMeasure
-     */
-    unit?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnMeasure
+   */
+  name?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnMeasure
+   */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnMeasure
+   */
+  date?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnMeasure
+   */
+  value?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnMeasure
+   */
+  type?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnMeasure
+   */
+  unit?: string;
 }
 
 /**
  * Check if a given object implements the GnMeasure interface.
  */
 export function instanceOfGnMeasure(value: object): value is GnMeasure {
-    return true;
+  return true;
 }
 
 export function GnMeasureFromJSON(json: any): GnMeasure {
-    return GnMeasureFromJSONTyped(json, false);
+  return GnMeasureFromJSONTyped(json, false);
 }
 
-export function GnMeasureFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnMeasure {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'name': json['name'] == null ? undefined : json['name'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'date': json['date'] == null ? undefined : json['date'],
-        'value': json['value'] == null ? undefined : json['value'],
-        'type': json['type'] == null ? undefined : json['type'],
-        'unit': json['unit'] == null ? undefined : json['unit'],
-    };
+export function GnMeasureFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnMeasure {
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json['name'] == null ? undefined : json['name'],
+    description: json['description'] == null ? undefined : json['description'],
+    date: json['date'] == null ? undefined : json['date'],
+    value: json['value'] == null ? undefined : json['value'],
+    type: json['type'] == null ? undefined : json['type'],
+    unit: json['unit'] == null ? undefined : json['unit'],
+  };
 }
 
 export function GnMeasureToJSON(value?: GnMeasure | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'name': value['name'],
-        'description': value['description'],
-        'date': value['date'],
-        'value': value['value'],
-        'type': value['type'],
-        'unit': value['unit'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value['name'],
+    description: value['description'],
+    date: value['date'],
+    value: value['value'],
+    type: value['type'],
+    unit: value['unit'],
+  };
 }
-

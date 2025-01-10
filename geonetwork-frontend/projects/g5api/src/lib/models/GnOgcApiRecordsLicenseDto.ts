@@ -14,56 +14,62 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsLicenseDto
  */
 export interface GnOgcApiRecordsLicenseDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsLicenseDto
-     */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsLicenseDto
-     */
-    url?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsLicenseDto
+   */
+  name: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsLicenseDto
+   */
+  url?: string;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsLicenseDto interface.
  */
-export function instanceOfGnOgcApiRecordsLicenseDto(value: object): value is GnOgcApiRecordsLicenseDto {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsLicenseDto(
+  value: object
+): value is GnOgcApiRecordsLicenseDto {
+  if (!('name' in value) || value['name'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsLicenseDtoFromJSON(json: any): GnOgcApiRecordsLicenseDto {
-    return GnOgcApiRecordsLicenseDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsLicenseDtoFromJSON(
+  json: any
+): GnOgcApiRecordsLicenseDto {
+  return GnOgcApiRecordsLicenseDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsLicenseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsLicenseDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'name': json['name'],
-        'url': json['url'] == null ? undefined : json['url'],
-    };
+export function GnOgcApiRecordsLicenseDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsLicenseDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json['name'],
+    url: json['url'] == null ? undefined : json['url'],
+  };
 }
 
-export function GnOgcApiRecordsLicenseDtoToJSON(value?: GnOgcApiRecordsLicenseDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'name': value['name'],
-        'url': value['url'],
-    };
+export function GnOgcApiRecordsLicenseDtoToJSON(
+  value?: GnOgcApiRecordsLicenseDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value['name'],
+    url: value['url'],
+  };
 }
-

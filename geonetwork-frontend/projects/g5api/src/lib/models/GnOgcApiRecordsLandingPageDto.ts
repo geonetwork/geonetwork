@@ -15,84 +15,100 @@
 import { mapValues } from '../runtime';
 import type { GnOgcApiRecordsLinkDto } from './GnGnOgcApiRecordsLinkDto';
 import {
-    GnOgcApiRecordsLinkDtoFromJSON,
-    GnOgcApiRecordsLinkDtoFromJSONTyped,
-    GnOgcApiRecordsLinkDtoToJSON,
+  GnOgcApiRecordsLinkDtoFromJSON,
+  GnOgcApiRecordsLinkDtoFromJSONTyped,
+  GnOgcApiRecordsLinkDtoToJSON,
 } from './GnGnOgcApiRecordsLinkDto';
 import type { GnOgcApiRecordsLinkTemplateDto } from './GnGnOgcApiRecordsLinkTemplateDto';
 import {
-    GnOgcApiRecordsLinkTemplateDtoFromJSON,
-    GnOgcApiRecordsLinkTemplateDtoFromJSONTyped,
-    GnOgcApiRecordsLinkTemplateDtoToJSON,
+  GnOgcApiRecordsLinkTemplateDtoFromJSON,
+  GnOgcApiRecordsLinkTemplateDtoFromJSONTyped,
+  GnOgcApiRecordsLinkTemplateDtoToJSON,
 } from './GnGnOgcApiRecordsLinkTemplateDto';
 
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsLandingPageDto
  */
 export interface GnOgcApiRecordsLandingPageDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsLandingPageDto
-     */
-    title?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsLandingPageDto
-     */
-    description?: string;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsLinkDto>}
-     * @memberof GnOgcApiRecordsLandingPageDto
-     */
-    links: Array<GnOgcApiRecordsLinkDto>;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsLinkTemplateDto>}
-     * @memberof GnOgcApiRecordsLandingPageDto
-     */
-    linkTemplates?: Array<GnOgcApiRecordsLinkTemplateDto>;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsLandingPageDto
+   */
+  title?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsLandingPageDto
+   */
+  description?: string;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsLinkDto>}
+   * @memberof GnOgcApiRecordsLandingPageDto
+   */
+  links: Array<GnOgcApiRecordsLinkDto>;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsLinkTemplateDto>}
+   * @memberof GnOgcApiRecordsLandingPageDto
+   */
+  linkTemplates?: Array<GnOgcApiRecordsLinkTemplateDto>;
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsLandingPageDto interface.
  */
-export function instanceOfGnOgcApiRecordsLandingPageDto(value: object): value is GnOgcApiRecordsLandingPageDto {
-    if (!('links' in value) || value['links'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsLandingPageDto(
+  value: object
+): value is GnOgcApiRecordsLandingPageDto {
+  if (!('links' in value) || value['links'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsLandingPageDtoFromJSON(json: any): GnOgcApiRecordsLandingPageDto {
-    return GnOgcApiRecordsLandingPageDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsLandingPageDtoFromJSON(
+  json: any
+): GnOgcApiRecordsLandingPageDto {
+  return GnOgcApiRecordsLandingPageDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsLandingPageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsLandingPageDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'title': json['title'] == null ? undefined : json['title'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'links': ((json['links'] as Array<any>).map(GnOgcApiRecordsLinkDtoFromJSON)),
-        'linkTemplates': json['linkTemplates'] == null ? undefined : ((json['linkTemplates'] as Array<any>).map(GnOgcApiRecordsLinkTemplateDtoFromJSON)),
-    };
+export function GnOgcApiRecordsLandingPageDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsLandingPageDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    title: json['title'] == null ? undefined : json['title'],
+    description: json['description'] == null ? undefined : json['description'],
+    links: (json['links'] as Array<any>).map(GnOgcApiRecordsLinkDtoFromJSON),
+    linkTemplates:
+      json['linkTemplates'] == null
+        ? undefined
+        : (json['linkTemplates'] as Array<any>).map(
+            GnOgcApiRecordsLinkTemplateDtoFromJSON
+          ),
+  };
 }
 
-export function GnOgcApiRecordsLandingPageDtoToJSON(value?: GnOgcApiRecordsLandingPageDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'title': value['title'],
-        'description': value['description'],
-        'links': ((value['links'] as Array<any>).map(GnOgcApiRecordsLinkDtoToJSON)),
-        'linkTemplates': value['linkTemplates'] == null ? undefined : ((value['linkTemplates'] as Array<any>).map(GnOgcApiRecordsLinkTemplateDtoToJSON)),
-    };
+export function GnOgcApiRecordsLandingPageDtoToJSON(
+  value?: GnOgcApiRecordsLandingPageDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    title: value['title'],
+    description: value['description'],
+    links: (value['links'] as Array<any>).map(GnOgcApiRecordsLinkDtoToJSON),
+    linkTemplates:
+      value['linkTemplates'] == null
+        ? undefined
+        : (value['linkTemplates'] as Array<any>).map(
+            GnOgcApiRecordsLinkTemplateDtoToJSON
+          ),
+  };
 }
-

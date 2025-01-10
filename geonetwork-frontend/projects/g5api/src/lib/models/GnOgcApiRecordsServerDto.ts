@@ -15,70 +15,85 @@
 import { mapValues } from '../runtime';
 import type { GnOgcApiRecordsServerVariableDto } from './GnGnOgcApiRecordsServerVariableDto';
 import {
-    GnOgcApiRecordsServerVariableDtoFromJSON,
-    GnOgcApiRecordsServerVariableDtoFromJSONTyped,
-    GnOgcApiRecordsServerVariableDtoToJSON,
+  GnOgcApiRecordsServerVariableDtoFromJSON,
+  GnOgcApiRecordsServerVariableDtoFromJSONTyped,
+  GnOgcApiRecordsServerVariableDtoToJSON,
 } from './GnGnOgcApiRecordsServerVariableDto';
 
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsServerDto
  */
 export interface GnOgcApiRecordsServerDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsServerDto
-     */
-    url: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsServerDto
-     */
-    description?: string;
-    /**
-     * 
-     * @type {{ [key: string]: GnOgcApiRecordsServerVariableDto; }}
-     * @memberof GnOgcApiRecordsServerDto
-     */
-    variables?: { [key: string]: GnOgcApiRecordsServerVariableDto; };
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsServerDto
+   */
+  url: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsServerDto
+   */
+  description?: string;
+  /**
+   *
+   * @type {{ [key: string]: GnOgcApiRecordsServerVariableDto; }}
+   * @memberof GnOgcApiRecordsServerDto
+   */
+  variables?: { [key: string]: GnOgcApiRecordsServerVariableDto };
 }
 
 /**
  * Check if a given object implements the GnOgcApiRecordsServerDto interface.
  */
-export function instanceOfGnOgcApiRecordsServerDto(value: object): value is GnOgcApiRecordsServerDto {
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsServerDto(
+  value: object
+): value is GnOgcApiRecordsServerDto {
+  if (!('url' in value) || value['url'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsServerDtoFromJSON(json: any): GnOgcApiRecordsServerDto {
-    return GnOgcApiRecordsServerDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsServerDtoFromJSON(
+  json: any
+): GnOgcApiRecordsServerDto {
+  return GnOgcApiRecordsServerDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsServerDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsServerDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'url': json['url'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'variables': json['variables'] == null ? undefined : (mapValues(json['variables'], GnOgcApiRecordsServerVariableDtoFromJSON)),
-    };
+export function GnOgcApiRecordsServerDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsServerDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    url: json['url'],
+    description: json['description'] == null ? undefined : json['description'],
+    variables:
+      json['variables'] == null
+        ? undefined
+        : mapValues(
+            json['variables'],
+            GnOgcApiRecordsServerVariableDtoFromJSON
+          ),
+  };
 }
 
-export function GnOgcApiRecordsServerDtoToJSON(value?: GnOgcApiRecordsServerDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'url': value['url'],
-        'description': value['description'],
-        'variables': value['variables'] == null ? undefined : (mapValues(value['variables'], GnOgcApiRecordsServerVariableDtoToJSON)),
-    };
+export function GnOgcApiRecordsServerDtoToJSON(
+  value?: GnOgcApiRecordsServerDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    url: value['url'],
+    description: value['description'],
+    variables:
+      value['variables'] == null
+        ? undefined
+        : mapValues(value['variables'], GnOgcApiRecordsServerVariableDtoToJSON),
+  };
 }
-

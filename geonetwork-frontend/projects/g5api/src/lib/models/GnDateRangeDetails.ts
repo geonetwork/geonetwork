@@ -15,61 +15,71 @@
 import { mapValues } from '../runtime';
 import type { GnDateRangeDetailsInfo } from './GnGnDateRangeDetailsInfo';
 import {
-    GnDateRangeDetailsInfoFromJSON,
-    GnDateRangeDetailsInfoFromJSONTyped,
-    GnDateRangeDetailsInfoToJSON,
+  GnDateRangeDetailsInfoFromJSON,
+  GnDateRangeDetailsInfoFromJSONTyped,
+  GnDateRangeDetailsInfoToJSON,
 } from './GnGnDateRangeDetailsInfo';
 
 /**
- * 
+ *
  * @export
  * @interface GnDateRangeDetails
  */
 export interface GnDateRangeDetails {
-    /**
-     * 
-     * @type {GnDateRangeDetailsInfo}
-     * @memberof GnDateRangeDetails
-     */
-    start?: GnDateRangeDetailsInfo;
-    /**
-     * 
-     * @type {GnDateRangeDetailsInfo}
-     * @memberof GnDateRangeDetails
-     */
-    end?: GnDateRangeDetailsInfo;
+  /**
+   *
+   * @type {GnDateRangeDetailsInfo}
+   * @memberof GnDateRangeDetails
+   */
+  start?: GnDateRangeDetailsInfo;
+  /**
+   *
+   * @type {GnDateRangeDetailsInfo}
+   * @memberof GnDateRangeDetails
+   */
+  end?: GnDateRangeDetailsInfo;
 }
 
 /**
  * Check if a given object implements the GnDateRangeDetails interface.
  */
-export function instanceOfGnDateRangeDetails(value: object): value is GnDateRangeDetails {
-    return true;
+export function instanceOfGnDateRangeDetails(
+  value: object
+): value is GnDateRangeDetails {
+  return true;
 }
 
 export function GnDateRangeDetailsFromJSON(json: any): GnDateRangeDetails {
-    return GnDateRangeDetailsFromJSONTyped(json, false);
+  return GnDateRangeDetailsFromJSONTyped(json, false);
 }
 
-export function GnDateRangeDetailsFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnDateRangeDetails {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'start': json['start'] == null ? undefined : GnDateRangeDetailsInfoFromJSON(json['start']),
-        'end': json['end'] == null ? undefined : GnDateRangeDetailsInfoFromJSON(json['end']),
-    };
+export function GnDateRangeDetailsFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnDateRangeDetails {
+  if (json == null) {
+    return json;
+  }
+  return {
+    start:
+      json['start'] == null
+        ? undefined
+        : GnDateRangeDetailsInfoFromJSON(json['start']),
+    end:
+      json['end'] == null
+        ? undefined
+        : GnDateRangeDetailsInfoFromJSON(json['end']),
+  };
 }
 
-export function GnDateRangeDetailsToJSON(value?: GnDateRangeDetails | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'start': GnDateRangeDetailsInfoToJSON(value['start']),
-        'end': GnDateRangeDetailsInfoToJSON(value['end']),
-    };
+export function GnDateRangeDetailsToJSON(
+  value?: GnDateRangeDetails | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    start: GnDateRangeDetailsInfoToJSON(value['start']),
+    end: GnDateRangeDetailsInfoToJSON(value['end']),
+  };
 }
-

@@ -14,63 +14,67 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnIndexingErrorMsg
  */
 export interface GnIndexingErrorMsg {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnIndexingErrorMsg
-     */
-    string?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnIndexingErrorMsg
-     */
-    type?: string;
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof GnIndexingErrorMsg
-     */
-    values?: { [key: string]: string; };
+  /**
+   *
+   * @type {string}
+   * @memberof GnIndexingErrorMsg
+   */
+  string?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnIndexingErrorMsg
+   */
+  type?: string;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof GnIndexingErrorMsg
+   */
+  values?: { [key: string]: string };
 }
 
 /**
  * Check if a given object implements the GnIndexingErrorMsg interface.
  */
-export function instanceOfGnIndexingErrorMsg(value: object): value is GnIndexingErrorMsg {
-    return true;
+export function instanceOfGnIndexingErrorMsg(
+  value: object
+): value is GnIndexingErrorMsg {
+  return true;
 }
 
 export function GnIndexingErrorMsgFromJSON(json: any): GnIndexingErrorMsg {
-    return GnIndexingErrorMsgFromJSONTyped(json, false);
+  return GnIndexingErrorMsgFromJSONTyped(json, false);
 }
 
-export function GnIndexingErrorMsgFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnIndexingErrorMsg {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'string': json['string'] == null ? undefined : json['string'],
-        'type': json['type'] == null ? undefined : json['type'],
-        'values': json['values'] == null ? undefined : json['values'],
-    };
+export function GnIndexingErrorMsgFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnIndexingErrorMsg {
+  if (json == null) {
+    return json;
+  }
+  return {
+    string: json['string'] == null ? undefined : json['string'],
+    type: json['type'] == null ? undefined : json['type'],
+    values: json['values'] == null ? undefined : json['values'],
+  };
 }
 
-export function GnIndexingErrorMsgToJSON(value?: GnIndexingErrorMsg | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'string': value['string'],
-        'type': value['type'],
-        'values': value['values'],
-    };
+export function GnIndexingErrorMsgToJSON(
+  value?: GnIndexingErrorMsg | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    string: value['string'],
+    type: value['type'],
+    values: value['values'],
+  };
 }
-

@@ -14,75 +14,82 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface MetadataResourceExternalManagementProperties
  */
 export interface MetadataResourceExternalManagementProperties {
-    /**
-     * 
-     * @type {string}
-     * @memberof MetadataResourceExternalManagementProperties
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MetadataResourceExternalManagementProperties
-     */
-    url?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MetadataResourceExternalManagementProperties
-     */
-    validationStatus?: MetadataResourceExternalManagementPropertiesValidationStatusEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof MetadataResourceExternalManagementProperties
+   */
+  id?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof MetadataResourceExternalManagementProperties
+   */
+  url?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof MetadataResourceExternalManagementProperties
+   */
+  validationStatus?: MetadataResourceExternalManagementPropertiesValidationStatusEnum;
 }
-
 
 /**
  * @export
  */
-export const MetadataResourceExternalManagementPropertiesValidationStatusEnum = {
+export const MetadataResourceExternalManagementPropertiesValidationStatusEnum =
+  {
     Unknown: 'UNKNOWN',
     Valid: 'VALID',
-    Incomplete: 'INCOMPLETE'
-} as const;
-export type MetadataResourceExternalManagementPropertiesValidationStatusEnum = typeof MetadataResourceExternalManagementPropertiesValidationStatusEnum[keyof typeof MetadataResourceExternalManagementPropertiesValidationStatusEnum];
-
+    Incomplete: 'INCOMPLETE',
+  } as const;
+export type MetadataResourceExternalManagementPropertiesValidationStatusEnum =
+  (typeof MetadataResourceExternalManagementPropertiesValidationStatusEnum)[keyof typeof MetadataResourceExternalManagementPropertiesValidationStatusEnum];
 
 /**
  * Check if a given object implements the MetadataResourceExternalManagementProperties interface.
  */
-export function instanceOfMetadataResourceExternalManagementProperties(value: object): value is MetadataResourceExternalManagementProperties {
-    return true;
+export function instanceOfMetadataResourceExternalManagementProperties(
+  value: object
+): value is MetadataResourceExternalManagementProperties {
+  return true;
 }
 
-export function MetadataResourceExternalManagementPropertiesFromJSON(json: any): MetadataResourceExternalManagementProperties {
-    return MetadataResourceExternalManagementPropertiesFromJSONTyped(json, false);
+export function MetadataResourceExternalManagementPropertiesFromJSON(
+  json: any
+): MetadataResourceExternalManagementProperties {
+  return MetadataResourceExternalManagementPropertiesFromJSONTyped(json, false);
 }
 
-export function MetadataResourceExternalManagementPropertiesFromJSONTyped(json: any, ignoreDiscriminator: boolean): MetadataResourceExternalManagementProperties {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'id': json['id'] == null ? undefined : json['id'],
-        'url': json['url'] == null ? undefined : json['url'],
-        'validationStatus': json['validationStatus'] == null ? undefined : json['validationStatus'],
-    };
+export function MetadataResourceExternalManagementPropertiesFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): MetadataResourceExternalManagementProperties {
+  if (json == null) {
+    return json;
+  }
+  return {
+    id: json['id'] == null ? undefined : json['id'],
+    url: json['url'] == null ? undefined : json['url'],
+    validationStatus:
+      json['validationStatus'] == null ? undefined : json['validationStatus'],
+  };
 }
 
-export function MetadataResourceExternalManagementPropertiesToJSON(value?: MetadataResourceExternalManagementProperties | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'id': value['id'],
-        'url': value['url'],
-        'validationStatus': value['validationStatus'],
-    };
+export function MetadataResourceExternalManagementPropertiesToJSON(
+  value?: MetadataResourceExternalManagementProperties | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    id: value['id'],
+    url: value['url'],
+    validationStatus: value['validationStatus'],
+  };
 }
-

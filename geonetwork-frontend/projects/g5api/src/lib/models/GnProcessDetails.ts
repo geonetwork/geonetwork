@@ -14,55 +14,57 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnProcessDetails
  */
 export interface GnProcessDetails {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnProcessDetails
-     */
-    process?: string;
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof GnProcessDetails
-     */
-    parameters?: { [key: string]: string; };
+  /**
+   *
+   * @type {string}
+   * @memberof GnProcessDetails
+   */
+  process?: string;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof GnProcessDetails
+   */
+  parameters?: { [key: string]: string };
 }
 
 /**
  * Check if a given object implements the GnProcessDetails interface.
  */
-export function instanceOfGnProcessDetails(value: object): value is GnProcessDetails {
-    return true;
+export function instanceOfGnProcessDetails(
+  value: object
+): value is GnProcessDetails {
+  return true;
 }
 
 export function GnProcessDetailsFromJSON(json: any): GnProcessDetails {
-    return GnProcessDetailsFromJSONTyped(json, false);
+  return GnProcessDetailsFromJSONTyped(json, false);
 }
 
-export function GnProcessDetailsFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnProcessDetails {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'process': json['process'] == null ? undefined : json['process'],
-        'parameters': json['parameters'] == null ? undefined : json['parameters'],
-    };
+export function GnProcessDetailsFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnProcessDetails {
+  if (json == null) {
+    return json;
+  }
+  return {
+    process: json['process'] == null ? undefined : json['process'],
+    parameters: json['parameters'] == null ? undefined : json['parameters'],
+  };
 }
 
 export function GnProcessDetailsToJSON(value?: GnProcessDetails | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'process': value['process'],
-        'parameters': value['parameters'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    process: value['process'],
+    parameters: value['parameters'],
+  };
 }
-

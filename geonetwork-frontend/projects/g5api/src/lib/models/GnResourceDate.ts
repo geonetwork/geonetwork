@@ -14,55 +14,57 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnResourceDate
  */
 export interface GnResourceDate {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnResourceDate
-     */
-    type?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnResourceDate
-     */
-    date?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnResourceDate
+   */
+  type?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnResourceDate
+   */
+  date?: string;
 }
 
 /**
  * Check if a given object implements the GnResourceDate interface.
  */
-export function instanceOfGnResourceDate(value: object): value is GnResourceDate {
-    return true;
+export function instanceOfGnResourceDate(
+  value: object
+): value is GnResourceDate {
+  return true;
 }
 
 export function GnResourceDateFromJSON(json: any): GnResourceDate {
-    return GnResourceDateFromJSONTyped(json, false);
+  return GnResourceDateFromJSONTyped(json, false);
 }
 
-export function GnResourceDateFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnResourceDate {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'type': json['type'] == null ? undefined : json['type'],
-        'date': json['date'] == null ? undefined : json['date'],
-    };
+export function GnResourceDateFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnResourceDate {
+  if (json == null) {
+    return json;
+  }
+  return {
+    type: json['type'] == null ? undefined : json['type'],
+    date: json['date'] == null ? undefined : json['date'],
+  };
 }
 
 export function GnResourceDateToJSON(value?: GnResourceDate | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'type': value['type'],
-        'date': value['date'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    type: value['type'],
+    date: value['date'],
+  };
 }
-

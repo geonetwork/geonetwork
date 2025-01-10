@@ -14,79 +14,85 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnRasterCornerCoordinates
  */
 export interface GnRasterCornerCoordinates {
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof GnRasterCornerCoordinates
-     */
-    upperLeft?: Array<number>;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof GnRasterCornerCoordinates
-     */
-    upperRight?: Array<number>;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof GnRasterCornerCoordinates
-     */
-    lowerLeft?: Array<number>;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof GnRasterCornerCoordinates
-     */
-    lowerRight?: Array<number>;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof GnRasterCornerCoordinates
-     */
-    center?: Array<number>;
+  /**
+   *
+   * @type {Array<number>}
+   * @memberof GnRasterCornerCoordinates
+   */
+  upperLeft?: Array<number>;
+  /**
+   *
+   * @type {Array<number>}
+   * @memberof GnRasterCornerCoordinates
+   */
+  upperRight?: Array<number>;
+  /**
+   *
+   * @type {Array<number>}
+   * @memberof GnRasterCornerCoordinates
+   */
+  lowerLeft?: Array<number>;
+  /**
+   *
+   * @type {Array<number>}
+   * @memberof GnRasterCornerCoordinates
+   */
+  lowerRight?: Array<number>;
+  /**
+   *
+   * @type {Array<number>}
+   * @memberof GnRasterCornerCoordinates
+   */
+  center?: Array<number>;
 }
 
 /**
  * Check if a given object implements the GnRasterCornerCoordinates interface.
  */
-export function instanceOfGnRasterCornerCoordinates(value: object): value is GnRasterCornerCoordinates {
-    return true;
+export function instanceOfGnRasterCornerCoordinates(
+  value: object
+): value is GnRasterCornerCoordinates {
+  return true;
 }
 
-export function GnRasterCornerCoordinatesFromJSON(json: any): GnRasterCornerCoordinates {
-    return GnRasterCornerCoordinatesFromJSONTyped(json, false);
+export function GnRasterCornerCoordinatesFromJSON(
+  json: any
+): GnRasterCornerCoordinates {
+  return GnRasterCornerCoordinatesFromJSONTyped(json, false);
 }
 
-export function GnRasterCornerCoordinatesFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnRasterCornerCoordinates {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'upperLeft': json['upperLeft'] == null ? undefined : json['upperLeft'],
-        'upperRight': json['upperRight'] == null ? undefined : json['upperRight'],
-        'lowerLeft': json['lowerLeft'] == null ? undefined : json['lowerLeft'],
-        'lowerRight': json['lowerRight'] == null ? undefined : json['lowerRight'],
-        'center': json['center'] == null ? undefined : json['center'],
-    };
+export function GnRasterCornerCoordinatesFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnRasterCornerCoordinates {
+  if (json == null) {
+    return json;
+  }
+  return {
+    upperLeft: json['upperLeft'] == null ? undefined : json['upperLeft'],
+    upperRight: json['upperRight'] == null ? undefined : json['upperRight'],
+    lowerLeft: json['lowerLeft'] == null ? undefined : json['lowerLeft'],
+    lowerRight: json['lowerRight'] == null ? undefined : json['lowerRight'],
+    center: json['center'] == null ? undefined : json['center'],
+  };
 }
 
-export function GnRasterCornerCoordinatesToJSON(value?: GnRasterCornerCoordinates | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'upperLeft': value['upperLeft'],
-        'upperRight': value['upperRight'],
-        'lowerLeft': value['lowerLeft'],
-        'lowerRight': value['lowerRight'],
-        'center': value['center'],
-    };
+export function GnRasterCornerCoordinatesToJSON(
+  value?: GnRasterCornerCoordinates | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    upperLeft: value['upperLeft'],
+    upperRight: value['upperRight'],
+    lowerLeft: value['lowerLeft'],
+    lowerRight: value['lowerRight'],
+    center: value['center'],
+  };
 }
-

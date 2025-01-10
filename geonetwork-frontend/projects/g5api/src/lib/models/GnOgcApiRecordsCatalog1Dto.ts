@@ -15,304 +15,385 @@
 import { mapValues } from '../runtime';
 import type { GnExtent } from './GnGnExtent';
 import {
-    GnExtentFromJSON,
-    GnExtentFromJSONTyped,
-    GnExtentToJSON,
+  GnExtentFromJSON,
+  GnExtentFromJSONTyped,
+  GnExtentToJSON,
 } from './GnGnExtent';
 import type { GnOgcApiRecordsFormatDto } from './GnGnOgcApiRecordsFormatDto';
 import {
-    GnOgcApiRecordsFormatDtoFromJSON,
-    GnOgcApiRecordsFormatDtoFromJSONTyped,
-    GnOgcApiRecordsFormatDtoToJSON,
+  GnOgcApiRecordsFormatDtoFromJSON,
+  GnOgcApiRecordsFormatDtoFromJSONTyped,
+  GnOgcApiRecordsFormatDtoToJSON,
 } from './GnGnOgcApiRecordsFormatDto';
 import type { GnOgcApiRecordsRecordGeoJSONDto } from './GnGnOgcApiRecordsRecordGeoJSONDto';
 import {
-    GnOgcApiRecordsRecordGeoJSONDtoFromJSON,
-    GnOgcApiRecordsRecordGeoJSONDtoFromJSONTyped,
-    GnOgcApiRecordsRecordGeoJSONDtoToJSON,
+  GnOgcApiRecordsRecordGeoJSONDtoFromJSON,
+  GnOgcApiRecordsRecordGeoJSONDtoFromJSONTyped,
+  GnOgcApiRecordsRecordGeoJSONDtoToJSON,
 } from './GnGnOgcApiRecordsRecordGeoJSONDto';
 import type { GnOgcApiRecordsLinkBaseDto } from './GnGnOgcApiRecordsLinkBaseDto';
 import {
-    GnOgcApiRecordsLinkBaseDtoFromJSON,
-    GnOgcApiRecordsLinkBaseDtoFromJSONTyped,
-    GnOgcApiRecordsLinkBaseDtoToJSON,
+  GnOgcApiRecordsLinkBaseDtoFromJSON,
+  GnOgcApiRecordsLinkBaseDtoFromJSONTyped,
+  GnOgcApiRecordsLinkBaseDtoToJSON,
 } from './GnGnOgcApiRecordsLinkBaseDto';
 import type { GnOgcApiRecordsLicenseDto } from './GnGnOgcApiRecordsLicenseDto';
 import {
-    GnOgcApiRecordsLicenseDtoFromJSON,
-    GnOgcApiRecordsLicenseDtoFromJSONTyped,
-    GnOgcApiRecordsLicenseDtoToJSON,
+  GnOgcApiRecordsLicenseDtoFromJSON,
+  GnOgcApiRecordsLicenseDtoFromJSONTyped,
+  GnOgcApiRecordsLicenseDtoToJSON,
 } from './GnGnOgcApiRecordsLicenseDto';
 import type { GnOgcApiRecordsLinkTemplateDto } from './GnGnOgcApiRecordsLinkTemplateDto';
 import {
-    GnOgcApiRecordsLinkTemplateDtoFromJSON,
-    GnOgcApiRecordsLinkTemplateDtoFromJSONTyped,
-    GnOgcApiRecordsLinkTemplateDtoToJSON,
+  GnOgcApiRecordsLinkTemplateDtoFromJSON,
+  GnOgcApiRecordsLinkTemplateDtoFromJSONTyped,
+  GnOgcApiRecordsLinkTemplateDtoToJSON,
 } from './GnGnOgcApiRecordsLinkTemplateDto';
 import type { GnLanguage } from './GnGnLanguage';
 import {
-    GnLanguageFromJSON,
-    GnLanguageFromJSONTyped,
-    GnLanguageToJSON,
+  GnLanguageFromJSON,
+  GnLanguageFromJSONTyped,
+  GnLanguageToJSON,
 } from './GnGnLanguage';
 import type { GnOgcApiRecordsContactDto } from './GnGnOgcApiRecordsContactDto';
 import {
-    GnOgcApiRecordsContactDtoFromJSON,
-    GnOgcApiRecordsContactDtoFromJSONTyped,
-    GnOgcApiRecordsContactDtoToJSON,
+  GnOgcApiRecordsContactDtoFromJSON,
+  GnOgcApiRecordsContactDtoFromJSONTyped,
+  GnOgcApiRecordsContactDtoToJSON,
 } from './GnGnOgcApiRecordsContactDto';
 import type { GnOgcApiRecordsThemeDto } from './GnGnOgcApiRecordsThemeDto';
 import {
-    GnOgcApiRecordsThemeDtoFromJSON,
-    GnOgcApiRecordsThemeDtoFromJSONTyped,
-    GnOgcApiRecordsThemeDtoToJSON,
+  GnOgcApiRecordsThemeDtoFromJSON,
+  GnOgcApiRecordsThemeDtoFromJSONTyped,
+  GnOgcApiRecordsThemeDtoToJSON,
 } from './GnGnOgcApiRecordsThemeDto';
 import type { GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto } from './GnGnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto';
 import {
-    GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON,
-    GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped,
-    GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON,
+  GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON,
+  GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped,
+  GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON,
 } from './GnGnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto';
 
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsCatalog1Dto
  */
 export interface GnOgcApiRecordsCatalog1Dto {
-    /**
-     * The extensions/conformance classes used in this record.
-     * @type {Array<string>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    conformsTo?: Array<string>;
-    /**
-     * The date this record was created in the server.
-     * @type {Date}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    created?: Date;
-    /**
-     * The most recent date on which the record was changed.
-     * @type {Date}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    updated?: Date;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    type: GnOgcApiRecordsCatalog1DtoTypeEnum;
-    /**
-     * A human-readable name given to the resource.
-     * @type {string}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    title?: string;
-    /**
-     * A free-text account of the resource.
-     * @type {string}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    description?: string;
-    /**
-     * The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or classification codes.
-     * @type {Array<string>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    keywords?: Array<string>;
-    /**
-     * A knowledge organization system used to classify the resource.
-     * @type {Array<GnOgcApiRecordsThemeDto>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    themes?: Array<GnOgcApiRecordsThemeDto>;
-    /**
-     * 
-     * @type {GnLanguage}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    language?: GnLanguage;
-    /**
-     * This list of languages in which this record is available.
-     * @type {Array<GnLanguage>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    languages?: Array<GnLanguage>;
-    /**
-     * The list of languages in which the resource described by this record is available.
-     * @type {Array<GnLanguage>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    resourceLanguages?: Array<GnLanguage>;
-    /**
-     * An identifier for the resource assigned by an external (to the catalog) entity.
-     * @type {Array<GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    externalIds?: Array<GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto>;
-    /**
-     * A list of available distributions of the resource.
-     * @type {Array<GnOgcApiRecordsFormatDto>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    formats?: Array<GnOgcApiRecordsFormatDto>;
-    /**
-     * A list of contacts qualified by their role(s) in association to the record or the resource described by the record.
-     * @type {Array<GnOgcApiRecordsContactDto>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    contacts?: Array<GnOgcApiRecordsContactDto>;
-    /**
-     * 
-     * @type {GnOgcApiRecordsLicenseDto}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    license?: GnOgcApiRecordsLicenseDto;
-    /**
-     * A statement that concerns all rights not addressed by the license such as a copyright statement.
-     * @type {string}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    rights?: string;
-    /**
-     * The identifier of the catalog.
-     * @type {string}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    id: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    itemType?: object;
-    /**
-     * 
-     * @type {GnExtent}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    extent?: GnExtent;
-    /**
-     * The list of supported coordinate reference systems.
-     * @type {Array<string>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    crs?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    recordsArrayName?: string;
-    /**
-     * An array of records that are part of this catalog that are encoded in-line with the catalog.
-     * @type {Array<GnOgcApiRecordsRecordGeoJSONDto>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    records?: Array<GnOgcApiRecordsRecordGeoJSONDto>;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsLinkBaseDto>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    links: Array<GnOgcApiRecordsLinkBaseDto>;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsLinkTemplateDto>}
-     * @memberof GnOgcApiRecordsCatalog1Dto
-     */
-    linkTemplates?: Array<GnOgcApiRecordsLinkTemplateDto>;
+  /**
+   * The extensions/conformance classes used in this record.
+   * @type {Array<string>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  conformsTo?: Array<string>;
+  /**
+   * The date this record was created in the server.
+   * @type {Date}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  created?: Date;
+  /**
+   * The most recent date on which the record was changed.
+   * @type {Date}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  updated?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  type: GnOgcApiRecordsCatalog1DtoTypeEnum;
+  /**
+   * A human-readable name given to the resource.
+   * @type {string}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  title?: string;
+  /**
+   * A free-text account of the resource.
+   * @type {string}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  description?: string;
+  /**
+   * The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or classification codes.
+   * @type {Array<string>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  keywords?: Array<string>;
+  /**
+   * A knowledge organization system used to classify the resource.
+   * @type {Array<GnOgcApiRecordsThemeDto>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  themes?: Array<GnOgcApiRecordsThemeDto>;
+  /**
+   *
+   * @type {GnLanguage}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  language?: GnLanguage;
+  /**
+   * This list of languages in which this record is available.
+   * @type {Array<GnLanguage>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  languages?: Array<GnLanguage>;
+  /**
+   * The list of languages in which the resource described by this record is available.
+   * @type {Array<GnLanguage>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  resourceLanguages?: Array<GnLanguage>;
+  /**
+   * An identifier for the resource assigned by an external (to the catalog) entity.
+   * @type {Array<GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  externalIds?: Array<GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto>;
+  /**
+   * A list of available distributions of the resource.
+   * @type {Array<GnOgcApiRecordsFormatDto>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  formats?: Array<GnOgcApiRecordsFormatDto>;
+  /**
+   * A list of contacts qualified by their role(s) in association to the record or the resource described by the record.
+   * @type {Array<GnOgcApiRecordsContactDto>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  contacts?: Array<GnOgcApiRecordsContactDto>;
+  /**
+   *
+   * @type {GnOgcApiRecordsLicenseDto}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  license?: GnOgcApiRecordsLicenseDto;
+  /**
+   * A statement that concerns all rights not addressed by the license such as a copyright statement.
+   * @type {string}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  rights?: string;
+  /**
+   * The identifier of the catalog.
+   * @type {string}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  id: string;
+  /**
+   *
+   * @type {object}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  itemType?: object;
+  /**
+   *
+   * @type {GnExtent}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  extent?: GnExtent;
+  /**
+   * The list of supported coordinate reference systems.
+   * @type {Array<string>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  crs?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  recordsArrayName?: string;
+  /**
+   * An array of records that are part of this catalog that are encoded in-line with the catalog.
+   * @type {Array<GnOgcApiRecordsRecordGeoJSONDto>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  records?: Array<GnOgcApiRecordsRecordGeoJSONDto>;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsLinkBaseDto>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  links: Array<GnOgcApiRecordsLinkBaseDto>;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsLinkTemplateDto>}
+   * @memberof GnOgcApiRecordsCatalog1Dto
+   */
+  linkTemplates?: Array<GnOgcApiRecordsLinkTemplateDto>;
 }
-
 
 /**
  * @export
  */
 export const GnOgcApiRecordsCatalog1DtoTypeEnum = {
-    Catalog: 'Catalog'
+  Catalog: 'Catalog',
 } as const;
-export type GnOgcApiRecordsCatalog1DtoTypeEnum = typeof GnOgcApiRecordsCatalog1DtoTypeEnum[keyof typeof GnOgcApiRecordsCatalog1DtoTypeEnum];
-
+export type GnOgcApiRecordsCatalog1DtoTypeEnum =
+  (typeof GnOgcApiRecordsCatalog1DtoTypeEnum)[keyof typeof GnOgcApiRecordsCatalog1DtoTypeEnum];
 
 /**
  * Check if a given object implements the GnOgcApiRecordsCatalog1Dto interface.
  */
-export function instanceOfGnOgcApiRecordsCatalog1Dto(value: object): value is GnOgcApiRecordsCatalog1Dto {
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('links' in value) || value['links'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsCatalog1Dto(
+  value: object
+): value is GnOgcApiRecordsCatalog1Dto {
+  if (!('type' in value) || value['type'] === undefined) return false;
+  if (!('id' in value) || value['id'] === undefined) return false;
+  if (!('links' in value) || value['links'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsCatalog1DtoFromJSON(json: any): GnOgcApiRecordsCatalog1Dto {
-    return GnOgcApiRecordsCatalog1DtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsCatalog1DtoFromJSON(
+  json: any
+): GnOgcApiRecordsCatalog1Dto {
+  return GnOgcApiRecordsCatalog1DtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsCatalog1DtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsCatalog1Dto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'conformsTo': json['conformsTo'] == null ? undefined : json['conformsTo'],
-        'created': json['created'] == null ? undefined : (new Date(json['created'])),
-        'updated': json['updated'] == null ? undefined : (new Date(json['updated'])),
-        'type': json['type'],
-        'title': json['title'] == null ? undefined : json['title'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'keywords': json['keywords'] == null ? undefined : json['keywords'],
-        'themes': json['themes'] == null ? undefined : ((json['themes'] as Array<any>).map(GnOgcApiRecordsThemeDtoFromJSON)),
-        'language': json['language'] == null ? undefined : GnLanguageFromJSON(json['language']),
-        'languages': json['languages'] == null ? undefined : ((json['languages'] as Array<any>).map(GnLanguageFromJSON)),
-        'resourceLanguages': json['resourceLanguages'] == null ? undefined : ((json['resourceLanguages'] as Array<any>).map(GnLanguageFromJSON)),
-        'externalIds': json['externalIds'] == null ? undefined : ((json['externalIds'] as Array<any>).map(GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON)),
-        'formats': json['formats'] == null ? undefined : ((json['formats'] as Array<any>).map(GnOgcApiRecordsFormatDtoFromJSON)),
-        'contacts': json['contacts'] == null ? undefined : ((json['contacts'] as Array<any>).map(GnOgcApiRecordsContactDtoFromJSON)),
-        'license': json['license'] == null ? undefined : GnOgcApiRecordsLicenseDtoFromJSON(json['license']),
-        'rights': json['rights'] == null ? undefined : json['rights'],
-        'id': json['id'],
-        'itemType': json['itemType'] == null ? undefined : json['itemType'],
-        'extent': json['extent'] == null ? undefined : GnExtentFromJSON(json['extent']),
-        'crs': json['crs'] == null ? undefined : json['crs'],
-        'recordsArrayName': json['recordsArrayName'] == null ? undefined : json['recordsArrayName'],
-        'records': json['records'] == null ? undefined : ((json['records'] as Array<any>).map(GnOgcApiRecordsRecordGeoJSONDtoFromJSON)),
-        'links': ((json['links'] as Array<any>).map(GnOgcApiRecordsLinkBaseDtoFromJSON)),
-        'linkTemplates': json['linkTemplates'] == null ? undefined : ((json['linkTemplates'] as Array<any>).map(GnOgcApiRecordsLinkTemplateDtoFromJSON)),
-    };
+export function GnOgcApiRecordsCatalog1DtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsCatalog1Dto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    conformsTo: json['conformsTo'] == null ? undefined : json['conformsTo'],
+    created: json['created'] == null ? undefined : new Date(json['created']),
+    updated: json['updated'] == null ? undefined : new Date(json['updated']),
+    type: json['type'],
+    title: json['title'] == null ? undefined : json['title'],
+    description: json['description'] == null ? undefined : json['description'],
+    keywords: json['keywords'] == null ? undefined : json['keywords'],
+    themes:
+      json['themes'] == null
+        ? undefined
+        : (json['themes'] as Array<any>).map(GnOgcApiRecordsThemeDtoFromJSON),
+    language:
+      json['language'] == null
+        ? undefined
+        : GnLanguageFromJSON(json['language']),
+    languages:
+      json['languages'] == null
+        ? undefined
+        : (json['languages'] as Array<any>).map(GnLanguageFromJSON),
+    resourceLanguages:
+      json['resourceLanguages'] == null
+        ? undefined
+        : (json['resourceLanguages'] as Array<any>).map(GnLanguageFromJSON),
+    externalIds:
+      json['externalIds'] == null
+        ? undefined
+        : (json['externalIds'] as Array<any>).map(
+            GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON
+          ),
+    formats:
+      json['formats'] == null
+        ? undefined
+        : (json['formats'] as Array<any>).map(GnOgcApiRecordsFormatDtoFromJSON),
+    contacts:
+      json['contacts'] == null
+        ? undefined
+        : (json['contacts'] as Array<any>).map(
+            GnOgcApiRecordsContactDtoFromJSON
+          ),
+    license:
+      json['license'] == null
+        ? undefined
+        : GnOgcApiRecordsLicenseDtoFromJSON(json['license']),
+    rights: json['rights'] == null ? undefined : json['rights'],
+    id: json['id'],
+    itemType: json['itemType'] == null ? undefined : json['itemType'],
+    extent:
+      json['extent'] == null ? undefined : GnExtentFromJSON(json['extent']),
+    crs: json['crs'] == null ? undefined : json['crs'],
+    recordsArrayName:
+      json['recordsArrayName'] == null ? undefined : json['recordsArrayName'],
+    records:
+      json['records'] == null
+        ? undefined
+        : (json['records'] as Array<any>).map(
+            GnOgcApiRecordsRecordGeoJSONDtoFromJSON
+          ),
+    links: (json['links'] as Array<any>).map(
+      GnOgcApiRecordsLinkBaseDtoFromJSON
+    ),
+    linkTemplates:
+      json['linkTemplates'] == null
+        ? undefined
+        : (json['linkTemplates'] as Array<any>).map(
+            GnOgcApiRecordsLinkTemplateDtoFromJSON
+          ),
+  };
 }
 
-export function GnOgcApiRecordsCatalog1DtoToJSON(value?: GnOgcApiRecordsCatalog1Dto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'conformsTo': value['conformsTo'],
-        'created': value['created'] == null ? undefined : ((value['created']).toISOString()),
-        'updated': value['updated'] == null ? undefined : ((value['updated']).toISOString()),
-        'type': value['type'],
-        'title': value['title'],
-        'description': value['description'],
-        'keywords': value['keywords'],
-        'themes': value['themes'] == null ? undefined : ((value['themes'] as Array<any>).map(GnOgcApiRecordsThemeDtoToJSON)),
-        'language': GnLanguageToJSON(value['language']),
-        'languages': value['languages'] == null ? undefined : ((value['languages'] as Array<any>).map(GnLanguageToJSON)),
-        'resourceLanguages': value['resourceLanguages'] == null ? undefined : ((value['resourceLanguages'] as Array<any>).map(GnLanguageToJSON)),
-        'externalIds': value['externalIds'] == null ? undefined : ((value['externalIds'] as Array<any>).map(GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON)),
-        'formats': value['formats'] == null ? undefined : ((value['formats'] as Array<any>).map(GnOgcApiRecordsFormatDtoToJSON)),
-        'contacts': value['contacts'] == null ? undefined : ((value['contacts'] as Array<any>).map(GnOgcApiRecordsContactDtoToJSON)),
-        'license': GnOgcApiRecordsLicenseDtoToJSON(value['license']),
-        'rights': value['rights'],
-        'id': value['id'],
-        'itemType': value['itemType'],
-        'extent': GnExtentToJSON(value['extent']),
-        'crs': value['crs'],
-        'recordsArrayName': value['recordsArrayName'],
-        'records': value['records'] == null ? undefined : ((value['records'] as Array<any>).map(GnOgcApiRecordsRecordGeoJSONDtoToJSON)),
-        'links': ((value['links'] as Array<any>).map(GnOgcApiRecordsLinkBaseDtoToJSON)),
-        'linkTemplates': value['linkTemplates'] == null ? undefined : ((value['linkTemplates'] as Array<any>).map(GnOgcApiRecordsLinkTemplateDtoToJSON)),
-    };
+export function GnOgcApiRecordsCatalog1DtoToJSON(
+  value?: GnOgcApiRecordsCatalog1Dto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    conformsTo: value['conformsTo'],
+    created:
+      value['created'] == null ? undefined : value['created'].toISOString(),
+    updated:
+      value['updated'] == null ? undefined : value['updated'].toISOString(),
+    type: value['type'],
+    title: value['title'],
+    description: value['description'],
+    keywords: value['keywords'],
+    themes:
+      value['themes'] == null
+        ? undefined
+        : (value['themes'] as Array<any>).map(GnOgcApiRecordsThemeDtoToJSON),
+    language: GnLanguageToJSON(value['language']),
+    languages:
+      value['languages'] == null
+        ? undefined
+        : (value['languages'] as Array<any>).map(GnLanguageToJSON),
+    resourceLanguages:
+      value['resourceLanguages'] == null
+        ? undefined
+        : (value['resourceLanguages'] as Array<any>).map(GnLanguageToJSON),
+    externalIds:
+      value['externalIds'] == null
+        ? undefined
+        : (value['externalIds'] as Array<any>).map(
+            GnOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON
+          ),
+    formats:
+      value['formats'] == null
+        ? undefined
+        : (value['formats'] as Array<any>).map(GnOgcApiRecordsFormatDtoToJSON),
+    contacts:
+      value['contacts'] == null
+        ? undefined
+        : (value['contacts'] as Array<any>).map(
+            GnOgcApiRecordsContactDtoToJSON
+          ),
+    license: GnOgcApiRecordsLicenseDtoToJSON(value['license']),
+    rights: value['rights'],
+    id: value['id'],
+    itemType: value['itemType'],
+    extent: GnExtentToJSON(value['extent']),
+    crs: value['crs'],
+    recordsArrayName: value['recordsArrayName'],
+    records:
+      value['records'] == null
+        ? undefined
+        : (value['records'] as Array<any>).map(
+            GnOgcApiRecordsRecordGeoJSONDtoToJSON
+          ),
+    links: (value['links'] as Array<any>).map(GnOgcApiRecordsLinkBaseDtoToJSON),
+    linkTemplates:
+      value['linkTemplates'] == null
+        ? undefined
+        : (value['linkTemplates'] as Array<any>).map(
+            GnOgcApiRecordsLinkTemplateDtoToJSON
+          ),
+  };
 }
-

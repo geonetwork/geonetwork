@@ -15,127 +15,153 @@
 import { mapValues } from '../runtime';
 import type { GnOgcApiRecordsLinkBaseDto } from './GnGnOgcApiRecordsLinkBaseDto';
 import {
-    GnOgcApiRecordsLinkBaseDtoFromJSON,
-    GnOgcApiRecordsLinkBaseDtoFromJSONTyped,
-    GnOgcApiRecordsLinkBaseDtoToJSON,
+  GnOgcApiRecordsLinkBaseDtoFromJSON,
+  GnOgcApiRecordsLinkBaseDtoFromJSONTyped,
+  GnOgcApiRecordsLinkBaseDtoToJSON,
 } from './GnGnOgcApiRecordsLinkBaseDto';
 import type { GnOgcApiRecordsLinkTemplateDto } from './GnGnOgcApiRecordsLinkTemplateDto';
 import {
-    GnOgcApiRecordsLinkTemplateDtoFromJSON,
-    GnOgcApiRecordsLinkTemplateDtoFromJSONTyped,
-    GnOgcApiRecordsLinkTemplateDtoToJSON,
+  GnOgcApiRecordsLinkTemplateDtoFromJSON,
+  GnOgcApiRecordsLinkTemplateDtoFromJSONTyped,
+  GnOgcApiRecordsLinkTemplateDtoToJSON,
 } from './GnGnOgcApiRecordsLinkTemplateDto';
 import type { GnOgcApiRecordsRecordGeoJSONPropertiesDto } from './GnGnOgcApiRecordsRecordGeoJSONPropertiesDto';
 import {
-    GnOgcApiRecordsRecordGeoJSONPropertiesDtoFromJSON,
-    GnOgcApiRecordsRecordGeoJSONPropertiesDtoFromJSONTyped,
-    GnOgcApiRecordsRecordGeoJSONPropertiesDtoToJSON,
+  GnOgcApiRecordsRecordGeoJSONPropertiesDtoFromJSON,
+  GnOgcApiRecordsRecordGeoJSONPropertiesDtoFromJSONTyped,
+  GnOgcApiRecordsRecordGeoJSONPropertiesDtoToJSON,
 } from './GnGnOgcApiRecordsRecordGeoJSONPropertiesDto';
 
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsRecordGeoJSONDto
  */
 export interface GnOgcApiRecordsRecordGeoJSONDto {
-    /**
-     * A unique identifier of the catalog record.
-     * @type {string}
-     * @memberof GnOgcApiRecordsRecordGeoJSONDto
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsRecordGeoJSONDto
-     */
-    type: GnOgcApiRecordsRecordGeoJSONDtoTypeEnum;
-    /**
-     * 
-     * @type {object}
-     * @memberof GnOgcApiRecordsRecordGeoJSONDto
-     */
-    time?: object;
-    /**
-     * 
-     * @type {object}
-     * @memberof GnOgcApiRecordsRecordGeoJSONDto
-     */
-    geometry: object;
-    /**
-     * 
-     * @type {GnOgcApiRecordsRecordGeoJSONPropertiesDto}
-     * @memberof GnOgcApiRecordsRecordGeoJSONDto
-     */
-    properties: GnOgcApiRecordsRecordGeoJSONPropertiesDto;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsLinkBaseDto>}
-     * @memberof GnOgcApiRecordsRecordGeoJSONDto
-     */
-    links?: Array<GnOgcApiRecordsLinkBaseDto>;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsLinkTemplateDto>}
-     * @memberof GnOgcApiRecordsRecordGeoJSONDto
-     */
-    linkTemplates?: Array<GnOgcApiRecordsLinkTemplateDto>;
+  /**
+   * A unique identifier of the catalog record.
+   * @type {string}
+   * @memberof GnOgcApiRecordsRecordGeoJSONDto
+   */
+  id: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsRecordGeoJSONDto
+   */
+  type: GnOgcApiRecordsRecordGeoJSONDtoTypeEnum;
+  /**
+   *
+   * @type {object}
+   * @memberof GnOgcApiRecordsRecordGeoJSONDto
+   */
+  time?: object;
+  /**
+   *
+   * @type {object}
+   * @memberof GnOgcApiRecordsRecordGeoJSONDto
+   */
+  geometry: object;
+  /**
+   *
+   * @type {GnOgcApiRecordsRecordGeoJSONPropertiesDto}
+   * @memberof GnOgcApiRecordsRecordGeoJSONDto
+   */
+  properties: GnOgcApiRecordsRecordGeoJSONPropertiesDto;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsLinkBaseDto>}
+   * @memberof GnOgcApiRecordsRecordGeoJSONDto
+   */
+  links?: Array<GnOgcApiRecordsLinkBaseDto>;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsLinkTemplateDto>}
+   * @memberof GnOgcApiRecordsRecordGeoJSONDto
+   */
+  linkTemplates?: Array<GnOgcApiRecordsLinkTemplateDto>;
 }
-
 
 /**
  * @export
  */
 export const GnOgcApiRecordsRecordGeoJSONDtoTypeEnum = {
-    Feature: 'Feature'
+  Feature: 'Feature',
 } as const;
-export type GnOgcApiRecordsRecordGeoJSONDtoTypeEnum = typeof GnOgcApiRecordsRecordGeoJSONDtoTypeEnum[keyof typeof GnOgcApiRecordsRecordGeoJSONDtoTypeEnum];
-
+export type GnOgcApiRecordsRecordGeoJSONDtoTypeEnum =
+  (typeof GnOgcApiRecordsRecordGeoJSONDtoTypeEnum)[keyof typeof GnOgcApiRecordsRecordGeoJSONDtoTypeEnum];
 
 /**
  * Check if a given object implements the GnOgcApiRecordsRecordGeoJSONDto interface.
  */
-export function instanceOfGnOgcApiRecordsRecordGeoJSONDto(value: object): value is GnOgcApiRecordsRecordGeoJSONDto {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('geometry' in value) || value['geometry'] === undefined) return false;
-    if (!('properties' in value) || value['properties'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsRecordGeoJSONDto(
+  value: object
+): value is GnOgcApiRecordsRecordGeoJSONDto {
+  if (!('id' in value) || value['id'] === undefined) return false;
+  if (!('type' in value) || value['type'] === undefined) return false;
+  if (!('geometry' in value) || value['geometry'] === undefined) return false;
+  if (!('properties' in value) || value['properties'] === undefined)
+    return false;
+  return true;
 }
 
-export function GnOgcApiRecordsRecordGeoJSONDtoFromJSON(json: any): GnOgcApiRecordsRecordGeoJSONDto {
-    return GnOgcApiRecordsRecordGeoJSONDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsRecordGeoJSONDtoFromJSON(
+  json: any
+): GnOgcApiRecordsRecordGeoJSONDto {
+  return GnOgcApiRecordsRecordGeoJSONDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsRecordGeoJSONDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsRecordGeoJSONDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'id': json['id'],
-        'type': json['type'],
-        'time': json['time'] == null ? undefined : json['time'],
-        'geometry': json['geometry'],
-        'properties': GnOgcApiRecordsRecordGeoJSONPropertiesDtoFromJSON(json['properties']),
-        'links': json['links'] == null ? undefined : ((json['links'] as Array<any>).map(GnOgcApiRecordsLinkBaseDtoFromJSON)),
-        'linkTemplates': json['linkTemplates'] == null ? undefined : ((json['linkTemplates'] as Array<any>).map(GnOgcApiRecordsLinkTemplateDtoFromJSON)),
-    };
+export function GnOgcApiRecordsRecordGeoJSONDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsRecordGeoJSONDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    id: json['id'],
+    type: json['type'],
+    time: json['time'] == null ? undefined : json['time'],
+    geometry: json['geometry'],
+    properties: GnOgcApiRecordsRecordGeoJSONPropertiesDtoFromJSON(
+      json['properties']
+    ),
+    links:
+      json['links'] == null
+        ? undefined
+        : (json['links'] as Array<any>).map(GnOgcApiRecordsLinkBaseDtoFromJSON),
+    linkTemplates:
+      json['linkTemplates'] == null
+        ? undefined
+        : (json['linkTemplates'] as Array<any>).map(
+            GnOgcApiRecordsLinkTemplateDtoFromJSON
+          ),
+  };
 }
 
-export function GnOgcApiRecordsRecordGeoJSONDtoToJSON(value?: GnOgcApiRecordsRecordGeoJSONDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'id': value['id'],
-        'type': value['type'],
-        'time': value['time'],
-        'geometry': value['geometry'],
-        'properties': GnOgcApiRecordsRecordGeoJSONPropertiesDtoToJSON(value['properties']),
-        'links': value['links'] == null ? undefined : ((value['links'] as Array<any>).map(GnOgcApiRecordsLinkBaseDtoToJSON)),
-        'linkTemplates': value['linkTemplates'] == null ? undefined : ((value['linkTemplates'] as Array<any>).map(GnOgcApiRecordsLinkTemplateDtoToJSON)),
-    };
+export function GnOgcApiRecordsRecordGeoJSONDtoToJSON(
+  value?: GnOgcApiRecordsRecordGeoJSONDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    id: value['id'],
+    type: value['type'],
+    time: value['time'],
+    geometry: value['geometry'],
+    properties: GnOgcApiRecordsRecordGeoJSONPropertiesDtoToJSON(
+      value['properties']
+    ),
+    links:
+      value['links'] == null
+        ? undefined
+        : (value['links'] as Array<any>).map(GnOgcApiRecordsLinkBaseDtoToJSON),
+    linkTemplates:
+      value['linkTemplates'] == null
+        ? undefined
+        : (value['linkTemplates'] as Array<any>).map(
+            GnOgcApiRecordsLinkTemplateDtoToJSON
+          ),
+  };
 }
-

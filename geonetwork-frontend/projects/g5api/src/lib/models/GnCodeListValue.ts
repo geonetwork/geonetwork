@@ -14,63 +14,65 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnCodeListValue
  */
 export interface GnCodeListValue {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnCodeListValue
-     */
-    label?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnCodeListValue
-     */
-    definition?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnCodeListValue
-     */
-    code?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnCodeListValue
+   */
+  label?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnCodeListValue
+   */
+  definition?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnCodeListValue
+   */
+  code?: string;
 }
 
 /**
  * Check if a given object implements the GnCodeListValue interface.
  */
-export function instanceOfGnCodeListValue(value: object): value is GnCodeListValue {
-    return true;
+export function instanceOfGnCodeListValue(
+  value: object
+): value is GnCodeListValue {
+  return true;
 }
 
 export function GnCodeListValueFromJSON(json: any): GnCodeListValue {
-    return GnCodeListValueFromJSONTyped(json, false);
+  return GnCodeListValueFromJSONTyped(json, false);
 }
 
-export function GnCodeListValueFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnCodeListValue {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'label': json['label'] == null ? undefined : json['label'],
-        'definition': json['definition'] == null ? undefined : json['definition'],
-        'code': json['code'] == null ? undefined : json['code'],
-    };
+export function GnCodeListValueFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnCodeListValue {
+  if (json == null) {
+    return json;
+  }
+  return {
+    label: json['label'] == null ? undefined : json['label'],
+    definition: json['definition'] == null ? undefined : json['definition'],
+    code: json['code'] == null ? undefined : json['code'],
+  };
 }
 
 export function GnCodeListValueToJSON(value?: GnCodeListValue | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'label': value['label'],
-        'definition': value['definition'],
-        'code': value['code'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    label: value['label'],
+    definition: value['definition'],
+    code: value['code'],
+  };
 }
-

@@ -14,47 +14,47 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnRasterBand
  */
 export interface GnRasterBand {
-    /**
-     * 
-     * @type {number}
-     * @memberof GnRasterBand
-     */
-    band?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof GnRasterBand
+   */
+  band?: number;
 }
 
 /**
  * Check if a given object implements the GnRasterBand interface.
  */
 export function instanceOfGnRasterBand(value: object): value is GnRasterBand {
-    return true;
+  return true;
 }
 
 export function GnRasterBandFromJSON(json: any): GnRasterBand {
-    return GnRasterBandFromJSONTyped(json, false);
+  return GnRasterBandFromJSONTyped(json, false);
 }
 
-export function GnRasterBandFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnRasterBand {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'band': json['band'] == null ? undefined : json['band'],
-    };
+export function GnRasterBandFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnRasterBand {
+  if (json == null) {
+    return json;
+  }
+  return {
+    band: json['band'] == null ? undefined : json['band'],
+  };
 }
 
 export function GnRasterBandToJSON(value?: GnRasterBand | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'band': value['band'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    band: value['band'],
+  };
 }
-

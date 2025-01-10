@@ -14,71 +14,75 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnMaintenance
  */
 export interface GnMaintenance {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnMaintenance
-     */
-    frequency?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GnMaintenance
-     */
-    nextUpdateDate?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnMaintenance
-     */
-    userDefinedFrequency?: string;
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof GnMaintenance
-     */
-    noteObject?: { [key: string]: string; };
+  /**
+   *
+   * @type {string}
+   * @memberof GnMaintenance
+   */
+  frequency?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof GnMaintenance
+   */
+  nextUpdateDate?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof GnMaintenance
+   */
+  userDefinedFrequency?: string;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof GnMaintenance
+   */
+  noteObject?: { [key: string]: string };
 }
 
 /**
  * Check if a given object implements the GnMaintenance interface.
  */
 export function instanceOfGnMaintenance(value: object): value is GnMaintenance {
-    return true;
+  return true;
 }
 
 export function GnMaintenanceFromJSON(json: any): GnMaintenance {
-    return GnMaintenanceFromJSONTyped(json, false);
+  return GnMaintenanceFromJSONTyped(json, false);
 }
 
-export function GnMaintenanceFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnMaintenance {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'frequency': json['frequency'] == null ? undefined : json['frequency'],
-        'nextUpdateDate': json['nextUpdateDate'] == null ? undefined : json['nextUpdateDate'],
-        'userDefinedFrequency': json['userDefinedFrequency'] == null ? undefined : json['userDefinedFrequency'],
-        'noteObject': json['noteObject'] == null ? undefined : json['noteObject'],
-    };
+export function GnMaintenanceFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnMaintenance {
+  if (json == null) {
+    return json;
+  }
+  return {
+    frequency: json['frequency'] == null ? undefined : json['frequency'],
+    nextUpdateDate:
+      json['nextUpdateDate'] == null ? undefined : json['nextUpdateDate'],
+    userDefinedFrequency:
+      json['userDefinedFrequency'] == null
+        ? undefined
+        : json['userDefinedFrequency'],
+    noteObject: json['noteObject'] == null ? undefined : json['noteObject'],
+  };
 }
 
 export function GnMaintenanceToJSON(value?: GnMaintenance | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'frequency': value['frequency'],
-        'nextUpdateDate': value['nextUpdateDate'],
-        'userDefinedFrequency': value['userDefinedFrequency'],
-        'noteObject': value['noteObject'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    frequency: value['frequency'],
+    nextUpdateDate: value['nextUpdateDate'],
+    userDefinedFrequency: value['userDefinedFrequency'],
+    noteObject: value['noteObject'],
+  };
 }
-

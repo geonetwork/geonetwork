@@ -14,63 +14,63 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface GnOverview
  */
 export interface GnOverview {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOverview
-     */
-    url?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOverview
-     */
-    data?: string;
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof GnOverview
-     */
-    nameObject?: { [key: string]: string; };
+  /**
+   *
+   * @type {string}
+   * @memberof GnOverview
+   */
+  url?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOverview
+   */
+  data?: string;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof GnOverview
+   */
+  nameObject?: { [key: string]: string };
 }
 
 /**
  * Check if a given object implements the GnOverview interface.
  */
 export function instanceOfGnOverview(value: object): value is GnOverview {
-    return true;
+  return true;
 }
 
 export function GnOverviewFromJSON(json: any): GnOverview {
-    return GnOverviewFromJSONTyped(json, false);
+  return GnOverviewFromJSONTyped(json, false);
 }
 
-export function GnOverviewFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOverview {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'url': json['url'] == null ? undefined : json['url'],
-        'data': json['data'] == null ? undefined : json['data'],
-        'nameObject': json['nameObject'] == null ? undefined : json['nameObject'],
-    };
+export function GnOverviewFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOverview {
+  if (json == null) {
+    return json;
+  }
+  return {
+    url: json['url'] == null ? undefined : json['url'],
+    data: json['data'] == null ? undefined : json['data'],
+    nameObject: json['nameObject'] == null ? undefined : json['nameObject'],
+  };
 }
 
 export function GnOverviewToJSON(value?: GnOverview | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'url': value['url'],
-        'data': value['data'],
-        'nameObject': value['nameObject'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    url: value['url'],
+    data: value['data'],
+    nameObject: value['nameObject'],
+  };
 }
-

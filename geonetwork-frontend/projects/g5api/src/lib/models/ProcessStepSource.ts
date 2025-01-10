@@ -14,47 +14,50 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface ProcessStepSource
  */
 export interface ProcessStepSource {
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof ProcessStepSource
-     */
-    descriptionObject?: { [key: string]: string; };
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof ProcessStepSource
+   */
+  descriptionObject?: { [key: string]: string };
 }
 
 /**
  * Check if a given object implements the ProcessStepSource interface.
  */
-export function instanceOfProcessStepSource(value: object): value is ProcessStepSource {
-    return true;
+export function instanceOfProcessStepSource(
+  value: object
+): value is ProcessStepSource {
+  return true;
 }
 
 export function ProcessStepSourceFromJSON(json: any): ProcessStepSource {
-    return ProcessStepSourceFromJSONTyped(json, false);
+  return ProcessStepSourceFromJSONTyped(json, false);
 }
 
-export function ProcessStepSourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessStepSource {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'descriptionObject': json['descriptionObject'] == null ? undefined : json['descriptionObject'],
-    };
+export function ProcessStepSourceFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ProcessStepSource {
+  if (json == null) {
+    return json;
+  }
+  return {
+    descriptionObject:
+      json['descriptionObject'] == null ? undefined : json['descriptionObject'],
+  };
 }
 
 export function ProcessStepSourceToJSON(value?: ProcessStepSource | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'descriptionObject': value['descriptionObject'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    descriptionObject: value['descriptionObject'],
+  };
 }
-

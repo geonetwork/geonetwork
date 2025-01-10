@@ -15,125 +15,154 @@
 import { mapValues } from '../runtime';
 import type { GnOgcApiRecordsRecordGeoJSONDto } from './GnGnOgcApiRecordsRecordGeoJSONDto';
 import {
-    GnOgcApiRecordsRecordGeoJSONDtoFromJSON,
-    GnOgcApiRecordsRecordGeoJSONDtoFromJSONTyped,
-    GnOgcApiRecordsRecordGeoJSONDtoToJSON,
+  GnOgcApiRecordsRecordGeoJSONDtoFromJSON,
+  GnOgcApiRecordsRecordGeoJSONDtoFromJSONTyped,
+  GnOgcApiRecordsRecordGeoJSONDtoToJSON,
 } from './GnGnOgcApiRecordsRecordGeoJSONDto';
 import type { GnOgcApiRecordsLinkDto } from './GnGnOgcApiRecordsLinkDto';
 import {
-    GnOgcApiRecordsLinkDtoFromJSON,
-    GnOgcApiRecordsLinkDtoFromJSONTyped,
-    GnOgcApiRecordsLinkDtoToJSON,
+  GnOgcApiRecordsLinkDtoFromJSON,
+  GnOgcApiRecordsLinkDtoFromJSONTyped,
+  GnOgcApiRecordsLinkDtoToJSON,
 } from './GnGnOgcApiRecordsLinkDto';
 import type { GnOgcApiRecordsLinkTemplateDto } from './GnGnOgcApiRecordsLinkTemplateDto';
 import {
-    GnOgcApiRecordsLinkTemplateDtoFromJSON,
-    GnOgcApiRecordsLinkTemplateDtoFromJSONTyped,
-    GnOgcApiRecordsLinkTemplateDtoToJSON,
+  GnOgcApiRecordsLinkTemplateDtoFromJSON,
+  GnOgcApiRecordsLinkTemplateDtoFromJSONTyped,
+  GnOgcApiRecordsLinkTemplateDtoToJSON,
 } from './GnGnOgcApiRecordsLinkTemplateDto';
 
 /**
- * 
+ *
  * @export
  * @interface GnOgcApiRecordsGetRecords200ResponseDto
  */
 export interface GnOgcApiRecordsGetRecords200ResponseDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof GnOgcApiRecordsGetRecords200ResponseDto
-     */
-    type: GnOgcApiRecordsGetRecords200ResponseDtoTypeEnum;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsRecordGeoJSONDto>}
-     * @memberof GnOgcApiRecordsGetRecords200ResponseDto
-     */
-    features: Array<GnOgcApiRecordsRecordGeoJSONDto>;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsLinkDto>}
-     * @memberof GnOgcApiRecordsGetRecords200ResponseDto
-     */
-    links?: Array<GnOgcApiRecordsLinkDto>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GnOgcApiRecordsGetRecords200ResponseDto
-     */
-    timeStamp?: Date;
-    /**
-     * 
-     * @type {number}
-     * @memberof GnOgcApiRecordsGetRecords200ResponseDto
-     */
-    numberMatched?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GnOgcApiRecordsGetRecords200ResponseDto
-     */
-    numberReturned?: number;
-    /**
-     * 
-     * @type {Array<GnOgcApiRecordsLinkTemplateDto>}
-     * @memberof GnOgcApiRecordsGetRecords200ResponseDto
-     */
-    linkTemplates?: Array<GnOgcApiRecordsLinkTemplateDto>;
+  /**
+   *
+   * @type {string}
+   * @memberof GnOgcApiRecordsGetRecords200ResponseDto
+   */
+  type: GnOgcApiRecordsGetRecords200ResponseDtoTypeEnum;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsRecordGeoJSONDto>}
+   * @memberof GnOgcApiRecordsGetRecords200ResponseDto
+   */
+  features: Array<GnOgcApiRecordsRecordGeoJSONDto>;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsLinkDto>}
+   * @memberof GnOgcApiRecordsGetRecords200ResponseDto
+   */
+  links?: Array<GnOgcApiRecordsLinkDto>;
+  /**
+   *
+   * @type {Date}
+   * @memberof GnOgcApiRecordsGetRecords200ResponseDto
+   */
+  timeStamp?: Date;
+  /**
+   *
+   * @type {number}
+   * @memberof GnOgcApiRecordsGetRecords200ResponseDto
+   */
+  numberMatched?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof GnOgcApiRecordsGetRecords200ResponseDto
+   */
+  numberReturned?: number;
+  /**
+   *
+   * @type {Array<GnOgcApiRecordsLinkTemplateDto>}
+   * @memberof GnOgcApiRecordsGetRecords200ResponseDto
+   */
+  linkTemplates?: Array<GnOgcApiRecordsLinkTemplateDto>;
 }
-
 
 /**
  * @export
  */
 export const GnOgcApiRecordsGetRecords200ResponseDtoTypeEnum = {
-    FeatureCollection: 'FeatureCollection'
+  FeatureCollection: 'FeatureCollection',
 } as const;
-export type GnOgcApiRecordsGetRecords200ResponseDtoTypeEnum = typeof GnOgcApiRecordsGetRecords200ResponseDtoTypeEnum[keyof typeof GnOgcApiRecordsGetRecords200ResponseDtoTypeEnum];
-
+export type GnOgcApiRecordsGetRecords200ResponseDtoTypeEnum =
+  (typeof GnOgcApiRecordsGetRecords200ResponseDtoTypeEnum)[keyof typeof GnOgcApiRecordsGetRecords200ResponseDtoTypeEnum];
 
 /**
  * Check if a given object implements the GnOgcApiRecordsGetRecords200ResponseDto interface.
  */
-export function instanceOfGnOgcApiRecordsGetRecords200ResponseDto(value: object): value is GnOgcApiRecordsGetRecords200ResponseDto {
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('features' in value) || value['features'] === undefined) return false;
-    return true;
+export function instanceOfGnOgcApiRecordsGetRecords200ResponseDto(
+  value: object
+): value is GnOgcApiRecordsGetRecords200ResponseDto {
+  if (!('type' in value) || value['type'] === undefined) return false;
+  if (!('features' in value) || value['features'] === undefined) return false;
+  return true;
 }
 
-export function GnOgcApiRecordsGetRecords200ResponseDtoFromJSON(json: any): GnOgcApiRecordsGetRecords200ResponseDto {
-    return GnOgcApiRecordsGetRecords200ResponseDtoFromJSONTyped(json, false);
+export function GnOgcApiRecordsGetRecords200ResponseDtoFromJSON(
+  json: any
+): GnOgcApiRecordsGetRecords200ResponseDto {
+  return GnOgcApiRecordsGetRecords200ResponseDtoFromJSONTyped(json, false);
 }
 
-export function GnOgcApiRecordsGetRecords200ResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GnOgcApiRecordsGetRecords200ResponseDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'type': json['type'],
-        'features': ((json['features'] as Array<any>).map(GnOgcApiRecordsRecordGeoJSONDtoFromJSON)),
-        'links': json['links'] == null ? undefined : ((json['links'] as Array<any>).map(GnOgcApiRecordsLinkDtoFromJSON)),
-        'timeStamp': json['timeStamp'] == null ? undefined : (new Date(json['timeStamp'])),
-        'numberMatched': json['numberMatched'] == null ? undefined : json['numberMatched'],
-        'numberReturned': json['numberReturned'] == null ? undefined : json['numberReturned'],
-        'linkTemplates': json['linkTemplates'] == null ? undefined : ((json['linkTemplates'] as Array<any>).map(GnOgcApiRecordsLinkTemplateDtoFromJSON)),
-    };
+export function GnOgcApiRecordsGetRecords200ResponseDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): GnOgcApiRecordsGetRecords200ResponseDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    type: json['type'],
+    features: (json['features'] as Array<any>).map(
+      GnOgcApiRecordsRecordGeoJSONDtoFromJSON
+    ),
+    links:
+      json['links'] == null
+        ? undefined
+        : (json['links'] as Array<any>).map(GnOgcApiRecordsLinkDtoFromJSON),
+    timeStamp:
+      json['timeStamp'] == null ? undefined : new Date(json['timeStamp']),
+    numberMatched:
+      json['numberMatched'] == null ? undefined : json['numberMatched'],
+    numberReturned:
+      json['numberReturned'] == null ? undefined : json['numberReturned'],
+    linkTemplates:
+      json['linkTemplates'] == null
+        ? undefined
+        : (json['linkTemplates'] as Array<any>).map(
+            GnOgcApiRecordsLinkTemplateDtoFromJSON
+          ),
+  };
 }
 
-export function GnOgcApiRecordsGetRecords200ResponseDtoToJSON(value?: GnOgcApiRecordsGetRecords200ResponseDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'type': value['type'],
-        'features': ((value['features'] as Array<any>).map(GnOgcApiRecordsRecordGeoJSONDtoToJSON)),
-        'links': value['links'] == null ? undefined : ((value['links'] as Array<any>).map(GnOgcApiRecordsLinkDtoToJSON)),
-        'timeStamp': value['timeStamp'] == null ? undefined : ((value['timeStamp']).toISOString()),
-        'numberMatched': value['numberMatched'],
-        'numberReturned': value['numberReturned'],
-        'linkTemplates': value['linkTemplates'] == null ? undefined : ((value['linkTemplates'] as Array<any>).map(GnOgcApiRecordsLinkTemplateDtoToJSON)),
-    };
+export function GnOgcApiRecordsGetRecords200ResponseDtoToJSON(
+  value?: GnOgcApiRecordsGetRecords200ResponseDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    type: value['type'],
+    features: (value['features'] as Array<any>).map(
+      GnOgcApiRecordsRecordGeoJSONDtoToJSON
+    ),
+    links:
+      value['links'] == null
+        ? undefined
+        : (value['links'] as Array<any>).map(GnOgcApiRecordsLinkDtoToJSON),
+    timeStamp:
+      value['timeStamp'] == null ? undefined : value['timeStamp'].toISOString(),
+    numberMatched: value['numberMatched'],
+    numberReturned: value['numberReturned'],
+    linkTemplates:
+      value['linkTemplates'] == null
+        ? undefined
+        : (value['linkTemplates'] as Array<any>).map(
+            GnOgcApiRecordsLinkTemplateDtoToJSON
+          ),
+  };
 }
-
