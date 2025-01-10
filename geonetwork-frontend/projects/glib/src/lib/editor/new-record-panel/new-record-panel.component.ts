@@ -64,6 +64,8 @@ import {
 import { Select } from 'primeng/select';
 import { Listbox, ListboxChangeEvent } from 'primeng/listbox';
 import { Message } from 'primeng/message';
+import { RadioButton } from 'primeng/radiobutton';
+import { OverviewSelectorComponent } from '../overview-selector/overview-selector.component';
 
 @Component({
   selector: 'g-new-record-panel',
@@ -73,6 +75,7 @@ import { Message } from 'primeng/message';
     Button,
     ButtonDirective,
     ChipModule,
+    RadioButton,
     DataAnalysisPanelComponent,
     DropdownModule,
     FileUploadModule,
@@ -87,6 +90,7 @@ import { Message } from 'primeng/message';
     Select,
     Listbox,
     Message,
+    OverviewSelectorComponent,
   ],
   templateUrl: './new-record-panel.component.html',
   styleUrl: './new-record-panel.component.css',

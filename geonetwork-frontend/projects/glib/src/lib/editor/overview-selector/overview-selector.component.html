@@ -1,0 +1,34 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  @for (type of listOfOverviewTypes; track $index) {
+    <div
+      class="border-2 rounded-md p-4"
+      [class.border-4]="overviewType() === type">
+      <p-radiobutton
+        [name]="type"
+        [value]="type"
+        [(ngModel)]="overviewType"
+        [inputId]="type"></p-radiobutton>
+      <label [attr.for]="type" class="ml-2 font-bold">{{ type }}</label>
+      @switch (type) {
+        @case ('overview_suggestion') {
+          @if (suggestion()) {
+            <img
+              [src]="suggestion()"
+              alt="Generated from the datasource"
+              class="max-w-full" />
+          }
+        }
+        @case ('overview_upload') {
+          <p-fileupload
+            mode="basic"
+            name="demo[]"
+            chooseIcon="fa fa-upload"
+            accept="image/*"
+            maxFileSize="1000000"
+            (onUpload)="uploadOverview($event)"
+            chooseLabel="Browse" />
+        }
+      }
+    </div>
+  }
+</div>

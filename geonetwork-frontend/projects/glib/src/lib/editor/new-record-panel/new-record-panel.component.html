@@ -238,16 +238,16 @@
           analysisResult()
         )
       "
-      >Build overview</p-step
+      >Choose overview</p-step
     >
     <p-step-panel>
       <ng-template
         pTemplate="content"
         let-activateCallback="activateCallback"
         let-index="index">
-        <div>
-          <img [src]="buildOverview()" class="max-w-full" />
-        </div>
+        <g-overview-selector
+          [uuid]="newRecordId()"
+          [suggestion]="buildOverview()"></g-overview-selector>
         <div class="flex mt-2 gap-2">
           <p-button
             label="Back"
@@ -300,8 +300,8 @@
             icon="fas fa-arrow-left"
             (onClick)="activateCallback(3)" />
           <p-button
-            label="Save"
-            icon="fas fa-save"
+            label="Edit"
+            icon="fas fa-pencil-alt"
             [disabled]="!previewResult()"
             (onClick)="applyAnalysisToRecord()" />
         </div>
