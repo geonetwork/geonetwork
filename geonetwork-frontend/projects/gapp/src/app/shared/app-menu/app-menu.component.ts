@@ -58,7 +58,7 @@ export class AppMenuComponent implements OnInit {
         routerLink: 'search',
       },
       map: {
-        label: 'New map',
+        label: 'Map',
         icon: 'fa-map',
         iconClass: this.iconClass(),
         visible: this.uiConfiguration?.mods?.map?.enabled || false,
