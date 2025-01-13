@@ -53,7 +53,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequestMapping(value = {"/api/records/{metadataUuid}/attachments"})
+@RequestMapping(value = {"/api/records/{metadataUuidOrId}/attachments"})
 @Tag(name = API_CLASS_RECORD_TAG, description = API_CLASS_RECORD_OPS)
 @RestController
 @RequiredArgsConstructor
