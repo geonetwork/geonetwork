@@ -67,6 +67,19 @@ export interface AttributeStatisticsRequest {
   attribute: string;
 }
 
+export interface BuildOverviewRequest {
+  datasource: string;
+  layer: string;
+}
+
+export interface BuildOverview1Request {
+  uuid: string;
+  visibility: BuildOverview1VisibilityEnum;
+  datasource: string;
+  approved: boolean;
+  layer: string;
+}
+
 export interface LayersRequest {
   datasource: string;
 }
@@ -563,6 +576,147 @@ export class DataAnalysisControllerApi extends runtime.BaseAPI {
 
   /**
    */
+  async buildOverviewRaw(
+    requestParameters: BuildOverviewRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling buildOverview().'
+      );
+    }
+
+    if (requestParameters['layer'] == null) {
+      throw new runtime.RequiredError(
+        'layer',
+        'Required parameter "layer" was null or undefined when calling buildOverview().'
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
+    }
+
+    if (requestParameters['layer'] != null) {
+      queryParameters['layer'] = requestParameters['layer'];
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/overview`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async buildOverview(
+    requestParameters: BuildOverviewRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.buildOverviewRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   */
+  async buildOverview1Raw(
+    requestParameters: BuildOverview1Request,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters['uuid'] == null) {
+      throw new runtime.RequiredError(
+        'uuid',
+        'Required parameter "uuid" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    if (requestParameters['visibility'] == null) {
+      throw new runtime.RequiredError(
+        'visibility',
+        'Required parameter "visibility" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    if (requestParameters['approved'] == null) {
+      throw new runtime.RequiredError(
+        'approved',
+        'Required parameter "approved" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    if (requestParameters['layer'] == null) {
+      throw new runtime.RequiredError(
+        'layer',
+        'Required parameter "layer" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters['uuid'] != null) {
+      queryParameters['uuid'] = requestParameters['uuid'];
+    }
+
+    if (requestParameters['visibility'] != null) {
+      queryParameters['visibility'] = requestParameters['visibility'];
+    }
+
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
+    }
+
+    if (requestParameters['approved'] != null) {
+      queryParameters['approved'] = requestParameters['approved'];
+    }
+
+    if (requestParameters['layer'] != null) {
+      queryParameters['layer'] = requestParameters['layer'];
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/overviewForMetadataResource`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async buildOverview1(
+    requestParameters: BuildOverview1Request,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.buildOverview1Raw(requestParameters, initOverrides);
+  }
+
+  /**
+   */
   async formatsRaw(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<DataFormat>>> {
@@ -941,6 +1095,15 @@ export const ApplyDataAnalysisOnRecordForMetadataResourceVisibilityEnum = {
 } as const;
 export type ApplyDataAnalysisOnRecordForMetadataResourceVisibilityEnum =
   (typeof ApplyDataAnalysisOnRecordForMetadataResourceVisibilityEnum)[keyof typeof ApplyDataAnalysisOnRecordForMetadataResourceVisibilityEnum];
+/**
+ * @export
+ */
+export const BuildOverview1VisibilityEnum = {
+  Public: 'public',
+  Private: 'private',
+} as const;
+export type BuildOverview1VisibilityEnum =
+  (typeof BuildOverview1VisibilityEnum)[keyof typeof BuildOverview1VisibilityEnum];
 /**
  * @export
  */

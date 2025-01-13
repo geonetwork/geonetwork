@@ -312,4 +312,40 @@ public class DataAnalysisController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping(path = "/overviewForMetadataResource", produces = MediaType.IMAGE_PNG_VALUE)
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Overview built successfully",
+                        content = {@Content(mediaType = MediaType.IMAGE_PNG_VALUE)}),
+            })
+    @PreAuthorize("hasRole('Editor')")
+    public ResponseEntity<byte[]> buildOverview(
+            @RequestParam String uuid,
+            @RequestParam MetadataResourceVisibility visibility,
+            @RequestParam String datasource,
+            @RequestParam boolean approved,
+            @RequestParam String layer)
+            throws MetadataNotFoundException {
+        Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(uuid, false);
+
+        String datasourceToUse;
+        try {
+            Store.ResourceHolder resourceHolder = metadataStore.getResource(uuid, visibility, datasource, approved);
+
+            datasourceToUse = resourceHolder.getPath().toString();
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        try {
+            return ResponseEntity.ok().body(overviewBuilder.buildOverview(datasourceToUse, layer));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
