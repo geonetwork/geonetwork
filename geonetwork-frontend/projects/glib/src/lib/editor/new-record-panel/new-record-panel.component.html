@@ -97,9 +97,9 @@
                 chooseIcon="fa fa-folder"
                 chooseLabel="Select your file"
                 uploadLabel="Upload"
-                accept="text/*,image/*"
+                accept="text/*,image/*,application/*"
                 multiple="true"
-                maxFileSize="1000000">
+                [maxFileSize]="100 * 1000000">
                 <ng-template #empty>
                   <div>Drag and drop files to here to upload.</div>
                 </ng-template>
