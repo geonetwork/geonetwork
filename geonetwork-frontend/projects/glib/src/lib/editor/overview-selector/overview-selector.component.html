@@ -2,6 +2,7 @@
   @for (type of listOfOverviewTypes; track $index) {
     <div
       class="border-2 rounded-md p-4"
+      [class.hidden]="type === 'overview_suggestion' && !suggestion()"
       [class.border-4]="overviewType() === type">
       <p-radiobutton
         [name]="type"
@@ -15,16 +16,16 @@
             <img
               [src]="suggestion()"
               alt="Generated from the datasource"
-              class="max-w-full" />
+              class="max-w-full m-6" />
           }
         }
         @case ('overview_upload') {
           <p-fileupload
             mode="basic"
-            name="demo[]"
+            name="overview_upload"
             chooseIcon="fa fa-upload"
             accept="image/*"
-            maxFileSize="1000000"
+            [maxFileSize]="100 * 1000000"
             (onUpload)="uploadOverview($event)"
             chooseLabel="Browse" />
         }

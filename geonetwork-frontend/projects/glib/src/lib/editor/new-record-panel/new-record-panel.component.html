@@ -13,7 +13,7 @@
   </div>
 }
 
-<p-stepper [(value)]="activeStep" class="p-10">
+<p-stepper [(value)]="activeStep" class="p-10 w-full">
   <p-step-item [value]="1">
     <p-step>Choose resource type</p-step>
     <p-step-panel>
@@ -93,7 +93,7 @@
                 (uploadHandler)="onUploadHandler($event)"
                 (onRemove)="onRemove($event)"
                 (onClear)="onClear($event)"
-                name="demo[]"
+                name="attachement_upload"
                 chooseIcon="fa fa-folder"
                 chooseLabel="Select your file"
                 uploadLabel="Upload"
@@ -221,7 +221,7 @@
             (onClick)="activateCallback(2)" />
           <p-button
             [disabled]="!analysisResult()"
-            label="Build overview"
+            label="Choose overview"
             icon="fas fa-arrow-right"
             iconPos="right"
             (onClick)="activateCallback(4)" />
@@ -245,9 +245,15 @@
         pTemplate="content"
         let-activateCallback="activateCallback"
         let-index="index">
+
+        @if (buildingOverview()) {
+          <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" class="mb-6"/>
+        }
+
         <g-overview-selector
           [uuid]="newRecordId()"
-          [suggestion]="buildOverview()"></g-overview-selector>
+          [suggestion]="overview()"></g-overview-selector>
+
         <div class="flex mt-2 gap-2">
           <p-button
             label="Back"

@@ -1,12 +1,11 @@
 import { Component, input, signal } from '@angular/core';
 import { RadioButton } from 'primeng/radiobutton';
 import { FormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
 import { FileUpload } from 'primeng/fileupload';
 
 @Component({
   selector: 'g-overview-selector',
-  imports: [RadioButton, FormsModule, NgClass, FileUpload],
+  imports: [RadioButton, FormsModule, FileUpload],
   templateUrl: './overview-selector.component.html',
   standalone: true,
 })
@@ -16,8 +15,8 @@ export class OverviewSelectorComponent {
 
   listOfOverviewTypes = [
     'overview_none',
-    'overview_suggestion',
     'overview_upload',
+    'overview_suggestion',
   ];
 
   overviewType = signal(this.listOfOverviewTypes[0]);

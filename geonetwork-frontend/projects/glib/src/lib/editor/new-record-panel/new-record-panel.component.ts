@@ -20,21 +20,21 @@ import {
   RecordsApi,
 } from 'gapi';
 import {
-  DataAnalysisControllerApi,
-  DataFormat,
-  RecordsApi as RecordsApi5,
-  PutResourceRequest,
-  GetAllResourcesRequest,
   AnalysisSynchMetadataResourceRequest,
   AnalysisSynchRequest,
-  ApplyDataAnalysisOnRecordRequest,
   ApplyDataAnalysisOnRecordForMetadataResourceRequest,
+  ApplyDataAnalysisOnRecordRequest,
+  DataAnalysisControllerApi,
+  DataFormat,
+  GetAllResourcesRequest,
   LayersMetadataResourceRequest,
   LayersMetadataResourceVisibilityEnum,
   LayersRequest,
+  MetadataResource,
   PreviewDataAnalysisOnRecordForMetadataResourceRequest,
   PreviewDataAnalysisOnRecordRequest,
-  MetadataResource,
+  PutResourceRequest,
+  RecordsApi as RecordsApi5,
 } from 'g5api';
 
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -43,7 +43,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import {
   FileRemoveEvent,
   FileSelectEvent,
-  FileUploadEvent,
   FileUploadHandlerEvent,
   FileUploadModule,
 } from 'primeng/fileupload';
@@ -64,8 +63,8 @@ import {
 import { Select } from 'primeng/select';
 import { Listbox, ListboxChangeEvent } from 'primeng/listbox';
 import { Message } from 'primeng/message';
-import { RadioButton } from 'primeng/radiobutton';
 import { OverviewSelectorComponent } from '../overview-selector/overview-selector.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'g-new-record-panel',
@@ -75,7 +74,6 @@ import { OverviewSelectorComponent } from '../overview-selector/overview-selecto
     Button,
     ButtonDirective,
     ChipModule,
-    RadioButton,
     DataAnalysisPanelComponent,
     DropdownModule,
     FileUploadModule,
@@ -101,7 +99,7 @@ export class NewRecordPanelComponent implements OnInit {
   template = signal('');
   activeStep = signal(1);
   newRecordId = signal('');
-  //newRecordUuid = signal('');
+
   datasource = signal(
     'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv'
   );
@@ -113,6 +111,8 @@ export class NewRecordPanelComponent implements OnInit {
 
   api5Configuration = inject(API5_CONFIGURATION);
   apiConfiguration = inject(API_CONFIGURATION);
+
+  http = inject(HttpClient);
 
   dataAnalysisApi = computed(() => {
     return new DataAnalysisControllerApi(this.api5Configuration());
@@ -181,7 +181,8 @@ export class NewRecordPanelComponent implements OnInit {
   private stepEvents: { [key: number]: Function } = {
     2: this.editRecord.bind(this),
     3: this.getDatasetInfo.bind(this),
-    4: this.getRecordPreview.bind(this),
+    4: this.buildOverview.bind(this),
+    5: this.getRecordPreview.bind(this),
   };
 
   constructor() {
@@ -240,7 +241,7 @@ export class NewRecordPanelComponent implements OnInit {
       .create(createRequest, {
         headers: {
           // TODO: remove this? Header should be set in the gapi?
-          'X-XSRF-TOKEN': '17666fa5-607b-41d1-92ed-e1819c7da3b6',
+          'X-XSRF-TOKEN': 'bc0e37f3-22c3-42c7-9a41-35f13ea51140',
           Accept: 'application/json', // Accept could be all?
           'Content-Type': 'application/json',
         },
@@ -396,10 +397,31 @@ export class NewRecordPanelComponent implements OnInit {
     }
   }
 
+  overview = signal<string | undefined>(undefined);
+  buildingOverview = signal(false)
+
   buildOverview() {
-    // TODO: need progress indicator
     // TODO: do not try on tabular data
-    return `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasource())}&layer=${this.layername()}`;
+    this.overview.set(undefined);
+    this.buildingOverview.set(true);
+
+    const overviewUrl = !this.datasourceFile()
+      ? `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasource())}&layer=${this.layername()}`
+      : `/api/data/analysis/overviewForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
+    this.http.get(overviewUrl, {responseType: 'arraybuffer'}).subscribe({
+      next: image => {
+        if (image.byteLength > 0) {
+          this.overview.set(overviewUrl);
+        }
+        this.buildingOverview.set(false);
+      },
+      error: error => {
+        this.errorMessage.set(
+          'Error building the overview: ' + error.statusText
+        );
+        this.buildingOverview.set(false);
+      },
+    });
   }
 
   /**
@@ -571,7 +593,7 @@ export class NewRecordPanelComponent implements OnInit {
 
     for (let i = 0; i < event.files.length; i++) {
       const putResourceRequest: PutResourceRequest = {
-        metadataUuid: this.newRecordId(),
+        metadataUuidOrId: this.newRecordId(),
         file: event.files[i],
       };
 
@@ -656,7 +678,7 @@ export class NewRecordPanelComponent implements OnInit {
 
   private retrieveMetadataFiles(): void {
     const getAllResourcesRequest: GetAllResourcesRequest = {
-      metadataUuid: this.newRecordId(),
+      metadataUuidOrId: this.newRecordId(),
     };
 
     this.recordsDataStoreApi()
@@ -675,5 +697,6 @@ export class NewRecordPanelComponent implements OnInit {
         }
       );
   }
+
   protected readonly ResourceTypeLayout = ResourceTypeLayout;
 }
