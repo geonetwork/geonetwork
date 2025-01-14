@@ -4,7 +4,7 @@ allOf:
   - type: object
     required:
       - uriTemplate
-    properties: 
+    properties:
       uriTemplate:
         type: string
         description:

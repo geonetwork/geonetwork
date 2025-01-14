@@ -22,6 +22,6 @@ import org.springframework.http.MediaType;
 @AllArgsConstructor
 // NOTE: see the spotbugs excludes for this class (EI_EXPOSE_REP2 and EI_EXPOSE_REP)
 public class MediaTypeAndName {
-    private MediaType mediaType;
-    private String name;
+  private MediaType mediaType;
+  private String name;
 }

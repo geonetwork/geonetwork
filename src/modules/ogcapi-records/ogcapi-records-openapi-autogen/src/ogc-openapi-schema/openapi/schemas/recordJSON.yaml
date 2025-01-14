@@ -16,7 +16,7 @@ allOf:
           with the resource that this record described.
         oneOf:
           - enum:
-            - null
+              - null
           - $ref: 'time.yaml'
       geometry:
         description:
@@ -24,7 +24,7 @@ allOf:
           the resource that this record described.
         oneOf:
           - enum:
-            - null
+              - null
           - $ref: 'extracted/geometryGeoJSON.yaml'
       conformsTo:
         type: array

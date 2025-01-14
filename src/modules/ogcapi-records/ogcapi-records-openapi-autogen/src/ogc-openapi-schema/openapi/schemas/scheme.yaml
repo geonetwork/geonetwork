@@ -1,13 +1,13 @@
 ---
 type: object
 required:
-  - scheme-id 
+  - scheme-id
   - namespace
 properties:
   scheme-id:
     type: string
     description:
-      An identifier for this namespace.  The identifier can be used as a 
+      An identifier for this namespace.  The identifier can be used as a
       short-form for the namespace.
   namespace:
     type: string

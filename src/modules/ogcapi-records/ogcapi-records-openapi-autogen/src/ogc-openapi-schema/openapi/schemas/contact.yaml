@@ -6,9 +6,9 @@ description: |-
   for the resource.
 anyOf:
   - required:
-    - name
+      - name
   - required:
-    - organization
+      - organization
 properties:
   identifier:
     type: string
@@ -50,7 +50,7 @@ properties:
     type: array
     description: Email addresses at which contact can be made.
     items:
-       $ref: 'extracted/email.yaml'
+      $ref: 'extracted/email.yaml'
   addresses:
     type: array
     title: address

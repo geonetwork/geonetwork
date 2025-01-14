@@ -12,6 +12,7 @@ import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.Data;
@@ -44,7 +45,12 @@ public class IndexClient {
     private Long totalFieldsLimit;
     private CredentialsProvider credentialsProvider;
 
-    /** Constructor. */
+    /**
+     * Constructor.
+     *
+     * <p>objectMapper comes from a spring bean - cf. WebConfig.json. It MUST be configured with
+     * .enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)
+     */
     public IndexClient(
             @Value("${geonetwork.index.url:'http://localhost:9200'}") String serverUrl,
             @Value("${geonetwork.index.username}") String username,
@@ -53,7 +59,8 @@ public class IndexClient {
             @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
             @Value("${geonetwork.index.elasticsearch.settings.maxResultWindow:50000}") Integer maxResultWindow,
             @Value("${geonetwork.index.elasticsearch.settings.mapping.totalFields:10000}") Long totalFieldsLimit,
-            @Value("${geonetwork.indexing.requestimeout:45000}") int requestTimeout) {
+            @Value("${geonetwork.indexing.requestimeout:45000}") int requestTimeout,
+            ObjectMapper objectMapper) {
         this.serverUrl = serverUrl;
         this.defaultIndexPrefix = defaultIndexPrefix;
         this.indexRecordName = indexRecordName;
@@ -77,7 +84,7 @@ public class IndexClient {
 
         RestClient restClient = builder.build();
 
-        JacksonJsonpMapper jacksonJsonpMapper = new JacksonJsonpMapper();
+        JacksonJsonpMapper jacksonJsonpMapper = new JacksonJsonpMapper(objectMapper);
 
         ElasticsearchTransport transport = new RestClientTransport(restClient, jacksonJsonpMapper);
 

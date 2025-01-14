@@ -10,12 +10,14 @@ import lombok.Getter;
 import org.geonetwork.domain.Source;
 import org.geonetwork.index.model.record.IndexRecord;
 
-/** Information about a catalog - the underlying DB Source, and the linked Elastic Index Record (if available). */
+/**
+ * Information about a catalog - the underlying DB Source, and the linked Elastic Index Record (if available).
+ */
 @Getter
 @AllArgsConstructor
 // NOTE: see the spotbugs excludes for this class (EI_EXPOSE_REP2 and EI_EXPOSE_REP)
 public class CatalogInfo {
 
-    private Source source;
-    private IndexRecord linkedIndexRecord;
+  private Source source;
+  private IndexRecord linkedIndexRecord;
 }

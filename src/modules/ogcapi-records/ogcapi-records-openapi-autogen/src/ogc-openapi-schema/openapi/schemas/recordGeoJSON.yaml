@@ -17,12 +17,12 @@ properties:
   time:
     oneOf:
       - enum:
-        - null
+          - null
       - $ref: 'time.yaml'
   geometry:
     oneOf:
       - enum:
-        - null
+          - null
       - $ref: 'extracted/geometryGeoJSON.yaml'
   conformsTo:
     type: array

@@ -1,10 +1,10 @@
 ---
 type: object
 anyOf:
-- required:
-  - name
-- required:
-  - mediaType
+  - required:
+      - name
+  - required:
+      - mediaType
 properties:
   name:
     type: string

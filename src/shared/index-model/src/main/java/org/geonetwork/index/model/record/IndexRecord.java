@@ -687,8 +687,8 @@ public class IndexRecord {
     private List<String> shapes;
 
     @JsonProperty(IndexRecordFieldNames.GEOM)
-    //    @JsonDeserialize(using = NodeTreeAsStringDeserializer.class)
-    //    @JsonSerialize(using = StringAsNodeTreeSerializer.class)
+    @JsonDeserialize(using = GeometryDeserializer.class)
+    @JsonSerialize(using = GeometrySerializer.class)
     // items this will be like:
     // {
     //    "type":"MultiPolygon",

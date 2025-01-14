@@ -29,7 +29,7 @@
       } ]
     }
   },
-  "geom" : [ "{\"type\": \"Polygon\",\"coordinates\": [[[-180,-90],[180,-90],[180,90],[-180,90],[-180,-90]]]}" ],
+  "geom" : [ "{\"type\":\"Polygon\",\"coordinates\":[[[-180,-90],[180,-90],[180,90],[-180,90],[-180,-90]]]}" ],
   "location" : [ "0,0" ],
   "lineageObject" : [ {
     "default" : "Compiled from published vegetation maps of the 8 circumpolar countries."

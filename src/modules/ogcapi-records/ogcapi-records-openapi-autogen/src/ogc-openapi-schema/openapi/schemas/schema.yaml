@@ -32,7 +32,7 @@ properties:
   components:
     $ref: '#/definitions/Components'
 patternProperties:
-  '^x-': {}
+  '^x-': { }
 additionalProperties: false
 definitions:
   Reference:
@@ -63,7 +63,7 @@ definitions:
       version:
         type: string
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
 
@@ -79,7 +79,7 @@ definitions:
         type: string
         format: email
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   License:
@@ -93,7 +93,7 @@ definitions:
         type: string
         format: uri-reference
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   Server:
@@ -110,7 +110,7 @@ definitions:
         additionalProperties:
           $ref: '#/definitions/ServerVariable'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   ServerVariable:
@@ -127,7 +127,7 @@ definitions:
       description:
         type: string
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   Components:
@@ -197,7 +197,7 @@ definitions:
               - $ref: '#/definitions/Reference'
               - $ref: '#/definitions/Callback'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   Schema:
@@ -254,7 +254,7 @@ definitions:
         uniqueItems: true
       enum:
         type: array
-        items: {}
+        items: { }
         minItems: 1
         uniqueItems: false
       type:
@@ -308,7 +308,7 @@ definitions:
         type: string
       format:
         type: string
-      default: {}
+      default: { }
       nullable:
         type: boolean
         default: false
@@ -320,7 +320,7 @@ definitions:
       writeOnly:
         type: boolean
         default: false
-      example: {}
+      example: { }
       externalDocs:
         $ref: '#/definitions/ExternalDocumentation'
       deprecated:
@@ -329,7 +329,7 @@ definitions:
       xml:
         $ref: '#/definitions/XML'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   Discriminator:
@@ -361,7 +361,7 @@ definitions:
         type: boolean
         default: false
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   Response:
@@ -388,7 +388,7 @@ definitions:
             - $ref: '#/definitions/Link'
             - $ref: '#/definitions/Reference'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   MediaType:
@@ -398,7 +398,7 @@ definitions:
         oneOf:
           - $ref: '#/definitions/Schema'
           - $ref: '#/definitions/Reference'
-      example: {}
+      example: { }
       examples:
         type: object
         additionalProperties:
@@ -410,7 +410,7 @@ definitions:
         additionalProperties:
           $ref: '#/definitions/Encoding'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
     allOf:
       - $ref: '#/definitions/ExampleXORExamples'
@@ -422,12 +422,12 @@ definitions:
         type: string
       description:
         type: string
-      value: {}
+      value: { }
       externalValue:
         type: string
         format: uri-reference
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   Header:
@@ -464,7 +464,7 @@ definitions:
           $ref: '#/definitions/MediaType'
         minProperties: 1
         maxProperties: 1
-      example: {}
+      example: { }
       examples:
         type: object
         additionalProperties:
@@ -472,7 +472,7 @@ definitions:
             - $ref: '#/definitions/Example'
             - $ref: '#/definitions/Reference'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
     allOf:
       - $ref: '#/definitions/ExampleXORExamples'
@@ -483,7 +483,7 @@ definitions:
     patternProperties:
       '^\/':
         $ref: '#/definitions/PathItem'
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   PathItem:
@@ -523,7 +523,7 @@ definitions:
             - $ref: '#/definitions/Reference'
         uniqueItems: true
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   Operation:
@@ -574,7 +574,7 @@ definitions:
         items:
           $ref: '#/definitions/Server'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   Responses:
@@ -589,7 +589,7 @@ definitions:
         oneOf:
           - $ref: '#/definitions/Response'
           - $ref: '#/definitions/Reference'
-      '^x-': {}
+      '^x-': { }
     minProperties: 1
     additionalProperties: false
 
@@ -613,7 +613,7 @@ definitions:
       externalDocs:
         $ref: '#/definitions/ExternalDocumentation'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   ExternalDocumentation:
@@ -627,33 +627,33 @@ definitions:
         type: string
         format: uri-reference
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   ExampleXORExamples:
     description: Example and examples are mutually exclusive
     not:
-      required: [example, examples]
+      required: [ example, examples ]
 
   SchemaXORContent:
     description: Schema and content are mutually exclusive, at least one is required
     not:
-      required: [schema, content]
+      required: [ schema, content ]
     oneOf:
-      - required: [schema]
-      - required: [content]
+      - required: [ schema ]
+      - required: [ content ]
         description: Some properties are not allowed if content is present
         allOf:
           - not:
-              required: [style]
+              required: [ style ]
           - not:
-              required: [explode]
+              required: [ explode ]
           - not:
-              required: [allowReserved]
+              required: [ allowReserved ]
           - not:
-              required: [example]
+              required: [ example ]
           - not:
-              required: [examples]
+              required: [ examples ]
 
   Parameter:
     type: object
@@ -690,7 +690,7 @@ definitions:
           $ref: '#/definitions/MediaType'
         minProperties: 1
         maxProperties: 1
-      example: {}
+      example: { }
       examples:
         type: object
         additionalProperties:
@@ -698,7 +698,7 @@ definitions:
             - $ref: '#/definitions/Example'
             - $ref: '#/definitions/Reference'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
     required:
       - name
@@ -716,35 +716,35 @@ definitions:
           - required
         properties:
           in:
-            enum: [path]
+            enum: [ path ]
           style:
-            enum: [matrix, label, simple]
+            enum: [ matrix, label, simple ]
             default: simple
           required:
-            enum: [true]
+            enum: [ true ]
 
       - description: Parameter in query
         properties:
           in:
-            enum: [query]
+            enum: [ query ]
           style:
-            enum: [form, spaceDelimited, pipeDelimited, deepObject]
+            enum: [ form, spaceDelimited, pipeDelimited, deepObject ]
             default: form
 
       - description: Parameter in header
         properties:
           in:
-            enum: [header]
+            enum: [ header ]
           style:
-            enum: [simple]
+            enum: [ simple ]
             default: simple
 
       - description: Parameter in cookie
         properties:
           in:
-            enum: [cookie]
+            enum: [ cookie ]
           style:
-            enum: [form]
+            enum: [ form ]
             default: form
 
   RequestBody:
@@ -762,7 +762,7 @@ definitions:
         type: boolean
         default: false
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   SecurityScheme:
@@ -794,7 +794,7 @@ definitions:
       description:
         type: string
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   HTTPSecurityScheme:
@@ -814,7 +814,7 @@ definitions:
         enum:
           - http
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
     oneOf:
       - description: Bearer
@@ -825,7 +825,7 @@ definitions:
 
       - description: Non Bearer
         not:
-          required: [bearerFormat]
+          required: [ bearerFormat ]
         properties:
           scheme:
             not:
@@ -847,7 +847,7 @@ definitions:
       description:
         type: string
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   OpenIdConnectSecurityScheme:
@@ -866,7 +866,7 @@ definitions:
       description:
         type: string
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   OAuthFlows:
@@ -881,7 +881,7 @@ definitions:
       authorizationCode:
         $ref: '#/definitions/AuthorizationCodeOAuthFlow'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   ImplicitOAuthFlow:
@@ -901,7 +901,7 @@ definitions:
         additionalProperties:
           type: string
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   PasswordOAuthFlow:
@@ -921,7 +921,7 @@ definitions:
         additionalProperties:
           type: string
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   ClientCredentialsFlow:
@@ -941,7 +941,7 @@ definitions:
         additionalProperties:
           type: string
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   AuthorizationCodeOAuthFlow:
@@ -965,7 +965,7 @@ definitions:
         additionalProperties:
           type: string
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
 
   Link:
@@ -978,25 +978,25 @@ definitions:
         format: uri-reference
       parameters:
         type: object
-        additionalProperties: {}
-      requestBody: {}
+        additionalProperties: { }
+      requestBody: { }
       description:
         type: string
       server:
         $ref: '#/definitions/Server'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false
     not:
       description: Operation Id and Operation Ref are mutually exclusive
-      required: [operationId, operationRef]
+      required: [ operationId, operationRef ]
 
   Callback:
     type: object
     additionalProperties:
       $ref: '#/definitions/PathItem'
     patternProperties:
-      '^x-': {}
+      '^x-': { }
 
   Encoding:
     type: object
@@ -1022,5 +1022,5 @@ definitions:
         type: boolean
         default: false
     patternProperties:
-      '^x-': {}
+      '^x-': { }
     additionalProperties: false

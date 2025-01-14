@@ -10,16 +10,22 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-/** simple configuration for links in ogcapi-records. */
+/**
+ * simple configuration for links in ogcapi-records.
+ */
 @Configuration
 @ConfigurationProperties(prefix = "geonetwork.openapi-records.links")
 @Getter
 @Setter
 public class OgcApiLinkConfiguration {
 
-    /** base url to OgcApiRecords - i.e. http://localhost:7979/ogcapi-records */
-    private String ogcApiRecordsBaseUrl;
+  /**
+   * base url to OgcApiRecords - i.e. http://localhost:7979/ogcapi-records
+   */
+  private String ogcApiRecordsBaseUrl;
 
-    /** base URL for geonetwork */
-    private String gnBaseUrl;
+  /**
+   * base URL for geonetwork
+   */
+  private String gnBaseUrl;
 }

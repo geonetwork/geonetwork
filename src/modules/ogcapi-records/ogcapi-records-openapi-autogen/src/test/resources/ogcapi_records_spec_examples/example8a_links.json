@@ -1,1 +1,8 @@
-[{"rel":"search","type":"text/html","title":"WOUDC - Data - Station List","href":"https://woudc.org/data/stations"}]
+[
+  {
+    "rel": "search",
+    "type": "text/html",
+    "title": "WOUDC - Data - Station List",
+    "href": "https://woudc.org/data/stations"
+  }
+]

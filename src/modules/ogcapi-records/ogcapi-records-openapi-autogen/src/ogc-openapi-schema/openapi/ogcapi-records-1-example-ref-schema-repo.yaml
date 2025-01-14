@@ -140,7 +140,7 @@ paths:
       tags:
         - Sortables
       summary: |-
-       get the list of sortable properties
+        get the list of sortable properties
       description: |-
         Fetch the list of properties which can be used to sort the getRecords
         response.
@@ -225,4 +225,4 @@ components:
       type: "openIdConnect"
       openIdConnectUrl: "https://accounts.google.com/.well-known/openid-configuration"
 security:
-  - openIdConnect: []
+  - openIdConnect: [ ]

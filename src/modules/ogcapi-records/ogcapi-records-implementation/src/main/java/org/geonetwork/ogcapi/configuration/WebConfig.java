@@ -8,7 +8,9 @@ package org.geonetwork.ogcapi.configuration;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -19,6 +21,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import static com.fasterxml.jackson.databind.DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS;
 
 /**
  * configuration for the Spring Boot app.
@@ -53,7 +57,14 @@ public class WebConfig implements WebMvcConfigurer {
   @Bean
   @Primary
   public ObjectMapper objectMapper() {
-    var result = new ObjectMapper();
+
+    var result = JsonMapper.builder()
+      .enable(MapperFeature.ALLOW_COERCION_OF_SCALARS)
+      .enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)
+      .build();
+
+    result.configure(UNWRAP_SINGLE_VALUE_ARRAYS, true);
+
     result.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
     result.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
     result.findAndRegisterModules();

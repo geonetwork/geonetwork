@@ -45,8 +45,8 @@ allOf:
       records:
         type: array
         description:
-           An array of records that are part of this catalog that
-           are encoded in-line with the catalog.
+          An array of records that are part of this catalog that
+          are encoded in-line with the catalog.
         items:
           $ref: 'recordGeoJSON.yaml'
       links:

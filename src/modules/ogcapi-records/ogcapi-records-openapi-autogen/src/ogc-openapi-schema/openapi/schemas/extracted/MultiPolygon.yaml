@@ -6,8 +6,8 @@ required:
 properties:
   type:
     type: string
-#    enum:
-#      - MultiPolygon
+  #    enum:
+  #      - MultiPolygon
   coordinates:
     type: array
     items:

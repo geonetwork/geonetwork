@@ -6,8 +6,8 @@ required:
 properties:
   type:
     type: string
-#    enum:
-#      - MultiLineString
+  #    enum:
+  #      - MultiLineString
   coordinates:
     type: array
     items:

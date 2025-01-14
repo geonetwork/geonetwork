@@ -8,7 +8,10 @@ package org.geonetwork.ogcapi.service.configuration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-/** simple configuration for links in ogcapi-records = /collections/{collectionid}/queryables */
+/**
+ * simple configuration for links in ogcapi-records = /collections/{collectionid}/queryables
+ */
 @Configuration
 @ConfigurationProperties(prefix = "geonetwork.openapi-records.links.queryables")
-public class QueryablesPageLinksConfiguration extends BasicLinksConfiguration {}
+public class QueryablesPageLinksConfiguration extends BasicLinksConfiguration {
+}
