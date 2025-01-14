@@ -23,7 +23,6 @@
     <module>indexing</module>
     <module>searching</module>
     <module>editing</module>
-    <module>data-analysis</module>
     <module>ogcapi-records</module>
   </modules>
 
