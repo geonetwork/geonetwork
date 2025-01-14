@@ -2,6 +2,7 @@
 /* eslint-disable */
 export * from './AtomApi';
 export * from './CustomstyleApi';
+export * from './DoiserversApi';
 export * from './FormattersApi';
 export * from './GroupsApi';
 export * from './HarvestersApi';

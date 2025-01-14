@@ -14,65 +14,59 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * Metadata field information to check
  * @export
- * @interface LocalizedString
+ * @interface DuplicatedValueDto
  */
-export interface LocalizedString {
+export interface DuplicatedValueDto {
   /**
    *
    * @type {string}
-   * @memberof LocalizedString
+   * @memberof DuplicatedValueDto
    */
-  href?: string;
+  field?: string;
   /**
    *
    * @type {string}
-   * @memberof LocalizedString
-   */
-  lang?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof LocalizedString
+   * @memberof DuplicatedValueDto
    */
   value?: string;
 }
 
 /**
- * Check if a given object implements the LocalizedString interface.
+ * Check if a given object implements the DuplicatedValueDto interface.
  */
-export function instanceOfLocalizedString(
+export function instanceOfDuplicatedValueDto(
   value: object
-): value is LocalizedString {
+): value is DuplicatedValueDto {
   return true;
 }
 
-export function LocalizedStringFromJSON(json: any): LocalizedString {
-  return LocalizedStringFromJSONTyped(json, false);
+export function DuplicatedValueDtoFromJSON(json: any): DuplicatedValueDto {
+  return DuplicatedValueDtoFromJSONTyped(json, false);
 }
 
-export function LocalizedStringFromJSONTyped(
+export function DuplicatedValueDtoFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean
-): LocalizedString {
+): DuplicatedValueDto {
   if (json == null) {
     return json;
   }
   return {
-    href: json['href'] == null ? undefined : json['href'],
-    lang: json['lang'] == null ? undefined : json['lang'],
+    field: json['field'] == null ? undefined : json['field'],
     value: json['value'] == null ? undefined : json['value'],
   };
 }
 
-export function LocalizedStringToJSON(value?: LocalizedString | null): any {
+export function DuplicatedValueDtoToJSON(
+  value?: DuplicatedValueDto | null
+): any {
   if (value == null) {
     return value;
   }
   return {
-    href: value['href'],
-    lang: value['lang'],
+    field: value['field'],
     value: value['value'],
   };
 }

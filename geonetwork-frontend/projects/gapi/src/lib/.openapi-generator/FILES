@@ -1,5 +1,6 @@
 apis/AtomApi.ts
 apis/CustomstyleApi.ts
+apis/DoiserversApi.ts
 apis/FormattersApi.ts
 apis/GroupsApi.ts
 apis/HarvestersApi.ts
@@ -34,6 +35,7 @@ apis/UserselectionsApi.ts
 apis/index.ts
 index.ts
 models/Address.ts
+models/AnonymousDoiServer.ts
 models/AnonymousMapserver.ts
 models/Associated.ts
 models/AssociatedRecord.ts
@@ -49,6 +51,8 @@ models/Crs.ts
 models/Dataset.ts
 models/Description.ts
 models/Direction.ts
+models/DoiServerDto.ts
+models/DuplicatedValueDto.ts
 models/Element.ts
 models/Entry.ts
 models/ExtentDto.ts
@@ -112,7 +116,6 @@ models/Patterns.ts
 models/ProcessingReport.ts
 models/ProxyConfiguration.ts
 models/PublicationOption.ts
-models/PutResourceRequest.ts
 models/RatingAverage.ts
 models/RatingCriteria.ts
 models/RegionResponse.ts

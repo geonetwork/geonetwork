@@ -11,12 +11,12 @@
       "name": "GPL 2.0",
       "url": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html"
     },
-    "title": "GeoNetwork 4.4.6 OpenAPI Documentation",
-    "version": "4.4.6"
+    "title": "GeoNetwork 4.4.7 OpenAPI Documentation",
+    "version": "4.4.7"
   },
   "externalDocs": {
     "description": "Learn how to access the catalog using the GeoNetwork REST API.",
-    "url": "http://localhost:8080/geonetwork/doc/api"
+    "url": "http://localhost:7979/geonetwork/doc/api"
   },
   "servers": [
     {
@@ -25,25 +25,34 @@
       "variables": {
         "catalog": {
           "description": "The GeoNetwork catalog to contact",
-          "default": "http://localhost:8080/geonetwork",
-          "enum": ["http://localhost:8080/geonetwork", "../.."]
+          "default": "http://localhost:7979/geonetwork",
+          "enum": [
+            "http://localhost:7979/geonetwork",
+            "../.."
+          ]
         },
         "portal": {
           "description": "The thematic portal",
           "default": "srv",
-          "enum": ["srv"]
+          "enum": [
+            "srv"
+          ]
         }
       }
     }
   ],
   "tags": [
     {
+      "description": "Catalog operations",
+      "name": "site"
+    },
+    {
       "description": "Standard related operations",
       "name": "standards"
     },
     {
-      "description": "Catalog operations",
-      "name": "site"
+      "description": "DOI servers related operations",
+      "name": "doiservers"
     },
     {
       "description": "Mapservices related operations",
@@ -138,12 +147,12 @@
       "name": "mapservers"
     },
     {
-      "description": "Logos operations",
-      "name": "logos"
-    },
-    {
       "description": "User selections related operations",
       "name": "userselections"
+    },
+    {
+      "description": "Logos operations",
+      "name": "logos"
     },
     {
       "description": "Identifiers operations",
@@ -154,12 +163,12 @@
       "name": "me"
     },
     {
-      "description": "Regions operations",
-      "name": "regions"
-    },
-    {
       "description": "User custom searches operations",
       "name": "usersearches"
+    },
+    {
+      "description": "Regions operations",
+      "name": "regions"
     },
     {
       "description": "User interface configuration operations",
@@ -216,7 +225,9 @@
           }
         },
         "summary": "Describe resource",
-        "tags": ["atom"]
+        "tags": [
+          "atom"
+        ]
       }
     },
     "/atom/describe/service/{metadataUuid}": {
@@ -243,7 +254,9 @@
           }
         },
         "summary": "Describe service",
-        "tags": ["atom"]
+        "tags": [
+          "atom"
+        ]
       }
     },
     "/atom/download/resource": {
@@ -289,7 +302,9 @@
           }
         },
         "summary": "Get a data file related to dataset",
-        "tags": ["atom"]
+        "tags": [
+          "atom"
+        ]
       }
     },
     "/atom/feeds": {
@@ -328,7 +343,9 @@
           }
         },
         "summary": "Get ATOM feeds",
-        "tags": ["atom"]
+        "tags": [
+          "atom"
+        ]
       }
     },
     "/atom/scan": {
@@ -351,7 +368,9 @@
           }
         },
         "summary": "Scan records for ATOM feeds",
-        "tags": ["atom"]
+        "tags": [
+          "atom"
+        ]
       }
     },
     "/customstyle": {
@@ -374,7 +393,9 @@
           }
         },
         "summary": "Get CssStyleSettings",
-        "tags": ["customstyle"]
+        "tags": [
+          "customstyle"
+        ]
       },
       "post": {
         "description": "Saves custom style variables.",
@@ -402,7 +423,301 @@
           }
         },
         "summary": "Saves custom style variables.",
-        "tags": ["customstyle"]
+        "tags": [
+          "customstyle"
+        ]
+      }
+    },
+    "/doiservers": {
+      "get": {
+        "operationId": "getDoiServers_1",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnonymousDoiServer"
+                  }
+                }
+              }
+            },
+            "description": "List of all DOI servers."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnonymousDoiServer"
+                  }
+                }
+              }
+            },
+            "description": "Operation not allowed. Only Administrators can access it."
+          }
+        },
+        "summary": "Get DOI servers",
+        "tags": [
+          "doiservers"
+        ]
+      },
+      "put": {
+        "description": "Return the id of the newly created DOI server.",
+        "operationId": "addDoiServer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoiServerDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            },
+            "description": "DOI server created."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            },
+            "description": "Bad parameters."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            },
+            "description": "Operation not allowed. Only Administrators can access it."
+          }
+        },
+        "summary": "Add a DOI server",
+        "tags": [
+          "doiservers"
+        ]
+      }
+    },
+    "/doiservers/metadata/{metadataId}": {
+      "get": {
+        "operationId": "getDoiServers",
+        "parameters": [
+          {
+            "description": "Metadata UUID",
+            "in": "path",
+            "name": "metadataId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnonymousDoiServer"
+                  }
+                }
+              }
+            },
+            "description": "List of all DOI servers where a metadata can be published."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnonymousDoiServer"
+                  }
+                }
+              }
+            },
+            "description": "Operation not allowed. Only Administrators can access it."
+          }
+        },
+        "summary": "Get DOI servers that can be used with a metadata",
+        "tags": [
+          "doiservers"
+        ]
+      }
+    },
+    "/doiservers/{doiServerId}": {
+      "delete": {
+        "operationId": "deleteMapserver",
+        "parameters": [
+          {
+            "description": "DOI server identifier",
+            "in": "path",
+            "name": "doiServerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "DOI server removed."
+          },
+          "403": {
+            "description": "Operation not allowed. Only Administrators can access it."
+          },
+          "404": {
+            "description": "Resource not found."
+          }
+        },
+        "summary": "Remove a DOI server",
+        "tags": [
+          "doiservers"
+        ]
+      },
+      "get": {
+        "operationId": "getDoiServer",
+        "parameters": [
+          {
+            "description": "DOI server identifier",
+            "in": "path",
+            "name": "doiServerId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnonymousDoiServer"
+                }
+              }
+            },
+            "description": "Operation not allowed. Only Editors can access it."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnonymousDoiServer"
+                }
+              }
+            },
+            "description": "Resource not found."
+          }
+        },
+        "summary": "Get a DOI Server",
+        "tags": [
+          "doiservers"
+        ]
+      },
+      "put": {
+        "operationId": "updateDoiServer",
+        "parameters": [
+          {
+            "description": "DOI server identifier",
+            "in": "path",
+            "name": "doiServerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoiServerDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "DOI server updated."
+          },
+          "403": {
+            "description": "Operation not allowed. Only Administrators can access it."
+          },
+          "404": {
+            "description": "Resource not found."
+          }
+        },
+        "summary": "Update a DOI server",
+        "tags": [
+          "doiservers"
+        ]
+      }
+    },
+    "/doiservers/{doiServerId}/auth": {
+      "post": {
+        "operationId": "updateDoiServerAuth",
+        "parameters": [
+          {
+            "description": "DOI server identifier",
+            "in": "path",
+            "name": "doiServerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "description": "Password",
+            "in": "query",
+            "name": "password",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "DOI server updated."
+          },
+          "403": {
+            "description": "Operation not allowed. Only Administrators can access it."
+          },
+          "404": {
+            "description": "Resource not found."
+          }
+        },
+        "summary": "Update a DOI server authentication",
+        "tags": [
+          "doiservers"
+        ]
       }
     },
     "/formatters": {
@@ -466,7 +781,9 @@
           }
         },
         "summary": "Get formatters",
-        "tags": ["formatters"]
+        "tags": [
+          "formatters"
+        ]
       },
       "post": {
         "operationId": "addFormatter",
@@ -491,7 +808,9 @@
           }
         },
         "summary": "Import a XSLT formatter (usually a zip named 'schema-formatter.zip')",
-        "tags": ["formatters"]
+        "tags": [
+          "formatters"
+        ]
       }
     },
     "/formatters/cache": {
@@ -507,7 +826,9 @@
           }
         },
         "summary": "Clear formatter cache",
-        "tags": ["formatters"]
+        "tags": [
+          "formatters"
+        ]
       }
     },
     "/formatters/{schema}/{formatter}": {
@@ -537,7 +858,9 @@
           }
         },
         "summary": "Delete a formatter",
-        "tags": ["formatters"]
+        "tags": [
+          "formatters"
+        ]
       },
       "get": {
         "operationId": "downloadFormatter",
@@ -565,7 +888,9 @@
           }
         },
         "summary": "Download a formatter as ZIP",
-        "tags": ["formatters"]
+        "tags": [
+          "formatters"
+        ]
       }
     },
     "/formatters/{schema}/{formatter}/files": {
@@ -602,7 +927,9 @@
           }
         },
         "summary": "Get formatter files",
-        "tags": ["formatters"]
+        "tags": [
+          "formatters"
+        ]
       }
     },
     "/formatters/{schema}/{formatter}/files/{file}": {
@@ -647,7 +974,9 @@
           }
         },
         "summary": "Get formatter file content",
-        "tags": ["formatters"]
+        "tags": [
+          "formatters"
+        ]
       },
       "post": {
         "operationId": "updateFormatterFile",
@@ -691,7 +1020,9 @@
           }
         },
         "summary": "Update formatter file",
-        "tags": ["formatters"]
+        "tags": [
+          "formatters"
+        ]
       }
     },
     "/groups": {
@@ -735,7 +1066,9 @@
           }
         },
         "summary": "Get groups",
-        "tags": ["groups"]
+        "tags": [
+          "groups"
+        ]
       },
       "put": {
         "description": "Return the identifier of the group created.",
@@ -786,7 +1119,9 @@
           }
         },
         "summary": "Add a group",
-        "tags": ["groups"]
+        "tags": [
+          "groups"
+        ]
       }
     },
     "/groups/{groupIdentifier}": {
@@ -827,7 +1162,9 @@
           }
         },
         "summary": "Remove a group",
-        "tags": ["groups"]
+        "tags": [
+          "groups"
+        ]
       },
       "get": {
         "description": "Return the requested group details.",
@@ -867,7 +1204,9 @@
           }
         },
         "summary": "Get group",
-        "tags": ["groups"]
+        "tags": [
+          "groups"
+        ]
       },
       "put": {
         "operationId": "updateGroup",
@@ -905,7 +1244,9 @@
           }
         },
         "summary": "Update a group",
-        "tags": ["groups"]
+        "tags": [
+          "groups"
+        ]
       }
     },
     "/groups/{groupIdentifier}/users": {
@@ -965,7 +1306,9 @@
           }
         },
         "summary": "Get group users",
-        "tags": ["groups"]
+        "tags": [
+          "groups"
+        ]
       }
     },
     "/groups/{groupId}/logo": {
@@ -990,7 +1333,9 @@
           }
         },
         "summary": "Get the group logo image.",
-        "tags": ["groups"]
+        "tags": [
+          "groups"
+        ]
       }
     },
     "/harvesters/properties/{property}": {
@@ -1259,7 +1604,9 @@
           }
         },
         "summary": "Check if a harvester name or host already exist",
-        "tags": ["harvesters"]
+        "tags": [
+          "harvesters"
+        ]
       }
     },
     "/harvesters/{harvesterUuid}/assign": {
@@ -1451,7 +1798,9 @@
           }
         },
         "summary": "Assign harvester records to a new source",
-        "tags": ["harvesters"]
+        "tags": [
+          "harvesters"
+        ]
       }
     },
     "/i18n/cache": {
@@ -1463,7 +1812,9 @@
           }
         },
         "summary": "Clean translation packages cache.",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/i18n/db": {
@@ -1498,7 +1849,9 @@
           }
         },
         "summary": "List translations for database description table",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/i18n/db/custom": {
@@ -1533,7 +1886,9 @@
           }
         },
         "summary": "List custom user translations",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/i18n/db/translations": {
@@ -1545,7 +1900,9 @@
           }
         },
         "summary": "Remove all database translations.",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       },
       "get": {
         "operationId": "getDbTranslations",
@@ -1570,7 +1927,9 @@
           }
         },
         "summary": "List database translations (used to overrides client application translations).",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       },
       "put": {
         "operationId": "addTranslations",
@@ -1610,7 +1969,9 @@
           }
         },
         "summary": "Add or update all database translations.",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/i18n/db/translations/{key}": {
@@ -1634,7 +1995,9 @@
           }
         },
         "summary": "Delete database translations.",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       },
       "put": {
         "description": "Database translations can be used to customize labels in the UI for different languages.",
@@ -1691,7 +2054,9 @@
           }
         },
         "summary": "Add or update database translations for a key.",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/i18n/packages": {
@@ -1716,7 +2081,9 @@
           }
         },
         "summary": "Get list of translation packages.",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/i18n/packages/{pack}": {
@@ -1748,12 +2115,14 @@
           }
         },
         "summary": "Get a translation package.",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/identifiers": {
       "get": {
-        "description": "Identifier templates are used to create record UUIDs havind a particular structure. The template will be used when user creates a new record. The template identifier to use is defined in the administration > settings.",
+        "description": "Identifier templates are used to create record UUIDs having a particular structure. The template will be used when user creates a new record. The identifier template to use is defined in the admin console > metadata and templates.",
         "operationId": "getIdentifiers",
         "parameters": [
           {
@@ -1796,7 +2165,9 @@
           }
         },
         "summary": "Get identifier templates",
-        "tags": ["identifiers"]
+        "tags": [
+          "identifiers"
+        ]
       },
       "put": {
         "operationId": "addIdentifier",
@@ -1835,7 +2206,9 @@
           }
         },
         "summary": "Add an identifier template",
-        "tags": ["identifiers"]
+        "tags": [
+          "identifiers"
+        ]
       }
     },
     "/identifiers/{identifier}": {
@@ -1865,7 +2238,9 @@
           }
         },
         "summary": "Remove an identifier template",
-        "tags": ["identifiers"]
+        "tags": [
+          "identifiers"
+        ]
       },
       "put": {
         "operationId": "updateIdentifier",
@@ -1903,7 +2278,9 @@
           }
         },
         "summary": "Update an identifier template",
-        "tags": ["identifiers"]
+        "tags": [
+          "identifiers"
+        ]
       }
     },
     "/isolanguages": {
@@ -1926,7 +2303,9 @@
           }
         },
         "summary": "Get ISO languages",
-        "tags": ["languages"]
+        "tags": [
+          "languages"
+        ]
       }
     },
     "/languages": {
@@ -1949,7 +2328,9 @@
           }
         },
         "summary": "Get languages",
-        "tags": ["languages"]
+        "tags": [
+          "languages"
+        ]
       }
     },
     "/languages/application": {
@@ -1972,7 +2353,9 @@
           }
         },
         "summary": "Get languages available in the application",
-        "tags": ["languages"]
+        "tags": [
+          "languages"
+        ]
       }
     },
     "/languages/{langCode}": {
@@ -2002,7 +2385,9 @@
           }
         },
         "summary": "Remove a language",
-        "tags": ["languages"]
+        "tags": [
+          "languages"
+        ]
       },
       "put": {
         "description": "Add all default translations from all *Desc tables in the database. This operation will only add translations for a default catalog installation. Defaults can be customized in SQL scripts located in WEB-INF/classes/setup/sql/data/*.",
@@ -2030,7 +2415,9 @@
           }
         },
         "summary": "Add a language",
-        "tags": ["languages"]
+        "tags": [
+          "languages"
+        ]
       }
     },
     "/logos": {
@@ -2054,7 +2441,9 @@
           }
         },
         "summary": "Get all logos",
-        "tags": ["logos"]
+        "tags": [
+          "logos"
+        ]
       },
       "post": {
         "operationId": "addLogo",
@@ -2107,7 +2496,9 @@
           }
         },
         "summary": "Add a logo",
-        "tags": ["logos"]
+        "tags": [
+          "logos"
+        ]
       }
     },
     "/logos/{file}": {
@@ -2136,7 +2527,9 @@
           }
         },
         "summary": "Remove a logo",
-        "tags": ["logos"]
+        "tags": [
+          "logos"
+        ]
       },
       "get": {
         "operationId": "getLogo",
@@ -2163,7 +2556,9 @@
           }
         },
         "summary": "Get a logo",
-        "tags": ["logos"]
+        "tags": [
+          "logos"
+        ]
       }
     },
     "/mapservers": {
@@ -2199,7 +2594,9 @@
           }
         },
         "summary": "Get mapservers",
-        "tags": ["mapservers"]
+        "tags": [
+          "mapservers"
+        ]
       },
       "put": {
         "description": "Return the id of the newly created mapserver.",
@@ -2250,12 +2647,14 @@
           }
         },
         "summary": "Add a mapserver",
-        "tags": ["mapservers"]
+        "tags": [
+          "mapservers"
+        ]
       }
     },
     "/mapservers/{mapserverId}": {
       "delete": {
-        "operationId": "deleteMapserver",
+        "operationId": "deleteMapserver_1",
         "parameters": [
           {
             "description": "Mapserver identifier",
@@ -2280,7 +2679,9 @@
           }
         },
         "summary": "Remove a mapserver",
-        "tags": ["mapservers"]
+        "tags": [
+          "mapservers"
+        ]
       },
       "get": {
         "operationId": "getMapserver",
@@ -2318,7 +2719,9 @@
           }
         },
         "summary": "Get a mapserver",
-        "tags": ["mapservers"]
+        "tags": [
+          "mapservers"
+        ]
       },
       "put": {
         "operationId": "updateMapserver",
@@ -2356,7 +2759,9 @@
           }
         },
         "summary": "Update a mapserver",
-        "tags": ["mapservers"]
+        "tags": [
+          "mapservers"
+        ]
       }
     },
     "/mapservers/{mapserverId}/auth": {
@@ -2405,7 +2810,9 @@
           }
         },
         "summary": "Update a mapserver authentication",
-        "tags": ["mapservers"]
+        "tags": [
+          "mapservers"
+        ]
       }
     },
     "/mapservers/{mapserverId}/records/{metadataUuid}": {
@@ -2473,7 +2880,9 @@
           }
         },
         "summary": "Remove a metadata mapserver resource",
-        "tags": ["mapservers"]
+        "tags": [
+          "mapservers"
+        ]
       },
       "get": {
         "operationId": "getMapserverResource",
@@ -2539,7 +2948,9 @@
           }
         },
         "summary": "Check metadata mapserver resource is published ",
-        "tags": ["mapservers"]
+        "tags": [
+          "mapservers"
+        ]
       },
       "put": {
         "operationId": "publishMapserverResource",
@@ -2605,7 +3016,9 @@
           }
         },
         "summary": "Publish a metadata resource in a mapserver",
-        "tags": ["mapservers"]
+        "tags": [
+          "mapservers"
+        ]
       }
     },
     "/mapservices": {
@@ -2628,7 +3041,9 @@
           }
         },
         "summary": "Get mapservices",
-        "tags": ["mapservices"]
+        "tags": [
+          "mapservices"
+        ]
       }
     },
     "/me": {
@@ -2651,7 +3066,9 @@
           }
         },
         "summary": "Get information about me",
-        "tags": ["me"]
+        "tags": [
+          "me"
+        ]
       }
     },
     "/operations": {
@@ -2674,7 +3091,9 @@
           }
         },
         "summary": "Get operations",
-        "tags": ["operations"]
+        "tags": [
+          "operations"
+        ]
       }
     },
     "/pages": {
@@ -2713,7 +3132,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["LINK", "HTML", "HTMLPAGE", "TEXT"]
+              "enum": [
+                "LINK",
+                "HTML",
+                "HTMLPAGE",
+                "TEXT"
+              ]
             }
           }
         ],
@@ -2733,7 +3157,9 @@
           }
         },
         "summary": "List all pages according to the filters",
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       },
       "post": {
         "description": "<p>Is not possible to load a link and a file at the same time.</p> <a href='https://geonetwork-opensource.org/manuals/4.0.x/en/customizing-application/adding-static-pages.html'>More info</a>",
@@ -2781,7 +3207,13 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["PUBLIC", "PUBLIC_ONLY", "PRIVATE", "HIDDEN"]
+              "enum": [
+                "PUBLIC",
+                "PUBLIC_ONLY",
+                "GROUPS",
+                "PRIVATE",
+                "HIDDEN"
+              ]
             }
           },
           {
@@ -2790,7 +3222,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["LINK", "HTML", "HTMLPAGE", "TEXT"]
+              "enum": [
+                "LINK",
+                "HTML",
+                "HTMLPAGE",
+                "TEXT"
+              ]
             }
           }
         ],
@@ -2807,7 +3244,9 @@
                     "example": null
                   }
                 },
-                "required": ["data"]
+                "required": [
+                  "data"
+                ]
               }
             }
           }
@@ -2865,7 +3304,9 @@
           }
         },
         "summary": "Add a page by uploading a file",
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       },
       "put": {
         "description": "<p>Is not possible to load a link and a file at the same time.</p> <a href='https://geonetwork-opensource.org/manuals/4.0.x/en/customizing-application/adding-static-pages.html'>More info</a>",
@@ -2933,7 +3374,9 @@
           }
         },
         "summary": "Add a page",
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       }
     },
     "/pages/config/formats": {
@@ -2947,7 +3390,12 @@
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "enum": ["LINK", "HTML", "HTMLPAGE", "TEXT"]
+                    "enum": [
+                      "LINK",
+                      "HTML",
+                      "HTMLPAGE",
+                      "TEXT"
+                    ]
                   }
                 }
               }
@@ -2955,7 +3403,9 @@
             "description": "Page found"
           }
         },
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       }
     },
     "/pages/config/sections": {
@@ -2985,7 +3435,9 @@
             "description": "Page found"
           }
         },
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       }
     },
     "/pages/config/status": {
@@ -2999,7 +3451,13 @@
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "enum": ["PUBLIC", "PUBLIC_ONLY", "PRIVATE", "HIDDEN"]
+                    "enum": [
+                      "PUBLIC",
+                      "PUBLIC_ONLY",
+                      "GROUPS",
+                      "PRIVATE",
+                      "HIDDEN"
+                    ]
                   }
                 }
               }
@@ -3007,7 +3465,9 @@
             "description": "Page found"
           }
         },
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       }
     },
     "/pages/{language}/{pageId}": {
@@ -3044,7 +3504,9 @@
           }
         },
         "summary": "Delete a page",
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       },
       "get": {
         "description": "<a href='https://geonetwork-opensource.org/manuals/4.0.x/en/customizing-application/adding-static-pages.html'>More info</a>",
@@ -3100,7 +3562,9 @@
           }
         },
         "summary": "Return the page object details except the content",
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       },
       "put": {
         "description": "<a href='https://geonetwork-opensource.org/manuals/4.0.x/en/customizing-application/adding-static-pages.html'>More info</a>",
@@ -3142,7 +3606,9 @@
           }
         },
         "summary": "Update a page",
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       }
     },
     "/pages/{language}/{pageId}/content": {
@@ -3200,7 +3666,9 @@
           }
         },
         "summary": "Return the static html content identified by pageId",
-        "tags": ["pages"]
+        "tags": [
+          "pages"
+        ]
       }
     },
     "/processes/db/search-and-replace": {
@@ -3254,7 +3722,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["patch", "diff", "diffhtml"]
+              "enum": [
+                "patch",
+                "diff",
+                "diffhtml"
+              ]
             }
           },
           {
@@ -3312,7 +3784,9 @@
           }
         },
         "summary": "Preview of search and replace text.",
-        "tags": ["processes"]
+        "tags": [
+          "processes"
+        ]
       },
       "post": {
         "description": "Process a metadata with an XSL transformation declared in the metadata schema (See the process folder). Parameters sent to the service are forwarded to XSL process.",
@@ -3423,7 +3897,9 @@
           }
         },
         "summary": "Apply a database search and replace to one or more records",
-        "tags": ["processes"]
+        "tags": [
+          "processes"
+        ]
       }
     },
     "/processes/reports": {
@@ -3438,7 +3914,9 @@
           }
         },
         "summary": "Clear process reports list",
-        "tags": ["processes"]
+        "tags": [
+          "processes"
+        ]
       },
       "get": {
         "description": "When processing, the report is stored in memory and allows to retrieve progress repport during processing. Usually, process reports are returned by the synchronous processing operation.",
@@ -3472,7 +3950,9 @@
           }
         },
         "summary": "Get current process reports",
-        "tags": ["processes"]
+        "tags": [
+          "processes"
+        ]
       }
     },
     "/processes/search-and-replace": {
@@ -3565,7 +4045,9 @@
           }
         },
         "summary": "Search and replace values in one or more ISO19139 records",
-        "tags": ["processes"]
+        "tags": [
+          "processes"
+        ]
       }
     },
     "/processes/{process}": {
@@ -3589,7 +4071,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["patch", "diff", "diffhtml"]
+              "enum": [
+                "patch",
+                "diff",
+                "diffhtml"
+              ]
             }
           },
           {
@@ -3659,7 +4145,9 @@
           }
         },
         "summary": "Preview process result applied to one or more records",
-        "tags": ["processes"]
+        "tags": [
+          "processes"
+        ]
       },
       "post": {
         "description": "Process a metadata with an XSL transformation declared in the metadata schema (See the process folder). Parameters sent to the service are forwarded to XSL process.",
@@ -3740,7 +4228,9 @@
           }
         },
         "summary": "Apply a process to one or more records",
-        "tags": ["processes"]
+        "tags": [
+          "processes"
+        ]
       }
     },
     "/records": {
@@ -3803,7 +4293,9 @@
           }
         },
         "summary": "Delete one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "get": {
         "description": ".",
@@ -3888,7 +4380,9 @@
           }
         },
         "summary": "Get catalog content as RDF. This endpoint supports the same Lucene query parameters as for the GUI search.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "post": {
         "description": "Add record in the catalog by uploading files.",
@@ -4053,7 +4547,9 @@
           }
         },
         "summary": "Add a record from XML or MEF/ZIP file",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "description": "Add one or more record from an XML fragment, URL or file in a folder on the catalog server. When loadingfrom the catalog server folder, it might be faster to use a local filesystem harvester.",
@@ -4245,7 +4741,9 @@
           }
         },
         "summary": "Add a record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/approve": {
@@ -4284,7 +4782,9 @@
           }
         },
         "summary": "Set the records status to approved",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/backups": {
@@ -4304,7 +4804,9 @@
           }
         },
         "summary": "Trigger MEF backup archive",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/backups/latest": {
@@ -4326,7 +4828,9 @@
           }
         },
         "summary": "Download MEF backup archive",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/batchediting": {
@@ -4401,7 +4905,9 @@
           }
         },
         "summary": "Edit a set of records by XPath expressions. This operations applies the update-fixed-info.xsl transformation for the metadata schema and updates the change date if the parameter updateDateStamp is set to true.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/batchediting/preview": {
@@ -4436,7 +4942,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["patch", "diff", "diffhtml"]
+              "enum": [
+                "patch",
+                "diff",
+                "diffhtml"
+              ]
             }
           }
         ],
@@ -4476,7 +4986,9 @@
           }
         },
         "summary": "Preview edits made by XPath expressions.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/csv": {
@@ -4569,7 +5081,9 @@
           }
         },
         "summary": "Get a set of metadata records as CSV",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/duplicate": {
@@ -4696,7 +5210,9 @@
           }
         },
         "summary": "Create a new record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/importfrommap": {
@@ -4819,6 +5335,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "description": "Schema",
+            "in": "query",
+            "name": "schema",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "iso19139"
+            }
           }
         ],
         "responses": {
@@ -4844,7 +5370,9 @@
           }
         },
         "summary": "Add a map metadata record from OGC OWS context",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/index": {
@@ -4897,7 +5425,9 @@
           }
         },
         "summary": "Index a set of records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/links": {
@@ -4909,7 +5439,9 @@
           }
         },
         "summary": "Remove all links and status history",
-        "tags": ["links"]
+        "tags": [
+          "links"
+        ]
       },
       "get": {
         "operationId": "getRecordLinks",
@@ -5012,7 +5544,9 @@
           }
         },
         "summary": "Get record links",
-        "tags": ["links"]
+        "tags": [
+          "links"
+        ]
       },
       "post": {
         "operationId": "getRecordLinksPost",
@@ -5115,7 +5649,9 @@
           }
         },
         "summary": "Get record links",
-        "tags": ["links"]
+        "tags": [
+          "links"
+        ]
       }
     },
     "/records/links/analyze": {
@@ -5177,7 +5713,9 @@
           }
         },
         "summary": "Analyze records links",
-        "tags": ["links"]
+        "tags": [
+          "links"
+        ]
       }
     },
     "/records/links/analyzeurl": {
@@ -5203,7 +5741,9 @@
           }
         },
         "summary": "Analyze one or more links",
-        "tags": ["links"]
+        "tags": [
+          "links"
+        ]
       }
     },
     "/records/links/csv": {
@@ -5301,7 +5841,9 @@
             "description": "OK"
           }
         },
-        "tags": ["links"]
+        "tags": [
+          "links"
+        ]
       }
     },
     "/records/ownership": {
@@ -5384,7 +5926,9 @@
           }
         },
         "summary": "Set group and owner for one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/pdf": {
@@ -5432,7 +5976,9 @@
           }
         },
         "summary": "Get a set of metadata records as PDF",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/publish": {
@@ -5494,7 +6040,9 @@
           }
         },
         "summary": "Publish one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/samples": {
@@ -5539,7 +6087,9 @@
           }
         },
         "summary": "Add samples",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/sharing": {
@@ -5568,7 +6118,9 @@
           }
         },
         "summary": "Get record sharing settings",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "description": "See record sharing for more details.",
@@ -5629,7 +6181,9 @@
           }
         },
         "summary": "Set sharing settings for one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/sharing/options": {
@@ -5651,7 +6205,9 @@
           }
         },
         "summary": "Get publication options.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/status/search": {
@@ -5667,7 +6223,11 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": ["workflow", "task", "event"]
+                "enum": [
+                  "workflow",
+                  "task",
+                  "event"
+                ]
               }
             }
           },
@@ -5687,7 +6247,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["ASC", "DESC"]
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
             }
           },
           {
@@ -5823,7 +6386,9 @@
           }
         },
         "summary": "Search status",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/submit": {
@@ -5862,7 +6427,9 @@
           }
         },
         "summary": "Set the records status to submitted",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/tags": {
@@ -5927,7 +6494,9 @@
           }
         },
         "summary": "Delete tags to one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "operationId": "tagRecords",
@@ -6013,7 +6582,9 @@
           }
         },
         "summary": "Add or remove tags to one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/templates": {
@@ -6058,7 +6629,9 @@
           }
         },
         "summary": "Add templates",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/unpublish": {
@@ -6120,7 +6693,9 @@
           }
         },
         "summary": "Un-publish one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/validate": {
@@ -6172,7 +6747,9 @@
           }
         },
         "summary": "Clear validation status of one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "description": "Update validation status for all records.",
@@ -6233,7 +6810,9 @@
           }
         },
         "summary": "Validate one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/validate/inspire": {
@@ -6295,7 +6874,9 @@
           }
         },
         "summary": "Validate one or more records in INSPIRE validator",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/versions": {
@@ -6337,7 +6918,9 @@
           }
         },
         "summary": "(Experimental) Enable version control for one or more records",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/zip": {
@@ -6374,7 +6957,11 @@
             "schema": {
               "type": "string",
               "default": "full",
-              "enum": ["SIMPLE", "PARTIAL", "FULL"]
+              "enum": [
+                "SIMPLE",
+                "PARTIAL",
+                "FULL"
+              ]
             }
           },
           {
@@ -6436,7 +7023,9 @@
           }
         },
         "summary": "Get a set of metadata records as ZIP",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}": {
@@ -6476,7 +7065,9 @@
           }
         },
         "summary": "Delete a record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "get": {
         "description": "Accept header should indicate which is the appropriate format to return. It could be text/html, application/xml, application/zip, ...If no appropriate Accept header found, the XML format is returned.Depending on the accept header the appropriate formatter is used. When requesting a ZIP, a MEF version 2 file is returned. When requesting HTML, the default formatter is used.",
@@ -6594,7 +7185,9 @@
           }
         },
         "summary": "Get a metadata record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/alert": {
@@ -6730,7 +7323,9 @@
           }
         },
         "summary": "Send an email to catalogue administrator or record's contact",
-        "tags": ["userfeedback"]
+        "tags": [
+          "userfeedback"
+        ]
       }
     },
     "/records/{metadataUuid}/associated": {
@@ -6829,7 +7424,9 @@
           }
         },
         "summary": "Get record associated resources",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/attachments": {
@@ -6867,7 +7464,9 @@
           }
         },
         "summary": "Delete all uploaded metadata resources",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "get": {
         "description": "<a href='https://docs.geonetwork-opensource.org/latest/user-guide/associating-resources/using-filestore/'>More info</a>",
@@ -6892,7 +7491,10 @@
             "schema": {
               "type": "string",
               "default": "name",
-              "enum": ["type", "name"]
+              "enum": [
+                "type",
+                "name"
+              ]
             }
           },
           {
@@ -6945,7 +7547,9 @@
           }
         },
         "summary": "List all metadata attachments",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "post": {
         "operationId": "putResource",
@@ -6969,7 +7573,10 @@
             "schema": {
               "type": "string",
               "default": "public",
-              "enum": ["PUBLIC", "PRIVATE"]
+              "enum": [
+                "PUBLIC",
+                "PRIVATE"
+              ]
             }
           },
           {
@@ -6986,7 +7593,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "example": null,
@@ -6998,7 +7605,9 @@
                     "example": null
                   }
                 },
-                "required": ["file"]
+                "required": [
+                  "file"
+                ]
               }
             }
           }
@@ -7026,7 +7635,9 @@
           }
         },
         "summary": "Create a new resource for a given metadata",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "operationId": "putResourceFromURL",
@@ -7050,7 +7661,10 @@
             "schema": {
               "type": "string",
               "default": "public",
-              "enum": ["PUBLIC", "PRIVATE"]
+              "enum": [
+                "PUBLIC",
+                "PRIVATE"
+              ]
             }
           },
           {
@@ -7078,7 +7692,7 @@
         "responses": {
           "201": {
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataResource"
                 }
@@ -7088,7 +7702,7 @@
           },
           "403": {
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataResource"
                 }
@@ -7098,7 +7712,9 @@
           }
         },
         "summary": "Create a new resource from a URL for a given metadata",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/attachments/print-thumbnail": {
@@ -7159,7 +7775,9 @@
           }
         },
         "summary": "Create an overview using the map print module",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/attachments/{resourceId}": {
@@ -7206,7 +7824,9 @@
           }
         },
         "summary": "Delete a metadata resource",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "get": {
         "operationId": "getResource",
@@ -7270,7 +7890,9 @@
           }
         },
         "summary": "Get a metadata resource",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "patch": {
         "operationId": "patchResource",
@@ -7302,7 +7924,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["PUBLIC", "PRIVATE"]
+              "enum": [
+                "PUBLIC",
+                "PRIVATE"
+              ]
             }
           },
           {
@@ -7340,12 +7965,15 @@
           }
         },
         "summary": "Update the metadata resource visibility",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
-    "/records/{metadataUuid}/doi": {
-      "delete": {
-        "operationId": "unregisterDoi",
+    "/records/{metadataUuid}/checkDuplicatedFieldValue": {
+      "post": {
+        "description": "Verifies if a metadata field value is in use. Fields supported: title (title), alternate title (altTitle) or resource identifier (identifier)",
+        "operationId": "checkDuplicatedFieldValue",
         "parameters": [
           {
             "description": "Record UUID.",
@@ -7357,43 +7985,86 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DuplicatedValueDto"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "DOI unregistered."
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "description": "Return true if the field value is duplicated in another metadata or false in other case."
           },
           "403": {
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "boolean"
                 }
               }
             },
+            "description": "Operation not allowed. User needs to be able to view the resource."
+          }
+        },
+        "summary": "Check if metadata field value is duplicated in another metadata",
+        "tags": [
+          "records"
+        ]
+      }
+    },
+    "/records/{metadataUuid}/doi/{doiServerId}": {
+      "delete": {
+        "operationId": "unregisterDoi",
+        "parameters": [
+          {
+            "description": "Record UUID.",
+            "in": "path",
+            "name": "metadataUuid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "DOI server identifier",
+            "in": "path",
+            "name": "doiServerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "DOI unregistered."
+          },
+          "403": {
             "description": "Operation not allowed. Only Administrators can access it."
           },
           "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "Metadata or DOI not found."
           },
           "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": "Service unavailable."
           }
         },
         "summary": "Remove a DOI (this is not recommended, DOI are supposed to be persistent once created. This is mainly here for testing).",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "operationId": "createDoi",
@@ -7405,6 +8076,16 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "DOI server identifier",
+            "in": "path",
+            "name": "doiServerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -7463,10 +8144,12 @@
           }
         },
         "summary": "Submit a record to the Datacite metadata store in order to create a DOI.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
-    "/records/{metadataUuid}/doi/checkDoiUrl": {
+    "/records/{metadataUuid}/doi/{doiServerId}/checkDoiUrl": {
       "get": {
         "operationId": "checkDoiUrl",
         "parameters": [
@@ -7477,6 +8160,16 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "DOI server identifier",
+            "in": "path",
+            "name": "doiServerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -7523,10 +8216,12 @@
           }
         },
         "summary": "Check the DOI URL created based on current configuration and pattern.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
-    "/records/{metadataUuid}/doi/checkPreConditions": {
+    "/records/{metadataUuid}/doi/{doiServerId}/checkPreConditions": {
       "get": {
         "operationId": "checkDoiStatus",
         "parameters": [
@@ -7537,6 +8232,16 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "description": "DOI server identifier",
+            "in": "path",
+            "name": "doiServerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -7608,7 +8313,9 @@
           }
         },
         "summary": "Check that a record can be submitted to DataCite for DOI creation. DataCite requires some fields to be populated.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/editor": {
@@ -7635,7 +8342,9 @@
           }
         },
         "summary": "Cancel edits",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "get": {
         "description": "Return HTML form for editing.",
@@ -7679,7 +8388,9 @@
           }
         },
         "summary": "Edit a record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "post": {
         "description": "Save the HTML form content.",
@@ -7781,7 +8492,9 @@
           }
         },
         "summary": "Save edits",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/editor/attributes": {
@@ -7826,7 +8539,9 @@
           }
         },
         "summary": "Delete attribute",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/editor/elements": {
@@ -7883,7 +8598,9 @@
           }
         },
         "summary": "Delete element",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "operationId": "addElement",
@@ -7916,7 +8633,7 @@
             }
           },
           {
-            "description": "Use geonet:attribute for attributes or child name.",
+            "description": "Empty for inserting element, `geonet:attribute` for attributes.",
             "in": "query",
             "name": "child",
             "required": false,
@@ -7944,7 +8661,9 @@
           }
         },
         "summary": "Add element",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/editor/elements/{direction}": {
@@ -7998,7 +8717,9 @@
           }
         },
         "summary": "Reorder element",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/extents.json": {
@@ -8032,7 +8753,9 @@
           }
         },
         "summary": "Get list of record extents",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/extents.png": {
@@ -8137,7 +8860,9 @@
           }
         },
         "summary": "Get record extents as image",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/extents/{geometryIndex}.png": {
@@ -8252,7 +8977,9 @@
           }
         },
         "summary": "Get one record extent as image",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/featureCatalog": {
@@ -8313,7 +9040,9 @@
           }
         },
         "summary": "Returns a map to decode attributes in a dataset (from the associated feature catalog)",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/formatters/json": {
@@ -8404,7 +9133,9 @@
           }
         },
         "summary": "Get a metadata record as JSON",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/formatters/xml": {
@@ -8495,7 +9226,9 @@
           }
         },
         "summary": "Get a metadata record as XML",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/formatters/zip": {
@@ -8520,7 +9253,11 @@
             "schema": {
               "type": "string",
               "default": "full",
-              "enum": ["SIMPLE", "PARTIAL", "FULL"]
+              "enum": [
+                "SIMPLE",
+                "PARTIAL",
+                "FULL"
+              ]
             }
           },
           {
@@ -8582,7 +9319,9 @@
           }
         },
         "summary": "Get a metadata record as ZIP",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/formatters/{formatterId}": {
@@ -8614,7 +9353,12 @@
             "schema": {
               "type": "string",
               "default": "_100",
-              "enum": ["_25", "_50", "_75", "_100"]
+              "enum": [
+                "_25",
+                "_50",
+                "_75",
+                "_100"
+              ]
             }
           },
           {
@@ -8640,7 +9384,15 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["txt", "html", "xml", "json", "jsonld", "pdf", "testpdf"]
+              "enum": [
+                "txt",
+                "html",
+                "xml",
+                "json",
+                "jsonld",
+                "pdf",
+                "testpdf"
+              ]
             }
           },
           {
@@ -8660,7 +9412,9 @@
           }
         },
         "summary": "Get a formatted metadata record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/group": {
@@ -8699,7 +9453,9 @@
           }
         },
         "summary": "Set record group",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/ownership": {
@@ -8770,7 +9526,9 @@
           }
         },
         "summary": "Set record group and owner",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/permalink": {
@@ -8821,7 +9579,9 @@
           }
         },
         "summary": "Get metadata record permalink",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/popularity": {
@@ -8871,7 +9631,9 @@
           }
         },
         "summary": "Get record popularity",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "post": {
         "description": "Used when a view is based on the search results content and does not really access the record. Record is then added to the indexing queue and popularity will be updated soon.",
@@ -8920,7 +9682,9 @@
           }
         },
         "summary": "Increase record popularity",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/processes": {
@@ -8967,7 +9731,9 @@
           }
         },
         "summary": "Get suggestions",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/processes/{process}": {
@@ -9005,7 +9771,9 @@
           }
         },
         "summary": "Preview process result",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "post": {
         "description": "Process a metadata with an XSL transformation declared in the metadata schema (See the process folder). Parameters sent to the service are forwarded to XSL process.",
@@ -9027,6 +9795,17 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "allRequestParams",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -9053,7 +9832,9 @@
           }
         },
         "summary": "Apply a process",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/publish": {
@@ -9088,7 +9869,9 @@
           }
         },
         "summary": "Set privileges for ALL group to publish the metadata for all users.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/query": {
@@ -9134,7 +9917,9 @@
           }
         },
         "summary": "List saved queries for this metadata",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/query/{savedQuery}": {
@@ -9205,7 +9990,9 @@
           }
         },
         "summary": "Apply a saved query for this metadata",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/rate": {
@@ -9260,7 +10047,9 @@
           }
         },
         "summary": "Rate a record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/related": {
@@ -9357,7 +10146,9 @@
           }
         },
         "summary": "Get record related resources",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/sharing": {
@@ -9398,7 +10189,9 @@
           }
         },
         "summary": "Get record sharing settings",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "description": "Privileges are assigned by group. User needs to be able to edit a record to set sharing settings. For reserved group (ie. Internet, Intranet & Guest), user MUST be reviewer of one group. For other group, if Only set privileges to user's groups is set in catalog configuration user MUST be a member of the group.<br/>Clear first allows to unset all operations first before setting the new ones.Clear option does not remove reserved groups operation if user is not an administrator, a reviewer or the owner of the record.<br/><a href='https://geonetwork-opensource.org/manuals/trunk/eng/users/user-guide/publishing/managing-privileges.html'>More info</a>",
@@ -9433,7 +10226,9 @@
           }
         },
         "summary": "Set record sharing",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/status": {
@@ -9462,7 +10257,9 @@
           }
         },
         "summary": "Delete all record status",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "get": {
         "operationId": "getRecordStatusHistory",
@@ -9492,7 +10289,10 @@
             "schema": {
               "type": "string",
               "default": "DESC",
-              "enum": ["ASC", "DESC"]
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
             }
           }
         ],
@@ -9512,7 +10312,9 @@
           }
         },
         "summary": "Get record status history",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "operationId": "setStatus",
@@ -9545,7 +10347,11 @@
                   "type": "object",
                   "additionalProperties": {
                     "type": "string",
-                    "enum": ["UPDATED", "UNCHANGED", "DELETED"]
+                    "enum": [
+                      "UPDATED",
+                      "UNCHANGED",
+                      "DELETED"
+                    ]
                   }
                 }
               }
@@ -9559,7 +10365,11 @@
                   "type": "object",
                   "additionalProperties": {
                     "type": "string",
-                    "enum": ["UPDATED", "UNCHANGED", "DELETED"]
+                    "enum": [
+                      "UPDATED",
+                      "UNCHANGED",
+                      "DELETED"
+                    ]
                   }
                 }
               }
@@ -9573,7 +10383,11 @@
                   "type": "object",
                   "additionalProperties": {
                     "type": "string",
-                    "enum": ["UPDATED", "UNCHANGED", "DELETED"]
+                    "enum": [
+                      "UPDATED",
+                      "UNCHANGED",
+                      "DELETED"
+                    ]
                   }
                 }
               }
@@ -9582,7 +10396,9 @@
           }
         },
         "summary": "Set the record status",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/status/workflow/last": {
@@ -9622,7 +10438,9 @@
           }
         },
         "summary": "Get last workflow status for a record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/status/{statusId}.{userId}.{changeDate}": {
@@ -9680,7 +10498,9 @@
           }
         },
         "summary": "Delete a record status",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/status/{statusId}.{userId}.{changeDate}/after": {
@@ -9749,7 +10569,9 @@
           }
         },
         "summary": "Get saved content from the status record after changes",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/status/{statusId}.{userId}.{changeDate}/before": {
@@ -9818,7 +10640,9 @@
           }
         },
         "summary": "Get saved content from the status record before changes",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/status/{statusId}.{userId}.{changeDate}/close": {
@@ -9885,7 +10709,9 @@
           }
         },
         "summary": "Close a record task",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/status/{statusId}.{userId}.{changeDate}/restore": {
@@ -9940,7 +10766,9 @@
           }
         },
         "summary": "Restore saved content from a status record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/status/{type}": {
@@ -9963,7 +10791,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["workflow", "task", "event"]
+              "enum": [
+                "workflow",
+                "task",
+                "event"
+              ]
             }
           },
           {
@@ -9982,7 +10814,10 @@
             "schema": {
               "type": "string",
               "default": "DESC",
-              "enum": ["ASC", "DESC"]
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
             }
           }
         ],
@@ -10002,7 +10837,9 @@
           }
         },
         "summary": "Get record status history by type",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/tags": {
@@ -10041,7 +10878,9 @@
           }
         },
         "summary": "Delete tags of a record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "get": {
         "description": "Tags are used to classify information.<br/><a href='https://docs.geonetwork-opensource.org/latest/user-guide/tag-information/tagging-with-categories/'>More info</a>",
@@ -10088,7 +10927,9 @@
           }
         },
         "summary": "Get record tags",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       },
       "put": {
         "operationId": "tagRecord",
@@ -10135,7 +10976,9 @@
           }
         },
         "summary": "Add tags to a record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/unpublish": {
@@ -10170,7 +11013,9 @@
           }
         },
         "summary": "Unsets privileges for ALL group to publish the metadata for all users.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/userfeedback": {
@@ -10215,7 +11060,9 @@
           }
         },
         "summary": "Finds a list of user feedback for a specific records. ",
-        "tags": ["userfeedback"]
+        "tags": [
+          "userfeedback"
+        ]
       }
     },
     "/records/{metadataUuid}/userfeedbackrating": {
@@ -10245,7 +11092,9 @@
           }
         },
         "summary": "Provides an average rating for a metadata record",
-        "tags": ["userfeedback"]
+        "tags": [
+          "userfeedback"
+        ]
       }
     },
     "/records/{metadataUuid}/validate/inspire": {
@@ -10324,7 +11173,9 @@
           }
         },
         "summary": "Submit a record to the INSPIRE service for validation.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/validate/inspire/testsuites": {
@@ -10377,7 +11228,9 @@
           }
         },
         "summary": "Get test suites available.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/validate/internal": {
@@ -10437,7 +11290,9 @@
           }
         },
         "summary": "Validate a record",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{metadataUuid}/versions": {
@@ -10467,7 +11322,9 @@
           }
         },
         "summary": "(Experimental) Enable version control",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/records/{testId}/validate/inspire": {
@@ -10540,7 +11397,9 @@
           }
         },
         "summary": "Check the status of validation with the INSPIRE service.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/regions": {
@@ -10592,7 +11451,9 @@
           }
         },
         "summary": "Get list of regions",
-        "tags": ["regions"]
+        "tags": [
+          "regions"
+        ]
       }
     },
     "/regions/geom.png": {
@@ -10707,7 +11568,9 @@
           }
         },
         "summary": "Get geometry as image",
-        "tags": ["regions"]
+        "tags": [
+          "regions"
+        ]
       }
     },
     "/regions/types": {
@@ -10729,7 +11592,9 @@
           }
         },
         "summary": "Get list of region types",
-        "tags": ["regions"]
+        "tags": [
+          "regions"
+        ]
       }
     },
     "/registries/actions/entries/collect": {
@@ -10792,7 +11657,9 @@
           }
         },
         "summary": "Preview directory entries extracted from records",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       },
       "put": {
         "description": "Scan one or more records for element matching the XPath provided and save them as directory entries (ie. subtemplate).<br/><br/>Only records that the current user can edit are analyzed.<br/><br/>Examples:<br/>For ISO19115-3 records, use .//cit:CI_Responsibility and compute identifier based on email with .//cit:electronicMailAddress/*/text() to create a contact directory.",
@@ -10853,7 +11720,9 @@
           }
         },
         "summary": "Extracts directory entries from records",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/actions/entries/import/spatial": {
@@ -10986,7 +11855,9 @@
                     "example": null
                   }
                 },
-                "required": ["file"]
+                "required": [
+                  "file"
+                ]
               }
             }
           }
@@ -11014,7 +11885,9 @@
           }
         },
         "summary": "Import spatial directory entries",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/actions/entries/synchronize": {
@@ -11111,7 +11984,9 @@
           }
         },
         "summary": "Preview updated matching entries in records",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       },
       "put": {
         "description": "Scan one or more records for element matching the XPath provided and then check if this element is available in the directory. If Found, the element from the directory update the element in the record and optionally text or attribute value properties are preserved using propertiesToCopy. Elements can be lost if not existing in the directory entry (eg. from an gex:Extent directory containing only description and bounding polygon, the update can remove temporal element).<br/><br/>The identifier XPath is used to find a match. An optional filtercan be added to restrict search to a subset of the directory. If no identifier XPaths is provided, the UUID is based on the content of the snippet (hash). It is recommended to use an identifier for better matching (eg. ISO19139 contact with different roles will not match on the automatic UUID mode).",
@@ -11205,7 +12080,9 @@
           }
         },
         "summary": "Update matching entries in records",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/crs": {
@@ -11266,7 +12143,9 @@
           }
         },
         "summary": "Search coordinate reference system (CRS)",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/crs/types": {
@@ -11294,7 +12173,9 @@
           }
         },
         "summary": "Get list of CRS type",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/crs/{id}": {
@@ -11344,7 +12225,9 @@
           }
         },
         "summary": "Get CRS",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/entries/{uuid}": {
@@ -11416,7 +12299,9 @@
           }
         },
         "summary": "Get a directory entry",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/vocabularies": {
@@ -11432,7 +12317,10 @@
             "schema": {
               "type": "string",
               "default": "external",
-              "enum": ["external", "local"]
+              "enum": [
+                "external",
+                "local"
+              ]
             }
           },
           {
@@ -11497,7 +12385,9 @@
           }
         },
         "summary": "Uploads a new thesaurus from a file",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       },
       "put": {
         "description": "Uploads a new thesaurus.",
@@ -11528,7 +12418,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["re3gistry", "ldRegistry"]
+              "enum": [
+                "re3gistry",
+                "ldRegistry"
+              ]
             }
           },
           {
@@ -11551,7 +12444,10 @@
             "schema": {
               "type": "string",
               "default": "external",
-              "enum": ["external", "local"]
+              "enum": [
+                "external",
+                "local"
+              ]
             }
           },
           {
@@ -11607,7 +12503,9 @@
           }
         },
         "summary": "Uploads a new thesaurus from URL or Registry",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/vocabularies/import/csv": {
@@ -11623,7 +12521,10 @@
             "schema": {
               "type": "string",
               "default": "external",
-              "enum": ["external", "local"]
+              "enum": [
+                "external",
+                "local"
+              ]
             }
           },
           {
@@ -11666,7 +12567,9 @@
               "items": {
                 "type": "string"
               },
-              "default": ["en"]
+              "default": [
+                "en"
+              ]
             }
           },
           {
@@ -11790,7 +12693,9 @@
           }
         },
         "summary": "Uploads a CSV file and convert it to SKOS format",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/vocabularies/keyword": {
@@ -11875,7 +12780,9 @@
           }
         },
         "summary": "Get keyword by id",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       },
       "post": {
         "description": "Retrieve XML representation of keyword(s) from same thesaurususing different transformations. 'to-iso19139-keyword' is the default and return an ISO19139 snippet.'to-iso19139-keyword-as-xlink' return an XLinked element. Custom transformation can be create on a per schema basis.This can be used instead of the GET method for cases where you need to submit large parameters list",
@@ -11958,7 +12865,9 @@
           }
         },
         "summary": "Get keyword by ids",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/vocabularies/search": {
@@ -12038,7 +12947,11 @@
             "schema": {
               "type": "string",
               "default": "CONTAINS",
-              "enum": ["STARTS_WITH", "CONTAINS", "MATCH"]
+              "enum": [
+                "STARTS_WITH",
+                "CONTAINS",
+                "MATCH"
+              ]
             }
           },
           {
@@ -12079,7 +12992,9 @@
           }
         },
         "summary": "Search keywords",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/registries/vocabularies/{thesaurus}": {
@@ -12109,7 +13024,9 @@
           }
         },
         "summary": "Delete a thesaurus by name",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       },
       "get": {
         "description": "Download the thesaurus in SKOS format.",
@@ -12148,7 +13065,9 @@
           }
         },
         "summary": "Download a thesaurus by name",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       },
       "put": {
         "description": "Updates the information of a local thesaurus.",
@@ -12186,7 +13105,9 @@
           }
         },
         "summary": "Updates the information of a local thesaurus",
-        "tags": ["registries"]
+        "tags": [
+          "registries"
+        ]
       }
     },
     "/related": {
@@ -12277,7 +13198,9 @@
           }
         },
         "summary": "Get record related resources for all requested metadatas",
-        "tags": ["related"]
+        "tags": [
+          "related"
+        ]
       }
     },
     "/reports/datadownloads": {
@@ -12322,7 +13245,9 @@
           }
         },
         "summary": "Get list of metadata file downloads",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/reports/datauploads": {
@@ -12367,7 +13292,9 @@
           }
         },
         "summary": "Get uploaded files to metadata records during a period.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/reports/metadatainternal": {
@@ -12412,7 +13339,9 @@
           }
         },
         "summary": "Get the metadata not published during a period.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/reports/metadataupdated": {
@@ -12457,7 +13386,9 @@
           }
         },
         "summary": "Get the updated metadata during a period.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/reports/users": {
@@ -12502,7 +13433,9 @@
           }
         },
         "summary": "Get the list of users \"active\" during a time period.",
-        "tags": ["records"]
+        "tags": [
+          "records"
+        ]
       }
     },
     "/robots.txt": {
@@ -12514,7 +13447,9 @@
           }
         },
         "summary": "robots.txt",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/search/records/_msearch": {
@@ -12552,6 +13487,12 @@
               "schema": {
                 "type": "string"
               }
+            },
+            "application/x-ndjson": {
+              "example": "{\"query\":{\"match\":{\"_id\":\"catalogue_uuid\"}}}",
+              "schema": {
+                "type": "string"
+              }
             }
           },
           "description": "JSON request based on Elasticsearch API.",
@@ -12564,13 +13505,20 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "application/x-ndjson": {
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "description": "Search results."
           }
         },
         "summary": "Executes several searches with a Elasticsearch API request.",
-        "tags": ["search"]
+        "tags": [
+          "search"
+        ]
       }
     },
     "/search/records/_search": {
@@ -12584,7 +13532,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "metadata"
+              "default": "s101"
             }
           },
           {
@@ -12626,7 +13574,9 @@
           }
         },
         "summary": "Execute a search query and get back search hits that match the query.",
-        "tags": ["search"]
+        "tags": [
+          "search"
+        ]
       }
     },
     "/selections": {
@@ -12649,7 +13599,9 @@
           }
         },
         "summary": "Get current selections",
-        "tags": ["selections"]
+        "tags": [
+          "selections"
+        ]
       }
     },
     "/selections/{bucket}": {
@@ -12693,7 +13645,9 @@
           }
         },
         "summary": "Clear selection or remove items",
-        "tags": ["selections"]
+        "tags": [
+          "selections"
+        ]
       },
       "get": {
         "operationId": "get",
@@ -12726,7 +13680,9 @@
           }
         },
         "summary": "Get current selection",
-        "tags": ["selections"]
+        "tags": [
+          "selections"
+        ]
       },
       "put": {
         "operationId": "add",
@@ -12768,7 +13724,9 @@
           }
         },
         "summary": "Select one or more items",
-        "tags": ["selections"]
+        "tags": [
+          "selections"
+        ]
       }
     },
     "/site": {
@@ -12778,8 +13736,19 @@
           "200": {
             "content": {
               "application/json": {
+                "example": {
+                  "system/site/name": "My GeoNetwork catalogue",
+                  "system/site/organization": "My organization",
+                  "system/site/siteId": "33bc8c82-7ac2-49b6-a22b-af7376dbcf10",
+                  "system/platform/version": "4.4.7",
+                  "system/platform/subVersion": "SNAPSHOT",
+                  "node/default": "true",
+                  "node/id": "33bc8c82-7ac2-49b6-a22b-af7376dbcf10",
+                  "node/name": "My GeoNetwork catalogue",
+                  "microservices/enabled": false
+                },
                 "schema": {
-                  "$ref": "#/components/schemas/SettingsListResponse"
+                  "type": "string"
                 }
               }
             },
@@ -12787,7 +13756,9 @@
           }
         },
         "summary": "Get site (or portal) description",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/index": {
@@ -12824,7 +13795,9 @@
               "items": {
                 "type": "string"
               },
-              "default": ["records"]
+              "default": [
+                "records"
+              ]
             }
           },
           {
@@ -12850,7 +13823,9 @@
           }
         },
         "summary": "Index",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/index/commit": {
@@ -12862,7 +13837,9 @@
           }
         },
         "summary": "Index commit",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       },
       "put": {
         "description": "May be used when indexing task is hanging.",
@@ -12873,7 +13850,9 @@
           }
         },
         "summary": "Force to commit pending documents in index.",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/index/status": {
@@ -12892,7 +13871,9 @@
           }
         },
         "summary": "Index status",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/index/synchronized": {
@@ -12914,7 +13895,9 @@
           }
         },
         "summary": "Index synchronized with database",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/indexing": {
@@ -12933,7 +13916,9 @@
           }
         },
         "summary": "Is indexing?",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/info": {
@@ -12952,7 +13937,9 @@
           }
         },
         "summary": "Get site informations",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/info/build": {
@@ -12972,7 +13959,9 @@
           }
         },
         "summary": "Get build details",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/info/isCasEnabled": {
@@ -12991,7 +13980,9 @@
           }
         },
         "summary": "Is CAS enabled?",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/info/notificationLevels": {
@@ -13026,7 +14017,9 @@
           }
         },
         "summary": "Get notification levels",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/info/proxy": {
@@ -13046,7 +14039,9 @@
           }
         },
         "summary": "Get proxy configuration details",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/info/readonly": {
@@ -13065,7 +14060,9 @@
           }
         },
         "summary": "Is in read-only mode?",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/info/staging/{profile}": {
@@ -13079,7 +14076,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["testing", "development", "production"]
+              "enum": [
+                "testing",
+                "development",
+                "production"
+              ]
             }
           }
         ],
@@ -13092,7 +14093,9 @@
           }
         },
         "summary": "Update staging profile",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/info/transforms": {
@@ -13115,7 +14118,9 @@
           }
         },
         "summary": "Get XSL tranformations available",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/logging": {
@@ -13137,7 +14142,9 @@
           }
         },
         "summary": "Get log files",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/logging/activity": {
@@ -13169,7 +14176,9 @@
           }
         },
         "summary": "Get last activity",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/logging/activity/zip": {
@@ -13181,7 +14190,9 @@
           }
         },
         "summary": "Get last activity in a ZIP",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/logo": {
@@ -13218,7 +14229,9 @@
           }
         },
         "summary": "Set catalog logo",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/settings": {
@@ -13276,7 +14289,9 @@
           }
         },
         "summary": "Get settings",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       },
       "post": {
         "operationId": "saveSettings",
@@ -13302,7 +14317,9 @@
           }
         },
         "summary": "Save settings",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/settings/details": {
@@ -13363,7 +14380,9 @@
           }
         },
         "summary": "Get settings with details",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/site/userfeedback": {
@@ -13430,7 +14449,9 @@
           }
         },
         "summary": "Send an email to catalogue administrator with feedback about the application",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/sitemap": {
@@ -13465,7 +14486,9 @@
           }
         },
         "summary": "Get sitemap",
-        "tags": ["site"]
+        "tags": [
+          "site"
+        ]
       }
     },
     "/sources": {
@@ -13505,7 +14528,9 @@
           }
         },
         "summary": "Get all sources",
-        "tags": ["sources"]
+        "tags": [
+          "sources"
+        ]
       },
       "put": {
         "operationId": "addSource",
@@ -13542,7 +14567,9 @@
           }
         },
         "summary": "Add a source",
-        "tags": ["sources"]
+        "tags": [
+          "sources"
+        ]
       }
     },
     "/sources/{sourceIdentifier}": {
@@ -13575,7 +14602,9 @@
           }
         },
         "summary": "Remove a source",
-        "tags": ["sources"]
+        "tags": [
+          "sources"
+        ]
       },
       "put": {
         "operationId": "updateSource",
@@ -13626,7 +14655,9 @@
           }
         },
         "summary": "Update a source",
-        "tags": ["sources"]
+        "tags": [
+          "sources"
+        ]
       }
     },
     "/sources/{type}": {
@@ -13640,7 +14671,12 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["portal", "subportal", "externalportal", "harvester"]
+              "enum": [
+                "portal",
+                "subportal",
+                "externalportal",
+                "harvester"
+              ]
             }
           }
         ],
@@ -13660,7 +14696,9 @@
           }
         },
         "summary": "Get all sources by type",
-        "tags": ["sources"]
+        "tags": [
+          "sources"
+        ]
       }
     },
     "/standards": {
@@ -13673,7 +14711,9 @@
           }
         },
         "summary": "Get standards",
-        "tags": ["standards"]
+        "tags": [
+          "standards"
+        ]
       }
     },
     "/standards/batchconfiguration": {
@@ -13710,7 +14750,9 @@
           }
         },
         "summary": "Get batch editor configuration for standards",
-        "tags": ["standards"]
+        "tags": [
+          "standards"
+        ]
       }
     },
     "/standards/reload": {
@@ -13722,7 +14764,9 @@
           }
         },
         "summary": "Reload standards",
-        "tags": ["standards"]
+        "tags": [
+          "standards"
+        ]
       }
     },
     "/standards/{schema}/batchconfiguration": {
@@ -13756,7 +14800,9 @@
           }
         },
         "summary": "Get batch editor configuration for a standard",
-        "tags": ["standards"]
+        "tags": [
+          "standards"
+        ]
       }
     },
     "/standards/{schema}/codelists": {
@@ -13803,7 +14849,9 @@
           }
         },
         "summary": "Get multiple codelist translations",
-        "tags": ["standards"]
+        "tags": [
+          "standards"
+        ]
       }
     },
     "/standards/{schema}/codelists/{codelist}": {
@@ -13878,7 +14926,9 @@
           }
         },
         "summary": "Get codelist translations",
-        "tags": ["standards"]
+        "tags": [
+          "standards"
+        ]
       }
     },
     "/standards/{schema}/codelists/{codelist}/details": {
@@ -13959,7 +15009,9 @@
           }
         },
         "summary": "Get codelist details",
-        "tags": ["standards"]
+        "tags": [
+          "standards"
+        ]
       }
     },
     "/standards/{schema}/descriptors/{element}/details": {
@@ -14036,7 +15088,9 @@
           }
         },
         "summary": "Get descriptor details",
-        "tags": ["standards"]
+        "tags": [
+          "standards"
+        ]
       }
     },
     "/standards/{schema}/editor/associatedpanel/config/{name}.json": {
@@ -14077,7 +15131,9 @@
           }
         },
         "summary": "Get editor associated resources panel configuration",
-        "tags": ["standards"]
+        "tags": [
+          "standards"
+        ]
       }
     },
     "/status": {
@@ -14092,7 +15148,9 @@
           }
         },
         "summary": "Delete all record history and status",
-        "tags": ["status"]
+        "tags": [
+          "status"
+        ]
       },
       "get": {
         "operationId": "getStatusList",
@@ -14112,7 +15170,9 @@
           }
         },
         "summary": "Get status",
-        "tags": ["status"]
+        "tags": [
+          "status"
+        ]
       }
     },
     "/status/{type}": {
@@ -14126,7 +15186,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["workflow", "task", "event"]
+              "enum": [
+                "workflow",
+                "task",
+                "event"
+              ]
             }
           }
         ],
@@ -14146,7 +15210,9 @@
           }
         },
         "summary": "Get status by type",
-        "tags": ["status"]
+        "tags": [
+          "status"
+        ]
       }
     },
     "/tags": {
@@ -14168,7 +15234,9 @@
           }
         },
         "summary": "Get tags",
-        "tags": ["tags"]
+        "tags": [
+          "tags"
+        ]
       },
       "put": {
         "description": "If labels are not defined, a default label is created with the category name for all languages.",
@@ -14208,7 +15276,9 @@
           }
         },
         "summary": "Create a tag",
-        "tags": ["tags"]
+        "tags": [
+          "tags"
+        ]
       }
     },
     "/tags/{tagIdentifier}": {
@@ -14242,7 +15312,9 @@
           }
         },
         "summary": "Remove a tag",
-        "tags": ["tags"]
+        "tags": [
+          "tags"
+        ]
       },
       "get": {
         "operationId": "getTag",
@@ -14271,7 +15343,9 @@
           }
         },
         "summary": "Get a tag",
-        "tags": ["tags"]
+        "tags": [
+          "tags"
+        ]
       },
       "put": {
         "operationId": "updateTag",
@@ -14313,7 +15387,9 @@
           }
         },
         "summary": "Update a tag",
-        "tags": ["tags"]
+        "tags": [
+          "tags"
+        ]
       }
     },
     "/tools/mail/test": {
@@ -14333,7 +15409,9 @@
           }
         },
         "summary": "Test mail configuration",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/tools/migration/steps/{stepName}": {
@@ -14364,7 +15442,9 @@
           }
         },
         "summary": "Call a migration step",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/tools/ogc/filter": {
@@ -14395,7 +15475,9 @@
           }
         },
         "summary": "Generate an OGC filter",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/tools/ogc/sld": {
@@ -14408,7 +15490,9 @@
           }
         },
         "summary": "Remove all SLD files",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       },
       "get": {
         "operationId": "getSLD",
@@ -14428,7 +15512,9 @@
           }
         },
         "summary": "Get the list of SLD available",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       },
       "post": {
         "description": "Get the current SLD for the requested layers, add new filters in, save the SLD and return the new SLD URL.",
@@ -14475,7 +15561,9 @@
           }
         },
         "summary": "Generate a SLD with a new filter",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/tools/ogc/sld/{id}.{extension}": {
@@ -14507,7 +15595,9 @@
           }
         },
         "summary": "Download a SLD",
-        "tags": ["tools"]
+        "tags": [
+          "tools"
+        ]
       }
     },
     "/translationproviders": {
@@ -14529,7 +15619,9 @@
           }
         },
         "summary": "Retrieve the list of translation provider.",
-        "tags": ["translationproviders"]
+        "tags": [
+          "translationproviders"
+        ]
       }
     },
     "/ui": {
@@ -14551,7 +15643,9 @@
           }
         },
         "summary": "Get UI configuration",
-        "tags": ["ui"]
+        "tags": [
+          "ui"
+        ]
       },
       "put": {
         "operationId": "putUiConfiguration",
@@ -14588,7 +15682,9 @@
           }
         },
         "summary": "Create a UI configuration",
-        "tags": ["ui"]
+        "tags": [
+          "ui"
+        ]
       }
     },
     "/ui/{uiIdentifier}": {
@@ -14631,7 +15727,9 @@
           }
         },
         "summary": "Remove a UI Configuration",
-        "tags": ["ui"]
+        "tags": [
+          "ui"
+        ]
       },
       "get": {
         "operationId": "getUiConfiguration",
@@ -14659,7 +15757,9 @@
           }
         },
         "summary": "Get a UI configuration",
-        "tags": ["ui"]
+        "tags": [
+          "ui"
+        ]
       },
       "put": {
         "operationId": "updateUiConfiguration",
@@ -14700,7 +15800,9 @@
           }
         },
         "summary": "Update a UI configuration",
-        "tags": ["ui"]
+        "tags": [
+          "ui"
+        ]
       }
     },
     "/user/actions/forgot-password": {
@@ -14731,7 +15833,9 @@
           }
         },
         "summary": "Send user password reminder by email",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/user/actions/register": {
@@ -14761,7 +15865,9 @@
           }
         },
         "summary": "Create user account",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/user/{username}": {
@@ -14802,7 +15908,9 @@
           }
         },
         "summary": "Update user password",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/userfeedback": {
@@ -14848,7 +15956,9 @@
           }
         },
         "summary": "Finds a list of user feedback records. ",
-        "tags": ["userfeedback"]
+        "tags": [
+          "userfeedback"
+        ]
       },
       "post": {
         "description": "Creates a user feedback in draft status if the user is not logged in.",
@@ -14876,7 +15986,9 @@
           }
         },
         "summary": "Creates a user feedback",
-        "tags": ["userfeedback"]
+        "tags": [
+          "userfeedback"
+        ]
       }
     },
     "/userfeedback/ratingcriteria": {
@@ -14898,7 +16010,9 @@
           }
         },
         "summary": "Get list of rating criteria",
-        "tags": ["userfeedback"]
+        "tags": [
+          "userfeedback"
+        ]
       }
     },
     "/userfeedback/{uuid}": {
@@ -14932,7 +16046,9 @@
           }
         },
         "summary": "Removes a user feedback",
-        "tags": ["userfeedback"]
+        "tags": [
+          "userfeedback"
+        ]
       },
       "get": {
         "operationId": "getUserComment",
@@ -14960,7 +16076,9 @@
           }
         },
         "summary": "Finds a specific user feedback",
-        "tags": ["userfeedback"]
+        "tags": [
+          "userfeedback"
+        ]
       }
     },
     "/userfeedback/{uuid}/publish": {
@@ -15004,7 +16122,9 @@
           }
         },
         "summary": "Publishes a feedback",
-        "tags": ["userfeedback"]
+        "tags": [
+          "userfeedback"
+        ]
       }
     },
     "/users": {
@@ -15026,7 +16146,9 @@
           }
         },
         "summary": "Get users",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       },
       "put": {
         "description": "Creates a catalog user.",
@@ -15054,7 +16176,9 @@
           }
         },
         "summary": "Creates a user",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/users/groups": {
@@ -15076,7 +16200,9 @@
           }
         },
         "summary": "Retrieve all user groups",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/users/owners": {
@@ -15099,7 +16225,9 @@
           }
         },
         "summary": "Get owners",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       },
       "put": {
         "operationId": "saveOwners",
@@ -15126,7 +16254,9 @@
           }
         },
         "summary": "Transfer privileges",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/users/properties/{property}": {
@@ -15395,7 +16525,9 @@
           }
         },
         "summary": "Check if a user property already exist",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/users/{userIdentifier}": {
@@ -15427,7 +16559,9 @@
           }
         },
         "summary": "Delete a user",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       },
       "get": {
         "operationId": "getUser",
@@ -15456,7 +16590,9 @@
           }
         },
         "summary": "Get user",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       },
       "put": {
         "description": "Updates a catalog user.",
@@ -15496,7 +16632,9 @@
           }
         },
         "summary": "Update a user",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/users/{userIdentifier}.png": {
@@ -15531,7 +16669,9 @@
           }
         },
         "summary": "Get user identicon",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/users/{userIdentifier}/actions/forget-password": {
@@ -15573,7 +16713,9 @@
           }
         },
         "summary": "Resets user password",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/users/{userIdentifier}/groups": {
@@ -15608,7 +16750,9 @@
           }
         },
         "summary": "Retrieve user groups",
-        "tags": ["users"]
+        "tags": [
+          "users"
+        ]
       }
     },
     "/usersearches": {
@@ -15630,7 +16774,9 @@
           }
         },
         "summary": "Get user custom searches",
-        "tags": ["usersearches"]
+        "tags": [
+          "usersearches"
+        ]
       },
       "put": {
         "description": "Creates a user search.",
@@ -15659,7 +16805,9 @@
           }
         },
         "summary": "Creates a user search",
-        "tags": ["usersearches"]
+        "tags": [
+          "usersearches"
+        ]
       }
     },
     "/usersearches/all": {
@@ -15673,7 +16821,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["HOME", "EDITOR_BOARD"]
+              "enum": [
+                "HOME",
+                "EDITOR_BOARD"
+              ]
             }
           }
         ],
@@ -15693,7 +16844,9 @@
           }
         },
         "summary": "Get user custom searches for all users (no paginated)",
-        "tags": ["usersearches"]
+        "tags": [
+          "usersearches"
+        ]
       }
     },
     "/usersearches/allpaginated": {
@@ -15707,7 +16860,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["HOME", "EDITOR_BOARD"]
+              "enum": [
+                "HOME",
+                "EDITOR_BOARD"
+              ]
             }
           },
           {
@@ -15755,7 +16911,9 @@
           }
         },
         "summary": "Get user custom searches for all users (paginated)",
-        "tags": ["usersearches"]
+        "tags": [
+          "usersearches"
+        ]
       }
     },
     "/usersearches/featured": {
@@ -15769,7 +16927,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["HOME", "EDITOR_BOARD"]
+              "enum": [
+                "HOME",
+                "EDITOR_BOARD"
+              ]
             }
           }
         ],
@@ -15789,7 +16950,9 @@
           }
         },
         "summary": "Get featured user custom searches",
-        "tags": ["usersearches"]
+        "tags": [
+          "usersearches"
+        ]
       }
     },
     "/usersearches/{searchIdentifier}": {
@@ -15821,7 +16984,9 @@
           }
         },
         "summary": "Delete a user search",
-        "tags": ["usersearches"]
+        "tags": [
+          "usersearches"
+        ]
       },
       "get": {
         "operationId": "getUserCustomSearch",
@@ -15850,7 +17015,9 @@
           }
         },
         "summary": "Get custom search",
-        "tags": ["usersearches"]
+        "tags": [
+          "usersearches"
+        ]
       },
       "put": {
         "operationId": "updateCustomUserSearch",
@@ -15885,7 +17052,9 @@
           }
         },
         "summary": "Update a user search",
-        "tags": ["usersearches"]
+        "tags": [
+          "usersearches"
+        ]
       }
     },
     "/userselections": {
@@ -15907,7 +17076,9 @@
           }
         },
         "summary": "Get list of user selection sets",
-        "tags": ["userselections"]
+        "tags": [
+          "userselections"
+        ]
       },
       "put": {
         "operationId": "createPersistentSelectionType",
@@ -15954,7 +17125,9 @@
           }
         },
         "summary": "Add a user selection set",
-        "tags": ["userselections"]
+        "tags": [
+          "userselections"
+        ]
       }
     },
     "/userselections/{selectionIdentifier}": {
@@ -15998,7 +17171,9 @@
           }
         },
         "summary": "Remove a user selection set",
-        "tags": ["userselections"]
+        "tags": [
+          "userselections"
+        ]
       },
       "put": {
         "operationId": "updateUserSelection",
@@ -16050,7 +17225,9 @@
           }
         },
         "summary": "Update a user selection set",
-        "tags": ["userselections"]
+        "tags": [
+          "userselections"
+        ]
       }
     },
     "/userselections/{selectionIdentifier}/{userIdentifier}": {
@@ -16116,7 +17293,9 @@
           }
         },
         "summary": "Remove items to a user selection set",
-        "tags": ["userselections"]
+        "tags": [
+          "userselections"
+        ]
       },
       "get": {
         "operationId": "getSelectionRecords",
@@ -16158,7 +17337,9 @@
           }
         },
         "summary": "Get record in a user selection set",
-        "tags": ["userselections"]
+        "tags": [
+          "userselections"
+        ]
       },
       "put": {
         "operationId": "addToUserSelection",
@@ -16229,7 +17410,9 @@
           }
         },
         "summary": "Add items to a user selection set",
-        "tags": ["userselections"]
+        "tags": [
+          "userselections"
+        ]
       }
     }
   },
@@ -16255,6 +17438,50 @@
             "type": "string"
           },
           "zip": {
+            "type": "string"
+          }
+        }
+      },
+      "AnonymousDoiServer": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "landingPageTemplate": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "prefix": {
+            "type": "string"
+          },
+          "publicUrl": {
+            "type": "string"
+          },
+          "publicationGroups": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "url": {
+            "type": "string"
+          },
+          "username": {
             "type": "string"
           }
         }
@@ -16340,7 +17567,11 @@
         }
       },
       "AssociatedSiblingMetadataItem": {
-        "required": ["description", "mdType", "title"],
+        "required": [
+          "description",
+          "mdType",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "agg_isDescriptionOf": {
@@ -16405,7 +17636,10 @@
         }
       },
       "BatchEditParameter": {
-        "required": ["value", "xpath"],
+        "required": [
+          "value",
+          "xpath"
+        ],
         "type": "object",
         "properties": {
           "condition": {
@@ -16423,7 +17657,9 @@
         }
       },
       "BatchEditing": {
-        "required": ["section"],
+        "required": [
+          "section"
+        ],
         "type": "object",
         "properties": {
           "section": {
@@ -16546,10 +17782,72 @@
       },
       "Direction": {
         "type": "string",
-        "enum": ["up", "down"]
+        "enum": [
+          "up",
+          "down"
+        ]
+      },
+      "DoiServerDto": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "landingPageTemplate": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "prefix": {
+            "type": "string"
+          },
+          "publicUrl": {
+            "type": "string"
+          },
+          "publicationGroups": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "url": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "description": "DOI server details"
+      },
+      "DuplicatedValueDto": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "description": "Metadata field information to check"
       },
       "Element": {
-        "required": ["label"],
+        "required": [
+          "label"
+        ],
         "type": "object",
         "properties": {
           "condition": {
@@ -16594,7 +17892,11 @@
         }
       },
       "Entry": {
-        "required": ["code", "description", "label"],
+        "required": [
+          "code",
+          "description",
+          "label"
+        ],
         "type": "object",
         "properties": {
           "code": {
@@ -16661,7 +17963,12 @@
         }
       },
       "FCRelatedMetadataItem": {
-        "required": ["description", "featureType", "mdType", "title"],
+        "required": [
+          "description",
+          "featureType",
+          "mdType",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "description": {
@@ -16858,6 +18165,18 @@
           "logo": {
             "type": "string"
           },
+          "minimumProfileForPrivileges": {
+            "type": "string",
+            "enum": [
+              "Administrator",
+              "UserAdmin",
+              "Reviewer",
+              "Editor",
+              "RegisteredUser",
+              "Guest",
+              "Monitor"
+            ]
+          },
           "name": {
             "type": "string"
           },
@@ -16903,6 +18222,9 @@
             }
           },
           "reserved": {
+            "type": "boolean"
+          },
+          "restricted": {
             "type": "boolean"
           },
           "userGroup": {
@@ -16964,7 +18286,9 @@
         }
       },
       "Helper": {
-        "required": ["option"],
+        "required": [
+          "option"
+        ],
         "type": "object",
         "properties": {
           "displayIf": {
@@ -17194,7 +18518,10 @@
           },
           "linkType": {
             "type": "string",
-            "enum": ["HTTP", "METADATA"]
+            "enum": [
+              "HTTP",
+              "METADATA"
+            ]
           },
           "protocol": {
             "type": "string"
@@ -17864,7 +19191,10 @@
           },
           "visibility": {
             "type": "string",
-            "enum": ["PUBLIC", "PRIVATE"]
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ]
           }
         },
         "xml": {
@@ -17882,7 +19212,11 @@
           },
           "validationStatus": {
             "type": "string",
-            "enum": ["UNKNOWN", "VALID", "INCOMPLETE"]
+            "enum": [
+              "UNKNOWN",
+              "VALID",
+              "INCOMPLETE"
+            ]
           }
         },
         "xml": {
@@ -17966,7 +19300,11 @@
           },
           "type": {
             "type": "string",
-            "enum": ["workflow", "task", "event"]
+            "enum": [
+              "workflow",
+              "task",
+              "event"
+            ]
           }
         },
         "description": "Metadata status"
@@ -18253,7 +19591,18 @@
           },
           "format": {
             "type": "string",
-            "enum": ["LINK", "HTML", "HTMLPAGE", "TEXT"]
+            "enum": [
+              "LINK",
+              "HTML",
+              "HTMLPAGE",
+              "TEXT"
+            ]
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "icon": {
             "type": "string"
@@ -18287,7 +19636,13 @@
           },
           "status": {
             "type": "string",
-            "enum": ["PUBLIC", "PUBLIC_ONLY", "PRIVATE", "HIDDEN"]
+            "enum": [
+              "PUBLIC",
+              "PUBLIC_ONLY",
+              "GROUPS",
+              "PRIVATE",
+              "HIDDEN"
+            ]
           }
         }
       },
@@ -18373,7 +19728,10 @@
         "description": "The new password and a valid change key"
       },
       "Pattern": {
-        "required": ["rules", "title"],
+        "required": [
+          "rules",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "rules": {
@@ -18388,7 +19746,9 @@
         }
       },
       "Patterns": {
-        "required": ["pattern"],
+        "required": [
+          "pattern"
+        ],
         "type": "object",
         "properties": {
           "pattern": {
@@ -18635,7 +19995,10 @@
         ]
       },
       "RelatedLinkItem": {
-        "required": ["description", "title"],
+        "required": [
+          "description",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "applicationProfile": {
@@ -18674,7 +20037,11 @@
         }
       },
       "RelatedMetadataItem": {
-        "required": ["description", "mdType", "title"],
+        "required": [
+          "description",
+          "mdType",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "description": {
@@ -18816,7 +20183,9 @@
         }
       },
       "RelatedThumbnailItem": {
-        "required": ["title"],
+        "required": [
+          "title"
+        ],
         "type": "object",
         "properties": {
           "hash": {
@@ -18921,14 +20290,27 @@
       },
       "ReservedGroup": {
         "type": "string",
-        "enum": ["all", "intranet", "guest"]
+        "enum": [
+          "all",
+          "intranet",
+          "guest"
+        ]
       },
       "ReservedOperation": {
         "type": "string",
-        "enum": ["view", "download", "editing", "notify", "dynamic", "featured"]
+        "enum": [
+          "view",
+          "download",
+          "editing",
+          "notify",
+          "dynamic",
+          "featured"
+        ]
       },
       "Rule": {
-        "required": ["details"],
+        "required": [
+          "details"
+        ],
         "type": "object",
         "properties": {
           "details": {
@@ -19007,7 +20389,9 @@
         }
       },
       "Section": {
-        "required": ["field"],
+        "required": [
+          "field"
+        ],
         "type": "object",
         "properties": {
           "field": {
@@ -19061,7 +20445,12 @@
         "properties": {
           "dataType": {
             "type": "string",
-            "enum": ["STRING", "INT", "BOOLEAN", "JSON"]
+            "enum": [
+              "STRING",
+              "INT",
+              "BOOLEAN",
+              "JSON"
+            ]
           },
           "editable": {
             "type": "boolean"
@@ -19376,7 +20765,12 @@
           },
           "type": {
             "type": "string",
-            "enum": ["portal", "subportal", "externalportal", "harvester"]
+            "enum": [
+              "portal",
+              "subportal",
+              "externalportal",
+              "harvester"
+            ]
           },
           "uiConfig": {
             "type": "string"
@@ -19401,7 +20795,13 @@
           },
           "state": {
             "type": "string",
-            "enum": ["RED", "UNINITIALIZED", "YELLOW", "GREEN", "DISABLED"]
+            "enum": [
+              "RED",
+              "UNINITIALIZED",
+              "YELLOW",
+              "GREEN",
+              "DISABLED"
+            ]
           }
         }
       },
@@ -19450,12 +20850,19 @@
           },
           "type": {
             "type": "string",
-            "enum": ["workflow", "task", "event"]
+            "enum": [
+              "workflow",
+              "task",
+              "event"
+            ]
           }
         }
       },
       "SuggestionType": {
-        "required": ["name", "operational"],
+        "required": [
+          "name",
+          "operational"
+        ],
         "type": "object",
         "properties": {
           "category": {
@@ -20006,7 +21413,10 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["UPDATE_HASH_REQUIRED", "UNKNOWN"]
+              "enum": [
+                "UPDATE_HASH_REQUIRED",
+                "UNKNOWN"
+              ]
             }
           },
           "securityNotificationsString": {

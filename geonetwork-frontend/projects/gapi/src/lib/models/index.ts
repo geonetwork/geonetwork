@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './Address';
+export * from './AnonymousDoiServer';
 export * from './AnonymousMapserver';
 export * from './Associated';
 export * from './AssociatedRecord';
@@ -16,6 +17,8 @@ export * from './Crs';
 export * from './Dataset';
 export * from './Description';
 export * from './Direction';
+export * from './DoiServerDto';
+export * from './DuplicatedValueDto';
 export * from './Element';
 export * from './Entry';
 export * from './ExtentDto';
@@ -79,7 +82,6 @@ export * from './Patterns';
 export * from './ProcessingReport';
 export * from './ProxyConfiguration';
 export * from './PublicationOption';
-export * from './PutResourceRequest';
 export * from './RatingAverage';
 export * from './RatingCriteria';
 export * from './RegionResponse';
