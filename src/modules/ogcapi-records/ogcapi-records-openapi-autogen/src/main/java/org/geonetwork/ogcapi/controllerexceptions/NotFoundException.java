@@ -7,7 +7,7 @@ package org.geonetwork.ogcapi.controllerexceptions;
 
 public class NotFoundException extends GenericOgcApiException {
 
-  public NotFoundException(String message) {
-    super(404, message);
-  }
+    public NotFoundException(String message) {
+        super(404, message);
+    }
 }

@@ -25,94 +25,93 @@ import org.springframework.web.context.request.NativeWebRequest;
 @Component
 public class OgcApiCollectionsApi {
 
-  @Autowired
-  CatalogApi catalogApi;
+    @Autowired
+    CatalogApi catalogApi;
 
-  @Autowired
-  LandingPageLinks landingPageLinks;
+    @Autowired
+    LandingPageLinks landingPageLinks;
 
-  @Autowired
-  CollectionsPageLinks collectionsPageLinks;
+    @Autowired
+    CollectionsPageLinks collectionsPageLinks;
 
-  @Autowired
-  CollectionPageLinks collectionPageLinks;
+    @Autowired
+    CollectionPageLinks collectionPageLinks;
 
-  @Autowired
-  private NativeWebRequest nativeWebRequest;
+    @Autowired
+    private NativeWebRequest nativeWebRequest;
 
-  public OgcApiCollectionsApi() {
-  }
+    public OgcApiCollectionsApi() {}
 
-  /**
-   * gets the landing page data (DB table source for the 'portal').
-   *
-   * @return OgcApiRecordsLandingPageDto
-   * @throws Exception bad config
-   */
-  public OgcApiRecordsLandingPageDto getLandingPage(NativeWebRequest nativeWebRequest) throws Exception {
-    var uuid = catalogApi.getMainPortalUUID();
-    if (uuid == null) {
-      throw new Exception("no main portal found in DB table source");
-    }
-    var collectionInfo = describeCollection(uuid);
-    var result = new OgcApiRecordsLandingPageDto();
-    result.description(collectionInfo.getDescription()).title(collectionInfo.getTitle());
+    /**
+     * gets the landing page data (DB table source for the 'portal').
+     *
+     * @return OgcApiRecordsLandingPageDto
+     * @throws Exception bad config
+     */
+    public OgcApiRecordsLandingPageDto getLandingPage(NativeWebRequest nativeWebRequest) throws Exception {
+        var uuid = catalogApi.getMainPortalUUID();
+        if (uuid == null) {
+            throw new Exception("no main portal found in DB table source");
+        }
+        var collectionInfo = describeCollection(uuid);
+        var result = new OgcApiRecordsLandingPageDto();
+        result.description(collectionInfo.getDescription()).title(collectionInfo.getTitle());
 
-    result.setCatalogInfo(collectionInfo);
+        result.setCatalogInfo(collectionInfo);
 
-    landingPageLinks.addLinks(nativeWebRequest, uuid, result);
+        landingPageLinks.addLinks(nativeWebRequest, uuid, result);
 
-    return result;
-  }
-
-  /**
-   * given a collectionId, get the DB/elastic catalogInfo and convert it to the final ogcapi-records output.
-   *
-   * @param catalogId collectionId (From user)
-   * @return OgcApiRecordsCatalogDto
-   * @throws Exception catalogId invalid, cannot find catalog.
-   */
-  public OgcApiRecordsCatalogDto describeCollection(String catalogId) throws Exception {
-    var info = catalogApi.getPortalInfo(catalogId);
-
-    var result = catalogInfoToOgcApiRecordsCatalogDto(info);
-    collectionPageLinks.addLinks(nativeWebRequest, result);
-    return result;
-  }
-
-  /**
-   * converts the CatalogInfo (DB/elastic) into a OgcApiRecordsCatalogDto
-   *
-   * @param info CatalogInfo (DB `source` table + elastic json index record)
-   * @return OgcApiRecordsCatalogDto
-   */
-  protected OgcApiRecordsCatalogDto catalogInfoToOgcApiRecordsCatalogDto(CatalogInfo info) {
-    OgcApiRecordsCatalogDto result = new OgcApiRecordsCatalogDto();
-    result.setId(info.getSource().getUuid());
-    result.setTitle(info.getSource().getName());
-
-    if (info.getLinkedIndexRecord() != null) {
-      ElasticIndex2Catalog.injectLinkedServiceRecordInfo(result, info.getLinkedIndexRecord(), "eng");
+        return result;
     }
 
-    return result;
-  }
+    /**
+     * given a collectionId, get the DB/elastic catalogInfo and convert it to the final ogcapi-records output.
+     *
+     * @param catalogId collectionId (From user)
+     * @return OgcApiRecordsCatalogDto
+     * @throws Exception catalogId invalid, cannot find catalog.
+     */
+    public OgcApiRecordsCatalogDto describeCollection(String catalogId) throws Exception {
+        var info = catalogApi.getPortalInfo(catalogId);
 
-  /**
-   * get info about ALL collections.
-   *
-   * @return OgcApiRecordsGetCollections200ResponseDto
-   */
-  public OgcApiRecordsGetCollections200ResponseDto getCollections() {
-    var collectionInfos = catalogApi.getAllPortalInfos();
-    var collections = collectionInfos.stream()
-      .map(x -> catalogInfoToOgcApiRecordsCatalogDto(x))
-      .toList();
+        var result = catalogInfoToOgcApiRecordsCatalogDto(info);
+        collectionPageLinks.addLinks(nativeWebRequest, result);
+        return result;
+    }
 
-    var result = new OgcApiRecordsGetCollections200ResponseDto();
-    result.setCollections(collections);
+    /**
+     * converts the CatalogInfo (DB/elastic) into a OgcApiRecordsCatalogDto
+     *
+     * @param info CatalogInfo (DB `source` table + elastic json index record)
+     * @return OgcApiRecordsCatalogDto
+     */
+    protected OgcApiRecordsCatalogDto catalogInfoToOgcApiRecordsCatalogDto(CatalogInfo info) {
+        OgcApiRecordsCatalogDto result = new OgcApiRecordsCatalogDto();
+        result.setId(info.getSource().getUuid());
+        result.setTitle(info.getSource().getName());
 
-    collectionsPageLinks.addLinks(nativeWebRequest, result);
-    return result;
-  }
+        if (info.getLinkedIndexRecord() != null) {
+            ElasticIndex2Catalog.injectLinkedServiceRecordInfo(result, info.getLinkedIndexRecord(), "eng");
+        }
+
+        return result;
+    }
+
+    /**
+     * get info about ALL collections.
+     *
+     * @return OgcApiRecordsGetCollections200ResponseDto
+     */
+    public OgcApiRecordsGetCollections200ResponseDto getCollections() {
+        var collectionInfos = catalogApi.getAllPortalInfos();
+        var collections = collectionInfos.stream()
+                .map(x -> catalogInfoToOgcApiRecordsCatalogDto(x))
+                .toList();
+
+        var result = new OgcApiRecordsGetCollections200ResponseDto();
+        result.setCollections(collections);
+
+        collectionsPageLinks.addLinks(nativeWebRequest, result);
+        return result;
+    }
 }

@@ -8,10 +8,7 @@ package org.geonetwork.ogcapi.service.configuration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * simple configuration for links in ogcapi-records = landingpage
- */
+/** simple configuration for links in ogcapi-records = landingpage */
 @Configuration
 @ConfigurationProperties(prefix = "geonetwork.openapi-records.links.landingpage")
-public class LandingPageLinksConfiguration extends BasicLinksConfiguration {
-}
+public class LandingPageLinksConfiguration extends BasicLinksConfiguration {}

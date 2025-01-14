@@ -5,38 +5,35 @@
  */
 package org.geonetwork.ogcapi.service.configuration;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MimeType;
 import org.springframework.web.accept.ContentNegotiationManager;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-/**
- * parent class for the endpoint links configuration.
- */
+/** parent class for the endpoint links configuration. */
 public class BasicLinksConfiguration {
 
-  @Autowired
-  ContentNegotiationManager contentNegotiationManager;
+    @Autowired
+    ContentNegotiationManager contentNegotiationManager;
 
-  private Map<String, MimeType> mimeFormats = new HashMap<>();
+    private Map<String, MimeType> mimeFormats = new HashMap<>();
 
-  public Map<String, MimeType> getMimeFormats() {
-    return mimeFormats == null ? null : new HashMap<>(mimeFormats);
-  }
-
-  public void setFormats(List<String> newFormats) {
-    //        formats = newFormats;
-    mimeFormats = new HashMap<>();
-    if (newFormats != null && !newFormats.isEmpty()) {
-      for (String format : newFormats) {
-        var mediaType = contentNegotiationManager.getMediaTypeMappings().get(format);
-        if (mediaType != null) {
-          mimeFormats.put(format, mediaType);
-        }
-      }
+    public Map<String, MimeType> getMimeFormats() {
+        return mimeFormats == null ? null : new HashMap<>(mimeFormats);
     }
-  }
+
+    public void setFormats(List<String> newFormats) {
+        //        formats = newFormats;
+        mimeFormats = new HashMap<>();
+        if (newFormats != null && !newFormats.isEmpty()) {
+            for (String format : newFormats) {
+                var mediaType = contentNegotiationManager.getMediaTypeMappings().get(format);
+                if (mediaType != null) {
+                    mimeFormats.put(format, mediaType);
+                }
+            }
+        }
+    }
 }

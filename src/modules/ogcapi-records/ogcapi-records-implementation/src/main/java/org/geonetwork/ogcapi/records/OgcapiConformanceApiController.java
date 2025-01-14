@@ -15,32 +15,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
-/**
- * implements the /conformance endpoint. See ConformanceApi
- */
+/** implements the /conformance endpoint. See ConformanceApi */
 @RestController
 @RequestMapping("/ogcapi-records")
 public class OgcapiConformanceApiController implements ConformanceApi {
 
-  @Autowired
-  public OgcapiConformanceApiController(NativeWebRequest request) {
-  }
+    @Autowired
+    public OgcapiConformanceApiController(NativeWebRequest request) {}
 
-  @Override
-  @SneakyThrows
-  public ResponseEntity<OgcApiRecordsConfClassesDto> getConformanceDeclaration() {
-    var result = new OgcApiRecordsConfClassesDto();
+    @Override
+    @SneakyThrows
+    public ResponseEntity<OgcApiRecordsConfClassesDto> getConformanceDeclaration() {
+        var result = new OgcApiRecordsConfClassesDto();
 
-    result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/core");
-    result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/searchable-catalogue");
-    result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-collection");
-    result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/records-api");
-    result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/html");
-    result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/json");
-    result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/sorting");
-    result.addConformsToItem("http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/queryables");
-    result.addConformsToItem("http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/queryables-query-parameters");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/core");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/searchable-catalogue");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-collection");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/records-api");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/html");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/json");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/sorting");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/queryables");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/queryables-query-parameters");
 
-    return new ResponseEntity<OgcApiRecordsConfClassesDto>(result, HttpStatusCode.valueOf(200));
-  }
+        return new ResponseEntity<OgcApiRecordsConfClassesDto>(result, HttpStatusCode.valueOf(200));
+    }
 }

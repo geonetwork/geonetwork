@@ -8,6 +8,8 @@ package org.geonetwork.ogcapi.service.dataaccess;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import java.util.ArrayList;
+import java.util.List;
 import org.geonetwork.domain.Profile;
 import org.geonetwork.domain.ReservedGroup;
 import org.geonetwork.domain.ReservedOperation;
@@ -17,9 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Given a query, create a new query that limits the results to items the user has permission for.
@@ -36,97 +35,97 @@ import java.util.List;
 @Component
 public class ElasticWithUserPermissions {
 
-  @Autowired
-  private UsergroupRepository usergroupRepository;
+    @Autowired
+    private UsergroupRepository usergroupRepository;
 
-  @Autowired
-  private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-  /**
-   * Creates a (original-query AND permission-Query) query.
-   *
-   * @param originalQuery original-query
-   * @return (original - query AND permission - Query) query
-   */
-  public Query createPermissionQuery(Query originalQuery) {
-    var queries = new ArrayList<Query>();
-    queries.add(originalQuery); // original query
-    queries.add(createPermissionQuery()); // permission query
-    return BoolQuery.of(bool -> bool.must(queries))._toQuery();
-  }
-
-  /**
-   * returns a (accessible-by-all-query OR (usergroup1) OR ... )
-   *
-   * @return (accessible - by - all - query OR ( usergroup1) OR ... )
-   */
-  public Query createPermissionQuery() {
-    var user = getUser();
-
-    if (user == null) {
-      return createAllQuery();
-    }
-    if (user.getProfile() == Profile.Administrator) {
-      return null;
+    /**
+     * Creates a (original-query AND permission-Query) query.
+     *
+     * @param originalQuery original-query
+     * @return (original - query AND permission - Query) query
+     */
+    public Query createPermissionQuery(Query originalQuery) {
+        var queries = new ArrayList<Query>();
+        queries.add(originalQuery); // original query
+        queries.add(createPermissionQuery()); // permission query
+        return BoolQuery.of(bool -> bool.must(queries))._toQuery();
     }
 
-    var queries = new ArrayList<Query>();
-    queries.add(createAllQuery());
-    queries.addAll(createUserGroupsQueries(user));
+    /**
+     * returns a (accessible-by-all-query OR (usergroup1) OR ... )
+     *
+     * @return (accessible - by - all - query OR ( usergroup1) OR ... )
+     */
+    public Query createPermissionQuery() {
+        var user = getUser();
 
-    return BoolQuery.of(bool -> bool.should(queries).minimumShouldMatch("1"))
-      ._toQuery();
-  }
+        if (user == null) {
+            return createAllQuery();
+        }
+        if (user.getProfile() == Profile.Administrator) {
+            return null;
+        }
 
-  /**
-   * for each of the groups the user is in, create a query to see if the record is accessible by that group.
-   *
-   * @return set of queries to see if that group is allowed to see that record
-   */
-  protected List<Query> createUserGroupsQueries(org.geonetwork.domain.User user) {
-    if (user == null) {
-      return new ArrayList<>();
+        var queries = new ArrayList<Query>();
+        queries.add(createAllQuery());
+        queries.addAll(createUserGroupsQueries(user));
+
+        return BoolQuery.of(bool -> bool.should(queries).minimumShouldMatch("1"))
+                ._toQuery();
     }
 
-    var groups = usergroupRepository.findAllByUserid_Id(user.getId());
-    var groupQueries = groups.stream()
-      .map(group -> createViewPermissionQuery(group.getGroupid().getId()))
-      .toList();
+    /**
+     * for each of the groups the user is in, create a query to see if the record is accessible by that group.
+     *
+     * @return set of queries to see if that group is allowed to see that record
+     */
+    protected List<Query> createUserGroupsQueries(org.geonetwork.domain.User user) {
+        if (user == null) {
+            return new ArrayList<>();
+        }
 
-    return groupQueries;
-  }
+        var groups = usergroupRepository.findAllByUserid_Id(user.getId());
+        var groupQueries = groups.stream()
+                .map(group -> createViewPermissionQuery(group.getGroupid().getId()))
+                .toList();
 
-  public org.geonetwork.domain.User getUser() {
-    var authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    String userName = "nobody";
-    var principal = authentication.getPrincipal();
-    if (principal instanceof User) {
-      userName = ((User) principal).getUsername();
+        return groupQueries;
     }
 
-    var userOptional = userRepository.findOptionalByUsername(userName);
-    if (userOptional.isPresent()) {
-      return userOptional.get();
+    public org.geonetwork.domain.User getUser() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userName = "nobody";
+        var principal = authentication.getPrincipal();
+        if (principal instanceof User) {
+            userName = ((User) principal).getUsername();
+        }
+
+        var userOptional = userRepository.findOptionalByUsername(userName);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        }
+        return null;
     }
-    return null;
-  }
 
-  /**
-   * creates a query to see if the record is accessible to all user groups
-   *
-   * @return query - record is accessible to all user groups
-   */
-  protected Query createAllQuery() {
-    return createViewPermissionQuery(ReservedGroup.all.getId());
-  }
+    /**
+     * creates a query to see if the record is accessible to all user groups
+     *
+     * @return query - record is accessible to all user groups
+     */
+    protected Query createAllQuery() {
+        return createViewPermissionQuery(ReservedGroup.all.getId());
+    }
 
-  protected Query createViewPermissionQuery(int groupNumber) {
-    return MatchQuery.of(m -> {
-        m.field("op" + String.valueOf(ReservedOperation.view.getId()));
-        m.query(String.valueOf(groupNumber));
-        return m;
-      })
-      ._toQuery();
-  }
+    protected Query createViewPermissionQuery(int groupNumber) {
+        return MatchQuery.of(m -> {
+                    m.field("op" + String.valueOf(ReservedOperation.view.getId()));
+                    m.query(String.valueOf(groupNumber));
+                    return m;
+                })
+                ._toQuery();
+    }
 }

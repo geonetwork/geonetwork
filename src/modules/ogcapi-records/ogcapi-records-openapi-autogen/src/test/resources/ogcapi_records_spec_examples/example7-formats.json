@@ -1,12 +1,1 @@
-[
-  {
-    "name": "TK50"
-  },
-  {
-    "name": "GRIB",
-    "mediaType": "application/x-grib"
-  },
-  {
-    "mediaType": "application/zip"
-  }
-]
+[{"name":"TK50"},{"name":"GRIB","mediaType":"application/x-grib"},{"mediaType":"application/zip"}]
