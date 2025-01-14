@@ -44,11 +44,6 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
-      <artifactId>gn-data-analysis</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geonetwork</groupId>
       <artifactId>gn-indexing</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -214,6 +209,13 @@
       <artifactId>spring-boot-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>nimbus-jose-jwt</artifactId>
+      <version>9.37.3</version>
+      <!--      <scope>provided</scope>-->
+    </dependency>
   </dependencies>
   <build>
     <resources>
@@ -241,7 +243,7 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <skipTests>true</skipTests>
+          <skipTests>false</skipTests>
         </configuration>
       </plugin>
     </plugins>
