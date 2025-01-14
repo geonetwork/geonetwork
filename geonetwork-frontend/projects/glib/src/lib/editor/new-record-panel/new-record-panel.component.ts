@@ -216,6 +216,12 @@ export class NewRecordPanelComponent implements OnInit {
     this.createRecord(false);
   }
 
+  openEditor() {
+    location.replace(
+      `/geonetwork/srv/eng/catalog.edit#/metadata/${this.newRecordId()}`
+    );
+  }
+
   /**
    * Creates a new metadata record.
    *
@@ -241,7 +247,7 @@ export class NewRecordPanelComponent implements OnInit {
       .create(createRequest, {
         headers: {
           // TODO: remove this? Header should be set in the gapi?
-          'X-XSRF-TOKEN': 'bc0e37f3-22c3-42c7-9a41-35f13ea51140',
+          'X-XSRF-TOKEN': '84f62daa-8bed-41d7-b161-f9205c7187a2',
           Accept: 'application/json', // Accept could be all?
           'Content-Type': 'application/json',
         },
@@ -251,9 +257,7 @@ export class NewRecordPanelComponent implements OnInit {
           this.newRecordId.set(response);
           this.isCreatingRecord.set(false);
           if (redirectToEditor) {
-            location.replace(
-              `/geonetwork/srv/eng/catalog.edit#/metadata/${this.newRecordId()}`
-            );
+            this.openEditor();
           }
         },
         error => {
@@ -397,21 +401,21 @@ export class NewRecordPanelComponent implements OnInit {
     }
   }
 
-  overview = signal<string | undefined>(undefined);
-  buildingOverview = signal(false)
+  overviewFromData = signal<Blob | undefined>(undefined);
+  buildingOverview = signal(false);
 
   buildOverview() {
     // TODO: do not try on tabular data
-    this.overview.set(undefined);
+    this.overviewFromData.set(undefined);
     this.buildingOverview.set(true);
 
     const overviewUrl = !this.datasourceFile()
       ? `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasource())}&layer=${this.layername()}`
       : `/api/data/analysis/overviewForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
-    this.http.get(overviewUrl, {responseType: 'arraybuffer'}).subscribe({
+    this.http.get(overviewUrl, { responseType: 'blob' }).subscribe({
       next: image => {
-        if (image.byteLength > 0) {
-          this.overview.set(overviewUrl);
+        if (image.size > 0) {
+          this.overviewFromData.set(image);
         }
         this.buildingOverview.set(false);
       },

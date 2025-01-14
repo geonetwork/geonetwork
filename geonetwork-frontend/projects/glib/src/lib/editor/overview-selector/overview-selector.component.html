@@ -1,12 +1,14 @@
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-4">
   @for (type of listOfOverviewTypes; track $index) {
     <div
       class="border-2 rounded-md p-4"
       [class.hidden]="type === 'overview_suggestion' && !suggestion()"
-      [class.border-4]="overviewType() === type">
+      [class.border-4]="overviewType() === type"
+      (click)="setType(type)">
       <p-radiobutton
         [name]="type"
         [value]="type"
+        [disabled]="overviewAttachedToRecord()"
         [(ngModel)]="overviewType"
         [inputId]="type"></p-radiobutton>
       <label [attr.for]="type" class="ml-2 font-bold">{{ type }}</label>
@@ -14,22 +16,31 @@
         @case ('overview_suggestion') {
           @if (suggestion()) {
             <img
-              [src]="suggestion()"
+              [attr.src]="suggestionData()"
               alt="Generated from the datasource"
-              class="max-w-full m-6" />
+              class="max-w-full p-6" />
           }
         }
         @case ('overview_upload') {
           <p-fileupload
             mode="basic"
+            auto="true"
+            [disabled]="overviewType() !== 'overview_upload'"
             name="overview_upload"
             chooseIcon="fa fa-upload"
-            accept="image/*"
+            accept="image/png,image/jpeg,image/gif"
             [maxFileSize]="100 * 1000000"
-            (onUpload)="uploadOverview($event)"
+            (onSelect)="setOverviewFile($event)"
             chooseLabel="Browse" />
         }
       }
     </div>
   }
 </div>
+
+<p-button
+  label="Save overview"
+  icon="fa fa-save"
+  [disabled]="!canSaveOverview()"
+  (onClick)="setRecordOverview()"
+  class="mt-4"></p-button>

@@ -1,4 +1,10 @@
-import { Configuration, DefaultConfig, UiApi, UiConfiguration } from 'gapi';
+import {
+  Configuration,
+  DefaultConfig,
+  SiteApi,
+  UiApi,
+  UiConfiguration,
+} from 'gapi';
 import { Configuration as Gn5Configuration } from 'g5api';
 import { DEFAULT_UI_CONFIGURATION, MISSING_CONFIG_ERROR } from './constants';
 import { InjectionToken, WritableSignal } from '@angular/core';

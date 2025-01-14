@@ -1,17 +1,18 @@
-<p-button
-  [disabled]="!template()"
-  label="Cancel"
-  icon="fa fa-xmark"
-  severity="danger"
-  (onClick)="onNewRecordCancel()"
-  [outlined]="true"
-  class="float-end m-4" />
+<div class="w-full">
+  <p-button
+    [disabled]="!isRecordCreated()"
+    label="Cancel"
+    icon="fa fa-xmark"
+    severity="danger"
+    (onClick)="onNewRecordCancel()"
+    class="float-end m-4" />
 
-@if (errorMessage()) {
-  <div class="float-end m-4">
-    <p-message severity="error" closable>{{ errorMessage() }}</p-message>
-  </div>
-}
+  @if (errorMessage()) {
+    <div class="float-end m-4">
+      <p-message severity="error" closable>{{ errorMessage() }}</p-message>
+    </div>
+  }
+</div>
 
 <p-stepper [(value)]="activeStep" class="p-10 w-full">
   <p-step-item [value]="1">
@@ -46,7 +47,7 @@
             iconPos="right"
             data-cy="gn-new-record-button-edit"
             [disabled]="!isTemplateSelected()"
-            (onClick)="editRecord()" />
+            (onClick)="createRecord(true)" />
         </div>
       </ng-template>
     </p-step-panel>
@@ -101,7 +102,13 @@
                 multiple="true"
                 [maxFileSize]="100 * 1000000">
                 <ng-template #empty>
-                  <div>Drag and drop files to here to upload.</div>
+                  <div>
+                    Drag and drop files to here to upload.
+
+                    <p class="font-medium mt-10">
+                      Maximum file size is <span class="font-bold">100Mo</span>.
+                    </p>
+                  </div>
                 </ng-template>
               </p-fileupload>
             </div>
@@ -166,10 +173,6 @@
                 [label]="format.name"
                 class="mr-2"></p-chip>
             }
-
-            <h2 class="font-medium mt-10">
-              Maximum file size is <span class="font-bold">100Mo</span>.
-            </h2>
           </div>
         </div>
 
@@ -245,14 +248,14 @@
         pTemplate="content"
         let-activateCallback="activateCallback"
         let-index="index">
-
         @if (buildingOverview()) {
-          <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" class="mb-6"/>
+          <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
         }
 
         <g-overview-selector
+          class="mt-2"
           [uuid]="newRecordId()"
-          [suggestion]="overview()"></g-overview-selector>
+          [suggestion]="overviewFromData()"></g-overview-selector>
 
         <div class="flex mt-2 gap-2">
           <p-button

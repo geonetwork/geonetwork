@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Avatar } from 'primeng/avatar';
 import { API_CONFIGURATION } from 'glib';
-import { SiteApi, SettingsListResponse } from 'gapi';
+import { SiteApi } from 'gapi';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -16,7 +16,7 @@ export class CatalogAvatarComponent implements OnInit {
     return new SiteApi(this.apiConfiguration());
   });
 
-  siteInformation = signal<SettingsListResponse | undefined>(undefined);
+  siteInformation = signal<{ [key: string]: string } | undefined>(undefined);
   siteLogoUrl: string;
 
   constructor() {}
