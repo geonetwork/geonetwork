@@ -25,7 +25,7 @@ export interface AddMapserverRequest {
   mapServer: MapServer;
 }
 
-export interface DeleteMapserver1Request {
+export interface DeleteMapserverRequest {
   mapserverId: number;
 }
 
@@ -129,14 +129,14 @@ export class MapserversApi extends runtime.BaseAPI {
   /**
    * Remove a mapserver
    */
-  async deleteMapserver1Raw(
-    requestParameters: DeleteMapserver1Request,
+  async deleteMapserverRaw(
+    requestParameters: DeleteMapserverRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<void>> {
     if (requestParameters['mapserverId'] == null) {
       throw new runtime.RequiredError(
         'mapserverId',
-        'Required parameter "mapserverId" was null or undefined when calling deleteMapserver1().'
+        'Required parameter "mapserverId" was null or undefined when calling deleteMapserver().'
       );
     }
 
@@ -163,11 +163,11 @@ export class MapserversApi extends runtime.BaseAPI {
   /**
    * Remove a mapserver
    */
-  async deleteMapserver1(
-    requestParameters: DeleteMapserver1Request,
+  async deleteMapserver(
+    requestParameters: DeleteMapserverRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
-    await this.deleteMapserver1Raw(requestParameters, initOverrides);
+    await this.deleteMapserverRaw(requestParameters, initOverrides);
   }
 
   /**

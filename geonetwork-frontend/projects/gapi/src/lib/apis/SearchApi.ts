@@ -137,7 +137,9 @@ export class SearchApi extends runtime.BaseAPI {
     );
 
     if (this.isJsonMime(response.headers.get('content-type'))) {
-      return new runtime.JSONApiResponse<estypes.SearchResponse<GnIndexRecord>>(response);
+      return new runtime.JSONApiResponse<estypes.SearchResponse<GnIndexRecord>>(
+        response
+      );
     } else {
       return new runtime.TextApiResponse(response) as any;
     }

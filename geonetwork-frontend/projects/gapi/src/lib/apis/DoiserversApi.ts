@@ -25,7 +25,7 @@ export interface AddDoiServerRequest {
   doiServerDto: DoiServerDto;
 }
 
-export interface DeleteMapserverRequest {
+export interface DeleteMapserver1Request {
   doiServerId: number;
 }
 
@@ -108,14 +108,14 @@ export class DoiserversApi extends runtime.BaseAPI {
   /**
    * Remove a DOI server
    */
-  async deleteMapserverRaw(
-    requestParameters: DeleteMapserverRequest,
+  async deleteMapserver1Raw(
+    requestParameters: DeleteMapserver1Request,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<void>> {
     if (requestParameters['doiServerId'] == null) {
       throw new runtime.RequiredError(
         'doiServerId',
-        'Required parameter "doiServerId" was null or undefined when calling deleteMapserver().'
+        'Required parameter "doiServerId" was null or undefined when calling deleteMapserver1().'
       );
     }
 
@@ -142,11 +142,11 @@ export class DoiserversApi extends runtime.BaseAPI {
   /**
    * Remove a DOI server
    */
-  async deleteMapserver(
-    requestParameters: DeleteMapserverRequest,
+  async deleteMapserver1(
+    requestParameters: DeleteMapserver1Request,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
-    await this.deleteMapserverRaw(requestParameters, initOverrides);
+    await this.deleteMapserver1Raw(requestParameters, initOverrides);
   }
 
   /**

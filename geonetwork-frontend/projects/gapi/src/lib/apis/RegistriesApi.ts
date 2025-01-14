@@ -159,7 +159,7 @@ export interface UpdateThesaurusRequest {
 }
 
 export interface UploadThesaurusOperationRequest {
-  type?: UploadThesaurusFromUrlTypeEnum;
+  type?: UploadThesaurusFromUrlRegistryTypeEnum;
   dir?: string;
   stylesheet?: string;
   uploadThesaurusRequest?: UploadThesaurusRequest;

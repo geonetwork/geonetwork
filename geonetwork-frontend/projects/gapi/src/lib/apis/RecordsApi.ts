@@ -553,7 +553,7 @@ export interface PreviewBatchEditRequest {
 export interface ProcessRecordRequest {
   metadataUuid: string;
   process: string;
-  allRequestParams: { [key: string]: string };
+  processParams?: { [key: string]: any };
 }
 
 export interface ProcessRecordPreviewRequest {
@@ -5048,14 +5048,13 @@ export class RecordsApi extends runtime.BaseAPI {
       );
     }
 
-    if (requestParameters['allRequestParams'] == null) {
-      throw new runtime.RequiredError(
-        'allRequestParams',
-        'Required parameter "allRequestParams" was null or undefined when calling processRecord().'
-      );
-    }
+    // FIXME: Check if the issue is related to openapi gen or GN4 spec
+    const queryParameters: any = requestParameters['processParams'] || {};
 
-    const queryParameters: any = requestParameters['allRequestParams'] || {};
+    // const queryParameters: any = {};
+    // if (requestParameters['processParams'] != null) {
+    //   queryParameters['processParams'] = requestParameters['processParams'];
+    // }
 
     const headerParameters: runtime.HTTPHeaders = {};
 

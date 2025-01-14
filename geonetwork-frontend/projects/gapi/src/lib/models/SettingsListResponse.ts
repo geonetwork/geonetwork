@@ -54,16 +54,12 @@ export function SettingsListResponseFromJSONTyped(
   if (json == null) {
     return json;
   }
-
- // TODO: Improve GN4 API schema which is a map {
-  return json;
-
-  // return {
-  //   settings:
-  //     json['settings'] == null
-  //       ? undefined
-  //       : (json['settings'] as Array<any>).map(SettingFromJSON),
-  // };
+  return {
+    settings:
+      json['settings'] == null
+        ? undefined
+        : (json['settings'] as Array<any>).map(SettingFromJSON),
+  };
 }
 
 export function SettingsListResponseToJSON(

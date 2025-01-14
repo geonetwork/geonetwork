@@ -30,7 +30,7 @@ export class MeApi extends runtime.BaseAPI {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-    // FIXME
+    // FIXME: Check OpenAPI spec.
     headerParameters['Accept'] = 'application/json';
 
     const response = await this.request(

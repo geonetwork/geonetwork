@@ -479,7 +479,7 @@ export class SiteApi extends runtime.BaseAPI {
    */
   async getSiteOrPortalDescriptionRaw(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<SettingsListResponse>> {
+  ): Promise<runtime.ApiResponse<{ [key: string]: string }>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
@@ -494,9 +494,7 @@ export class SiteApi extends runtime.BaseAPI {
       initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, jsonValue =>
-      SettingsListResponseFromJSON(jsonValue)
-    );
+    return new runtime.JSONApiResponse<any>(response);
   }
 
   /**
@@ -504,7 +502,7 @@ export class SiteApi extends runtime.BaseAPI {
    */
   async getSiteOrPortalDescription(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<SettingsListResponse> {
+  ): Promise<{ [key: string]: string }> {
     const response = await this.getSiteOrPortalDescriptionRaw(initOverrides);
     return await response.value();
   }
