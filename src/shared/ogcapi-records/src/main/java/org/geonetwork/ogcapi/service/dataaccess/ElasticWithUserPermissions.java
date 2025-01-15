@@ -36,10 +36,10 @@ import org.springframework.stereotype.Component;
 public class ElasticWithUserPermissions {
 
     @Autowired
-    private UsergroupRepository usergroupRepository;
+    UsergroupRepository usergroupRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     /**
      * Creates a (original-query AND permission-Query) query.
@@ -48,10 +48,11 @@ public class ElasticWithUserPermissions {
      * @return (original - query AND permission - Query) query
      */
     public Query createPermissionQuery(Query originalQuery) {
-        var queries = new ArrayList<Query>();
+        List<Query> queries = new ArrayList<Query>();
         queries.add(originalQuery); // original query
         queries.add(createPermissionQuery()); // permission query
-        return BoolQuery.of(bool -> bool.must(queries))._toQuery();
+        var queries2 = queries.stream().filter(x -> x != null).toList();
+        return BoolQuery.of(bool -> bool.must(queries2))._toQuery();
     }
 
     /**

@@ -24,8 +24,12 @@ public class BasicLinksConfiguration {
         return mimeFormats == null ? null : new HashMap<>(mimeFormats);
     }
 
+    /**
+     * used by application.yaml to populate the formats (format names) for the links configuration.
+     *
+     * @param newFormats list of format names
+     */
     public void setFormats(List<String> newFormats) {
-        //        formats = newFormats;
         mimeFormats = new HashMap<>();
         if (newFormats != null && !newFormats.isEmpty()) {
             for (String format : newFormats) {
