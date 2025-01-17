@@ -19,12 +19,16 @@ allOf:
           of records and catalogs then itemType is a array
           indicated that item types of the members of this
           collections (i.e. record and/or catalog).
-        type: array
-        items:
-          type: string
-          enum:
-            - record
-            - catalog
+        type: string
+        enum:
+          - record
+          - catalog
+#        type: array
+#        items:
+#          type: string
+#          enum:
+#            - record
+#            - catalog
       type:
         description:
           Fixed to catalog for collections of records

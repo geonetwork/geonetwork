@@ -64,7 +64,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
     @SneakyThrows
     public ResponseEntity<OgcApiRecordsGetCollections200ResponseDto> getCollections() {
         var result = collectionsApi.getCollections();
-        return new ResponseEntity<OgcApiRecordsGetCollections200ResponseDto>(result, HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
     }
 
     @Override

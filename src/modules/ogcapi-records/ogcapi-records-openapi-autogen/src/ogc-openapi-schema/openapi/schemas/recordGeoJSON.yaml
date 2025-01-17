@@ -12,8 +12,6 @@ properties:
       A unique identifier of the catalog record.
   type:
     type: string
-    enum:
-      - Feature
   time:
     oneOf:
       - enum:

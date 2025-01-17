@@ -151,8 +151,8 @@ public class OgcApiRecordsExtraExamplesTest {
 
         assertEquals(OgcApiRecordsCatalogDto.class, result.getClass());
         assertEquals("catalog", result.getType().toString());
-        assertEquals(1, result.getItemType().size());
-        assertEquals("record", result.getItemType().get(0).toString());
+        //        assertEquals(1, result.getItemType().size());
+        assertEquals("record", result.getItemType().toString());
 
         // doTest("catalog_1.json", OgcApiRecordsCatalogDto.class);
     }
@@ -167,8 +167,8 @@ public class OgcApiRecordsExtraExamplesTest {
 
         assertEquals(OgcApiRecordsCatalogDto.class, result.getClass());
         assertEquals("Catalog", result.getType().toString());
-        assertEquals(1, result.getItemType().size());
-        assertEquals("record", result.getItemType().get(0).toString());
+        //        assertEquals(1, result.getItemType().size());
+        assertEquals("record", result.getItemType().toString());
 
         doTest("catalog_1b.json", OgcApiRecordsCatalogDto.class);
     }

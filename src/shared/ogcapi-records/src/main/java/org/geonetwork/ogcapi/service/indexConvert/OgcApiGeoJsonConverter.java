@@ -95,7 +95,13 @@ public class OgcApiGeoJsonConverter {
 
         result.setMetadataRecordText(metadataRecord.getData());
 
-        result.setType(OgcApiRecordsRecordGeoJSONDto.TypeEnum.FEATURE);
+        result.setType("Feature");
+        result.getProperties().setType("unknown");
+        if (elasticIndexJsonRecord.getResourceType() != null
+                && !elasticIndexJsonRecord.getResourceType().isEmpty()) {
+            result.getProperties()
+                    .setType(elasticIndexJsonRecord.getResourceType().getFirst());
+        }
 
         return result;
     }
