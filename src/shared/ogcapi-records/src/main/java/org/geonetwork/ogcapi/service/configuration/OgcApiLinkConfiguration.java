@@ -22,4 +22,37 @@ public class OgcApiLinkConfiguration {
 
     /** base URL for geonetwork */
     private String gnBaseUrl;
+
+    /**
+     * base url for the ogcapi records service. Should end in "/" should NOT have "//" in it.
+     *
+     * @param ogcApiRecordsBaseUrl url to ogcapi-records in gn5
+     */
+    public void setOgcApiRecordsBaseUrl(String ogcApiRecordsBaseUrl) {
+        if (ogcApiRecordsBaseUrl == null || ogcApiRecordsBaseUrl.isEmpty()) {
+            return;
+        }
+        if (!ogcApiRecordsBaseUrl.endsWith("/")) {
+            ogcApiRecordsBaseUrl += "/";
+        }
+        ogcApiRecordsBaseUrl = ogcApiRecordsBaseUrl.replace("//", "/");
+        this.ogcApiRecordsBaseUrl = ogcApiRecordsBaseUrl;
+    }
+
+    /**
+     * override lombok to ensure that the url ends in "/"
+     *
+     * @param gnBaseUrl where GN is (for building links)
+     */
+    public void setGnBaseUrl(String gnBaseUrl) {
+        if (gnBaseUrl == null || gnBaseUrl.isEmpty()) {
+            return;
+        }
+        if (!gnBaseUrl.endsWith("/")) {
+            gnBaseUrl += "/";
+        }
+        gnBaseUrl = gnBaseUrl.replace("//", "/");
+
+        this.gnBaseUrl = gnBaseUrl;
+    }
 }

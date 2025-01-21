@@ -1,12 +1,26 @@
+#
+# ENVIRONMENT VARIABLES
+#
+#    Var                default                           meaning
+# --------------------------------------------------------------------------------------------------
+#  GN5_BASE_URL       http://localhost:7979/            Where is GN5 deployed.
+#  GN4_BASE_URL       http://localhost:8080/geonetwork  Where is GN4?
+#  GN4_PROXY_BASE_URL http://localhost:7979/geonetwork  Where is proxied GN4?
+#  ELASTIC_URL        http://localhost:9200             Where is elastic?
+#
+#
+
 geonetwork:
   openapi-records:
     links:
-      #where is GN5?
+      # Where is GN5's ogcapi-records located?
+      # should end in "/" and shouldn't have "//" in the path
+      ogcApiRecordsBaseUrl: ${GN5_BASE_URL:http://localhost:7979/}/ogcapi-records/
+      # How to link to GN (can be either GN4 or GN5's GN4 proxy)
       # should end in "/"
-      ogcApiRecordsBaseUrl: 'http://localhost:7979/ogcapi-records/'
-      #how to link to GN (can be either GN4 or GN5's GN4 proxy)
-      # should end in "/"
-      gnBaseUrl: 'http://localhost:7979/geonetwork/'
+      gnBaseUrl: ${GN4_PROXY_BASE_URL:http://localhost:7979/geonetwork}/
+
+      # These define what kinds of links should be shown for the ogcapi-records various documents.
       landingpage:
         formats:
           - json
@@ -41,9 +55,9 @@ geonetwork:
       sources:
         - "*"
   core:
-    url: http://localhost:8080/geonetwork
+    url: ${GN4_BASE_URL:http://localhost:8080/geonetwork}
   index:
-    url: http://localhost:9200
+    url: ${ELASTIC_URL:http://localhost:9200}
     indexPrefix: gn5-
     indexRecordName: gn-records
     username: elastic
@@ -62,8 +76,6 @@ geonetwork:
     asynchronous: false
   directory:
     data: /data/dev/gn/5/web/src/main/webapp/WEB-INF/data/data
-  openapi:
-    url: http://localhost:7979
   settings:
     system:
       metadata:
@@ -115,12 +127,6 @@ spring:
     gateway:
       mvc:
         routes:
-          - id: geonetwork_proxy_redirect
-            uri: ${geonetwork.openapi.url}
-            predicates:
-              - Path=/geonetwork/proxy
-            filters:
-              - RewritePath=/geonetwork/(?<url>.*), /api/$\{url}
           - id: geonetwork_route
             uri: ${geonetwork.core.url}
             predicates:
