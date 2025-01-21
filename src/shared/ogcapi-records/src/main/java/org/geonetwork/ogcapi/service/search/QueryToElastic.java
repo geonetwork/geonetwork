@@ -114,6 +114,15 @@ public class QueryToElastic {
         return createMulti(jsonProperty.getxGnElastic(), userSearchTerm, lang3iso);
     }
 
+    /**
+     * given an elastic config, the user search term, and the language, create a query. This function determines what
+     * type of query to create, and then hands off to the create*() methods.
+     *
+     * @param gnElasticPath info about the how to query elastic
+     * @param userSearchTerm what the user is looking for
+     * @param lang3iso what language (iso 3 letter)
+     * @return Query for the parameter
+     */
     private Query create(OgcApiRecordsGnElasticDto gnElasticPath, String userSearchTerm, String lang3iso) {
         if (gnElasticPath.getElasticColumnType() == OgcApiRecordsGnElasticDto.ElasticColumnTypeEnum.TEXT
                 && StringUtils.countMatches(gnElasticPath.getElasticPath(), ".") > 2) {

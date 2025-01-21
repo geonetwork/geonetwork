@@ -57,6 +57,16 @@ public class SimpleElastic {
         return indexRecord;
     }
 
+    /**
+     * perform search on the Elastic Client. This is just a simple wrapper around client.getEsClient().search
+     *
+     * @param fn builder
+     * @param tDocumentClass parse results into
+     * @return elastic search results
+     * @param <TDocument> parse results into
+     * @throws IOException elastic connection error
+     * @throws ElasticsearchException something wrong with the request
+     */
     public final <TDocument> SearchResponse<TDocument> search(
             Function<SearchRequest.Builder, ObjectBuilder<SearchRequest>> fn, Class<TDocument> tDocumentClass)
             throws IOException, ElasticsearchException {
