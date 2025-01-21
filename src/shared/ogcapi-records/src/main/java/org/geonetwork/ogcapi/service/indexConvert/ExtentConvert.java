@@ -141,9 +141,9 @@ public class ExtentConvert {
 
         public BBox() {
             xmin = Double.MAX_VALUE;
-            xmax = Double.MIN_VALUE;
+            xmax = -Double.MAX_VALUE;
             ymin = Double.MAX_VALUE;
-            ymax = Double.MIN_VALUE;
+            ymax = -Double.MAX_VALUE;
         }
 
         public BBox(double xmin, double xmax, double ymin, double ymax) {

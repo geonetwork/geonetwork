@@ -142,6 +142,18 @@ public class RecordsEsQueryBuilder {
         // collectionFilter));
     }
 
+    public double constrainLong(double x) {
+        if (x < -180) return -180;
+        if (x > 180) return 180;
+        return x;
+    }
+
+    public double constrainLat(double x) {
+        if (x < -90) return -90;
+        if (x > 90) return 90;
+        return x;
+    }
+
     /**
      * this builds the actual filter/query.
      *
@@ -172,10 +184,10 @@ public class RecordsEsQueryBuilder {
         if (ogcApiQuery.getBbox() != null && ogcApiQuery.getBbox().size() == 4) {
 
             Rectangle rectangle = new Rectangle(
-                    ogcApiQuery.getBbox().get(0).doubleValue(),
-                    ogcApiQuery.getBbox().get(2).doubleValue(),
-                    ogcApiQuery.getBbox().get(3).doubleValue(),
-                    ogcApiQuery.getBbox().get(1).doubleValue());
+                    constrainLong(ogcApiQuery.getBbox().get(0).doubleValue()),
+                    constrainLong(ogcApiQuery.getBbox().get(2).doubleValue()),
+                    constrainLat(ogcApiQuery.getBbox().get(3).doubleValue()),
+                    constrainLat(ogcApiQuery.getBbox().get(1).doubleValue()));
 
             geoQuery = GeoBoundingBoxQuery.of(q -> q.field("geom")
                             .boundingBox(b -> b.trbl(trbl -> trbl.bottomLeft(

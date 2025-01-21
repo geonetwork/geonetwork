@@ -52,6 +52,25 @@ public class LandingPageLinks extends BasicLinks {
         addOpenApiLink(landingPage);
         addIconLink(landingPage, catalogUuid);
         addConformanceLinks(nativeWebRequest, landingPage);
+        addCollectionLinks(nativeWebRequest, landingPage);
+    }
+
+    /**
+     * Added for https://camptocamp.github.io/ogc-client/#/demo -- also looks like in the pygeoapi demo.
+     *
+     * @param nativeWebRequest from user
+     * @param landingPage where to put the link
+     */
+    @SuppressWarnings("UnusedVariable")
+    private void addCollectionLinks(NativeWebRequest nativeWebRequest, OgcApiRecordsLandingPageDto landingPage) {
+        var uri = URI.create(linkConfiguration.getOgcApiRecordsBaseUrl()).resolve("collections");
+        var link = new OgcApiRecordsLinkDto()
+                .href(uri)
+                .rel("data")
+                .title("Collections")
+                .type("application/json");
+
+        landingPage.addLinksItem(link);
     }
 
     /**

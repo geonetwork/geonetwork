@@ -92,6 +92,8 @@ public class OgcApiItemsApi {
         response.numberReturned(features.size());
         response.setTimeStamp(OffsetDateTime.now(ZoneId.of("UTC")));
         itemsPageLinks.addLinks(nativeWebRequest, ogcApiQuery.getCollectionId(), response, ogcApiQuery);
+        features.stream().forEach(x -> itemPageLinks.addLinks(nativeWebRequest, ogcApiQuery.getCollectionId(), x));
+
         return response;
     }
 

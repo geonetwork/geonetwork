@@ -29,9 +29,11 @@ geonetwork:
       items:
         formats:
           - geojson
+          - json
       item:
         formats:
           - geojson
+          - json
     search:
       queryFilter: '+isTemplate:n'
       queryBase: '(any.\*:(${any}) OR resourceTitleObject.\*:(${any})^2)'

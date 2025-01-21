@@ -39,7 +39,7 @@ public class ItemPageLinks extends BasicLinks {
         addStandardLinks(
                 nativeWebRequest,
                 linkConfiguration.getOgcApiRecordsBaseUrl(),
-                "collections/" + collectionId + "/items",
+                "collections/" + collectionId + "/items/" + page.getId(),
                 page,
                 new ArrayList<String>(
                         itemPageLinksConfiguration.getMimeFormats().keySet()),
