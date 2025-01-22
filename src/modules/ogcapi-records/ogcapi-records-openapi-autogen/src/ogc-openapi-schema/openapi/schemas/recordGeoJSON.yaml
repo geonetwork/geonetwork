@@ -32,6 +32,8 @@ properties:
     description:
       Underlying record stored in GeoNetwork (often XML).
     type: string
+  geoNetworkElasticIndexRecord:
+    $ref: 'IndexRecord.yaml'
   properties:
     allOf:
       - $ref: 'recordCommonProperties.yaml'

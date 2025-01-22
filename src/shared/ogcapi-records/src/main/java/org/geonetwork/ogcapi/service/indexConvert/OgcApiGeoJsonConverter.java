@@ -94,6 +94,7 @@ public class OgcApiGeoJsonConverter {
         Metadata metadataRecord = metadataRepository.findOneByUuid(elasticIndexJsonRecord.getMetadataIdentifier());
 
         result.setMetadataRecordText(metadataRecord.getData());
+        result.setGeoNetworkElasticIndexRecord(elasticIndexJsonRecord);
 
         result.setType("Feature");
         result.getProperties().setType("unknown");

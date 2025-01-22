@@ -17,8 +17,7 @@ Method for developing (when changing the yaml):
 1. validate
    openapi-generator-cli validate -i src/ogc-openapi-schema/openapi/ogcapi-records-1-example-ref-schema-repo.yaml
 2. generate code
-   rm -r delme ; openapi-generator-cli generate -g spring --generate-alias-as-model -i
-   src/ogc-openapi-schema/openapi/ogcapi-records-1-example-ref-schema-repo.yaml -o delme -v
+   rm -r delme ; openapi-generator-cli generate -g spring --generate-alias-as-model -i    src/ogc-openapi-schema/openapi/ogcapi-records-1-example-ref-schema-repo.yaml -o delme -v
 
 Verify:
 

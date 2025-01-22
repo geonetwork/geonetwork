@@ -82,6 +82,13 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-index-model</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -104,7 +111,8 @@
               <modelNameSuffix>Dto</modelNameSuffix>
               <generateApiTests>false</generateApiTests>
               <generateModelTests>false</generateModelTests>
-              <!--              <modelNameMappings>getRecords_bbox_parameter=GetRecordsBboxDto</modelNameMappings>-->
+              <!-- We have a faux definition of IndexRecord in the .yaml - this will replace it with the actual Java implementation! -->
+              <typeMappings>OgcApiRecordsIndexRecordDto=org.geonetwork.index.model.record.IndexRecord</typeMappings>
               <configOptions>
                 <sourceFolder>src/gen/java/main</sourceFolder>
 

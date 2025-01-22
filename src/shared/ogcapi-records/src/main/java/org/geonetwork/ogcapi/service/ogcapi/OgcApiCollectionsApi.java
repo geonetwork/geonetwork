@@ -75,6 +75,7 @@ public class OgcApiCollectionsApi {
         var info = catalogApi.getPortalInfo(catalogId);
 
         var result = catalogInfoToOgcApiRecordsCatalogDto(info);
+
         collectionPageLinks.addLinks(nativeWebRequest, result);
         return result;
     }
@@ -92,6 +93,7 @@ public class OgcApiCollectionsApi {
 
         if (info.getLinkedIndexRecord() != null) {
             ElasticIndex2Catalog.injectLinkedServiceRecordInfo(result, info.getLinkedIndexRecord(), "eng");
+            result.setGeoNetworkElasticIndexRecord(info.getLinkedIndexRecord());
         }
 
         return result;
