@@ -17,10 +17,11 @@ geonetwork:
       # should end in "/" and shouldn't have "//" in the path
       ogcApiRecordsBaseUrl: ${GN5_BASE_URL:http://localhost:7979/}/ogcapi-records/
       # How to link to GN (can be either GN4 or GN5's GN4 proxy)
-      # should end in "/"
+      # should end in "/" and shouldn't have "//" in the path
       gnBaseUrl: ${GN4_PROXY_BASE_URL:http://localhost:7979/geonetwork}/
 
       # These define what kinds of links should be shown for the ogcapi-records various documents.
+      # You probably will not need to modify these.
       landingpage:
         formats:
           - json
@@ -49,9 +50,13 @@ geonetwork:
           - geojson
           - json
     search:
+      # This query filter is always added to all queries
       queryFilter: '+isTemplate:n'
+      # When executing a normal `q=...` query, this defines how we do an elastic search.
       queryBase: '(any.\*:(${any}) OR resourceTitleObject.\*:(${any})^2)'
+      # Should the elastic query track total hits?  Tracking total hits is expensive, however, is needed for paging.
       trackTotalHits: true
+      # What elastic index json record sources (properties) should be retrieved during a query?
       sources:
         - "*"
   core:
