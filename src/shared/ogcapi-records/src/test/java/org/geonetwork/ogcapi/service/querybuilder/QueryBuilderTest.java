@@ -38,6 +38,8 @@ public class QueryBuilderTest {
     public void setup() {
         queryBuilder = new QueryBuilder();
         queryBuilder.queryablesService = new QueryablesService();
+        queryBuilder.queryablesExtractor = new QueryablesExtractor();
+        queryBuilder.queryablesExtractor.queryablesService = queryBuilder.queryablesService;
 
         collectionId = "collectionId";
         bbox = Arrays.asList(new BigDecimal(0), new BigDecimal(0), new BigDecimal(100), new BigDecimal(100));

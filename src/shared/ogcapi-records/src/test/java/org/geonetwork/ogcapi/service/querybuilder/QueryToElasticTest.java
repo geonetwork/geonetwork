@@ -455,6 +455,8 @@ public class QueryToElasticTest {
         // setup QueryBuilder
         var queryBuilder = new QueryBuilder();
         queryBuilder.queryablesService = queryablesService;
+        queryBuilder.queryablesExtractor = new QueryablesExtractor();
+        queryBuilder.queryablesExtractor.queryablesService = queryablesService;
 
         Map<String, String[]> paramMap = new LinkedHashMap<>();
         paramMap.put(pname, new String[] {pvalue});

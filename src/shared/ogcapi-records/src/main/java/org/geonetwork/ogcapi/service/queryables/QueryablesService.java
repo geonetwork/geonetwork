@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
 import org.springframework.stereotype.Service;
@@ -78,5 +80,26 @@ public class QueryablesService {
      */
     public OgcApiRecordsJsonSchemaDto getFullQueryables(String collectionId) {
         return fullJsonSchema;
+    }
+
+    /**
+     * is this a queryable property?
+     *
+     * @param propertyName name of the queryable property (i.e. "contacts")
+     * @param collectionID which collection (null is usually ok)
+     * @return if this is defined as a queryable
+     */
+    public boolean isQueryable(String propertyName, String collectionID) {
+        return getFullQueryables(collectionID).getProperties().containsKey(propertyName);
+    }
+
+    /**
+     * get all the queryables property names.
+     *
+     * @param collectionID which collection (null is usually ok)
+     * @return all the properties (i.e. ["id","contacts"] )
+     */
+    public List<String> queryableProperties(String collectionID) {
+        return new ArrayList<>(getFullQueryables(collectionID).getProperties().keySet());
     }
 }

@@ -31,6 +31,9 @@ public class QueryBuilder {
     @Autowired
     QueryablesService queryablesService;
 
+    @Autowired
+    QueryablesExtractor queryablesExtractor;
+
     /**
      * builds a query from the request - cf. ItemApiController#collectionsCollectionIdItemsGet.
      *
@@ -79,6 +82,8 @@ public class QueryBuilder {
         result.setSortBy(sortby);
 
         injectExtraFromRequest(collectionId, result, parameterMap);
+
+        queryablesExtractor.extractQueryables(result);
 
         return result;
     }
