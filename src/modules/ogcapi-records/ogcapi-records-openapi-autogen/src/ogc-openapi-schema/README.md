@@ -40,7 +40,7 @@ Notes:
 3. Some of the "oneOf" definitions were removed. This causes some problem in the java generation - the differences in
    the model are minor (i.e. validation)
 4. Roles were moved inline as it was a simple `List<String>` but wasn't generating correctly
-5. Catalog#itemtype was defined as a either a `String` or  `List<String>`. Changed so its always a `List<String>`
+5. Catalog#itemtype was defined as a either a `String` or  `List<String>`. Changed so its always a `List<String>`.  This was later changed to only a `String` (for compatibility with other clients)
 6. BBOX - simplified to not have "oneOf" constraints
 7. Time - simplified to only have one super-pattern instead of a bunch of "oneOf" sub-patterns
 
