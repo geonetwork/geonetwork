@@ -134,7 +134,7 @@ public class DataAnalysisController {
         try {
             Store.ResourceHolder resourceHolder =
                     metadataStore.getResource(metadataUuid, visibility, datasource, approved);
-            datasourceToUse = resourceHolder.getPath().toString();
+            datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -162,11 +162,19 @@ public class DataAnalysisController {
                     metadataStore.getResource(metadataUuid, visibility, datasource, approved);
 
             return new ResponseEntity<>(
-                    analyzer.getDatasourceLayers(resourceHolder.getPath().toString()), HttpStatus.OK);
+                    analyzer.getDatasourceLayers(buildLocalDatasourceUrl(resourceHolder.getPath().toString())), HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private String buildLocalDatasourceUrl(String string) {
+        if (string.endsWith(".zip")) {
+            return "/vsizip/" + string;
+        } else {
+            return string;
         }
     }
 
@@ -186,7 +194,7 @@ public class DataAnalysisController {
             Store.ResourceHolder resourceHolder =
                     metadataStore.getResource(metadataUuid, visibility, datasource, approved);
 
-            datasourceToUse = resourceHolder.getPath().toString();
+            datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -241,7 +249,7 @@ public class DataAnalysisController {
         try {
             Store.ResourceHolder resourceHolder = metadataStore.getResource(uuid, visibility, datasource, approved);
 
-            datasourceToUse = resourceHolder.getPath().toString();
+            datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -334,8 +342,7 @@ public class DataAnalysisController {
         String datasourceToUse;
         try {
             Store.ResourceHolder resourceHolder = metadataStore.getResource(uuid, visibility, datasource, approved);
-
-            datasourceToUse = resourceHolder.getPath().toString();
+            datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {

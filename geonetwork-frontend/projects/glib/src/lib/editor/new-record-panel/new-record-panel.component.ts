@@ -126,7 +126,7 @@ export class NewRecordPanelComponent implements OnInit {
     },
     {
       name: 'ZIP',
-      prefix: '/viszip/',
+      prefix: '/vsizip//vsicurl/',
       placeholder: 'https://...',
       icon: 'fa-archive',
     },
