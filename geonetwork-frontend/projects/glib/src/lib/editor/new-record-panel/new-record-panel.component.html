@@ -69,7 +69,7 @@
                 [(ngModel)]="datasourceType"
                 optionLabel="name"
                 title="Select a type"
-                class="w-full md:w-26">
+                class="w-full md:w-14">
                 <ng-template #selectedItem let-selectedOption>
                   <div class="flex items-center gap-2" *ngIf="selectedOption">
                     <i [attr.class]="'fa ' + selectedOption.icon"></i>
@@ -280,54 +280,9 @@
             severity="secondary"
             (onClick)="activateCallback(3)" />
           <p-button
-            [disabled]="!analysisResult()"
-            label="Preview record"
-            icon="fas fa-arrow-right"
-            iconPos="right"
-            (onClick)="activateCallback(5)" />
-        </div>
-      </ng-template>
-    </p-step-panel>
-  </p-step-item>
-  <p-step-item [value]="5">
-    <p-step
-      [disabled]="
-        !(
-          isTemplateSelected() &&
-          isDatasourceAndTemplateSelected() &&
-          analysisResult()
-        )
-      "
-      >Review and save</p-step
-    >
-    <p-step-panel>
-      <ng-template
-        pTemplate="content"
-        let-activateCallback="activateCallback"
-        let-index="index">
-        <div>
-          @if (isCreatingPreview()) {
-            <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
-          } @else if (previewResult()) {
-            <ace
-              style="height: 50vh"
-              [config]="{ wrap: true, tabSize: 2 }"
-              [mode]="'xml'"
-              [theme]="'github'"
-              [(value)]="previewResult"
-              [disabled]="true"></ace>
-          }
-        </div>
-        <div class="flex mt-2 gap-2">
-          <p-button
-            label="Back"
-            severity="secondary"
-            icon="fas fa-arrow-left"
-            (onClick)="activateCallback(3)" />
-          <p-button
             label="Edit"
             icon="fas fa-pencil-alt"
-            [disabled]="!previewResult()"
+            [disabled]="!analysisResult()"
             (onClick)="applyAnalysisToRecord()" />
         </div>
       </ng-template>
