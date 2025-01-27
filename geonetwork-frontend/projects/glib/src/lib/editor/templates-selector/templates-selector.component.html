@@ -3,6 +3,13 @@
   size="40"
   filter="+isTemplate:y"
   [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]">
+
+  <g-search-agg
+    aggregation="resourceType"
+    [isLabelDisplayed]="false"
+    [layout]="SearchAggLayout.SELECT_BUTTON"
+    scope="newDataTemplates" />
+
   <g-search-results scope="newDataTemplates">
     <ng-template #searchProgressTemplate>
       <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
@@ -11,14 +18,8 @@
       @if (search.response().hits.total.value === 0) {
         <p class="text-center">No template found.</p>
       } @else {
-        <g-search-agg
-          aggregation="resourceType"
-          [isLabelDisplayed]="false"
-          [layout]="SearchAggLayout.SELECT_BUTTON"
-          scope="newDataTemplates" />
-
         <div class="w-full">
-          <label class="font-bold">and a template</label>
+          <label class="font-bold">Templates</label>
         </div>
         <p-selectButton
           class="flex-col"
