@@ -64,14 +64,30 @@
         <div class="grid grid-cols-2 gap-x-8 mb-10">
           <div class="basis-1/2">
             <p-inputGroup>
-              <p-inputGroupAddon>
-                <i class="fa fa-link"></i>
-                URL
-              </p-inputGroupAddon>
+              <p-select
+                [options]="datasourceTypes"
+                [(ngModel)]="datasourceType"
+                optionLabel="name"
+                title="Select a type"
+                class="w-full md:w-26">
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <i [attr.class]="'fa ' + selectedOption.icon"></i>
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template #item let-option>
+                  <div class="flex items-center gap-2">
+                    <i [attr.class]="'fa ' + option.icon"></i>
+                    <div>{{ option.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
               <input
                 pInputText
                 id="datasource"
                 aria-describedby="datasource-help"
+                [placeholder]="datasourceType().placeholder || ''"
                 [disabled]="isDatasourceFileSelected()"
                 (change)="onDatasourceChange()"
                 [(ngModel)]="datasource" />

@@ -104,6 +104,39 @@ export class NewRecordPanelComponent implements OnInit {
     'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv'
   );
   datasourceFile = signal('');
+
+  datasourceTypes = [
+    {
+      name: 'URL',
+      prefix: '',
+      placeholder: 'https://...',
+      icon: 'fa-link',
+    },
+    {
+      name: 'DB',
+      prefix: '',
+      placeholder: 'postgresql://www-data:www-data@localhost:5432/geo',
+      icon: 'fa-database',
+    },
+    {
+      name: 'WFS',
+      prefix: 'WFS:',
+      placeholder: 'https://...',
+      icon: 'fa-map',
+    },
+    {
+      name: 'ZIP',
+      prefix: '/viszip/',
+      placeholder: 'https://...',
+      icon: 'fa-archive',
+    },
+  ];
+  datasourceType = signal(this.datasourceTypes[0]);
+
+  datasourceWithPrefix = computed(() => {
+    return (this.datasourceType().prefix || '') + this.datasource();
+  });
+
   layername = signal('');
   metadataFiles = signal<MetadataResource[]>([]);
 
@@ -193,6 +226,7 @@ export class NewRecordPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // TODO: Check GDAL is available
     // Retrieve the dataset formats supported
     this.dataAnalysisApi()
       .formats()
@@ -280,7 +314,7 @@ export class NewRecordPanelComponent implements OnInit {
     this.errorFetchingLayers.set('');
 
     const layersRequest: LayersRequest = {
-      datasource: this.datasource(),
+      datasource: this.datasourceWithPrefix(),
     };
 
     this.dataAnalysisApi()
@@ -345,62 +379,44 @@ export class NewRecordPanelComponent implements OnInit {
    * Analyses the selected dataset, returning the related information.
    */
   private getDatasetInfo() {
-    if (!this.analysisResult()) {
-      this.isExecutingAnalysis.set(true);
-      this.errorExecutingAnalysis.set('');
+    if (this.analysisResult()) return;
 
-      if (!this.datasourceFile()) {
-        // Process dataset from external URL
-        const analysisRequest: AnalysisSynchRequest = {
-          datasource: this.datasource(),
-          layer: this.layername(),
-        };
+    this.isExecutingAnalysis.set(true);
+    this.errorExecutingAnalysis.set('');
 
-        this.dataAnalysisApi()
-          .analysisSynch(analysisRequest)
-          .then(
-            response => {
-              console.log(response);
-              this.analysisResult.set(response);
-              this.isExecutingAnalysis.set(false);
-            },
-            error => {
-              console.log(
-                'Error processing the dataset: ' + error.response.statusText
-              );
-              this.errorExecutingAnalysis.set(error.errorMessage);
-              this.isExecutingAnalysis.set(false);
-            }
-          );
-      } else {
-        // Process uploaded dataset to a new metadata
-        const analysisRequest: AnalysisSynchMetadataResourceRequest = {
+    const analysisRequest = this.datasourceFile()
+      ? {
           metadataUuid: this.newRecordId(),
           datasource: this.datasourceFile(),
           visibility: LayersMetadataResourceVisibilityEnum.Public,
           approved: true,
           layer: this.layername(),
+        }
+      : {
+          datasource: this.datasourceWithPrefix(),
+          layer: this.layername(),
         };
 
-        this.dataAnalysisApi()
-          .analysisSynchMetadataResource(analysisRequest)
-          .then(
-            response => {
-              this.analysisResult.set(response);
-              this.isExecutingAnalysis.set(false);
-            },
-            error => {
-              console.log(
-                'Error processing the dataset: ' + error.response.statusText
-              );
-              this.errorExecutingAnalysis.set(error.errorMessage);
-              this.isExecutingAnalysis.set(false);
-            }
-          );
-      }
-    }
-  }
+    const analysisMethod = this.datasourceFile()
+      ? this.dataAnalysisApi().analysisSynchMetadataResource(
+          analysisRequest as AnalysisSynchMetadataResourceRequest
+        )
+      : this.dataAnalysisApi().analysisSynch(analysisRequest);
 
+    analysisMethod.then(
+      response => {
+        this.analysisResult.set(response);
+        this.isExecutingAnalysis.set(false);
+      },
+      error => {
+        console.log(
+          'Error processing the dataset: ' + error.response.statusText
+        );
+        this.errorExecutingAnalysis.set(error.errorMessage);
+        this.isExecutingAnalysis.set(false);
+      }
+    );
+  }
   overviewFromData = signal<Blob | undefined>(undefined);
   buildingOverview = signal(false);
 
@@ -410,7 +426,7 @@ export class NewRecordPanelComponent implements OnInit {
     this.buildingOverview.set(true);
 
     const overviewUrl = !this.datasourceFile()
-      ? `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasource())}&layer=${this.layername()}`
+      ? `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
       : `/api/data/analysis/overviewForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
     this.http.get(overviewUrl, { responseType: 'blob' }).subscribe({
       next: image => {
@@ -432,127 +448,92 @@ export class NewRecordPanelComponent implements OnInit {
    * Previews the metadata record with the dataset analysis result.
    */
   private getRecordPreview() {
-    if (!this.previewResult()) {
-      this.isCreatingPreview.set(true);
-      this.errorPreviewingAnalysis.set('');
+    if (this.previewResult()) return;
 
-      if (!this.datasourceFile()) {
-        // Process dataset from external URL
-        const previewAnalysisRequest: PreviewDataAnalysisOnRecordRequest = {
+    this.isCreatingPreview.set(true);
+    this.errorPreviewingAnalysis.set('');
+
+    const previewAnalysisRequest = this.datasourceFile()
+      ? {
+          metadataUuid: this.newRecordId(),
+          datasource: this.datasourceFile(),
+          visibility: LayersMetadataResourceVisibilityEnum.Public,
+          approved: true,
+          layer: this.layername(),
+        }
+      : {
           uuid: this.newRecordId(),
-          datasource: this.datasource(),
+          datasource: this.datasourceWithPrefix(),
           layer: this.layername(),
         };
 
-        this.dataAnalysisApi()
-          .previewDataAnalysisOnRecord(previewAnalysisRequest)
-          .then(
-            response => {
-              this.previewResult.set(response);
-              this.isCreatingPreview.set(false);
-            },
-            error => {
-              console.log(
-                'Error previewing metadata dataset analysis: ' +
-                  error.response.statusText
-              );
-              this.errorPreviewingAnalysis.set(error.errorMessage);
-              this.isCreatingPreview.set(false);
-            }
-          );
-      } else {
-        // Process uploaded dataset to a new metadata
-        const previewAnalysisRequest: PreviewDataAnalysisOnRecordForMetadataResourceRequest =
-          {
-            metadataUuid: this.newRecordId(),
-            datasource: this.datasourceFile(),
-            visibility: LayersMetadataResourceVisibilityEnum.Public,
-            approved: true,
-            layer: this.layername(),
-          };
+    const previewMethod = this.datasourceFile()
+      ? this.dataAnalysisApi().previewDataAnalysisOnRecordForMetadataResource(
+          previewAnalysisRequest as PreviewDataAnalysisOnRecordForMetadataResourceRequest
+        )
+      : this.dataAnalysisApi().previewDataAnalysisOnRecord(
+          previewAnalysisRequest as PreviewDataAnalysisOnRecordRequest
+        );
 
-        this.dataAnalysisApi()
-          .previewDataAnalysisOnRecordForMetadataResource(
-            previewAnalysisRequest
-          )
-          .then(
-            response => {
-              this.previewResult.set(response);
-              this.isCreatingPreview.set(false);
-            },
-            error => {
-              console.log(
-                'Error previewing metadata dataset analysis: ' +
-                  error.response.statusText
-              );
-              this.errorPreviewingAnalysis.set(error.errorMessage);
-              this.isCreatingPreview.set(false);
-            }
-          );
+    previewMethod.then(
+      response => {
+        this.previewResult.set(response);
+        this.isCreatingPreview.set(false);
+      },
+      error => {
+        console.log(
+          'Error previewing metadata dataset analysis: ' +
+            error.response.statusText
+        );
+        this.errorPreviewingAnalysis.set(error.errorMessage);
+        this.isCreatingPreview.set(false);
       }
-    }
+    );
   }
 
   /**
    * Updates the metadata record with the dataset analysis result.
    */
   applyAnalysisToRecord() {
-    if (!this.datasourceFile()) {
-      const analysisRequest: ApplyDataAnalysisOnRecordRequest = {
-        uuid: this.newRecordId(),
-        datasource: this.datasource(),
-        layer: this.layername(),
-      };
-
-      this.dataAnalysisApi()
-        .applyDataAnalysisOnRecord(analysisRequest)
-        .then(
-          response => {
-            location.replace(
-              `/geonetwork/srv/eng/catalog.edit#/metadata/${this.newRecordId()}`
-            );
-          },
-          error => {
-            console.log(
-              'Error updating metadata record with the dataset analysis: ' +
-                error.response.statusText
-            );
-            this.errorMessage.set(
-              'Error updating metadata record with the dataset analysis: ' +
-                error.response.statusText
-            );
-          }
-        );
-    } else {
-      const analysisRequest: ApplyDataAnalysisOnRecordForMetadataResourceRequest =
-        {
+    const analysisRequest = this.datasourceFile()
+      ? {
           uuid: this.newRecordId(),
           datasource: this.datasourceFile(),
           visibility: LayersMetadataResourceVisibilityEnum.Public,
           approved: true,
           layer: this.layername(),
+        }
+      : {
+          uuid: this.newRecordId(),
+          datasource: this.datasourceWithPrefix(),
+          layer: this.layername(),
         };
 
-      this.dataAnalysisApi()
-        .applyDataAnalysisOnRecordForMetadataResource(analysisRequest)
-        .then(
-          response => {
-            location.replace(
-              `/geonetwork/srv/eng/catalog.edit#/metadata/${this.newRecordId()}`
-            );
-          },
-          error => {
-            console.log(
-              'Error updating metadata record with the dataset analysis: ' +
-                error.response.statusText
-            );
-            this.errorMessage.set(
-              'Error updating metadata record with the dataset analysis: ' +
-                error.response.statusText
-            );
-          }
+    const applyAnalysis = this.datasourceFile()
+      ? this.dataAnalysisApi().applyDataAnalysisOnRecordForMetadataResource(
+          analysisRequest as ApplyDataAnalysisOnRecordForMetadataResourceRequest
+        )
+      : this.dataAnalysisApi().applyDataAnalysisOnRecord(analysisRequest);
+
+    applyAnalysis.then(
+      () => {
+        this.recordsApi()
+          .index({ uuids: [this.newRecordId()] })
+          .then(() => {
+            this.openEditor();
+          });
+      },
+      error => {
+        console.log(
+          'Error updating metadata record with the dataset analysis: ' +
+            error.response.statusText
         );
-    }
+        this.errorMessage.set(
+          'Error updating metadata record with the dataset analysis: ' +
+            error.response.statusText
+        );
+      }
+    );
   }
 
   onLayerChange(): void {
@@ -571,14 +552,10 @@ export class NewRecordPanelComponent implements OnInit {
     this.previewResult.set('');
   }
 
-  /**
-   * Resets the form.
-   */
   resetForm() {
     this.template.set('');
     this.newRecordId.set('');
     this.onDatasourceChange();
-
     this.activeStep.set(1);
   }
 
@@ -588,7 +565,6 @@ export class NewRecordPanelComponent implements OnInit {
 
   /**
    * Event triggered to upload the selected files to the metadata.
-   *
    */
   onUploadHandler(event: FileUploadHandlerEvent) {
     if (!this.newRecordId()) {
@@ -677,8 +653,6 @@ export class NewRecordPanelComponent implements OnInit {
       this.resetForm();
     }
   }
-
-  moveToConfirmationPanel() {}
 
   private retrieveMetadataFiles(): void {
     const getAllResourcesRequest: GetAllResourcesRequest = {
