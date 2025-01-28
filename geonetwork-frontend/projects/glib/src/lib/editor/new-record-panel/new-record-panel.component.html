@@ -229,6 +229,7 @@
             <small class="error-message">{{ errorExecutingAnalysis() }}</small>
           } @else if (analysisResult()) {
             <g-data-analysis-panel
+              [uuid]="newRecordId()"
               [analysisResult]="analysisResult"></g-data-analysis-panel>
           }
         </div>

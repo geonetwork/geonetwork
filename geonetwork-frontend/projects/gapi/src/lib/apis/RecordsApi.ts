@@ -4570,6 +4570,8 @@ export class RecordsApi extends runtime.BaseAPI {
     }
 
     const headerParameters: runtime.HTTPHeaders = {};
+    // FIXME: Check OpenAPI spec.
+    headerParameters['Accept'] = 'application/json';
 
     const response = await this.request(
       {

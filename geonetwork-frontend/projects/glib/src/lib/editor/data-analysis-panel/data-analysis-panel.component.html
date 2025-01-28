@@ -3,16 +3,24 @@
   @let isRaster = analysisResult().dataType === GnRasterInfoDataTypeEnum.Raster;
 
   <h2 class="pt-2 pb-2 text-2xl font-medium">
-    @if (isVector) {
-      <span class="font-bold">{{ analysisResult().layers[0].name }}</span>
-      dataset contains
-      <span class="font-bold">{{
-        analysisResult().layers[0].featureCount
-      }}</span>
-      features.
-    } @else if (isRaster) {
-      RASTER dataset contains {{ analysisResult().bands?.length }} band(s).
-    }
+    <div class="inline-flex items-center">
+      <g-inplace-field
+        property="resourceTitleObject"
+        [uuid]="uuid()"
+        [(value)]="analysisResult().layers[0].name" />
+
+      <div>
+        @if (isVector) {
+          dataset contains
+          <span class="font-bold">{{
+            analysisResult().layers[0].featureCount
+          }}</span>
+          features.
+        } @else if (isRaster) {
+          dataset contains {{ analysisResult().bands?.length }} band(s).
+        }
+      </div>
+    </div>
   </h2>
 
   <div class="grid grid-cols-8 gap-4">

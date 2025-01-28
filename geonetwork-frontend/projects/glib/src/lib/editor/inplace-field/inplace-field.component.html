@@ -1,0 +1,16 @@
+<p-inplace>
+  <ng-template #display>
+    <span class="font-bold">
+      {{ value() }}
+    </span>
+    <i class="fa fa-pencil"></i>
+  </ng-template>
+  <ng-template #content let-closeCallback="closeCallback">
+    <p-inputgroup>
+      <input type="text" pInputText autofocus [(ngModel)]="value" />
+      <p-button
+        (click)="saveEdit($event, closeCallback)"
+        icon="fa fa-floppy-disk"></p-button>
+    </p-inputgroup>
+  </ng-template>
+</p-inplace>

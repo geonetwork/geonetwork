@@ -1,21 +1,39 @@
-import { Component, computed, Input, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  input,
+  Input,
+  WritableSignal,
+} from '@angular/core';
 import { DropdownModule } from 'primeng/dropdown';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { GnDatasetInfo, GnRasterInfo, GnRasterInfoDataTypeEnum } from 'gapi';
 import { Select } from 'primeng/select';
 import { JsonPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { InplaceFieldComponent } from '../inplace-field/inplace-field.component';
 
 @Component({
   selector: 'g-data-analysis-panel',
   standalone: true,
-  imports: [DropdownModule, PrimeTemplate, TableModule, Select, JsonPipe],
+  imports: [
+    DropdownModule,
+    PrimeTemplate,
+    TableModule,
+    Select,
+    JsonPipe,
+    FormsModule,
+    InplaceFieldComponent,
+  ],
   templateUrl: './data-analysis-panel.component.html',
 })
 export class DataAnalysisPanelComponent {
   @Input() analysisResult!: WritableSignal<
     GnDatasetInfo | GnRasterInfo | undefined
   >;
+
+  uuid = input.required<string>();
 
   isVector = (
     datasetInfo: GnDatasetInfo | GnRasterInfo | undefined

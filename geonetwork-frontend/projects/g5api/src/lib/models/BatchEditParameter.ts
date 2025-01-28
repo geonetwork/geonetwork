@@ -14,25 +14,31 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * Batch edit parameter. Use either xpath or property to identify the element to edit.
  * @export
  * @interface BatchEditParameter
  */
 export interface BatchEditParameter {
   /**
-   *
+   * XPath to the element to edit
    * @type {string}
    * @memberof BatchEditParameter
    */
-  xpath: string;
+  xpath?: string;
   /**
-   *
+   * Property in the index object of the element to edit
+   * @type {string}
+   * @memberof BatchEditParameter
+   */
+  property?: string;
+  /**
+   * Insertion mode and value.
    * @type {string}
    * @memberof BatchEditParameter
    */
   value: string;
   /**
-   *
+   * XPath condition to evaluate against the metadata record to decide if edit should be applied.
    * @type {string}
    * @memberof BatchEditParameter
    */
@@ -45,7 +51,6 @@ export interface BatchEditParameter {
 export function instanceOfBatchEditParameter(
   value: object
 ): value is BatchEditParameter {
-  if (!('xpath' in value) || value['xpath'] === undefined) return false;
   if (!('value' in value) || value['value'] === undefined) return false;
   return true;
 }
@@ -62,7 +67,8 @@ export function BatchEditParameterFromJSONTyped(
     return json;
   }
   return {
-    xpath: json['xpath'],
+    xpath: json['xpath'] == null ? undefined : json['xpath'],
+    property: json['property'] == null ? undefined : json['property'],
     value: json['value'],
     condition: json['condition'] == null ? undefined : json['condition'],
   };
@@ -76,6 +82,7 @@ export function BatchEditParameterToJSON(
   }
   return {
     xpath: value['xpath'],
+    property: value['property'],
     value: value['value'],
     condition: value['condition'],
   };

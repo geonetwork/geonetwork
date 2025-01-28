@@ -28,16 +28,16 @@ import {
 export interface MetadataResource {
   /**
    *
-   * @type {boolean}
-   * @memberof MetadataResource
-   */
-  approved?: boolean;
-  /**
-   *
    * @type {MetadataResourceExternalManagementProperties}
    * @memberof MetadataResource
    */
   metadataResourceExternalManagementProperties?: MetadataResourceExternalManagementProperties;
+  /**
+   *
+   * @type {boolean}
+   * @memberof MetadataResource
+   */
+  approved?: boolean;
   /**
    *
    * @type {Date}
@@ -125,13 +125,13 @@ export function MetadataResourceFromJSONTyped(
     return json;
   }
   return {
-    approved: json['approved'] == null ? undefined : json['approved'],
     metadataResourceExternalManagementProperties:
       json['metadataResourceExternalManagementProperties'] == null
         ? undefined
         : MetadataResourceExternalManagementPropertiesFromJSON(
             json['metadataResourceExternalManagementProperties']
           ),
+    approved: json['approved'] == null ? undefined : json['approved'],
     lastModification:
       json['lastModification'] == null
         ? undefined
@@ -153,11 +153,11 @@ export function MetadataResourceToJSON(value?: MetadataResource | null): any {
     return value;
   }
   return {
-    approved: value['approved'],
     metadataResourceExternalManagementProperties:
       MetadataResourceExternalManagementPropertiesToJSON(
         value['metadataResourceExternalManagementProperties']
       ),
+    approved: value['approved'],
     lastModification:
       value['lastModification'] == null
         ? undefined

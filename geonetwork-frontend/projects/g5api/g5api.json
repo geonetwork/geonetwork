@@ -2253,11 +2253,11 @@
       "MetadataResource": {
         "type": "object",
         "properties": {
-          "approved": {
-            "type": "boolean"
-          },
           "metadataResourceExternalManagementProperties": {
             "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
+          },
+          "approved": {
+            "type": "boolean"
           },
           "lastModification": {
             "type": "string",
@@ -2308,19 +2308,27 @@
         }
       },
       "BatchEditParameter": {
-        "required": ["value", "xpath"],
+        "required": ["value"],
         "type": "object",
         "properties": {
           "xpath": {
-            "type": "string"
+            "type": "string",
+            "description": "XPath to the element to edit"
+          },
+          "property": {
+            "type": "string",
+            "description": "Property in the index object of the element to edit"
           },
           "value": {
-            "type": "string"
+            "type": "string",
+            "description": "Insertion mode and value."
           },
           "condition": {
-            "type": "string"
+            "type": "string",
+            "description": "XPath condition to evaluate against the metadata record to decide if edit should be applied."
           }
         },
+        "description": "Batch edit parameter. Use either xpath or property to identify the element to edit.",
         "xml": {
           "name": "edit"
         }
