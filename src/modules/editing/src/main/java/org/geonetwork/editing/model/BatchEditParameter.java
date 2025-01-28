@@ -5,60 +5,31 @@
  */
 package org.geonetwork.editing.model;
 
-import jakarta.xml.bind.annotation.XmlElement;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import lombok.Builder;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
+@Data
+@Builder
 @XmlRootElement(name = "edit")
+@Schema(description = "Batch edit parameter. Use either xpath or property to identify the element to edit.")
 public class BatchEditParameter implements Serializable {
+    @Schema(description = "XPath to the element to edit")
     private String xpath;
+
+    @Schema(description = "Property in the index object of the element to edit")
+    private String property;
+
+    @Schema(description = "Insertion mode and value.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String value;
+
+    @Schema(
+            description =
+                    "XPath condition to evaluate against the metadata record to decide if edit should be applied.")
     private String condition;
-
-    public BatchEditParameter() {}
-
-    public BatchEditParameter(String xpath, String value, String condition) {
-        if (StringUtils.isEmpty(xpath)) {
-            throw new IllegalArgumentException(
-                    "Parameter xpath is not set. It should be not empty and define the XPath of the element"
-                            + " to update.");
-        }
-        this.xpath = xpath;
-        this.value = value;
-        this.condition = condition;
-    }
-
-    public BatchEditParameter(String xpath, String value) {
-        this(xpath, value, null);
-    }
-
-    @XmlElement(required = true)
-    public String getXpath() {
-        return xpath;
-    }
-
-    public void setXpath(String xpath) {
-        this.xpath = xpath;
-    }
-
-    @XmlElement(required = true)
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    @XmlElement(required = false)
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
 
     @Override
     public String toString() {

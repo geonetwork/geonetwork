@@ -162,7 +162,9 @@ public class DataAnalysisController {
                     metadataStore.getResource(metadataUuid, visibility, datasource, approved);
 
             return new ResponseEntity<>(
-                    analyzer.getDatasourceLayers(buildLocalDatasourceUrl(resourceHolder.getPath().toString())), HttpStatus.OK);
+                    analyzer.getDatasourceLayers(
+                            buildLocalDatasourceUrl(resourceHolder.getPath().toString())),
+                    HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {

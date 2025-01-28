@@ -15,9 +15,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
+import org.geonetwork.constants.Geonet;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.editing.model.AddElemValue;
 import org.geonetwork.editing.model.BatchEditParameter;
+import org.geonetwork.metadata.MetadataAccessManager;
 import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.schemas.MetadataSchema;
 import org.geonetwork.schemas.SchemaManager;
@@ -37,6 +39,8 @@ public class BatchEditsService {
 
     private final MetadataManager metadataManager;
 
+    private final MetadataAccessManager metadataAccessManager;
+
     public Pair<Object, Element> applyBatchEdits(
             //    private Pair<SimpleMetadataProcessingReport, Element> applyBatchEdits(
             String[] uuids,
@@ -51,7 +55,7 @@ public class BatchEditsService {
             throw new IllegalArgumentException("At least one edit must be defined.");
         }
 
-        final Set<String> setOfUuidsToEdit;
+        final Set<String> setOfUuidsToEdit = new HashSet<>();
         if (uuids == null) {
             throw new NotImplementedException("GN5 / SelectionManager is not implemented.");
             //    TODO:        SelectionManager selectionManager =
@@ -64,7 +68,12 @@ public class BatchEditsService {
             //            }
             //            setOfUuidsToEdit = new HashSet<>();
         } else {
-            setOfUuidsToEdit = new HashSet<>(Arrays.asList(uuids));
+            for (String uuid : uuids) {
+                Metadata metadata = metadataManager.findMetadataByUuidOrId(uuid, true);
+                if (metadata != null && metadataAccessManager.canEdit(metadata.getId())) {
+                    setOfUuidsToEdit.add(metadata.getUuid());
+                }
+            }
         }
 
         if (setOfUuidsToEdit.isEmpty()) {
@@ -124,7 +133,7 @@ public class BatchEditsService {
                             metadataChanged = editLib.addElementOrFragmentFromXpath(
                                             metadata,
                                             metadataSchema,
-                                            batchEditParameter.getXpath(),
+                                            getXpath(batchEditParameter, metadataSchema),
                                             propertyValue,
                                             createXpathNodeIfNotExists)
                                     || metadataChanged;
@@ -182,5 +191,38 @@ public class BatchEditsService {
         }
         //    report.close();
         return Pair.write(null, preview);
+    }
+
+    private String getXpath(BatchEditParameter batchEditParameter, MetadataSchema metadataSchema) {
+        if (StringUtils.isNotEmpty(batchEditParameter.getXpath())) {
+            return batchEditParameter.getXpath();
+        } else if (StringUtils.isNotEmpty(batchEditParameter.getProperty())) {
+            return getXpathForProperty(metadataSchema.getName(), batchEditParameter.getProperty());
+        } else {
+            throw new IllegalArgumentException("Either xpath or property must be defined.");
+        }
+    }
+
+    // TODO - this is a temporary solution until we have a better way to map properties to xpaths
+    private String getXpathForProperty(String schema, String property) {
+        switch (property) {
+            case Geonet.IndexFieldNames.RESOURCETITLE + "Object":
+                switch (schema) {
+                    case "iso19115-3.2018":
+                        return "mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString";
+                    case "iso19139":
+                        return "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString";
+                }
+                break;
+            case Geonet.IndexFieldNames.RESOURCEABSTRACT + "Object":
+                switch (schema) {
+                    case "iso19115-3.2018":
+                        return "mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString";
+                    case "iso19139":
+                        return "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString";
+                }
+                break;
+        }
+        return "";
     }
 }

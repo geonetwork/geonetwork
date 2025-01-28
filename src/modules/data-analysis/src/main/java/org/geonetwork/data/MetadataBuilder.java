@@ -182,9 +182,9 @@ public class MetadataBuilder {
             if (property.getContext().equals(DataIngesterConfiguration.Resource.Property.Context.DatasetLayer.name())) {
                 property.getOperations().forEach(operation -> {
                     if (operation.getSchema().equals(schema)) {
-                        edits.add(new BatchEditParameter(
-                                buildForVectorLayerProperties(operation.getXpath(), property, datasetInfo),
-                                String.format(
+                        edits.add(BatchEditParameter.builder()
+                                .xpath(buildForVectorLayerProperties(operation.getXpath(), property, datasetInfo))
+                                .value(String.format(
                                         "<%s>%s</%s>",
                                         operation.getOperation(),
                                         operation
@@ -195,8 +195,10 @@ public class MetadataBuilder {
                                                 ? ""
                                                 : buildForVectorLayerProperties(
                                                         operation.getValue(), property, datasetInfo),
-                                        operation.getOperation()),
-                                buildForVectorLayerProperties(operation.getCondition(), property, datasetInfo)));
+                                        operation.getOperation()))
+                                .condition(
+                                        buildForVectorLayerProperties(operation.getCondition(), property, datasetInfo))
+                                .build());
                     }
                 });
             } else if (property.getContext()
@@ -204,9 +206,9 @@ public class MetadataBuilder {
                 property.getOperations().forEach(operation -> {
                     datasetInfo.getLayers().getFirst().getFields().forEach(field -> {
                         if (operation.getSchema().equals(schema)) {
-                            edits.add(new BatchEditParameter(
-                                    buildForVectorLayerProperties(operation.getXpath(), property, datasetInfo),
-                                    String.format(
+                            edits.add(BatchEditParameter.builder()
+                                    .xpath(buildForVectorLayerProperties(operation.getXpath(), property, datasetInfo))
+                                    .value(String.format(
                                             "<%s>%s</%s>",
                                             operation.getOperation(),
                                             operation
@@ -217,12 +219,13 @@ public class MetadataBuilder {
                                                     ? ""
                                                     : buildForLayerColumnProperties(
                                                             operation.getValue(), property, field),
-                                            operation.getOperation()),
-                                    buildForLayerColumnProperties(
+                                            operation.getOperation()))
+                                    .condition(buildForLayerColumnProperties(
                                             buildForVectorLayerProperties(
                                                     operation.getCondition(), property, datasetInfo),
                                             property,
-                                            field)));
+                                            field))
+                                    .build());
                         }
                     });
                 });
@@ -239,9 +242,9 @@ public class MetadataBuilder {
             if (property.getContext().equals(DataIngesterConfiguration.Resource.Property.Context.DatasetLayer.name())) {
                 property.getOperations().forEach(operation -> {
                     if (operation.getSchema().equals(schema)) {
-                        edits.add(new BatchEditParameter(
-                                buildForRasterLayerProperties(operation.getXpath(), property, rasterInfo),
-                                String.format(
+                        edits.add(BatchEditParameter.builder()
+                                .xpath(buildForRasterLayerProperties(operation.getXpath(), property, rasterInfo))
+                                .value(String.format(
                                         "<%s>%s</%s>",
                                         operation.getOperation(),
                                         operation
@@ -252,8 +255,10 @@ public class MetadataBuilder {
                                                 ? ""
                                                 : buildForRasterLayerProperties(
                                                         operation.getValue(), property, rasterInfo),
-                                        operation.getOperation()),
-                                buildForRasterLayerProperties(operation.getCondition(), property, rasterInfo)));
+                                        operation.getOperation()))
+                                .condition(
+                                        buildForRasterLayerProperties(operation.getCondition(), property, rasterInfo))
+                                .build());
                     }
                 });
             }
