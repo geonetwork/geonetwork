@@ -7,6 +7,7 @@ package org.geonetwork.editing;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -190,7 +191,7 @@ public class BatchEditsService {
             }
         }
         //    report.close();
-        return Pair.write(null, preview);
+        return Pair.write(new HashMap<>(), preview);
     }
 
     private String getXpath(BatchEditParameter batchEditParameter, MetadataSchema metadataSchema) {
