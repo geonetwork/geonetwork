@@ -11,12 +11,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
-import org.geonetwork.constants.Geonet;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.text.StringSubstitutor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.editing.model.AddElemValue;
 import org.geonetwork.editing.model.BatchEditParameter;
@@ -41,6 +44,8 @@ public class BatchEditsService {
     private final MetadataManager metadataManager;
 
     private final MetadataAccessManager metadataAccessManager;
+
+    private final SchemaConfiguration schemaConfiguration;
 
     public Pair<Object, Element> applyBatchEdits(
             //    private Pair<SimpleMetadataProcessingReport, Element> applyBatchEdits(
@@ -119,8 +124,6 @@ public class BatchEditsService {
                     while (listOfUpdatesIterator.hasNext()) {
                         BatchEditParameter batchEditParameter = listOfUpdatesIterator.next();
 
-                        AddElemValue propertyValue = new AddElemValue(batchEditParameter.getValue());
-
                         boolean applyEdit = true;
                         if (StringUtils.isNotEmpty(batchEditParameter.getCondition())) {
                             applyEdit = false;
@@ -131,10 +134,14 @@ public class BatchEditsService {
                             }
                         }
                         if (applyEdit) {
+                            buildBatchParameterForSchema(batchEditParameter, metadataSchema);
+
+                            AddElemValue propertyValue = new AddElemValue(batchEditParameter.getValue());
+
                             metadataChanged = editLib.addElementOrFragmentFromXpath(
                                             metadata,
                                             metadataSchema,
-                                            getXpath(batchEditParameter, metadataSchema),
+                                            batchEditParameter.getXpath(),
                                             propertyValue,
                                             createXpathNodeIfNotExists)
                                     || metadataChanged;
@@ -194,36 +201,41 @@ public class BatchEditsService {
         return Pair.write(new HashMap<>(), preview);
     }
 
-    private String getXpath(BatchEditParameter batchEditParameter, MetadataSchema metadataSchema) {
+    private void buildBatchParameterForSchema(BatchEditParameter batchEditParameter, MetadataSchema metadataSchema) {
         if (StringUtils.isNotEmpty(batchEditParameter.getXpath())) {
-            return batchEditParameter.getXpath();
+            return;
         } else if (StringUtils.isNotEmpty(batchEditParameter.getProperty())) {
-            return getXpathForProperty(metadataSchema.getName(), batchEditParameter.getProperty());
+            SchemaConfiguration.Schema.Property propertyConfig =
+                    getPropertyConfig(metadataSchema.getName(), batchEditParameter.getProperty());
+            batchEditParameter.setXpath(propertyConfig.getXpath());
+
+            String value = batchEditParameter.getValue();
+            Map<String, String> replacements = new HashMap<>();
+            replacements.put(propertyConfig.getName(), value);
+            batchEditParameter.setValue(buildWithPropertySubstitutions(propertyConfig.getValue(), replacements));
         } else {
             throw new IllegalArgumentException("Either xpath or property must be defined.");
         }
     }
 
-    // TODO - this is a temporary solution until we have a better way to map properties to xpaths
-    private String getXpathForProperty(String schema, String property) {
-        switch (property) {
-            case Geonet.IndexFieldNames.RESOURCETITLE + "Object":
-                switch (schema) {
-                    case "iso19115-3.2018":
-                        return "mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString";
-                    case "iso19139":
-                        return "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString";
-                }
-                break;
-            case Geonet.IndexFieldNames.RESOURCEABSTRACT + "Object":
-                switch (schema) {
-                    case "iso19115-3.2018":
-                        return "mdb:identificationInfo/mri:MD_DataIdentification/mri:abstract/gco:CharacterString";
-                    case "iso19139":
-                        return "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract/gco:CharacterString";
-                }
-                break;
+    private SchemaConfiguration.Schema.Property getPropertyConfig(String schemaIdentifier, String property) {
+        Optional<SchemaConfiguration.Schema> schema = schemaConfiguration.getSchema(schemaIdentifier);
+        if (schema.isEmpty()) {
+            throw new IllegalArgumentException(String.format("Schema %s not found in configuration", schemaIdentifier));
         }
-        return "";
+        Optional<SchemaConfiguration.Schema.Property> field = schema.get().getProperties().stream()
+                .filter(p -> p.getName().equals(property))
+                .findFirst();
+        if (field.isEmpty()) {
+            throw new IllegalArgumentException(
+                    String.format("Property %s not found in schema %s", property, schemaIdentifier));
+        }
+        return field.get();
+    }
+
+    public static String buildWithPropertySubstitutions(String template, Map<String, String> replacements) {
+        replacements.forEach((key, value) -> replacements.put(key, StringEscapeUtils.escapeXml11(value)));
+        StringSubstitutor sub = new StringSubstitutor(replacements, "{{", "}}");
+        return sub.replace(template);
     }
 }

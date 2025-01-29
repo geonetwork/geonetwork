@@ -19,13 +19,21 @@ import org.geonetwork.data.DataIngesterConfiguration;
 import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.domain.Metadata;
+import org.geonetwork.domain.Profile;
+import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.domain.repository.OperationRepository;
 import org.geonetwork.domain.repository.OperationallowedRepository;
+import org.geonetwork.domain.repository.UserRepository;
+import org.geonetwork.domain.repository.UsergroupRepository;
 import org.geonetwork.editing.BatchEditMode;
 import org.geonetwork.editing.BatchEditsService;
+import org.geonetwork.editing.SchemaConfiguration;
+import org.geonetwork.metadata.MetadataAccessManager;
 import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.schemas.SchemaManager;
+import org.geonetwork.security.AuthenticationFacade;
+import org.geonetwork.security.user.UserManager;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -41,6 +49,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.xmlunit.builder.DiffBuilder;
@@ -50,10 +59,20 @@ import org.xmlunit.diff.Diff;
 import org.xmlunit.diff.ElementSelectors;
 
 @ExtendWith(SpringExtension.class)
-@Import({MetadataBuilder.class, MetadataManager.class, BatchEditsService.class, SchemaManager.class})
-@EnableConfigurationProperties({DataIngesterConfiguration.class})
+@Import({
+    MetadataBuilder.class,
+    MetadataManager.class,
+    BatchEditsService.class,
+    MetadataManager.class,
+    MetadataAccessManager.class,
+    UserManager.class,
+    AuthenticationFacade.class,
+    SchemaManager.class
+})
+@EnableConfigurationProperties({DataIngesterConfiguration.class, SchemaConfiguration.class})
 @ActiveProfiles({"prod", "test"})
 @SpringBootTest(classes = {TestConfiguration.class})
+@WithMockUser(username = "mock_test_admin")
 class MetadataBuilderTest {
 
     @Autowired
@@ -61,6 +80,12 @@ class MetadataBuilderTest {
 
     @MockBean
     private MetadataRepository metadataRepository;
+
+    @MockBean
+    private UserRepository userRepository;
+
+    @MockBean
+    private UsergroupRepository usergroupRepository;
 
     @MockBean
     private OperationRepository operationRepository;
@@ -94,10 +119,16 @@ class MetadataBuilderTest {
 
         Metadata metadata = new Metadata();
         metadata.setUuid(uuid);
+        metadata.setId(1);
         metadata.setSchemaid("iso19115-3.2018");
         metadata.setData(template);
         when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
         when(metadataRepository.findByUuid("uuid1")).thenReturn(Optional.of(metadata));
+        when(userRepository.findOptionalByUsername("mock_test_admin"))
+                .thenReturn(Optional.of(User.builder()
+                        .name("mock_test_admin")
+                        .profile(Profile.Administrator)
+                        .build()));
 
         String builtMetadata = metadataBuilder.buildMetadata(
                 uuid, metadata.getSchemaid(), layerProperties.get(), BatchEditMode.PREVIEW);
@@ -131,10 +162,16 @@ class MetadataBuilderTest {
         String uuid = "uuid1";
         Metadata metadata = new Metadata();
         metadata.setUuid(uuid);
+        metadata.setId(1);
         metadata.setSchemaid(schema);
         metadata.setData(xml);
         when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
         when(metadataRepository.findByUuid("uuid1")).thenReturn(Optional.of(metadata));
+        when(userRepository.findOptionalByUsername("mock_test_admin"))
+                .thenReturn(Optional.of(User.builder()
+                        .name("mock_test_admin")
+                        .profile(Profile.Administrator)
+                        .build()));
 
         String builtMetadata = metadataBuilder.buildMetadata(
                 uuid,

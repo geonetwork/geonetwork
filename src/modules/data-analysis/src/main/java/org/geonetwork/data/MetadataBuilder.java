@@ -141,7 +141,7 @@ public class MetadataBuilder {
         return buildWithPropertySubstitutions(template, replacements);
     }
 
-    private String buildWithPropertySubstitutions(String template, Map<String, String> replacements) {
+    public static String buildWithPropertySubstitutions(String template, Map<String, String> replacements) {
         replacements.forEach((key, value) -> replacements.put(key, StringEscapeUtils.escapeXml11(value)));
         StringSubstitutor sub = new StringSubstitutor(replacements, "{{", "}}");
         return sub.replace(template);

@@ -339,7 +339,7 @@ public class DataAnalysisController {
             @RequestParam boolean approved,
             @RequestParam String layer)
             throws MetadataNotFoundException {
-        Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(uuid, false);
+        metadataManager.findMetadataByUuidOrId(uuid, false);
 
         String datasourceToUse;
         try {
