@@ -24,6 +24,14 @@
   </h2>
 
   <div class="grid grid-cols-8 gap-4">
+    <div class="font-medium">Resource identifier</div>
+    <div class="col-span-7">
+      <g-inplace-field
+        property="resourceIdentifier"
+        [uuid]="uuid()"
+        [(value)]="resourceIdentifier" />
+    </div>
+
     <div class="font-medium">Source</div>
     <div class="col-span-7">{{ analysisResult().description }}</div>
 

@@ -1,0 +1,6 @@
+::ng-deep p-inputgroup p-datepicker .p-inputwrapper {
+  width: 100% !important;
+}
+::ng-deep p-inputgroup p-datepicker input {
+  border-radius: 0 !important;
+}

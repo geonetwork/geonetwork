@@ -35,6 +35,8 @@ export class DataAnalysisPanelComponent {
 
   uuid = input.required<string>();
 
+  resourceIdentifier = '';
+
   isVector = (
     datasetInfo: GnDatasetInfo | GnRasterInfo | undefined
   ): datasetInfo is GnDatasetInfo => {

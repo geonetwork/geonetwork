@@ -6,11 +6,27 @@
     <i class="fa fa-pencil"></i>
   </ng-template>
   <ng-template #content let-closeCallback="closeCallback">
-    <p-inputgroup>
-      <input type="text" pInputText autofocus [(ngModel)]="value" />
-      <p-button
-        (click)="saveEdit($event, closeCallback)"
-        icon="fa fa-floppy-disk"></p-button>
-    </p-inputgroup>
+    <div class="inline-flex gap-2">
+      <div>
+        @if (property() === 'resourceIdentifier') {
+          <g-eea-resource-identifier-field
+            [(value)]="value"></g-eea-resource-identifier-field>
+        } @else {
+          <input type="text" pInputText autofocus [(ngModel)]="value" />
+        }
+      </div>
+      <div class="inline-flex gap-2">
+        <p-button
+          title="Save changes"
+          (click)="saveEdit($event, closeCallback)"
+          [outlined]="true"
+          icon="fa fa-floppy-disk"></p-button>
+        <p-button
+          title="Cancel changes"
+          (click)="cancelEdit($event, closeCallback)"
+          [outlined]="true"
+          icon="fa fa-cancel"></p-button>
+      </div>
+    </div>
   </ng-template>
 </p-inplace>
