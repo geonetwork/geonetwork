@@ -5,22 +5,14 @@ import {
   input,
   model,
   OnInit,
-  signal,
-  WritableSignal,
 } from '@angular/core';
 import { Button } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { Inplace } from 'primeng/inplace';
-import { InputGroup } from 'primeng/inputgroup';
 import { InputText } from 'primeng/inputtext';
-import { API5_CONFIGURATION } from 'glib';
 import { BatchEditRequest, RecordsApi } from 'g5api';
-import { Tooltip } from 'primeng/tooltip';
-import { Select } from 'primeng/select';
-import { InputGroupAddon } from 'primeng/inputgroupaddon';
-import { InputNumber } from 'primeng/inputnumber';
-import { DatePicker } from 'primeng/datepicker';
 import { EeaResourceIdentifierFieldComponent } from '../eea-resource-identifier-field/eea-resource-identifier-field.component';
+import { API5_CONFIGURATION } from '../../config/config.loader';
 
 @Component({
   selector: 'g-inplace-field',
