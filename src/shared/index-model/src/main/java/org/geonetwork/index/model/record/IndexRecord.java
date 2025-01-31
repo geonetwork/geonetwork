@@ -268,8 +268,19 @@ public class IndexRecord {
         return operations;
     }
 
+    /**
+     * Any properties not explicitly defined.
+     */
     @Singular
-    private final Map<String, List<String>> otherProperties = new HashMap<>();
+    @Builder.ObtainVia(method = "copyOtherProperties")
+    private Map<String, List<Object>> otherProperties = new HashMap<>();
+
+    private Map<String, List<Object>> copyOtherProperties() {
+        if (otherProperties == null) {
+            otherProperties = new HashMap<>();
+        }
+        return otherProperties;
+    }
 
     /**
      * Record title.
@@ -904,13 +915,13 @@ public class IndexRecord {
     }
 
     private void handleOtherProperties(String name, Object value) {
-        List<String> s = otherProperties.get(name);
+        List<Object> s = otherProperties.get(name);
         if (s == null) {
             s = new ArrayList<>(1);
-            s.add(value.toString());
+            s.add(value);
             otherProperties.put(name, s);
         } else {
-            s.add(value.toString());
+            s.add(value);
         }
     }
 
