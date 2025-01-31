@@ -19,64 +19,58 @@ import { mapValues } from '../runtime';
  * @interface OgcApiRecordsContactDto
  */
 export interface OgcApiRecordsContactDto {
-  /**
-   *
-   * @type {string}
-   * @memberof OgcApiRecordsContactDto
-   */
-  name?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof OgcApiRecordsContactDto
-   */
-  url?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof OgcApiRecordsContactDto
-   */
-  email?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OgcApiRecordsContactDto
+     */
+    name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OgcApiRecordsContactDto
+     */
+    url?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OgcApiRecordsContactDto
+     */
+    email?: string;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsContactDto interface.
  */
-export function instanceOfOgcApiRecordsContactDto(
-  value: object
-): value is OgcApiRecordsContactDto {
-  return true;
+export function instanceOfOgcApiRecordsContactDto(value: object): value is OgcApiRecordsContactDto {
+    return true;
 }
 
-export function OgcApiRecordsContactDtoFromJSON(
-  json: any
-): OgcApiRecordsContactDto {
-  return OgcApiRecordsContactDtoFromJSONTyped(json, false);
+export function OgcApiRecordsContactDtoFromJSON(json: any): OgcApiRecordsContactDto {
+    return OgcApiRecordsContactDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsContactDtoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): OgcApiRecordsContactDto {
-  if (json == null) {
-    return json;
-  }
-  return {
-    name: json['name'] == null ? undefined : json['name'],
-    url: json['url'] == null ? undefined : json['url'],
-    email: json['email'] == null ? undefined : json['email'],
-  };
+export function OgcApiRecordsContactDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsContactDto {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'name': json['name'] == null ? undefined : json['name'],
+        'url': json['url'] == null ? undefined : json['url'],
+        'email': json['email'] == null ? undefined : json['email'],
+    };
 }
 
-export function OgcApiRecordsContactDtoToJSON(
-  value?: OgcApiRecordsContactDto | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    name: value['name'],
-    url: value['url'],
-    email: value['email'],
-  };
+export function OgcApiRecordsContactDtoToJSON(value?: OgcApiRecordsContactDto | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'name': value['name'],
+        'url': value['url'],
+        'email': value['email'],
+    };
 }
+

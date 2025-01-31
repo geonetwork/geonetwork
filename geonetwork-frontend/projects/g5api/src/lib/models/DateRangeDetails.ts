@@ -15,69 +15,61 @@
 import { mapValues } from '../runtime';
 import type { DateRangeDetailsInfo } from './DateRangeDetailsInfo';
 import {
-  DateRangeDetailsInfoFromJSON,
-  DateRangeDetailsInfoFromJSONTyped,
-  DateRangeDetailsInfoToJSON,
+    DateRangeDetailsInfoFromJSON,
+    DateRangeDetailsInfoFromJSONTyped,
+    DateRangeDetailsInfoToJSON,
 } from './DateRangeDetailsInfo';
 
 /**
- *
+ * 
  * @export
  * @interface DateRangeDetails
  */
 export interface DateRangeDetails {
-  /**
-   *
-   * @type {DateRangeDetailsInfo}
-   * @memberof DateRangeDetails
-   */
-  start?: DateRangeDetailsInfo;
-  /**
-   *
-   * @type {DateRangeDetailsInfo}
-   * @memberof DateRangeDetails
-   */
-  end?: DateRangeDetailsInfo;
+    /**
+     * 
+     * @type {DateRangeDetailsInfo}
+     * @memberof DateRangeDetails
+     */
+    start?: DateRangeDetailsInfo;
+    /**
+     * 
+     * @type {DateRangeDetailsInfo}
+     * @memberof DateRangeDetails
+     */
+    end?: DateRangeDetailsInfo;
 }
 
 /**
  * Check if a given object implements the DateRangeDetails interface.
  */
-export function instanceOfDateRangeDetails(
-  value: object
-): value is DateRangeDetails {
-  return true;
+export function instanceOfDateRangeDetails(value: object): value is DateRangeDetails {
+    return true;
 }
 
 export function DateRangeDetailsFromJSON(json: any): DateRangeDetails {
-  return DateRangeDetailsFromJSONTyped(json, false);
+    return DateRangeDetailsFromJSONTyped(json, false);
 }
 
-export function DateRangeDetailsFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): DateRangeDetails {
-  if (json == null) {
-    return json;
-  }
-  return {
-    start:
-      json['start'] == null
-        ? undefined
-        : DateRangeDetailsInfoFromJSON(json['start']),
-    end:
-      json['end'] == null
-        ? undefined
-        : DateRangeDetailsInfoFromJSON(json['end']),
-  };
+export function DateRangeDetailsFromJSONTyped(json: any, ignoreDiscriminator: boolean): DateRangeDetails {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'start': json['start'] == null ? undefined : DateRangeDetailsInfoFromJSON(json['start']),
+        'end': json['end'] == null ? undefined : DateRangeDetailsInfoFromJSON(json['end']),
+    };
 }
 
 export function DateRangeDetailsToJSON(value?: DateRangeDetails | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    start: DateRangeDetailsInfoToJSON(value['start']),
-    end: DateRangeDetailsInfoToJSON(value['end']),
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'start': DateRangeDetailsInfoToJSON(value['start']),
+        'end': DateRangeDetailsInfoToJSON(value['end']),
+    };
 }
+

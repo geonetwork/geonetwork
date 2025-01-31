@@ -14,62 +14,56 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface OgcApiRecordsLicenseDto
  */
 export interface OgcApiRecordsLicenseDto {
-  /**
-   *
-   * @type {string}
-   * @memberof OgcApiRecordsLicenseDto
-   */
-  name: string;
-  /**
-   *
-   * @type {string}
-   * @memberof OgcApiRecordsLicenseDto
-   */
-  url?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OgcApiRecordsLicenseDto
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OgcApiRecordsLicenseDto
+     */
+    url?: string;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsLicenseDto interface.
  */
-export function instanceOfOgcApiRecordsLicenseDto(
-  value: object
-): value is OgcApiRecordsLicenseDto {
-  if (!('name' in value) || value['name'] === undefined) return false;
-  return true;
+export function instanceOfOgcApiRecordsLicenseDto(value: object): value is OgcApiRecordsLicenseDto {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    return true;
 }
 
-export function OgcApiRecordsLicenseDtoFromJSON(
-  json: any
-): OgcApiRecordsLicenseDto {
-  return OgcApiRecordsLicenseDtoFromJSONTyped(json, false);
+export function OgcApiRecordsLicenseDtoFromJSON(json: any): OgcApiRecordsLicenseDto {
+    return OgcApiRecordsLicenseDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsLicenseDtoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): OgcApiRecordsLicenseDto {
-  if (json == null) {
-    return json;
-  }
-  return {
-    name: json['name'],
-    url: json['url'] == null ? undefined : json['url'],
-  };
+export function OgcApiRecordsLicenseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsLicenseDto {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'name': json['name'],
+        'url': json['url'] == null ? undefined : json['url'],
+    };
 }
 
-export function OgcApiRecordsLicenseDtoToJSON(
-  value?: OgcApiRecordsLicenseDto | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    name: value['name'],
-    url: value['url'],
-  };
+export function OgcApiRecordsLicenseDtoToJSON(value?: OgcApiRecordsLicenseDto | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'name': value['name'],
+        'url': value['url'],
+    };
 }
+

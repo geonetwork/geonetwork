@@ -14,87 +14,87 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface Measure
  */
 export interface Measure {
-  /**
-   *
-   * @type {string}
-   * @memberof Measure
-   */
-  name?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Measure
-   */
-  description?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Measure
-   */
-  date?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Measure
-   */
-  value?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Measure
-   */
-  type?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Measure
-   */
-  unit?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Measure
+     */
+    name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Measure
+     */
+    description?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Measure
+     */
+    date?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Measure
+     */
+    value?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Measure
+     */
+    type?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Measure
+     */
+    unit?: string;
 }
 
 /**
  * Check if a given object implements the Measure interface.
  */
 export function instanceOfMeasure(value: object): value is Measure {
-  return true;
+    return true;
 }
 
 export function MeasureFromJSON(json: any): Measure {
-  return MeasureFromJSONTyped(json, false);
+    return MeasureFromJSONTyped(json, false);
 }
 
-export function MeasureFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): Measure {
-  if (json == null) {
-    return json;
-  }
-  return {
-    name: json['name'] == null ? undefined : json['name'],
-    description: json['description'] == null ? undefined : json['description'],
-    date: json['date'] == null ? undefined : json['date'],
-    value: json['value'] == null ? undefined : json['value'],
-    type: json['type'] == null ? undefined : json['type'],
-    unit: json['unit'] == null ? undefined : json['unit'],
-  };
+export function MeasureFromJSONTyped(json: any, ignoreDiscriminator: boolean): Measure {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'name': json['name'] == null ? undefined : json['name'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'date': json['date'] == null ? undefined : json['date'],
+        'value': json['value'] == null ? undefined : json['value'],
+        'type': json['type'] == null ? undefined : json['type'],
+        'unit': json['unit'] == null ? undefined : json['unit'],
+    };
 }
 
 export function MeasureToJSON(value?: Measure | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    name: value['name'],
-    description: value['description'],
-    date: value['date'],
-    value: value['value'],
-    type: value['type'],
-    unit: value['unit'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'name': value['name'],
+        'description': value['description'],
+        'date': value['date'],
+        'value': value['value'],
+        'type': value['type'],
+        'unit': value['unit'],
+    };
 }
+

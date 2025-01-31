@@ -12,8 +12,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Max;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import lombok.AllArgsConstructor;
 import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
@@ -22,9 +29,14 @@ import org.geonetwork.data.model.AttributeStatistics;
 import org.geonetwork.data.model.BaseDataInfo;
 import org.geonetwork.data.model.DataFormat;
 import org.geonetwork.data.model.DatasetInfo;
+import org.geonetwork.data.model.DatasetLayer;
 import org.geonetwork.data.model.RasterInfo;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.editing.BatchEditMode;
+import org.geonetwork.index.model.record.Codelist;
+import org.geonetwork.index.model.record.FeatureType;
+import org.geonetwork.index.model.record.IndexRecord;
+import org.geonetwork.index.model.record.Link;
 import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.metadata.MetadataNotFoundException;
 import org.geonetwork.metadatastore.MetadataResourceVisibility;
@@ -109,6 +121,18 @@ public class DataAnalysisController {
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<BaseDataInfo> analysisSynch(@RequestParam String datasource, @RequestParam String layer) {
         return internalAnalysisSynch(datasource, layer);
+    }
+
+    @GetMapping(path = "/executeIndexRecord", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Analysis executed successfully"),
+        })
+    @PreAuthorize("hasRole('Editor')")
+    public ResponseEntity<IndexRecord> analysisSynchIndexRecord(@RequestParam String datasource, @RequestParam String layer) {
+        return internalAnalysisSynchIndexRecord(datasource, layer);
     }
 
     @GetMapping(path = "/executeMetadataResource", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -298,6 +322,29 @@ public class DataAnalysisController {
                 Optional<RasterInfo> rasterProperties = analyzer.getRasterProperties(datasource);
                 if (rasterProperties.isPresent()) {
                     return new ResponseEntity<>(rasterProperties.get(), HttpStatus.OK);
+                }
+            } catch (Exception rasterException) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity<IndexRecord> internalAnalysisSynchIndexRecord(String datasource, String layer) {
+        try {
+            Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
+            if (layerProperties.isPresent()) {
+                IndexRecord indexRecord = layerProperties.get().toIndexRecord(datasource, layer);
+
+                return new ResponseEntity<>(indexRecord, HttpStatus.OK);
+            }
+        } catch (Exception vectorException) {
+            try {
+                Optional<RasterInfo> rasterProperties = analyzer.getRasterProperties(datasource);
+                if (rasterProperties.isPresent()) {
+                    IndexRecord indexRecord = rasterProperties.get().toIndexRecord(datasource, layer);
+
+                    return new ResponseEntity<>(indexRecord, HttpStatus.OK);
                 }
             } catch (Exception rasterException) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

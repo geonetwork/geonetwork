@@ -32,9 +32,11 @@
   "paths": {
     "/api/records/{metadataUuidOrId}/attachments": {
       "get": {
-        "tags": ["records"],
+        "tags": [
+          "records"
+        ],
         "summary": "List all metadata attachments",
-        "description": "<a href='https://docs.geonetwork-opensource.org/latest/user-guide/associating-resources/using-filestore/'>More info</a>",
+        "description": "\u003Ca href='https://docs.geonetwork-opensource.org/latest/user-guide/associating-resources/using-filestore/'\u003EMore info\u003C/a\u003E",
         "operationId": "getAllResources",
         "parameters": [
           {
@@ -55,7 +57,10 @@
             "schema": {
               "type": "string",
               "default": "name",
-              "enum": ["type", "name"]
+              "enum": [
+                "type",
+                "name"
+              ]
             },
             "example": "type"
           },
@@ -110,7 +115,9 @@
         }
       },
       "put": {
-        "tags": ["records"],
+        "tags": [
+          "records"
+        ],
         "summary": "Create a new resource from a URL for a given metadata",
         "operationId": "putResourceFromURL",
         "parameters": [
@@ -132,7 +139,10 @@
             "schema": {
               "type": "string",
               "default": "public",
-              "enum": ["public", "private"]
+              "enum": [
+                "public",
+                "private"
+              ]
             },
             "example": "public"
           },
@@ -182,7 +192,9 @@
         }
       },
       "post": {
-        "tags": ["records"],
+        "tags": [
+          "records"
+        ],
         "summary": "Create a new resource for a given metadata",
         "operationId": "putResource",
         "parameters": [
@@ -204,7 +216,10 @@
             "schema": {
               "type": "string",
               "default": "public",
-              "enum": ["public", "private"]
+              "enum": [
+                "public",
+                "private"
+              ]
             },
             "example": "public"
           },
@@ -224,7 +239,9 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": ["file"],
+                "required": [
+                  "file"
+                ],
                 "type": "object",
                 "properties": {
                   "file": {
@@ -261,7 +278,9 @@
         }
       },
       "delete": {
-        "tags": ["records"],
+        "tags": [
+          "records"
+        ],
         "summary": "Delete all uploaded metadata resources",
         "operationId": "delResources",
         "parameters": [
@@ -288,18 +307,20 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Attachment added."
-          },
           "403": {
             "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT"
+          },
+          "204": {
+            "description": "Attachment added."
           }
         }
       }
     },
     "/api/records/batchediting": {
       "put": {
-        "tags": ["records"],
+        "tags": [
+          "records"
+        ],
         "summary": "Batch edit one or more records",
         "description": "Batch editing API allows to apply multiple edits to one or more record.\n\n**Warning: You can break things here. When defining xpath and using delete or replace mode,\nbe sure to test on a single record before applying changes to a lot of records.\nIf needed, back up your record first and use the preview mode to check the processing.**\n\nChanges are defined on a per standard basis so it is recommended to apply changes\non records which are encoded using the same standard.\n\nWhen applying changes, user privileges apply, so if the user cannot edit a selected record,\nbatch edits will not be applied to that record.\n\nThis operations applies the `update-fixed-info.xsl` transformation for the metadata schema and\n updates the change date if the parameter `updateDateStamp` is set to `true`.\n\n## Changes with GeoNetwork 4\n\n* `diffType` not yet supported.\n\n```\n",
         "operationId": "batchEdit",
@@ -352,7 +373,7 @@
                   "value": [
                     {
                       "xpath": ".//gmd:onLine[*/gmd:protocol/*/text() = 'OGC:WMS']",
-                      "value": "<gn_delete></gn_delete>"
+                      "value": "\u003Cgn_delete\u003E\u003C/gn_delete\u003E"
                     }
                   ]
                 },
@@ -361,7 +382,7 @@
                   "value": [
                     {
                       "xpath": "/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords",
-                      "value": "<gn_add><gmd:descriptiveKeywords xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\"><gmd:MD_Keywords><gmd:keyword><gco:CharacterString>Waste water</gco:CharacterString></gmd:keyword><gmd:type><gmd:MD_KeywordTypeCode codeList=\"./resources/codeList.xml#MD_KeywordTypeCode\" codeListValue=\"theme\"/></gmd:type></gmd:MD_Keywords></gmd:descriptiveKeywords></gn_add>"
+                      "value": "\u003Cgn_add\u003E\u003Cgmd:descriptiveKeywords xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\"\u003E\u003Cgmd:MD_Keywords\u003E\u003Cgmd:keyword\u003E\u003Cgco:CharacterString\u003EWaste water\u003C/gco:CharacterString\u003E\u003C/gmd:keyword\u003E\u003Cgmd:type\u003E\u003Cgmd:MD_KeywordTypeCode codeList=\"./resources/codeList.xml#MD_KeywordTypeCode\" codeListValue=\"theme\"/\u003E\u003C/gmd:type\u003E\u003C/gmd:MD_Keywords\u003E\u003C/gmd:descriptiveKeywords\u003E\u003C/gn_add\u003E"
                     }
                   ]
                 },
@@ -370,7 +391,7 @@
                   "value": [
                     {
                       "xpath": ".//gmd:keyword/gco:CharacterString[text() = 'wastewater']",
-                      "value": "<gn_replace>Waste water</gn_replace>"
+                      "value": "\u003Cgn_replace\u003EWaste water\u003C/gn_replace\u003E"
                     }
                   ]
                 }
@@ -405,7 +426,9 @@
     },
     "/api/process": {
       "get": {
-        "tags": ["process-controller"],
+        "tags": [
+          "process-controller"
+        ],
         "operationId": "list",
         "responses": {
           "200": {
@@ -424,7 +447,9 @@
         }
       },
       "put": {
-        "tags": ["process-controller"],
+        "tags": [
+          "process-controller"
+        ],
         "operationId": "execute",
         "requestBody": {
           "content": {
@@ -453,7 +478,9 @@
     },
     "/api/search": {
       "get": {
-        "tags": ["search-controller"],
+        "tags": [
+          "search-controller"
+        ],
         "operationId": "getQuery",
         "parameters": [
           {
@@ -500,7 +527,9 @@
         }
       },
       "post": {
-        "tags": ["search-controller"],
+        "tags": [
+          "search-controller"
+        ],
         "operationId": "query",
         "parameters": [
           {
@@ -552,7 +581,9 @@
     },
     "/api/records/batchediting/preview": {
       "post": {
-        "tags": ["records"],
+        "tags": [
+          "records"
+        ],
         "summary": "Preview batch editing results.",
         "description": "Batch editing API allows to apply multiple edits to one or more record.\n\n**Warning: You can break things here. When defining xpath and using delete or replace mode,\nbe sure to test on a single record before applying changes to a lot of records.\nIf needed, back up your record first and use the preview mode to check the processing.**\n\nChanges are defined on a per standard basis so it is recommended to apply changes\non records which are encoded using the same standard.\n\nWhen applying changes, user privileges apply, so if the user cannot edit a selected record,\nbatch edits will not be applied to that record.\n\nThis operations applies the `update-fixed-info.xsl` transformation for the metadata schema and\n updates the change date if the parameter `updateDateStamp` is set to `true`.\n\n## Changes with GeoNetwork 4\n\n* `diffType` not yet supported.\n\n```\n",
         "operationId": "previewBatchEdit",
@@ -605,7 +636,7 @@
             }
           },
           "200": {
-            "description": "In preview mode, the response is an XML document with the modified records.\n\n```xml\n<preview>\n    <gmd:MD_Metadata ...\n    <gmd:MD_Metadata ...\n</preview>\n```\n",
+            "description": "In preview mode, the response is an XML document with the modified records.\n\n```xml\n\u003Cpreview\u003E\n    \u003Cgmd:MD_Metadata ...\n    \u003Cgmd:MD_Metadata ...\n\u003C/preview\u003E\n```\n",
             "content": {
               "application/xml": {
                 "schema": {
@@ -619,7 +650,9 @@
     },
     "/api/data/analysis/apply": {
       "post": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "applyDataAnalysisOnRecord",
         "parameters": [
           {
@@ -663,7 +696,9 @@
     },
     "/api/data/analysis/applyForMetadataResource": {
       "post": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "applyDataAnalysisOnRecordForMetadataResource",
         "parameters": [
           {
@@ -680,7 +715,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["public", "private"]
+              "enum": [
+                "public",
+                "private"
+              ]
             }
           },
           {
@@ -724,7 +762,9 @@
     },
     "/api/records/{metadataUuidOrId}/attachments/{resourceId}": {
       "get": {
-        "tags": ["records"],
+        "tags": [
+          "records"
+        ],
         "summary": "Get a metadata resource",
         "operationId": "getResource",
         "parameters": [
@@ -788,7 +828,9 @@
         }
       },
       "delete": {
-        "tags": ["records"],
+        "tags": [
+          "records"
+        ],
         "summary": "Delete a metadata resource",
         "operationId": "delResource",
         "parameters": [
@@ -833,7 +875,9 @@
         }
       },
       "patch": {
-        "tags": ["records"],
+        "tags": [
+          "records"
+        ],
         "summary": "Update the metadata resource visibility",
         "operationId": "patchResource",
         "parameters": [
@@ -863,7 +907,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["public", "private"]
+              "enum": [
+                "public",
+                "private"
+              ]
             },
             "example": "public"
           },
@@ -905,7 +952,9 @@
     },
     "/ogcapi/records/conformance": {
       "get": {
-        "tags": ["OGC API Records"],
+        "tags": [
+          "OGC API Records"
+        ],
         "summary": "information about specifications that this API conforms to",
         "description": "A list of all conformance classes specified in a standard that the server conforms to.",
         "operationId": "getConformanceDeclaration",
@@ -945,7 +994,9 @@
     },
     "/ogcapi/records/collections": {
       "get": {
-        "tags": ["OGC API Records"],
+        "tags": [
+          "OGC API Records"
+        ],
         "summary": "the record collections",
         "description": "Fetch list of catalogs offered by this API",
         "operationId": "getCollections",
@@ -985,7 +1036,9 @@
     },
     "/ogcapi/records/collections/{catalogId}": {
       "get": {
-        "tags": ["OGC API Records"],
+        "tags": [
+          "OGC API Records"
+        ],
         "summary": "describe the record collection with id `catalogId`",
         "description": "Fetch a detailed description of the catalog with id `catalogId`.",
         "operationId": "describeCollection",
@@ -1051,7 +1104,9 @@
     },
     "/ogcapi/records/collections/{catalogId}/sortables": {
       "get": {
-        "tags": ["OGC API Records"],
+        "tags": [
+          "OGC API Records"
+        ],
         "summary": "get the list of sortable properties",
         "description": "Fetch the list of properties which can be used to sort the getRecords response.",
         "operationId": "getSortables",
@@ -1117,7 +1172,9 @@
     },
     "/ogcapi/records/collections/{catalogId}/items": {
       "get": {
-        "tags": ["OGC API Records"],
+        "tags": [
+          "OGC API Records"
+        ],
         "summary": "fetch records",
         "description": "Fetch records of the record collection with id `catalogId`.  Every record in a dataset belongs to a collection. A dataset may consist of multiple record collections. A record collection is often a collection of records of a similar type, based on a common schema.  Use content negotiation to request HTML or GeoJSON.",
         "operationId": "getRecords",
@@ -1311,7 +1368,9 @@
     },
     "/ogcapi/records/collections/{catalogId}/items/{recordId}": {
       "get": {
-        "tags": ["OGC API Records"],
+        "tags": [
+          "OGC API Records"
+        ],
         "summary": "fetch a single record",
         "description": "Fetch the record with id `recordId` in the record collection with id `catalogId`.  Use content negotiation to request HTML or GeoJSON.",
         "operationId": "getRecord",
@@ -1401,7 +1460,9 @@
     },
     "/ogcapi/records/": {
       "get": {
-        "tags": ["OGC API Records"],
+        "tags": [
+          "OGC API Records"
+        ],
         "summary": "landing page",
         "description": "The landing page provides links to the API definition, the conformance statements and to the record collections in this dataset.",
         "operationId": "getLandingPage",
@@ -1441,7 +1502,9 @@
     },
     "/api/search/doc/{uuid}": {
       "get": {
-        "tags": ["search-controller"],
+        "tags": [
+          "search-controller"
+        ],
         "operationId": "getIndexDocument",
         "parameters": [
           {
@@ -1469,7 +1532,9 @@
     },
     "/api/records/{uuid}/formatters/{formatterId}": {
       "get": {
-        "tags": ["record-controller"],
+        "tags": [
+          "record-controller"
+        ],
         "operationId": "getRecord_1",
         "parameters": [
           {
@@ -1520,7 +1585,9 @@
     },
     "/api/records/{uuid}": {
       "get": {
-        "tags": ["record-controller"],
+        "tags": [
+          "record-controller"
+        ],
         "operationId": "getRecord_2",
         "parameters": [
           {
@@ -1563,7 +1630,9 @@
     },
     "/api/process/status/{executionJobId}": {
       "get": {
-        "tags": ["process-controller"],
+        "tags": [
+          "process-controller"
+        ],
         "operationId": "analysisExecutionStatus",
         "parameters": [
           {
@@ -1602,7 +1671,9 @@
     },
     "/api/process/result/{executionJobId}": {
       "get": {
-        "tags": ["process-controller"],
+        "tags": [
+          "process-controller"
+        ],
         "operationId": "analysisExecutionResult",
         "parameters": [
           {
@@ -1631,7 +1702,9 @@
     },
     "/api/me": {
       "get": {
-        "tags": ["me-api"],
+        "tags": [
+          "me-api"
+        ],
         "operationId": "user",
         "responses": {
           "200": {
@@ -1652,7 +1725,9 @@
     },
     "/api/indexing/setup": {
       "get": {
-        "tags": ["indexing-controller"],
+        "tags": [
+          "indexing-controller"
+        ],
         "operationId": "setupIndex",
         "parameters": [
           {
@@ -1681,7 +1756,9 @@
     },
     "/api/indexing/index": {
       "get": {
-        "tags": ["indexing-controller"],
+        "tags": [
+          "indexing-controller"
+        ],
         "operationId": "indexRecords",
         "parameters": [
           {
@@ -1713,7 +1790,9 @@
     },
     "/api/data/analysis/status": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "status",
         "responses": {
           "200": {
@@ -1731,7 +1810,9 @@
     },
     "/api/data/analysis/preview": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "previewDataAnalysisOnRecord",
         "parameters": [
           {
@@ -1775,7 +1856,9 @@
     },
     "/api/data/analysis/previewForMetadataResource": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "previewDataAnalysisOnRecordForMetadataResource",
         "parameters": [
           {
@@ -1792,7 +1875,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["public", "private"]
+              "enum": [
+                "public",
+                "private"
+              ]
             }
           },
           {
@@ -1836,7 +1922,9 @@
     },
     "/api/data/analysis/overview": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "buildOverview",
         "parameters": [
           {
@@ -1860,7 +1948,9 @@
           "200": {
             "description": "Overview built successfully",
             "content": {
-              "image/png": {}
+              "image/png": {
+
+              }
             }
           }
         }
@@ -1868,7 +1958,9 @@
     },
     "/api/data/analysis/overviewForMetadataResource": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "buildOverview_1",
         "parameters": [
           {
@@ -1885,7 +1977,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["public", "private"]
+              "enum": [
+                "public",
+                "private"
+              ]
             }
           },
           {
@@ -1917,7 +2012,9 @@
           "200": {
             "description": "Overview built successfully",
             "content": {
-              "image/png": {}
+              "image/png": {
+
+              }
             }
           }
         }
@@ -1925,7 +2022,9 @@
     },
     "/api/data/analysis/layers": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "layers",
         "parameters": [
           {
@@ -1956,7 +2055,9 @@
     },
     "/api/data/analysis/layersMetadataResource": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "layersMetadataResource",
         "parameters": [
           {
@@ -1973,7 +2074,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["public", "private"]
+              "enum": [
+                "public",
+                "private"
+              ]
             }
           },
           {
@@ -2012,7 +2116,9 @@
     },
     "/api/data/analysis/formats": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "formats",
         "responses": {
           "200": {
@@ -2033,7 +2139,9 @@
     },
     "/api/data/analysis/execute": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "analysisSynch",
         "parameters": [
           {
@@ -2076,7 +2184,9 @@
     },
     "/api/data/analysis/executeMetadataResource": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "analysisSynchMetadataResource",
         "parameters": [
           {
@@ -2093,7 +2203,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["public", "private"]
+              "enum": [
+                "public",
+                "private"
+              ]
             }
           },
           {
@@ -2142,9 +2255,49 @@
         }
       }
     },
+    "/api/data/analysis/executeIndexRecord": {
+      "get": {
+        "tags": [
+          "data-analysis-controller"
+        ],
+        "operationId": "analysisSynchIndexRecord",
+        "parameters": [
+          {
+            "name": "datasource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analysis executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexRecord"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/data/analysis/attribute/statistics": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "attributeStatistics",
         "parameters": [
           {
@@ -2191,7 +2344,9 @@
     },
     "/api/data/analysis/attribute/codelist": {
       "get": {
-        "tags": ["data-analysis-controller"],
+        "tags": [
+          "data-analysis-controller"
+        ],
         "operationId": "attributeCodelist",
         "parameters": [
           {
@@ -2253,24 +2408,6 @@
       "MetadataResource": {
         "type": "object",
         "properties": {
-          "metadataResourceExternalManagementProperties": {
-            "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
-          },
-          "approved": {
-            "type": "boolean"
-          },
-          "lastModification": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "metadataId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "visibility": {
-            "type": "string",
-            "enum": ["public", "private"]
-          },
           "id": {
             "type": "string"
           },
@@ -2284,11 +2421,32 @@
           "url": {
             "type": "string"
           },
-          "filename": {
-            "type": "string"
+          "metadataResourceExternalManagementProperties": {
+            "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
+          },
+          "lastModification": {
+            "type": "string",
+            "format": "date-time"
           },
           "metadataUuid": {
             "type": "string"
+          },
+          "approved": {
+            "type": "boolean"
+          },
+          "metadataId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "public",
+              "private"
+            ]
           }
         }
       },
@@ -2303,12 +2461,18 @@
           },
           "validationStatus": {
             "type": "string",
-            "enum": ["UNKNOWN", "VALID", "INCOMPLETE"]
+            "enum": [
+              "UNKNOWN",
+              "VALID",
+              "INCOMPLETE"
+            ]
           }
         }
       },
       "BatchEditParameter": {
-        "required": ["value"],
+        "required": [
+          "value"
+        ],
         "type": "object",
         "properties": {
           "xpath": {
@@ -2364,7 +2528,9 @@
         ]
       },
       "OgcApiRecordsConfClassesDto": {
-        "required": ["conformsTo"],
+        "required": [
+          "conformsTo"
+        ],
         "type": "object",
         "properties": {
           "conformsTo": {
@@ -2382,7 +2548,9 @@
         }
       },
       "OgcApiRecordsExceptionDto": {
-        "required": ["code"],
+        "required": [
+          "code"
+        ],
         "type": "object",
         "properties": {
           "code": {
@@ -2397,7 +2565,10 @@
         }
       },
       "OgcApiRecordsGetCollections200ResponseDto": {
-        "required": ["collections", "links"],
+        "required": [
+          "collections",
+          "links"
+        ],
         "type": "object",
         "properties": {
           "links": {
@@ -2424,7 +2595,10 @@
         }
       },
       "OgcApiRecordsLinkDto": {
-        "required": ["href", "rel"],
+        "required": [
+          "href",
+          "rel"
+        ],
         "type": "object",
         "properties": {
           "href": {
@@ -2457,7 +2631,9 @@
         }
       },
       "OgcApiRecordsLinkTemplateDto": {
-        "required": ["uriTemplate"],
+        "required": [
+          "uriTemplate"
+        ],
         "type": "object",
         "properties": {
           "rel": {
@@ -2519,7 +2695,11 @@
         }
       },
       "OgcApiRecordsCatalog1Dto": {
-        "required": ["id", "links", "type"],
+        "required": [
+          "id",
+          "links",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "conformsTo": {
@@ -2545,7 +2725,9 @@
           },
           "type": {
             "type": "string",
-            "enum": ["Catalog"]
+            "enum": [
+              "Catalog"
+            ]
           },
           "title": {
             "type": "string",
@@ -2709,7 +2891,9 @@
         }
       },
       "OgcApiRecordsLicenseDto": {
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -2766,7 +2950,9 @@
         }
       },
       "OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto": {
-        "required": ["value"],
+        "required": [
+          "value"
+        ],
         "type": "object",
         "properties": {
           "scheme": {
@@ -2784,7 +2970,12 @@
         }
       },
       "OgcApiRecordsRecordGeoJSONDto": {
-        "required": ["geometry", "id", "properties", "type"],
+        "required": [
+          "geometry",
+          "id",
+          "properties",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -2793,7 +2984,9 @@
           },
           "type": {
             "type": "string",
-            "enum": ["Feature"]
+            "enum": [
+              "Feature"
+            ]
           },
           "time": {
             "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONTimeDto"
@@ -2940,7 +3133,9 @@
         }
       },
       "OgcApiRecordsThemeConceptsInnerDto": {
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -2967,7 +3162,10 @@
         }
       },
       "OgcApiRecordsThemeDto": {
-        "required": ["concepts", "scheme"],
+        "required": [
+          "concepts",
+          "scheme"
+        ],
         "type": "object",
         "properties": {
           "concepts": {
@@ -3057,7 +3255,9 @@
           "trs": {
             "type": "string",
             "description": "Coordinate reference system of the coordinates in the temporal extent (property `interval`). The default reference system is the Gregorian calendar. In the Core this is the only supported temporal coordinate reference system. Extensions may support additional temporal coordinate reference systems and add additional enum values.",
-            "enum": ["http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"]
+            "enum": [
+              "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
+            ]
           }
         },
         "description": "The temporal extent of the features in the collection.",
@@ -3066,7 +3266,9 @@
         }
       },
       "language": {
-        "required": ["code"],
+        "required": [
+          "code"
+        ],
         "type": "object",
         "properties": {
           "code": {
@@ -3089,7 +3291,12 @@
           "dir": {
             "type": "string",
             "description": "The direction for text in this language. The default, `ltr` (left-to-right), represents the most common situation. However, care should be taken to set the value of `dir` appropriately if the language direction is not `ltr`. Other values supported are `rtl` (right-to-left), `ttb` (top-to-bottom), and `btt` (bottom-to-top).",
-            "enum": ["ltr", "rtl", "ttb", "btt"]
+            "enum": [
+              "ltr",
+              "rtl",
+              "ttb",
+              "btt"
+            ]
           }
         },
         "description": "The language used for textual values in this record.",
@@ -3133,7 +3340,9 @@
         }
       },
       "OgcApiRecordsExternalDocumentationDto": {
-        "required": ["url"],
+        "required": [
+          "url"
+        ],
         "type": "object",
         "properties": {
           "description": {
@@ -3148,7 +3357,10 @@
         }
       },
       "OgcApiRecordsInfoDto": {
-        "required": ["title", "version"],
+        "required": [
+          "title",
+          "version"
+        ],
         "type": "object",
         "properties": {
           "title": {
@@ -3181,7 +3393,9 @@
         }
       },
       "OgcApiRecordsServerDto": {
-        "required": ["url"],
+        "required": [
+          "url"
+        ],
         "type": "object",
         "properties": {
           "url": {
@@ -3202,7 +3416,9 @@
         }
       },
       "OgcApiRecordsServerVariableDto": {
-        "required": ["default"],
+        "required": [
+          "default"
+        ],
         "type": "object",
         "properties": {
           "description": {
@@ -3226,7 +3442,9 @@
         }
       },
       "OgcApiRecordsTagDto": {
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -3244,7 +3462,11 @@
         }
       },
       "schema": {
-        "required": ["info", "openapi", "paths"],
+        "required": [
+          "info",
+          "openapi",
+          "paths"
+        ],
         "type": "object",
         "properties": {
           "openapi": {
@@ -3289,12 +3511,17 @@
         }
       },
       "OgcApiRecordsGetRecords200ResponseDto": {
-        "required": ["features", "type"],
+        "required": [
+          "features",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["FeatureCollection"]
+            "enum": [
+              "FeatureCollection"
+            ]
           },
           "features": {
             "type": "array",
@@ -3340,7 +3567,9 @@
         }
       },
       "OgcApiRecordsLandingPageDto": {
-        "required": ["links"],
+        "required": [
+          "links"
+        ],
         "type": "object",
         "properties": {
           "title": {
@@ -3542,7 +3771,10 @@
         "properties": {
           "docType": {
             "type": "string",
-            "enum": ["metadata", "features"]
+            "enum": [
+              "metadata",
+              "features"
+            ]
           },
           "document": {
             "type": "string"
@@ -3896,6 +4128,16 @@
             "items": {
               "$ref": "#/components/schemas/Overview"
             }
+          },
+          "otherProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "writeOnly": true
           },
           "documentStandard": {
             "type": "string"
@@ -4262,7 +4504,10 @@
           },
           "origin": {
             "type": "string",
-            "enum": ["remote", "catalog"]
+            "enum": [
+              "remote",
+              "catalog"
+            ]
           },
           "to": {
             "type": "string"
@@ -4438,7 +4683,10 @@
           },
           "dataType": {
             "type": "string",
-            "enum": ["RASTER", "VECTOR"]
+            "enum": [
+              "RASTER",
+              "VECTOR"
+            ]
           },
           "layers": {
             "type": "array",
@@ -4587,7 +4835,10 @@
           },
           "dataType": {
             "type": "string",
-            "enum": ["RASTER", "VECTOR"]
+            "enum": [
+              "RASTER",
+              "VECTOR"
+            ]
           },
           "crs": {
             "type": "string"

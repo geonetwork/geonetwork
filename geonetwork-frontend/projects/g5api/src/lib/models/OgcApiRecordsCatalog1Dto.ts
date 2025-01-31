@@ -15,372 +15,304 @@
 import { mapValues } from '../runtime';
 import type { OgcApiRecordsLicenseDto } from './OgcApiRecordsLicenseDto';
 import {
-  OgcApiRecordsLicenseDtoFromJSON,
-  OgcApiRecordsLicenseDtoFromJSONTyped,
-  OgcApiRecordsLicenseDtoToJSON,
+    OgcApiRecordsLicenseDtoFromJSON,
+    OgcApiRecordsLicenseDtoFromJSONTyped,
+    OgcApiRecordsLicenseDtoToJSON,
 } from './OgcApiRecordsLicenseDto';
 import type { OgcApiRecordsThemeDto } from './OgcApiRecordsThemeDto';
 import {
-  OgcApiRecordsThemeDtoFromJSON,
-  OgcApiRecordsThemeDtoFromJSONTyped,
-  OgcApiRecordsThemeDtoToJSON,
+    OgcApiRecordsThemeDtoFromJSON,
+    OgcApiRecordsThemeDtoFromJSONTyped,
+    OgcApiRecordsThemeDtoToJSON,
 } from './OgcApiRecordsThemeDto';
 import type { OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto } from './OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto';
 import {
-  OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON,
-  OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped,
-  OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON,
+    OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON,
+    OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped,
+    OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON,
 } from './OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto';
 import type { Language } from './Language';
 import {
-  LanguageFromJSON,
-  LanguageFromJSONTyped,
-  LanguageToJSON,
+    LanguageFromJSON,
+    LanguageFromJSONTyped,
+    LanguageToJSON,
 } from './Language';
 import type { OgcApiRecordsFormatDto } from './OgcApiRecordsFormatDto';
 import {
-  OgcApiRecordsFormatDtoFromJSON,
-  OgcApiRecordsFormatDtoFromJSONTyped,
-  OgcApiRecordsFormatDtoToJSON,
+    OgcApiRecordsFormatDtoFromJSON,
+    OgcApiRecordsFormatDtoFromJSONTyped,
+    OgcApiRecordsFormatDtoToJSON,
 } from './OgcApiRecordsFormatDto';
 import type { Extent } from './Extent';
-import { ExtentFromJSON, ExtentFromJSONTyped, ExtentToJSON } from './Extent';
+import {
+    ExtentFromJSON,
+    ExtentFromJSONTyped,
+    ExtentToJSON,
+} from './Extent';
 import type { OgcApiRecordsContactDto } from './OgcApiRecordsContactDto';
 import {
-  OgcApiRecordsContactDtoFromJSON,
-  OgcApiRecordsContactDtoFromJSONTyped,
-  OgcApiRecordsContactDtoToJSON,
+    OgcApiRecordsContactDtoFromJSON,
+    OgcApiRecordsContactDtoFromJSONTyped,
+    OgcApiRecordsContactDtoToJSON,
 } from './OgcApiRecordsContactDto';
 import type { OgcApiRecordsLinkTemplateDto } from './OgcApiRecordsLinkTemplateDto';
 import {
-  OgcApiRecordsLinkTemplateDtoFromJSON,
-  OgcApiRecordsLinkTemplateDtoFromJSONTyped,
-  OgcApiRecordsLinkTemplateDtoToJSON,
+    OgcApiRecordsLinkTemplateDtoFromJSON,
+    OgcApiRecordsLinkTemplateDtoFromJSONTyped,
+    OgcApiRecordsLinkTemplateDtoToJSON,
 } from './OgcApiRecordsLinkTemplateDto';
 import type { OgcApiRecordsRecordGeoJSONDto } from './OgcApiRecordsRecordGeoJSONDto';
 import {
-  OgcApiRecordsRecordGeoJSONDtoFromJSON,
-  OgcApiRecordsRecordGeoJSONDtoFromJSONTyped,
-  OgcApiRecordsRecordGeoJSONDtoToJSON,
+    OgcApiRecordsRecordGeoJSONDtoFromJSON,
+    OgcApiRecordsRecordGeoJSONDtoFromJSONTyped,
+    OgcApiRecordsRecordGeoJSONDtoToJSON,
 } from './OgcApiRecordsRecordGeoJSONDto';
 import type { OgcApiRecordsLinkBaseDto } from './OgcApiRecordsLinkBaseDto';
 import {
-  OgcApiRecordsLinkBaseDtoFromJSON,
-  OgcApiRecordsLinkBaseDtoFromJSONTyped,
-  OgcApiRecordsLinkBaseDtoToJSON,
+    OgcApiRecordsLinkBaseDtoFromJSON,
+    OgcApiRecordsLinkBaseDtoFromJSONTyped,
+    OgcApiRecordsLinkBaseDtoToJSON,
 } from './OgcApiRecordsLinkBaseDto';
 
 /**
- *
+ * 
  * @export
  * @interface OgcApiRecordsCatalog1Dto
  */
 export interface OgcApiRecordsCatalog1Dto {
-  /**
-   * The extensions/conformance classes used in this record.
-   * @type {Array<string>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  conformsTo?: Array<string>;
-  /**
-   * The date this record was created in the server.
-   * @type {Date}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  created?: Date;
-  /**
-   * The most recent date on which the record was changed.
-   * @type {Date}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  updated?: Date;
-  /**
-   *
-   * @type {string}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  type: OgcApiRecordsCatalog1DtoTypeEnum;
-  /**
-   * A human-readable name given to the resource.
-   * @type {string}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  title?: string;
-  /**
-   * A free-text account of the resource.
-   * @type {string}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  description?: string;
-  /**
-   * The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or classification codes.
-   * @type {Array<string>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  keywords?: Array<string>;
-  /**
-   * A knowledge organization system used to classify the resource.
-   * @type {Array<OgcApiRecordsThemeDto>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  themes?: Array<OgcApiRecordsThemeDto>;
-  /**
-   *
-   * @type {Language}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  language?: Language;
-  /**
-   * This list of languages in which this record is available.
-   * @type {Array<Language>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  languages?: Array<Language>;
-  /**
-   * The list of languages in which the resource described by this record is available.
-   * @type {Array<Language>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  resourceLanguages?: Array<Language>;
-  /**
-   * An identifier for the resource assigned by an external (to the catalog) entity.
-   * @type {Array<OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  externalIds?: Array<OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto>;
-  /**
-   * A list of available distributions of the resource.
-   * @type {Array<OgcApiRecordsFormatDto>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  formats?: Array<OgcApiRecordsFormatDto>;
-  /**
-   * A list of contacts qualified by their role(s) in association to the record or the resource described by the record.
-   * @type {Array<OgcApiRecordsContactDto>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  contacts?: Array<OgcApiRecordsContactDto>;
-  /**
-   *
-   * @type {OgcApiRecordsLicenseDto}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  license?: OgcApiRecordsLicenseDto;
-  /**
-   * A statement that concerns all rights not addressed by the license such as a copyright statement.
-   * @type {string}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  rights?: string;
-  /**
-   * The identifier of the catalog.
-   * @type {string}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  id: string;
-  /**
-   *
-   * @type {object}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  itemType?: object;
-  /**
-   *
-   * @type {Extent}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  extent?: Extent;
-  /**
-   * The list of supported coordinate reference systems.
-   * @type {Array<string>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  crs?: Array<string>;
-  /**
-   *
-   * @type {string}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  recordsArrayName?: string;
-  /**
-   * An array of records that are part of this catalog that are encoded in-line with the catalog.
-   * @type {Array<OgcApiRecordsRecordGeoJSONDto>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  records?: Array<OgcApiRecordsRecordGeoJSONDto>;
-  /**
-   *
-   * @type {Array<OgcApiRecordsLinkBaseDto>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  links: Array<OgcApiRecordsLinkBaseDto>;
-  /**
-   *
-   * @type {Array<OgcApiRecordsLinkTemplateDto>}
-   * @memberof OgcApiRecordsCatalog1Dto
-   */
-  linkTemplates?: Array<OgcApiRecordsLinkTemplateDto>;
+    /**
+     * The extensions/conformance classes used in this record.
+     * @type {Array<string>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    conformsTo?: Array<string>;
+    /**
+     * The date this record was created in the server.
+     * @type {Date}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    created?: Date;
+    /**
+     * The most recent date on which the record was changed.
+     * @type {Date}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    updated?: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    type: OgcApiRecordsCatalog1DtoTypeEnum;
+    /**
+     * A human-readable name given to the resource.
+     * @type {string}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    title?: string;
+    /**
+     * A free-text account of the resource.
+     * @type {string}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    description?: string;
+    /**
+     * The topic or topics of the resource. Typically represented using free-form keywords, tags, key phrases, or classification codes.
+     * @type {Array<string>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    keywords?: Array<string>;
+    /**
+     * A knowledge organization system used to classify the resource.
+     * @type {Array<OgcApiRecordsThemeDto>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    themes?: Array<OgcApiRecordsThemeDto>;
+    /**
+     * 
+     * @type {Language}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    language?: Language;
+    /**
+     * This list of languages in which this record is available.
+     * @type {Array<Language>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    languages?: Array<Language>;
+    /**
+     * The list of languages in which the resource described by this record is available.
+     * @type {Array<Language>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    resourceLanguages?: Array<Language>;
+    /**
+     * An identifier for the resource assigned by an external (to the catalog) entity.
+     * @type {Array<OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    externalIds?: Array<OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto>;
+    /**
+     * A list of available distributions of the resource.
+     * @type {Array<OgcApiRecordsFormatDto>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    formats?: Array<OgcApiRecordsFormatDto>;
+    /**
+     * A list of contacts qualified by their role(s) in association to the record or the resource described by the record.
+     * @type {Array<OgcApiRecordsContactDto>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    contacts?: Array<OgcApiRecordsContactDto>;
+    /**
+     * 
+     * @type {OgcApiRecordsLicenseDto}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    license?: OgcApiRecordsLicenseDto;
+    /**
+     * A statement that concerns all rights not addressed by the license such as a copyright statement.
+     * @type {string}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    rights?: string;
+    /**
+     * The identifier of the catalog.
+     * @type {string}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    id: string;
+    /**
+     * 
+     * @type {object}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    itemType?: object;
+    /**
+     * 
+     * @type {Extent}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    extent?: Extent;
+    /**
+     * The list of supported coordinate reference systems.
+     * @type {Array<string>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    crs?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    recordsArrayName?: string;
+    /**
+     * An array of records that are part of this catalog that are encoded in-line with the catalog.
+     * @type {Array<OgcApiRecordsRecordGeoJSONDto>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    records?: Array<OgcApiRecordsRecordGeoJSONDto>;
+    /**
+     * 
+     * @type {Array<OgcApiRecordsLinkBaseDto>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    links: Array<OgcApiRecordsLinkBaseDto>;
+    /**
+     * 
+     * @type {Array<OgcApiRecordsLinkTemplateDto>}
+     * @memberof OgcApiRecordsCatalog1Dto
+     */
+    linkTemplates?: Array<OgcApiRecordsLinkTemplateDto>;
 }
+
 
 /**
  * @export
  */
 export const OgcApiRecordsCatalog1DtoTypeEnum = {
-  Catalog: 'Catalog',
+    Catalog: 'Catalog'
 } as const;
-export type OgcApiRecordsCatalog1DtoTypeEnum =
-  (typeof OgcApiRecordsCatalog1DtoTypeEnum)[keyof typeof OgcApiRecordsCatalog1DtoTypeEnum];
+export type OgcApiRecordsCatalog1DtoTypeEnum = typeof OgcApiRecordsCatalog1DtoTypeEnum[keyof typeof OgcApiRecordsCatalog1DtoTypeEnum];
+
 
 /**
  * Check if a given object implements the OgcApiRecordsCatalog1Dto interface.
  */
-export function instanceOfOgcApiRecordsCatalog1Dto(
-  value: object
-): value is OgcApiRecordsCatalog1Dto {
-  if (!('type' in value) || value['type'] === undefined) return false;
-  if (!('id' in value) || value['id'] === undefined) return false;
-  if (!('links' in value) || value['links'] === undefined) return false;
-  return true;
+export function instanceOfOgcApiRecordsCatalog1Dto(value: object): value is OgcApiRecordsCatalog1Dto {
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('links' in value) || value['links'] === undefined) return false;
+    return true;
 }
 
-export function OgcApiRecordsCatalog1DtoFromJSON(
-  json: any
-): OgcApiRecordsCatalog1Dto {
-  return OgcApiRecordsCatalog1DtoFromJSONTyped(json, false);
+export function OgcApiRecordsCatalog1DtoFromJSON(json: any): OgcApiRecordsCatalog1Dto {
+    return OgcApiRecordsCatalog1DtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsCatalog1DtoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): OgcApiRecordsCatalog1Dto {
-  if (json == null) {
-    return json;
-  }
-  return {
-    conformsTo: json['conformsTo'] == null ? undefined : json['conformsTo'],
-    created: json['created'] == null ? undefined : new Date(json['created']),
-    updated: json['updated'] == null ? undefined : new Date(json['updated']),
-    type: json['type'],
-    title: json['title'] == null ? undefined : json['title'],
-    description: json['description'] == null ? undefined : json['description'],
-    keywords: json['keywords'] == null ? undefined : json['keywords'],
-    themes:
-      json['themes'] == null
-        ? undefined
-        : (json['themes'] as Array<any>).map(OgcApiRecordsThemeDtoFromJSON),
-    language:
-      json['language'] == null ? undefined : LanguageFromJSON(json['language']),
-    languages:
-      json['languages'] == null
-        ? undefined
-        : (json['languages'] as Array<any>).map(LanguageFromJSON),
-    resourceLanguages:
-      json['resourceLanguages'] == null
-        ? undefined
-        : (json['resourceLanguages'] as Array<any>).map(LanguageFromJSON),
-    externalIds:
-      json['externalIds'] == null
-        ? undefined
-        : (json['externalIds'] as Array<any>).map(
-            OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON
-          ),
-    formats:
-      json['formats'] == null
-        ? undefined
-        : (json['formats'] as Array<any>).map(OgcApiRecordsFormatDtoFromJSON),
-    contacts:
-      json['contacts'] == null
-        ? undefined
-        : (json['contacts'] as Array<any>).map(OgcApiRecordsContactDtoFromJSON),
-    license:
-      json['license'] == null
-        ? undefined
-        : OgcApiRecordsLicenseDtoFromJSON(json['license']),
-    rights: json['rights'] == null ? undefined : json['rights'],
-    id: json['id'],
-    itemType: json['itemType'] == null ? undefined : json['itemType'],
-    extent: json['extent'] == null ? undefined : ExtentFromJSON(json['extent']),
-    crs: json['crs'] == null ? undefined : json['crs'],
-    recordsArrayName:
-      json['recordsArrayName'] == null ? undefined : json['recordsArrayName'],
-    records:
-      json['records'] == null
-        ? undefined
-        : (json['records'] as Array<any>).map(
-            OgcApiRecordsRecordGeoJSONDtoFromJSON
-          ),
-    links: (json['links'] as Array<any>).map(OgcApiRecordsLinkBaseDtoFromJSON),
-    linkTemplates:
-      json['linkTemplates'] == null
-        ? undefined
-        : (json['linkTemplates'] as Array<any>).map(
-            OgcApiRecordsLinkTemplateDtoFromJSON
-          ),
-  };
+export function OgcApiRecordsCatalog1DtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsCatalog1Dto {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'conformsTo': json['conformsTo'] == null ? undefined : json['conformsTo'],
+        'created': json['created'] == null ? undefined : (new Date(json['created'])),
+        'updated': json['updated'] == null ? undefined : (new Date(json['updated'])),
+        'type': json['type'],
+        'title': json['title'] == null ? undefined : json['title'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'keywords': json['keywords'] == null ? undefined : json['keywords'],
+        'themes': json['themes'] == null ? undefined : ((json['themes'] as Array<any>).map(OgcApiRecordsThemeDtoFromJSON)),
+        'language': json['language'] == null ? undefined : LanguageFromJSON(json['language']),
+        'languages': json['languages'] == null ? undefined : ((json['languages'] as Array<any>).map(LanguageFromJSON)),
+        'resourceLanguages': json['resourceLanguages'] == null ? undefined : ((json['resourceLanguages'] as Array<any>).map(LanguageFromJSON)),
+        'externalIds': json['externalIds'] == null ? undefined : ((json['externalIds'] as Array<any>).map(OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON)),
+        'formats': json['formats'] == null ? undefined : ((json['formats'] as Array<any>).map(OgcApiRecordsFormatDtoFromJSON)),
+        'contacts': json['contacts'] == null ? undefined : ((json['contacts'] as Array<any>).map(OgcApiRecordsContactDtoFromJSON)),
+        'license': json['license'] == null ? undefined : OgcApiRecordsLicenseDtoFromJSON(json['license']),
+        'rights': json['rights'] == null ? undefined : json['rights'],
+        'id': json['id'],
+        'itemType': json['itemType'] == null ? undefined : json['itemType'],
+        'extent': json['extent'] == null ? undefined : ExtentFromJSON(json['extent']),
+        'crs': json['crs'] == null ? undefined : json['crs'],
+        'recordsArrayName': json['recordsArrayName'] == null ? undefined : json['recordsArrayName'],
+        'records': json['records'] == null ? undefined : ((json['records'] as Array<any>).map(OgcApiRecordsRecordGeoJSONDtoFromJSON)),
+        'links': ((json['links'] as Array<any>).map(OgcApiRecordsLinkBaseDtoFromJSON)),
+        'linkTemplates': json['linkTemplates'] == null ? undefined : ((json['linkTemplates'] as Array<any>).map(OgcApiRecordsLinkTemplateDtoFromJSON)),
+    };
 }
 
-export function OgcApiRecordsCatalog1DtoToJSON(
-  value?: OgcApiRecordsCatalog1Dto | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    conformsTo: value['conformsTo'],
-    created:
-      value['created'] == null ? undefined : value['created'].toISOString(),
-    updated:
-      value['updated'] == null ? undefined : value['updated'].toISOString(),
-    type: value['type'],
-    title: value['title'],
-    description: value['description'],
-    keywords: value['keywords'],
-    themes:
-      value['themes'] == null
-        ? undefined
-        : (value['themes'] as Array<any>).map(OgcApiRecordsThemeDtoToJSON),
-    language: LanguageToJSON(value['language']),
-    languages:
-      value['languages'] == null
-        ? undefined
-        : (value['languages'] as Array<any>).map(LanguageToJSON),
-    resourceLanguages:
-      value['resourceLanguages'] == null
-        ? undefined
-        : (value['resourceLanguages'] as Array<any>).map(LanguageToJSON),
-    externalIds:
-      value['externalIds'] == null
-        ? undefined
-        : (value['externalIds'] as Array<any>).map(
-            OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON
-          ),
-    formats:
-      value['formats'] == null
-        ? undefined
-        : (value['formats'] as Array<any>).map(OgcApiRecordsFormatDtoToJSON),
-    contacts:
-      value['contacts'] == null
-        ? undefined
-        : (value['contacts'] as Array<any>).map(OgcApiRecordsContactDtoToJSON),
-    license: OgcApiRecordsLicenseDtoToJSON(value['license']),
-    rights: value['rights'],
-    id: value['id'],
-    itemType: value['itemType'],
-    extent: ExtentToJSON(value['extent']),
-    crs: value['crs'],
-    recordsArrayName: value['recordsArrayName'],
-    records:
-      value['records'] == null
-        ? undefined
-        : (value['records'] as Array<any>).map(
-            OgcApiRecordsRecordGeoJSONDtoToJSON
-          ),
-    links: (value['links'] as Array<any>).map(OgcApiRecordsLinkBaseDtoToJSON),
-    linkTemplates:
-      value['linkTemplates'] == null
-        ? undefined
-        : (value['linkTemplates'] as Array<any>).map(
-            OgcApiRecordsLinkTemplateDtoToJSON
-          ),
-  };
+export function OgcApiRecordsCatalog1DtoToJSON(value?: OgcApiRecordsCatalog1Dto | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'conformsTo': value['conformsTo'],
+        'created': value['created'] == null ? undefined : ((value['created']).toISOString()),
+        'updated': value['updated'] == null ? undefined : ((value['updated']).toISOString()),
+        'type': value['type'],
+        'title': value['title'],
+        'description': value['description'],
+        'keywords': value['keywords'],
+        'themes': value['themes'] == null ? undefined : ((value['themes'] as Array<any>).map(OgcApiRecordsThemeDtoToJSON)),
+        'language': LanguageToJSON(value['language']),
+        'languages': value['languages'] == null ? undefined : ((value['languages'] as Array<any>).map(LanguageToJSON)),
+        'resourceLanguages': value['resourceLanguages'] == null ? undefined : ((value['resourceLanguages'] as Array<any>).map(LanguageToJSON)),
+        'externalIds': value['externalIds'] == null ? undefined : ((value['externalIds'] as Array<any>).map(OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON)),
+        'formats': value['formats'] == null ? undefined : ((value['formats'] as Array<any>).map(OgcApiRecordsFormatDtoToJSON)),
+        'contacts': value['contacts'] == null ? undefined : ((value['contacts'] as Array<any>).map(OgcApiRecordsContactDtoToJSON)),
+        'license': OgcApiRecordsLicenseDtoToJSON(value['license']),
+        'rights': value['rights'],
+        'id': value['id'],
+        'itemType': value['itemType'],
+        'extent': ExtentToJSON(value['extent']),
+        'crs': value['crs'],
+        'recordsArrayName': value['recordsArrayName'],
+        'records': value['records'] == null ? undefined : ((value['records'] as Array<any>).map(OgcApiRecordsRecordGeoJSONDtoToJSON)),
+        'links': ((value['links'] as Array<any>).map(OgcApiRecordsLinkBaseDtoToJSON)),
+        'linkTemplates': value['linkTemplates'] == null ? undefined : ((value['linkTemplates'] as Array<any>).map(OgcApiRecordsLinkTemplateDtoToJSON)),
+    };
 }
+

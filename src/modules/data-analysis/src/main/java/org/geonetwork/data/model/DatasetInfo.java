@@ -6,12 +6,23 @@
 
 package org.geonetwork.data.model;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+import org.geonetwork.index.model.record.Codelist;
+import org.geonetwork.index.model.record.FeatureType;
+import org.geonetwork.index.model.record.IndexRecord;
+import org.geonetwork.index.model.record.Link;
 
 @Data
 @SuperBuilder
@@ -22,4 +33,53 @@ public class DatasetInfo extends BaseDataInfo {
 
     private List<DatasetLayer> layers;
     private Map<String, Object> metadata;
+
+    public IndexRecord toIndexRecord(String datasource, String layer) {
+        DatasetLayer datasetLayer = getLayers().get(0);
+
+        Map<String, String> resourceTitle = new HashMap<>();
+        resourceTitle.put("default", layer);
+
+        Link link = new Link();
+        Map<String, String> linkName = new HashMap<>();
+        linkName.put("default", "source");
+        link.setName(linkName);
+
+        Map<String, String> linkUrl = new HashMap<>();
+        linkUrl.put("default", datasource);
+        link.setUrl(linkUrl);
+
+        IndexRecord indexRecord = IndexRecord.builder().codelist("cl_spatialRepresentationType",
+                List.of(Codelist.builder().property("key", "vector").build()))
+            .resourceTitle(resourceTitle)
+            .formats(List.of(getFormat()))
+            .links(List.of(link))
+            .build();
+
+        if (datasetLayer.getGeometryFields().size() > 0) {
+            String crs = datasetLayer.getGeometryFields().get(0).getCrs();
+            Pattern crsPattern = Pattern.compile("[\\s\\S.]*\\\"EPSG\\\",([0-9]*).*");
+            Matcher m = crsPattern.matcher(crs);
+            if (m.find()) {
+                crs = "EPSG:" + m.group(1);
+            }
+
+            indexRecord.setCoordinateSystem(List.of(crs));
+            indexRecord.setGeometries(datasetLayer.getGeometryFields().get(0).getExtent().stream().map(BigDecimal::toString).collect(Collectors.toList()));
+        }
+
+        List<FeatureType> featureTypeList = new ArrayList<>();
+        datasetLayer.getFields().forEach(f -> {
+            FeatureType ft = new FeatureType();
+            ft.setTypeName(f.getType());
+            ft.setCode(f.getName());
+
+            featureTypeList.add(ft);
+        });
+
+        indexRecord.setFeatureTypes(featureTypeList);
+        indexRecord.handleUnrecognizedField("featureCount", datasetLayer.getFeatureCount());
+
+        return indexRecord;
+    }
 }

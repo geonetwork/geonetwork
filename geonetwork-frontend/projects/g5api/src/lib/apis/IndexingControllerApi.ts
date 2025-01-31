@@ -12,102 +12,84 @@
  * Do not edit the class manually.
  */
 
+
 import * as runtime from '../runtime';
 
 export interface IndexRecordsRequest {
-  uuid?: Array<string>;
+    uuid?: Array<string>;
 }
 
 export interface SetupIndexRequest {
-  dropIfExists?: boolean;
+    dropIfExists?: boolean;
 }
 
 /**
- *
+ * 
  */
 export class IndexingControllerApi extends runtime.BaseAPI {
-  /**
-   */
-  async indexRecordsRaw(
-    requestParameters: IndexRecordsRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<string>> {
-    const queryParameters: any = {};
 
-    if (requestParameters['uuid'] != null) {
-      queryParameters['uuid'] = requestParameters['uuid'];
+    /**
+     */
+    async indexRecordsRaw(requestParameters: IndexRecordsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: any = {};
+
+        if (requestParameters['uuid'] != null) {
+            queryParameters['uuid'] = requestParameters['uuid'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/indexing/index`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
     }
 
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/api/indexing/index`,
-        method: 'GET',
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    if (this.isJsonMime(response.headers.get('content-type'))) {
-      return new runtime.JSONApiResponse<string>(response);
-    } else {
-      return new runtime.TextApiResponse(response) as any;
-    }
-  }
-
-  /**
-   */
-  async indexRecords(
-    requestParameters: IndexRecordsRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<string> {
-    const response = await this.indexRecordsRaw(
-      requestParameters,
-      initOverrides
-    );
-    return await response.value();
-  }
-
-  /**
-   */
-  async setupIndexRaw(
-    requestParameters: SetupIndexRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<string>> {
-    const queryParameters: any = {};
-
-    if (requestParameters['dropIfExists'] != null) {
-      queryParameters['dropIfExists'] = requestParameters['dropIfExists'];
+    /**
+     */
+    async indexRecords(requestParameters: IndexRecordsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.indexRecordsRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
-    const headerParameters: runtime.HTTPHeaders = {};
+    /**
+     */
+    async setupIndexRaw(requestParameters: SetupIndexRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: any = {};
 
-    const response = await this.request(
-      {
-        path: `/api/indexing/setup`,
-        method: 'GET',
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
+        if (requestParameters['dropIfExists'] != null) {
+            queryParameters['dropIfExists'] = requestParameters['dropIfExists'];
+        }
 
-    if (this.isJsonMime(response.headers.get('content-type'))) {
-      return new runtime.JSONApiResponse<string>(response);
-    } else {
-      return new runtime.TextApiResponse(response) as any;
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/indexing/setup`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
     }
-  }
 
-  /**
-   */
-  async setupIndex(
-    requestParameters: SetupIndexRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<string> {
-    const response = await this.setupIndexRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
+    /**
+     */
+    async setupIndex(requestParameters: SetupIndexRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.setupIndexRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
 }

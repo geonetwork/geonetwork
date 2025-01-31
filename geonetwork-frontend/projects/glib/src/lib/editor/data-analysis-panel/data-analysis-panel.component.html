@@ -1,26 +1,18 @@
 @if (analysisResult()) {
-  @let isVector = analysisResult().dataType === GnRasterInfoDataTypeEnum.Vector;
-  @let isRaster = analysisResult().dataType === GnRasterInfoDataTypeEnum.Raster;
+  @let isVector = true;
+  @let isRaster = !isVector;
 
   <h2 class="pt-2 pb-2 text-2xl font-medium">
-    <div class="inline-flex items-center">
-      <g-inplace-field
-        property="resourceTitleObject"
-        [uuid]="uuid()"
-        [(value)]="analysisResult().layers[0].name" />
-
-      <div>
-        @if (isVector) {
-          dataset contains
-          <span class="font-bold">{{
-            analysisResult().layers[0].featureCount
-          }}</span>
-          features.
-        } @else if (isRaster) {
-          dataset contains {{ analysisResult().bands?.length }} band(s).
-        }
-      </div>
-    </div>
+    @if (isVector) {
+      <span class="font-bold">{{ analysisResult().resourceTitleObject.default }}</span>
+      dataset contains
+      <span class="font-bold">{{
+          analysisResult()
+      }}</span>
+      features.
+    } @else if (isRaster) {
+      RASTER dataset contains {{ analysisResult() }} band(s).
+    }
   </h2>
 
   <div class="grid grid-cols-8 gap-4">
@@ -33,10 +25,10 @@
     </div>
 
     <div class="font-medium">Source</div>
-    <div class="col-span-7">{{ analysisResult().description }}</div>
+    <div class="col-span-7">{{ analysisResult().link[0].urlObject.default }}</div>
 
     <div class="font-medium">Format</div>
-    <div class="col-span-7">{{ analysisResult().format }}</div>
+    <div class="col-span-7">{{ analysisResult().format[0] }}</div>
 
     <div class="font-medium">Spatial representation</div>
     <div class="col-span-7">
@@ -44,26 +36,26 @@
         [attr.class]="
           isVector ? 'fa fa-fw fa-vector-square' : 'fa fa-fw fa-table-cells'
         "></i>
-      {{ analysisResult().dataType }}
+      {{ analysisResult().cl_spatialRepresentationType[0] }}
     </div>
 
-    @if (isVector && analysisResult().layers[0].geometryFields?.length > 0) {
+    @if (isVector && analysisResult().geom) {
       <div class="font-medium">Geometry type</div>
       <div class="col-span-7">
-        {{ analysisResult().layers[0].geometryFields[0].type }}
+        {{ analysisResult() }}
       </div>
 
       <div class="font-medium">Spatial extent</div>
       <div class="col-span-7">
-        {{ analysisResult().layers[0].geometryFields[0].extent }}
+        {{ analysisResult().geom }}
       </div>
     }
 
     @if (isRaster) {
-      @if (analysisResult().wgs84Extent) {
+      @if (analysisResult().geom) {
         <div class="font-medium">Spatial extent</div>
         <div class="col-span-7">
-          {{ analysisResult().wgs84Extent }}
+          {{ analysisResult().geom }}
         </div>
       }
       @if (analysisResult().size) {
@@ -74,10 +66,10 @@
       }
     }
 
-    @if (crsCode(); as crs) {
+    @if (analysisResult().coordinateSystem[0]; as crs) {
       <div class="font-medium">Coordinate system</div>
       <div class="col-span-7">
-        <a href="http://epsg.io/{{ crs }}" target="_blank"> EPSG:{{ crs }} </a>
+        <a href="http://epsg.io/{{ crs.replace('EPSG:', '') }}" target="_blank">{{ crs }}</a>
       </div>
     }
 
@@ -85,7 +77,7 @@
       <div class="font-medium">Data model</div>
       <div class="col-span-7">
         <p-table
-          [value]="analysisResult().layers[0].fields"
+          [value]="analysisResult().featureTypes"
           styleClass="w-full"
           tableStyleClass="w-full">
           <ng-template pTemplate="header">
@@ -96,47 +88,47 @@
           </ng-template>
           <ng-template pTemplate="body" let-field>
             <tr>
-              <td>{{ field.name }}</td>
-              <td>{{ field.type }}</td>
+              <td>{{ field.code }}</td>
+              <td>{{ field.typeName }}</td>
             </tr>
           </ng-template>
         </p-table>
       </div>
 
       @if (isRaster) {
-        @if (analysisResult().metadata) {
+        @if (analysisResult()) {
           <div class="font-medium">Temporal extent</div>
           <div class="col-span-7">
-            {{ analysisResult().metadata | json }}
+            {{ analysisResult() }}
           </div>
         }
       }
-      @if (analysisResult().layers[0].geometryFields.length == 0) {
+      @if (analysisResult().geom) {
         <div class="font-medium">Spatial extent?</div>
         <div class="col-span-7">
           <p-select
-            [options]="analysisResult().layers[0].fields"
+            [options]="analysisResult().featureTypes"
             placeholder="Compute spatial extent from attribute"
-            optionLabel="name"
-            optionValue="name" />
+            optionLabel="code"
+            optionValue="code" />
         </div>
       }
       <div class="font-medium">Temporal extent?</div>
       <div class="col-span-7">
         <p-select
-          [options]="analysisResult().layers[0].fields"
+          [options]="analysisResult().featureTypes"
           placeholder="Compute temporal extent from attribute"
-          optionLabel="name"
-          optionValue="name" />
+          optionLabel="code"
+          optionValue="code" />
       </div>
 
       <div class="font-medium">Vertical extent?</div>
       <div class="col-span-7">
         <p-select
-          [options]="analysisResult().layers[0].fields"
+          [options]="analysisResult().featureTypes"
           placeholder="Compute vertical extent from attribute"
-          optionLabel="name"
-          optionValue="name" />
+          optionLabel="code"
+          optionValue="code" />
       </div>
     }
   </div>

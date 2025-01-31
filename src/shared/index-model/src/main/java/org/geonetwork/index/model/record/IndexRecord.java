@@ -926,7 +926,7 @@ public class IndexRecord {
     }
 
     private void handleDateProperties(String name, Object value) {
-        List<String> resourceDateForField = resourceDateDetails.computeIfAbsent(name, k -> new ArrayList<String>());
+        List<String> resourceDateForField = resourceDateDetails.computeIfAbsent(name, k -> new ArrayList<>());
         if (value instanceof List) {
             @SuppressWarnings("unchecked")
             Collection<? extends String> collection = (Collection<? extends String>) value;
@@ -1046,8 +1046,8 @@ public class IndexRecord {
         List<Keyword> keywordForType =
                 (byType ? copyKeywordByType() : keywordByThesaurus).computeIfAbsent(name, k -> new ArrayList<>());
 
-        if (value instanceof Map) {
-            Object listOfKeywords = ((Map) value).get("keywords"); // XML
+        if (value instanceof Map mapValue) {
+            Object listOfKeywords = mapValue.get("keywords"); // XML
             if (listOfKeywords instanceof List) {
                 ((List<?>) listOfKeywords).forEach(k -> {
                     if (k instanceof String && StringUtils.isNotEmpty(k.toString())) {
@@ -1096,13 +1096,13 @@ public class IndexRecord {
             @SuppressWarnings("unchecked")
             List<String> list = (List<String>) value;
             recordLinkForField.addAll(list);
-        } else if (value instanceof String) {
-            recordLinkForField.add((String) value);
+        } else if (value instanceof String stringVal) {
+            recordLinkForField.add(stringVal);
         }
     }
 
     private void handleConformProperties(String name, Object value) {
-        conformsTo.put(name, value instanceof Boolean ? ((Boolean) value).toString() : (String) value);
+        conformsTo.put(name, value instanceof Boolean boolValue ? (boolValue).toString() : (String) value);
     }
 
     private void handleCodelistProperties(String name, Object value) {

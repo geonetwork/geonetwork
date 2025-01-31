@@ -12,48 +12,47 @@
  * Do not edit the class manually.
  */
 
+
 /**
- *
+ * 
  * @export
  */
 export const RelatedItemType = {
-  Children: 'children',
-  Parent: 'parent',
-  BrothersAndSisters: 'brothersAndSisters',
-  Siblings: 'siblings',
-  Associated: 'associated',
-  Services: 'services',
-  Datasets: 'datasets',
-  Fcats: 'fcats',
-  Hasfeaturecats: 'hasfeaturecats',
-  Sources: 'sources',
-  Hassources: 'hassources',
+    Children: 'children',
+    Parent: 'parent',
+    BrothersAndSisters: 'brothersAndSisters',
+    Siblings: 'siblings',
+    Associated: 'associated',
+    Services: 'services',
+    Datasets: 'datasets',
+    Fcats: 'fcats',
+    Hasfeaturecats: 'hasfeaturecats',
+    Sources: 'sources',
+    Hassources: 'hassources'
 } as const;
-export type RelatedItemType =
-  (typeof RelatedItemType)[keyof typeof RelatedItemType];
+export type RelatedItemType = typeof RelatedItemType[keyof typeof RelatedItemType];
+
 
 export function instanceOfRelatedItemType(value: any): boolean {
-  for (const key in RelatedItemType) {
-    if (Object.prototype.hasOwnProperty.call(RelatedItemType, key)) {
-      if (RelatedItemType[key as keyof typeof RelatedItemType] === value) {
-        return true;
-      }
+    for (const key in RelatedItemType) {
+        if (Object.prototype.hasOwnProperty.call(RelatedItemType, key)) {
+            if (RelatedItemType[key as keyof typeof RelatedItemType] === value) {
+                return true;
+            }
+        }
     }
-  }
-  return false;
+    return false;
 }
 
 export function RelatedItemTypeFromJSON(json: any): RelatedItemType {
-  return RelatedItemTypeFromJSONTyped(json, false);
+    return RelatedItemTypeFromJSONTyped(json, false);
 }
 
-export function RelatedItemTypeFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): RelatedItemType {
-  return json as RelatedItemType;
+export function RelatedItemTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): RelatedItemType {
+    return json as RelatedItemType;
 }
 
 export function RelatedItemTypeToJSON(value?: RelatedItemType | null): any {
-  return value as any;
+    return value as any;
 }
+

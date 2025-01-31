@@ -15,33 +15,33 @@
 import { mapValues } from '../runtime';
 import type { OgcApiRecordsInfoDto } from './OgcApiRecordsInfoDto';
 import {
-  OgcApiRecordsInfoDtoFromJSON,
-  OgcApiRecordsInfoDtoFromJSONTyped,
-  OgcApiRecordsInfoDtoToJSON,
+    OgcApiRecordsInfoDtoFromJSON,
+    OgcApiRecordsInfoDtoFromJSONTyped,
+    OgcApiRecordsInfoDtoToJSON,
 } from './OgcApiRecordsInfoDto';
 import type { OgcApiRecordsComponentsDto } from './OgcApiRecordsComponentsDto';
 import {
-  OgcApiRecordsComponentsDtoFromJSON,
-  OgcApiRecordsComponentsDtoFromJSONTyped,
-  OgcApiRecordsComponentsDtoToJSON,
+    OgcApiRecordsComponentsDtoFromJSON,
+    OgcApiRecordsComponentsDtoFromJSONTyped,
+    OgcApiRecordsComponentsDtoToJSON,
 } from './OgcApiRecordsComponentsDto';
 import type { OgcApiRecordsServerDto } from './OgcApiRecordsServerDto';
 import {
-  OgcApiRecordsServerDtoFromJSON,
-  OgcApiRecordsServerDtoFromJSONTyped,
-  OgcApiRecordsServerDtoToJSON,
+    OgcApiRecordsServerDtoFromJSON,
+    OgcApiRecordsServerDtoFromJSONTyped,
+    OgcApiRecordsServerDtoToJSON,
 } from './OgcApiRecordsServerDto';
 import type { OgcApiRecordsExternalDocumentationDto } from './OgcApiRecordsExternalDocumentationDto';
 import {
-  OgcApiRecordsExternalDocumentationDtoFromJSON,
-  OgcApiRecordsExternalDocumentationDtoFromJSONTyped,
-  OgcApiRecordsExternalDocumentationDtoToJSON,
+    OgcApiRecordsExternalDocumentationDtoFromJSON,
+    OgcApiRecordsExternalDocumentationDtoFromJSONTyped,
+    OgcApiRecordsExternalDocumentationDtoToJSON,
 } from './OgcApiRecordsExternalDocumentationDto';
 import type { OgcApiRecordsTagDto } from './OgcApiRecordsTagDto';
 import {
-  OgcApiRecordsTagDtoFromJSON,
-  OgcApiRecordsTagDtoFromJSONTyped,
-  OgcApiRecordsTagDtoToJSON,
+    OgcApiRecordsTagDtoFromJSON,
+    OgcApiRecordsTagDtoFromJSONTyped,
+    OgcApiRecordsTagDtoToJSON,
 } from './OgcApiRecordsTagDto';
 
 /**
@@ -50,123 +50,101 @@ import {
  * @interface Schema
  */
 export interface Schema {
-  /**
-   *
-   * @type {string}
-   * @memberof Schema
-   */
-  openapi: string;
-  /**
-   *
-   * @type {OgcApiRecordsInfoDto}
-   * @memberof Schema
-   */
-  info: OgcApiRecordsInfoDto;
-  /**
-   *
-   * @type {OgcApiRecordsExternalDocumentationDto}
-   * @memberof Schema
-   */
-  externalDocs?: OgcApiRecordsExternalDocumentationDto;
-  /**
-   *
-   * @type {Array<OgcApiRecordsServerDto>}
-   * @memberof Schema
-   */
-  servers?: Array<OgcApiRecordsServerDto>;
-  /**
-   *
-   * @type {Array<object>}
-   * @memberof Schema
-   */
-  security?: Array<object>;
-  /**
-   *
-   * @type {Set<OgcApiRecordsTagDto>}
-   * @memberof Schema
-   */
-  tags?: Set<OgcApiRecordsTagDto>;
-  /**
-   *
-   * @type {object}
-   * @memberof Schema
-   */
-  paths: object;
-  /**
-   *
-   * @type {OgcApiRecordsComponentsDto}
-   * @memberof Schema
-   */
-  components?: OgcApiRecordsComponentsDto;
+    /**
+     * 
+     * @type {string}
+     * @memberof Schema
+     */
+    openapi: string;
+    /**
+     * 
+     * @type {OgcApiRecordsInfoDto}
+     * @memberof Schema
+     */
+    info: OgcApiRecordsInfoDto;
+    /**
+     * 
+     * @type {OgcApiRecordsExternalDocumentationDto}
+     * @memberof Schema
+     */
+    externalDocs?: OgcApiRecordsExternalDocumentationDto;
+    /**
+     * 
+     * @type {Array<OgcApiRecordsServerDto>}
+     * @memberof Schema
+     */
+    servers?: Array<OgcApiRecordsServerDto>;
+    /**
+     * 
+     * @type {Array<object>}
+     * @memberof Schema
+     */
+    security?: Array<object>;
+    /**
+     * 
+     * @type {Set<OgcApiRecordsTagDto>}
+     * @memberof Schema
+     */
+    tags?: Set<OgcApiRecordsTagDto>;
+    /**
+     * 
+     * @type {object}
+     * @memberof Schema
+     */
+    paths: object;
+    /**
+     * 
+     * @type {OgcApiRecordsComponentsDto}
+     * @memberof Schema
+     */
+    components?: OgcApiRecordsComponentsDto;
 }
 
 /**
  * Check if a given object implements the Schema interface.
  */
 export function instanceOfSchema(value: object): value is Schema {
-  if (!('openapi' in value) || value['openapi'] === undefined) return false;
-  if (!('info' in value) || value['info'] === undefined) return false;
-  if (!('paths' in value) || value['paths'] === undefined) return false;
-  return true;
+    if (!('openapi' in value) || value['openapi'] === undefined) return false;
+    if (!('info' in value) || value['info'] === undefined) return false;
+    if (!('paths' in value) || value['paths'] === undefined) return false;
+    return true;
 }
 
 export function SchemaFromJSON(json: any): Schema {
-  return SchemaFromJSONTyped(json, false);
+    return SchemaFromJSONTyped(json, false);
 }
 
-export function SchemaFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): Schema {
-  if (json == null) {
-    return json;
-  }
-  return {
-    openapi: json['openapi'],
-    info: OgcApiRecordsInfoDtoFromJSON(json['info']),
-    externalDocs:
-      json['externalDocs'] == null
-        ? undefined
-        : OgcApiRecordsExternalDocumentationDtoFromJSON(json['externalDocs']),
-    servers:
-      json['servers'] == null
-        ? undefined
-        : (json['servers'] as Array<any>).map(OgcApiRecordsServerDtoFromJSON),
-    security: json['security'] == null ? undefined : json['security'],
-    tags:
-      json['tags'] == null
-        ? undefined
-        : new Set(
-            (json['tags'] as Array<any>).map(OgcApiRecordsTagDtoFromJSON)
-          ),
-    paths: json['paths'],
-    components:
-      json['components'] == null
-        ? undefined
-        : OgcApiRecordsComponentsDtoFromJSON(json['components']),
-  };
+export function SchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean): Schema {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'openapi': json['openapi'],
+        'info': OgcApiRecordsInfoDtoFromJSON(json['info']),
+        'externalDocs': json['externalDocs'] == null ? undefined : OgcApiRecordsExternalDocumentationDtoFromJSON(json['externalDocs']),
+        'servers': json['servers'] == null ? undefined : ((json['servers'] as Array<any>).map(OgcApiRecordsServerDtoFromJSON)),
+        'security': json['security'] == null ? undefined : json['security'],
+        'tags': json['tags'] == null ? undefined : (new Set((json['tags'] as Array<any>).map(OgcApiRecordsTagDtoFromJSON))),
+        'paths': json['paths'],
+        'components': json['components'] == null ? undefined : OgcApiRecordsComponentsDtoFromJSON(json['components']),
+    };
 }
 
 export function SchemaToJSON(value?: Schema | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    openapi: value['openapi'],
-    info: OgcApiRecordsInfoDtoToJSON(value['info']),
-    externalDocs: OgcApiRecordsExternalDocumentationDtoToJSON(
-      value['externalDocs']
-    ),
-    servers:
-      value['servers'] == null
-        ? undefined
-        : (value['servers'] as Array<any>).map(OgcApiRecordsServerDtoToJSON),
-    security: value['security'],
-    tags:
-      value['tags'] == null
-        ? undefined
-        : Array.from(value['tags'] as Set<any>).map(OgcApiRecordsTagDtoToJSON),
-    paths: value['paths'],
-    components: OgcApiRecordsComponentsDtoToJSON(value['components']),
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'openapi': value['openapi'],
+        'info': OgcApiRecordsInfoDtoToJSON(value['info']),
+        'externalDocs': OgcApiRecordsExternalDocumentationDtoToJSON(value['externalDocs']),
+        'servers': value['servers'] == null ? undefined : ((value['servers'] as Array<any>).map(OgcApiRecordsServerDtoToJSON)),
+        'security': value['security'],
+        'tags': value['tags'] == null ? undefined : (Array.from(value['tags'] as Set<any>).map(OgcApiRecordsTagDtoToJSON)),
+        'paths': value['paths'],
+        'components': OgcApiRecordsComponentsDtoToJSON(value['components']),
+    };
 }
+

@@ -35,6 +35,7 @@ import {
   PreviewDataAnalysisOnRecordRequest,
   PutResourceRequest,
   RecordsApi as RecordsApi5,
+  IndexRecord
 } from 'g5api';
 
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -179,7 +180,7 @@ export class NewRecordPanelComponent implements OnInit {
     );
   });
   previewResult = signal<string>('');
-  analysisResult = signal<GnDatasetInfo | GnRasterInfo | undefined>(undefined);
+  analysisResult = signal<IndexRecord | undefined | undefined>(undefined);
   layers = signal<string[]>([]);
 
   isCreatingRecord = signal(false);
@@ -281,7 +282,7 @@ export class NewRecordPanelComponent implements OnInit {
       .create(createRequest, {
         headers: {
           // TODO: remove this? Header should be set in the gapi?
-          'X-XSRF-TOKEN': '84f62daa-8bed-41d7-b161-f9205c7187a2',
+          'X-XSRF-TOKEN': '17666fa5-607b-41d1-92ed-e1819c7da3b6',
           Accept: 'application/json', // Accept could be all?
           'Content-Type': 'application/json',
         },
@@ -386,23 +387,24 @@ export class NewRecordPanelComponent implements OnInit {
 
     const analysisRequest = this.datasourceFile()
       ? {
-          metadataUuid: this.newRecordId(),
-          datasource: this.datasourceFile(),
-          visibility: LayersMetadataResourceVisibilityEnum.Public,
-          approved: true,
-          layer: this.layername(),
-        }
+        metadataUuid: this.newRecordId(),
+        datasource: this.datasourceFile(),
+        visibility: LayersMetadataResourceVisibilityEnum.Public,
+        approved: true,
+        layer: this.layername(),
+      }
       : {
-          datasource: this.datasourceWithPrefix(),
-          layer: this.layername(),
-        };
+        datasource: this.datasourceWithPrefix(),
+        layer: this.layername(),
+      };
 
-    const analysisMethod = this.datasourceFile()
+    /*const analysisMethod = this.datasourceFile()
       ? this.dataAnalysisApi().analysisSynchMetadataResource(
-          analysisRequest as AnalysisSynchMetadataResourceRequest
-        )
-      : this.dataAnalysisApi().analysisSynch(analysisRequest);
+        analysisRequest as AnalysisSynchMetadataResourceRequest
+      )
+      : this.dataAnalysisApi().analysisSynchIndexRecord(analysisRequest);*/
 
+    const analysisMethod = this.dataAnalysisApi().analysisSynchIndexRecord(analysisRequest);
     analysisMethod.then(
       response => {
         this.analysisResult.set(response);
@@ -417,6 +419,7 @@ export class NewRecordPanelComponent implements OnInit {
       }
     );
   }
+
   overviewFromData = signal<Blob | undefined>(undefined);
   buildingOverview = signal(false);
 

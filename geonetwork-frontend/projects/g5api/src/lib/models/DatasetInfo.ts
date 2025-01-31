@@ -15,110 +15,104 @@
 import { mapValues } from '../runtime';
 import type { DatasetLayer } from './DatasetLayer';
 import {
-  DatasetLayerFromJSON,
-  DatasetLayerFromJSONTyped,
-  DatasetLayerToJSON,
+    DatasetLayerFromJSON,
+    DatasetLayerFromJSONTyped,
+    DatasetLayerToJSON,
 } from './DatasetLayer';
 
 /**
- *
+ * 
  * @export
  * @interface DatasetInfo
  */
 export interface DatasetInfo {
-  /**
-   *
-   * @type {string}
-   * @memberof DatasetInfo
-   */
-  description?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof DatasetInfo
-   */
-  format?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof DatasetInfo
-   */
-  formatDescription?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof DatasetInfo
-   */
-  dataType?: DatasetInfoDataTypeEnum;
-  /**
-   *
-   * @type {Array<DatasetLayer>}
-   * @memberof DatasetInfo
-   */
-  layers?: Array<DatasetLayer>;
-  /**
-   *
-   * @type {{ [key: string]: object; }}
-   * @memberof DatasetInfo
-   */
-  metadata?: { [key: string]: object };
+    /**
+     * 
+     * @type {string}
+     * @memberof DatasetInfo
+     */
+    description?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DatasetInfo
+     */
+    format?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DatasetInfo
+     */
+    formatDescription?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DatasetInfo
+     */
+    dataType?: DatasetInfoDataTypeEnum;
+    /**
+     * 
+     * @type {Array<DatasetLayer>}
+     * @memberof DatasetInfo
+     */
+    layers?: Array<DatasetLayer>;
+    /**
+     * 
+     * @type {{ [key: string]: object; }}
+     * @memberof DatasetInfo
+     */
+    metadata?: { [key: string]: object; };
 }
+
 
 /**
  * @export
  */
 export const DatasetInfoDataTypeEnum = {
-  Raster: 'RASTER',
-  Vector: 'VECTOR',
+    Raster: 'RASTER',
+    Vector: 'VECTOR'
 } as const;
-export type DatasetInfoDataTypeEnum =
-  (typeof DatasetInfoDataTypeEnum)[keyof typeof DatasetInfoDataTypeEnum];
+export type DatasetInfoDataTypeEnum = typeof DatasetInfoDataTypeEnum[keyof typeof DatasetInfoDataTypeEnum];
+
 
 /**
  * Check if a given object implements the DatasetInfo interface.
  */
 export function instanceOfDatasetInfo(value: object): value is DatasetInfo {
-  return true;
+    return true;
 }
 
 export function DatasetInfoFromJSON(json: any): DatasetInfo {
-  return DatasetInfoFromJSONTyped(json, false);
+    return DatasetInfoFromJSONTyped(json, false);
 }
 
-export function DatasetInfoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): DatasetInfo {
-  if (json == null) {
-    return json;
-  }
-  return {
-    description: json['description'] == null ? undefined : json['description'],
-    format: json['format'] == null ? undefined : json['format'],
-    formatDescription:
-      json['formatDescription'] == null ? undefined : json['formatDescription'],
-    dataType: json['dataType'] == null ? undefined : json['dataType'],
-    layers:
-      json['layers'] == null
-        ? undefined
-        : (json['layers'] as Array<any>).map(DatasetLayerFromJSON),
-    metadata: json['metadata'] == null ? undefined : json['metadata'],
-  };
+export function DatasetInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetInfo {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'description': json['description'] == null ? undefined : json['description'],
+        'format': json['format'] == null ? undefined : json['format'],
+        'formatDescription': json['formatDescription'] == null ? undefined : json['formatDescription'],
+        'dataType': json['dataType'] == null ? undefined : json['dataType'],
+        'layers': json['layers'] == null ? undefined : ((json['layers'] as Array<any>).map(DatasetLayerFromJSON)),
+        'metadata': json['metadata'] == null ? undefined : json['metadata'],
+    };
 }
 
 export function DatasetInfoToJSON(value?: DatasetInfo | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    description: value['description'],
-    format: value['format'],
-    formatDescription: value['formatDescription'],
-    dataType: value['dataType'],
-    layers:
-      value['layers'] == null
-        ? undefined
-        : (value['layers'] as Array<any>).map(DatasetLayerToJSON),
-    metadata: value['metadata'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'description': value['description'],
+        'format': value['format'],
+        'formatDescription': value['formatDescription'],
+        'dataType': value['dataType'],
+        'layers': value['layers'] == null ? undefined : ((value['layers'] as Array<any>).map(DatasetLayerToJSON)),
+        'metadata': value['metadata'],
+    };
 }
+

@@ -14,131 +14,127 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface Link
  */
 export interface Link {
-  /**
-   *
-   * @type {string}
-   * @memberof Link
-   */
-  protocol?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Link
-   */
-  _function?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Link
-   */
-  applicationProfile?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Link
-   */
-  group?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Link
-   */
-  mimeType?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Link
-   */
-  nilReason?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Link
-   */
-  hash?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Link
-   */
-  idx?: string;
-  /**
-   *
-   * @type {{ [key: string]: string; }}
-   * @memberof Link
-   */
-  urlObject?: { [key: string]: string };
-  /**
-   *
-   * @type {{ [key: string]: string; }}
-   * @memberof Link
-   */
-  nameObject?: { [key: string]: string };
-  /**
-   *
-   * @type {{ [key: string]: string; }}
-   * @memberof Link
-   */
-  descriptionObject?: { [key: string]: string };
+    /**
+     * 
+     * @type {string}
+     * @memberof Link
+     */
+    protocol?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Link
+     */
+    _function?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Link
+     */
+    applicationProfile?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Link
+     */
+    group?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Link
+     */
+    mimeType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Link
+     */
+    nilReason?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Link
+     */
+    hash?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Link
+     */
+    idx?: string;
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof Link
+     */
+    urlObject?: { [key: string]: string; };
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof Link
+     */
+    nameObject?: { [key: string]: string; };
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof Link
+     */
+    descriptionObject?: { [key: string]: string; };
 }
 
 /**
  * Check if a given object implements the Link interface.
  */
 export function instanceOfLink(value: object): value is Link {
-  return true;
+    return true;
 }
 
 export function LinkFromJSON(json: any): Link {
-  return LinkFromJSONTyped(json, false);
+    return LinkFromJSONTyped(json, false);
 }
 
-export function LinkFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): Link {
-  if (json == null) {
-    return json;
-  }
-  return {
-    protocol: json['protocol'] == null ? undefined : json['protocol'],
-    _function: json['function'] == null ? undefined : json['function'],
-    applicationProfile:
-      json['applicationProfile'] == null
-        ? undefined
-        : json['applicationProfile'],
-    group: json['group'] == null ? undefined : json['group'],
-    mimeType: json['mimeType'] == null ? undefined : json['mimeType'],
-    nilReason: json['nilReason'] == null ? undefined : json['nilReason'],
-    hash: json['hash'] == null ? undefined : json['hash'],
-    idx: json['idx'] == null ? undefined : json['idx'],
-    urlObject: json['urlObject'] == null ? undefined : json['urlObject'],
-    nameObject: json['nameObject'] == null ? undefined : json['nameObject'],
-    descriptionObject:
-      json['descriptionObject'] == null ? undefined : json['descriptionObject'],
-  };
+export function LinkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Link {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'protocol': json['protocol'] == null ? undefined : json['protocol'],
+        '_function': json['function'] == null ? undefined : json['function'],
+        'applicationProfile': json['applicationProfile'] == null ? undefined : json['applicationProfile'],
+        'group': json['group'] == null ? undefined : json['group'],
+        'mimeType': json['mimeType'] == null ? undefined : json['mimeType'],
+        'nilReason': json['nilReason'] == null ? undefined : json['nilReason'],
+        'hash': json['hash'] == null ? undefined : json['hash'],
+        'idx': json['idx'] == null ? undefined : json['idx'],
+        'urlObject': json['urlObject'] == null ? undefined : json['urlObject'],
+        'nameObject': json['nameObject'] == null ? undefined : json['nameObject'],
+        'descriptionObject': json['descriptionObject'] == null ? undefined : json['descriptionObject'],
+    };
 }
 
 export function LinkToJSON(value?: Link | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    protocol: value['protocol'],
-    function: value['_function'],
-    applicationProfile: value['applicationProfile'],
-    group: value['group'],
-    mimeType: value['mimeType'],
-    nilReason: value['nilReason'],
-    hash: value['hash'],
-    idx: value['idx'],
-    urlObject: value['urlObject'],
-    nameObject: value['nameObject'],
-    descriptionObject: value['descriptionObject'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'protocol': value['protocol'],
+        'function': value['_function'],
+        'applicationProfile': value['applicationProfile'],
+        'group': value['group'],
+        'mimeType': value['mimeType'],
+        'nilReason': value['nilReason'],
+        'hash': value['hash'],
+        'idx': value['idx'],
+        'urlObject': value['urlObject'],
+        'nameObject': value['nameObject'],
+        'descriptionObject': value['descriptionObject'],
+    };
 }
+

@@ -14,107 +14,106 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface RecordLink
  */
 export interface RecordLink {
-  /**
-   *
-   * @type {string}
-   * @memberof RecordLink
-   */
-  type?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof RecordLink
-   */
-  origin?: RecordLinkOriginEnum;
-  /**
-   *
-   * @type {string}
-   * @memberof RecordLink
-   */
-  to?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof RecordLink
-   */
-  title?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof RecordLink
-   */
-  url?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof RecordLink
-   */
-  associationType?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof RecordLink
-   */
-  initiativeType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecordLink
+     */
+    type?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecordLink
+     */
+    origin?: RecordLinkOriginEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecordLink
+     */
+    to?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecordLink
+     */
+    title?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecordLink
+     */
+    url?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecordLink
+     */
+    associationType?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecordLink
+     */
+    initiativeType?: string;
 }
+
 
 /**
  * @export
  */
 export const RecordLinkOriginEnum = {
-  Remote: 'remote',
-  Catalog: 'catalog',
+    Remote: 'remote',
+    Catalog: 'catalog'
 } as const;
-export type RecordLinkOriginEnum =
-  (typeof RecordLinkOriginEnum)[keyof typeof RecordLinkOriginEnum];
+export type RecordLinkOriginEnum = typeof RecordLinkOriginEnum[keyof typeof RecordLinkOriginEnum];
+
 
 /**
  * Check if a given object implements the RecordLink interface.
  */
 export function instanceOfRecordLink(value: object): value is RecordLink {
-  return true;
+    return true;
 }
 
 export function RecordLinkFromJSON(json: any): RecordLink {
-  return RecordLinkFromJSONTyped(json, false);
+    return RecordLinkFromJSONTyped(json, false);
 }
 
-export function RecordLinkFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): RecordLink {
-  if (json == null) {
-    return json;
-  }
-  return {
-    type: json['type'] == null ? undefined : json['type'],
-    origin: json['origin'] == null ? undefined : json['origin'],
-    to: json['to'] == null ? undefined : json['to'],
-    title: json['title'] == null ? undefined : json['title'],
-    url: json['url'] == null ? undefined : json['url'],
-    associationType:
-      json['associationType'] == null ? undefined : json['associationType'],
-    initiativeType:
-      json['initiativeType'] == null ? undefined : json['initiativeType'],
-  };
+export function RecordLinkFromJSONTyped(json: any, ignoreDiscriminator: boolean): RecordLink {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'type': json['type'] == null ? undefined : json['type'],
+        'origin': json['origin'] == null ? undefined : json['origin'],
+        'to': json['to'] == null ? undefined : json['to'],
+        'title': json['title'] == null ? undefined : json['title'],
+        'url': json['url'] == null ? undefined : json['url'],
+        'associationType': json['associationType'] == null ? undefined : json['associationType'],
+        'initiativeType': json['initiativeType'] == null ? undefined : json['initiativeType'],
+    };
 }
 
 export function RecordLinkToJSON(value?: RecordLink | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    type: value['type'],
-    origin: value['origin'],
-    to: value['to'],
-    title: value['title'],
-    url: value['url'],
-    associationType: value['associationType'],
-    initiativeType: value['initiativeType'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'type': value['type'],
+        'origin': value['origin'],
+        'to': value['to'],
+        'title': value['title'],
+        'url': value['url'],
+        'associationType': value['associationType'],
+        'initiativeType': value['initiativeType'],
+    };
 }
+

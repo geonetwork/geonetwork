@@ -15,117 +15,99 @@
 import { mapValues } from '../runtime';
 import type { DatasetLayerField } from './DatasetLayerField';
 import {
-  DatasetLayerFieldFromJSON,
-  DatasetLayerFieldFromJSONTyped,
-  DatasetLayerFieldToJSON,
+    DatasetLayerFieldFromJSON,
+    DatasetLayerFieldFromJSONTyped,
+    DatasetLayerFieldToJSON,
 } from './DatasetLayerField';
 import type { DatasetLayerGeomField } from './DatasetLayerGeomField';
 import {
-  DatasetLayerGeomFieldFromJSON,
-  DatasetLayerGeomFieldFromJSONTyped,
-  DatasetLayerGeomFieldToJSON,
+    DatasetLayerGeomFieldFromJSON,
+    DatasetLayerGeomFieldFromJSONTyped,
+    DatasetLayerGeomFieldToJSON,
 } from './DatasetLayerGeomField';
 
 /**
- *
+ * 
  * @export
  * @interface DatasetLayer
  */
 export interface DatasetLayer {
-  /**
-   *
-   * @type {string}
-   * @memberof DatasetLayer
-   */
-  name?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof DatasetLayer
-   */
-  fidColumnName?: string;
-  /**
-   *
-   * @type {number}
-   * @memberof DatasetLayer
-   */
-  featureCount?: number;
-  /**
-   *
-   * @type {Array<DatasetLayerField>}
-   * @memberof DatasetLayer
-   */
-  fields?: Array<DatasetLayerField>;
-  /**
-   *
-   * @type {Array<DatasetLayerGeomField>}
-   * @memberof DatasetLayer
-   */
-  geometryFields?: Array<DatasetLayerGeomField>;
-  /**
-   *
-   * @type {{ [key: string]: object; }}
-   * @memberof DatasetLayer
-   */
-  metadata?: { [key: string]: object };
+    /**
+     * 
+     * @type {string}
+     * @memberof DatasetLayer
+     */
+    name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DatasetLayer
+     */
+    fidColumnName?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof DatasetLayer
+     */
+    featureCount?: number;
+    /**
+     * 
+     * @type {Array<DatasetLayerField>}
+     * @memberof DatasetLayer
+     */
+    fields?: Array<DatasetLayerField>;
+    /**
+     * 
+     * @type {Array<DatasetLayerGeomField>}
+     * @memberof DatasetLayer
+     */
+    geometryFields?: Array<DatasetLayerGeomField>;
+    /**
+     * 
+     * @type {{ [key: string]: object; }}
+     * @memberof DatasetLayer
+     */
+    metadata?: { [key: string]: object; };
 }
 
 /**
  * Check if a given object implements the DatasetLayer interface.
  */
 export function instanceOfDatasetLayer(value: object): value is DatasetLayer {
-  return true;
+    return true;
 }
 
 export function DatasetLayerFromJSON(json: any): DatasetLayer {
-  return DatasetLayerFromJSONTyped(json, false);
+    return DatasetLayerFromJSONTyped(json, false);
 }
 
-export function DatasetLayerFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): DatasetLayer {
-  if (json == null) {
-    return json;
-  }
-  return {
-    name: json['name'] == null ? undefined : json['name'],
-    fidColumnName:
-      json['fidColumnName'] == null ? undefined : json['fidColumnName'],
-    featureCount:
-      json['featureCount'] == null ? undefined : json['featureCount'],
-    fields:
-      json['fields'] == null
-        ? undefined
-        : (json['fields'] as Array<any>).map(DatasetLayerFieldFromJSON),
-    geometryFields:
-      json['geometryFields'] == null
-        ? undefined
-        : (json['geometryFields'] as Array<any>).map(
-            DatasetLayerGeomFieldFromJSON
-          ),
-    metadata: json['metadata'] == null ? undefined : json['metadata'],
-  };
+export function DatasetLayerFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetLayer {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'name': json['name'] == null ? undefined : json['name'],
+        'fidColumnName': json['fidColumnName'] == null ? undefined : json['fidColumnName'],
+        'featureCount': json['featureCount'] == null ? undefined : json['featureCount'],
+        'fields': json['fields'] == null ? undefined : ((json['fields'] as Array<any>).map(DatasetLayerFieldFromJSON)),
+        'geometryFields': json['geometryFields'] == null ? undefined : ((json['geometryFields'] as Array<any>).map(DatasetLayerGeomFieldFromJSON)),
+        'metadata': json['metadata'] == null ? undefined : json['metadata'],
+    };
 }
 
 export function DatasetLayerToJSON(value?: DatasetLayer | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    name: value['name'],
-    fidColumnName: value['fidColumnName'],
-    featureCount: value['featureCount'],
-    fields:
-      value['fields'] == null
-        ? undefined
-        : (value['fields'] as Array<any>).map(DatasetLayerFieldToJSON),
-    geometryFields:
-      value['geometryFields'] == null
-        ? undefined
-        : (value['geometryFields'] as Array<any>).map(
-            DatasetLayerGeomFieldToJSON
-          ),
-    metadata: value['metadata'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'name': value['name'],
+        'fidColumnName': value['fidColumnName'],
+        'featureCount': value['featureCount'],
+        'fields': value['fields'] == null ? undefined : ((value['fields'] as Array<any>).map(DatasetLayerFieldToJSON)),
+        'geometryFields': value['geometryFields'] == null ? undefined : ((value['geometryFields'] as Array<any>).map(DatasetLayerGeomFieldToJSON)),
+        'metadata': value['metadata'],
+    };
 }
+
