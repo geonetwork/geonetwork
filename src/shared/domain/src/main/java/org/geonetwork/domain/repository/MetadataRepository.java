@@ -29,4 +29,6 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
 
     @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
     Stream<Metadata> streamAllByUuidIn(List<String> uuid, Sort sortBy);
+
+    Metadata findOneByUuid(String uuid);
 }
