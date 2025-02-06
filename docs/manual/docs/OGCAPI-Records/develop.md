@@ -4,7 +4,7 @@ Here is a technical overview so developers can easily contribute!
 
 ## History
 
-The [GeoServer Microservices Project](https://github.com/geonetwork/geonetwork-microservices) had an OGCAPI-Records implementation.  This was used as a basis for the GN5 implementation.
+The [GeoNetwork Microservices Project](https://github.com/geonetwork/geonetwork-microservices) had an OGCAPI-Records implementation.  This was used as a basis for the GN5 implementation.
 
 ## Development of GN5's OGCAPI-Records
 
