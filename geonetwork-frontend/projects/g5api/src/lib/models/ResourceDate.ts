@@ -14,55 +14,55 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface ResourceDate
  */
 export interface ResourceDate {
-    /**
-     * 
-     * @type {string}
-     * @memberof ResourceDate
-     */
-    type?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResourceDate
-     */
-    date?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ResourceDate
+   */
+  type?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ResourceDate
+   */
+  date?: string;
 }
 
 /**
  * Check if a given object implements the ResourceDate interface.
  */
 export function instanceOfResourceDate(value: object): value is ResourceDate {
-    return true;
+  return true;
 }
 
 export function ResourceDateFromJSON(json: any): ResourceDate {
-    return ResourceDateFromJSONTyped(json, false);
+  return ResourceDateFromJSONTyped(json, false);
 }
 
-export function ResourceDateFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResourceDate {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'type': json['type'] == null ? undefined : json['type'],
-        'date': json['date'] == null ? undefined : json['date'],
-    };
+export function ResourceDateFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ResourceDate {
+  if (json == null) {
+    return json;
+  }
+  return {
+    type: json['type'] == null ? undefined : json['type'],
+    date: json['date'] == null ? undefined : json['date'],
+  };
 }
 
 export function ResourceDateToJSON(value?: ResourceDate | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'type': value['type'],
-        'date': value['date'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    type: value['type'],
+    date: value['date'],
+  };
 }
-

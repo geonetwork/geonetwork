@@ -14,47 +14,47 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface RasterBand
  */
 export interface RasterBand {
-    /**
-     * 
-     * @type {number}
-     * @memberof RasterBand
-     */
-    band?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof RasterBand
+   */
+  band?: number;
 }
 
 /**
  * Check if a given object implements the RasterBand interface.
  */
 export function instanceOfRasterBand(value: object): value is RasterBand {
-    return true;
+  return true;
 }
 
 export function RasterBandFromJSON(json: any): RasterBand {
-    return RasterBandFromJSONTyped(json, false);
+  return RasterBandFromJSONTyped(json, false);
 }
 
-export function RasterBandFromJSONTyped(json: any, ignoreDiscriminator: boolean): RasterBand {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'band': json['band'] == null ? undefined : json['band'],
-    };
+export function RasterBandFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): RasterBand {
+  if (json == null) {
+    return json;
+  }
+  return {
+    band: json['band'] == null ? undefined : json['band'],
+  };
 }
 
 export function RasterBandToJSON(value?: RasterBand | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'band': value['band'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    band: value['band'],
+  };
 }
-

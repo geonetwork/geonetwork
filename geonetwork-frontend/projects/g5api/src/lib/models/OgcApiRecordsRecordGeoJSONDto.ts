@@ -15,127 +15,153 @@
 import { mapValues } from '../runtime';
 import type { OgcApiRecordsRecordGeoJSONPropertiesDto } from './OgcApiRecordsRecordGeoJSONPropertiesDto';
 import {
-    OgcApiRecordsRecordGeoJSONPropertiesDtoFromJSON,
-    OgcApiRecordsRecordGeoJSONPropertiesDtoFromJSONTyped,
-    OgcApiRecordsRecordGeoJSONPropertiesDtoToJSON,
+  OgcApiRecordsRecordGeoJSONPropertiesDtoFromJSON,
+  OgcApiRecordsRecordGeoJSONPropertiesDtoFromJSONTyped,
+  OgcApiRecordsRecordGeoJSONPropertiesDtoToJSON,
 } from './OgcApiRecordsRecordGeoJSONPropertiesDto';
 import type { OgcApiRecordsLinkTemplateDto } from './OgcApiRecordsLinkTemplateDto';
 import {
-    OgcApiRecordsLinkTemplateDtoFromJSON,
-    OgcApiRecordsLinkTemplateDtoFromJSONTyped,
-    OgcApiRecordsLinkTemplateDtoToJSON,
+  OgcApiRecordsLinkTemplateDtoFromJSON,
+  OgcApiRecordsLinkTemplateDtoFromJSONTyped,
+  OgcApiRecordsLinkTemplateDtoToJSON,
 } from './OgcApiRecordsLinkTemplateDto';
 import type { OgcApiRecordsLinkBaseDto } from './OgcApiRecordsLinkBaseDto';
 import {
-    OgcApiRecordsLinkBaseDtoFromJSON,
-    OgcApiRecordsLinkBaseDtoFromJSONTyped,
-    OgcApiRecordsLinkBaseDtoToJSON,
+  OgcApiRecordsLinkBaseDtoFromJSON,
+  OgcApiRecordsLinkBaseDtoFromJSONTyped,
+  OgcApiRecordsLinkBaseDtoToJSON,
 } from './OgcApiRecordsLinkBaseDto';
 
 /**
- * 
+ *
  * @export
  * @interface OgcApiRecordsRecordGeoJSONDto
  */
 export interface OgcApiRecordsRecordGeoJSONDto {
-    /**
-     * A unique identifier of the catalog record.
-     * @type {string}
-     * @memberof OgcApiRecordsRecordGeoJSONDto
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsRecordGeoJSONDto
-     */
-    type: OgcApiRecordsRecordGeoJSONDtoTypeEnum;
-    /**
-     * 
-     * @type {object}
-     * @memberof OgcApiRecordsRecordGeoJSONDto
-     */
-    time?: object;
-    /**
-     * 
-     * @type {object}
-     * @memberof OgcApiRecordsRecordGeoJSONDto
-     */
-    geometry: object;
-    /**
-     * 
-     * @type {OgcApiRecordsRecordGeoJSONPropertiesDto}
-     * @memberof OgcApiRecordsRecordGeoJSONDto
-     */
-    properties: OgcApiRecordsRecordGeoJSONPropertiesDto;
-    /**
-     * 
-     * @type {Array<OgcApiRecordsLinkBaseDto>}
-     * @memberof OgcApiRecordsRecordGeoJSONDto
-     */
-    links?: Array<OgcApiRecordsLinkBaseDto>;
-    /**
-     * 
-     * @type {Array<OgcApiRecordsLinkTemplateDto>}
-     * @memberof OgcApiRecordsRecordGeoJSONDto
-     */
-    linkTemplates?: Array<OgcApiRecordsLinkTemplateDto>;
+  /**
+   * A unique identifier of the catalog record.
+   * @type {string}
+   * @memberof OgcApiRecordsRecordGeoJSONDto
+   */
+  id: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsRecordGeoJSONDto
+   */
+  type: OgcApiRecordsRecordGeoJSONDtoTypeEnum;
+  /**
+   *
+   * @type {object}
+   * @memberof OgcApiRecordsRecordGeoJSONDto
+   */
+  time?: object;
+  /**
+   *
+   * @type {object}
+   * @memberof OgcApiRecordsRecordGeoJSONDto
+   */
+  geometry: object;
+  /**
+   *
+   * @type {OgcApiRecordsRecordGeoJSONPropertiesDto}
+   * @memberof OgcApiRecordsRecordGeoJSONDto
+   */
+  properties: OgcApiRecordsRecordGeoJSONPropertiesDto;
+  /**
+   *
+   * @type {Array<OgcApiRecordsLinkBaseDto>}
+   * @memberof OgcApiRecordsRecordGeoJSONDto
+   */
+  links?: Array<OgcApiRecordsLinkBaseDto>;
+  /**
+   *
+   * @type {Array<OgcApiRecordsLinkTemplateDto>}
+   * @memberof OgcApiRecordsRecordGeoJSONDto
+   */
+  linkTemplates?: Array<OgcApiRecordsLinkTemplateDto>;
 }
-
 
 /**
  * @export
  */
 export const OgcApiRecordsRecordGeoJSONDtoTypeEnum = {
-    Feature: 'Feature'
+  Feature: 'Feature',
 } as const;
-export type OgcApiRecordsRecordGeoJSONDtoTypeEnum = typeof OgcApiRecordsRecordGeoJSONDtoTypeEnum[keyof typeof OgcApiRecordsRecordGeoJSONDtoTypeEnum];
-
+export type OgcApiRecordsRecordGeoJSONDtoTypeEnum =
+  (typeof OgcApiRecordsRecordGeoJSONDtoTypeEnum)[keyof typeof OgcApiRecordsRecordGeoJSONDtoTypeEnum];
 
 /**
  * Check if a given object implements the OgcApiRecordsRecordGeoJSONDto interface.
  */
-export function instanceOfOgcApiRecordsRecordGeoJSONDto(value: object): value is OgcApiRecordsRecordGeoJSONDto {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('geometry' in value) || value['geometry'] === undefined) return false;
-    if (!('properties' in value) || value['properties'] === undefined) return false;
-    return true;
+export function instanceOfOgcApiRecordsRecordGeoJSONDto(
+  value: object
+): value is OgcApiRecordsRecordGeoJSONDto {
+  if (!('id' in value) || value['id'] === undefined) return false;
+  if (!('type' in value) || value['type'] === undefined) return false;
+  if (!('geometry' in value) || value['geometry'] === undefined) return false;
+  if (!('properties' in value) || value['properties'] === undefined)
+    return false;
+  return true;
 }
 
-export function OgcApiRecordsRecordGeoJSONDtoFromJSON(json: any): OgcApiRecordsRecordGeoJSONDto {
-    return OgcApiRecordsRecordGeoJSONDtoFromJSONTyped(json, false);
+export function OgcApiRecordsRecordGeoJSONDtoFromJSON(
+  json: any
+): OgcApiRecordsRecordGeoJSONDto {
+  return OgcApiRecordsRecordGeoJSONDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsRecordGeoJSONDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsRecordGeoJSONDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'id': json['id'],
-        'type': json['type'],
-        'time': json['time'] == null ? undefined : json['time'],
-        'geometry': json['geometry'],
-        'properties': OgcApiRecordsRecordGeoJSONPropertiesDtoFromJSON(json['properties']),
-        'links': json['links'] == null ? undefined : ((json['links'] as Array<any>).map(OgcApiRecordsLinkBaseDtoFromJSON)),
-        'linkTemplates': json['linkTemplates'] == null ? undefined : ((json['linkTemplates'] as Array<any>).map(OgcApiRecordsLinkTemplateDtoFromJSON)),
-    };
+export function OgcApiRecordsRecordGeoJSONDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OgcApiRecordsRecordGeoJSONDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    id: json['id'],
+    type: json['type'],
+    time: json['time'] == null ? undefined : json['time'],
+    geometry: json['geometry'],
+    properties: OgcApiRecordsRecordGeoJSONPropertiesDtoFromJSON(
+      json['properties']
+    ),
+    links:
+      json['links'] == null
+        ? undefined
+        : (json['links'] as Array<any>).map(OgcApiRecordsLinkBaseDtoFromJSON),
+    linkTemplates:
+      json['linkTemplates'] == null
+        ? undefined
+        : (json['linkTemplates'] as Array<any>).map(
+            OgcApiRecordsLinkTemplateDtoFromJSON
+          ),
+  };
 }
 
-export function OgcApiRecordsRecordGeoJSONDtoToJSON(value?: OgcApiRecordsRecordGeoJSONDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'id': value['id'],
-        'type': value['type'],
-        'time': value['time'],
-        'geometry': value['geometry'],
-        'properties': OgcApiRecordsRecordGeoJSONPropertiesDtoToJSON(value['properties']),
-        'links': value['links'] == null ? undefined : ((value['links'] as Array<any>).map(OgcApiRecordsLinkBaseDtoToJSON)),
-        'linkTemplates': value['linkTemplates'] == null ? undefined : ((value['linkTemplates'] as Array<any>).map(OgcApiRecordsLinkTemplateDtoToJSON)),
-    };
+export function OgcApiRecordsRecordGeoJSONDtoToJSON(
+  value?: OgcApiRecordsRecordGeoJSONDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    id: value['id'],
+    type: value['type'],
+    time: value['time'],
+    geometry: value['geometry'],
+    properties: OgcApiRecordsRecordGeoJSONPropertiesDtoToJSON(
+      value['properties']
+    ),
+    links:
+      value['links'] == null
+        ? undefined
+        : (value['links'] as Array<any>).map(OgcApiRecordsLinkBaseDtoToJSON),
+    linkTemplates:
+      value['linkTemplates'] == null
+        ? undefined
+        : (value['linkTemplates'] as Array<any>).map(
+            OgcApiRecordsLinkTemplateDtoToJSON
+          ),
+  };
 }
-

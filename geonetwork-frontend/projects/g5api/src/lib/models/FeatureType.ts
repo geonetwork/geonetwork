@@ -15,93 +15,99 @@
 import { mapValues } from '../runtime';
 import type { AttributeTable } from './AttributeTable';
 import {
-    AttributeTableFromJSON,
-    AttributeTableFromJSONTyped,
-    AttributeTableToJSON,
+  AttributeTableFromJSON,
+  AttributeTableFromJSONTyped,
+  AttributeTableToJSON,
 } from './AttributeTable';
 
 /**
- * 
+ *
  * @export
  * @interface FeatureType
  */
 export interface FeatureType {
-    /**
-     * 
-     * @type {string}
-     * @memberof FeatureType
-     */
-    typeName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FeatureType
-     */
-    definition?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FeatureType
-     */
-    code?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FeatureType
-     */
-    isAbstract?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FeatureType
-     */
-    aliases?: string;
-    /**
-     * 
-     * @type {Array<AttributeTable>}
-     * @memberof FeatureType
-     */
-    attributeTable?: Array<AttributeTable>;
+  /**
+   *
+   * @type {string}
+   * @memberof FeatureType
+   */
+  typeName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof FeatureType
+   */
+  definition?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof FeatureType
+   */
+  code?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof FeatureType
+   */
+  isAbstract?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof FeatureType
+   */
+  aliases?: string;
+  /**
+   *
+   * @type {Array<AttributeTable>}
+   * @memberof FeatureType
+   */
+  attributeTable?: Array<AttributeTable>;
 }
 
 /**
  * Check if a given object implements the FeatureType interface.
  */
 export function instanceOfFeatureType(value: object): value is FeatureType {
-    return true;
+  return true;
 }
 
 export function FeatureTypeFromJSON(json: any): FeatureType {
-    return FeatureTypeFromJSONTyped(json, false);
+  return FeatureTypeFromJSONTyped(json, false);
 }
 
-export function FeatureTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureType {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'typeName': json['typeName'] == null ? undefined : json['typeName'],
-        'definition': json['definition'] == null ? undefined : json['definition'],
-        'code': json['code'] == null ? undefined : json['code'],
-        'isAbstract': json['isAbstract'] == null ? undefined : json['isAbstract'],
-        'aliases': json['aliases'] == null ? undefined : json['aliases'],
-        'attributeTable': json['attributeTable'] == null ? undefined : ((json['attributeTable'] as Array<any>).map(AttributeTableFromJSON)),
-    };
+export function FeatureTypeFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): FeatureType {
+  if (json == null) {
+    return json;
+  }
+  return {
+    typeName: json['typeName'] == null ? undefined : json['typeName'],
+    definition: json['definition'] == null ? undefined : json['definition'],
+    code: json['code'] == null ? undefined : json['code'],
+    isAbstract: json['isAbstract'] == null ? undefined : json['isAbstract'],
+    aliases: json['aliases'] == null ? undefined : json['aliases'],
+    attributeTable:
+      json['attributeTable'] == null
+        ? undefined
+        : (json['attributeTable'] as Array<any>).map(AttributeTableFromJSON),
+  };
 }
 
 export function FeatureTypeToJSON(value?: FeatureType | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'typeName': value['typeName'],
-        'definition': value['definition'],
-        'code': value['code'],
-        'isAbstract': value['isAbstract'],
-        'aliases': value['aliases'],
-        'attributeTable': value['attributeTable'] == null ? undefined : ((value['attributeTable'] as Array<any>).map(AttributeTableToJSON)),
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    typeName: value['typeName'],
+    definition: value['definition'],
+    code: value['code'],
+    isAbstract: value['isAbstract'],
+    aliases: value['aliases'],
+    attributeTable:
+      value['attributeTable'] == null
+        ? undefined
+        : (value['attributeTable'] as Array<any>).map(AttributeTableToJSON),
+  };
 }
-

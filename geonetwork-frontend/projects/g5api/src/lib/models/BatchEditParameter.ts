@@ -19,67 +19,71 @@ import { mapValues } from '../runtime';
  * @interface BatchEditParameter
  */
 export interface BatchEditParameter {
-    /**
-     * XPath to the element to edit
-     * @type {string}
-     * @memberof BatchEditParameter
-     */
-    xpath?: string;
-    /**
-     * Property in the index object of the element to edit
-     * @type {string}
-     * @memberof BatchEditParameter
-     */
-    property?: string;
-    /**
-     * Insertion mode and value.
-     * @type {string}
-     * @memberof BatchEditParameter
-     */
-    value: string;
-    /**
-     * XPath condition to evaluate against the metadata record to decide if edit should be applied.
-     * @type {string}
-     * @memberof BatchEditParameter
-     */
-    condition?: string;
+  /**
+   * XPath to the element to edit
+   * @type {string}
+   * @memberof BatchEditParameter
+   */
+  xpath?: string;
+  /**
+   * Property in the index object of the element to edit
+   * @type {string}
+   * @memberof BatchEditParameter
+   */
+  property?: string;
+  /**
+   * Insertion mode and value.
+   * @type {string}
+   * @memberof BatchEditParameter
+   */
+  value: string;
+  /**
+   * XPath condition to evaluate against the metadata record to decide if edit should be applied.
+   * @type {string}
+   * @memberof BatchEditParameter
+   */
+  condition?: string;
 }
 
 /**
  * Check if a given object implements the BatchEditParameter interface.
  */
-export function instanceOfBatchEditParameter(value: object): value is BatchEditParameter {
-    if (!('value' in value) || value['value'] === undefined) return false;
-    return true;
+export function instanceOfBatchEditParameter(
+  value: object
+): value is BatchEditParameter {
+  if (!('value' in value) || value['value'] === undefined) return false;
+  return true;
 }
 
 export function BatchEditParameterFromJSON(json: any): BatchEditParameter {
-    return BatchEditParameterFromJSONTyped(json, false);
+  return BatchEditParameterFromJSONTyped(json, false);
 }
 
-export function BatchEditParameterFromJSONTyped(json: any, ignoreDiscriminator: boolean): BatchEditParameter {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'xpath': json['xpath'] == null ? undefined : json['xpath'],
-        'property': json['property'] == null ? undefined : json['property'],
-        'value': json['value'],
-        'condition': json['condition'] == null ? undefined : json['condition'],
-    };
+export function BatchEditParameterFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): BatchEditParameter {
+  if (json == null) {
+    return json;
+  }
+  return {
+    xpath: json['xpath'] == null ? undefined : json['xpath'],
+    property: json['property'] == null ? undefined : json['property'],
+    value: json['value'],
+    condition: json['condition'] == null ? undefined : json['condition'],
+  };
 }
 
-export function BatchEditParameterToJSON(value?: BatchEditParameter | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'xpath': value['xpath'],
-        'property': value['property'],
-        'value': value['value'],
-        'condition': value['condition'],
-    };
+export function BatchEditParameterToJSON(
+  value?: BatchEditParameter | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    xpath: value['xpath'],
+    property: value['property'],
+    value: value['value'],
+    condition: value['condition'],
+  };
 }
-

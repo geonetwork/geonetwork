@@ -14,71 +14,75 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface Maintenance
  */
 export interface Maintenance {
-    /**
-     * 
-     * @type {string}
-     * @memberof Maintenance
-     */
-    frequency?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Maintenance
-     */
-    nextUpdateDate?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Maintenance
-     */
-    userDefinedFrequency?: string;
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof Maintenance
-     */
-    noteObject?: { [key: string]: string; };
+  /**
+   *
+   * @type {string}
+   * @memberof Maintenance
+   */
+  frequency?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Maintenance
+   */
+  nextUpdateDate?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof Maintenance
+   */
+  userDefinedFrequency?: string;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof Maintenance
+   */
+  noteObject?: { [key: string]: string };
 }
 
 /**
  * Check if a given object implements the Maintenance interface.
  */
 export function instanceOfMaintenance(value: object): value is Maintenance {
-    return true;
+  return true;
 }
 
 export function MaintenanceFromJSON(json: any): Maintenance {
-    return MaintenanceFromJSONTyped(json, false);
+  return MaintenanceFromJSONTyped(json, false);
 }
 
-export function MaintenanceFromJSONTyped(json: any, ignoreDiscriminator: boolean): Maintenance {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'frequency': json['frequency'] == null ? undefined : json['frequency'],
-        'nextUpdateDate': json['nextUpdateDate'] == null ? undefined : json['nextUpdateDate'],
-        'userDefinedFrequency': json['userDefinedFrequency'] == null ? undefined : json['userDefinedFrequency'],
-        'noteObject': json['noteObject'] == null ? undefined : json['noteObject'],
-    };
+export function MaintenanceFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): Maintenance {
+  if (json == null) {
+    return json;
+  }
+  return {
+    frequency: json['frequency'] == null ? undefined : json['frequency'],
+    nextUpdateDate:
+      json['nextUpdateDate'] == null ? undefined : json['nextUpdateDate'],
+    userDefinedFrequency:
+      json['userDefinedFrequency'] == null
+        ? undefined
+        : json['userDefinedFrequency'],
+    noteObject: json['noteObject'] == null ? undefined : json['noteObject'],
+  };
 }
 
 export function MaintenanceToJSON(value?: Maintenance | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'frequency': value['frequency'],
-        'nextUpdateDate': value['nextUpdateDate'],
-        'userDefinedFrequency': value['userDefinedFrequency'],
-        'noteObject': value['noteObject'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    frequency: value['frequency'],
+    nextUpdateDate: value['nextUpdateDate'],
+    userDefinedFrequency: value['userDefinedFrequency'],
+    noteObject: value['noteObject'],
+  };
 }
-

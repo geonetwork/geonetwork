@@ -14,63 +14,65 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface PartyIdentifier
  */
 export interface PartyIdentifier {
-    /**
-     * 
-     * @type {string}
-     * @memberof PartyIdentifier
-     */
-    code?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PartyIdentifier
-     */
-    codeSpace?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PartyIdentifier
-     */
-    link?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof PartyIdentifier
+   */
+  code?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof PartyIdentifier
+   */
+  codeSpace?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof PartyIdentifier
+   */
+  link?: string;
 }
 
 /**
  * Check if a given object implements the PartyIdentifier interface.
  */
-export function instanceOfPartyIdentifier(value: object): value is PartyIdentifier {
-    return true;
+export function instanceOfPartyIdentifier(
+  value: object
+): value is PartyIdentifier {
+  return true;
 }
 
 export function PartyIdentifierFromJSON(json: any): PartyIdentifier {
-    return PartyIdentifierFromJSONTyped(json, false);
+  return PartyIdentifierFromJSONTyped(json, false);
 }
 
-export function PartyIdentifierFromJSONTyped(json: any, ignoreDiscriminator: boolean): PartyIdentifier {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'code': json['code'] == null ? undefined : json['code'],
-        'codeSpace': json['codeSpace'] == null ? undefined : json['codeSpace'],
-        'link': json['link'] == null ? undefined : json['link'],
-    };
+export function PartyIdentifierFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): PartyIdentifier {
+  if (json == null) {
+    return json;
+  }
+  return {
+    code: json['code'] == null ? undefined : json['code'],
+    codeSpace: json['codeSpace'] == null ? undefined : json['codeSpace'],
+    link: json['link'] == null ? undefined : json['link'],
+  };
 }
 
 export function PartyIdentifierToJSON(value?: PartyIdentifier | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'code': value['code'],
-        'codeSpace': value['codeSpace'],
-        'link': value['link'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    code: value['code'],
+    codeSpace: value['codeSpace'],
+    link: value['link'],
+  };
 }
-

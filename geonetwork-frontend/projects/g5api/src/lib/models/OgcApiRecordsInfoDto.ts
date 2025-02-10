@@ -15,101 +15,112 @@
 import { mapValues } from '../runtime';
 import type { OgcApiRecordsLicenseDto } from './OgcApiRecordsLicenseDto';
 import {
-    OgcApiRecordsLicenseDtoFromJSON,
-    OgcApiRecordsLicenseDtoFromJSONTyped,
-    OgcApiRecordsLicenseDtoToJSON,
+  OgcApiRecordsLicenseDtoFromJSON,
+  OgcApiRecordsLicenseDtoFromJSONTyped,
+  OgcApiRecordsLicenseDtoToJSON,
 } from './OgcApiRecordsLicenseDto';
 import type { OgcApiRecordsContactDto } from './OgcApiRecordsContactDto';
 import {
-    OgcApiRecordsContactDtoFromJSON,
-    OgcApiRecordsContactDtoFromJSONTyped,
-    OgcApiRecordsContactDtoToJSON,
+  OgcApiRecordsContactDtoFromJSON,
+  OgcApiRecordsContactDtoFromJSONTyped,
+  OgcApiRecordsContactDtoToJSON,
 } from './OgcApiRecordsContactDto';
 
 /**
- * 
+ *
  * @export
  * @interface OgcApiRecordsInfoDto
  */
 export interface OgcApiRecordsInfoDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsInfoDto
-     */
-    title: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsInfoDto
-     */
-    description?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsInfoDto
-     */
-    termsOfService?: string;
-    /**
-     * 
-     * @type {OgcApiRecordsContactDto}
-     * @memberof OgcApiRecordsInfoDto
-     */
-    contact?: OgcApiRecordsContactDto;
-    /**
-     * 
-     * @type {OgcApiRecordsLicenseDto}
-     * @memberof OgcApiRecordsInfoDto
-     */
-    license?: OgcApiRecordsLicenseDto;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsInfoDto
-     */
-    version: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsInfoDto
+   */
+  title: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsInfoDto
+   */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsInfoDto
+   */
+  termsOfService?: string;
+  /**
+   *
+   * @type {OgcApiRecordsContactDto}
+   * @memberof OgcApiRecordsInfoDto
+   */
+  contact?: OgcApiRecordsContactDto;
+  /**
+   *
+   * @type {OgcApiRecordsLicenseDto}
+   * @memberof OgcApiRecordsInfoDto
+   */
+  license?: OgcApiRecordsLicenseDto;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsInfoDto
+   */
+  version: string;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsInfoDto interface.
  */
-export function instanceOfOgcApiRecordsInfoDto(value: object): value is OgcApiRecordsInfoDto {
-    if (!('title' in value) || value['title'] === undefined) return false;
-    if (!('version' in value) || value['version'] === undefined) return false;
-    return true;
+export function instanceOfOgcApiRecordsInfoDto(
+  value: object
+): value is OgcApiRecordsInfoDto {
+  if (!('title' in value) || value['title'] === undefined) return false;
+  if (!('version' in value) || value['version'] === undefined) return false;
+  return true;
 }
 
 export function OgcApiRecordsInfoDtoFromJSON(json: any): OgcApiRecordsInfoDto {
-    return OgcApiRecordsInfoDtoFromJSONTyped(json, false);
+  return OgcApiRecordsInfoDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsInfoDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsInfoDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'title': json['title'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'termsOfService': json['termsOfService'] == null ? undefined : json['termsOfService'],
-        'contact': json['contact'] == null ? undefined : OgcApiRecordsContactDtoFromJSON(json['contact']),
-        'license': json['license'] == null ? undefined : OgcApiRecordsLicenseDtoFromJSON(json['license']),
-        'version': json['version'],
-    };
+export function OgcApiRecordsInfoDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OgcApiRecordsInfoDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    title: json['title'],
+    description: json['description'] == null ? undefined : json['description'],
+    termsOfService:
+      json['termsOfService'] == null ? undefined : json['termsOfService'],
+    contact:
+      json['contact'] == null
+        ? undefined
+        : OgcApiRecordsContactDtoFromJSON(json['contact']),
+    license:
+      json['license'] == null
+        ? undefined
+        : OgcApiRecordsLicenseDtoFromJSON(json['license']),
+    version: json['version'],
+  };
 }
 
-export function OgcApiRecordsInfoDtoToJSON(value?: OgcApiRecordsInfoDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'title': value['title'],
-        'description': value['description'],
-        'termsOfService': value['termsOfService'],
-        'contact': OgcApiRecordsContactDtoToJSON(value['contact']),
-        'license': OgcApiRecordsLicenseDtoToJSON(value['license']),
-        'version': value['version'],
-    };
+export function OgcApiRecordsInfoDtoToJSON(
+  value?: OgcApiRecordsInfoDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    title: value['title'],
+    description: value['description'],
+    termsOfService: value['termsOfService'],
+    contact: OgcApiRecordsContactDtoToJSON(value['contact']),
+    license: OgcApiRecordsLicenseDtoToJSON(value['license']),
+    version: value['version'],
+  };
 }
-

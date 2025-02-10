@@ -14,89 +14,93 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface OgcApiRecordsLinkDto
  */
 export interface OgcApiRecordsLinkDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsLinkDto
-     */
-    href: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsLinkDto
-     */
-    rel: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsLinkDto
-     */
-    type?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsLinkDto
-     */
-    hreflang?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsLinkDto
-     */
-    title?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OgcApiRecordsLinkDto
-     */
-    length?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsLinkDto
+   */
+  href: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsLinkDto
+   */
+  rel: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsLinkDto
+   */
+  type?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsLinkDto
+   */
+  hreflang?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsLinkDto
+   */
+  title?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof OgcApiRecordsLinkDto
+   */
+  length?: number;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsLinkDto interface.
  */
-export function instanceOfOgcApiRecordsLinkDto(value: object): value is OgcApiRecordsLinkDto {
-    if (!('href' in value) || value['href'] === undefined) return false;
-    if (!('rel' in value) || value['rel'] === undefined) return false;
-    return true;
+export function instanceOfOgcApiRecordsLinkDto(
+  value: object
+): value is OgcApiRecordsLinkDto {
+  if (!('href' in value) || value['href'] === undefined) return false;
+  if (!('rel' in value) || value['rel'] === undefined) return false;
+  return true;
 }
 
 export function OgcApiRecordsLinkDtoFromJSON(json: any): OgcApiRecordsLinkDto {
-    return OgcApiRecordsLinkDtoFromJSONTyped(json, false);
+  return OgcApiRecordsLinkDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsLinkDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsLinkDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'href': json['href'],
-        'rel': json['rel'],
-        'type': json['type'] == null ? undefined : json['type'],
-        'hreflang': json['hreflang'] == null ? undefined : json['hreflang'],
-        'title': json['title'] == null ? undefined : json['title'],
-        'length': json['length'] == null ? undefined : json['length'],
-    };
+export function OgcApiRecordsLinkDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OgcApiRecordsLinkDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    href: json['href'],
+    rel: json['rel'],
+    type: json['type'] == null ? undefined : json['type'],
+    hreflang: json['hreflang'] == null ? undefined : json['hreflang'],
+    title: json['title'] == null ? undefined : json['title'],
+    length: json['length'] == null ? undefined : json['length'],
+  };
 }
 
-export function OgcApiRecordsLinkDtoToJSON(value?: OgcApiRecordsLinkDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'href': value['href'],
-        'rel': value['rel'],
-        'type': value['type'],
-        'hreflang': value['hreflang'],
-        'title': value['title'],
-        'length': value['length'],
-    };
+export function OgcApiRecordsLinkDtoToJSON(
+  value?: OgcApiRecordsLinkDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    href: value['href'],
+    rel: value['rel'],
+    type: value['type'],
+    hreflang: value['hreflang'],
+    title: value['title'],
+    length: value['length'],
+  };
 }
-
