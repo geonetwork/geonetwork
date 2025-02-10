@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -125,6 +126,23 @@ import org.apache.commons.lang3.StringUtils;
     IndexRecordFieldNames.OVERVIEW,
     IndexRecordFieldNames.UUID
 })
+@Schema(
+        description =
+                """
+        Index records are used to store the metadata in the index.
+
+        Additional properties can be:
+        * cl_* for codelists
+        * contactFor* for contacts
+        * measure_* for measures
+        * ...
+
+        And all additional properties not explicitly defined in the class
+        or managed in handleUnrecognizedField.
+        """,
+        type = "object",
+        // FIXME: additional properties does not add the properties to the OpenAPI schema
+        additionalProperties = Schema.AdditionalPropertiesValue.TRUE)
 @Slf4j
 public class IndexRecord {
 
@@ -268,9 +286,7 @@ public class IndexRecord {
         return operations;
     }
 
-    /**
-     * Any properties not explicitly defined.
-     */
+    /** Any properties not explicitly defined. */
     @Singular
     @Builder.ObtainVia(method = "copyOtherProperties")
     private Map<String, List<Object>> otherProperties = new HashMap<>();

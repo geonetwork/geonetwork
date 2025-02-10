@@ -116,6 +116,7 @@ import {
  * @interface IndexRecord
  */
 export interface IndexRecord {
+    [key: string]: any | any;
     /**
      * 
      * @type {string}
@@ -752,6 +753,7 @@ export function IndexRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
+            ...json,
         'docType': json['docType'] == null ? undefined : json['docType'],
         'document': json['document'] == null ? undefined : json['document'],
         'metadataIdentifier': json['metadataIdentifier'] == null ? undefined : json['metadataIdentifier'],
@@ -862,6 +864,7 @@ export function IndexRecordToJSON(value?: IndexRecord | null): any {
     }
     return {
         
+            ...value,
         'docType': value['docType'],
         'document': value['document'],
         'metadataIdentifier': value['metadataIdentifier'],
