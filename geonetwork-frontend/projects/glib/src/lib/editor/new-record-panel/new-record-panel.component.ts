@@ -35,7 +35,7 @@ import {
   PreviewDataAnalysisOnRecordRequest,
   PutResourceRequest,
   RecordsApi as RecordsApi5,
-  IndexRecord
+  IndexRecord,
 } from 'g5api';
 
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -387,16 +387,16 @@ export class NewRecordPanelComponent implements OnInit {
 
     const analysisRequest = this.datasourceFile()
       ? {
-        metadataUuid: this.newRecordId(),
-        datasource: this.datasourceFile(),
-        visibility: LayersMetadataResourceVisibilityEnum.Public,
-        approved: true,
-        layer: this.layername(),
-      }
+          metadataUuid: this.newRecordId(),
+          datasource: this.datasourceFile(),
+          visibility: LayersMetadataResourceVisibilityEnum.Public,
+          approved: true,
+          layer: this.layername(),
+        }
       : {
-        datasource: this.datasourceWithPrefix(),
-        layer: this.layername(),
-      };
+          datasource: this.datasourceWithPrefix(),
+          layer: this.layername(),
+        };
 
     /*const analysisMethod = this.datasourceFile()
       ? this.dataAnalysisApi().analysisSynchMetadataResource(
@@ -404,16 +404,15 @@ export class NewRecordPanelComponent implements OnInit {
       )
       : this.dataAnalysisApi().analysisSynchIndexRecord(analysisRequest);*/
 
-    const analysisMethod = this.dataAnalysisApi().analysisSynchIndexRecord(analysisRequest);
+    const analysisMethod =
+      this.dataAnalysisApi().analysisSynchIndexRecord(analysisRequest);
     analysisMethod.then(
       response => {
         this.analysisResult.set(response);
         this.isExecutingAnalysis.set(false);
       },
       error => {
-        console.log(
-          'Error processing the dataset: ' + error.response.statusText
-        );
+        console.log('Error processing the dataset: ', error);
         this.errorExecutingAnalysis.set(error.errorMessage);
         this.isExecutingAnalysis.set(false);
       }

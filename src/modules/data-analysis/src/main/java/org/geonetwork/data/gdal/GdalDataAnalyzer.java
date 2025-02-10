@@ -407,6 +407,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     }
 
     private static List<Double> getWgs84Extent(GdalGeoJSONPolygonDto extent) {
+        // TODO: Reproject extent to WGS84 and add polygon in shape property
         if (!extent.getBbox().isEmpty()) {
             return extent.getBbox().stream().map(Number::doubleValue).toList();
         } else if (!extent.getCoordinates().isEmpty() && extent.getCoordinates().getFirst() != null) {

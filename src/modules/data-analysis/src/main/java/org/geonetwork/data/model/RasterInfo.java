@@ -6,15 +6,12 @@
 
 package org.geonetwork.data.model;
 
-import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,13 +47,14 @@ public class RasterInfo extends BaseDataInfo {
         linkUrl.put("default", datasource);
         link.setUrl(linkUrl);
 
-        IndexRecord indexRecord = IndexRecord.builder().codelist("cl_spatialRepresentationType",
-                List.of(Codelist.builder().property("key", "grid").build()))
-            .resourceTitle(resourceTitle)
-            .formats(List.of(getFormat()))
-            .links(List.of(link))
-            .build();
-
+        IndexRecord indexRecord = IndexRecord.builder()
+                .codelist(
+                        "cl_spatialRepresentationType",
+                        List.of(Codelist.builder().property("key", "grid").build()))
+                .resourceTitle(resourceTitle)
+                .formats(List.of(getFormat()))
+                .links(List.of(link))
+                .build();
 
         String crs = getCrs();
         Pattern crsPattern = Pattern.compile("[\\s\\S.]*\\\"EPSG\\\",([0-9]*).*");
@@ -65,10 +63,14 @@ public class RasterInfo extends BaseDataInfo {
             crs = "EPSG:" + m.group(1);
         }
         indexRecord.setCoordinateSystem(List.of(crs));
-        indexRecord.setGeometries(getWgs84Extent().stream().map(c -> c.toString()).collect(Collectors.toList()));
+        indexRecord.setGeometries(
+                getWgs84Extent().stream().map(c -> c.toString()).collect(Collectors.toList()));
 
-        indexRecord.handleUnrecognizedField("dimensionSizeX", getSize().get(0));
-        indexRecord.handleUnrecognizedField("dimensionSizeY", getSize().get(1));
+        HashMap<String, List<Object>> additionalProperties = new HashMap<>();
+        additionalProperties.put("dimensionSizeX", List.of(getSize().get(0)));
+        additionalProperties.put("dimensionSizeY", List.of(getSize().get(1)));
+        additionalProperties.put("dimensionsCount", List.of(getSize().size()));
+        indexRecord.setOtherProperties(additionalProperties);
 
         return indexRecord;
     }

@@ -1,17 +1,20 @@
 @if (analysisResult()) {
-  @let isVector = true;
-  @let isRaster = !isVector;
+  @let spatialRepresentation =
+    analysisResult().cl_spatialRepresentationType[0].key;
+  @let isVector = spatialRepresentation === 'vector';
+  @let isTabular = spatialRepresentation === 'textTable';
+  @let isRaster = spatialRepresentation === 'grid';
 
   <h2 class="pt-2 pb-2 text-2xl font-medium">
     @if (isVector) {
-      <span class="font-bold">{{ analysisResult().resourceTitleObject.default }}</span>
-      dataset contains
       <span class="font-bold">{{
-          analysisResult()
+        analysisResult().resourceTitleObject.default
       }}</span>
+      dataset contains
+      <span class="font-bold">{{ analysisResult().featureCount[0] }}</span>
       features.
     } @else if (isRaster) {
-      RASTER dataset contains {{ analysisResult() }} band(s).
+      RASTER dataset contains {{ analysisResult().dimensionsCount[0] }} band(s).
     }
   </h2>
 
@@ -25,19 +28,23 @@
     </div>
 
     <div class="font-medium">Source</div>
-    <div class="col-span-7">{{ analysisResult().link[0].urlObject.default }}</div>
+    <div class="col-span-7">
+      {{ analysisResult().link[0].urlObject.default }}
+    </div>
 
     <div class="font-medium">Format</div>
     <div class="col-span-7">{{ analysisResult().format[0] }}</div>
 
-    <div class="font-medium">Spatial representation</div>
-    <div class="col-span-7">
-      <i
-        [attr.class]="
-          isVector ? 'fa fa-fw fa-vector-square' : 'fa fa-fw fa-table-cells'
-        "></i>
-      {{ analysisResult().cl_spatialRepresentationType[0] }}
-    </div>
+    @if (spatialRepresentation) {
+      <div class="font-medium">Spatial representation</div>
+      <div class="col-span-7">
+        <i
+          [attr.class]="
+            isVector ? 'fa fa-fw fa-vector-square' : 'fa fa-fw fa-table-cells'
+          "></i>
+        {{ spatialRepresentation }}
+      </div>
+    }
 
     @if (isVector && analysisResult().geom) {
       <div class="font-medium">Geometry type</div>
@@ -66,10 +73,14 @@
       }
     }
 
-    @if (analysisResult().coordinateSystem[0]; as crs) {
+    @for (crs of analysisResult().coordinateSystem; track $index) {
       <div class="font-medium">Coordinate system</div>
       <div class="col-span-7">
-        <a href="http://epsg.io/{{ crs.replace('EPSG:', '') }}" target="_blank">{{ crs }}</a>
+        <a
+          href="http://epsg.io/{{ crs.replace('EPSG:', '') }}"
+          target="_blank"
+          >{{ crs }}</a
+        >
       </div>
     }
 

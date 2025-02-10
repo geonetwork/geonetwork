@@ -29,9 +29,7 @@ import { InplaceFieldComponent } from '../inplace-field/inplace-field.component'
   templateUrl: './data-analysis-panel.component.html',
 })
 export class DataAnalysisPanelComponent {
-  @Input() analysisResult!: WritableSignal<
-    IndexRecord | undefined
-  >;
+  @Input() analysisResult!: WritableSignal<IndexRecord | undefined>;
 
   uuid = input.required<string>();
 

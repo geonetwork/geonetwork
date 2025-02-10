@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,12 +48,14 @@ public class DatasetInfo extends BaseDataInfo {
         linkUrl.put("default", datasource);
         link.setUrl(linkUrl);
 
-        IndexRecord indexRecord = IndexRecord.builder().codelist("cl_spatialRepresentationType",
-                List.of(Codelist.builder().property("key", "vector").build()))
-            .resourceTitle(resourceTitle)
-            .formats(List.of(getFormat()))
-            .links(List.of(link))
-            .build();
+        IndexRecord indexRecord = IndexRecord.builder()
+                .codelist(
+                        "cl_spatialRepresentationType",
+                        List.of(Codelist.builder().property("key", "vector").build()))
+                .resourceTitle(resourceTitle)
+                .formats(List.of(getFormat()))
+                .links(List.of(link))
+                .build();
 
         if (datasetLayer.getGeometryFields().size() > 0) {
             String crs = datasetLayer.getGeometryFields().get(0).getCrs();
@@ -65,7 +66,9 @@ public class DatasetInfo extends BaseDataInfo {
             }
 
             indexRecord.setCoordinateSystem(List.of(crs));
-            indexRecord.setGeometries(datasetLayer.getGeometryFields().get(0).getExtent().stream().map(BigDecimal::toString).collect(Collectors.toList()));
+            indexRecord.setGeometries(datasetLayer.getGeometryFields().getFirst().getExtent().stream()
+                    .map(BigDecimal::toString)
+                    .collect(Collectors.toList()));
         }
 
         List<FeatureType> featureTypeList = new ArrayList<>();
@@ -78,7 +81,9 @@ public class DatasetInfo extends BaseDataInfo {
         });
 
         indexRecord.setFeatureTypes(featureTypeList);
-        indexRecord.handleUnrecognizedField("featureCount", datasetLayer.getFeatureCount());
+        HashMap<String, List<Object>> additionalProperties = new HashMap<>();
+        additionalProperties.put("featureCount", List.of(datasetLayer.getFeatureCount()));
+        indexRecord.setOtherProperties(additionalProperties);
 
         return indexRecord;
     }
