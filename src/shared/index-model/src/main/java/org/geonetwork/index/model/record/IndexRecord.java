@@ -287,10 +287,11 @@ public class IndexRecord {
     }
 
     /** Any properties not explicitly defined. */
-    @Singular
+    @Singular("otherProperty")
     @Builder.ObtainVia(method = "copyOtherProperties")
-    private Map<String, List<Object>> otherProperties = new HashMap<>();
+    private Map<String, List<Object>> otherProperties;
 
+    @SuppressWarnings("UnusedMethod")
     private Map<String, List<Object>> copyOtherProperties() {
         if (otherProperties == null) {
             otherProperties = new HashMap<>();
@@ -1118,7 +1119,7 @@ public class IndexRecord {
     }
 
     private void handleConformProperties(String name, Object value) {
-        conformsTo.put(name, value instanceof Boolean boolValue ? (boolValue).toString() : (String) value);
+        conformsTo.put(name, value instanceof Boolean boolValue ? boolValue.toString() : (String) value);
     }
 
     private void handleCodelistProperties(String name, Object value) {
