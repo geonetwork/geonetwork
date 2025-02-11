@@ -14,6 +14,7 @@ import org.geonetwork.security.DatabaseUserDetailsService;
 import org.geonetwork.security.GeoNetworkUserService;
 import org.geonetwork.security.OauthAuthoritiesMapperService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -91,6 +92,7 @@ public class WebSecurityConfiguration {
         return new StandardPasswordEncoder(salt);
     }
 
+    @ConditionalOnProperty(name = "geonetwork.security.provider", havingValue = "database")
     @Bean
     public UserDetailsService userDetailsService(
             @Value("${geonetwork.security.checkUsernameOrEmail: 'USERNAME_OR_EMAIL'}")

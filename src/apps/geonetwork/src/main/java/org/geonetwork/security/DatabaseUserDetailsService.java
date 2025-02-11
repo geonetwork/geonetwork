@@ -77,7 +77,7 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
     }
 
     @Override
-    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication)
+    public UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication)
             throws AuthenticationException {
         Optional<org.geonetwork.domain.User> user =
                 switch (checkUsernameOrEmail) {

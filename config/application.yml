@@ -44,9 +44,24 @@ geonetwork:
         prefergrouplogo: true
   security:
     provider: database
+    # provider: ldap
     passwordSalt: secret-hash-salt=
     databaseUserAuthProperty: USERNAME_OR_EMAIL
-
+    createdUser:
+      profile: Editor
+      group: sample
+    # Enabled if provider is ldap
+    ldap:
+      url: ldap://localhost:389
+      # url: # Empty use embedded LDAP
+      base: dc=springframework,dc=org
+      user-search-dn: ou=people
+      user-search-filter: uid={0}
+      attributes:
+        username: uid
+        email: email
+        name: cn
+        surname:
 server:
   port: 7979
   servlet:
@@ -132,8 +147,11 @@ management:
     web:
       exposure:
         include: "*"
-
+  health:
+    ldap:
+      enabled: false
 springdoc:
+  show-login-endpoint: true
   swagger-ui:
     path: /doc/api/
 
@@ -144,11 +162,12 @@ logging:
   level:
     org.geonetwork.schemas: DEBUG
     org.geonetwork.data: DEBUG
+#    org.springframework.cloud.gateway: DEBUG
 #    org.geonetwork.tasks.indexing: DEBUG
 #    org.elasticsearch.client.RestClient: TRACE
 #    org.apache.http.impl.client and org.apache.http.wire: TRACE
 #    org.apache.http.headers: TRACE
-#    org.springframework.cache: TRACE
+    org.springframework.security: DEBUG
 
 ---
 
