@@ -5,18 +5,20 @@
   @let isTabular = spatialRepresentation === 'textTable';
   @let isRaster = spatialRepresentation === 'grid';
 
-  <h2 class="pt-2 pb-2 text-2xl font-medium">
+  <div class="inline-flex items-center">
+    <g-inplace-field
+      property="resourceTitleObject"
+      [uuid]="uuid()"
+      [(value)]="analysisResult().resourceTitleObject.default" />
+
     @if (isVector) {
-      <span class="font-bold">{{
-        analysisResult().resourceTitleObject.default
-      }}</span>
       dataset contains
       <span class="font-bold">{{ analysisResult().featureCount[0] }}</span>
       features.
     } @else if (isRaster) {
-      RASTER dataset contains {{ analysisResult().dimensionsCount[0] }} band(s).
+      dataset contains {{ analysisResult().dimensionsCount[0] }} band(s).
     }
-  </h2>
+  </div>
 
   <div class="grid grid-cols-8 gap-4">
     <div class="font-medium">Resource identifier</div>
