@@ -107,6 +107,16 @@ import {
 } from './VerticalRange';
 
 /**
+ * Index records are used to store the metadata in the index.
+ *
+ * Additional properties can be:
+ * * cl_* for codelists
+ * * contactFor* for contacts
+ * * measure_* for measures
+ * * ...
+ *
+ * And all additional properties not explicitly defined in the class
+ * or managed in handleUnrecognizedField.
  *
  * @export
  * @interface IndexRecord

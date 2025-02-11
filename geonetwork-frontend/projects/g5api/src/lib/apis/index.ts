@@ -2,6 +2,7 @@
 /* eslint-disable */
 export * from './DataAnalysisControllerApi';
 export * from './IndexingControllerApi';
+export * from './LoginEndpointApi';
 export * from './MeApiApi';
 export * from './OGCAPIRecordsApi';
 export * from './ProcessControllerApi';

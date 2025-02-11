@@ -288,11 +288,11 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT"
-          },
           "204": {
             "description": "Attachment added."
+          },
+          "403": {
+            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT"
           }
         }
       }
@@ -824,11 +824,11 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT"
-          },
           "204": {
             "description": "Attachment visibility removed."
+          },
+          "403": {
+            "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT"
           }
         }
       },
@@ -2282,6 +2282,36 @@
           }
         }
       }
+    },
+    "/api/user/signin": {
+      "post": {
+        "tags": ["login-endpoint"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2289,6 +2319,24 @@
       "MetadataResource": {
         "type": "object",
         "properties": {
+          "lastModification": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadataId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "metadataResourceExternalManagementProperties": {
+            "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
+          },
+          "approved": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": ["public", "private"]
+          },
           "id": {
             "type": "string"
           },
@@ -2302,29 +2350,11 @@
           "url": {
             "type": "string"
           },
-          "metadataResourceExternalManagementProperties": {
-            "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
-          },
-          "lastModification": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "metadataUuid": {
-            "type": "string"
-          },
-          "approved": {
-            "type": "boolean"
-          },
-          "metadataId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "filename": {
             "type": "string"
           },
-          "visibility": {
-            "type": "string",
-            "enum": ["public", "private"]
+          "metadataUuid": {
+            "type": "string"
           }
         }
       },
@@ -4118,7 +4148,8 @@
               "type": "string"
             }
           }
-        }
+        },
+        "description": "Index records are used to store the metadata in the index.\n\nAdditional properties can be:\n* cl_* for codelists\n* contactFor* for contacts\n* measure_* for measures\n* ...\n\nAnd all additional properties not explicitly defined in the class\nor managed in handleUnrecognizedField.\n"
       },
       "IndexingErrorMsg": {
         "type": "object",

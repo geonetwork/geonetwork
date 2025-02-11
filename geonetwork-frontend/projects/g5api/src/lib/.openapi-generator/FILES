@@ -1,5 +1,6 @@
 apis/DataAnalysisControllerApi.ts
 apis/IndexingControllerApi.ts
+apis/LoginEndpointApi.ts
 apis/MeApiApi.ts
 apis/OGCAPIRecordsApi.ts
 apis/ProcessControllerApi.ts
@@ -9,6 +10,7 @@ apis/SearchControllerApi.ts
 apis/index.ts
 index.ts
 models/AnalysisSynch200Response.ts
+models/ApiUserSigninPostRequest.ts
 models/AttributeStatistics.ts
 models/AttributeTable.ts
 models/BatchEditParameter.ts
