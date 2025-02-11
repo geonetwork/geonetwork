@@ -11,10 +11,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.StringSubstitutor;
+import org.geonetwork.data.geom.GeomUtil;
 import org.geonetwork.data.model.BaseDataInfo;
 import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.data.model.DatasetLayer;
@@ -49,12 +52,20 @@ public class MetadataBuilder {
                 break;
             case "latLonBoundingBox":
                 if (!datasetLayer.getGeometryFields().isEmpty()) {
+                    String crs = GeomUtil.parseCrsCode(datasetLayer.getGeometryFields().get(0).getCrs());
                     List<BigDecimal> extent =
-                            datasetLayer.getGeometryFields().getFirst().getExtent();
-                    replacements.put("west", extent.get(0).toString());
-                    replacements.put("south", extent.get(1).toString());
-                    replacements.put("east", extent.get(2).toString());
-                    replacements.put("north", extent.get(3).toString());
+                        datasetLayer.getGeometryFields().getFirst().getExtent();
+                    List<Double> wgs84Extent = GeomUtil.calculateWgs84Bbox(crs, extent.stream().map(BigDecimal::doubleValue).collect(Collectors.toList()));
+
+                    if (wgs84Extent == null) {
+                        // Use the original extent if an error ocurred transforming the original extent to WGS84.
+                        wgs84Extent = extent.stream().map(BigDecimal::doubleValue).collect(Collectors.toList());
+                    }
+
+                    replacements.put("west", wgs84Extent.get(0).toString());
+                    replacements.put("south", wgs84Extent.get(1).toString());
+                    replacements.put("east", wgs84Extent.get(2).toString());
+                    replacements.put("north", wgs84Extent.get(3).toString());
                 }
                 break;
             case "spatialRepresentationType":
@@ -111,11 +122,19 @@ public class MetadataBuilder {
                 break;
             case "latLonBoundingBox":
                 if (!datasetInfo.getWgs84Extent().isEmpty()) {
+                    String crs = GeomUtil.parseCrsCode(datasetInfo.getCrs());
                     List<Double> extent = datasetInfo.getWgs84Extent();
-                    replacements.put("west", extent.get(0).toString());
-                    replacements.put("south", extent.get(1).toString());
-                    replacements.put("east", extent.get(2).toString());
-                    replacements.put("north", extent.get(3).toString());
+                    List<Double> wgs84Extent = GeomUtil.calculateWgs84Bbox(crs, extent);
+
+                    if (wgs84Extent == null) {
+                        // Use the original extent if an error ocurred transforming the original extent to WGS84.
+                        wgs84Extent = extent;
+                    }
+
+                    replacements.put("west", wgs84Extent.get(0).toString());
+                    replacements.put("south", wgs84Extent.get(1).toString());
+                    replacements.put("east", wgs84Extent.get(2).toString());
+                    replacements.put("north", wgs84Extent.get(3).toString());
                 }
                 break;
             case "spatialRepresentationType":

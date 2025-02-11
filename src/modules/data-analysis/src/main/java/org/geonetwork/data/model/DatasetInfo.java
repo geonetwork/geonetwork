@@ -11,13 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+import org.geonetwork.data.geom.GeomUtil;
 import org.geonetwork.index.model.record.Codelist;
 import org.geonetwork.index.model.record.FeatureType;
 import org.geonetwork.index.model.record.IndexRecord;
@@ -58,17 +57,10 @@ public class DatasetInfo extends BaseDataInfo {
                 .build();
 
         if (datasetLayer.getGeometryFields().size() > 0) {
-            String crs = datasetLayer.getGeometryFields().get(0).getCrs();
-            Pattern crsPattern = Pattern.compile("[\\s\\S.]*\\\"EPSG\\\",([0-9]*).*");
-            Matcher m = crsPattern.matcher(crs);
-            if (m.find()) {
-                crs = "EPSG:" + m.group(1);
-            }
-
-            indexRecord.setCoordinateSystem(List.of(crs));
-            indexRecord.setGeometries(datasetLayer.getGeometryFields().getFirst().getExtent().stream()
-                    .map(BigDecimal::toString)
-                    .collect(Collectors.toList()));
+            String crs = GeomUtil.parseCrsCode(datasetLayer.getGeometryFields().get(0).getCrs());
+            calculateIndexRecordGeomInfo(indexRecord, crs, datasetLayer.getGeometryFields().getFirst().getExtent().stream()
+                .map(BigDecimal::doubleValue)
+                .collect(Collectors.toList()));
         }
 
         List<FeatureType> featureTypeList = new ArrayList<>();

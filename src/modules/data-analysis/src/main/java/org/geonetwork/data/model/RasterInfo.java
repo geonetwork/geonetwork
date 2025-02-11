@@ -9,13 +9,12 @@ package org.geonetwork.data.model;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+import org.geonetwork.data.geom.GeomUtil;
 import org.geonetwork.index.model.record.Codelist;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.index.model.record.Link;
@@ -56,15 +55,8 @@ public class RasterInfo extends BaseDataInfo {
                 .links(List.of(link))
                 .build();
 
-        String crs = getCrs();
-        Pattern crsPattern = Pattern.compile("[\\s\\S.]*\\\"EPSG\\\",([0-9]*).*");
-        Matcher m = crsPattern.matcher(crs);
-        if (m.find()) {
-            crs = "EPSG:" + m.group(1);
-        }
-        indexRecord.setCoordinateSystem(List.of(crs));
-        indexRecord.setGeometries(
-                getWgs84Extent().stream().map(c -> c.toString()).collect(Collectors.toList()));
+        String crs = GeomUtil.parseCrsCode(getCrs());
+        calculateIndexRecordGeomInfo(indexRecord, crs, getWgs84Extent());
 
         HashMap<String, List<Object>> additionalProperties = new HashMap<>();
         additionalProperties.put("dimensionSizeX", List.of(getSize().get(0)));
