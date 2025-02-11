@@ -428,8 +428,8 @@ export class NewRecordPanelComponent implements OnInit {
     this.buildingOverview.set(true);
 
     const overviewUrl = !this.datasourceFile()
-      ? `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
-      : `/api/data/analysis/overviewForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
+      ? `/geonetwork/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
+      : `/geonetwork/api/data/analysis/overviewForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
     this.http.get(overviewUrl, { responseType: 'blob' }).subscribe({
       next: image => {
         if (image.size > 0) {
@@ -573,6 +573,7 @@ export class NewRecordPanelComponent implements OnInit {
       return;
     }
 
+
     for (let i = 0; i < event.files.length; i++) {
       const putResourceRequest: PutResourceRequest = {
         metadataUuidOrId: this.newRecordId(),
@@ -583,7 +584,8 @@ export class NewRecordPanelComponent implements OnInit {
         .putResource(putResourceRequest)
         .then(
           response => {
-            this.retrieveMetadataFiles();
+            // select the file by default, when uploading 1 file only
+            this.retrieveMetadataFiles(event.files.length == 1);
           },
           error => {
             console.log(
@@ -656,7 +658,7 @@ export class NewRecordPanelComponent implements OnInit {
     }
   }
 
-  private retrieveMetadataFiles(): void {
+  private retrieveMetadataFiles(selectFile: boolean): void {
     const getAllResourcesRequest: GetAllResourcesRequest = {
       metadataUuidOrId: this.newRecordId(),
     };
@@ -666,6 +668,11 @@ export class NewRecordPanelComponent implements OnInit {
       .then(
         response => {
           this.metadataFiles.set(response);
+
+          if (response.length > 0 && selectFile) {
+            this.datasourceFile.set(response[0].filename!);
+            this.getLayerListForMetadataResource();
+          }
         },
         error => {
           console.log(

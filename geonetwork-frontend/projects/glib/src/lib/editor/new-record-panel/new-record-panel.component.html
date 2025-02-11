@@ -155,6 +155,7 @@
                 <p-listbox
                   [options]="metadataFiles()"
                   (onChange)="onMetadataFileSelectedChange($event)"
+                  [(ngModel)]="datasourceFile"
                   optionLabel="filename"
                   optionValue="filename" />
               </div>
