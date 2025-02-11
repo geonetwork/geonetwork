@@ -50,7 +50,10 @@ geonetwork:
 server:
   port: 7979
   servlet:
-    context-path: /
+    context-path: /geonetwork
+    session:
+      cookie:
+        name: GNSESSIONID
   forward-headers-strategy: framework
 
 spring:
@@ -108,7 +111,8 @@ spring:
           - id: geonetwork_route
             uri: ${geonetwork.4.url}
             predicates:
-              - Path=/geonetwork/**
+              - Path=/srv/**, /static/**, /catalog/**, /map/**, /criticalhealthcheck, /warninghealthcheck
+              # TODO: Declare all portals paths, how?
             filters:
               - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
