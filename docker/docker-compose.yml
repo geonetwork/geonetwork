@@ -96,7 +96,8 @@ services:
 
 
   geonetwork-5:
-    image: gn-main-app:5.0.0-SNAPSHOT
+    image: gn-main-app-gdal:5.0.0-SNAPSHOT
+#    image: gn-main-app:5.0.0-SNAPSHOT
     environment:
       SERVER_PORT: 7979
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/geonetwork

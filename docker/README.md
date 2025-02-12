@@ -5,7 +5,18 @@
 ```shell
 (cd geonetwork-frontend/; npm install; npm run build-all; cd..)
 ./mvnw clean install -Drelax
+```
+
+Build default docker image:
+
+```shell
 (cd src/apps/geonetwork; ../../../mvnw spring-boot:build-image)
+```
+
+or docker image with GDAL:
+
+```shell
+(cd docker/gn5;cp ../../src/apps/geonetwork/target/gn-main-app-5.0.0-SNAPSHOT.jar .;docker build -t gn-main-app:5.0.0-SNAPSHOT .)
 ```
 
 ## Build GeoNetwork 4
