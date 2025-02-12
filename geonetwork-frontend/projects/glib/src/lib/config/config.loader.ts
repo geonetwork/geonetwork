@@ -5,14 +5,14 @@ import {
   UiApi,
   UiConfiguration,
 } from 'gapi';
-import { Configuration as Gn5Configuration } from 'g5api';
+import { Configuration as Gn5Configuration, DefaultConfig as Gn5DefaultConfig } from 'g5api';
 import { DEFAULT_UI_CONFIGURATION, MISSING_CONFIG_ERROR } from './constants';
 import { InjectionToken, WritableSignal } from '@angular/core';
 
 export interface ApplicationConfiguration {
   ui: UiConfiguration | undefined;
   apiConfig: Configuration | undefined;
-  api5Config: Configuration | undefined;
+  api5Config: Gn5Configuration | undefined;
   space: string;
 }
 
@@ -44,6 +44,7 @@ export function getAppConfig(): ApplicationConfiguration {
 }
 
 export function buildGn4BaseUrl(baseUrl: string): string {
+  console.log(baseUrl);
   const gn4BaseUrl = baseUrl.split('/').slice(0, -2).join('/');
   return gn4BaseUrl.startsWith('http')
     ? gn4BaseUrl
@@ -51,14 +52,15 @@ export function buildGn4BaseUrl(baseUrl: string): string {
 }
 
 export function loadAppConfig(environment: any) {
+  console.log(environment);
   if (environment.baseUrl) {
     appConfig.apiConfig = new Configuration({ basePath: environment.baseUrl });
-    appConfig.api5Config = new Configuration({
+    appConfig.api5Config = new Gn5Configuration({
       basePath: environment.baseUrlGn5Api,
     });
   } else {
     appConfig.apiConfig = DefaultConfig;
-    appConfig.api5Config = DefaultConfig;
+    appConfig.api5Config = Gn5DefaultConfig;
   }
 
   return new UiApi(appConfig.apiConfig)
