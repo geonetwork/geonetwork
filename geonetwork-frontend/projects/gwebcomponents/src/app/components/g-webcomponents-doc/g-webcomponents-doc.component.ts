@@ -16,6 +16,7 @@ import { GcSearchComponent } from '../gc-search-results/gc-search.component';
 import { GcSearchResultsTableComponent } from '../gc-search-results-table/gc-search-results-table.component';
 import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
+import { GcNewRecordPanelComponent } from '../gc-new-record-panel/gc-new-record-panel.component';
 
 interface field {
   label: string;
@@ -31,6 +32,7 @@ export const API_URL_LIST = [
   { url: 'https://apps.titellus.net/geonetwork/srv/api' },
   { url: 'https://www.geocatalogue.fr/geonetwork/srv/api' },
   { url: 'http://localhost:8080/geonetwork/srv/api' },
+  { url: 'http://localhost:4200/geonetwork/srv/api' },
 ];
 
 export const SELECTION_MODE_LIST = [
@@ -74,6 +76,7 @@ export const CSV_SOURCE_FILE_LIST = [
     GcSearchResultsTableComponent,
     Select,
     FormsModule,
+    GcNewRecordPanelComponent,
   ],
 })
 export class GWebcomponentsDocComponent implements OnInit {

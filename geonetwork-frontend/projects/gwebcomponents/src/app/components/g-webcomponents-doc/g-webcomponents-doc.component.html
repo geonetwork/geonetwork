@@ -103,7 +103,17 @@
       </div>
     }
     @case ('gc-new-record-panel') {
-      <gc-new-record-panel-component></gc-new-record-panel-component>
+      <gc-new-record-panel [api-url]="apiUrl"></gc-new-record-panel>
+
+      <g-webcomponents-doc-embed>
+        <pre class="whitespace-pre-wrap">
+<![CDATA[ <gc-new-record-panel-component
+            api-url="{{ apiUrl }}"
+          />
+]]>
+          </pre
+        >
+      </g-webcomponents-doc-embed>
     }
     @default {
       <div class="h-30">
