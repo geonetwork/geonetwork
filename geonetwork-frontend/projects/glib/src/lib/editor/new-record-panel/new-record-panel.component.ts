@@ -252,7 +252,8 @@ export class NewRecordPanelComponent implements OnInit {
   }
 
   openEditor() {
-    location.replace(
+    const target = top?.window.location || location;
+    target.replace(
       `/geonetwork/srv/eng/catalog.edit#/metadata/${this.newRecordId()}`
     );
   }
