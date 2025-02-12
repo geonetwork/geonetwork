@@ -102,6 +102,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/geonetwork
       SPRING_DATASOURCE_USERNAME: geonetwork
       SPRING_DATASOURCE_PASSWORD: geonetwork
+      SERVER_SERVLET_CONTEXT-PATH: /geonetwork
       GEONETWORK_INDEX_URL: http://elasticsearch:9200
       GEONETWORK_INDEX_INDEXPREFIX: gn-
       GEONETWORK_INDEX_INDEXRECORDNAME: gn-records
