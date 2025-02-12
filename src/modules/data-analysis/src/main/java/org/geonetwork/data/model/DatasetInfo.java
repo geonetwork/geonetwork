@@ -57,10 +57,14 @@ public class DatasetInfo extends BaseDataInfo {
                 .build();
 
         if (datasetLayer.getGeometryFields().size() > 0) {
-            String crs = GeomUtil.parseCrsCode(datasetLayer.getGeometryFields().get(0).getCrs());
-            calculateIndexRecordGeomInfo(indexRecord, crs, datasetLayer.getGeometryFields().getFirst().getExtent().stream()
-                .map(BigDecimal::doubleValue)
-                .collect(Collectors.toList()));
+            String crs = GeomUtil.parseCrsCode(
+                    datasetLayer.getGeometryFields().get(0).getCrs());
+            calculateIndexRecordGeomInfo(
+                    indexRecord,
+                    crs,
+                    datasetLayer.getGeometryFields().getFirst().getExtent().stream()
+                            .map(BigDecimal::doubleValue)
+                            .collect(Collectors.toList()));
         }
 
         List<FeatureType> featureTypeList = new ArrayList<>();

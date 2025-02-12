@@ -5,18 +5,17 @@
  */
 package org.geonetwork.data.geom;
 
-import org.geotools.api.referencing.FactoryException;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 
 public class GeomUtil {
 
@@ -27,7 +26,7 @@ public class GeomUtil {
     /**
      * Parses the EPSG crs code from the crs definition from GDAL.
      *
-     * If the code can not be parsed, returns EPSG:4326
+     * <p>If the code can not be parsed, returns EPSG:4326
      *
      * @param crs crs definition from GDAL.
      * @return EPSG crs code.

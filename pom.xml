@@ -48,18 +48,6 @@
     <url>https://github.com/geonetwork/geonetwork/issues</url>
   </issueManagement>
 
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>osgeo</id>
-      <name>OSGeo Release repository</name>
-      <url>https://repo.osgeo.org/repository/release/</url>
-    </repository>
-  </repositories>
-
-
   <properties>
     <java.version>21</java.version>
     <spring-cloud.version>2023.0.5</spring-cloud.version>
@@ -248,6 +236,17 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>osgeo</id>
+      <name>OSGeo Release repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+    </repository>
+  </repositories>
 
   <build>
     <pluginManagement>

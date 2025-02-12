@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringEscapeUtils;
@@ -52,14 +51,17 @@ public class MetadataBuilder {
                 break;
             case "latLonBoundingBox":
                 if (!datasetLayer.getGeometryFields().isEmpty()) {
-                    String crs = GeomUtil.parseCrsCode(datasetLayer.getGeometryFields().get(0).getCrs());
+                    String crs = GeomUtil.parseCrsCode(
+                            datasetLayer.getGeometryFields().get(0).getCrs());
                     List<BigDecimal> extent =
-                        datasetLayer.getGeometryFields().getFirst().getExtent();
-                    List<Double> wgs84Extent = GeomUtil.calculateWgs84Bbox(crs, extent.stream().map(BigDecimal::doubleValue).collect(Collectors.toList()));
+                            datasetLayer.getGeometryFields().getFirst().getExtent();
+                    List<Double> wgs84Extent = GeomUtil.calculateWgs84Bbox(
+                            crs, extent.stream().map(BigDecimal::doubleValue).collect(Collectors.toList()));
 
                     if (wgs84Extent == null) {
                         // Use the original extent if an error ocurred transforming the original extent to WGS84.
-                        wgs84Extent = extent.stream().map(BigDecimal::doubleValue).collect(Collectors.toList());
+                        wgs84Extent =
+                                extent.stream().map(BigDecimal::doubleValue).collect(Collectors.toList());
                     }
 
                     replacements.put("west", wgs84Extent.get(0).toString());
@@ -127,7 +129,7 @@ public class MetadataBuilder {
                     List<Double> wgs84Extent = GeomUtil.calculateWgs84Bbox(crs, extent);
 
                     if (wgs84Extent == null) {
-                        // Use the original extent if an error ocurred transforming the original extent to WGS84.
+                        // Use the original extent if an error occurred transforming the original extent to WGS84.
                         wgs84Extent = extent;
                     }
 

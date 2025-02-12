@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
-
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
-
--->
 <preview>
   <mdb:MD_Metadata xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
                    xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
@@ -135,7 +128,7 @@
         <mri:citation>
           <cit:CI_Citation>
             <cit:title>
-              <gco:CharacterString>CEEUBG100kV2_1</gco:CharacterString>
+              <gco:CharacterString>Template for geographical data</gco:CharacterString>
             </cit:title>
             <cit:date>
               <cit:CI_Date>
@@ -267,13 +260,13 @@
             <gex:geographicElement>
               <gex:EX_GeographicBoundingBox>
                 <gex:westBoundLongitude>
-                  <gco:Decimal>-61.805814108435243</gco:Decimal>
+                  <gco:Decimal>-61.80581413190214</gco:Decimal>
                 </gex:westBoundLongitude>
                 <gex:eastBoundLongitude>
-                  <gco:Decimal>34.605668981354938</gco:Decimal>
+                  <gco:Decimal>34.605669014636646</gco:Decimal>
                 </gex:eastBoundLongitude>
                 <gex:southBoundLatitude>
-                  <gco:Decimal>4.2138689443886506</gco:Decimal>
+                  <gco:Decimal>4.213868944388651</gco:Decimal>
                 </gex:southBoundLatitude>
                 <gex:northBoundLatitude>
                   <gco:Decimal>65.90833200184602</gco:Decimal>

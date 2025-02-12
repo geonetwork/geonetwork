@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import org.geonetwork.data.geom.GeomUtil;
@@ -25,7 +24,7 @@ public abstract class BaseDataInfo implements Serializable {
     /**
      * Converts the BBOX coordinates from GDAL to WGS84 and updates IndexRecord with the WGS84 crs and WGS84 bbox.
      *
-     * If the conversion fails, it stores the original information from GDAL.
+     * <p>If the conversion fails, it stores the original information from GDAL.
      *
      * @param indexRecord IndexRecord information to updat.e
      * @param crs original GDAL dataset / raster crs code.
@@ -46,9 +45,8 @@ public abstract class BaseDataInfo implements Serializable {
             indexRecord.setGeometries(wgs84Geom);
         } else {
             indexRecord.setCoordinateSystem(List.of(crs));
-            indexRecord.setGeometries(bboxCoordinates.stream()
-                .map(d -> d.toString())
-                .collect(Collectors.toList()));
+            indexRecord.setGeometries(
+                    bboxCoordinates.stream().map(d -> d.toString()).collect(Collectors.toList()));
         }
     }
 }

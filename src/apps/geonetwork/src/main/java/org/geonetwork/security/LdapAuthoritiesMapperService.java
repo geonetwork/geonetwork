@@ -16,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.Profile;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.UserRepository;
-import org.geonetwork.domain.repository.UsergroupRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.ldap.core.DirContextAdapter;
@@ -32,7 +31,6 @@ import org.springframework.stereotype.Service;
 @ConditionalOnProperty(name = "geonetwork.security.provider", havingValue = "ldap")
 public class LdapAuthoritiesMapperService {
     UserRepository userRepository;
-    UsergroupRepository userGroupRepository;
     GeoNetworkUserService geoNetworkUserService;
     String defaultUserGroup;
     Profile defaultUserProfile;
@@ -49,7 +47,6 @@ public class LdapAuthoritiesMapperService {
             @Value("${geonetwork.security.ldap.attributes.name: 'cn'}") String nameAttribute,
             @Value("${geonetwork.security.ldap.attributes.surname: ''}") String surnameAttribute,
             UserRepository userRepository,
-            UsergroupRepository userGroupRepository,
             GeoNetworkUserService geoNetworkUserService) {
         this.defaultUserGroup = defaultUserGroup;
         this.defaultUserProfile = Profile.valueOf(defaultUserProfile);
@@ -60,7 +57,6 @@ public class LdapAuthoritiesMapperService {
         this.surnameAttribute = surnameAttribute;
 
         this.userRepository = userRepository;
-        this.userGroupRepository = userGroupRepository;
         this.geoNetworkUserService = geoNetworkUserService;
     }
 

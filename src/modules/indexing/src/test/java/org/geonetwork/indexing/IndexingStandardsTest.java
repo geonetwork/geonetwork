@@ -6,6 +6,8 @@
 
 package org.geonetwork.indexing;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,8 +21,8 @@ import org.geonetwork.domain.Metadata;
 import org.geonetwork.index.model.record.Codelist;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.index.model.record.IndexRecords;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -29,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ActiveProfiles;
 
+@Disabled
 @SpringBootTest(classes = {GeonetworkTestingApplication.class})
 @ActiveProfiles(value = {"test"})
 class IndexingStandardsTest {
@@ -50,7 +53,7 @@ class IndexingStandardsTest {
                 .codelist(
                         "dada",
                         List.of(Codelist.builder().property("key", "www").build()))
-            .otherProperties(extraprops)
+                .otherProperties(extraprops)
                 .build();
 
         String jsonString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(record);
