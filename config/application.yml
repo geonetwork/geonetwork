@@ -2,6 +2,14 @@ geonetwork:
   url: http://localhost:7979
   4:
     url: http://localhost:8080/geonetwork
+    path: >
+      /srv/,
+      /static/,
+      /images/,
+      /catalog/,
+      /map/,
+      /criticalhealthcheck,
+      /warninghealthcheck
   index:
     url: http://localhost:9200
     indexPrefix: gn5-
@@ -114,20 +122,19 @@ spring:
           - id: geonetwork_proxy_redirect
             uri: ${geonetwork.url}
             predicates:
-              - Path=/geonetwork/proxy
+              - Path=/proxy
             filters:
-              - RewritePath=/geonetwork/(?<url>.*), /api/$\{url}
+              - RewritePath=/(?<url>.*), /api/$\{url}
           - id: geonetwork4_api_migrated
             uri: ${geonetwork.url}
             predicates:
-              - Path=/geonetwork/srv/api/records/*/attachments/**
+              - Path=/srv/api/records/*/attachments/**
             filters:
-              - RewritePath=/geonetwork/srv/api/records/(?<uuid>.+)/attachments(?<segment>.*), /api/records/$\{uuid}/attachments$\{segment}
+              - RewritePath=/srv/api/records/(?<uuid>.+)/attachments(?<segment>.*), /api/records/$\{uuid}/attachments$\{segment}
           - id: geonetwork_route
             uri: ${geonetwork.4.url}
             predicates:
-              - Path=/srv/**, /static/**, /catalog/**, /map/**, /criticalhealthcheck, /warninghealthcheck
-              # TODO: Declare all portals paths, how?
+              - isGnPortalRequest=
             filters:
               - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:

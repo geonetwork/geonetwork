@@ -3,14 +3,20 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.gn4proxyprediates;
+package org.geonetwork.gn4proxypredicates;
 
 import io.micrometer.common.util.StringUtils;
 import java.util.List;
+import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.geonetwork.domain.Source;
 import org.geonetwork.domain.repository.SourceRepository;
 import org.geonetwork.utility.ApplicationContextProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.server.mvc.common.Shortcut;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.function.RequestPredicate;
 
 /**
@@ -25,9 +31,19 @@ import org.springframework.web.servlet.function.RequestPredicate;
  *
  * <p>If there is no source called "home", then `/geonetwork/home/...` will NOT MATCH.
  */
+@Component
+@AllArgsConstructor
 public class GnPortalPredicate {
 
     static ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
+
+    @Getter
+    private static List<String> listOfPath;
+
+    @Value("${geonetwork.4.path}")
+    public void setListOfPath(List<String> listOfPath) {
+        GnPortalPredicate.listOfPath = listOfPath;
+    }
 
     /*
      * This does the matching to things like '/geonetwork/<portal uuid>/...'.
@@ -37,29 +53,23 @@ public class GnPortalPredicate {
      * @return true if request path is like "/geonetwork/PORTAL-UUID/..."
      */
     @Shortcut
-    public static RequestPredicate isGnPortalRequest(String contextPath) {
+    public static RequestPredicate isGnPortalRequest() {
         return request -> {
-            if (!request.path().startsWith(contextPath + "/")) {
-                return false; // not to "/geonetwork/..."
-            }
-            // remove "/geonetwork" from start
-            var path = request.path().substring(contextPath.length());
-            if (path.startsWith("/")) {
-                path = path.substring(1);
-            }
+            var path = request.path();
             if (StringUtils.isBlank(path)) {
                 return false;
             }
-            // portalName: "/geonetwork/srv/..." --> "srv"
-            var portalName = path;
+            Optional<String> matchOnePath =
+                    listOfPath.stream().filter(path::startsWith).findFirst();
+            if (matchOnePath.isPresent()) {
+                return true;
+            }
+            var portalName = path.substring(1);
             if (portalName.contains("/")) {
                 portalName = portalName.substring(0, portalName.indexOf("/"));
             }
-            if (portalName.equals("srv")) {
-                return true; // this is the default portal
-            }
-            var portalIds = portalIds();
-            return portalIds.contains(portalName);
+
+            return portalIds().contains(portalName);
         };
     }
 
@@ -70,10 +80,11 @@ public class GnPortalPredicate {
      *
      * @return the IDs (UUID) of the all portal (DB: `sources` tables)
      */
+    // FIXME need to be not static  @Cacheable(cacheNames = "db-sources")
     static List<String> portalIds() {
-        var sourceRepository = applicationContext.getBean(SourceRepository.class);
-        var portalNames =
-                sourceRepository.findAll().stream().map(x -> x.getUuid()).toList();
-        return portalNames;
+        var sourceRepository = applicationContext != null
+                ? applicationContext.getBean(SourceRepository.class)
+                : ApplicationContextProvider.getApplicationContext().getBean(SourceRepository.class);
+        return sourceRepository.findAll().stream().map(Source::getUuid).toList();
     }
 }
