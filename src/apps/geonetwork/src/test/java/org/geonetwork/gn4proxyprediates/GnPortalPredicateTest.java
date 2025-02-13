@@ -102,8 +102,8 @@ public class GnPortalPredicateTest {
                         })
                         .toList());
 
-        GnPortalPredicate.applicationContext = mock(ApplicationContext.class);
-        when(GnPortalPredicate.applicationContext.getBean(SourceRepository.class))
+        CachingPortalIds.applicationContext = mock(ApplicationContext.class);
+        when(CachingPortalIds.applicationContext.getBean(SourceRepository.class))
                 .thenReturn(mockSourceRepository);
     }
 }
