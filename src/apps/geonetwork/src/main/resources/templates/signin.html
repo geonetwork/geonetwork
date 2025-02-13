@@ -79,9 +79,9 @@
     </div>
     <br/>
     or with
-    <a href="/oauth2/authorization/github">GitHub</a>
+    <a th:href="@{/oauth2/authorization/github}">GitHub</a>
     <br/>
-    <a href="/oauth2/authorization/custom">Custom provider</a>
+    <a th:href="@{/oauth2/authorization/custom}">Custom provider</a>
   </div>
   <div>
     <div th:if="${param.error}">
