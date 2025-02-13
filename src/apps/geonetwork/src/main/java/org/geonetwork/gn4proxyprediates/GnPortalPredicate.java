@@ -6,11 +6,7 @@
 package org.geonetwork.gn4proxyprediates;
 
 import io.micrometer.common.util.StringUtils;
-import java.util.List;
-import org.geonetwork.domain.repository.SourceRepository;
-import org.geonetwork.utility.ApplicationContextProvider;
 import org.springframework.cloud.gateway.server.mvc.common.Shortcut;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.function.RequestPredicate;
 
 /**
@@ -27,7 +23,7 @@ import org.springframework.web.servlet.function.RequestPredicate;
  */
 public class GnPortalPredicate {
 
-    static ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
+    static CachingPortalIds cachingPortalIds = new CachingPortalIds();
 
     /*
      * This does the matching to things like '/geonetwork/<portal uuid>/...'.
@@ -58,22 +54,8 @@ public class GnPortalPredicate {
             if (portalName.equals("srv")) {
                 return true; // this is the default portal
             }
-            var portalIds = portalIds();
+            var portalIds = cachingPortalIds.portalIds();
             return portalIds.contains(portalName);
         };
-    }
-
-    /**
-     * Get the IDs (UUID) of all the portals (DB: `sources` tables).
-     *
-     * <p>Note, in general, the UUID of the main portal will be GUID.
-     *
-     * @return the IDs (UUID) of the all portal (DB: `sources` tables)
-     */
-    static List<String> portalIds() {
-        var sourceRepository = applicationContext.getBean(SourceRepository.class);
-        var portalNames =
-                sourceRepository.findAll().stream().map(x -> x.getUuid()).toList();
-        return portalNames;
     }
 }
