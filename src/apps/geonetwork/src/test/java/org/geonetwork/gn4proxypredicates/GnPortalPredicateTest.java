@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.gn4proxyprediates;
+package org.geonetwork.gn4proxypredicates;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -20,12 +20,12 @@ import org.springframework.web.servlet.function.ServerRequest;
 /** Simple tests for GnPortalPredicate. */
 public class GnPortalPredicateTest {
 
-    /** this tests a Path that isn't to "/geonetwork" */
+    /** this tests a Path that isn't to "/" */
     @Test
     public void testNotGN() {
         setupGnPortalPredicate(Arrays.asList());
 
-        var predicate = GnPortalPredicate.isGnPortalRequest("/geoserver");
+        var predicate = GeoNetwork4Predicate.isGeoNetwork4Request();
 
         assertEquals(false, predicate.test(createRequest("/abc")));
         assertEquals(false, predicate.test(createRequest("/abc/")));
@@ -36,10 +36,10 @@ public class GnPortalPredicateTest {
     public void testSrv() {
         setupGnPortalPredicate(Arrays.asList());
 
-        var predicate = GnPortalPredicate.isGnPortalRequest("/geoserver");
+        var predicate = GeoNetwork4Predicate.isGeoNetwork4Request();
 
-        assertEquals(true, predicate.test(createRequest("/geoserver/srv")));
-        assertEquals(true, predicate.test(createRequest("/geoserver/srv/")));
+        assertEquals(true, predicate.test(createRequest("/srv")));
+        assertEquals(true, predicate.test(createRequest("/srv/")));
     }
 
     /** Tests a good source (portal uuid) - one that exists. */
@@ -47,24 +47,10 @@ public class GnPortalPredicateTest {
     public void testGoodSource() {
         setupGnPortalPredicate(Arrays.asList("abc", "def", "ghi"));
 
-        var predicate = GnPortalPredicate.isGnPortalRequest("/geoserver");
+        var predicate = GeoNetwork4Predicate.isGeoNetwork4Request();
 
-        assertEquals(true, predicate.test(createRequest("/geoserver/def")));
-        assertEquals(true, predicate.test(createRequest("/geoserver/def/")));
-    }
-
-    /** Tests a good source (portal uuid) - one that exists. This time, using "/gggg" instead of "/geoserver". */
-    @Test
-    public void testGoodSource2() {
-        setupGnPortalPredicate(Arrays.asList("abc", "def", "ghi"));
-
-        var predicate = GnPortalPredicate.isGnPortalRequest("/gggg");
-
-        assertEquals(true, predicate.test(createRequest("/gggg/def")));
-        assertEquals(true, predicate.test(createRequest("/gggg/def/")));
-
-        assertEquals(false, predicate.test(createRequest("/geoserver/def")));
-        assertEquals(false, predicate.test(createRequest("/geoserver/def")));
+        assertEquals(true, predicate.test(createRequest("/def")));
+        assertEquals(true, predicate.test(createRequest("/def/")));
     }
 
     /** Tests a bad source (portal uuid) - one that does NOT exists. */
@@ -72,10 +58,10 @@ public class GnPortalPredicateTest {
     public void testBadSource() {
         setupGnPortalPredicate(Arrays.asList("abc", "def", "ghi"));
 
-        var predicate = GnPortalPredicate.isGnPortalRequest("/geoserver");
+        var predicate = GeoNetwork4Predicate.isGeoNetwork4Request();
 
-        assertEquals(false, predicate.test(createRequest("/geoserver/zzz")));
-        assertEquals(false, predicate.test(createRequest("/geoserver/zzz/")));
+        assertEquals(false, predicate.test(createRequest("/zzz")));
+        assertEquals(false, predicate.test(createRequest("/zzz/")));
     }
 
     public ServerRequest createRequest(String path) {
@@ -92,6 +78,10 @@ public class GnPortalPredicateTest {
      * @param allSourceUUID list of the uuids to put in the mocked source reposition
      */
     public void setupGnPortalPredicate(List<String> allSourceUUID) {
+        GeoNetwork4Predicate geoNetwork4Predicate = new GeoNetwork4Predicate();
+        geoNetwork4Predicate.setListOfPath(List.of("/srv"));
+        geoNetwork4Predicate.cachingPortalIds.clear();
+
         var mockSourceRepository = mock(SourceRepository.class);
         when(mockSourceRepository.findAll())
                 .thenReturn(allSourceUUID.stream()
@@ -105,5 +95,14 @@ public class GnPortalPredicateTest {
         CachingPortalIds.applicationContext = mock(ApplicationContext.class);
         when(CachingPortalIds.applicationContext.getBean(SourceRepository.class))
                 .thenReturn(mockSourceRepository);
+        //    FIXME: This is not working. It's not mocking the ApplicationContextProvider correctly.
+        //    try (MockedStatic<ApplicationContextProvider> applicationContextProviderMockedStatic =
+        //        Mockito.mockStatic(ApplicationContextProvider.class)) {
+        //      ApplicationContext applicationContext = mock(ApplicationContext.class);
+        //      applicationContextProviderMockedStatic
+        //          .when(ApplicationContextProvider::getApplicationContext)
+        //          .thenReturn(applicationContext);
+        //      when(applicationContext.getBean(SourceRepository.class)).thenReturn(mockSourceRepository);
+        //    }
     }
 }
