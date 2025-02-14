@@ -32,14 +32,14 @@ public class OauthAuthoritiesMapperService {
     GeoNetworkUserService geoNetworkUserService;
 
     public GrantedAuthoritiesMapper userOauthAuthoritiesMapper() {
-        return (authorities) -> {
+        return authorities -> {
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 
-            authorities.forEach(authority -> {
-                if (authority instanceof OidcUserAuthority) {
-                    // Handle OIDC user authority
-                } else if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
-                    Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
+            for (GrantedAuthority authority : authorities) {
+                Map<String, Object> userAttributes = getUserAttributes(authority);
+
+                if (userAttributes != null) {
+
                     // in github, emails are typically hidden, so this will be null and cause issues...
                     String email = userAttributes.get("email") != null
                             ? userAttributes.get("email").toString()
@@ -82,10 +82,19 @@ public class OauthAuthoritiesMapperService {
                             });
 
                     mappedAuthorities.add(geoNetworkUserService.buildUserAuthority(user));
+                    break;
                 }
-            });
-
+            }
             return mappedAuthorities;
         };
+    }
+
+    private static Map<String, Object> getUserAttributes(GrantedAuthority authority) {
+        if (authority instanceof OidcUserAuthority oidcUserAuthority) {
+            return oidcUserAuthority.getUserInfo().getClaims();
+        } else if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
+            return oauth2UserAuthority.getAttributes();
+        }
+        return null;
     }
 }
