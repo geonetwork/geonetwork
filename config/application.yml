@@ -12,6 +12,17 @@
 #
 
 geonetwork:
+  url: http://localhost:7979
+  4:
+    url: http://localhost:8080/geonetwork
+    path: >
+      /srv,
+      /static/,
+      /images/,
+      /catalog/,
+      /map/,
+      /criticalhealthcheck,
+      /warninghealthcheck
   openapi-records:
     ogcapi-records-json:
       includeRawXML: false
@@ -138,7 +149,10 @@ geonetwork:
 server:
   port: 7979
   servlet:
-    context-path: /
+    context-path: /geonetwork
+    session:
+      cookie:
+        name: GNSESSIONID
   forward-headers-strategy: framework
 
 spring:
@@ -177,10 +191,18 @@ spring:
     gateway:
       mvc:
         routes:
-          - id: geonetwork_route
+          - id: geonetwork_proxy_redirect
             uri: ${geonetwork.url}
             predicates:
+              - Path=/proxy
+            filters:
+              - RewritePath=/(?<url>.*), /api/$\{url}
+          - id: geonetwork_route
+            uri: ${geonetwork.url}
+            uri: ${geonetwork.4.url}
+            predicates:
               - Path=${GATEWAY_GEONETWORK_PATH:/geonetwork/**}
+              - isGeoNetwork4Request=
             filters:
               - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
