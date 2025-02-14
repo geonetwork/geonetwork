@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.gn4proxyprediates;
+package org.geonetwork.gn4proxypredicates;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -16,6 +16,6 @@ public class GnPortalPredicateProvider implements PredicateSupplier {
 
     @Override
     public Collection<Method> get() {
-        return Arrays.asList(GnPortalPredicate.class.getMethods());
+        return Arrays.asList(GeoNetwork4Predicate.class.getMethods());
     }
 }
