@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.gn4proxyprediates;
+package org.geonetwork.gn4proxypredicates;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -24,8 +24,9 @@ import org.springframework.context.ApplicationContext;
  * request for the portal uuids.
  */
 public class CachingPortalIds {
-    static ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
     static LoadingCache<String, List<String>> cache;
+    // FIXME: is ok in test, but null at runtime
+    static ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
 
     static int CACHE_TIMEOUT_SECONDS = 60;
 
@@ -42,7 +43,9 @@ public class CachingPortalIds {
              */
             @Override
             public List<String> load(String key) {
-                var sourceRepository = applicationContext.getBean(SourceRepository.class);
+                var sourceRepository = applicationContext == null
+                        ? ApplicationContextProvider.getApplicationContext().getBean(SourceRepository.class)
+                        : applicationContext.getBean(SourceRepository.class);
                 var portalUUIDs = sourceRepository.findAll().stream()
                         .map(x -> x.getUuid())
                         .toList();
@@ -62,5 +65,10 @@ public class CachingPortalIds {
      */
     public List<String> portalIds() {
         return cache.getUnchecked("portalIds");
+    }
+
+    /** Clean cache */
+    public void clear() {
+        cache.invalidateAll();
     }
 }
