@@ -27,13 +27,18 @@ export class GcBaseComponent implements OnInit, OnChanges {
   api5Configuration = inject(API5_CONFIGURATION);
 
   setApiUrl(url: string) {
-    console.log('Setting API URL', url);
     this.apiConfiguration.set(new Configuration({ basePath: url }));
     // TODO: Update to use GN5 context path
     this.api5Configuration.set(
       new Gn5Configuration({
         basePath: url && url.replace('/srv/api', ''),
       })
+    );
+    console.log(
+      'Setting APIs URL',
+      url,
+      this.api5Configuration(),
+      this.apiConfiguration()
     );
   }
 

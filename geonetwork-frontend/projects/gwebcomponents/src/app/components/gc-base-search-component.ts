@@ -11,10 +11,7 @@ import { GcBaseComponent } from './gc-base-component';
 @Component({
   selector: 'gc-base-search-component',
   template: '<div></div>',
-  providers: [
-    { provide: API_CONFIGURATION, useValue: signal(DefaultConfig) },
-    SearchService,
-  ],
+  providers: [SearchService],
 })
 export class GcBaseSearchComponent extends GcBaseComponent {
   @Input({ alias: 'search-id' }) searchId = Math.random()

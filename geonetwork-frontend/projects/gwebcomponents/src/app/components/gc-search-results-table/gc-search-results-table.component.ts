@@ -15,10 +15,7 @@ import { GcBaseSearchComponent } from '../gc-base-search-component';
   templateUrl: './gc-search-results-table.component.html',
   styleUrl: './gc-search-results-table.component.css',
   // encapsulation: ViewEncapsulation.ShadowDom,
-  providers: [
-    { provide: API_CONFIGURATION, useValue: signal(DefaultConfig) },
-    SearchService,
-  ],
+  providers: [SearchService],
   imports: [
     SearchBarSimpleComponent,
     SearchContextDirective,

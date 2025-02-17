@@ -1,15 +1,21 @@
-import { computed, inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API5_CONFIGURATION } from '../config/config.loader';
+import { API5_CONFIGURATION, API_CONFIGURATION } from '../config/config.loader';
 import { LoginEndpointApi } from 'g5api';
+import { Configuration, MeApi, SearchApi } from 'gapi';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   api5Configuration = inject(API5_CONFIGURATION);
+  apiConfiguration = inject(API_CONFIGURATION);
 
   http = inject(HttpClient);
+
+  meApi = computed(() => {
+    return new MeApi(this.apiConfiguration());
+  });
 
   // loginApi = computed(() => {
   //   return new LoginEndpointApi(this.api5Configuration());
@@ -30,6 +36,10 @@ export class AuthService {
     //   username: username,
     //   password: password,
     // }} as ApiUserSigninPostOperationRequest);
+  }
+
+  getUser() {
+    return this.meApi().getMe();
   }
 
   signOut() {

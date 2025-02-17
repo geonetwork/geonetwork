@@ -5,7 +5,10 @@ import {
   UiApi,
   UiConfiguration,
 } from 'gapi';
-import { Configuration as Gn5Configuration, DefaultConfig as Gn5DefaultConfig } from 'g5api';
+import {
+  Configuration as Gn5Configuration,
+  DefaultConfig as Gn5DefaultConfig,
+} from 'g5api';
 import { DEFAULT_UI_CONFIGURATION, MISSING_CONFIG_ERROR } from './constants';
 import { InjectionToken, WritableSignal } from '@angular/core';
 

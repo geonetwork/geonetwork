@@ -13,7 +13,9 @@
 
     @if (isVector) {
       dataset contains
-      <span class="font-bold">{{ analysisResult().featureCount[0] }}</span>
+      <span class="font-bold"
+        >&nbsp;{{ analysisResult().featureCount[0] }}&nbsp;</span
+      >
       features.
     } @else if (isRaster) {
       dataset contains {{ analysisResult().dimensionsCount[0] }} band(s).

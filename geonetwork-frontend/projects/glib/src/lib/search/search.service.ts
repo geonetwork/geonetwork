@@ -6,7 +6,7 @@ import {
   SearchFilterList,
   SearchRequestParameters,
 } from './search.state.model';
-import { API_CONFIGURATION } from '../config/config.loader';
+import { API5_CONFIGURATION, API_CONFIGURATION } from '../config/config.loader';
 import { estypes } from '@elastic/elasticsearch';
 
 export interface SearchRegistry {
@@ -20,6 +20,7 @@ export class SearchService {
   store: SearchRegistry = {};
 
   apiConfiguration = inject(API_CONFIGURATION);
+  api5Configuration = inject(API5_CONFIGURATION);
 
   searchApi = computed(() => {
     return new SearchApi(this.apiConfiguration());

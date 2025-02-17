@@ -254,7 +254,8 @@ export class NewRecordPanelComponent implements OnInit {
   openEditor() {
     const target = top?.window.location || location;
     target.replace(
-      `/geonetwork/srv/eng/catalog.edit#/metadata/${this.newRecordId()}`
+      this.api5Configuration().basePath +
+        `/srv/eng/catalog.edit#/metadata/${this.newRecordId()}`
     );
   }
 
@@ -429,22 +430,28 @@ export class NewRecordPanelComponent implements OnInit {
     this.buildingOverview.set(true);
 
     const overviewUrl = !this.datasourceFile()
-      ? `/geonetwork/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
-      : `/geonetwork/api/data/analysis/overviewForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
-    this.http.get(overviewUrl, { responseType: 'blob' }).subscribe({
-      next: image => {
-        if (image.size > 0) {
-          this.overviewFromData.set(image);
-        }
-        this.buildingOverview.set(false);
-      },
-      error: error => {
-        this.errorMessage.set(
-          'Error building the overview: ' + error.statusText
-        );
-        this.buildingOverview.set(false);
-      },
-    });
+      ? `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
+      : `/api/data/analysis/overviewForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
+    this.http
+      .get(this.api5Configuration().basePath + overviewUrl, {
+        responseType: 'blob',
+      })
+      .subscribe({
+        next: image => {
+          if (image.size > 0) {
+            this.overviewFromData.set(image);
+          } else {
+            this.errorMessage.set('Empty image returned.');
+          }
+          this.buildingOverview.set(false);
+        },
+        error: error => {
+          this.errorMessage.set(
+            'Error building the overview: ' + error.statusText
+          );
+          this.buildingOverview.set(false);
+        },
+      });
   }
 
   /**
@@ -573,7 +580,6 @@ export class NewRecordPanelComponent implements OnInit {
     if (!this.newRecordId()) {
       return;
     }
-
 
     for (let i = 0; i < event.files.length; i++) {
       const putResourceRequest: PutResourceRequest = {
