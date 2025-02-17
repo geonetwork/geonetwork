@@ -34,6 +34,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+// @DependsOn("isGeoNetwork4RoutePredicateFactory")
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfiguration {
@@ -72,13 +73,14 @@ public class WebSecurityConfiguration {
                         .loginProcessingUrl("/api/user/signin")
                         .defaultSuccessUrl("/home", true)
                         .permitAll())
-                .httpBasic(basic ->
-                        // No popup in browsers
-                        basic.authenticationEntryPoint((request, response, authException) -> response.sendError(
-                                HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase())))
+                .httpBasic(AbstractHttpConfigurer::disable)
+//                .httpBasic(basic ->
+//                        // No popup in browsers
+//                        basic.authenticationEntryPoint((request, response, authException) -> response.sendError(
+//                                HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase())))
                 .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
                         .logoutSuccessUrl("/"))
-                .csrf(csrf -> csrf.disable());
+                .csrf(AbstractHttpConfigurer::disable);
 
         //    http.sessionManagement(
         //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
