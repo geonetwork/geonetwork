@@ -6,7 +6,11 @@
 
 package org.geonetwork.config;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
+import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.proxy.HttpProxyPolicyAgentAuthorizationManager;
 import org.geonetwork.security.DatabaseUserAuthProperties;
@@ -17,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -54,10 +57,10 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
-            OauthAuthoritiesMapperService oauthAuthoritiesMapperService)
+            OauthAuthoritiesMapperService oauthAuthoritiesMapperService,
+            @Value("${geonetwork.home: '/'}") String homeUrl)
             throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/home", "/signin")
                         .permitAll()
                         .requestMatchers("/geonetwork/**")
@@ -71,21 +74,34 @@ public class WebSecurityConfiguration {
                                 oauthAuthoritiesMapperService.userOauthAuthoritiesMapper())))
                 .formLogin(form -> form.loginPage("/signin")
                         .loginProcessingUrl("/api/user/signin")
-                        .defaultSuccessUrl("/home", true)
+                        .successHandler((request, response, authentication) -> {
+                            handleRedirectParam(request, response, homeUrl);
+                        })
+                        //                        .defaultSuccessUrl("/", false)
                         .permitAll())
                 .httpBasic(AbstractHttpConfigurer::disable)
-//                .httpBasic(basic ->
-//                        // No popup in browsers
-//                        basic.authenticationEntryPoint((request, response, authException) -> response.sendError(
-//                                HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase())))
+                //                .httpBasic(basic ->
+                //                        // No popup in browsers
+                //                        basic.authenticationEntryPoint((request, response, authException) ->
+                // response.sendError(
+                //                                HttpStatus.UNAUTHORIZED.value(),
+                // HttpStatus.UNAUTHORIZED.getReasonPhrase())))
                 .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
-                        .logoutSuccessUrl("/"))
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            handleRedirectParam(request, response, homeUrl);
+                        }))
                 .csrf(AbstractHttpConfigurer::disable);
 
         //    http.sessionManagement(
         //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
+    }
+
+    private static void handleRedirectParam(HttpServletRequest request, HttpServletResponse response, String homeUrl)
+            throws IOException {
+        String redirectUrl = request.getParameter("redirectUrl");
+        response.sendRedirect(StringUtils.isNotEmpty(redirectUrl) ? redirectUrl : request.getContextPath() + homeUrl);
     }
 
     @Bean

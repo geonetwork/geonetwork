@@ -1,9 +1,10 @@
 geonetwork:
   url: http://localhost:7979
+  home: /
   4:
     url: http://localhost:8080/geonetwork
     path: >
-      /srv/,
+      /srv,
       /static/,
       /images/,
       /catalog/,
