@@ -45,7 +45,7 @@
     crossorigin="anonymous"></script>
 
   <script type="text/javascript">
-    fetch('/api/me')
+    fetch('api/me')
       .then((response) => response.json())
       .then((data) => {
         $('#user').html(data.username);
