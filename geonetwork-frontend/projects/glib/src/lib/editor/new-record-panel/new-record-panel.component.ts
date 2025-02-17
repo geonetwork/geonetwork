@@ -427,11 +427,12 @@ export class NewRecordPanelComponent implements OnInit {
     this.overviewFromData.set(undefined);
     this.buildingOverview.set(true);
 
-    const overviewUrl = !this.datasourceFile()
-      ? `/api/data/analysis/overview?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
-      : `/api/data/analysis/overviewForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
+    const baseUrl = this.api5Configuration().basePath + '/api/data/analysis/overview',
+      overviewUrl = !this.datasourceFile()
+      ? `${baseUrl}?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
+      : `${baseUrl}ForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
     this.http
-      .get(this.api5Configuration().basePath + overviewUrl, {
+      .get(overviewUrl, {
         responseType: 'blob',
       })
       .subscribe({

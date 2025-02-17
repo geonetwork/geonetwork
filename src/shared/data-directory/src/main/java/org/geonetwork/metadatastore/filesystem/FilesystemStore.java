@@ -28,6 +28,7 @@ import org.geonetwork.metadatastore.MetadataResourceVisibility;
 import org.geonetwork.metadatastore.ResourceAlreadyExistException;
 import org.geonetwork.metadatastore.ResourceNotFoundException;
 import org.geonetwork.utility.legacy.io.IO;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -52,6 +53,9 @@ public class FilesystemStore extends AbstractStore {
     // TODO: Use settingManager.getNodeURL()?
     @Value("${geonetwork.url}")
     private String baseUrl;
+
+    @Value("${server.servlet.context-path:}")
+    private String contextPath;
 
     public FilesystemStore(
             final IMetadataManager metadataManager,
@@ -86,7 +90,7 @@ public class FilesystemStore extends AbstractStore {
                         metadataUuid,
                         metadataId,
                         filePathName,
-                        this.baseUrl + "/api/records/",
+                        getBaseUrl(),
                         visibility,
                         Files.size(path),
                         Date.from(Instant.ofEpochMilli(
@@ -187,7 +191,7 @@ public class FilesystemStore extends AbstractStore {
                     metadataUuid,
                     metadataId,
                     filePathName,
-                    this.baseUrl + "/api/records/",
+                    getBaseUrl(),
                     visibility,
                     fileSize,
                     Date.from(Instant.ofEpochMilli(
@@ -199,6 +203,10 @@ public class FilesystemStore extends AbstractStore {
             log.error("Error in getResourceDescription: " + e.getMessage(), e);
         }
         return result;
+    }
+
+    private @NotNull String getBaseUrl() {
+        return this.baseUrl + this.contextPath + "/api/records/";
     }
 
     @Override
@@ -216,8 +224,7 @@ public class FilesystemStore extends AbstractStore {
             }
         }
 
-        return new FilesystemStoreResourceContainer(
-                metadataUuid, metadataId, metadataUuid, this.baseUrl + "/api/records/", approved);
+        return new FilesystemStoreResourceContainer(metadataUuid, metadataId, metadataUuid, getBaseUrl(), approved);
     }
 
     @Override
