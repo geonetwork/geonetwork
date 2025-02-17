@@ -400,14 +400,12 @@ export class NewRecordPanelComponent implements OnInit {
           layer: this.layername(),
         };
 
-    /*const analysisMethod = this.datasourceFile()
+    const analysisMethod = this.datasourceFile()
       ? this.dataAnalysisApi().analysisSynchMetadataResource(
-        analysisRequest as AnalysisSynchMetadataResourceRequest
-      )
-      : this.dataAnalysisApi().analysisSynchIndexRecord(analysisRequest);*/
+          analysisRequest as AnalysisSynchMetadataResourceRequest
+        )
+      : this.dataAnalysisApi().analysisSynchIndexRecord(analysisRequest);
 
-    const analysisMethod =
-      this.dataAnalysisApi().analysisSynchIndexRecord(analysisRequest);
     analysisMethod.then(
       response => {
         this.analysisResult.set(response);

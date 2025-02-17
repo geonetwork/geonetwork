@@ -242,7 +242,7 @@ export class DataAnalysisControllerApi extends runtime.BaseAPI {
   async analysisSynchMetadataResourceRaw(
     requestParameters: AnalysisSynchMetadataResourceRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<AnalysisSynch200Response>> {
+  ): Promise<runtime.ApiResponse<IndexRecord>> {
     if (requestParameters['metadataUuid'] == null) {
       throw new runtime.RequiredError(
         'metadataUuid',
@@ -313,7 +313,7 @@ export class DataAnalysisControllerApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, jsonValue =>
-      AnalysisSynch200ResponseFromJSON(jsonValue)
+      IndexRecordFromJSON(jsonValue)
     );
   }
 
@@ -322,7 +322,7 @@ export class DataAnalysisControllerApi extends runtime.BaseAPI {
   async analysisSynchMetadataResource(
     requestParameters: AnalysisSynchMetadataResourceRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<AnalysisSynch200Response> {
+  ): Promise<IndexRecord> {
     const response = await this.analysisSynchMetadataResourceRaw(
       requestParameters,
       initOverrides

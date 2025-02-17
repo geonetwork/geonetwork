@@ -28,18 +28,6 @@ import {
 export interface MetadataResource {
   /**
    *
-   * @type {Date}
-   * @memberof MetadataResource
-   */
-  lastModification?: Date;
-  /**
-   *
-   * @type {number}
-   * @memberof MetadataResource
-   */
-  metadataId?: number;
-  /**
-   *
    * @type {MetadataResourceExternalManagementProperties}
    * @memberof MetadataResource
    */
@@ -50,6 +38,18 @@ export interface MetadataResource {
    * @memberof MetadataResource
    */
   approved?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof MetadataResource
+   */
+  lastModification?: Date;
+  /**
+   *
+   * @type {number}
+   * @memberof MetadataResource
+   */
+  metadataId?: number;
   /**
    *
    * @type {string}
@@ -125,11 +125,6 @@ export function MetadataResourceFromJSONTyped(
     return json;
   }
   return {
-    lastModification:
-      json['lastModification'] == null
-        ? undefined
-        : new Date(json['lastModification']),
-    metadataId: json['metadataId'] == null ? undefined : json['metadataId'],
     metadataResourceExternalManagementProperties:
       json['metadataResourceExternalManagementProperties'] == null
         ? undefined
@@ -137,6 +132,11 @@ export function MetadataResourceFromJSONTyped(
             json['metadataResourceExternalManagementProperties']
           ),
     approved: json['approved'] == null ? undefined : json['approved'],
+    lastModification:
+      json['lastModification'] == null
+        ? undefined
+        : new Date(json['lastModification']),
+    metadataId: json['metadataId'] == null ? undefined : json['metadataId'],
     visibility: json['visibility'] == null ? undefined : json['visibility'],
     id: json['id'] == null ? undefined : json['id'],
     size: json['size'] == null ? undefined : json['size'],
@@ -153,16 +153,16 @@ export function MetadataResourceToJSON(value?: MetadataResource | null): any {
     return value;
   }
   return {
-    lastModification:
-      value['lastModification'] == null
-        ? undefined
-        : value['lastModification'].toISOString(),
-    metadataId: value['metadataId'],
     metadataResourceExternalManagementProperties:
       MetadataResourceExternalManagementPropertiesToJSON(
         value['metadataResourceExternalManagementProperties']
       ),
     approved: value['approved'],
+    lastModification:
+      value['lastModification'] == null
+        ? undefined
+        : value['lastModification'].toISOString(),
+    metadataId: value['metadataId'],
     visibility: value['visibility'],
     id: value['id'],
     size: value['size'],

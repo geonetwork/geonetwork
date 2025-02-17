@@ -288,11 +288,11 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Attachment added."
-          },
           "403": {
             "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT"
+          },
+          "204": {
+            "description": "Attachment added."
           }
         }
       }
@@ -2127,14 +2127,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/DatasetInfo"
-                    },
-                    {
-                      "$ref": "#/components/schemas/RasterInfo"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/IndexRecord"
                 }
               }
             }
@@ -2319,6 +2312,12 @@
       "MetadataResource": {
         "type": "object",
         "properties": {
+          "metadataResourceExternalManagementProperties": {
+            "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
+          },
+          "approved": {
+            "type": "boolean"
+          },
           "lastModification": {
             "type": "string",
             "format": "date-time"
@@ -2326,12 +2325,6 @@
           "metadataId": {
             "type": "integer",
             "format": "int32"
-          },
-          "metadataResourceExternalManagementProperties": {
-            "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
-          },
-          "approved": {
-            "type": "boolean"
           },
           "visibility": {
             "type": "string",

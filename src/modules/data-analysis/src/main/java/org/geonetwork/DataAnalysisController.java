@@ -124,19 +124,9 @@ public class DataAnalysisController {
     }
 
     @GetMapping(path = "/executeMetadataResource", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponses(
-            value = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "Analysis executed successfully",
-                        content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(oneOf = {DatasetInfo.class, RasterInfo.class}))
-                        }),
-            })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Analysis executed successfully")})
     @PreAuthorize("hasRole('Editor')")
-    public ResponseEntity<BaseDataInfo> analysisSynchMetadataResource(
+    public ResponseEntity<IndexRecord> analysisSynchMetadataResource(
             @RequestParam String metadataUuid,
             @RequestParam MetadataResourceVisibility visibility,
             @RequestParam String datasource,
@@ -153,7 +143,7 @@ public class DataAnalysisController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return internalAnalysisSynch(datasourceToUse, layer);
+        return internalAnalysisSynchIndexRecord(datasourceToUse, layer);
     }
 
     @GetMapping(path = "/layers", produces = MediaType.APPLICATION_JSON_VALUE)
