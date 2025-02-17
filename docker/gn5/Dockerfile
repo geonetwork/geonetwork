@@ -2,7 +2,8 @@ FROM openjdk:21-bookworm
 
 RUN apt update && apt install -y gdal-bin
 
-RUN groupadd --system spring && useradd -g spring  --system spring
+RUN groupadd --system -g 999 spring && \
+    useradd -g spring -u 999 --system spring
 
 USER spring:spring
 
