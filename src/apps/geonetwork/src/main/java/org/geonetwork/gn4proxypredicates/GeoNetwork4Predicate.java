@@ -8,6 +8,7 @@ package org.geonetwork.gn4proxypredicates;
 import io.micrometer.common.util.StringUtils;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.geonetwork.utility.ApplicationContextProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.server.mvc.common.Shortcut;
 import org.springframework.stereotype.Component;
@@ -42,14 +43,27 @@ import org.springframework.web.servlet.function.RequestPredicate;
 @AllArgsConstructor
 public class GeoNetwork4Predicate {
 
-    static CachingPortalIds cachingPortalIds = new CachingPortalIds();
+    static volatile CachingPortalIds cachingPortalIdsInstance = null;
 
     private static List<String> listOfPath;
 
-    @SuppressWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     @Value("${geonetwork.4.path}")
     public void setListOfPath(List<String> listOfPath) {
         GeoNetwork4Predicate.listOfPath = listOfPath;
+    }
+
+    // double check pattern to ensure we only construct CachingPortalIds once
+    static CachingPortalIds cachingPortalIds() {
+        if (cachingPortalIdsInstance != null) {
+            return cachingPortalIdsInstance;
+        }
+        synchronized (GeoNetwork4Predicate.class) {
+            if (cachingPortalIdsInstance == null) {
+                cachingPortalIdsInstance =
+                        ApplicationContextProvider.getApplicationContext().getBean(CachingPortalIds.class);
+            }
+            return cachingPortalIdsInstance;
+        }
     }
 
     /*
@@ -71,8 +85,8 @@ public class GeoNetwork4Predicate {
             }
             var portalName = path.substring(1);
             var slashIndex = portalName.indexOf("/");
-            return cachingPortalIds
-                    .portalIds()
+            return cachingPortalIds()
+                    .loadIdsFromDB()
                     .contains(slashIndex == -1 ? portalName : portalName.substring(0, slashIndex));
         };
     }

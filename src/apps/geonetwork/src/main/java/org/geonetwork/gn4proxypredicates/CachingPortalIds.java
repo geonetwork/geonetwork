@@ -5,14 +5,12 @@
  */
 package org.geonetwork.gn4proxypredicates;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.geonetwork.domain.repository.SourceRepository;
-import org.geonetwork.utility.ApplicationContextProvider;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 
 /**
  * very simple cache for the portal IDs. This is likely to be called on every request, so its worth caching to cut down
@@ -23,52 +21,33 @@ import org.springframework.context.ApplicationContext;
  * <p>The cache is set to expire this after CACHE_TIMEOUT_SECONDS seconds. After this time, it will re-execute the db
  * request for the portal uuids.
  */
+@Component
 public class CachingPortalIds {
-    static LoadingCache<String, List<String>> cache;
-    // FIXME: is ok in test, but null at runtime
-    static ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
 
-    static int CACHE_TIMEOUT_SECONDS = 60;
-
-    // create the cache - with the load() method to do the DB query.
-    static {
-        var cacheLoader = new CacheLoader<String, List<String>>() {
-
-            /**
-             * Get the IDs (UUID) of all the portals (DB: `sources` tables).
-             *
-             * <p>Note, in general, the UUID of the main portal will be GUID.
-             *
-             * @return the IDs (UUID) of the all portal (DB: `sources` tables)
-             */
-            @Override
-            public List<String> load(String key) {
-                var sourceRepository = applicationContext == null
-                        ? ApplicationContextProvider.getApplicationContext().getBean(SourceRepository.class)
-                        : applicationContext.getBean(SourceRepository.class);
-                var portalUUIDs = sourceRepository.findAll().stream()
-                        .map(x -> x.getUuid())
-                        .toList();
-                return portalUUIDs;
-            }
-        };
-        // build cache and expire after CACHE_TIMEOUT_SECONDS seconds
-        cache = CacheBuilder.newBuilder()
-                .expireAfterWrite(CACHE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .build(cacheLoader);
-    }
+    @Autowired
+    SourceRepository sourceRepository;
 
     /**
      * get the portal UUIDs from the cache.
      *
-     * @return list of portal uuids (might be up to CACHE_TIMEOUT_SECONDS old).
+     * @return list of portal uuids (might be old due to cache).
      */
-    public List<String> portalIds() {
-        return cache.getUnchecked("portalIds");
+    @Cacheable("source-portal-ids")
+    public List<String> loadIdsFromDB() {
+        var portalUUIDs =
+                sourceRepository.findAll().stream().map(x -> x.getUuid()).toList();
+        return portalUUIDs;
     }
 
-    /** Clean cache */
-    public void clear() {
-        cache.invalidateAll();
-    }
+    //    @Autowired
+    //    CacheManager cacheManager;
+    //
+    //    /** Clean cache NOW. */
+    //    public void clear() {
+    //        cacheManager.getCache("source-portal-ids").invalidate();
+    //    }
+
+    /** Clean cache NOW. */
+    @CacheEvict("source-portal-ids")
+    public void clear() {}
 }
