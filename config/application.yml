@@ -10,7 +10,11 @@ geonetwork:
       /catalog/,
       /map/,
       /criticalhealthcheck,
-      /warninghealthcheck
+      /warninghealthcheck,
+      /doc/api/index.html,
+      /doc/api/swagger-ui.css,
+      /doc/api/swagger-ui-bundle.js,
+      /doc/api/swagger-ui-standalone-preset.js
   index:
     url: http://localhost:9200
     indexPrefix: gn5-
