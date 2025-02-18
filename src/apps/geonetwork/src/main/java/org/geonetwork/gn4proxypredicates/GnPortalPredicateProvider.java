@@ -16,6 +16,6 @@ public class GnPortalPredicateProvider implements PredicateSupplier {
 
     @Override
     public Collection<Method> get() {
-        return Arrays.asList(GnPortalPredicate.class.getMethods());
+        return Arrays.asList(GeoNetwork4Predicate.class.getMethods());
     }
 }

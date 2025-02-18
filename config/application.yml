@@ -139,7 +139,7 @@ spring:
           - id: geonetwork_route
             uri: ${geonetwork.4.url}
             predicates:
-              - isGnPortalRequest=
+              - isGeoNetwork4Request=
             filters:
               - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
