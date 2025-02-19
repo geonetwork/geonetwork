@@ -1,4 +1,5 @@
-FROM openjdk:21-bookworm
+FROM eclipse-temurin:21-noble
+
 
 RUN apt update && apt install -y gdal-bin
 
