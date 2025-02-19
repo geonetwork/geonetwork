@@ -19,11 +19,18 @@
               [attr.src]="suggestionData()"
               alt="Generated from the datasource"
               class="max-w-full p-6" />
+
+            <p-button
+              label="Save overview"
+              icon="fa fa-save"
+              [disabled]="!canSaveOverview()"
+              (onClick)="setRecordOverview()"
+              class="mt-4"></p-button>
           }
         }
         @case ('overview_upload') {
           <p-fileupload
-            chooseLabel="Select an overview"
+            chooseLabel="Upload overview"
             mode="basic"
             auto="true"
             [disabled]="overviewType() !== 'overview_upload'"
@@ -42,10 +49,3 @@
     </div>
   }
 </div>
-
-<p-button
-  label="Save overview"
-  icon="fa fa-save"
-  [disabled]="!canSaveOverview()"
-  (onClick)="setRecordOverview()"
-  class="mt-4"></p-button>

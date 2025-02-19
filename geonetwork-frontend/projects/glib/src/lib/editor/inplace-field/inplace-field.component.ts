@@ -17,6 +17,7 @@ import {
   API5_CONFIGURATION,
   API_CONFIGURATION,
 } from '../../config/config.loader';
+import { AutoFocus } from 'primeng/autofocus';
 
 @Component({
   selector: 'g-inplace-field',
@@ -26,6 +27,7 @@ import {
     Inplace,
     InputText,
     EeaResourceIdentifierFieldComponent,
+    AutoFocus,
   ],
   templateUrl: './inplace-field.component.html',
   styleUrl: './inplace-field.component.css',

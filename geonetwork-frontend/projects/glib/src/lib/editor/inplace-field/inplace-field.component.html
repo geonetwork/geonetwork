@@ -12,7 +12,11 @@
           <g-eea-resource-identifier-field
             [(value)]="value"></g-eea-resource-identifier-field>
         } @else {
-          <input type="text" pInputText autofocus [(ngModel)]="value" />
+          <input
+            type="text"
+            pInputText
+            [pAutoFocus]="true"
+            [(ngModel)]="value" />
         }
       </div>
       <div class="inline-flex gap-2">

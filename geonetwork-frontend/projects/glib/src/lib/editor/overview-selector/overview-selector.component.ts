@@ -9,11 +9,10 @@ import {
 } from '../../config/config.module';
 import { Button } from 'primeng/button';
 import { PutResourceRequest, RecordsApi as RecordsApi5 } from 'g5api';
-import { Badge } from 'primeng/badge';
 
 @Component({
   selector: 'g-overview-selector',
-  imports: [RadioButton, FormsModule, FileUpload, Button, Badge],
+  imports: [RadioButton, FormsModule, FileUpload, Button],
   templateUrl: './overview-selector.component.html',
   standalone: true,
 })
