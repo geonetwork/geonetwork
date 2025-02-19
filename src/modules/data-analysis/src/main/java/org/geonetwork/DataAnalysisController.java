@@ -5,6 +5,7 @@
  */
 package org.geonetwork;
 
+import org.geonetwork.data.DataAnalyzerException;
 import static org.geonetwork.data.gdal.GdalUtils.GDAL_DEFAULT_RASTER_LAYER;
 
 import io.swagger.v3.oas.annotations.media.Content;
@@ -325,7 +326,8 @@ public class DataAnalysisController {
                     return new ResponseEntity<>(indexRecord, HttpStatus.OK);
                 }
             } catch (Exception rasterException) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                throw new DataAnalyzerException(String.format("Error analyzing datasource %s.\nVector analysis error: %s.\nRaster analysis error: %s",
+                    datasource, vectorException.getMessage(), rasterException.getMessage()));
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
