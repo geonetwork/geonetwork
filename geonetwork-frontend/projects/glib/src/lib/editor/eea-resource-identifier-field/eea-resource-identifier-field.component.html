@@ -62,6 +62,7 @@
     <span>_</span>
   </p-inputgroup-addon>
   <input
+    placeholder="Short name"
     title="Dataset short name"
     pTooltip="Dataset name should be the same whenever new versions or revisions of the dataset supersede previous ones.
                       Different parts of the shortname will be separated by '-'
@@ -88,6 +89,7 @@
     <span>_</span>
   </p-inputgroup-addon>
   <p-datePicker
+    placeholder="Temporal extent"
     [(ngModel)]="resourceIdentifier.temporalCoverage"
     view="year"
     selectionMode="range"
