@@ -53,7 +53,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequestMapping(value = {"/api/records/{metadataUuidOrId}/attachments"})
+@RequestMapping(value = {"/api/records/{metadataUuid}/attachments"})
 @Tag(name = API_CLASS_RECORD_TAG, description = API_CLASS_RECORD_OPS)
 @RestController
 @RequiredArgsConstructor
@@ -90,7 +90,7 @@ public class AttachmentsController {
                             required = true,
                             example = "43d7c186-2187-4bcd-8843-41e575a5ef56")
                     @PathVariable
-                    String metadataUuidOrId,
+                    String metadataUuid,
             @Parameter(description = "The resource identifier (ie. filename)", required = true) @PathVariable
                     String resourceId,
             @Parameter(description = "Use approved version or not", example = "true")
@@ -101,9 +101,9 @@ public class AttachmentsController {
                     Integer size,
             @Parameter(hidden = true) HttpServletResponse response)
             throws Exception {
-        try (Store.ResourceHolder file = store.getResource(metadataUuidOrId, resourceId, approved)) {
+        try (Store.ResourceHolder file = store.getResource(metadataUuid, resourceId, approved)) {
 
-            Metadata metadata = metadataManager.findMetadataByUuidOrId(metadataUuidOrId, approved);
+            Metadata metadata = metadataManager.findMetadataByUuidOrId(metadataUuid, approved);
 
             if (!metadataAccessManager.canView(metadata.getId())) {
                 throw new AccessDeniedException("User is not permitted to access this resource");
@@ -151,7 +151,7 @@ public class AttachmentsController {
                             required = true,
                             example = "43d7c186-2187-4bcd-8843-41e575a5ef56")
                     @PathVariable
-                    String metadataUuidOrId,
+                    String metadataUuid,
             @Parameter(description = "Sort by", example = "type") @RequestParam(required = false, defaultValue = "name")
                     Sort sort,
             @Parameter(description = "Use approved version or not", example = "true")
@@ -160,7 +160,7 @@ public class AttachmentsController {
             @RequestParam(required = false, defaultValue = FilesystemStore.DEFAULT_FILTER) String filter)
             throws Exception {
 
-        return store.getResources(metadataUuidOrId, sort, filter, approved);
+        return store.getResources(metadataUuid, sort, filter, approved);
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Delete a metadata resource")
@@ -181,14 +181,14 @@ public class AttachmentsController {
                             required = true,
                             example = "43d7c186-2187-4bcd-8843-41e575a5ef56")
                     @PathVariable
-                    String metadataUuidOrId,
+                    String metadataUuid,
             @Parameter(description = "The resource identifier (ie. filename)", required = true) @PathVariable
                     String resourceId,
             @Parameter(description = "Use approved version or not", example = "true")
                     @RequestParam(required = false, defaultValue = "false")
                     Boolean approved)
             throws Exception {
-        store.delResource(metadataUuidOrId, resourceId, approved);
+        store.delResource(metadataUuid, resourceId, approved);
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Delete all uploaded metadata resources")
@@ -209,13 +209,13 @@ public class AttachmentsController {
                             required = true,
                             example = "43d7c186-2187-4bcd-8843-41e575a5ef56")
                     @PathVariable
-                    String metadataUuidOrId,
+                    String metadataUuid,
             @Parameter(description = "Use approved version or not", example = "true")
                     @RequestParam(required = false, defaultValue = "false")
                     Boolean approved)
             throws Exception {
 
-        Metadata metadata = metadataManager.findMetadataByUuidOrId(metadataUuidOrId, approved);
+        Metadata metadata = metadataManager.findMetadataByUuidOrId(metadataUuid, approved);
         store.delResources(metadata.getId());
     }
 
@@ -234,7 +234,7 @@ public class AttachmentsController {
                             required = true,
                             example = "43d7c186-2187-4bcd-8843-41e575a5ef56")
                     @PathVariable
-                    String metadataUuidOrId,
+                    String metadataUuid,
             @Parameter(description = "The sharing policy", example = "public")
                     @RequestParam(required = false, defaultValue = "public")
                     MetadataResourceVisibility visibility,
@@ -244,7 +244,7 @@ public class AttachmentsController {
                     Boolean approved)
             throws Exception {
 
-        return store.putResource(metadataUuidOrId, file, visibility, approved);
+        return store.putResource(metadataUuid, file, visibility, approved);
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Create a new resource from a URL for a given metadata")
@@ -262,7 +262,7 @@ public class AttachmentsController {
                             required = true,
                             example = "43d7c186-2187-4bcd-8843-41e575a5ef56")
                     @PathVariable
-                    String metadataUuidOrId,
+                    String metadataUuid,
             @Parameter(description = "The sharing policy", example = "public")
                     @RequestParam(required = false, defaultValue = "public")
                     MetadataResourceVisibility visibility,
@@ -272,7 +272,7 @@ public class AttachmentsController {
                     Boolean approved)
             throws Exception {
 
-        return store.putResource(metadataUuidOrId, url, visibility, approved);
+        return store.putResource(metadataUuid, url, visibility, approved);
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Update the metadata resource visibility")
@@ -290,7 +290,7 @@ public class AttachmentsController {
                             required = true,
                             example = "43d7c186-2187-4bcd-8843-41e575a5ef56")
                     @PathVariable
-                    String metadataUuidOrId,
+                    String metadataUuid,
             @Parameter(description = "The resource identifier (ie. filename)", required = true) @PathVariable
                     String resourceId,
             @Parameter(description = "The visibility", required = true, example = "public")
@@ -300,6 +300,6 @@ public class AttachmentsController {
                     @RequestParam(required = false, defaultValue = "false")
                     Boolean approved)
             throws Exception {
-        return store.patchResourceStatus(metadataUuidOrId, resourceId, visibility, approved);
+        return store.patchResourceStatus(metadataUuid, resourceId, visibility, approved);
     }
 }

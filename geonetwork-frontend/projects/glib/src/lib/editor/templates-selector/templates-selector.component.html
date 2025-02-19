@@ -1,13 +1,13 @@
 <div
   gSearchContext="newDataTemplates"
-  size="40"
-  filter="+isTemplate:y"
+  size="60"
+  filter="+isTemplate:y +resourceType:(dataset or nonGeographicDataset)"
   [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]">
-  <g-search-agg
+  <!-- <g-search-agg
     aggregation="resourceType"
     [isLabelDisplayed]="false"
     [layout]="SearchAggLayout.SELECT_BUTTON"
-    scope="newDataTemplates" />
+    scope="newDataTemplates" />-->
 
   <g-search-results scope="newDataTemplates">
     <ng-template #searchProgressTemplate>
@@ -20,6 +20,11 @@
         <div class="w-full">
           <label class="font-bold">Templates</label>
         </div>
+
+        <!--<div class="my-4">
+          <g-search-input scope="newDataTemplates" />
+        </div>-->
+
         <p-selectButton
           class="flex-col"
           styleClass="w-full"

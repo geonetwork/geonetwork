@@ -427,10 +427,11 @@ export class NewRecordPanelComponent implements OnInit {
     this.overviewFromData.set(undefined);
     this.buildingOverview.set(true);
 
-    const baseUrl = this.api5Configuration().basePath + '/api/data/analysis/overview',
+    const baseUrl =
+        this.api5Configuration().basePath + '/api/data/analysis/overview',
       overviewUrl = !this.datasourceFile()
-      ? `${baseUrl}?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
-      : `${baseUrl}ForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
+        ? `${baseUrl}?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
+        : `${baseUrl}ForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
     this.http
       .get(overviewUrl, {
         responseType: 'blob',
@@ -582,7 +583,7 @@ export class NewRecordPanelComponent implements OnInit {
 
     for (let i = 0; i < event.files.length; i++) {
       const putResourceRequest: PutResourceRequest = {
-        metadataUuidOrId: this.newRecordId(),
+        metadataUuid: this.newRecordId(),
         file: event.files[i],
       };
 
@@ -666,7 +667,7 @@ export class NewRecordPanelComponent implements OnInit {
 
   private retrieveMetadataFiles(selectFile: boolean): void {
     const getAllResourcesRequest: GetAllResourcesRequest = {
-      metadataUuidOrId: this.newRecordId(),
+      metadataUuid: this.newRecordId(),
     };
 
     this.recordsDataStoreApi()

@@ -133,7 +133,7 @@ spring:
           - id: geonetwork4_api_migrated
             uri: ${geonetwork.url}
             predicates:
-              - Path=/srv/api/records/*/attachments/**
+              - Path=/srv/api/records/{uuid}/attachments/**
             filters:
               - RewritePath=/srv/api/records/(?<uuid>.+)/attachments(?<segment>.*), /api/records/$\{uuid}/attachments$\{segment}
           - id: geonetwork_route

@@ -30,7 +30,7 @@
     }
   ],
   "paths": {
-    "/api/records/{metadataUuidOrId}/attachments": {
+    "/api/records/{metadataUuid}/attachments": {
       "get": {
         "tags": ["records"],
         "summary": "List all metadata attachments",
@@ -38,7 +38,7 @@
         "operationId": "getAllResources",
         "parameters": [
           {
-            "name": "metadataUuidOrId",
+            "name": "metadataUuid",
             "in": "path",
             "description": "The metadata UUID or internal identifier",
             "required": true,
@@ -115,7 +115,7 @@
         "operationId": "putResourceFromURL",
         "parameters": [
           {
-            "name": "metadataUuidOrId",
+            "name": "metadataUuid",
             "in": "path",
             "description": "The metadata UUID or internal identifier",
             "required": true,
@@ -187,7 +187,7 @@
         "operationId": "putResource",
         "parameters": [
           {
-            "name": "metadataUuidOrId",
+            "name": "metadataUuid",
             "in": "path",
             "description": "The metadata UUID or internal identifier",
             "required": true,
@@ -266,7 +266,7 @@
         "operationId": "delResources",
         "parameters": [
           {
-            "name": "metadataUuidOrId",
+            "name": "metadataUuid",
             "in": "path",
             "description": "The metadata UUID or internal identifier",
             "required": true,
@@ -722,14 +722,14 @@
         }
       }
     },
-    "/api/records/{metadataUuidOrId}/attachments/{resourceId}": {
+    "/api/records/{metadataUuid}/attachments/{resourceId}": {
       "get": {
         "tags": ["records"],
         "summary": "Get a metadata resource",
         "operationId": "getResource",
         "parameters": [
           {
-            "name": "metadataUuidOrId",
+            "name": "metadataUuid",
             "in": "path",
             "description": "The metadata UUID or internal identifier",
             "required": true,
@@ -793,7 +793,7 @@
         "operationId": "delResource",
         "parameters": [
           {
-            "name": "metadataUuidOrId",
+            "name": "metadataUuid",
             "in": "path",
             "description": "The metadata UUID or internal identifier",
             "required": true,
@@ -838,7 +838,7 @@
         "operationId": "patchResource",
         "parameters": [
           {
-            "name": "metadataUuidOrId",
+            "name": "metadataUuid",
             "in": "path",
             "description": "The metadata UUID or internal identifier",
             "required": true,

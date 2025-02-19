@@ -29,32 +29,32 @@ export interface BatchEditRequest {
 }
 
 export interface DelResourceRequest {
-  metadataUuidOrId: string;
+  metadataUuid: string;
   resourceId: string;
   approved?: boolean;
 }
 
 export interface DelResourcesRequest {
-  metadataUuidOrId: string;
+  metadataUuid: string;
   approved?: boolean;
 }
 
 export interface GetAllResourcesRequest {
-  metadataUuidOrId: string;
+  metadataUuid: string;
   sort?: GetAllResourcesSortEnum;
   approved?: boolean;
   filter?: string;
 }
 
 export interface GetResourceRequest {
-  metadataUuidOrId: string;
+  metadataUuid: string;
   resourceId: string;
   approved?: boolean;
   size?: number;
 }
 
 export interface PatchResourceRequest {
-  metadataUuidOrId: string;
+  metadataUuid: string;
   resourceId: string;
   visibility: PatchResourceVisibilityEnum;
   approved?: boolean;
@@ -67,14 +67,14 @@ export interface PreviewBatchEditRequest {
 }
 
 export interface PutResourceRequest {
-  metadataUuidOrId: string;
+  metadataUuid: string;
   file: Blob;
   visibility?: PutResourceVisibilityEnum;
   approved?: boolean;
 }
 
 export interface PutResourceFromURLRequest {
-  metadataUuidOrId: string;
+  metadataUuid: string;
   url: string;
   visibility?: PutResourceFromURLVisibilityEnum;
   approved?: boolean;
@@ -152,10 +152,10 @@ export class RecordsApi extends runtime.BaseAPI {
     requestParameters: DelResourceRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<void>> {
-    if (requestParameters['metadataUuidOrId'] == null) {
+    if (requestParameters['metadataUuid'] == null) {
       throw new runtime.RequiredError(
-        'metadataUuidOrId',
-        'Required parameter "metadataUuidOrId" was null or undefined when calling delResource().'
+        'metadataUuid',
+        'Required parameter "metadataUuid" was null or undefined when calling delResource().'
       );
     }
 
@@ -176,10 +176,10 @@ export class RecordsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/api/records/{metadataUuidOrId}/attachments/{resourceId}`
+        path: `/api/records/{metadataUuid}/attachments/{resourceId}`
           .replace(
-            `{${'metadataUuidOrId'}}`,
-            encodeURIComponent(String(requestParameters['metadataUuidOrId']))
+            `{${'metadataUuid'}}`,
+            encodeURIComponent(String(requestParameters['metadataUuid']))
           )
           .replace(
             `{${'resourceId'}}`,
@@ -212,10 +212,10 @@ export class RecordsApi extends runtime.BaseAPI {
     requestParameters: DelResourcesRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<void>> {
-    if (requestParameters['metadataUuidOrId'] == null) {
+    if (requestParameters['metadataUuid'] == null) {
       throw new runtime.RequiredError(
-        'metadataUuidOrId',
-        'Required parameter "metadataUuidOrId" was null or undefined when calling delResources().'
+        'metadataUuid',
+        'Required parameter "metadataUuid" was null or undefined when calling delResources().'
       );
     }
 
@@ -229,9 +229,9 @@ export class RecordsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/api/records/{metadataUuidOrId}/attachments`.replace(
-          `{${'metadataUuidOrId'}}`,
-          encodeURIComponent(String(requestParameters['metadataUuidOrId']))
+        path: `/api/records/{metadataUuid}/attachments`.replace(
+          `{${'metadataUuid'}}`,
+          encodeURIComponent(String(requestParameters['metadataUuid']))
         ),
         method: 'DELETE',
         headers: headerParameters,
@@ -261,10 +261,10 @@ export class RecordsApi extends runtime.BaseAPI {
     requestParameters: GetAllResourcesRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<MetadataResource>>> {
-    if (requestParameters['metadataUuidOrId'] == null) {
+    if (requestParameters['metadataUuid'] == null) {
       throw new runtime.RequiredError(
-        'metadataUuidOrId',
-        'Required parameter "metadataUuidOrId" was null or undefined when calling getAllResources().'
+        'metadataUuid',
+        'Required parameter "metadataUuid" was null or undefined when calling getAllResources().'
       );
     }
 
@@ -286,9 +286,9 @@ export class RecordsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/api/records/{metadataUuidOrId}/attachments`.replace(
-          `{${'metadataUuidOrId'}}`,
-          encodeURIComponent(String(requestParameters['metadataUuidOrId']))
+        path: `/api/records/{metadataUuid}/attachments`.replace(
+          `{${'metadataUuid'}}`,
+          encodeURIComponent(String(requestParameters['metadataUuid']))
         ),
         method: 'GET',
         headers: headerParameters,
@@ -324,10 +324,10 @@ export class RecordsApi extends runtime.BaseAPI {
     requestParameters: GetResourceRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Blob>> {
-    if (requestParameters['metadataUuidOrId'] == null) {
+    if (requestParameters['metadataUuid'] == null) {
       throw new runtime.RequiredError(
-        'metadataUuidOrId',
-        'Required parameter "metadataUuidOrId" was null or undefined when calling getResource().'
+        'metadataUuid',
+        'Required parameter "metadataUuid" was null or undefined when calling getResource().'
       );
     }
 
@@ -352,10 +352,10 @@ export class RecordsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/api/records/{metadataUuidOrId}/attachments/{resourceId}`
+        path: `/api/records/{metadataUuid}/attachments/{resourceId}`
           .replace(
-            `{${'metadataUuidOrId'}}`,
-            encodeURIComponent(String(requestParameters['metadataUuidOrId']))
+            `{${'metadataUuid'}}`,
+            encodeURIComponent(String(requestParameters['metadataUuid']))
           )
           .replace(
             `{${'resourceId'}}`,
@@ -392,10 +392,10 @@ export class RecordsApi extends runtime.BaseAPI {
     requestParameters: PatchResourceRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<MetadataResource>> {
-    if (requestParameters['metadataUuidOrId'] == null) {
+    if (requestParameters['metadataUuid'] == null) {
       throw new runtime.RequiredError(
-        'metadataUuidOrId',
-        'Required parameter "metadataUuidOrId" was null or undefined when calling patchResource().'
+        'metadataUuid',
+        'Required parameter "metadataUuid" was null or undefined when calling patchResource().'
       );
     }
 
@@ -427,10 +427,10 @@ export class RecordsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/api/records/{metadataUuidOrId}/attachments/{resourceId}`
+        path: `/api/records/{metadataUuid}/attachments/{resourceId}`
           .replace(
-            `{${'metadataUuidOrId'}}`,
-            encodeURIComponent(String(requestParameters['metadataUuidOrId']))
+            `{${'metadataUuid'}}`,
+            encodeURIComponent(String(requestParameters['metadataUuid']))
           )
           .replace(
             `{${'resourceId'}}`,
@@ -533,10 +533,10 @@ export class RecordsApi extends runtime.BaseAPI {
     requestParameters: PutResourceRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<MetadataResource>> {
-    if (requestParameters['metadataUuidOrId'] == null) {
+    if (requestParameters['metadataUuid'] == null) {
       throw new runtime.RequiredError(
-        'metadataUuidOrId',
-        'Required parameter "metadataUuidOrId" was null or undefined when calling putResource().'
+        'metadataUuid',
+        'Required parameter "metadataUuid" was null or undefined when calling putResource().'
       );
     }
 
@@ -581,9 +581,9 @@ export class RecordsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/api/records/{metadataUuidOrId}/attachments`.replace(
-          `{${'metadataUuidOrId'}}`,
-          encodeURIComponent(String(requestParameters['metadataUuidOrId']))
+        path: `/api/records/{metadataUuid}/attachments`.replace(
+          `{${'metadataUuid'}}`,
+          encodeURIComponent(String(requestParameters['metadataUuid']))
         ),
         method: 'POST',
         headers: headerParameters,
@@ -619,10 +619,10 @@ export class RecordsApi extends runtime.BaseAPI {
     requestParameters: PutResourceFromURLRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<MetadataResource>> {
-    if (requestParameters['metadataUuidOrId'] == null) {
+    if (requestParameters['metadataUuid'] == null) {
       throw new runtime.RequiredError(
-        'metadataUuidOrId',
-        'Required parameter "metadataUuidOrId" was null or undefined when calling putResourceFromURL().'
+        'metadataUuid',
+        'Required parameter "metadataUuid" was null or undefined when calling putResourceFromURL().'
       );
     }
 
@@ -651,9 +651,9 @@ export class RecordsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/api/records/{metadataUuidOrId}/attachments`.replace(
-          `{${'metadataUuidOrId'}}`,
-          encodeURIComponent(String(requestParameters['metadataUuidOrId']))
+        path: `/api/records/{metadataUuid}/attachments`.replace(
+          `{${'metadataUuid'}}`,
+          encodeURIComponent(String(requestParameters['metadataUuid']))
         ),
         method: 'PUT',
         headers: headerParameters,

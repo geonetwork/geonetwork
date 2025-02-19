@@ -74,7 +74,7 @@ export class OverviewSelectorComponent {
     }
 
     const putResourceRequest: PutResourceRequest = {
-      metadataUuidOrId: this.uuid(),
+      metadataUuid: this.uuid(),
       file:
         this.suggestion() !== undefined &&
         this.overviewType() === 'overview_suggestion'
