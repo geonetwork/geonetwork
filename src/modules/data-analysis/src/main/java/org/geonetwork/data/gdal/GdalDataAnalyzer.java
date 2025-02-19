@@ -114,18 +114,28 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
     @Override
     public List<String> getDatasourceLayers(String dataSource) {
-        Optional<List<String>> vectorLayers = GdalUtils.executeCommand(
-                        buildUtilityCommand(OGR_INFO_APP), timeoutInSeconds, "-ro", buildDataSourcePath(dataSource))
-                .map(GdalUtils::parseLayers);
-        if (vectorLayers.isPresent() && !vectorLayers.get().isEmpty()) {
-            return vectorLayers.get();
+        try {
+            Optional<List<String>> vectorLayers = GdalUtils.executeCommand(
+                            buildUtilityCommand(OGR_INFO_APP), timeoutInSeconds, "-ro", buildDataSourcePath(dataSource))
+                    .map(GdalUtils::parseLayers);
+            if (vectorLayers.isPresent() && !vectorLayers.get().isEmpty()) {
+                return vectorLayers.get();
+            }
+        } catch (DataAnalyzerException vectorException) {
+            try {
+                Optional<List<String>> rasterLayers = GdalUtils.executeCommand(
+                                buildUtilityCommand(GDAL_INFO_APP), timeoutInSeconds, buildDataSourcePath(dataSource))
+                        .map(GdalUtils::parseRasterLayers);
+                if (rasterLayers.isPresent() && !rasterLayers.get().isEmpty()) {
+                    return rasterLayers.get();
+                }
+            } catch (DataAnalyzerException rasterException) {
+                throw new DataAnalyzerException(String.format(
+                        "Error while collecting layers in datasource %s.\nVector analysis error: %s.\nRaster analysis error: %s",
+                        dataSource, vectorException.getMessage(), rasterException.getMessage()));
+            }
         }
-        Optional<List<String>> rasterLayers = GdalUtils.executeCommand(
-                        buildUtilityCommand(GDAL_INFO_APP), timeoutInSeconds, buildDataSourcePath(dataSource))
-                .map(GdalUtils::parseRasterLayers);
-        if (rasterLayers.isPresent() && !rasterLayers.get().isEmpty()) {
-            return rasterLayers.get();
-        }
+
         return List.of();
     }
 

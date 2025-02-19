@@ -72,6 +72,8 @@ public class GdalUtils {
     protected static List<String> parseRasterLayers(String output) {
         if (output.startsWith("Driver:")) {
             return List.of(GDAL_DEFAULT_RASTER_LAYER);
+        } else if (output.startsWith("ERROR")) {
+            throw new DataAnalyzerException(output);
         }
         return List.of();
     }

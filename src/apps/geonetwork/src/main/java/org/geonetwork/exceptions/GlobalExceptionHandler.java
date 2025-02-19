@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork;
+package org.geonetwork.exceptions;
 
 import org.geonetwork.data.DataAnalyzerException;
 import org.springframework.http.HttpStatus;
