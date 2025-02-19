@@ -286,8 +286,6 @@ export class NewRecordPanelComponent implements OnInit {
     this.recordsApi()
       .create(createRequest, {
         headers: {
-          // TODO: remove this? Header should be set in the gapi?
-          'X-XSRF-TOKEN': '17666fa5-607b-41d1-92ed-e1819c7da3b6',
           Accept: 'application/json', // Accept could be all?
           'Content-Type': 'application/json',
         },
@@ -650,12 +648,7 @@ export class NewRecordPanelComponent implements OnInit {
       };
 
       this.recordsApi()
-        .deleteRecord(deleteRecordRequest, {
-          headers: {
-            // TODO: remove this? Header should be set in the gapi?
-            'X-XSRF-TOKEN': '17666fa5-607b-41d1-92ed-e1819c7da3b6',
-          },
-        })
+        .deleteRecord(deleteRecordRequest)
         .then(
           response => {
             this.resetForm();
