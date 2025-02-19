@@ -5,7 +5,6 @@
  */
 package org.geonetwork;
 
-import org.geonetwork.data.DataAnalyzerException;
 import static org.geonetwork.data.gdal.GdalUtils.GDAL_DEFAULT_RASTER_LAYER;
 
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +15,7 @@ import jakarta.validation.constraints.Max;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.geonetwork.data.DataAnalyzerException;
 import org.geonetwork.data.MetadataBuilder;
 import org.geonetwork.data.gdal.GdalDataAnalyzer;
 import org.geonetwork.data.gdal.GdalOverviewBuilder;
@@ -326,8 +326,9 @@ public class DataAnalysisController {
                     return new ResponseEntity<>(indexRecord, HttpStatus.OK);
                 }
             } catch (Exception rasterException) {
-                throw new DataAnalyzerException(String.format("Error analyzing datasource %s.\nVector analysis error: %s.\nRaster analysis error: %s",
-                    datasource, vectorException.getMessage(), rasterException.getMessage()));
+                throw new DataAnalyzerException(String.format(
+                        "Error analyzing datasource %s.\nVector analysis error: %s.\nRaster analysis error: %s",
+                        datasource, vectorException.getMessage(), rasterException.getMessage()));
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
