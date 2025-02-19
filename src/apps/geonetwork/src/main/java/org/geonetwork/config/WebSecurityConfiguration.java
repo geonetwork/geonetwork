@@ -11,7 +11,6 @@ import org.geonetwork.proxy.HttpProxyPolicyAgentAuthorizationManager;
 import org.geonetwork.security.DatabaseUserAuthProperties;
 import org.geonetwork.security.DatabaseUserDetailsService;
 import org.geonetwork.security.GeoNetworkUserService;
-import org.geonetwork.security.OauthAuthoritiesMapperService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +34,7 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
-            OauthAuthoritiesMapperService oauthAuthoritiesMapperService)
+            GeoNetworkOAuth2UserService geoNetworkOAuth2UserService)
             throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/home", "/signin")
@@ -46,9 +45,9 @@ public class WebSecurityConfiguration {
                         .access(proxyPolicyAgentAuthorizationManager)
                         .anyRequest()
                         .permitAll())
-                .oauth2Login(oauth -> oauth.permitAll()
-                        .userInfoEndpoint(userInfo -> userInfo.userAuthoritiesMapper(
-                                oauthAuthoritiesMapperService.userOauthAuthoritiesMapper())))
+                .oauth2Login(oauth -> oauth.permitAll().userInfoEndpoint(userInfo -> userInfo.oidcUserService(
+                                geoNetworkOAuth2UserService.oidcUserService())
+                        .userService(geoNetworkOAuth2UserService.userService())))
                 .formLogin(form -> form.loginPage("/signin")
                         .loginProcessingUrl("/api/user/signin")
                         .defaultSuccessUrl("/home", true)

@@ -33,6 +33,7 @@ Typically, you would use the standard username/password authentication thats bui
 3. Add the `clientId` and `clientSecret` to GN5's `application.yml` section `security: oauth2: client: registration: github:`
 
     * fill in the  `clientId:` and `clientSecret:` sections
+    * choose the attribute name to use as the GeoNetwork username
 
 ```yml
  security:
@@ -42,6 +43,10 @@ Typically, you would use the standard username/password authentication thats bui
           github:
             clientId:  ...from your GitHub application...
             clientSecret: ...from your GitHub application...
+        # this is optional: 
+        provider:
+          github:
+            user-name-attribute: login
 ```
 
 One the main GN5 (http://localhost:7979) click "GitHub" and you will be redirected for GitHub's authentication.

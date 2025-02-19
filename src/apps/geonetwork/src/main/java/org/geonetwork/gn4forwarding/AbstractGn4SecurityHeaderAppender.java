@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.servlet.function.ServerRequest;
 
@@ -64,8 +64,10 @@ public abstract class AbstractGn4SecurityHeaderAppender {
             }
         });
 
-        var gn5Session = request.session();
-        SecurityContext securityContext = (SecurityContextImpl) gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
+        //        var gn5Session = request.session();
+        //        SecurityContext securityContext = (SecurityContextImpl)
+        // gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
+        var securityContext = SecurityContextHolder.getContext();
         var username = getUserName(securityContext);
         if (username == null) {
             return changedRequest.build();
@@ -104,14 +106,17 @@ public abstract class AbstractGn4SecurityHeaderAppender {
         if (principle instanceof User) {
             return ((User) principle).getUsername();
         }
-        if (principle instanceof DefaultOidcUser) {
-            return ((DefaultOidcUser) principle).getName();
-        }
         if (principle instanceof DefaultOAuth2User) {
-            // this is what a GITHUB (see doc) will come in as
-            // for github, .getName() is a number so we might want to make this configurable
-            // i.e. ((DefaultOAuth2User) auth.getPrincipal()).getAttribute("login")
+            // #getName() should return the username of the user in the GN DB!!
+            //
+            // configure:
+            //        provider:
+            //          github:
+            //            user-name-attribute: login
             return ((DefaultOAuth2User) principle).getName();
+        }
+        if (principle instanceof String) {
+            return (String) principle;
         }
 
         throw new RuntimeException("unknown auth type - add support here!");
