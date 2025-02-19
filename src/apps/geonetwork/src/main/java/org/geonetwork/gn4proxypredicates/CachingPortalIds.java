@@ -27,6 +27,11 @@ public class CachingPortalIds {
     @Autowired
     SourceRepository sourceRepository;
 
+    @Autowired
+    public CachingPortalIds(SourceRepository sourceRepository) {
+        this.sourceRepository = sourceRepository;
+    }
+
     /**
      * get the portal UUIDs from the cache.
      *
