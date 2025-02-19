@@ -16,16 +16,17 @@
 
 <ng-template #overviewStepButton let-activateCallback>
   <p-button
-    label="Choose overview"
-    icon="fas fa-arrow-right"
+    label="Add overview"
+    icon="fas fa-image"
     iconPos="right"
+    [disabled]="!isTemplateSelected()"
     (onClick)="activateCallback(4)" />
 </ng-template>
 
 <ng-template #editButton>
   <p-button
     label="Edit record"
-    icon="fas fa-plus"
+    icon="fas fa-pen"
     iconPos="right"
     data-cy="gn-new-record-button-edit"
     [disabled]="!isTemplateSelected()"
@@ -59,6 +60,13 @@
             data-cy="gn-new-record-button-step-data"
             [disabled]="!isTemplateSelected()"
             (onClick)="activateCallback(2)" />
+
+          <ng-container
+            *ngTemplateOutlet="
+              overviewStepButton;
+              context: { $implicit: activateCallback }
+            "></ng-container>
+
           <ng-container *ngTemplateOutlet="editButton"></ng-container>
         </div>
       </ng-template>
@@ -214,7 +222,7 @@
           <p-button
             [disabled]="!isDatasourceAndTemplateSelected()"
             label="Analyze dataset"
-            icon="fas fa-arrow-right"
+            icon="fas fa-magnifying-glass"
             iconPos="right"
             (onClick)="activateCallback(3)" />
 
@@ -263,6 +271,8 @@
               overviewStepButton;
               context: { $implicit: activateCallback }
             "></ng-container>
+
+          <ng-container *ngTemplateOutlet="editButton"></ng-container>
         </div>
       </ng-template>
     </p-step-panel>

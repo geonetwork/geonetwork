@@ -23,6 +23,7 @@
         }
         @case ('overview_upload') {
           <p-fileupload
+            chooseLabel="Select an overview"
             mode="basic"
             auto="true"
             [disabled]="overviewType() !== 'overview_upload'"
@@ -30,8 +31,12 @@
             chooseIcon="fa fa-upload"
             accept="image/png,image/jpeg,image/gif"
             [maxFileSize]="100 * 1000000"
-            (onSelect)="setOverviewFile($event)"
-            chooseLabel="Browse" />
+            (onSelect)="setOverviewFile($event)">
+          </p-fileupload>
+
+          @if (uploadedFile() && overviewType() === 'overview_upload') {
+            <img class="max-w-full p-6" alt="overview" [src]="uploadedFile()" />
+          }
         }
       }
     </div>

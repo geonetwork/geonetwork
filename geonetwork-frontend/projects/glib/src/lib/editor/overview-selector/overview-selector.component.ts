@@ -9,10 +9,11 @@ import {
 } from '../../config/config.module';
 import { Button } from 'primeng/button';
 import { PutResourceRequest, RecordsApi as RecordsApi5 } from 'g5api';
+import { Badge } from 'primeng/badge';
 
 @Component({
   selector: 'g-overview-selector',
-  imports: [RadioButton, FormsModule, FileUpload, Button],
+  imports: [RadioButton, FormsModule, FileUpload, Button, Badge],
   templateUrl: './overview-selector.component.html',
   standalone: true,
 })
@@ -26,6 +27,7 @@ export class OverviewSelectorComponent {
   overviewAttachedToRecord = signal(false);
 
   file = signal<Blob | undefined>(undefined);
+  uploadedFile = signal<string | undefined>(undefined);
 
   canSaveOverview = computed(() => {
     return (
@@ -66,6 +68,9 @@ export class OverviewSelectorComponent {
     for (let i = 0; i < event.files.length; i++) {
       this.file.set(event.files[i]);
     }
+    if (this.file()) {
+      this.setRecordOverview();
+    }
   }
 
   setRecordOverview() {
@@ -86,16 +91,16 @@ export class OverviewSelectorComponent {
       .putResource(putResourceRequest)
       .then(
         response => {
+          this.uploadedFile.set(response.url);
           this.recordsApi()
             .processRecord({
               process: 'thumbnail-add',
               metadataUuid: this.uuid(),
               processParams: {
-                thumbnail_url: response.url,
+                thumbnail_url: this.uploadedFile(),
               },
             })
             .then(response => {
-              console.log(response);
               this.overviewAttachedToRecord.set(true);
             });
         },
