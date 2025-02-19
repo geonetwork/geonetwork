@@ -15,6 +15,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.servlet.function.ServerRequest;
 
 /**
@@ -64,15 +66,11 @@ public abstract class AbstractGn4SecurityHeaderAppender {
 
         var gn5Session = request.session();
         SecurityContext securityContext = (SecurityContextImpl) gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
-        var user = getUser(securityContext);
-        if (user == null) {
-            return changedRequest.build();
-        }
-
-        var username = user.getUsername();
+        var username = getUserName(securityContext);
         if (username == null) {
             return changedRequest.build();
         }
+
         var token = new Gn4SecurityToken(username);
 
         // get the header
@@ -85,12 +83,12 @@ public abstract class AbstractGn4SecurityHeaderAppender {
     protected abstract String encodeToken(Gn4SecurityToken token, Map config);
 
     /**
-     * Gets the User from the gn5 request (security context "SPRING_SECURITY_CONTEXT" attribute).
+     * Gets the Username from the gn5 request (security context "SPRING_SECURITY_CONTEXT" attribute).
      *
      * @param securityContext from request (SPRING_SECURITY_CONTEXT attribute) that will be proxied to gn4
-     * @return null or the User
+     * @return null or the Username
      */
-    public User getUser(SecurityContext securityContext) {
+    public String getUserName(SecurityContext securityContext) {
         if (securityContext == null) {
             // no security context - let GN4 create it own
             return null;
@@ -102,13 +100,21 @@ public abstract class AbstractGn4SecurityHeaderAppender {
             // anonymous)
             return null;
         }
-        User user = (User) auth.getPrincipal();
-        if (user == null || user.getUsername() == null) {
-            // not sure if this is possible, but if there's no user, there isn't really a correct authentication
-            return null;
+        var principle = auth.getPrincipal();
+        if (principle instanceof User) {
+            return ((User) principle).getUsername();
+        }
+        if (principle instanceof DefaultOidcUser) {
+            return ((DefaultOidcUser) principle).getName();
+        }
+        if (principle instanceof DefaultOAuth2User) {
+            // this is what a GITHUB (see doc) will come in as
+            // for github, .getName() is a number so we might want to make this configurable
+            // i.e. ((DefaultOAuth2User) auth.getPrincipal()).getAttribute("login")
+            return ((DefaultOAuth2User) principle).getName();
         }
 
-        return user;
+        throw new RuntimeException("unknown auth type - add support here!");
     }
 
     /**

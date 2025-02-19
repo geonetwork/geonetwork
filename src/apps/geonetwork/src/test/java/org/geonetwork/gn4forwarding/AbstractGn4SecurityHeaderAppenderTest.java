@@ -46,9 +46,9 @@ public class AbstractGn4SecurityHeaderAppenderTest {
         var auth = new UsernamePasswordAuthenticationToken(user, null, authorities);
         var securityContext = new SecurityContextImpl(auth);
 
-        var user2 = abstractGn4SecurityHeaderAppender.getUser(securityContext);
+        var user2 = abstractGn4SecurityHeaderAppender.getUserName(securityContext);
 
-        assertSame(user, user2);
+        assertSame(user.getUsername(), user2);
     }
 
     /**
