@@ -92,7 +92,7 @@ geonetwork:
               <gco:CharacterString xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0">{{resourceTitleObject:-}}</gco:CharacterString>
 
           - name: "resourceIdentifier"
-            xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:identifier/cit:MD_Identifier/mcc:code"
+            xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:identifier/mcc:MD_Identifier/mcc:code"
             value: >
               <gco:CharacterString xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0">{{resourceIdentifier:-}}</gco:CharacterString>
 
