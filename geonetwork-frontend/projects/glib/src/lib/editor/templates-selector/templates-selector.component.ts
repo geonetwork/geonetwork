@@ -10,7 +10,6 @@ import {
 import { SearchContextDirective } from '../../search/search-context.directive';
 import { SearchResultsComponent } from '../../search/search-results/search-results.component';
 import {
-  SearchAggComponent,
   SearchAggLayout,
 } from '../../search/search-agg/search-agg.component';
 
@@ -25,7 +24,6 @@ import {
     SearchContextDirective,
     SearchResultsComponent,
     SelectButtonModule,
-    SearchAggComponent,
   ],
   templateUrl: './templates-selector.component.html',
 })

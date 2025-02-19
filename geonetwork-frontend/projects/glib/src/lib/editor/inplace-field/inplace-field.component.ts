@@ -11,8 +11,12 @@ import { FormsModule } from '@angular/forms';
 import { Inplace } from 'primeng/inplace';
 import { InputText } from 'primeng/inputtext';
 import { BatchEditRequest, RecordsApi } from 'g5api';
+import { RecordsApi as Gn4RecordsApi } from 'gapi';
 import { EeaResourceIdentifierFieldComponent } from '../eea-resource-identifier-field/eea-resource-identifier-field.component';
-import { API5_CONFIGURATION } from '../../config/config.loader';
+import {
+  API5_CONFIGURATION,
+  API_CONFIGURATION,
+} from '../../config/config.loader';
 
 @Component({
   selector: 'g-inplace-field',
@@ -32,10 +36,14 @@ export class InplaceFieldComponent implements OnInit {
   value = model<string>();
   initialValue: string | undefined;
 
+  apiConfiguration = inject(API_CONFIGURATION);
   api5Configuration = inject(API5_CONFIGURATION);
 
   recordsApi = computed(() => {
     return new RecordsApi(this.api5Configuration());
+  });
+  gn4RecordsApi = computed(() => {
+    return new Gn4RecordsApi(this.apiConfiguration());
   });
 
   ngOnInit(): void {
@@ -55,6 +63,7 @@ export class InplaceFieldComponent implements OnInit {
     this.recordsApi()
       .batchEdit(batchEditRequest)
       .then(response => {
+        this.gn4RecordsApi().index({ uuids: [this.uuid()] });
         cb(event);
       });
   }

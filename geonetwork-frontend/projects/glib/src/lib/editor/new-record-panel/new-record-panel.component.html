@@ -14,6 +14,24 @@
   }
 </div>
 
+<ng-template #overviewStepButton let-activateCallback>
+  <p-button
+    label="Choose overview"
+    icon="fas fa-arrow-right"
+    iconPos="right"
+    (onClick)="activateCallback(4)" />
+</ng-template>
+
+<ng-template #editButton>
+  <p-button
+    label="Edit record"
+    icon="fas fa-plus"
+    iconPos="right"
+    data-cy="gn-new-record-button-edit"
+    [disabled]="!isTemplateSelected()"
+    (onClick)="createRecord(true)" />
+</ng-template>
+
 <p-stepper [(value)]="activeStep" class="p-10 w-full">
   <p-step-item [value]="1">
     <p-step>Choose resource type</p-step>
@@ -41,13 +59,7 @@
             data-cy="gn-new-record-button-step-data"
             [disabled]="!isTemplateSelected()"
             (onClick)="activateCallback(2)" />
-          <p-button
-            label="Edit record"
-            icon="fas fa-plus"
-            iconPos="right"
-            data-cy="gn-new-record-button-edit"
-            [disabled]="!isTemplateSelected()"
-            (onClick)="createRecord(true)" />
+          <ng-container *ngTemplateOutlet="editButton"></ng-container>
         </div>
       </ng-template>
     </p-step-panel>
@@ -194,17 +206,23 @@
         </div>
 
         <div class="flex mt-2 gap-2">
-          <p-button
+          <!--<p-button
             label="Back"
             icon="fas fa-arrow-left"
             severity="secondary"
-            (onClick)="activateCallback(1)" />
+            (onClick)="activateCallback(1)" />-->
           <p-button
             [disabled]="!isDatasourceAndTemplateSelected()"
             label="Analyze dataset"
             icon="fas fa-arrow-right"
             iconPos="right"
             (onClick)="activateCallback(3)" />
+
+          <ng-container
+            *ngTemplateOutlet="
+              overviewStepButton;
+              context: { $implicit: activateCallback }
+            "></ng-container>
         </div>
       </ng-template>
     </p-step-panel>
@@ -235,17 +253,16 @@
           }
         </div>
         <div class="flex mt-2 gap-2">
-          <p-button
+          <!--<p-button
             label="Back"
             icon="fas fa-arrow-left"
             severity="secondary"
-            (onClick)="activateCallback(2)" />
-          <p-button
-            [disabled]="!analysisResult()"
-            label="Choose overview"
-            icon="fas fa-arrow-right"
-            iconPos="right"
-            (onClick)="activateCallback(4)" />
+            (onClick)="activateCallback(2)" />-->
+          <ng-container
+            *ngTemplateOutlet="
+              overviewStepButton;
+              context: { $implicit: activateCallback }
+            "></ng-container>
         </div>
       </ng-template>
     </p-step-panel>
@@ -276,16 +293,12 @@
           [suggestion]="overviewFromData()"></g-overview-selector>
 
         <div class="flex mt-2 gap-2">
-          <p-button
+          <!--<p-button
             label="Back"
             icon="fas fa-arrow-left"
             severity="secondary"
-            (onClick)="activateCallback(3)" />
-          <p-button
-            label="Edit"
-            icon="fas fa-pencil-alt"
-            [disabled]="!analysisResult()"
-            (onClick)="applyAnalysisToRecord()" />
+            (onClick)="activateCallback(3)" />-->
+          <ng-container *ngTemplateOutlet="editButton"></ng-container>
         </div>
       </ng-template>
     </p-step-panel>

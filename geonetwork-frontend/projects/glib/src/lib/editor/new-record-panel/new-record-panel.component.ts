@@ -269,6 +269,9 @@ export class NewRecordPanelComponent implements OnInit {
       return;
     }
     if (this.isRecordCreated()) {
+      if (redirectToEditor) {
+        this.openEditor();
+      }
       return;
     }
 
@@ -409,6 +412,7 @@ export class NewRecordPanelComponent implements OnInit {
     analysisMethod.then(
       response => {
         this.analysisResult.set(response);
+        this.applyAnalysisToRecord();
         this.isExecutingAnalysis.set(false);
       },
       error => {
@@ -423,7 +427,13 @@ export class NewRecordPanelComponent implements OnInit {
   buildingOverview = signal(false);
 
   buildOverview() {
-    // TODO: do not try on tabular data
+    if (
+      this.analysisResult() === undefined ||
+      (this.analysisResult() && this.analysisResult()!.geom === undefined)
+    ) {
+      return;
+    }
+
     this.overviewFromData.set(undefined);
     this.buildingOverview.set(true);
 
@@ -527,11 +537,10 @@ export class NewRecordPanelComponent implements OnInit {
 
     applyAnalysis.then(
       () => {
-        this.recordsApi()
-          .index({ uuids: [this.newRecordId()] })
-          .then(() => {
-            this.openEditor();
-          });
+        this.recordsApi().index({ uuids: [this.newRecordId()] });
+        // .then(() => {
+        //   this.openEditor();
+        // });
       },
       error => {
         console.log(
