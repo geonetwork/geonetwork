@@ -20,6 +20,7 @@ import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
+import org.geonetwork.data.DataAnalyzerException;
 import org.geonetwork.data.model.DataFormat;
 
 public class GdalUtils {
@@ -53,6 +54,9 @@ public class GdalUtils {
         //  1: ms:ALEARG_REALISE (title: Exposition au retrait-gonflement des argiles)
         // or geom type
         // 1: CEEUBG100kV2_1 (Line String)
+        if (output.startsWith("ERROR")) {
+            throw new DataAnalyzerException(output);
+        }
         return Arrays.stream(output.split(System.lineSeparator()))
                 .map(pattern::matcher)
                 .filter(Matcher::matches)
