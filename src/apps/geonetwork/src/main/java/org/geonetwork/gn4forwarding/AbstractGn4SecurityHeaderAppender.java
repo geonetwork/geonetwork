@@ -103,22 +103,21 @@ public abstract class AbstractGn4SecurityHeaderAppender {
             return null;
         }
         var principle = auth.getPrincipal();
-        if (principle instanceof User) {
-            return ((User) principle).getUsername();
+        if (principle instanceof User user) {
+            return user.getUsername();
         }
-        if (principle instanceof DefaultOAuth2User) {
+        if (principle instanceof DefaultOAuth2User user) {
             // #getName() should return the username of the user in the GN DB!!
             //
             // configure:
             //        provider:
             //          github:
             //            user-name-attribute: login
-            return ((DefaultOAuth2User) principle).getName();
+            return user.getName();
         }
-        if (principle instanceof String) {
-            return (String) principle;
+        if (principle instanceof String principleString) {
+            return principleString;
         }
-
         throw new RuntimeException("unknown auth type - add support here!");
     }
 
