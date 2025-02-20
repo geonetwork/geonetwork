@@ -49,6 +49,24 @@ Typically, you would use the standard username/password authentication thats bui
             user-name-attribute: login
 ```
 
+You can also customize how the user is created in the GeoNetwork database from attributes in the OIDC/OAUTH2 user from the IDP:
+
+```yml
+geonetwork:
+  sso:
+    registration:
+      github:
+        email: email
+        name: login
+        organization: company
+        surname: lastname
+      custom:
+        email: email
+        name: login
+        organization: company
+        surname: lastname
+```
+
 One the main GN5 (http://localhost:7979) click "GitHub" and you will be redirected for GitHub's authentication.
 
 Once the user logs into GN5, it will create a user in the database.  The username will either be their email (if they have configured GitHub to have their email address public) or their GitHub username.

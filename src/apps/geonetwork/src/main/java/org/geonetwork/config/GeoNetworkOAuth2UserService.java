@@ -50,6 +50,9 @@ public class GeoNetworkOAuth2UserService {
     @Autowired
     GeoNetworkUserService geoNetworkUserService;
 
+    @Autowired
+    GeoNetworkSsoConfiguration geoNetworkSsoConfiguration;
+
     /**
      * FOR OIDC
      *
@@ -62,7 +65,11 @@ public class GeoNetworkOAuth2UserService {
             // Delegate to the default implementation for loading a user
             OidcUser oidcUser = delegate.loadUser(userRequest);
 
-            var dbUser = getOrCreate(oidcUser);
+            // i.e. "github"
+            var ssoRegistrationName = userRequest.getClientRegistration().getRegistrationId();
+            var userCreationInfo = geoNetworkSsoConfiguration.getRegistrationInfo(ssoRegistrationName);
+
+            var dbUser = getOrCreate(oidcUser, userCreationInfo);
 
             // ---- get the "gn" authorities for the user  ----------
 
@@ -101,7 +108,11 @@ public class GeoNetworkOAuth2UserService {
             // Delegate to the default implementation for loading a user
             DefaultOAuth2User oAuth2User = (DefaultOAuth2User) delegate.loadUser(userRequest);
 
-            var dbUser = getOrCreate(oAuth2User);
+            // i.e. "github"
+            var ssoRegistrationName = userRequest.getClientRegistration().getRegistrationId();
+            var userCreationInfo = geoNetworkSsoConfiguration.getRegistrationInfo(ssoRegistrationName);
+
+            var dbUser = getOrCreate(oAuth2User, userCreationInfo);
 
             // ---- get the "gn" authorities for the user  ----------
 
@@ -131,12 +142,11 @@ public class GeoNetworkOAuth2UserService {
      *
      * <p>NOTE: OIDC-user is a subclass of OAuth2User, so this works for both cases.
      *
-     * <p>TODO: allow configuration to better control user creation - like name, address, org, etc...
-     *
      * @param oAuth2User User (either from OIDC or OAuth2)
+     * @param userCreationInfo Info about how to take info from the OAuth2User to the GN User
      * @return user from DB (might be created if doesnt already exist)
      */
-    public User getOrCreate(OAuth2User oAuth2User) {
+    public User getOrCreate(OAuth2User oAuth2User, GeoNetworkSsoConfiguration.Registration userCreationInfo) {
         if (oAuth2User == null || StringUtils.isBlank(oAuth2User.getName())) {
             throw new RuntimeException("User name not found!");
         }
@@ -149,24 +159,40 @@ public class GeoNetworkOAuth2UserService {
         // ---- user is missing, create them ----------
         if (dbUser.isEmpty()) {
             // create the user in the DB
-            var email = (String) oAuth2User.getAttribute("email");
-            var name = oAuth2User.getAttribute("name");
-            var company = oAuth2User.getAttribute("company");
-            var authority = oAuth2User.getAuthorities().stream().findFirst().orElse(null);
+            var email = getValue(oAuth2User, userCreationInfo.getEmail());
+            var name = getValue(oAuth2User, userCreationInfo.getName());
+            var surname = getValue(oAuth2User, userCreationInfo.getSurname());
+            var company = getValue(oAuth2User, userCreationInfo.getOrganization());
             User newUser = User.builder()
                     .isenabled("y")
                     .password("")
                     .username(username)
-                    .name(Optional.ofNullable(name).orElse("").toString())
-                    .surname("")
-                    .authtype(authority == null ? null : authority.getAuthority())
+                    .name(Optional.ofNullable(name).orElse(""))
+                    .surname(Optional.ofNullable(surname).orElse(""))
+                    // GN4 `GeonetworkAuthenticationProvider` expects this to be null or empty
+                    .authtype(null)
                     .email(email == null ? null : Set.of(email))
-                    .organisation(Optional.ofNullable(company).orElse("").toString())
+                    .organisation(Optional.ofNullable(company).orElse(""))
                     .build();
             var user = userRepository.save(newUser);
             dbUser = Optional.of(user);
         }
 
         return dbUser.get();
+    }
+
+    public String getValue(OAuth2User oAuth2User, String value) {
+        if (value == null) {
+            return null;
+        }
+        var result = oAuth2User.getAttributes().get(value);
+        if (result == null) {
+            return null;
+        }
+        var resultStr = result.toString();
+        if (StringUtils.isBlank(resultStr)) {
+            return null;
+        }
+        return resultStr;
     }
 }
