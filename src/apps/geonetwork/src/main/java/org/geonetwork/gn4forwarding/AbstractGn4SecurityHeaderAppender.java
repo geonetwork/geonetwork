@@ -102,11 +102,15 @@ public abstract class AbstractGn4SecurityHeaderAppender {
             // anonymous)
             return null;
         }
-        User user = (User) auth.getPrincipal();
-        if (user == null || user.getUsername() == null) {
-            // not sure if this is possible, but if there's no user, there isn't really a correct authentication
-            return null;
+        if (auth.getPrincipal() instanceof User user) {
+            if (user.getUsername() == null) {
+                // not sure if this is possible, but if there's no user, there isn't really a correct authentication
+                return null;
+            }
+        } else if (auth.getAuthorities().size() == 1) {
+
         }
+        User user = (User) auth.getPrincipal();
 
         return user;
     }
