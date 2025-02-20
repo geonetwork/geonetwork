@@ -12,7 +12,7 @@ import org.springframework.cloud.gateway.server.mvc.predicate.PredicateSupplier;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class GnPortalPredicateProvider implements PredicateSupplier {
+public class GeoNetwork4PredicateProvider implements PredicateSupplier {
 
     @Override
     public Collection<Method> get() {
