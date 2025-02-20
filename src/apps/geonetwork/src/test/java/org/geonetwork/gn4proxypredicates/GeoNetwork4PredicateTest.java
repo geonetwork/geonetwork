@@ -35,7 +35,7 @@ import org.springframework.web.servlet.function.ServerRequest;
 /** Simple tests for GnPortalPredicate. */
 @ContextConfiguration
 @ExtendWith(SpringExtension.class)
-public class GnPortalPredicateTest {
+public class GeoNetwork4PredicateTest {
 
     @Autowired
     ApplicationContext applicationContext;
