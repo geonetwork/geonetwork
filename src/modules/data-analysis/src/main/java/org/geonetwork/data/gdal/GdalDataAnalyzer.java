@@ -131,7 +131,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                 }
             } catch (DataAnalyzerException rasterException) {
                 throw new DataAnalyzerException(String.format(
-                        "Error while collecting layers in datasource %s.\nVector analysis error: %s.\nRaster analysis error: %s",
+                        "Error while collecting layers in datasource %s.%n* Vector analysis error: %s%n* Raster analysis error: %s",
                         dataSource, vectorException.getMessage(), rasterException.getMessage()));
             }
         }

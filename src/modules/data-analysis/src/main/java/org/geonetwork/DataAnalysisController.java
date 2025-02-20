@@ -327,7 +327,7 @@ public class DataAnalysisController {
                 }
             } catch (Exception rasterException) {
                 throw new DataAnalyzerException(String.format(
-                        "Error analyzing datasource %s.\nVector analysis error: %s.\nRaster analysis error: %s",
+                        "Error analyzing datasource %s.%n* Vector analysis error: %s%n* Raster analysis error: %s",
                         datasource, vectorException.getMessage(), rasterException.getMessage()));
             }
         }
