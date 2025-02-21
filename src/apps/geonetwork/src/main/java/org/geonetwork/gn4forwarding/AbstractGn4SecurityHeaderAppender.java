@@ -69,7 +69,9 @@ public abstract class AbstractGn4SecurityHeaderAppender {
         // gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
         var securityContext = SecurityContextHolder.getContext();
         var username = getUserName(securityContext);
-        if (username == null) {
+        // don't pass on anonymous to GN4 - it will automatically happen and we don't want to create the
+        //  "anonymousUser" in the database.
+        if (username == null || "anonymousUser".equals(username)) {
             return changedRequest.build();
         }
 
