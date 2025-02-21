@@ -75,6 +75,19 @@ geonetwork:
         email: email
         name: cn
         surname:
+  sso:
+    registration:
+      github:
+        email: email
+        name: login
+        organization: company
+        surname: lastname
+      custom:
+        email: email
+        name: login
+        organization: company
+        surname: lastname
+
 server:
   port: 7979
   servlet:
