@@ -69,7 +69,7 @@ public abstract class AbstractGn4SecurityHeaderAppender {
         // gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
         var securityContext = SecurityContextHolder.getContext();
         var username = getUserName(securityContext);
-        if (username == null) {
+        if (username == null || "anonymousUser".equals(username)) {
             return changedRequest.build();
         }
 
