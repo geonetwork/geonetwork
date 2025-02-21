@@ -1,6 +1,7 @@
 import {
   Configuration,
   DefaultConfig,
+  Middleware,
   SiteApi,
   UiApi,
   UiConfiguration,
@@ -54,10 +55,28 @@ export function buildGn4BaseUrl(baseUrl: string): string {
     : window.location.origin + gn4BaseUrl;
 }
 
+const xsrfMiddleware: Middleware = {
+  async pre(context) {
+    const xsrfToken = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('XSRF-TOKEN='));
+    if (xsrfToken) {
+      context.init.headers = {
+        ...context.init.headers,
+        'X-XSRF-TOKEN': xsrfToken.split('=')[1],
+      };
+    }
+    return context;
+  },
+};
+
 export function loadAppConfig(environment: any) {
   console.log(environment);
   if (environment.baseUrl) {
-    appConfig.apiConfig = new Configuration({ basePath: environment.baseUrl });
+    appConfig.apiConfig = new Configuration({
+      basePath: environment.baseUrl,
+      middleware: [xsrfMiddleware],
+    });
     appConfig.api5Config = new Gn5Configuration({
       basePath: environment.baseUrlGn5Api,
     });
