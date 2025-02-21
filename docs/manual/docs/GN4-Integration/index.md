@@ -53,18 +53,19 @@ You can also customize how the user is created in the GeoNetwork database from a
 
 ```yml
 geonetwork:
-  sso:
-    registration:
-      github:
-        email: email
-        name: login
-        organization: company
-        surname: lastname
-      custom:
-        email: email
-        name: login
-        organization: company
-        surname: lastname
+  security:
+    oauth2:
+      registration:
+        github:
+          email: email
+          name: login
+          organization: company
+          surname: lastname
+        custom:
+          email: email
+          name: first_name
+          organization: company
+          surname: last_name
 ```
 
 One the main GN5 (http://localhost:7979) click "GitHub" and you will be redirected for GitHub's authentication.

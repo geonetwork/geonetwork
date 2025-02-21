@@ -14,22 +14,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "geonetwork.sso")
+@ConfigurationProperties(prefix = "geonetwork.security.oauth2")
 @Getter
 public class GeoNetworkSsoConfiguration {
 
-    private final Map<String, Registration> registration = new HashMap<>();
+    private final Map<String, Registration> userCreationRegistration = new HashMap<>();
 
     public GeoNetworkSsoConfiguration() {
         var defaultInfo = new Registration("email", "name", "organization", "surname");
-        registration.put("default", defaultInfo);
+        userCreationRegistration.put("default", defaultInfo);
     }
 
     public Registration getRegistrationInfo(String registrationId) {
-        if (registration.containsKey(registrationId)) {
-            return registration.get(registrationId);
+        if (userCreationRegistration.containsKey(registrationId)) {
+            return userCreationRegistration.get(registrationId);
         }
-        return registration.get("default");
+        return userCreationRegistration.get("default");
     }
 
     @Getter
