@@ -39,7 +39,7 @@ public class FormattingController {
     private final XsltFormatter xsltFormatter;
     private final IndexFormatter indexFormatter;
     private final IdentityFormatter identityFormatter;
-    private static final String PARAM_LANGUAGE_ALL_VALUES = "all";
+    //    private static final String PARAM_LANGUAGE_ALL_VALUES = "all";
 
     @GetMapping(
             value = {"{formatterId:.+}"},
@@ -110,18 +110,18 @@ public class FormattingController {
             formatType = FormatType.xml;
         }
 
-        String language;
-        if (StringUtils.isNotEmpty(iso3lang)) {
-            if (PARAM_LANGUAGE_ALL_VALUES.equalsIgnoreCase(iso3lang)) {
-                language = iso3lang;
-                // TODO           } else if (languageUtils.getUiLanguages().contains(iso3lang)) {
-                //                language = isoLanguagesMapper.iso639_2T_to_iso639_2B(iso3lang);
-                //            } else {
-                //                language = languageUtils.getDefaultUiLanguage();
-            }
-        } else {
-            //            language = isoLanguagesMapper.iso639_2T_to_iso639_2B(locale.getISO3Language());
-        }
+        //        String language;
+        //        if (StringUtils.isNotEmpty(iso3lang)) {
+        //            if (PARAM_LANGUAGE_ALL_VALUES.equalsIgnoreCase(iso3lang)) {
+        //                language = iso3lang;
+        // TODO           } else if (languageUtils.getUiLanguages().contains(iso3lang)) {
+        //                language = isoLanguagesMapper.iso639_2T_to_iso639_2B(iso3lang);
+        //            } else {
+        //                language = languageUtils.getDefaultUiLanguage();
+        //            }
+        //        } else {
+        //                        language = isoLanguagesMapper.iso639_2T_to_iso639_2B(locale.getISO3Language());
+        //        }
 
         // TODO      Boolean hideWithheld = !context.getBean(AccessManager.class).canEdit(context,
         // String.valueOf(metadata.getId()));

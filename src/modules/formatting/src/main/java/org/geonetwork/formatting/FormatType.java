@@ -5,6 +5,9 @@
  */
 package org.geonetwork.formatting;
 
+import java.util.Locale;
+import org.testcontainers.shaded.com.google.common.base.Splitter;
+
 /**
  * Enumerates the support output types.
  *
@@ -27,7 +30,7 @@ public enum FormatType {
     /** Find the best format matching the list of Accept header. If not found, return null */
     public static FormatType find(String acceptHeader) {
         if (acceptHeader != null) {
-            String[] accept = acceptHeader.toLowerCase().split(",");
+            Iterable<String> accept = Splitter.on(',').split(acceptHeader.toLowerCase(Locale.ROOT));
             for (String h : accept) {
                 for (FormatType c : values()) {
                     if (h.startsWith(c.contentType)) {
