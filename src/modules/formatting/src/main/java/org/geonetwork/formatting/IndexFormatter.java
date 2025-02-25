@@ -5,6 +5,8 @@
  */
 package org.geonetwork.formatting;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import co.elastic.clients.json.JsonpUtils;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import java.io.OutputStream;
@@ -25,7 +27,7 @@ public class IndexFormatter implements Formatter {
         try {
             IndexRecord indexDocument = searchController.getIndexDocument(metadata.getUuid());
             outputStream.write(JsonpUtils.toJsonString(indexDocument, new JacksonJsonpMapper())
-                    .getBytes());
+                    .getBytes(UTF_8));
         } catch (Exception e) {
             throw new FormatterException(
                     String.format("Error occur while formatting record %s", metadata.getUuid()), e);
