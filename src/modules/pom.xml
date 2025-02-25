@@ -24,6 +24,7 @@
     <module>searching</module>
     <module>editing</module>
     <module>ogcapi-records</module>
+    <module>formatting</module>
   </modules>
 
   <properties>
