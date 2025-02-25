@@ -23,5 +23,6 @@
     <module>indexing</module>
     <module>searching</module>
     <module>editing</module>
+    <module>formatting</module>
   </modules>
 </project>
