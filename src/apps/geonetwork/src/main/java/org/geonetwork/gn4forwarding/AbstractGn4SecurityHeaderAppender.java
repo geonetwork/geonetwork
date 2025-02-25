@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.servlet.function.ServerRequest;
 
 /**
@@ -62,17 +64,17 @@ public abstract class AbstractGn4SecurityHeaderAppender {
             }
         });
 
-        var gn5Session = request.session();
-        SecurityContext securityContext = (SecurityContextImpl) gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
-        var user = getUser(securityContext);
-        if (user == null) {
+        //        var gn5Session = request.session();
+        //        SecurityContext securityContext = (SecurityContextImpl)
+        // gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
+        var securityContext = SecurityContextHolder.getContext();
+        var username = getUserName(securityContext);
+        // don't pass on anonymous to GN4 - it will automatically happen and we don't want to create the
+        //  "anonymousUser" in the database.
+        if (username == null || "anonymousUser".equals(username)) {
             return changedRequest.build();
         }
 
-        var username = user.getUsername();
-        if (username == null) {
-            return changedRequest.build();
-        }
         var token = new Gn4SecurityToken(username);
 
         // get the header
@@ -85,12 +87,12 @@ public abstract class AbstractGn4SecurityHeaderAppender {
     protected abstract String encodeToken(Gn4SecurityToken token, Map config);
 
     /**
-     * Gets the User from the gn5 request (security context "SPRING_SECURITY_CONTEXT" attribute).
+     * Gets the Username from the gn5 request (security context "SPRING_SECURITY_CONTEXT" attribute).
      *
      * @param securityContext from request (SPRING_SECURITY_CONTEXT attribute) that will be proxied to gn4
-     * @return null or the User
+     * @return null or the Username
      */
-    public User getUser(SecurityContext securityContext) {
+    public String getUserName(SecurityContext securityContext) {
         if (securityContext == null) {
             // no security context - let GN4 create it own
             return null;
@@ -102,13 +104,23 @@ public abstract class AbstractGn4SecurityHeaderAppender {
             // anonymous)
             return null;
         }
-        User user = (User) auth.getPrincipal();
-        if (user == null || user.getUsername() == null) {
-            // not sure if this is possible, but if there's no user, there isn't really a correct authentication
-            return null;
+        var principle = auth.getPrincipal();
+        if (principle instanceof User user) {
+            return user.getUsername();
         }
-
-        return user;
+        if (principle instanceof DefaultOAuth2User user) {
+            // #getName() should return the username of the user in the GN DB!!
+            //
+            // configure:
+            //        provider:
+            //          github:
+            //            user-name-attribute: login
+            return user.getName();
+        }
+        if (principle instanceof String principleString) {
+            return principleString;
+        }
+        throw new RuntimeException("unknown auth type - add support here!");
     }
 
     /**

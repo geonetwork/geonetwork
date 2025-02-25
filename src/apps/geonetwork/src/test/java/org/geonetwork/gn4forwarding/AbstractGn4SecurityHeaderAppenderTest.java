@@ -26,6 +26,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -46,9 +47,9 @@ public class AbstractGn4SecurityHeaderAppenderTest {
         var auth = new UsernamePasswordAuthenticationToken(user, null, authorities);
         var securityContext = new SecurityContextImpl(auth);
 
-        var user2 = abstractGn4SecurityHeaderAppender.getUser(securityContext);
+        var user2 = abstractGn4SecurityHeaderAppender.getUserName(securityContext);
 
-        assertSame(user, user2);
+        assertSame(user.getUsername(), user2);
     }
 
     /**
@@ -124,6 +125,7 @@ public class AbstractGn4SecurityHeaderAppenderTest {
 
         var mockSession = new MockHttpSession();
         mockSession.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        SecurityContextHolder.setContext(securityContext);
 
         var request = mock(ServerRequest.class);
         when(request.session()).thenReturn(mockSession);
@@ -154,6 +156,7 @@ public class AbstractGn4SecurityHeaderAppenderTest {
 
         var mockSession = new MockHttpSession();
         mockSession.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        SecurityContextHolder.setContext(securityContext);
 
         var request = mock(ServerRequest.class);
         when(request.session()).thenReturn(mockSession);
