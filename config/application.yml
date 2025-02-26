@@ -123,26 +123,21 @@ spring:
           github:
             clientId: github-client-id
             clientSecret: github-client-secret
-  #          custom:
-  #            client-id: custom-client-id
-  #            client-secret: custom-client-secret
-  #        provider:
-  #          custom:
-  #            authorization-uri: https://custom/auth/realms/test/protocol/openid-connect/auth
-  #            token-uri: https://custom/auth/realms/test/protocol/openid-connect/token
-  #            user-info-uri: https://custom/auth/realms/test/protocol/openid-connect/userinfo
-  #            jwk-set-uri: https://custom/auth/realms/test/protocol/openid-connect/certs
-  #            issuer-uri: https://custom/auth/realms/test
+#          custom:
+#            client-id: custom-client-id
+#            client-secret: custom-client-secret
+#        provider:
+#          custom:
+#            authorization-uri: https://custom/auth/realms/test/protocol/openid-connect/auth
+#            token-uri: https://custom/auth/realms/test/protocol/openid-connect/token
+#            user-info-uri: https://custom/auth/realms/test/protocol/openid-connect/userinfo
+#            jwk-set-uri: https://custom/auth/realms/test/protocol/openid-connect/certs
+#            issuer-uri: https://custom/auth/realms/test
+
   cloud:
     gateway:
       mvc:
         routes:
-          - id: geonetwork_proxy_redirect
-            uri: ${geonetwork.url}
-            predicates:
-              - Path=/proxy
-            filters:
-              - RewritePath=/(?<url>.*), /api/$\{url}
           - id: geonetwork4_api_migrated
             uri: ${geonetwork.url}
             predicates:

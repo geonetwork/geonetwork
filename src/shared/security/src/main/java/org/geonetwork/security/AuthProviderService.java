@@ -7,7 +7,6 @@ package org.geonetwork.security;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.stereotype.Component;
@@ -18,12 +17,10 @@ public class AuthProviderService {
     private String baseUrl;
     private String contextPath;
 
-    public AuthProviderService(InMemoryClientRegistrationRepository clientRegistrationRepository,
-                               @Value("${geonetwork.url}")
-                               String baseUrl,
-                               @Value("${server.servlet.context-path:}")
-                               String contextPath
-                               ) {
+    public AuthProviderService(
+            InMemoryClientRegistrationRepository clientRegistrationRepository,
+            @Value("${geonetwork.url}") String baseUrl,
+            @Value("${server.servlet.context-path:}") String contextPath) {
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.contextPath = contextPath;
         this.baseUrl = baseUrl;

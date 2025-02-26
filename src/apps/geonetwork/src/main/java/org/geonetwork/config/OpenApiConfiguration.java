@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfiguration {
     @Value("${geonetwork.openapi.url:'http://localhost:7979'}")
     private String serverUrl;
+
     @Value("${server.servlet.context-path:'/geonetwork'}")
     private String contextPath;
 
