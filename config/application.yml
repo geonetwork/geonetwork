@@ -56,6 +56,10 @@ geonetwork:
       metadata:
         prefergrouplogo: true
   security:
+    # SAMEORIGIN, DENY, ALLOW-FROM
+    frameOptions:
+      mode: SAMEORIGIN
+      allowFrom: ""
     provider: database
     # provider: ldap
     passwordSalt: secret-hash-salt=

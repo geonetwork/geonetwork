@@ -57,7 +57,9 @@ public class WebSecurityConfiguration {
             HttpSecurity http,
             HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
             GeoNetworkOAuth2UserService geoNetworkOAuth2UserService,
-            @Value("${geonetwork.home: '/'}") String homeUrl)
+            @Value("${geonetwork.home: '/'}") String homeUrl,
+            @Value("${geonetwork.security.frameOptions.mode: 'DENY'}") String frameOptionMode,
+            @Value("${geonetwork.security.frameOptions.allowFrom: ''}") String allowFrom)
             throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/home", "/signin")
@@ -89,7 +91,26 @@ public class WebSecurityConfiguration {
                         .logoutSuccessHandler((request, response, authentication) -> {
                             handleRedirectParam(request, response, homeUrl);
                         }))
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(headers -> {
+                    headers.frameOptions(frameOptions -> {
+                        switch (frameOptionMode) {
+                            case "DENY":
+                                frameOptions.deny();
+                                break;
+                            case "SAMEORIGIN":
+                                frameOptions.sameOrigin();
+                                break;
+                            default:
+                                frameOptions.deny();
+                                break;
+                        }
+                    });
+                    if ("ALLOW-FROM".equals(frameOptionMode)) {
+                        headers.contentSecurityPolicy(
+                                csp -> csp.policyDirectives(String.format("frame-ancestors '%s'", allowFrom)));
+                    }
+                });
 
         //    http.sessionManagement(
         //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
