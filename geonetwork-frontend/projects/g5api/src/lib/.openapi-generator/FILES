@@ -13,6 +13,7 @@ models/AnalysisSynch200Response.ts
 models/ApiUserSigninPostRequest.ts
 models/AttributeStatistics.ts
 models/AttributeTable.ts
+models/AuthProvider.ts
 models/BatchEditParameter.ts
 models/CodeListValue.ts
 models/Contact.ts

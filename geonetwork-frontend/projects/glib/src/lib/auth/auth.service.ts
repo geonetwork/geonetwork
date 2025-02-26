@@ -3,6 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { API5_CONFIGURATION, API_CONFIGURATION } from '../config/config.loader';
 import { LoginEndpointApi } from 'g5api';
 import { Configuration, MeApi, SearchApi } from 'gapi';
+import { defer, from } from 'rxjs';
+
+export interface AuthProvider {
+  id: string;
+  url: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +23,9 @@ export class AuthService {
     return new MeApi(this.apiConfiguration());
   });
 
-  // loginApi = computed(() => {
-  //   return new LoginEndpointApi(this.api5Configuration());
-  // });
+  loginApi = computed(() => {
+    return new LoginEndpointApi(this.api5Configuration());
+  });
 
   signIn(username: string, password: string) {
     return this.http.post(
@@ -36,6 +42,10 @@ export class AuthService {
     //   username: username,
     //   password: password,
     // }} as ApiUserSigninPostOperationRequest);
+  }
+
+  getAuthProviders() {
+    return from(this.loginApi().getAuthProviders());
   }
 
   getUser() {

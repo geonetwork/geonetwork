@@ -1,5 +1,5 @@
-import { Component, effect, inject, output } from '@angular/core';
-import { Button } from 'primeng/button';
+import { Component, effect, inject, OnInit, output } from '@angular/core';
+import { Button, ButtonDirective } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -7,6 +7,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { AppStore } from '../../app.state';
 import { Message } from 'primeng/message';
+import { AuthService } from '../auth.service';
+import { AuthProvider } from 'g5api';
+import { SeparatorComponent } from '../../ui/separator/separator.component';
 
 @Component({
   selector: 'g-sign-in-form',
@@ -19,16 +22,22 @@ import { Message } from 'primeng/message';
     FormsModule,
     Button,
     Message,
+    ButtonDirective,
+    SeparatorComponent,
   ],
   templateUrl: './sign-in-form.component.html',
 })
-export class SignInFormComponent {
+export class SignInFormComponent implements OnInit {
   onSignIn = output<void>();
 
   readonly app = inject(AppStore);
 
+  authService = inject(AuthService);
+
   username: string = '';
   password: string = '';
+
+  authProviders: AuthProvider[] = [];
 
   constructor() {
     effect(() => {
@@ -36,6 +45,12 @@ export class SignInFormComponent {
         this.#cleanup();
         this.onSignIn && this.onSignIn.emit();
       }
+    });
+  }
+
+  ngOnInit() {
+    this.authService.getAuthProviders().subscribe(authProviders => {
+      this.authProviders = authProviders;
     });
   }
 

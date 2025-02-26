@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-export const BASE_PATH = 'http://localhost:7979'.replace(/\/+$/, '');
+export const BASE_PATH = 'http://localhost:7979/geonetwork'.replace(/\/+$/, '');
 
 export interface ConfigurationParameters {
   basePath?: string; // override base path

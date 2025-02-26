@@ -4,6 +4,7 @@ export * from './AnalysisSynch200Response';
 export * from './ApiUserSigninPostRequest';
 export * from './AttributeStatistics';
 export * from './AttributeTable';
+export * from './AuthProvider';
 export * from './BatchEditParameter';
 export * from './CodeListValue';
 export * from './Contact';

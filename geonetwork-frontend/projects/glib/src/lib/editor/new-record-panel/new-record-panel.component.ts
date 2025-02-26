@@ -66,6 +66,7 @@ import { Listbox, ListboxChangeEvent } from 'primeng/listbox';
 import { Message } from 'primeng/message';
 import { OverviewSelectorComponent } from '../overview-selector/overview-selector.component';
 import { HttpClient } from '@angular/common/http';
+import { SeparatorComponent } from '../../ui/separator/separator.component';
 
 @Component({
   selector: 'g-new-record-panel',
@@ -90,6 +91,7 @@ import { HttpClient } from '@angular/common/http';
     Listbox,
     Message,
     OverviewSelectorComponent,
+    SeparatorComponent,
   ],
   templateUrl: './new-record-panel.component.html',
   styleUrl: './new-record-panel.component.css',

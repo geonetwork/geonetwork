@@ -46,7 +46,7 @@
         >
       </div>
       <p-button
-        class="w-full"
+        styleClass="w-full"
         icon="fa fa-right-to-bracket"
         label="Sign In"
         [disabled]="username.length === 0 || password.length === 0"
@@ -58,5 +58,15 @@
         >
       }
     </div>
+
+    @if (authProviders) {
+      <g-separator label="Or" />
+
+      @for (provider of authProviders; track provider) {
+        <a pButton class="w-full mt-3" [attr.href]="provider.endpoint">
+          {{ provider.clientId }}
+        </a>
+      }
+    }
   </div>
 </form>

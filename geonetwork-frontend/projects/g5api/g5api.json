@@ -16,7 +16,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:7979"
+      "url": "http://localhost:7979/geonetwork"
     }
   ],
   "tags": [
@@ -824,11 +824,11 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Attachment visibility removed."
-          },
           "403": {
             "description": "ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT"
+          },
+          "204": {
+            "description": "Attachment visibility removed."
           }
         }
       },
@@ -1432,6 +1432,27 @@
               "text/html": {
                 "schema": {
                   "$ref": "#/components/schemas/OgcApiRecordsExceptionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/auth-providers": {
+      "get": {
+        "tags": ["login-endpoint"],
+        "operationId": "getAuthProviders",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuthProvider"
+                  }
                 }
               }
             }
@@ -3427,6 +3448,17 @@
           "name": "OgcApiRecordsLandingPageDto"
         }
       },
+      "AuthProvider": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string"
+          },
+          "endpoint": {
+            "type": "string"
+          }
+        }
+      },
       "AttributeTable": {
         "type": "object",
         "properties": {
@@ -3598,7 +3630,6 @@
       },
       "IndexRecord": {
         "type": "object",
-        "additionalProperties": true,
         "properties": {
           "docType": {
             "type": "string",

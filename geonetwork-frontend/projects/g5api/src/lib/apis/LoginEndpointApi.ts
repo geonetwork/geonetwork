@@ -13,10 +13,12 @@
  */
 
 import * as runtime from '../runtime';
-import type { ApiUserSigninPostRequest } from '../models/index';
+import type { ApiUserSigninPostRequest, AuthProvider } from '../models/index';
 import {
   ApiUserSigninPostRequestFromJSON,
   ApiUserSigninPostRequestToJSON,
+  AuthProviderFromJSON,
+  AuthProviderToJSON,
 } from '../models/index';
 
 export interface ApiUserSigninPostOperationRequest {
@@ -62,5 +64,38 @@ export class LoginEndpointApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
     await this.apiUserSigninPostRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   */
+  async getAuthProvidersRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<AuthProvider>>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/user/auth-providers`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, jsonValue =>
+      jsonValue.map(AuthProviderFromJSON)
+    );
+  }
+
+  /**
+   */
+  async getAuthProviders(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<AuthProvider>> {
+    const response = await this.getAuthProvidersRaw(initOverrides);
+    return await response.value();
   }
 }
