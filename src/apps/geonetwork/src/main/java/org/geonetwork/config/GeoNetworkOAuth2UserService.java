@@ -7,12 +7,14 @@ package org.geonetwork.config;
 
 import io.micrometer.common.util.StringUtils;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.security.GeoNetworkUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -87,7 +89,10 @@ public class GeoNetworkOAuth2UserService {
 
             // rebuild the user with the new authorities
             var modifiedOidcUser = new DefaultOidcUser(
-                    Collections.singletonList(userAuthority),
+                    List.of(
+                            userAuthority,
+                            new SimpleGrantedAuthority(
+                                    "ROLE_" + dbUser.getProfile().name())),
                     oidcUser.getIdToken(),
                     oidcUser.getUserInfo(),
                     userNameAttributeName);
