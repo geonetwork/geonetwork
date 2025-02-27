@@ -52,16 +52,16 @@
             <gmd:geographicElement>
               <gmd:EX_GeographicBoundingBox>
                 <gmd:westBoundLongitude>
-                  <gco:Decimal>-61.805814108435243</gco:Decimal>
+                  <gco:Decimal>-61.80581410843524</gco:Decimal>
                 </gmd:westBoundLongitude>
                 <gmd:eastBoundLongitude>
-                  <gco:Decimal>34.605668981354938</gco:Decimal>
+                  <gco:Decimal>34.605668981354945</gco:Decimal>
                 </gmd:eastBoundLongitude>
                 <gmd:southBoundLatitude>
-                  <gco:Decimal>4.2138689443886506</gco:Decimal>
+                  <gco:Decimal>4.213868944381421</gco:Decimal>
                 </gmd:southBoundLatitude>
                 <gmd:northBoundLatitude>
-                  <gco:Decimal>65.90833200184602</gco:Decimal>
+                  <gco:Decimal>65.9083320185337</gco:Decimal>
                 </gmd:northBoundLatitude>
               </gmd:EX_GeographicBoundingBox>
             </gmd:geographicElement>

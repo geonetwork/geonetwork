@@ -65,6 +65,13 @@
             codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#MD_SpatialRepresentationTypeCode"
             codeListValue="grid"/>
         </mri:spatialRepresentationType>
+        <mri:spatialResolution xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0" gco:nilReason="computedFromDatasource">
+          <mri:MD_Resolution>
+            <mri:distance>
+              <gco:Distance uom="m">100.0</gco:Distance>
+            </mri:distance>
+          </mri:MD_Resolution>
+        </mri:spatialResolution>
         <mri:extent xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
                     xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0" gco:nilReason="computedFromDatasource">
           <gex:EX_Extent>

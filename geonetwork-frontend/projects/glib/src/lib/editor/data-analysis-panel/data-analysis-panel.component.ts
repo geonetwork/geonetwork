@@ -6,6 +6,7 @@ import { IndexRecord } from 'g5api';
 import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { InplaceFieldComponent } from '../inplace-field/inplace-field.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'g-data-analysis-panel',
@@ -17,6 +18,7 @@ import { InplaceFieldComponent } from '../inplace-field/inplace-field.component'
     Select,
     FormsModule,
     InplaceFieldComponent,
+    JsonPipe,
   ],
   templateUrl: './data-analysis-panel.component.html',
 })

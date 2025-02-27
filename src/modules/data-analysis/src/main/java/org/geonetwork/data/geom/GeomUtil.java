@@ -53,12 +53,12 @@ public class GeomUtil {
 
         if (!wgs84Crs) {
             try {
-                CoordinateReferenceSystem mapCRS = CRS.decode(crs, false);
+                CoordinateReferenceSystem mapCRS = CRS.decode(crs, true);
 
-                double west = bboxCoordinates.get(0).doubleValue();
-                double south = bboxCoordinates.get(1).doubleValue();
-                double east = bboxCoordinates.get(2).doubleValue();
-                double north = bboxCoordinates.get(3).doubleValue();
+                double west = bboxCoordinates.get(0);
+                double south = bboxCoordinates.get(1);
+                double east = bboxCoordinates.get(2);
+                double north = bboxCoordinates.get(3);
                 ReferencedEnvelope bbox = new ReferencedEnvelope(west, east, south, north, mapCRS);
 
                 ReferencedEnvelope wgs84BBox = bbox.transform(WGS84, true);

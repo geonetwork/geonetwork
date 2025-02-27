@@ -124,14 +124,7 @@ public class MetadataBuilder {
                 break;
             case "latLonBoundingBox":
                 if (!datasetInfo.getWgs84Extent().isEmpty()) {
-                    String crs = GeomUtil.parseCrsCode(datasetInfo.getCrs());
-                    List<Double> extent = datasetInfo.getWgs84Extent();
-                    List<Double> wgs84Extent = GeomUtil.calculateWgs84Bbox(crs, extent);
-
-                    if (wgs84Extent == null) {
-                        // Use the original extent if an error occurred transforming the original extent to WGS84.
-                        wgs84Extent = extent;
-                    }
+                    List<Double> wgs84Extent = datasetInfo.getWgs84Extent();
 
                     replacements.put("west", wgs84Extent.get(0).toString());
                     replacements.put("south", wgs84Extent.get(1).toString());
@@ -147,6 +140,14 @@ public class MetadataBuilder {
                         "dimensionSizeX", String.valueOf(datasetInfo.getSize().get(0)));
                 replacements.put(
                         "dimensionSizeY", String.valueOf(datasetInfo.getSize().get(1)));
+                break;
+            case "spatialResolution":
+                if (datasetInfo.getGeoTransform() != null
+                        && datasetInfo.getGeoTransform().size() == 6) {
+                    replacements.put(
+                            "spatialResolution",
+                            String.valueOf(datasetInfo.getGeoTransform().get(1)));
+                }
                 break;
             case "distributionFormat":
                 replacements.put("format", datasetInfo.getFormat());

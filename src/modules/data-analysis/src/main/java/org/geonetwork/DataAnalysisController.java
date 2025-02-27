@@ -71,6 +71,11 @@ public class DataAnalysisController {
         return analyzer.getStatus();
     }
 
+    @GetMapping(path = "/version", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getVersion() {
+        return analyzer.getVersion();
+    }
+
     @GetMapping(path = "/formats", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('Editor')")
     public List<DataFormat> formats() {

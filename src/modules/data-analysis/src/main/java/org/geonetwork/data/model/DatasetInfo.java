@@ -64,7 +64,8 @@ public class DatasetInfo extends BaseDataInfo {
                     crs,
                     datasetLayer.getGeometryFields().getFirst().getExtent().stream()
                             .map(BigDecimal::doubleValue)
-                            .collect(Collectors.toList()));
+                            .collect(Collectors.toList()),
+                    null);
         }
 
         List<FeatureType> featureTypeList = new ArrayList<>();

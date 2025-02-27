@@ -5,48 +5,114 @@
  */
 package org.geonetwork.data.model;
 
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.data.geom.GeomUtil;
 import org.geonetwork.index.model.record.IndexRecord;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geojson.geom.GeometryJSON;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 
 @Data
 @SuperBuilder
+@Slf4j
 public abstract class BaseDataInfo implements Serializable {
     String description;
     String format;
     String formatDescription;
 
-    /**
-     * Converts the BBOX coordinates from GDAL to WGS84 and updates IndexRecord with the WGS84 crs and WGS84 bbox.
-     *
-     * <p>If the conversion fails, it stores the original information from GDAL.
-     *
-     * @param indexRecord IndexRecord information to updat.e
-     * @param crs original GDAL dataset / raster crs code.
-     * @param bboxCoordinates GDAL dataset / raster BBOX.
-     */
-    protected void calculateIndexRecordGeomInfo(IndexRecord indexRecord, String crs, List<Double> bboxCoordinates) {
-        List<Double> wgs84Coordinates = GeomUtil.calculateWgs84Bbox(crs, bboxCoordinates);
+    protected void calculateIndexRecordGeomInfo(
+            IndexRecord indexRecord,
+            String crs,
+            List<Double> wgs84Coordinates,
+            RasterCornerCoordinates rasterCornerCoordinates) {
+        indexRecord.setCoordinateSystem(List.of(crs));
 
-        boolean useGeomInfoFromGdal = (wgs84Coordinates == null);
-
-        if (!useGeomInfoFromGdal) {
-            indexRecord.setCoordinateSystem(List.of("EPSG:4326"));
-            List<String> wgs84Geom = new ArrayList<>();
-            wgs84Geom.add(String.valueOf(wgs84Coordinates.get(0)));
-            wgs84Geom.add(String.valueOf(wgs84Coordinates.get(1)));
-            wgs84Geom.add(String.valueOf(wgs84Coordinates.get(2)));
-            wgs84Geom.add(String.valueOf(wgs84Coordinates.get(3)));
-            indexRecord.setGeometries(wgs84Geom);
-        } else {
-            indexRecord.setCoordinateSystem(List.of(crs));
-            indexRecord.setGeometries(
-                    bboxCoordinates.stream().map(d -> d.toString()).collect(Collectors.toList()));
+        if (rasterCornerCoordinates != null) {
+            GeometryFactory geometryFactory = new GeometryFactory();
+            List<Coordinate> coordinates = List.of(
+                            rasterCornerCoordinates.getLowerLeft(),
+                            rasterCornerCoordinates.getLowerRight(),
+                            rasterCornerCoordinates.getUpperRight(),
+                            rasterCornerCoordinates.getUpperLeft(),
+                            rasterCornerCoordinates.getLowerLeft())
+                    .stream()
+                    .map(c -> new Coordinate(
+                            c.getFirst().doubleValue(), c.getLast().doubleValue()))
+                    .toList();
+            Polygon rasterCoordinatesPolygon = geometryFactory.createPolygon(coordinates.toArray(new Coordinate[0]));
+            Geometry rasterCoordinatesGeometry = transformGeometry(crs, rasterCoordinatesPolygon);
+            if (rasterCoordinatesGeometry != null) {
+                indexRecord.setShapes(List.of(geometryToJson(rasterCoordinatesGeometry)));
+            }
+            if (wgs84Coordinates == null) {
+                wgs84Coordinates = calculateWgs84Coordinates(crs, coordinates);
+            }
         }
+
+        if (wgs84Coordinates != null) {
+            indexRecord.setGeometries(convertToStringList(wgs84Coordinates));
+        }
+    }
+
+    private Geometry transformGeometry(String crs, Polygon rasterCoordinatesPolygon) {
+        if ("EPSG:4326".equals(crs)) {
+            return rasterCoordinatesPolygon;
+        }
+        try {
+            CoordinateReferenceSystem datasourceCrs = CRS.decode(crs, false);
+            MathTransform transform = CRS.findMathTransform(datasourceCrs, WGS84, true);
+            return JTS.transform(rasterCoordinatesPolygon, transform);
+        } catch (FactoryException | TransformException e) {
+            log.atWarn().log(String.format("Error reprojecting raster coordinates: %s", e.getMessage()));
+        }
+        return null;
+    }
+
+    private String geometryToJson(Geometry geometry) {
+        GeometryJSON g = new GeometryJSON();
+        ByteArrayOutputStream shape = new ByteArrayOutputStream();
+        try {
+            g.write(geometry, shape);
+        } catch (IOException e) {
+            log.atWarn().log(String.format("Error converting raster coordinates to JSON: %s", e.getMessage()));
+        }
+        return shape.toString(StandardCharsets.UTF_8);
+    }
+
+    private List<Double> calculateWgs84Coordinates(String crs, List<Coordinate> coordinates) {
+        List<Double> bboxCoordinates = coordinates.stream()
+                .map(c -> List.of(c.getX(), c.getY()))
+                .flatMap(List::stream)
+                .toList();
+        if ("EPSG:4326".equals(crs)) {
+            return bboxCoordinates;
+        }
+        return GeomUtil.calculateWgs84Bbox(crs, bboxCoordinates);
+    }
+
+    private List<String> convertToStringList(List<Double> coordinates) {
+        List<String> stringList = new ArrayList<>();
+        for (Double coordinate : coordinates) {
+            stringList.add(String.valueOf(coordinate));
+        }
+        return stringList;
     }
 }

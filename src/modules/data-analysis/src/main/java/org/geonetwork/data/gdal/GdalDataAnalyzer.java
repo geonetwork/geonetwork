@@ -9,7 +9,6 @@ package org.geonetwork.data.gdal;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +34,9 @@ import org.geonetwork.data.model.DatasetLayerGeomField;
 import org.geonetwork.data.model.RasterBand;
 import org.geonetwork.data.model.RasterCornerCoordinates;
 import org.geonetwork.data.model.RasterInfo;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.beans.factory.annotation.Value;
@@ -92,10 +94,11 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     public String getVersion() {
         Optional<String> version = GdalUtils.execute(getVersionCommand(), timeoutInSeconds);
         if (version.isEmpty()) {
-            throw new RuntimeException("GDAL version not found");
+            throw new DataAnalyzerException("GDAL version not found");
         }
         if (!isValidVersion(version.get())) {
-            throw new RuntimeException("GDAL version is not supported. JSON output is available since version 3.7");
+            throw new DataAnalyzerException(
+                    "GDAL version is not supported. JSON output is available since version 3.7");
         }
         return version.get();
     }
@@ -109,7 +112,12 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
     @Override
     public String getStatus() {
-        return "";
+        try {
+            getVersion();
+            return "GREEN";
+        } catch (Exception e) {
+            return "RED";
+        }
     }
 
     @Override
@@ -409,6 +417,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                             .map(b -> RasterBand.builder().build())
                             .toList())
                     .size(raster.getSize())
+                    .geoTransform(raster.getGeoTransform())
                     .build();
 
         } catch (IOException e) {
@@ -421,18 +430,22 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
         if (!extent.getBbox().isEmpty()) {
             return extent.getBbox().stream().map(Number::doubleValue).toList();
         } else if (!extent.getCoordinates().isEmpty() && extent.getCoordinates().getFirst() != null) {
-            List<List<BigDecimal>> coordinates = extent.getCoordinates().getFirst();
-            List<Double> xCoordinates = coordinates.stream()
-                    .map(c -> c.getFirst().doubleValue())
-                    .sorted()
-                    .toList();
-            List<Double> yCoordinates = coordinates.stream()
-                    .map(c -> c.getLast().doubleValue())
-                    .sorted()
-                    .toList();
+            try {
+                List<Coordinate> coordinates = extent.getCoordinates().getFirst().stream()
+                        .map(c -> new Coordinate(
+                                c.getFirst().doubleValue(), c.getLast().doubleValue()))
+                        .toList();
+                Polygon geometry = new GeometryFactory().createPolygon(coordinates.toArray(new Coordinate[0]));
 
-            return List.of(
-                    xCoordinates.getFirst(), yCoordinates.getFirst(), xCoordinates.getLast(), yCoordinates.getLast());
+                return List.of(
+                        geometry.getEnvelopeInternal().getMinX(),
+                        geometry.getEnvelopeInternal().getMinY(),
+                        geometry.getEnvelopeInternal().getMaxX(),
+                        geometry.getEnvelopeInternal().getMaxY());
+            } catch (Exception e) {
+                log.atWarn().log(e.getMessage());
+                return List.of();
+            }
         }
         return List.of();
     }

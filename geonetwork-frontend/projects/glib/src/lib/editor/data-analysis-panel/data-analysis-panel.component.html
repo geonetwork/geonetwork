@@ -5,23 +5,26 @@
   @let isTabular = spatialRepresentation === 'textTable';
   @let isRaster = spatialRepresentation === 'grid';
 
-  <div class="inline-flex items-center">
-    <g-inplace-field
-      property="resourceTitleObject"
-      [uuid]="uuid()"
-      [(value)]="analysisResult().resourceTitleObject.default" />
 
-    @if (isVector) {
-      dataset contains
-      <span class="font-bold"
-        >&nbsp;{{ analysisResult().featureCount[0] }}&nbsp;</span
-      >
-      features.
-    } @else if (isRaster) {
-      dataset contains {{ analysisResult().dimensionsCount[0] }} band(s).
-    }
+  <div class="grid grid-cols-8 gap-4">
+    <div class="font-medium">Title</div>
+    <div class="col-span-7">
+      <div class="inline-flex items-center">
+        <g-inplace-field
+          property="resourceTitleObject"
+          [uuid]="uuid()"
+          [(value)]="analysisResult().resourceTitleObject.default" />
+
+        @if (isVector) {
+          dataset contains
+          <span class="font-bold"
+            >&nbsp;{{ analysisResult().featureCount[0] }}&nbsp;</span
+          >
+          features.
+        }
+      </div>
+    </div>
   </div>
-
   <div class="grid grid-cols-8 gap-4">
     <div class="font-medium">Resource identifier</div>
     <div class="col-span-7">
@@ -49,6 +52,21 @@
         {{ spatialRepresentation }}
       </div>
     }
+    @if (analysisResult().resolutionDistance) {
+      <div class="font-medium">Resolution</div>
+      <div class="col-span-7">
+        @for (resolution of analysisResult().resolutionDistance; track $index) {
+          {{ resolution }}
+        }
+      </div>
+    }
+    @if (analysisResult().dimensionSizeY && analysisResult().dimensionSizeX) {
+      <div class="font-medium">Dimension</div>
+      <div class="col-span-7">
+        {{ analysisResult().dimensionSizeX[0] }} x {{ analysisResult().dimensionSizeY[0] }}
+      </div>
+    }
+
 
     @if (isVector && analysisResult().geom) {
       <div class="font-medium">Geometry type</div>
@@ -67,6 +85,12 @@
         <div class="font-medium">Spatial extent</div>
         <div class="col-span-7">
           {{ analysisResult().geom }}
+        </div>
+      }
+      @if (analysisResult()?.shape) {
+        <div class="font-medium">Foot print</div>
+        <div class="col-span-7">
+          {{ analysisResult().shape | json }}
         </div>
       }
       @if (analysisResult().size) {

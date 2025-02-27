@@ -6,13 +6,16 @@
 
 package org.geonetwork.data.model;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+import org.apache.commons.io.FilenameUtils;
 import org.geonetwork.data.geom.GeomUtil;
 import org.geonetwork.index.model.record.Codelist;
 import org.geonetwork.index.model.record.IndexRecord;
@@ -30,11 +33,13 @@ public class RasterInfo extends BaseDataInfo {
     private RasterCornerCoordinates rasterCornerCoordinates;
     private Map<String, Object> metadata;
     private List<Integer> size;
+    // https://gdal.org/en/stable/tutorials/geotransforms_tut.html
+    private List<BigDecimal> geoTransform;
     private List<RasterBand> bands;
 
     public IndexRecord toIndexRecord(String datasource, String layer) {
         Map<String, String> resourceTitle = new HashMap<>();
-        resourceTitle.put("default", layer);
+        resourceTitle.put("default", FilenameUtils.getBaseName(datasource));
 
         Link link = new Link();
         Map<String, String> linkName = new HashMap<>();
@@ -55,7 +60,13 @@ public class RasterInfo extends BaseDataInfo {
                 .build();
 
         String crs = GeomUtil.parseCrsCode(getCrs());
-        calculateIndexRecordGeomInfo(indexRecord, crs, getWgs84Extent());
+        calculateIndexRecordGeomInfo(indexRecord, crs, getWgs84Extent(), getRasterCornerCoordinates());
+
+        if (getGeoTransform() != null && getGeoTransform().size() == 6) {
+            indexRecord.setResolutionDistance(Stream.of(getGeoTransform().get(1))
+                    .map(BigDecimal::toString)
+                    .toList());
+        }
 
         HashMap<String, List<Object>> additionalProperties = new HashMap<>();
         additionalProperties.put("dimensionSizeX", List.of(getSize().get(0)));
