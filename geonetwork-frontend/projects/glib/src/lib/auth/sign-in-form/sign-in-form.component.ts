@@ -1,4 +1,11 @@
-import { Component, effect, inject, OnInit, output } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { Button, ButtonDirective } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -37,7 +44,7 @@ export class SignInFormComponent implements OnInit {
   username: string = '';
   password: string = '';
 
-  authProviders: AuthProvider[] = [];
+  authProviders = signal<AuthProvider[]>([]);
 
   constructor() {
     effect(() => {
@@ -50,7 +57,7 @@ export class SignInFormComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getAuthProviders().subscribe(authProviders => {
-      this.authProviders = authProviders;
+      this.authProviders.set(authProviders);
     });
   }
 

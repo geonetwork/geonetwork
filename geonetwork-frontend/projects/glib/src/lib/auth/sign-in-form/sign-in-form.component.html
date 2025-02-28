@@ -59,10 +59,10 @@
       }
     </div>
 
-    @if (authProviders) {
+    @if (authProviders()) {
       <g-separator label="Or" />
 
-      @for (provider of authProviders; track provider) {
+      @for (provider of authProviders(); track provider) {
         <a pButton class="w-full mt-3" [attr.href]="provider.endpoint">
           {{ provider.clientId }}
         </a>
