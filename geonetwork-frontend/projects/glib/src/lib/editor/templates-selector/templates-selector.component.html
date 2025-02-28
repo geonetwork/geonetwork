@@ -1,8 +1,9 @@
 <div
   gSearchContext="newDataTemplates"
   size="60"
-  filter="+isTemplate:y +resourceType:(dataset OR nonGeographicDataset)"
-  [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]">
+  [filter]="'+isTemplate:y ' + filter()"
+  [sort]="[{ 'resourceTitleObject.default.sort': 'desc' }]"
+  [(response)]="response">
   <!-- <g-search-agg
     aggregation="resourceType"
     [isLabelDisplayed]="false"

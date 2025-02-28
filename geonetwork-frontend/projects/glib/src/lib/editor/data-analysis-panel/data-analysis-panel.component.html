@@ -5,7 +5,7 @@
   @let isTabular = spatialRepresentation === 'textTable';
   @let isRaster = spatialRepresentation === 'grid';
 
-  <div class="grid grid-cols-8 gap-4">
+  <div class="grid grid-cols-8 gap-4 items-center">
     <div class="font-medium">Title</div>
     <div class="col-span-7">
       <div class="inline-flex items-center">
@@ -24,7 +24,7 @@
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-8 gap-4">
+  <div class="grid grid-cols-8 gap-4 items-center">
     <div class="font-medium">Resource identifier</div>
     <div class="col-span-7">
       <g-inplace-field
@@ -141,7 +141,7 @@
           </div>
         }
       }
-      @if (analysisResult().geom) {
+      @if (!analysisResult().geom) {
         <div class="font-medium">Spatial extent?</div>
         <div class="col-span-7">
           <p-select
@@ -151,23 +151,50 @@
             optionValue="code" />
         </div>
       }
-      <div class="font-medium">Temporal extent?</div>
-      <div class="col-span-7">
-        <p-select
-          [options]="analysisResult().featureTypes"
-          placeholder="Compute temporal extent from attribute"
-          optionLabel="code"
-          optionValue="code" />
-      </div>
 
-      <div class="font-medium">Vertical extent?</div>
-      <div class="col-span-7">
-        <p-select
-          [options]="analysisResult().featureTypes"
-          placeholder="Compute vertical extent from attribute"
-          optionLabel="code"
-          optionValue="code" />
-      </div>
+      @if (analysisResult().featureTypes) {
+        <div class="font-medium">Temporal extent?</div>
+        <div class="col-span-7 flex gap-2">
+          <p-select
+            [options]="analysisResult().featureTypes"
+            (onChange)="getStatistics($event)"
+            placeholder="Compute temporal extent from attribute"
+            optionLabel="code"
+            optionValue="code" />
+
+          @if (isComputingStatistics()) {
+            <p-progressBar
+              mode="indeterminate"
+              [style]="{ height: '6px' }"
+              class="flex-auto" />
+          }
+          @if (
+            temporalExtent() &&
+            temporalExtent()![0] &&
+            temporalExtent()![0].statistics
+          ) {
+            <!--
+            <g-inplace-field
+              property="temporalExtent"
+              [uuid]="uuid()"
+              [(value)]="{from: temporalExtent()![0].statistics.MIN, to: temporalExtent()![0].statistics.MAX}">
+            </g-inplace-field>
+            -->
+            <g-temporal-extent-field
+              [from]="String(temporalExtent()![0].statistics.MIN)"
+              [to]="String(temporalExtent()![0].statistics.MAX)" />
+          }
+        </div>
+
+        <div class="font-medium">Vertical extent?</div>
+        <div class="col-span-7">
+          <p-select
+            [options]="analysisResult().featureTypes"
+            placeholder="Compute vertical extent from attribute"
+            optionLabel="code"
+            optionValue="code" />
+        </div>
+      }
     }
   </div>
 }

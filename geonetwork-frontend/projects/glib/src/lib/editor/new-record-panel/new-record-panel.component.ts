@@ -100,6 +100,7 @@ export class NewRecordPanelComponent implements OnInit {
   @ViewChild('fileUpload', { static: false }) fileUpload: any;
 
   template = signal('');
+  numberOfTemplates = signal<number | undefined>(undefined);
   activeStep = signal(1);
   newRecordId = signal('');
 

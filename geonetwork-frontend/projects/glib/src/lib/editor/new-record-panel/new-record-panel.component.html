@@ -1,315 +1,334 @@
-<div class="w-full">
-  <p-button
-    [disabled]="!isRecordCreated()"
-    label="Cancel"
-    icon="fa fa-xmark"
-    severity="danger"
-    (onClick)="onNewRecordCancel()"
-    class="float-end m-4" />
+<div
+  [class.hidden]="
+    numberOfTemplates() === undefined || numberOfTemplates() === 0
+  ">
+  <div class="w-full">
+    <p-button
+      [disabled]="!isRecordCreated()"
+      label="Cancel"
+      icon="fa fa-xmark"
+      severity="danger"
+      (onClick)="onNewRecordCancel()"
+      class="float-end m-4" />
 
-  @if (errorMessage()) {
-    <div class="float-end m-4">
-      <p-message severity="error" closable>{{ errorMessage() }}</p-message>
-    </div>
-  }
-</div>
+    @if (errorMessage()) {
+      <div class="float-end m-4">
+        <p-message severity="error" closable>{{ errorMessage() }}</p-message>
+      </div>
+    }
+  </div>
 
-<ng-template #overviewStepButton let-activateCallback>
-  <p-button
-    label="Add overview"
-    icon="fas fa-image"
-    iconPos="right"
-    [disabled]="!isTemplateSelected()"
-    (onClick)="activateCallback(4)" />
-</ng-template>
+  <ng-template #overviewStepButton let-activateCallback>
+    <p-button
+      label="Add overview"
+      icon="fas fa-image"
+      iconPos="right"
+      [disabled]="!isTemplateSelected()"
+      (onClick)="activateCallback(4)" />
+  </ng-template>
 
-<ng-template #editButton>
-  <p-button
-    label="Edit record"
-    icon="fas fa-pen"
-    iconPos="right"
-    data-cy="gn-new-record-button-edit"
-    [disabled]="!isTemplateSelected()"
-    (onClick)="createRecord(true)" />
-</ng-template>
+  <ng-template #editButton>
+    <p-button
+      label="Edit record"
+      icon="fas fa-pen"
+      iconPos="right"
+      data-cy="gn-new-record-button-edit"
+      [disabled]="!isTemplateSelected()"
+      (onClick)="createRecord(true)" />
+  </ng-template>
 
-<p-stepper [(value)]="activeStep" class="p-10 w-full">
-  <p-step-item [value]="1">
-    <p-step>Choose resource type</p-step>
-    <p-step-panel>
-      <ng-template
-        pTemplate="content"
-        let-activateCallback="activateCallback"
-        let-index="index">
-        <div class="grid md:grid-cols-2 gap-x-8 mb-10">
-          <div class="w-full">
-            <g-templates-selector
-              [(template)]="template"></g-templates-selector>
-          </div>
-          <div class="basis-1/4">
-            Choose a type of resource to describe (eg. geospatial, tabular,
-            statistical, maps) and select a template to start with.
-          </div>
-        </div>
-
-        <div class="flex mt-2 gap-2">
-          <p-button
-            label="Add data"
-            icon="fas fa-upload"
-            iconPos="right"
-            data-cy="gn-new-record-button-step-data"
-            [disabled]="!isTemplateSelected()"
-            (onClick)="activateCallback(2)" />
-
-          <ng-container
-            *ngTemplateOutlet="
-              overviewStepButton;
-              context: { $implicit: activateCallback }
-            "></ng-container>
-
-          <ng-container *ngTemplateOutlet="editButton"></ng-container>
-        </div>
-      </ng-template>
-    </p-step-panel>
-  </p-step-item>
-  <p-step-item [value]="2">
-    <p-step [disabled]="!isTemplateSelected()"
-      >Upload or connect your data</p-step
-    >
-    <p-step-panel>
-      <ng-template
-        pTemplate="content"
-        let-activateCallback="activateCallback"
-        let-index="index">
-        <div class="grid grid-cols-2 gap-x-8 mb-10">
-          <div class="basis-1/2">
-            <p-inputGroup>
-              <p-select
-                [options]="datasourceTypes"
-                [(ngModel)]="datasourceType"
-                optionLabel="name"
-                title="Select a type"
-                class="w-full md:w-14">
-                <ng-template #selectedItem let-selectedOption>
-                  <div class="flex items-center gap-2" *ngIf="selectedOption">
-                    <i [attr.class]="'fa ' + selectedOption.icon"></i>
-                    <div>{{ selectedOption.name }}</div>
-                  </div>
-                </ng-template>
-                <ng-template #item let-option>
-                  <div class="flex items-center gap-2">
-                    <i [attr.class]="'fa ' + option.icon"></i>
-                    <div>{{ option.name }}</div>
-                  </div>
-                </ng-template>
-              </p-select>
-              <input
-                pInputText
-                id="datasource"
-                aria-describedby="datasource-help"
-                [placeholder]="datasourceType().placeholder || ''"
-                [disabled]="isDatasourceFileSelected()"
-                (change)="onDatasourceChange()"
-                [(ngModel)]="datasource" />
-              <button
-                type="button"
-                pButton
-                label="Find datasets"
-                [disabled]="isFetchingLayers() || isDatasourceFileSelected()"
-                (click)="getLayerList()"></button>
-            </p-inputGroup>
-
-            <g-separator label="Or" />
-
-            <div class="mb-10">
-              <p-fileupload
-                #fileUpload
-                styleClass="w-full"
-                [customUpload]="true"
-                (onSelect)="onAttachmentSelected($event)"
-                (uploadHandler)="onUploadHandler($event)"
-                (onRemove)="onRemove($event)"
-                (onClear)="onClear($event)"
-                name="attachement_upload"
-                chooseIcon="fa fa-folder"
-                chooseLabel="Select your file"
-                uploadLabel="Upload"
-                multiple="true"
-                [maxFileSize]="100 * 1000000">
-                <ng-template #empty>
-                  <div>
-                    Drag and drop files to here to upload.
-
-                    <p class="font-medium mt-10">
-                      Maximum file size is <span class="font-bold">100Mo</span>.
-                    </p>
-                  </div>
-                </ng-template>
-              </p-fileupload>
+  <p-stepper [(value)]="activeStep" class="p-10 w-full">
+    <p-step-item [value]="1">
+      <p-step>Choose resource type</p-step>
+      <p-step-panel>
+        <ng-template
+          pTemplate="content"
+          let-activateCallback="activateCallback"
+          let-index="index">
+          <div class="grid md:grid-cols-2 gap-x-8 mb-10">
+            <div class="w-full">
+              <g-templates-selector
+                [(template)]="template"
+                [(numberOfTemplates)]="numberOfTemplates"
+                filter=" +resourceType:(dataset OR nonGeographicDataset) +documentStandard:iso19115-3.2018"></g-templates-selector>
             </div>
+            <div class="basis-1/4">
+              Choose a type of resource to describe (eg. geospatial, tabular,
+              statistical, maps) and select a template to start with.
+            </div>
+          </div>
 
-            @if (isFetchingLayers()) {
-              <div>
-                <p-progressBar
-                  mode="indeterminate"
-                  [style]="{ height: '6px' }" />
-              </div>
-            }
+          <div class="flex mt-2 gap-2">
+            <p-button
+              label="Add data"
+              icon="fas fa-upload"
+              iconPos="right"
+              data-cy="gn-new-record-button-step-data"
+              [disabled]="!isTemplateSelected()"
+              (onClick)="activateCallback(2)" />
 
-            @if (errorFetchingLayers()) {
-              <p class="error-message">
-                An error occurred retrieving dataset information. Please try
-                later.
-              </p>
-              <small class="error-message"
-                >Error is: {{ errorFetchingLayers() }}</small
-              >
-            }
+            <ng-container
+              *ngTemplateOutlet="
+                overviewStepButton;
+                context: { $implicit: activateCallback }
+              "></ng-container>
 
-            @if (metadataFiles().length > 0) {
-              <div class="mb-10">
-                <div class="w-full">
-                  Select the metadata dataset file to process
-                </div>
-                <p-listbox
-                  [options]="metadataFiles()"
-                  (onChange)="onMetadataFileSelectedChange($event)"
-                  [(ngModel)]="datasourceFile"
-                  optionLabel="filename"
-                  optionValue="filename" />
-              </div>
-            }
-
-            @if (layers().length > 0) {
-              <div title=" Select the dataset name to analyse">
-                <label for="layername" class="w-full"
-                  >{{ layers().length }} dataset(s) found</label
-                >
+            <ng-container *ngTemplateOutlet="editButton"></ng-container>
+          </div>
+        </ng-template>
+      </p-step-panel>
+    </p-step-item>
+    <p-step-item [value]="2">
+      <p-step [disabled]="!isTemplateSelected()"
+        >Upload or connect your data
+      </p-step>
+      <p-step-panel>
+        <ng-template
+          pTemplate="content"
+          let-activateCallback="activateCallback"
+          let-index="index">
+          <div class="grid grid-cols-2 gap-x-8 mb-10">
+            <div class="basis-1/2">
+              <p-inputGroup>
                 <p-select
-                  id="layername"
+                  [options]="datasourceTypes"
+                  [(ngModel)]="datasourceType"
+                  optionLabel="name"
+                  title="Select a type"
+                  class="w-full md:w-14">
+                  <ng-template #selectedItem let-selectedOption>
+                    <div class="flex items-center gap-2" *ngIf="selectedOption">
+                      <i [attr.class]="'fa ' + selectedOption.icon"></i>
+                      <div>{{ selectedOption.name }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template #item let-option>
+                    <div class="flex items-center gap-2">
+                      <i [attr.class]="'fa ' + option.icon"></i>
+                      <div>{{ option.name }}</div>
+                    </div>
+                  </ng-template>
+                </p-select>
+                <input
+                  pInputText
+                  id="datasource"
+                  aria-describedby="datasource-help"
+                  [placeholder]="datasourceType().placeholder || ''"
+                  [disabled]="isDatasourceFileSelected()"
+                  (change)="onDatasourceChange()"
+                  [(ngModel)]="datasource" />
+                <button
+                  type="button"
+                  pButton
+                  label="Find datasets"
+                  [disabled]="isFetchingLayers() || isDatasourceFileSelected()"
+                  (click)="getLayerList()"></button>
+              </p-inputGroup>
+
+              <g-separator label="Or" />
+
+              <div class="mb-10">
+                <p-fileupload
+                  #fileUpload
                   styleClass="w-full"
-                  disabled="{{ layers().length === 0 }}"
-                  [options]="layers()"
-                  [(ngModel)]="layername"
-                  (onChange)="onLayerChange()"
-                  placeholder="Select a dataset" />
+                  [customUpload]="true"
+                  (onSelect)="onAttachmentSelected($event)"
+                  (uploadHandler)="onUploadHandler($event)"
+                  (onRemove)="onRemove($event)"
+                  (onClear)="onClear($event)"
+                  name="attachement_upload"
+                  chooseIcon="fa fa-folder"
+                  chooseLabel="Select your file"
+                  uploadLabel="Upload"
+                  multiple="true"
+                  [maxFileSize]="100 * 1000000">
+                  <ng-template #empty>
+                    <div>
+                      Drag and drop files to here to upload.
+
+                      <p class="font-medium mt-10">
+                        Maximum file size is
+                        <span class="font-bold">100Mo</span>.
+                      </p>
+                    </div>
+                  </ng-template>
+                </p-fileupload>
               </div>
+
+              @if (isFetchingLayers()) {
+                <div>
+                  <p-progressBar
+                    mode="indeterminate"
+                    [style]="{ height: '6px' }" />
+                </div>
+              }
+
+              @if (errorFetchingLayers()) {
+                <p class="error-message">
+                  An error occurred retrieving dataset information. Please try
+                  later.
+                </p>
+                <small class="error-message"
+                  >Error is: {{ errorFetchingLayers() }}</small
+                >
+              }
+
+              @if (metadataFiles().length > 0) {
+                <div class="mb-10">
+                  <div class="w-full">
+                    Select the metadata dataset file to process
+                  </div>
+                  <p-listbox
+                    [options]="metadataFiles()"
+                    (onChange)="onMetadataFileSelectedChange($event)"
+                    [(ngModel)]="datasourceFile"
+                    optionLabel="filename"
+                    optionValue="filename" />
+                </div>
+              }
+
+              @if (layers().length > 0) {
+                <div title=" Select the dataset name to analyse">
+                  <label for="layername" class="w-full"
+                    >{{ layers().length }} dataset(s) found</label
+                  >
+                  <p-select
+                    id="layername"
+                    styleClass="w-full"
+                    disabled="{{ layers().length === 0 }}"
+                    [options]="layers()"
+                    [(ngModel)]="layername"
+                    (onChange)="onLayerChange()"
+                    placeholder="Select a dataset" />
+                </div>
+              }
+            </div>
+            <div class="basis-1/2">
+              <span
+                >Point to the datasource URL or upload a new file and select the
+                dataset to register.</span
+              >
+
+              <h2 class="font-medium mt-10">Supported data formats:</h2>
+              @for (format of mainSupportedFormats(); track format) {
+                <p-chip
+                  [title]="format.description + ' - ' + format.dataType"
+                  [label]="format.name"
+                  class="mr-2"></p-chip>
+              }
+            </div>
+          </div>
+
+          <div class="flex mt-2 gap-2">
+            <!--<p-button
+              label="Back"
+              icon="fas fa-arrow-left"
+              severity="secondary"
+              (onClick)="activateCallback(1)" />-->
+            <p-button
+              [disabled]="!isDatasourceAndTemplateSelected()"
+              label="Analyze dataset"
+              icon="fas fa-magnifying-glass"
+              iconPos="right"
+              (onClick)="activateCallback(3)" />
+
+            <ng-container
+              *ngTemplateOutlet="
+                overviewStepButton;
+                context: { $implicit: activateCallback }
+              "></ng-container>
+          </div>
+        </ng-template>
+      </p-step-panel>
+    </p-step-item>
+    <p-step-item [value]="3">
+      <p-step
+        [disabled]="
+          !(isTemplateSelected() && isDatasourceAndTemplateSelected())
+        "
+        >Data analysis summary
+      </p-step>
+      <p-step-panel>
+        <ng-template
+          pTemplate="content"
+          let-activateCallback="activateCallback"
+          let-index="index">
+          <div>
+            @if (isExecutingAnalysis()) {
+              <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
+            }
+            @if (errorExecutingAnalysis()) {
+              <p class="error-message">
+                An error analysing the dataset information. Please try later.
+              </p>
+              <small class="error-message">{{
+                errorExecutingAnalysis()
+              }}</small>
+            } @else if (analysisResult()) {
+              <g-data-analysis-panel
+                [uuid]="newRecordId()"
+                [datasource]="datasource"
+                [layername]="layername"
+                [analysisResult]="analysisResult"></g-data-analysis-panel>
             }
           </div>
-          <div class="basis-1/2">
-            <span
-              >Point to the datasource URL or upload a new file and select the
-              dataset to register.</span
-            >
+          <div class="flex mt-2 gap-2">
+            <!--<p-button
+              label="Back"
+              icon="fas fa-arrow-left"
+              severity="secondary"
+              (onClick)="activateCallback(2)" />-->
+            <ng-container
+              *ngTemplateOutlet="
+                overviewStepButton;
+                context: { $implicit: activateCallback }
+              "></ng-container>
 
-            <h2 class="font-medium mt-10">Supported data formats:</h2>
-            @for (format of mainSupportedFormats(); track format) {
-              <p-chip
-                [title]="format.description + ' - ' + format.dataType"
-                [label]="format.name"
-                class="mr-2"></p-chip>
-            }
+            <ng-container *ngTemplateOutlet="editButton"></ng-container>
           </div>
-        </div>
-
-        <div class="flex mt-2 gap-2">
-          <!--<p-button
-            label="Back"
-            icon="fas fa-arrow-left"
-            severity="secondary"
-            (onClick)="activateCallback(1)" />-->
-          <p-button
-            [disabled]="!isDatasourceAndTemplateSelected()"
-            label="Analyze dataset"
-            icon="fas fa-magnifying-glass"
-            iconPos="right"
-            (onClick)="activateCallback(3)" />
-
-          <ng-container
-            *ngTemplateOutlet="
-              overviewStepButton;
-              context: { $implicit: activateCallback }
-            "></ng-container>
-        </div>
-      </ng-template>
-    </p-step-panel>
-  </p-step-item>
-  <p-step-item [value]="3">
-    <p-step
-      [disabled]="!(isTemplateSelected() && isDatasourceAndTemplateSelected())"
-      >Data analysis summary</p-step
-    >
-    <p-step-panel>
-      <ng-template
-        pTemplate="content"
-        let-activateCallback="activateCallback"
-        let-index="index">
-        <div>
-          @if (isExecutingAnalysis()) {
+        </ng-template>
+      </p-step-panel>
+    </p-step-item>
+    <p-step-item [value]="4">
+      <p-step
+        [disabled]="
+          !(
+            isTemplateSelected() &&
+            isDatasourceAndTemplateSelected() &&
+            analysisResult()
+          )
+        "
+        >Choose overview
+      </p-step>
+      <p-step-panel>
+        <ng-template
+          pTemplate="content"
+          let-activateCallback="activateCallback"
+          let-index="index">
+          @if (buildingOverview()) {
             <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
           }
-          @if (errorExecutingAnalysis()) {
-            <p class="error-message">
-              An error analysing the dataset information. Please try later.
-            </p>
-            <small class="error-message">{{ errorExecutingAnalysis() }}</small>
-          } @else if (analysisResult()) {
-            <g-data-analysis-panel
-              [uuid]="newRecordId()"
-              [analysisResult]="analysisResult"></g-data-analysis-panel>
-          }
-        </div>
-        <div class="flex mt-2 gap-2">
-          <!--<p-button
-            label="Back"
-            icon="fas fa-arrow-left"
-            severity="secondary"
-            (onClick)="activateCallback(2)" />-->
-          <ng-container
-            *ngTemplateOutlet="
-              overviewStepButton;
-              context: { $implicit: activateCallback }
-            "></ng-container>
 
-          <ng-container *ngTemplateOutlet="editButton"></ng-container>
-        </div>
-      </ng-template>
-    </p-step-panel>
-  </p-step-item>
-  <p-step-item [value]="4">
-    <p-step
-      [disabled]="
-        !(
-          isTemplateSelected() &&
-          isDatasourceAndTemplateSelected() &&
-          analysisResult()
-        )
-      "
-      >Choose overview</p-step
-    >
-    <p-step-panel>
-      <ng-template
-        pTemplate="content"
-        let-activateCallback="activateCallback"
-        let-index="index">
-        @if (buildingOverview()) {
-          <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
-        }
+          <g-overview-selector
+            class="mt-2"
+            [uuid]="newRecordId()"
+            [suggestion]="overviewFromData()"></g-overview-selector>
 
-        <g-overview-selector
-          class="mt-2"
-          [uuid]="newRecordId()"
-          [suggestion]="overviewFromData()"></g-overview-selector>
-
-        <div class="flex mt-2 gap-2">
-          <!--<p-button
-            label="Back"
-            icon="fas fa-arrow-left"
-            severity="secondary"
-            (onClick)="activateCallback(3)" />-->
-          <ng-container *ngTemplateOutlet="editButton"></ng-container>
-        </div>
-      </ng-template>
-    </p-step-panel>
-  </p-step-item>
-</p-stepper>
+          <div class="flex mt-2 gap-2">
+            <!--<p-button
+              label="Back"
+              icon="fas fa-arrow-left"
+              severity="secondary"
+              (onClick)="activateCallback(3)" />-->
+            <ng-container *ngTemplateOutlet="editButton"></ng-container>
+          </div>
+        </ng-template>
+      </p-step-panel>
+    </p-step-item>
+  </p-stepper>
+</div>
+@if (numberOfTemplates() === 0) {
+  <p-message severity="error" styleClass="m-10"
+    >No template available.</p-message
+  >
+}

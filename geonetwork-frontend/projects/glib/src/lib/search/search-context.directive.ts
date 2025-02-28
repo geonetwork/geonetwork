@@ -1,4 +1,4 @@
-import { Directive, effect, inject, input, OnInit } from '@angular/core';
+import { Directive, effect, inject, input, model, OnInit } from '@angular/core';
 import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_SCORE,
@@ -7,7 +7,7 @@ import {
 } from './search.state';
 import { SearchService } from './search.service';
 import { API_CONFIGURATION } from '../config/config.loader';
-import { elasticsearch } from 'gapi';
+import { elasticsearch, GnIndexRecord } from 'gapi';
 
 @Directive({
   selector: '[gSearchContext]',
@@ -22,6 +22,7 @@ export class SearchContextDirective implements OnInit {
   size = input<number>(DEFAULT_PAGE_SIZE);
   sort = input<elasticsearch.Sort>(DEFAULT_SORT);
   filter = input<string>('');
+  response = model<elasticsearch.SearchResponse<GnIndexRecord> | null>();
 
   #searchStore = inject(SearchStore);
   #searchService = inject(SearchService);
@@ -40,6 +41,9 @@ export class SearchContextDirective implements OnInit {
     });
     effect(() => {
       this.sort() && this.#searchStore.setSort(this.sort());
+    });
+    effect(() => {
+      this.response.set(this.#searchStore.response());
     });
   }
 

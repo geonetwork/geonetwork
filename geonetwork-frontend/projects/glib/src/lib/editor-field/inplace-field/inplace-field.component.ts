@@ -30,7 +30,6 @@ import { AutoFocus } from 'primeng/autofocus';
     AutoFocus,
   ],
   templateUrl: './inplace-field.component.html',
-  styleUrl: './inplace-field.component.css',
 })
 export class InplaceFieldComponent implements OnInit {
   uuid = input.required<string>();
@@ -74,4 +73,5 @@ export class InplaceFieldComponent implements OnInit {
     this.value.set(this.initialValue);
     cb(event);
   }
+
 }
