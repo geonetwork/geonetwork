@@ -307,6 +307,7 @@ export class NewRecordPanelComponent implements OnInit {
           this.errorMessage.set(
             'Error creating the metadata record: ' + error.response.statusText
           );
+          this.activeStep.set(1);
           this.isCreatingRecord.set(false);
         }
       );

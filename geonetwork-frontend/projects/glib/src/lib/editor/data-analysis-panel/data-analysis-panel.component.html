@@ -5,7 +5,6 @@
   @let isTabular = spatialRepresentation === 'textTable';
   @let isRaster = spatialRepresentation === 'grid';
 
-
   <div class="grid grid-cols-8 gap-4">
     <div class="font-medium">Title</div>
     <div class="col-span-7">
@@ -63,15 +62,15 @@
     @if (analysisResult().dimensionSizeY && analysisResult().dimensionSizeX) {
       <div class="font-medium">Dimension</div>
       <div class="col-span-7">
-        {{ analysisResult().dimensionSizeX[0] }} x {{ analysisResult().dimensionSizeY[0] }}
+        {{ analysisResult().dimensionSizeX[0] }} x
+        {{ analysisResult().dimensionSizeY[0] }}
       </div>
     }
-
 
     @if (isVector && analysisResult().geom) {
       <div class="font-medium">Geometry type</div>
       <div class="col-span-7">
-        {{ analysisResult() }}
+        {{ analysisResult().cl_geometricObjectType[0].key }}
       </div>
 
       <div class="font-medium">Spatial extent</div>

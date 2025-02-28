@@ -41,29 +41,21 @@ public class RasterInfo extends BaseDataInfo {
         Map<String, String> resourceTitle = new HashMap<>();
         resourceTitle.put("default", FilenameUtils.getBaseName(datasource));
 
-        Link link = new Link();
-        Map<String, String> linkName = new HashMap<>();
-        linkName.put("default", "source");
-        link.setName(linkName);
+        Link link = buildDatasourceLink(datasource);
 
-        Map<String, String> linkUrl = new HashMap<>();
-        linkUrl.put("default", datasource);
-        link.setUrl(linkUrl);
-
-        IndexRecord indexRecord = IndexRecord.builder()
+        IndexRecord.IndexRecordBuilder indexRecord = IndexRecord.builder()
                 .codelist(
                         "cl_spatialRepresentationType",
                         List.of(Codelist.builder().property("key", "grid").build()))
                 .resourceTitle(resourceTitle)
                 .formats(List.of(getFormat()))
-                .links(List.of(link))
-                .build();
+                .links(List.of(link));
 
         String crs = GeomUtil.parseCrsCode(getCrs());
         calculateIndexRecordGeomInfo(indexRecord, crs, getWgs84Extent(), getRasterCornerCoordinates());
 
         if (getGeoTransform() != null && getGeoTransform().size() == 6) {
-            indexRecord.setResolutionDistance(Stream.of(getGeoTransform().get(1))
+            indexRecord.resolutionDistance(Stream.of(getGeoTransform().get(1))
                     .map(BigDecimal::toString)
                     .toList());
         }
@@ -72,8 +64,8 @@ public class RasterInfo extends BaseDataInfo {
         additionalProperties.put("dimensionSizeX", List.of(getSize().get(0)));
         additionalProperties.put("dimensionSizeY", List.of(getSize().get(1)));
         additionalProperties.put("dimensionsCount", List.of(getSize().size()));
-        indexRecord.setOtherProperties(additionalProperties);
+        indexRecord.otherProperties(additionalProperties);
 
-        return indexRecord;
+        return indexRecord.build();
     }
 }

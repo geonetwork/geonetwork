@@ -12,12 +12,15 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.data.geom.GeomUtil;
 import org.geonetwork.index.model.record.IndexRecord;
+import org.geonetwork.index.model.record.Link;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -39,11 +42,11 @@ public abstract class BaseDataInfo implements Serializable {
     String formatDescription;
 
     protected void calculateIndexRecordGeomInfo(
-            IndexRecord indexRecord,
+            IndexRecord.IndexRecordBuilder indexRecord,
             String crs,
             List<Double> wgs84Coordinates,
             RasterCornerCoordinates rasterCornerCoordinates) {
-        indexRecord.setCoordinateSystem(List.of(crs));
+        indexRecord.coordinateSystem(List.of(crs));
 
         if (rasterCornerCoordinates != null) {
             GeometryFactory geometryFactory = new GeometryFactory();
@@ -60,7 +63,7 @@ public abstract class BaseDataInfo implements Serializable {
             Polygon rasterCoordinatesPolygon = geometryFactory.createPolygon(coordinates.toArray(new Coordinate[0]));
             Geometry rasterCoordinatesGeometry = transformGeometry(crs, rasterCoordinatesPolygon);
             if (rasterCoordinatesGeometry != null) {
-                indexRecord.setShapes(List.of(geometryToJson(rasterCoordinatesGeometry)));
+                indexRecord.shapes(List.of(geometryToJson(rasterCoordinatesGeometry)));
             }
             if (wgs84Coordinates == null) {
                 wgs84Coordinates = calculateWgs84Coordinates(crs, coordinates);
@@ -68,7 +71,7 @@ public abstract class BaseDataInfo implements Serializable {
         }
 
         if (wgs84Coordinates != null) {
-            indexRecord.setGeometries(convertToStringList(wgs84Coordinates));
+            indexRecord.geometries(convertToStringList(wgs84Coordinates));
         }
     }
 
@@ -114,5 +117,17 @@ public abstract class BaseDataInfo implements Serializable {
             stringList.add(String.valueOf(coordinate));
         }
         return stringList;
+    }
+
+    protected Link buildDatasourceLink(String datasource) {
+        Link link = new Link();
+        Map<String, String> linkName = new HashMap<>();
+        linkName.put("default", "source");
+        link.setName(linkName);
+
+        Map<String, String> linkUrl = new HashMap<>();
+        linkUrl.put("default", datasource);
+        link.setUrl(linkUrl);
+        return link;
     }
 }

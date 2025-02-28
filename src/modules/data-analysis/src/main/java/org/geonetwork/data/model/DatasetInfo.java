@@ -20,7 +20,6 @@ import org.geonetwork.data.geom.GeomUtil;
 import org.geonetwork.index.model.record.Codelist;
 import org.geonetwork.index.model.record.FeatureType;
 import org.geonetwork.index.model.record.IndexRecord;
-import org.geonetwork.index.model.record.Link;
 
 @Data
 @SuperBuilder
@@ -38,23 +37,15 @@ public class DatasetInfo extends BaseDataInfo {
         Map<String, String> resourceTitle = new HashMap<>();
         resourceTitle.put("default", layer);
 
-        Link link = new Link();
-        Map<String, String> linkName = new HashMap<>();
-        linkName.put("default", "source");
-        link.setName(linkName);
+        var link = buildDatasourceLink(datasource);
 
-        Map<String, String> linkUrl = new HashMap<>();
-        linkUrl.put("default", datasource);
-        link.setUrl(linkUrl);
-
-        IndexRecord indexRecord = IndexRecord.builder()
+        IndexRecord.IndexRecordBuilder indexRecord = IndexRecord.builder()
                 .codelist(
                         "cl_spatialRepresentationType",
                         List.of(Codelist.builder().property("key", "vector").build()))
                 .resourceTitle(resourceTitle)
                 .formats(List.of(getFormat()))
-                .links(List.of(link))
-                .build();
+                .links(List.of(link));
 
         if (datasetLayer.getGeometryFields().size() > 0) {
             String crs = GeomUtil.parseCrsCode(
@@ -66,6 +57,14 @@ public class DatasetInfo extends BaseDataInfo {
                             .map(BigDecimal::doubleValue)
                             .collect(Collectors.toList()),
                     null);
+
+            indexRecord.codelist(
+                    "cl_geometricObjectType",
+                    List.of(Codelist.builder()
+                            .property(
+                                    "key",
+                                    datasetLayer.getGeometryFields().getFirst().getType())
+                            .build()));
         }
 
         List<FeatureType> featureTypeList = new ArrayList<>();
@@ -77,11 +76,11 @@ public class DatasetInfo extends BaseDataInfo {
             featureTypeList.add(ft);
         });
 
-        indexRecord.setFeatureTypes(featureTypeList);
+        indexRecord.featureTypes(featureTypeList);
         HashMap<String, List<Object>> additionalProperties = new HashMap<>();
         additionalProperties.put("featureCount", List.of(datasetLayer.getFeatureCount()));
-        indexRecord.setOtherProperties(additionalProperties);
+        indexRecord.otherProperties(additionalProperties);
 
-        return indexRecord;
+        return indexRecord.build();
     }
 }
