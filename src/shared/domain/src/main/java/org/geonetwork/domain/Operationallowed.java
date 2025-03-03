@@ -24,4 +24,10 @@ import lombok.Setter;
 public class Operationallowed {
     @EmbeddedId
     private OperationallowedId id;
+
+    @Override
+    public String toString() {
+        return "Operationallowed [metadataId=" + id.getMetadataid() + ", groupid=" + id.getGroupid() + ", permission="
+                + ReservedOperation.lookup(id.getOperationid()) + "]";
+    }
 }

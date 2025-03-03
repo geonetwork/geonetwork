@@ -38,4 +38,9 @@ public class Operation {
     @NotNull
     @Column(name = "name", nullable = false, length = 32)
     private String name;
+
+    @Override
+    public String toString() {
+        return "Operation [name=" + name + ", id=" + id + "]";
+    }
 }

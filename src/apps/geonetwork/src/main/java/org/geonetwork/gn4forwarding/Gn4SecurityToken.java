@@ -7,11 +7,8 @@ package org.geonetwork.gn4forwarding;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Collection;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 
 /**
  * very simple class (for JSON) for the information being sent to GN4's JWT Header. Does some conversions for the
@@ -32,17 +29,6 @@ public class Gn4SecurityToken {
      * @param username gn4/gn5 username (get from DB)
      */
     public Gn4SecurityToken(String username) {
-        this.username = username;
-    }
-
-    /**
-     * creates a full token with profile-groups ("<group name>:<profile name>") also find the "max" profile to set as
-     * the "generic" user profile
-     *
-     * @param username GN4 username
-     */
-    public Gn4SecurityToken(
-            String username, Collection<? extends GrantedAuthority> authorities, List<UserGroupProfile> roles) {
         this.username = username;
     }
 }
