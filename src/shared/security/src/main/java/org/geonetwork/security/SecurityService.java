@@ -12,13 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Profile;
 import org.geonetwork.domain.Setting;
 import org.geonetwork.domain.SettingKey;
-import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.SettingRepository;
-import org.geonetwork.security.user.UserManager;
-import org.geonetwork.security.user.UserNotFoundException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -28,14 +25,10 @@ import org.springframework.util.StringUtils;
 public class SecurityService {
 
     private final SettingRepository settingRepository;
-
-    private final UserManager userManager;
-
-    private final AuthenticationFacade authenticationFacade;
-
+    private final IAuthenticationFacade authenticationFacade;
     private final RoleHierarchy roleHierarchy;
 
-    public boolean hasMetadataBatchEditingAccessLevel() throws UserNotFoundException {
+    public boolean hasMetadataBatchEditingAccessLevel() {
         if (!authenticationFacade.getAuthentication().isAuthenticated()) {
             return false;
         }
@@ -44,10 +37,11 @@ public class SecurityService {
         if (!StringUtils.hasLength(currentUsername)) {
             return false;
         }
-        User currentUser = userManager.getUserByUsername(currentUsername);
+
+        var authentication = this.authenticationFacade.geonetworkPermissions();
 
         // --- check if the user is an administrator
-        Profile profile = currentUser.getProfile();
+        Profile profile = authentication.getHighestProfile();
         if (profile == Profile.Administrator) {
             return true;
         }
@@ -68,12 +62,16 @@ public class SecurityService {
     /**
      * Checks if the current user has a role using the role hierarchy.
      *
+     * <p>TODO: a) test case required. b) Shouldn't need "ROLE_"...
+     *
      * @param role Role to check.
      * @return true if the current user has a role using the role hierarchy, otherwise false.
      */
     public boolean hasHierarchyRole(String role) {
-        Collection<? extends GrantedAuthority> authorities =
-                SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+
+        var authorities = authenticationFacade.geonetworkPermissions().getProfileGroups().keySet().stream()
+                .map(x -> new SimpleGrantedAuthority("ROLE_" + x.toString()))
+                .toList();
 
         Collection<? extends GrantedAuthority> hierarchyAuthorities =
                 roleHierarchy.getReachableGrantedAuthorities(authorities);
