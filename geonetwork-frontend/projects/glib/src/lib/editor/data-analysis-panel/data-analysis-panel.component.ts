@@ -13,6 +13,7 @@ import { TableModule } from 'primeng/table';
 import {
   AttributeStatistics,
   DataAnalysisControllerApi,
+  DateRangeDetails,
   IndexRecord,
 } from 'g5api';
 import { Select, SelectChangeEvent } from 'primeng/select';
@@ -55,13 +56,14 @@ export class DataAnalysisPanelComponent {
 
   resourceIdentifier = '';
 
-  temporalExtent = signal<AttributeStatistics[] | undefined>(undefined);
+  temporalExtentStats = signal<AttributeStatistics[] | undefined>(undefined);
+  temporalExtent = signal<DateRangeDetails | undefined>(undefined);
   verticalExtent = signal<AttributeStatistics[] | undefined>(undefined);
 
   isComputingStatistics = signal<boolean>(false);
 
   getStatistics($event: SelectChangeEvent) {
-    this.temporalExtent.set(undefined);
+    this.temporalExtentStats.set(undefined);
     this.isComputingStatistics.set(true);
     this.dataAnalysisApi()
       .attributeStatistics({
@@ -72,7 +74,15 @@ export class DataAnalysisPanelComponent {
       .then(
         response => {
           this.isComputingStatistics.set(false);
-          this.temporalExtent.set(response);
+          this.temporalExtentStats.set(response);
+          this.temporalExtent.set({
+            start: {
+              date: String(this.temporalExtentStats()![0].statistics?.MIN),
+            },
+            end: {
+              date: String(this.temporalExtentStats()![0].statistics?.MAX),
+            },
+          });
         },
         error => {
           this.isComputingStatistics.set(false);

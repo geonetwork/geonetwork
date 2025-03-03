@@ -192,6 +192,30 @@ geonetwork:
                               </mdb:spatialRepresentationInfo>
 
 
+            - name: "spatialResolution"
+              help: "For raster dataset, set the spatial resolution."
+              context: "DatasetLayer"
+              operations:
+                - schema: "iso19115-3.2018"
+                  operation: "gn_delete"
+                  xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution[@gco:nilReason = 'computedFromDatasource']"
+                  condition: "count(./mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 1"
+                - schema: "iso19115-3.2018"
+                  operation: "gn_create"
+                  xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialResolution"
+                  condition: "count(./mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 1"
+                  value: >
+                    <mri:spatialResolution xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0"
+                                                       xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                                                       gco:nilReason="computedFromDatasource">
+                       <mri:MD_Resolution>
+                          <mri:distance>
+                             <gco:Distance uom="m">{{spatialResolution:-}}</gco:Distance>
+                          </mri:distance>
+                       </mri:MD_Resolution>
+                    </mri:spatialResolution>
+
+
             - name: "rasterSpatialRepresentation"
               help: "For raster dataset, set the X and Y dimension info."
               context: "DatasetLayer"
@@ -244,6 +268,7 @@ geonetwork:
                         </gmd:transformationParameterAvailability>
                       </gmd:MD_GridSpatialRepresentation>
                     </gmd:spatialRepresentationInfo>
+
 
                 - schema: "iso19115-3.2018"
                   operation: "gn_delete"

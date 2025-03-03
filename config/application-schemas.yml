@@ -131,6 +131,24 @@ geonetwork:
                        </gex:EX_Extent>
                     </mri:extent>
 
+          - name: "dateRangeDetails"
+            xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:temporalElement"
+            value: >
+               <gex:temporalElement xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0"
+                                                                 xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
+                                                                 xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                                                                 xmlns:gml="http://www.opengis.net/gml/3.2"
+                                                                 gco:nilReason="computedFromDatasource">
+                   <gex:EX_TemporalExtent>
+                      <gex:extent>
+                         <gml:TimePeriod gml:id="d26013e323a1051934">
+                            <gml:beginPosition>{{start.date:-}}</gml:beginPosition>
+                            <gml:endPosition>{{end.date:-}}</gml:endPosition>
+                         </gml:TimePeriod>
+                      </gex:extent>
+                   </gex:EX_TemporalExtent>
+                  </gex:temporalElement>
+
           - name: "format"
             xpath: "mdb:distributionInfo/mrd:MD_Distribution/mrd:distributionFormat"
   #            condition: "count(./mdb:distributionInfo/*/mrd:distributionFormat[*/mrd:formatSpecificationCitation/*/cit:title/*/text() ='{{formatDescription}}']) = 0"

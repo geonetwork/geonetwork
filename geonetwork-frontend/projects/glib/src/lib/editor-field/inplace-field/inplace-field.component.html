@@ -1,23 +1,35 @@
 <p-inplace>
-  <ng-template #display>
+  <ng-template #defaultDisplayTemplate>
     <span class="font-bold">
       {{ value() }}
     </span>
+  </ng-template>
+
+  <ng-template #defaultEditTemplate>
+    @if (property() === 'resourceIdentifier') {
+      <g-eea-resource-identifier-field
+        [(value)]="value"></g-eea-resource-identifier-field>
+    } @else {
+      <input type="text" pInputText [pAutoFocus]="true" [(ngModel)]="value" />
+    }
+  </ng-template>
+
+  <ng-template #display>
+    <ng-container
+      *ngTemplateOutlet="
+        displayTemplate || defaultDisplayTemplate
+      "></ng-container>
     <i class="fa fa-pencil"></i>
   </ng-template>
+
   <ng-template #content let-closeCallback="closeCallback">
     <div class="inline-flex gap-2">
       <div>
-        @if (property() === 'resourceIdentifier') {
-          <g-eea-resource-identifier-field
-            [(value)]="value"></g-eea-resource-identifier-field>
-        } @else {
-          <input
-            type="text"
-            pInputText
-            [pAutoFocus]="true"
-            [(ngModel)]="value" />
-        }
+        <ng-container
+          *ngTemplateOutlet="
+            editTemplate || defaultEditTemplate;
+            context: { onFieldValueChange: onFieldValueChange.bind(this) }
+          "></ng-container>
       </div>
       <div class="inline-flex gap-2">
         <p-button

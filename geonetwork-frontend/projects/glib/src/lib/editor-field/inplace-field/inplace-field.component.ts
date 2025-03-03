@@ -1,16 +1,18 @@
 import {
   Component,
   computed,
+  ContentChild,
   inject,
   input,
   model,
   OnInit,
+  TemplateRef,
 } from '@angular/core';
 import { Button } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { Inplace } from 'primeng/inplace';
 import { InputText } from 'primeng/inputtext';
-import { BatchEditRequest, RecordsApi } from 'g5api';
+import { BatchEditRequest, DateRangeDetails, RecordsApi } from 'g5api';
 import { RecordsApi as Gn4RecordsApi } from 'gapi';
 import { EeaResourceIdentifierFieldComponent } from '../eea-resource-identifier-field/eea-resource-identifier-field.component';
 import {
@@ -18,6 +20,7 @@ import {
   API_CONFIGURATION,
 } from '../../config/config.loader';
 import { AutoFocus } from 'primeng/autofocus';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'g-inplace-field',
@@ -28,14 +31,18 @@ import { AutoFocus } from 'primeng/autofocus';
     InputText,
     EeaResourceIdentifierFieldComponent,
     AutoFocus,
+    NgTemplateOutlet,
   ],
   templateUrl: './inplace-field.component.html',
 })
 export class InplaceFieldComponent implements OnInit {
   uuid = input.required<string>();
   property = input.required<string>();
-  value = model<string>();
-  initialValue: string | undefined;
+  value = model<string | DateRangeDetails | undefined>();
+  initialValue: string | DateRangeDetails | undefined;
+
+  @ContentChild('display') displayTemplate: TemplateRef<any> | undefined;
+  @ContentChild('edit') editTemplate: TemplateRef<any> | undefined;
 
   apiConfiguration = inject(API_CONFIGURATION);
   api5Configuration = inject(API5_CONFIGURATION);
@@ -51,13 +58,20 @@ export class InplaceFieldComponent implements OnInit {
     this.initialValue = this.value();
   }
 
+  onFieldValueChange(event: DateRangeDetails) {
+    this.value.set(event);
+  }
+
   saveEdit(event: Event, cb: Function) {
     let batchEditRequest: BatchEditRequest = {
       uuids: [this.uuid()],
       batchEditParameter: [
         {
           property: this.property(),
-          value: this.value() || '',
+          value:
+            (typeof this.value() === 'string'
+              ? (this.value() as string)
+              : JSON.stringify(this.value())) || '',
         },
       ],
     };
@@ -73,5 +87,4 @@ export class InplaceFieldComponent implements OnInit {
     this.value.set(this.initialValue);
     cb(event);
   }
-
 }

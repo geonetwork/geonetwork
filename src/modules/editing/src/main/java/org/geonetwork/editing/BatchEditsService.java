@@ -5,6 +5,7 @@
  */
 package org.geonetwork.editing;
 
+import com.jayway.jsonpath.JsonPath;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
@@ -27,6 +30,7 @@ import org.geonetwork.metadata.MetadataAccessManager;
 import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.schemas.MetadataSchema;
 import org.geonetwork.schemas.SchemaManager;
+import org.geonetwork.utility.json.JsonUtil;
 import org.geonetwork.utility.legacy.Pair;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
@@ -92,7 +96,7 @@ public class BatchEditsService {
         //    AccessManager accessMan = context.getBean(AccessManager.class);
         //    final String settingId =
         // Settings.SYSTEM_CSW_TRANSACTION_XPATH_UPDATE_CREATE_NEW_ELEMENTS;
-        boolean createXpathNodeIfNotExists = false;
+        boolean createXpathNodeIfNotExists = true;
 
         //    SimpleMetadataProcessingReport report = new SimpleMetadataProcessingReport();
         //    report.setTotalRecords(setOfUuidsToEdit.size());
@@ -201,21 +205,66 @@ public class BatchEditsService {
         return Pair.write(new HashMap<>(), preview);
     }
 
+    /**
+     * If batch edit parameter is defined by property, set xpath to the corresponding value in the schema (see
+     * application-schemas.yml).
+     */
     private void buildBatchParameterForSchema(BatchEditParameter batchEditParameter, MetadataSchema metadataSchema) {
-        if (StringUtils.isNotEmpty(batchEditParameter.getXpath())) {
-            return;
+        if (StringUtils.isNotBlank(batchEditParameter.getXpath())) {
+            // Xpath defined, nothing to do
         } else if (StringUtils.isNotEmpty(batchEditParameter.getProperty())) {
             SchemaConfiguration.Schema.Property propertyConfig =
                     getPropertyConfig(metadataSchema.getName(), batchEditParameter.getProperty());
             batchEditParameter.setXpath(propertyConfig.getXpath());
 
             String value = batchEditParameter.getValue();
-            Map<String, String> replacements = new HashMap<>();
-            replacements.put(propertyConfig.getName(), value);
+            Map<String, String> replacements = buildReplacements(value, propertyConfig);
             batchEditParameter.setValue(buildWithPropertySubstitutions(propertyConfig.getValue(), replacements));
         } else {
             throw new IllegalArgumentException("Either xpath or property must be defined.");
         }
+    }
+
+    /**
+     * Build a map of replacements for the property value.
+     *
+     * <p>First, extract all keys contains in the XML in between {{key:defaultValue}}, eg.
+     *
+     * <pre>
+     *     <gml:beginPosition>{{start.date:}}</gml:beginPosition>
+     * </pre>
+     *
+     * will extract `start.date` as key.
+     *
+     * <p>Then, for each key, check if a JSONPath match in the valueOrJson parameter.
+     *
+     * <p>Then return the list of replacement for each key with the value from the valueOrJson parameter.
+     */
+    private Map<String, String> buildReplacements(String valueOrJson, SchemaConfiguration.Schema.Property config) {
+        Map<String, String> replacements = new HashMap<>();
+        Set<String> keys = new HashSet<>();
+        String xml = config.getValue();
+        String name = config.getName();
+        if (JsonUtil.isValidJsonObject(valueOrJson)) {
+            // Extract all keys contains in the XML in between {{key:-defaultValue}}
+            String regex = "\\{\\{([^:]+):-?([^}]+)\\}\\}";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(xml);
+            while (matcher.find()) {
+                String key = matcher.group(1);
+                keys.add(key);
+            }
+            // For each key, check if a JSONPath match in the valueOrJson parameter
+            for (String key : keys) {
+                String value = JsonPath.read(valueOrJson, "$." + key);
+                if (value != null) {
+                    replacements.put(key, value);
+                }
+            }
+        } else {
+            replacements.put(name, valueOrJson);
+        }
+        return replacements;
     }
 
     private SchemaConfiguration.Schema.Property getPropertyConfig(String schemaIdentifier, String property) {
