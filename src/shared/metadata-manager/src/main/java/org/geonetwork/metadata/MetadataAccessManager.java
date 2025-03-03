@@ -5,30 +5,40 @@
  */
 package org.geonetwork.metadata;
 
+import io.micrometer.common.util.StringUtils;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.Operation;
+import org.geonetwork.domain.Operationallowed;
 import org.geonetwork.domain.Profile;
+import org.geonetwork.domain.ReservedGroup;
 import org.geonetwork.domain.ReservedOperation;
-import org.geonetwork.domain.User;
-import org.geonetwork.domain.Usergroup;
-import org.geonetwork.security.AuthenticationFacade;
-import org.geonetwork.security.user.UserManager;
+import org.geonetwork.domain.repository.GroupRepository;
+import org.geonetwork.domain.repository.OperationRepository;
+import org.geonetwork.security.IAuthenticationFacade;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
+/**
+ * Handles the access to a metadata depending on the metadata/group.
+ *
+ * <p>See GN4's AccessManager.
+ */
 @Component
 @AllArgsConstructor
+@Slf4j
 public class MetadataAccessManager implements IMetadataAccessManager {
 
     private final MetadataManager metadataManager;
-    private final UserManager userManager;
-    private final AuthenticationFacade authenticationFacade;
+    private final IAuthenticationFacade authenticationFacade;
+    private final GroupRepository groupRepository;
+    private final OperationRepository operationRepository;
+    private final IntranetHelper intranetHelper;
 
     /**
      * Returns true if, and only if, at least one of these conditions is satisfied:
@@ -45,6 +55,21 @@ public class MetadataAccessManager implements IMetadataAccessManager {
         return isOwner(metadataId) || hasEditPermission(metadataId);
     }
 
+    /**
+     * Return true if the current user is:
+     *
+     * <ul>
+     *   <li>administrator
+     *   <li>the metadata owner (the user who created the record)
+     *   <li>reviewer in the group the metadata was created
+     * </ul>
+     *
+     * Note: old GeoNetwork was also restricting editing on harvested record. This is not restricted on the server side
+     * anymore. If a record is harvested it could be edited by default but the client application may restrict this
+     * condition.
+     *
+     * @param metadataId The metadata internal identifier
+     */
     @Override
     public boolean isOwner(final int metadataId) throws Exception {
         try {
@@ -53,13 +78,14 @@ public class MetadataAccessManager implements IMetadataAccessManager {
             }
 
             String currentUsername = this.authenticationFacade.getUsername();
-            if (!StringUtils.hasLength(currentUsername)) {
+            if (StringUtils.isBlank(currentUsername) || this.authenticationFacade.isAnonymous()) {
                 return false;
             }
-            User currentUser = this.userManager.getUserByUsername(currentUsername);
+
+            var authentication = this.authenticationFacade.geonetworkPermissions();
 
             // --- check if the user is an administrator
-            Profile profile = currentUser.getProfile();
+            Profile profile = authentication.getHighestProfile();
             if (profile == Profile.Administrator) {
                 return true;
             }
@@ -68,7 +94,7 @@ public class MetadataAccessManager implements IMetadataAccessManager {
 
             // --- check if the user is the metadata owner
             //
-            if (currentUser.getId().equals(metadata.getOwner())) {
+            if (authentication.getUserId().equals(metadata.getOwner())) {
                 return true;
             }
 
@@ -83,14 +109,15 @@ public class MetadataAccessManager implements IMetadataAccessManager {
                 return false;
             }
 
-            List<Usergroup> userReviewerGroups = this.userManager.getUserGroups(currentUser.getId(), Profile.Reviewer);
+            var reviewerGroups = this.authenticationFacade
+                    .geonetworkPermissions()
+                    .getProfileGroups()
+                    .get(Profile.Reviewer);
+            if (reviewerGroups == null) {
+                return false;
+            }
 
-            boolean isReviewerInGroupOwner = (userReviewerGroups.stream()
-                            .filter(usergroup -> usergroup.getGroupid().getId().equals(groupOwner))
-                            .count()
-                    > 0);
-
-            return isReviewerInGroupOwner;
+            return reviewerGroups.contains(groupOwner);
 
         } catch (MetadataNotFoundException ex) {
             return false;
@@ -104,7 +131,7 @@ public class MetadataAccessManager implements IMetadataAccessManager {
      */
     @Override
     public boolean hasEditPermission(final int metadataId) throws Exception {
-        return hasEditingPermissionWithProfile(metadataId);
+        return hasEditingPermissionWithProfile(metadataId, Profile.Editor);
     }
 
     /** Returns whether a particular metadata is downloadable. */
@@ -115,7 +142,7 @@ public class MetadataAccessManager implements IMetadataAccessManager {
         }
         int downloadId = ReservedOperation.download.getId();
         // TODO: get IP address --> context.getIpAddress()
-        String ipAddress = "";
+        String ipAddress = intranetHelper.currentRequestIpAddress();
         Set<Operation> ops = getOperations(metadataId, ipAddress);
         for (Operation op : ops) {
             if (op.getId() == downloadId) {
@@ -128,7 +155,7 @@ public class MetadataAccessManager implements IMetadataAccessManager {
     @Override
     public boolean canView(int metadataId) throws Exception {
         // TODO: get IP address --> context.getIpAddress()
-        String ipAddress = "";
+        String ipAddress = intranetHelper.currentRequestIpAddress();
         Set<Operation> hsOper = this.getOperations(metadataId, ipAddress);
         boolean hasViewOperation = (hsOper.stream()
                         .filter(op -> op.getId() == ReservedOperation.view.getId())
@@ -163,6 +190,7 @@ public class MetadataAccessManager implements IMetadataAccessManager {
             }
 
             // TODO: Use user session
+            // NOTE: this can never do anything because it checks that a profile is 2 different things
             /*UserSession us = context.getUserSession();
             if ((us != null) && us.isAuthenticated() && us.getProfile() == Profile.Editor && us.getProfile() == Profile.Reviewer) {
               results.add(operationRepository.findReservedOperation(ReservedOperation.view));
@@ -172,19 +200,63 @@ public class MetadataAccessManager implements IMetadataAccessManager {
         return results;
     }
 
+    /**
+     * Returns all groups accessible by the user (a set of ids).
+     *
+     * <p>1. admin -> all groups (from DB `groups` table) 2. All users have group.all 3. Determine if request is from
+     * intranet. If so, group.intranet 4. If signed in, + add group.guest + find all the groups the user is in (DB table
+     * `usergroups`) + if editingGroupsOnly, then Profile for that group must be >= Profile.Editor
+     *
+     * @param editingGroupsOnly TODO
+     */
+    public Set<Integer> getUserGroups(String ip, boolean editingGroupsOnly) throws Exception {
+
+        Set<Integer> hs = new HashSet<>();
+
+        // add All (1) network group
+        hs.add(ReservedGroup.all.getId());
+
+        if (ip != null && intranetHelper.isIntranet(ip)) {
+            hs.add(ReservedGroup.intranet.getId());
+        }
+
+        var gnPermissions = authenticationFacade.geonetworkPermissions();
+
+        if (authenticationFacade.isAuthenticated()) {
+            // add (-1) GUEST group
+            hs.add(ReservedGroup.guest.getId());
+
+            if (gnPermissions.isAdmin()) {
+                // admin - ALL groups
+                List<Integer> allGroupIds =
+                        groupRepository.findAll().stream().map(x -> x.getId()).toList();
+                hs.addAll(allGroupIds);
+            } else {
+                // go through their groups and add them
+                for (var profileGroup : gnPermissions.getProfileGroups().entrySet()) {
+                    var profile = profileGroup.getKey();
+                    if (!editingGroupsOnly || profile.compareTo(Profile.Editor) > 0) {
+                        hs.add(profile.getId());
+                    }
+                }
+            }
+        }
+
+        return hs;
+    }
+
     /** Returns all operations permitted by the user on a particular metadata. */
     @Override
     public Set<Operation> getAllOperations(int metadataId, String ip) throws Exception {
-        // TODO: Implement
-
         HashSet<Operation> operations = new HashSet<>();
-        /*Set<Integer> groups = getUserGroups(context.getUserSession(),
-          ip, false);
-        for (Operationallowed opAllow : this.metadataManager.getMetadataOperations(mdId)) {
-          if (groups.contains(opAllow.getId().getGroupid())) {
-            operations.add(operationRepository.findById(opAllow.getId().getOperationId()).get());
-          }
-        }*/
+        var groups = getUserGroups(ip, false);
+        for (Operationallowed opAllow : this.metadataManager.getMetadataOperations(metadataId)) {
+            if (groups.contains(opAllow.getId().getGroupid())) {
+                operations.add(operationRepository
+                        .findById(opAllow.getId().getOperationid())
+                        .get());
+            }
+        }
         return operations;
     }
 
@@ -193,36 +265,31 @@ public class MetadataAccessManager implements IMetadataAccessManager {
      * specific user profile.
      *
      * @param metadataId The metadata internal identifier
+     * @param profile The specific profile the user must have on the editable-group
      */
-    private boolean hasEditingPermissionWithProfile(final int metadataId) throws Exception {
+    private boolean hasEditingPermissionWithProfile(final int metadataId, Profile profile) throws Exception {
         if (this.authenticationFacade.getAuthentication().isAuthenticated()) {
             return false;
         }
 
-        String currentUsername = this.authenticationFacade.getUsername();
-        if (!StringUtils.hasLength(currentUsername)) {
+        var authority = this.authenticationFacade.geonetworkPermissions();
+        if (this.authenticationFacade.isAnonymous() || StringUtils.isBlank(authority.getUsername())) {
             return false;
         }
-        User currentUser = this.userManager.getUserByUsername(currentUsername);
 
-        // Get the groups where the metadata is editable
+        // what groups have permission to edit?
         List<Integer> metadataEditableGroups = this.metadataManager.getEditableGroups(metadataId);
         if (metadataEditableGroups.isEmpty()) {
-            return false;
+            return false; // no one can edit by profile (might be admin or owner)
         }
 
-        // Get the groups where the user is Editor
-        List<Usergroup> userEditableGroups = this.userManager.getUserGroups(currentUser.getId());
-        List<Integer> userEditableGroupsIds = userEditableGroups.stream()
-                .map(usergroup -> usergroup.getId().getGroupid())
-                .collect(Collectors.toUnmodifiableList());
+        // get the groups that the user has `profile` permission on
+        var auth = authenticationFacade.geonetworkPermissions();
+        var userGroups = auth.getProfileGroups().get(profile);
 
-        boolean userCanEditMetadata = (userEditableGroupsIds.stream()
-                        .filter(metadataEditableGroups::contains)
-                        .distinct()
-                        .count()
-                > 0);
+        var intersection = new ArrayList<>(metadataEditableGroups);
+        intersection.retainAll(userGroups);
 
-        return userCanEditMetadata;
+        return !intersection.isEmpty();
     }
 }
