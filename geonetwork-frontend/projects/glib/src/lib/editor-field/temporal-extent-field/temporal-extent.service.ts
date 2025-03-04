@@ -19,7 +19,7 @@ export class TemporalExtentService {
     return !!fromDate && !!toDate;
   }
 
-  getRangeDetails(
+  buildDateRangeDetails(
     from: string | undefined,
     to: string | undefined
   ): DateRangeDetails {

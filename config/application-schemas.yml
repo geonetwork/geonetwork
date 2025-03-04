@@ -149,6 +149,22 @@ geonetwork:
                    </gex:EX_TemporalExtent>
                   </gex:temporalElement>
 
+          - name: "resourceVerticalRange"
+            xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:extent/gex:EX_Extent/gex:verticalElement"
+            value: >
+              <gex:verticalElement xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
+                                                xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                                                gco:nilReason="computedFromDatasource">
+                 <gex:EX_VerticalExtent>
+                    <gex:minimumValue>
+                       <gco:Real>{{gte:-}}</gco:Real>
+                    </gex:minimumValue>
+                    <gex:maximumValue>
+                       <gco:Real>{{lte:-}}</gco:Real>
+                    </gex:maximumValue>
+                 </gex:EX_VerticalExtent>
+              </gex:verticalElement>
+
           - name: "format"
             xpath: "mdb:distributionInfo/mrd:MD_Distribution/mrd:distributionFormat"
   #            condition: "count(./mdb:distributionInfo/*/mrd:distributionFormat[*/mrd:formatSpecificationCitation/*/cit:title/*/text() ='{{formatDescription}}']) = 0"

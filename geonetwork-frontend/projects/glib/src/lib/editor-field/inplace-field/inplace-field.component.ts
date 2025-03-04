@@ -12,7 +12,12 @@ import { Button } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { Inplace } from 'primeng/inplace';
 import { InputText } from 'primeng/inputtext';
-import { BatchEditRequest, DateRangeDetails, RecordsApi } from 'g5api';
+import {
+  BatchEditRequest,
+  DateRangeDetails,
+  RecordsApi,
+  VerticalRange,
+} from 'g5api';
 import { RecordsApi as Gn4RecordsApi } from 'gapi';
 import { EeaResourceIdentifierFieldComponent } from '../eea-resource-identifier-field/eea-resource-identifier-field.component';
 import {
@@ -38,8 +43,8 @@ import { NgTemplateOutlet } from '@angular/common';
 export class InplaceFieldComponent implements OnInit {
   uuid = input.required<string>();
   property = input.required<string>();
-  value = model<string | DateRangeDetails | undefined>();
-  initialValue: string | DateRangeDetails | undefined;
+  value = model<string | DateRangeDetails | VerticalRange | undefined>();
+  initialValue: string | DateRangeDetails | VerticalRange | undefined;
 
   @ContentChild('display') displayTemplate: TemplateRef<any> | undefined;
   @ContentChild('edit') editTemplate: TemplateRef<any> | undefined;
@@ -58,7 +63,7 @@ export class InplaceFieldComponent implements OnInit {
     this.initialValue = this.value();
   }
 
-  onFieldValueChange(event: DateRangeDetails) {
+  onFieldValueChange(event: DateRangeDetails | VerticalRange) {
     this.value.set(event);
   }
 

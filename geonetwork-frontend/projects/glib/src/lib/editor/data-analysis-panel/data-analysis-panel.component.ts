@@ -15,17 +15,23 @@ import {
   DataAnalysisControllerApi,
   DateRangeDetails,
   IndexRecord,
+  VerticalRange,
 } from 'g5api';
 import { Select, SelectChangeEvent } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
-import {
-  API5_CONFIGURATION,
-  API_CONFIGURATION,
-} from '../../config/config.loader';
+import { API5_CONFIGURATION } from '../../config/config.loader';
 import { InplaceFieldComponent } from '../../editor-field/inplace-field/inplace-field.component';
 import { TemporalExtentFieldComponent } from '../../editor-field/temporal-extent-field/temporal-extent-field.component';
 import { ProgressBar } from 'primeng/progressbar';
+import { TemporalExtentService } from '../../editor-field/temporal-extent-field/temporal-extent.service';
+import { VerticalExtentFieldComponent } from '../../editor-field/vertical-extent-field/vertical-extent-field.component';
+import { JsonPipe } from '@angular/common';
+import { VerticalExtentService } from '../../editor-field/vertical-extent-field/vertical-extent.service';
+
+enum StatsType {
+  TEMPORAL = 'temporalExtent',
+  VERTICAL = 'resourceVerticalRange',
+}
 
 @Component({
   selector: 'g-data-analysis-panel',
@@ -39,6 +45,8 @@ import { ProgressBar } from 'primeng/progressbar';
     InplaceFieldComponent,
     TemporalExtentFieldComponent,
     ProgressBar,
+    VerticalExtentFieldComponent,
+    JsonPipe,
   ],
   templateUrl: './data-analysis-panel.component.html',
 })
@@ -58,13 +66,29 @@ export class DataAnalysisPanelComponent {
 
   temporalExtentStats = signal<AttributeStatistics[] | undefined>(undefined);
   temporalExtent = signal<DateRangeDetails | undefined>(undefined);
-  verticalExtent = signal<AttributeStatistics[] | undefined>(undefined);
+  resourceVerticalRangeStats = signal<AttributeStatistics[] | undefined>(
+    undefined
+  );
+  resourceVerticalRange = signal<VerticalRange | undefined>(undefined);
 
-  isComputingStatistics = signal<boolean>(false);
+  isComputingStatistics = signal<{ [key in StatsType]: boolean }>({
+    [StatsType.TEMPORAL]: false,
+    [StatsType.VERTICAL]: false,
+  });
 
-  getStatistics($event: SelectChangeEvent) {
-    this.temporalExtentStats.set(undefined);
-    this.isComputingStatistics.set(true);
+  temporalExtentService = inject(TemporalExtentService);
+  verticalExtentService = inject(VerticalExtentService);
+
+  getStatistics($event: SelectChangeEvent, type: StatsType) {
+    const statsField =
+      type === StatsType.TEMPORAL
+        ? 'temporalExtentStats'
+        : 'resourceVerticalRangeStats';
+
+    this[statsField].set(undefined);
+    this.isComputingStatistics.update(prev => {
+      return { ...prev, [type]: true };
+    });
     this.dataAnalysisApi()
       .attributeStatistics({
         datasource: this.datasource(),
@@ -73,19 +97,30 @@ export class DataAnalysisPanelComponent {
       })
       .then(
         response => {
-          this.isComputingStatistics.set(false);
-          this.temporalExtentStats.set(response);
-          this.temporalExtent.set({
-            start: {
-              date: String(this.temporalExtentStats()![0].statistics?.MIN),
-            },
-            end: {
-              date: String(this.temporalExtentStats()![0].statistics?.MAX),
-            },
+          this.isComputingStatistics.update(prev => {
+            return { ...prev, [type]: false };
           });
+          this[statsField].set(response);
+          if (type === StatsType.TEMPORAL) {
+            this.temporalExtent.set(
+              this.temporalExtentService.buildDateRangeDetails(
+                String(this.temporalExtentStats()![0].statistics?.MIN),
+                String(this.temporalExtentStats()![0].statistics?.MAX)
+              )
+            );
+          } else {
+            this.resourceVerticalRange.set(
+              this.verticalExtentService.buildVerticalExtent(
+                Number(this.resourceVerticalRangeStats()![0].statistics?.MIN),
+                Number(this.resourceVerticalRangeStats()![0].statistics?.MAX)
+              )
+            );
+          }
         },
         error => {
-          this.isComputingStatistics.set(false);
+          this.isComputingStatistics.update(prev => {
+            return { ...prev, [type]: false };
+          });
           console.log(
             'Error retrieving attribute statistic : ' + error.response
           );
@@ -94,4 +129,5 @@ export class DataAnalysisPanelComponent {
   }
 
   protected readonly String = String;
+  StatsType = StatsType;
 }

@@ -22,6 +22,7 @@ export class TemporalExtentFieldComponent implements OnInit {
   from = input<string>();
   to = input<string>();
   format = input('yy');
+  appendTo = input<string | HTMLElement>('body');
 
   onChange = output<DateRangeDetails>();
 
@@ -31,28 +32,23 @@ export class TemporalExtentFieldComponent implements OnInit {
 
   dateRangeDetails = signal<DateRangeDetails | undefined>(undefined);
 
-  constructor() {
-    effect(() => {
-      if (this.temporalExtentService.isValid(this.from(), this.to())) {
-        this.calendarRange = this.temporalExtentService.getCalendarRange(
-          this.from(),
-          this.to()
-        );
-      } else {
-        this.errorMessage.set(`Invalid date value ${this.from()}-${this.to()}`);
-      }
-    });
-  }
-
   ngOnInit() {
-    this.setValue(this.from(), this.to());
+    if (this.temporalExtentService.isValid(this.from(), this.to())) {
+      this.calendarRange = this.temporalExtentService.getCalendarRange(
+        this.from(),
+        this.to()
+      );
+      this.setValue(this.from(), this.to());
+    } else {
+      this.errorMessage.set(`Invalid date value ${this.from()}-${this.to()}`);
+    }
   }
 
   errorMessage = signal<string | undefined>(undefined);
 
   setValue(from: string | undefined, to: string | undefined) {
     this.dateRangeDetails.set(
-      this.temporalExtentService.getRangeDetails(from, to)
+      this.temporalExtentService.buildDateRangeDetails(from, to)
     );
     this.onChange.emit(this.dateRangeDetails()!);
   }

@@ -1,0 +1,25 @@
+<div class="flex flex-row">
+  <p-slider
+    [(ngModel)]="rangeValues"
+    orientation="vertical"
+    [range]="true"
+    [min]="min()"
+    [max]="max()"
+    (onChange)="emitOnChange()"
+    styleClass="h-56 mx-10 my-6" />
+
+  <div class="flex-grow flex flex-col justify-between gap-4">
+    <p-input-number
+      [(ngModel)]="rangeValues[1]"
+      [min]="rangeValues[0]"
+      [suffix]="unit"
+      class="w-full"
+      (onInput)="updateRange()" />
+    <p-input-number
+      [(ngModel)]="rangeValues[0]"
+      [max]="rangeValues[1]"
+      [suffix]="unit"
+      class="w-full"
+      (onInput)="updateRange()" />
+  </div>
+</div>

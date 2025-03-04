@@ -5,7 +5,7 @@
   @let isTabular = spatialRepresentation === 'textTable';
   @let isRaster = spatialRepresentation === 'grid';
 
-  <div class="grid grid-cols-8 gap-4 items-center">
+  <div class="grid grid-cols-8 gap-4 items-center" #dataAnalysisPanel>
     <div class="font-medium">Title</div>
     <div class="col-span-7">
       <div class="inline-flex items-center">
@@ -157,12 +157,13 @@
         <div class="col-span-7 flex gap-2">
           <p-select
             [options]="analysisResult().featureTypes"
-            (onChange)="getStatistics($event)"
+            (onChange)="getStatistics($event, StatsType.TEMPORAL)"
             placeholder="Compute temporal extent from attribute"
             optionLabel="code"
-            optionValue="code" />
+            optionValue="code"
+            [appendTo]="dataAnalysisPanel" />
 
-          @if (isComputingStatistics()) {
+          @if (isComputingStatistics()[StatsType.TEMPORAL]) {
             <p-progressBar
               mode="indeterminate"
               [style]="{ height: '6px' }"
@@ -187,20 +188,54 @@
                 <g-temporal-extent-field
                   [from]="String(temporalExtentStats()![0].statistics.MIN)"
                   [to]="String(temporalExtentStats()![0].statistics.MAX)"
-                  (onChange)="onFieldValueChange($event)" />
+                  (onChange)="onFieldValueChange($event)"
+                  [appendTo]="dataAnalysisPanel" />
               </ng-template>
             </g-inplace-field>
           }
         </div>
 
-        <!--<div class="font-medium">Vertical extent?</div>
-        <div class="col-span-7">
+        <div class="font-medium">Vertical extent?</div>
+        <div class="col-span-7 flex gap-2">
           <p-select
             [options]="analysisResult().featureTypes"
             placeholder="Compute vertical extent from attribute"
+            (onChange)="getStatistics($event, StatsType.VERTICAL)"
             optionLabel="code"
-            optionValue="code" />
-        </div>-->
+            optionValue="code"
+            [appendTo]="dataAnalysisPanel" />
+
+          @if (isComputingStatistics()[StatsType.VERTICAL]) {
+            <p-progressBar
+              mode="indeterminate"
+              [style]="{ height: '6px' }"
+              class="flex-auto" />
+          }
+          @if (
+            resourceVerticalRangeStats() &&
+            resourceVerticalRangeStats()![0] &&
+            resourceVerticalRangeStats()![0].statistics
+          ) {
+            <g-inplace-field
+              property="resourceVerticalRange"
+              [(value)]="resourceVerticalRange"
+              [uuid]="uuid()">
+              <ng-template #display>
+                <span class="font-bold">
+                  {{ resourceVerticalRange()?.gte }} -
+                  {{ resourceVerticalRange()?.lte }}
+                  {{ resourceVerticalRange()?.unit }}
+                </span>
+              </ng-template>
+              <ng-template #edit let-onFieldValueChange="onFieldValueChange">
+                <g-vertical-extent-field
+                  [gte]="resourceVerticalRange()?.gte"
+                  [lte]="resourceVerticalRange()?.lte"
+                  (onChange)="onFieldValueChange($event)" />
+              </ng-template>
+            </g-inplace-field>
+          }
+        </div>
       }
     }
   </div>

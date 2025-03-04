@@ -256,9 +256,9 @@ public class BatchEditsService {
             }
             // For each key, check if a JSONPath match in the valueOrJson parameter
             for (String key : keys) {
-                String value = JsonPath.read(valueOrJson, "$." + key);
+                Object value = JsonPath.read(valueOrJson, "$." + key);
                 if (value != null) {
-                    replacements.put(key, value);
+                    replacements.put(key, String.valueOf(value));
                 }
             }
         } else {
