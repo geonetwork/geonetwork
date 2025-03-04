@@ -10,8 +10,10 @@
 package org.geonetwork.ogcapi.service.indexConvert;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.index.model.record.IndexRecord;
@@ -152,11 +154,16 @@ public class OgcApiGeoJsonConverter {
                 && collectionInfo.getExtent().getTemporal().getInterval() != null
                 && !collectionInfo.getExtent().getTemporal().getInterval().isEmpty()) {
             var time = new OgcApiRecordsTimeDto();
-            var interval = collectionInfo.getExtent().getTemporal().getInterval().get(0).stream()
-                    .map(x -> x.toString())
-                    .toList();
-            time.setInterval(interval);
-            result.setTime(JsonNullable.of(time));
+            List<OffsetDateTime> temporalInterval =
+                    collectionInfo.getExtent().getTemporal().getInterval().getFirst();
+            if (!temporalInterval.isEmpty()) {
+                var interval = temporalInterval.stream()
+                        .filter(Objects::nonNull)
+                        .map(OffsetDateTime::toString)
+                        .toList();
+                time.setInterval(interval);
+                result.setTime(JsonNullable.of(time));
+            }
         }
 
         result.setProperties(properties);
