@@ -51,23 +51,13 @@ public class MetadataBuilder {
                 break;
             case "latLonBoundingBox":
                 if (!datasetLayer.getGeometryFields().isEmpty()) {
-                    String crs = GeomUtil.parseCrsCode(
-                            datasetLayer.getGeometryFields().get(0).getCrs());
                     List<BigDecimal> extent =
                             datasetLayer.getGeometryFields().getFirst().getExtent();
-                    List<Double> wgs84Extent = GeomUtil.calculateWgs84Bbox(
-                            crs, extent.stream().map(BigDecimal::doubleValue).collect(Collectors.toList()));
 
-                    if (wgs84Extent == null) {
-                        // Use the original extent if an error ocurred transforming the original extent to WGS84.
-                        wgs84Extent =
-                                extent.stream().map(BigDecimal::doubleValue).collect(Collectors.toList());
-                    }
-
-                    replacements.put("west", wgs84Extent.get(0).toString());
-                    replacements.put("south", wgs84Extent.get(1).toString());
-                    replacements.put("east", wgs84Extent.get(2).toString());
-                    replacements.put("north", wgs84Extent.get(3).toString());
+                    replacements.put("west", extent.get(0).toString());
+                    replacements.put("south", extent.get(1).toString());
+                    replacements.put("east", extent.get(2).toString());
+                    replacements.put("north", extent.get(3).toString());
                 }
                 break;
             case "spatialRepresentationType":

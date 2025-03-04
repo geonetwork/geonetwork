@@ -5,6 +5,9 @@
  */
 package org.geonetwork.data.geom;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.stream.Stream;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 
 import java.util.ArrayList;
@@ -18,6 +21,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 
 public class GeomUtil {
+
+    public static final int NUMBER_OF_DECIMALS_IN_WGS84 = 6;
+    public static final String EPSG_4326 = "EPSG:4326";
 
     private GeomUtil() {
         // Don't allow to instantiate it
@@ -38,7 +44,7 @@ public class GeomUtil {
             return "EPSG:" + m.group(1);
         }
 
-        return "EPSG:4326";
+        return EPSG_4326;
     }
 
     /**
@@ -49,7 +55,7 @@ public class GeomUtil {
      * @return Coordinates transformed to WGS84 or null if an error occurs in the conversion.
      */
     public static List<Double> calculateWgs84Bbox(String crs, List<Double> bboxCoordinates) {
-        boolean wgs84Crs = crs.equals("EPSG:4326");
+        boolean wgs84Crs = crs.equals(EPSG_4326);
 
         if (!wgs84Crs) {
             try {
@@ -64,10 +70,9 @@ public class GeomUtil {
                 ReferencedEnvelope wgs84BBox = bbox.transform(WGS84, true);
 
                 List<Double> wgs84Geom = new ArrayList<>();
-                wgs84Geom.add(wgs84BBox.getMinX());
-                wgs84Geom.add(wgs84BBox.getMinY());
-                wgs84Geom.add(wgs84BBox.getMaxX());
-                wgs84Geom.add(wgs84BBox.getMaxY());
+                Stream.of(wgs84BBox.getMinX(), wgs84BBox.getMinY(), wgs84BBox.getMaxX(), wgs84BBox.getMaxY()).map(d ->
+                    BigDecimal.valueOf(d).setScale(NUMBER_OF_DECIMALS_IN_WGS84, RoundingMode.HALF_UP).doubleValue()
+                ).forEach(wgs84Geom::add);
 
                 return wgs84Geom;
             } catch (TransformException | FactoryException e) {
