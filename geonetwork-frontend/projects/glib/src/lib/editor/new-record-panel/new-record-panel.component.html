@@ -34,7 +34,7 @@
       iconPos="right"
       data-cy="gn-new-record-button-edit"
       [disabled]="!isTemplateSelected()"
-      (onClick)="createRecord(true)" />
+      (onClick)="createRecordIfNotYetCreated(true)" />
   </ng-template>
 
   <p-stepper [(value)]="activeStep" class="p-10 w-full">
@@ -79,9 +79,7 @@
       </p-step-panel>
     </p-step-item>
     <p-step-item [value]="2">
-      <p-step [disabled]="!isTemplateSelected()"
-        >Upload or connect your data
-      </p-step>
+      <p-step [disabled]="!isTemplateSelected()">Add dataset </p-step>
       <p-step-panel>
         <ng-template
           pTemplate="content"
@@ -89,70 +87,83 @@
           let-index="index">
           <div class="grid grid-cols-2 gap-x-8 mb-10">
             <div class="basis-1/2">
-              <p-inputGroup>
-                <p-select
-                  [options]="datasourceTypes"
-                  [(ngModel)]="datasourceType"
-                  optionLabel="name"
-                  title="Select a type"
-                  class="w-full md:w-14">
-                  <ng-template #selectedItem let-selectedOption>
-                    <div class="flex items-center gap-2" *ngIf="selectedOption">
-                      <i [attr.class]="'fa ' + selectedOption.icon"></i>
-                      <div>{{ selectedOption.name }}</div>
-                    </div>
-                  </ng-template>
-                  <ng-template #item let-option>
-                    <div class="flex items-center gap-2">
-                      <i [attr.class]="'fa ' + option.icon"></i>
-                      <div>{{ option.name }}</div>
-                    </div>
-                  </ng-template>
-                </p-select>
-                <input
-                  pInputText
-                  id="datasource"
-                  aria-describedby="datasource-help"
-                  [placeholder]="datasourceType().placeholder || ''"
-                  [disabled]="isDatasourceFileSelected()"
-                  (change)="onDatasourceChange()"
-                  [(ngModel)]="datasource" />
-                <button
-                  type="button"
-                  pButton
-                  label="Find datasets"
-                  [disabled]="isFetchingLayers() || isDatasourceFileSelected()"
-                  (click)="getLayerList()"></button>
-              </p-inputGroup>
-
-              <g-separator label="Or" />
-
               <div class="mb-10">
-                <p-fileupload
-                  #fileUpload
-                  styleClass="w-full"
-                  [customUpload]="true"
-                  (onSelect)="onAttachmentSelected($event)"
-                  (uploadHandler)="onUploadHandler($event)"
-                  (onRemove)="onRemove($event)"
-                  (onClear)="onClear($event)"
-                  name="attachement_upload"
-                  chooseIcon="fa fa-folder"
-                  chooseLabel="Select your file"
-                  uploadLabel="Upload"
-                  multiple="true"
-                  [maxFileSize]="100 * 1000000">
-                  <ng-template #empty>
-                    <div>
-                      Drag and drop files to here to upload.
+                <p-tabs value="0">
+                  <p-tablist>
+                    <p-tab value="0">Upload a file</p-tab>
+                    <p-tab value="1">or connect to datasource</p-tab>
+                  </p-tablist>
+                  <p-tabpanels>
+                    <p-tabpanel value="0">
+                      <p-fileupload
+                        #fileUpload
+                        styleClass="w-full"
+                        [customUpload]="true"
+                        (onSelect)="onAttachmentSelected($event)"
+                        (uploadHandler)="onUploadHandler($event)"
+                        (onRemove)="onRemove($event)"
+                        (onClear)="onClear($event)"
+                        name="attachement_upload"
+                        chooseIcon="fa fa-folder"
+                        chooseLabel="Select your file"
+                        uploadLabel="Upload"
+                        multiple="true"
+                        [maxFileSize]="100 * 1000000">
+                        <ng-template #empty>
+                          <div>
+                            Drag and drop files to here to upload.
 
-                      <p class="font-medium mt-10">
-                        Maximum file size is
-                        <span class="font-bold">100Mo</span>.
-                      </p>
-                    </div>
-                  </ng-template>
-                </p-fileupload>
+                            <p class="font-medium mt-10">
+                              Maximum file size is
+                              <span class="font-bold">100Mo</span>.
+                            </p>
+                          </div>
+                        </ng-template>
+                      </p-fileupload>
+                    </p-tabpanel>
+                    <p-tabpanel value="1">
+                      <p-inputGroup>
+                        <p-select
+                          [options]="datasourceTypes"
+                          [(ngModel)]="datasourceType"
+                          optionLabel="name"
+                          title="Select a type"
+                          class="w-full md:w-14">
+                          <ng-template #selectedItem let-selectedOption>
+                            <div
+                              class="flex items-center gap-2"
+                              *ngIf="selectedOption">
+                              <i [attr.class]="'fa ' + selectedOption.icon"></i>
+                              <div>{{ selectedOption.name }}</div>
+                            </div>
+                          </ng-template>
+                          <ng-template #item let-option>
+                            <div class="flex items-center gap-2">
+                              <i [attr.class]="'fa ' + option.icon"></i>
+                              <div>{{ option.name }}</div>
+                            </div>
+                          </ng-template>
+                        </p-select>
+                        <input
+                          pInputText
+                          id="datasource"
+                          aria-describedby="datasource-help"
+                          [placeholder]="datasourceType().placeholder || ''"
+                          [disabled]="isDatasourceFileSelected()"
+                          (change)="onDatasourceChange()"
+                          [(ngModel)]="datasource" />
+                        <button
+                          type="button"
+                          pButton
+                          label="Find datasets"
+                          [disabled]="
+                            isFetchingLayers() || isDatasourceFileSelected()
+                          "
+                          (click)="getLayerList()"></button>
+                      </p-inputGroup>
+                    </p-tabpanel>
+                  </p-tabpanels>
+                </p-tabs>
               </div>
 
               @if (isFetchingLayers()) {
@@ -329,6 +340,6 @@
 </div>
 @if (numberOfTemplates() === 0) {
   <p-message severity="error" styleClass="m-10"
-    >No template available.</p-message
-  >
+    >No template available.
+  </p-message>
 }

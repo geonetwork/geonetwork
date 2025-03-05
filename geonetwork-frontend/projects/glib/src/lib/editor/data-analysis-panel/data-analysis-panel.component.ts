@@ -4,6 +4,7 @@ import {
   inject,
   input,
   Input,
+  linkedSignal,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -62,7 +63,12 @@ export class DataAnalysisPanelComponent {
 
   uuid = input.required<string>();
 
-  resourceIdentifier = '';
+  spatialRepresentationType = computed(
+    () => this.analysisResult()?.cl_spatialRepresentationType[0].key
+  );
+  isVector = computed(() => this.spatialRepresentationType() === 'vector');
+  isRaster = computed(() => this.spatialRepresentationType() === 'grid');
+  isTabular = computed(() => this.spatialRepresentationType() === 'textTable');
 
   temporalExtentStats = signal<AttributeStatistics[] | undefined>(undefined);
   temporalExtent = signal<DateRangeDetails | undefined>(undefined);
@@ -70,6 +76,25 @@ export class DataAnalysisPanelComponent {
     undefined
   );
   resourceVerticalRange = signal<VerticalRange | undefined>(undefined);
+
+  resourceIdentifier = linkedSignal<string>(() => {
+    const resolution = this.analysisResult()?.resolutionDistance?.[0];
+    const spatialType = this.isVector()
+      ? 'v'
+      : this.isRaster()
+        ? 'r'
+        : this.isTabular()
+          ? 't'
+          : '';
+    const coordinateSystem =
+      this.analysisResult()?.coordinateSystem?.[0].replace('EPSG:', '') || '';
+    const roundedResolution = resolution ? Math.round(Number(resolution)) : '';
+    const temporalExtent = this.temporalExtent()
+      ? `${this.temporalExtent()?.start?.date || ''}-${this.temporalExtent()?.end?.date || ''}`
+      : '';
+
+    return `org_${spatialType}_${coordinateSystem}_${roundedResolution}_m__p_${temporalExtent}_1_0`;
+  });
 
   isComputingStatistics = signal<{ [key in StatsType]: boolean }>({
     [StatsType.TEMPORAL]: false,

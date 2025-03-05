@@ -26,14 +26,16 @@ export class TemporalExtentFieldComponent implements OnInit {
 
   onChange = output<DateRangeDetails>();
 
-  calendarRange: string[] | Date[] = [];
+  calendarRange: string[] | Date[] | null = [];
 
   temporalExtentService = inject(TemporalExtentService);
 
   dateRangeDetails = signal<DateRangeDetails | undefined>(undefined);
 
   ngOnInit() {
-    if (this.temporalExtentService.isValid(this.from(), this.to())) {
+    if (this.from() === undefined && this.to() === undefined) {
+      this.calendarRange = null;
+    } else if (this.temporalExtentService.isValid(this.from(), this.to())) {
       this.calendarRange = this.temporalExtentService.getCalendarRange(
         this.from(),
         this.to()
@@ -54,7 +56,7 @@ export class TemporalExtentFieldComponent implements OnInit {
   }
 
   onSelect(event: any) {
-    if (this.calendarRange[0] && this.calendarRange[1]) {
+    if (this.calendarRange && this.calendarRange[0] && this.calendarRange[1]) {
       this.setValue(
         this.calendarRange[0] as string,
         this.calendarRange[1] as string

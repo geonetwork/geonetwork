@@ -1,4 +1,4 @@
-<p-inputgroup>
+<p-inputgroup #resourceIdentifierField>
   <input
     placeholder="Provider"
     pTooltip="This element refers to the data provider and shall be coded with its abbreviation."
@@ -15,7 +15,8 @@
     [options]="eeaDataTypes"
     optionLabel="code"
     optionValue="code"
-    [(ngModel)]="resourceIdentifier.dataType">
+    [(ngModel)]="resourceIdentifier.dataType"
+    [appendTo]="resourceIdentifierField">
     <ng-template let-type #item>
       <span>{{ type.code }} - {{ type.name }}</span>
     </ng-template>
@@ -53,7 +54,8 @@
     [options]="eeaScaleResolutionUnits"
     optionLabel="code"
     optionValue="code"
-    [(ngModel)]="resourceIdentifier.scaleUnit">
+    [(ngModel)]="resourceIdentifier.scaleUnit"
+    [appendTo]="resourceIdentifierField">
     <ng-template let-unit #item>
       <span>{{ unit.code }} - {{ unit.name }}</span>
     </ng-template>
@@ -80,7 +82,8 @@
     [options]="eeaDataAccessTypes"
     optionLabel="code"
     optionValue="code"
-    [(ngModel)]="resourceIdentifier.access">
+    [(ngModel)]="resourceIdentifier.access"
+    [appendTo]="resourceIdentifierField">
     <ng-template let-type #item>
       <span [title]="type.title">{{ type.code }} - {{ type.name }}</span>
     </ng-template>
@@ -97,7 +100,8 @@
     dateFormat="yy"
     multipleSeparator="-"
     styleClass="w-full"
-    inputStyleClass="w-full">
+    inputStyleClass="w-full"
+    [appendTo]="resourceIdentifierField">
   </p-datePicker>
   <p-inputgroup-addon>
     <span>_v</span>

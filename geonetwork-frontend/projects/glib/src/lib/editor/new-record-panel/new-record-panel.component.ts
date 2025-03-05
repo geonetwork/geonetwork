@@ -15,15 +15,11 @@ import {
   CreateMetadataTypeEnum,
   CreateRequest,
   DeleteRecordRequest,
-  GnDatasetInfo,
-  GnRasterInfo,
   RecordsApi,
 } from 'gapi';
 import {
   AnalysisSynchMetadataResourceRequest,
-  AnalysisSynchRequest,
   ApplyDataAnalysisOnRecordForMetadataResourceRequest,
-  ApplyDataAnalysisOnRecordRequest,
   DataAnalysisControllerApi,
   DataFormat,
   GetAllResourcesRequest,
@@ -66,7 +62,7 @@ import { Listbox, ListboxChangeEvent } from 'primeng/listbox';
 import { Message } from 'primeng/message';
 import { OverviewSelectorComponent } from '../overview-selector/overview-selector.component';
 import { HttpClient } from '@angular/common/http';
-import { SeparatorComponent } from '../../ui/separator/separator.component';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 
 @Component({
   selector: 'g-new-record-panel',
@@ -91,7 +87,11 @@ import { SeparatorComponent } from '../../ui/separator/separator.component';
     Listbox,
     Message,
     OverviewSelectorComponent,
-    SeparatorComponent,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
   ],
   templateUrl: './new-record-panel.component.html',
   styleUrl: './new-record-panel.component.css',
@@ -251,7 +251,7 @@ export class NewRecordPanelComponent implements OnInit {
   }
 
   editRecord() {
-    this.createRecord(false);
+    this.createRecordIfNotYetCreated(false);
   }
 
   openEditor() {
@@ -267,7 +267,7 @@ export class NewRecordPanelComponent implements OnInit {
    *
    * @param redirectToEditor if true, opens the metadata editor with the new metadata.
    */
-  createRecord(redirectToEditor: boolean) {
+  createRecordIfNotYetCreated(redirectToEditor: boolean) {
     if (!this.isTemplateSelected()) {
       return;
     }
@@ -429,6 +429,8 @@ export class NewRecordPanelComponent implements OnInit {
   buildingOverview = signal(false);
 
   buildOverview() {
+    this.createRecordIfNotYetCreated(false);
+
     if (
       this.analysisResult() === undefined ||
       (this.analysisResult() && this.analysisResult()!.geom === undefined)
@@ -576,6 +578,7 @@ export class NewRecordPanelComponent implements OnInit {
   resetForm() {
     this.template.set('');
     this.newRecordId.set('');
+    this.metadataFiles.set([]);
     this.onDatasourceChange();
     this.activeStep.set(1);
   }

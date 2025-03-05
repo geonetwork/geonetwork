@@ -1,18 +1,16 @@
-@if (calendarRange.length === 2) {
-  <p-datePicker
-    placeholder=""
-    [(ngModel)]="calendarRange"
-    (onSelect)="onSelect($event)"
-    view="year"
-    dataType="string"
-    selectionMode="range"
-    [dateFormat]="format()"
-    [appendTo]="appendTo()"
-    multipleSeparator="-"
-    styleClass="w-full"
-    inputStyleClass="w-full">
-  </p-datePicker>
-}
+<p-datePicker
+  placeholder=""
+  [(ngModel)]="calendarRange"
+  (onSelect)="onSelect($event)"
+  view="year"
+  dataType="string"
+  selectionMode="range"
+  [dateFormat]="format()"
+  [appendTo]="appendTo()"
+  multipleSeparator="-"
+  styleClass="w-full"
+  inputStyleClass="w-full">
+</p-datePicker>
 @if (errorMessage()) {
   <p-message severity="error" size="small" closable=""
     >{{ errorMessage() }}

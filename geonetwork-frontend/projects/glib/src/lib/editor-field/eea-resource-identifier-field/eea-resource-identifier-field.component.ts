@@ -47,7 +47,7 @@ export class EeaResourceIdentifierFieldComponent implements OnInit {
   value = model.required<string>();
 
   resourceIdentifier: EEAResourceIdentifier = {
-    provider: signal('eea'),
+    provider: signal(''),
     dataType: signal(''),
     epsg: signal(undefined),
     scale: signal(undefined),
