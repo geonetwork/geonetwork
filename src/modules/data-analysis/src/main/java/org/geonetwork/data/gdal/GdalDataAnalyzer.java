@@ -354,6 +354,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                                 .geometryFields(l.getGeometryFields().stream()
                                         .map(f -> {
                                             var crs = f.getCoordinateSystem().isPresent()
+                                                && f.getCoordinateSystem().get() != null
                                                     ? f.getCoordinateSystem()
                                                             .get()
                                                             .getWkt()
