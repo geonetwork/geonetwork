@@ -6,6 +6,8 @@
 package org.geonetwork.ogcapi.service.links;
 
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
@@ -46,7 +48,7 @@ public class ItemsPageLinks extends BasicLinks {
         addStandardLinks(
                 nativeWebRequest,
                 linkConfiguration.getOgcApiRecordsBaseUrl(),
-                "collections/" + collectionId + "/items",
+                "collections/" + URLEncoder.encode(collectionId, StandardCharsets.UTF_8) + "/items",
                 page,
                 new ArrayList<String>(
                         itemsPageLinksConfiguration.getMimeFormats().keySet()),
@@ -104,7 +106,7 @@ public class ItemsPageLinks extends BasicLinks {
         addStandardLinks(
                 nativeWebRequest,
                 linkConfiguration.getOgcApiRecordsBaseUrl(),
-                "collections/" + catalogId,
+                "collections/" + URLEncoder.encode(catalogId, StandardCharsets.UTF_8),
                 page,
                 new ArrayList<String>(
                         collectionPageLinksConfiguration.getMimeFormats().keySet()),
@@ -130,7 +132,7 @@ public class ItemsPageLinks extends BasicLinks {
         addStandardLinks(
                 nativeWebRequest,
                 linkConfiguration.getOgcApiRecordsBaseUrl(),
-                "collections/" + collectionId + "/items",
+                "collections/" + URLEncoder.encode(collectionId, StandardCharsets.UTF_8) + "/items",
                 page,
                 new ArrayList<String>(
                         itemsPageLinksConfiguration.getMimeFormats().keySet()),

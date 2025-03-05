@@ -6,6 +6,7 @@
 package org.geonetwork.ogcapi.controllerexceptions;
 
 import java.lang.reflect.UndeclaredThrowableException;
+import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsExceptionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /** Global exception handling - will wrap exceptions in the OgcApiRecordsExceptionDto */
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     /**
@@ -42,6 +44,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = GenericOgcApiException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<OgcApiRecordsExceptionDto> handleException(GenericOgcApiException e) {
+        log.error(e.getMessage(), e);
         OgcApiRecordsExceptionDto exception =
                 new OgcApiRecordsExceptionDto().code(e.getCode() + "").description(e.getMessage());
         return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(e.getCode()));
@@ -50,6 +53,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<OgcApiRecordsExceptionDto> handleException(Exception e) {
+        log.error(e.getMessage(), e);
         OgcApiRecordsExceptionDto exception =
                 new OgcApiRecordsExceptionDto().code("500").description(e.getMessage());
         return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(500));
