@@ -80,7 +80,7 @@
     </p-step-item>
     <p-step-item [value]="2">
       <p-step [disabled]="!isTemplateSelected()">Add dataset </p-step>
-      <p-step-panel>
+      <p-step-panel #newRecordStep2>
         <ng-template
           pTemplate="content"
           let-activateCallback="activateCallback"
@@ -210,7 +210,8 @@
                     [options]="layers()"
                     [(ngModel)]="layername"
                     (onChange)="onLayerChange()"
-                    placeholder="Select a dataset" />
+                    placeholder="Select a dataset"
+                    [appendTo]="newRecordStep2"/>
                 </div>
               }
             </div>

@@ -105,7 +105,7 @@ export class NewRecordPanelComponent implements OnInit {
   newRecordId = signal('');
 
   datasource = signal(
-    'https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv'
+    ''
   );
   datasourceFile = signal('');
 
