@@ -11,12 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.StringSubstitutor;
-import org.geonetwork.data.geom.GeomUtil;
 import org.geonetwork.data.model.BaseDataInfo;
 import org.geonetwork.data.model.DatasetInfo;
 import org.geonetwork.data.model.DatasetLayer;
@@ -109,7 +108,7 @@ public class MetadataBuilder {
                         "title",
                         datasetInfo
                                 .getMetadata()
-                                .getOrDefault("TITLE", "filename?")
+                                .getOrDefault("TITLE", FilenameUtils.getBaseName(datasetInfo.getDescription()))
                                 .toString());
                 break;
             case "latLonBoundingBox":

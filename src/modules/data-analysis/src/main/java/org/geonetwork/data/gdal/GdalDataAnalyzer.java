@@ -6,16 +6,16 @@
 
 package org.geonetwork.data.gdal;
 
+import static org.geonetwork.data.geom.GeomUtil.NUMBER_OF_DECIMALS_IN_WGS84;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,8 +30,6 @@ import org.geonetwork.data.gdal.model.generated.GdalGdalinfoDto;
 import org.geonetwork.data.gdal.model.generated.GdalGeoJSONPolygonDto;
 import org.geonetwork.data.gdal.model.generated.GdalOgrinfoDatasetDto;
 import org.geonetwork.data.geom.GeomUtil;
-import static org.geonetwork.data.geom.GeomUtil.NUMBER_OF_DECIMALS_IN_WGS84;
-import static org.geonetwork.data.geom.GeomUtil.calculateWgs84Bbox;
 import org.geonetwork.data.model.AttributeStatistics;
 import org.geonetwork.data.model.DataFormat;
 import org.geonetwork.data.model.DatasetInfo;
@@ -380,7 +378,9 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                                             if (wgs84Extent != null) {
                                                 datasetLayerGeomFieldBuilder.extent(wgs84Extent.stream()
                                                         .map(d -> BigDecimal.valueOf(d)
-                                                                .setScale(NUMBER_OF_DECIMALS_IN_WGS84, RoundingMode.HALF_UP))
+                                                                .setScale(
+                                                                        NUMBER_OF_DECIMALS_IN_WGS84,
+                                                                        RoundingMode.HALF_UP))
                                                         .toList());
                                             }
                                             return datasetLayerGeomFieldBuilder.build();
@@ -445,8 +445,6 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
             throw new DataAnalyzerException(json);
         }
     }
-
-
 
     private static List<Double> getWgs84Extent(GdalGeoJSONPolygonDto extent) {
         // TODO: Reproject extent to WGS84 and add polygon in shape property

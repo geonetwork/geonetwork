@@ -5,15 +5,15 @@
  */
 package org.geonetwork.data.geom;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.stream.Stream;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
@@ -70,9 +70,11 @@ public class GeomUtil {
                 ReferencedEnvelope wgs84BBox = bbox.transform(WGS84, true);
 
                 List<Double> wgs84Geom = new ArrayList<>();
-                Stream.of(wgs84BBox.getMinX(), wgs84BBox.getMinY(), wgs84BBox.getMaxX(), wgs84BBox.getMaxY()).map(d ->
-                    BigDecimal.valueOf(d).setScale(NUMBER_OF_DECIMALS_IN_WGS84, RoundingMode.HALF_UP).doubleValue()
-                ).forEach(wgs84Geom::add);
+                Stream.of(wgs84BBox.getMinX(), wgs84BBox.getMinY(), wgs84BBox.getMaxX(), wgs84BBox.getMaxY())
+                        .map(d -> BigDecimal.valueOf(d)
+                                .setScale(NUMBER_OF_DECIMALS_IN_WGS84, RoundingMode.HALF_UP)
+                                .doubleValue())
+                        .forEach(wgs84Geom::add);
 
                 return wgs84Geom;
             } catch (TransformException | FactoryException e) {

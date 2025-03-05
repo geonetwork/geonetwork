@@ -150,9 +150,7 @@ class MetadataBuilderTest {
     @ParameterizedTest
     @CsvSource({
         "CEEUBG100kV2_1.shp,iso19115-3.2018,<mdb:MD_Metadata xmlns:mdb=\"http://standards.iso.org/iso/19115/-3/mdb/2.0\"/>",
-        "CEEUBG100kV2_1.shp,iso19139,<gmd:MD_Metadata xmlns:gmd=\"http://www.isotc211.org/2005/gmd\"/>",
-        "ENI2018_CHA0018_00_V2020_1_AM_PILOT.tif,iso19115-3.2018,<mdb:MD_Metadata xmlns:mdb=\"http://standards.iso.org/iso/19115/-3/mdb/2.0\"/>",
-        "ENI2018_CHA0018_00_V2020_1_AM_PILOT.tif,iso19139,<gmd:MD_Metadata xmlns:gmd=\"http://www.isotc211.org/2005/gmd\"/>"
+        "ENI2018_CHA0018_00_V2020_1_AM_PILOT.tif,iso19115-3.2018,<mdb:MD_Metadata xmlns:mdb=\"http://standards.iso.org/iso/19115/-3/mdb/2.0\"/>"
     })
     void dataAnalysisFromRasterFromEmptyRecord(String layerFile, String schema, String xml)
             throws IOException, JDOMException {

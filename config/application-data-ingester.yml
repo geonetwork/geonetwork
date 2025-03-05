@@ -13,11 +13,9 @@ geonetwork:
                 - schema: "iso19115-3.2018"
                   operation: "gn_delete"
                   xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString"
-                  condition: "starts-with(./mdb:identificationInfo/*/mri:citation/*/cit:title/gco:CharacterString, 'Copy of')"
                 - schema: "iso19115-3.2018"
                   operation: "gn_create"
                   xpath: "mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:title/gco:CharacterString"
-                  condition: "starts-with(./mdb:identificationInfo/*/mri:citation/*/cit:title/gco:CharacterString, 'Copy of') or count(./mdb:identificationInfo/*/mri:citation/*/cit:title) = 0"
                   value: "{{title}}"
 
 
@@ -247,7 +245,7 @@ geonetwork:
                 - schema: "iso19115-3.2018"
                   operation: "gn_create"
                   xpath: "mdb:contentInfo"
-                  condition: "count(mdb:contentInfo/*[@uuid='fc/{{featureTypeName}}']) = 0 and count(./mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 0"
+                  condition: "count(mdb:contentInfo/*[@uuid='fc/{{featureTypeName}}']) = 0 and count(mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 0"
                   value: >
                     <mrc:MD_FeatureCatalogue xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
                                                                                             xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
@@ -276,7 +274,7 @@ geonetwork:
                 - schema: "iso19115-3.2018"
                   operation: "gn_add"
                   xpath: "/mdb:contentInfo/*[@uuid = 'fc/{{featureTypeName}}']/mrc:featureCatalogue/*"
-                  condition: "count(mdb:contentInfo/*[@uuid = 'fc/{{featureTypeName}}']/mrc:featureCatalogue/*/gfc:featureType[*/gfc:typeName = '{{featureTypeName}}']) = 0"
+                  condition: "count(mdb:contentInfo/*[@uuid = 'fc/{{featureTypeName}}']/mrc:featureCatalogue/*/gfc:featureType[*/gfc:typeName = '{{featureTypeName}}']) = 0 and count(mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 0"
                   value: >
                     <gfc:featureType xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
                       xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0"
@@ -296,7 +294,7 @@ geonetwork:
                 - schema: "iso19115-3.2018"
                   operation: "gn_add"
                   xpath: "/mdb:contentInfo/*[@uuid = 'fc/{{featureTypeName}}']/mrc:featureCatalogue/*/gfc:featureType/*[gfc:typeName = '{{featureTypeName}}']"
-                  condition: "count(mdb:contentInfo/*[@uuid = 'fc/{{featureTypeName}}']/mrc:featureCatalogue/*/gfc:featureType/*[gfc:typeName = '{{featureTypeName}}']/gfc:carrierOfCharacteristics[*/gfc:memberName = '{{fieldName}}']) = 0"
+                  condition: "count(mdb:contentInfo/*[@uuid = 'fc/{{featureTypeName}}']/mrc:featureCatalogue/*/gfc:featureType/*[gfc:typeName = '{{featureTypeName}}']/gfc:carrierOfCharacteristics[*/gfc:memberName = '{{fieldName}}']) = 0 and count(mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType[*/@codeListValue = 'grid']) = 0"
                   value: >
                     <gfc:carrierOfCharacteristics xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
                                                                              xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0"

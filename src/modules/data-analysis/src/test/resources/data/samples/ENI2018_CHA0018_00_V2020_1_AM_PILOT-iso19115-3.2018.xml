@@ -54,7 +54,7 @@
         <mri:citation>
           <cit:CI_Citation xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0">
             <cit:title>
-              <gco:CharacterString xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0">filename?
+              <gco:CharacterString xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0">ENI2018_CHA0018_00_V2020_1_AM_PILOT
               </gco:CharacterString>
             </cit:title>
           </cit:CI_Citation>
