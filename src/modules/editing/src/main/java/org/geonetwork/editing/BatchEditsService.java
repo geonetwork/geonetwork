@@ -12,11 +12,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.Metadata;
-import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.editing.model.AddElemValue;
 import org.geonetwork.editing.model.BatchEditParameter;
+import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.schemas.MetadataSchema;
 import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.utility.legacy.Pair;
@@ -26,10 +28,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class BatchEditsService {
 
+    public static final String PREVIEW_RESPONSE_ROOT_ELEMENT_NAME = "preview";
+
     private final SchemaManager schemaManager;
-    private final MetadataRepository metadataRepository;
+
+    private final MetadataManager metadataManager;
 
     public Pair<Object, Element> applyBatchEdits(
             //    private Pair<SimpleMetadataProcessingReport, Element> applyBatchEdits(
@@ -38,20 +44,17 @@ public class BatchEditsService {
             boolean updateDateStamp,
             BatchEditParameter[] edits,
             HttpServletRequest request,
-            boolean previewOnly)
+            BatchEditMode batchEditMode)
             throws Exception {
         List<BatchEditParameter> listOfUpdates = Arrays.asList(edits);
         if (listOfUpdates.size() == 0) {
             throw new IllegalArgumentException("At least one edit must be defined.");
         }
 
-        //        ServiceContext serviceContext = ApiUtils.createServiceContext(request);
-        //        UserUtil.checkUserProfileLevel(serviceContext.getUserSession(), settingManager,
-        // roleHierarchy, Settings.METADATA_BATCH_EDITING_ACCESS_LEVEL, Profile.Editor, "batch edit
-        // metadata");
         final Set<String> setOfUuidsToEdit;
         if (uuids == null) {
-            //            SelectionManager selectionManager =
+            throw new NotImplementedException("GN5 / SelectionManager is not implemented.");
+            //    TODO:        SelectionManager selectionManager =
             //                SelectionManager.getManager(serviceContext.getUserSession());
             //
             //            synchronized (
@@ -59,7 +62,7 @@ public class BatchEditsService {
             //                final Set<String> selection = selectionManager.getSelection(bucket);
             //                setOfUuidsToEdit = Sets.newHashSet(selection);
             //            }
-            setOfUuidsToEdit = new HashSet<>();
+            //            setOfUuidsToEdit = new HashSet<>();
         } else {
             setOfUuidsToEdit = new HashSet<>(Arrays.asList(uuids));
         }
@@ -82,13 +85,11 @@ public class BatchEditsService {
 
         @SuppressWarnings("unused")
         String changeDate = null;
-        Element preview = new Element("preview");
+        Element preview = new Element(PREVIEW_RESPONSE_ROOT_ELEMENT_NAME);
 
         //    final IMetadataUtils metadataRepository = context.getBean(IMetadataUtils.class);
         for (String recordUuid : setOfUuidsToEdit) {
-            List<Metadata> recordList = metadataRepository.findAllByUuidIn(List.of(recordUuid));
-            //      AbstractMetadata record = metadataRepository.findOneByUuid(recordUuid);
-            Metadata record = recordList.get(0);
+            Metadata record = metadataManager.findMetadataByUuid(recordUuid, false);
             if (record == null) {
                 //        report.incrementNullRecords();
                 //      } else if (!accessMan.isOwner(serviceContext,
@@ -115,7 +116,7 @@ public class BatchEditsService {
                             applyEdit = false;
                             final Object node = Xml.selectSingle(
                                     metadata, batchEditParameter.getCondition(), metadataSchema.getNamespaces());
-                            if (node != null && node instanceof Boolean && (Boolean) node == true) {
+                            if (node instanceof Boolean && Boolean.TRUE.equals(node)) {
                                 applyEdit = true;
                             }
                         }
@@ -129,7 +130,7 @@ public class BatchEditsService {
                                     || metadataChanged;
                         }
                     }
-                    if (previewOnly) {
+                    if (batchEditMode == BatchEditMode.PREVIEW) {
                         //            if (diffType == null) {
                         preview.addContent(metadata);
                         //            } else {
@@ -138,18 +139,13 @@ public class BatchEditsService {
                         // diffType));
                         //            }
                     } else if (metadataChanged) {
-                        @SuppressWarnings("unused")
-                        boolean validate = false;
-                        @SuppressWarnings("unused")
-                        boolean ufo = true;
-                        @SuppressWarnings("unused")
-                        boolean uds = updateDateStamp;
                         //            Element beforeMetadata =
                         //                dataMan.getMetadata(
                         //                    serviceContext, String.valueOf(record.getId()), false,
                         // false,
                         // false);
-                        //
+
+                        metadataManager.update(record.getId(), metadata, false, true, changeDate, false);
                         //            dataMan.updateMetadata(
                         //                serviceContext,
                         //                record.getId() + "",
@@ -178,7 +174,7 @@ public class BatchEditsService {
                         //            report.incrementUnchangedRecords();
                     }
                 } catch (Exception e) {
-                    System.out.println("Error processing record: " + recordUuid + e.getMessage());
+                    log.error("Error processing record: " + recordUuid + e.getMessage());
                     //          report.addMetadataError(record, e);
                 }
                 //        report.incrementProcessedRecords();

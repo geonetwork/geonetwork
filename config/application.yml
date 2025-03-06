@@ -61,6 +61,7 @@ geonetwork:
         - "*"
   core:
     url: ${GN4_BASE_URL:http://localhost:8080/geonetwork}
+  url: http://localhost:8080/geonetwork
   index:
     url: ${ELASTIC_URL:http://localhost:9200}
     indexPrefix: gn5-
@@ -133,7 +134,7 @@ spring:
       mvc:
         routes:
           - id: geonetwork_route
-            uri: ${geonetwork.core.url}
+            uri: ${geonetwork.url}
             predicates:
               - Path=/geonetwork/**
             filters:
