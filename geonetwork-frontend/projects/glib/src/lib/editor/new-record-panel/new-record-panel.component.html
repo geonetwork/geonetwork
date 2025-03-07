@@ -23,6 +23,7 @@
       label="Add overview"
       icon="fas fa-image"
       iconPos="right"
+      [severity]="activeStep() === 3 ? 'primary' : 'secondary'"
       [disabled]="!isTemplateSelected()"
       (onClick)="activateCallback(4)" />
   </ng-template>
@@ -32,6 +33,7 @@
       label="Edit record"
       icon="fas fa-pen"
       iconPos="right"
+      [severity]="activeStep() === 4 ? 'primary' : 'secondary'"
       data-cy="gn-new-record-button-edit"
       [disabled]="!isTemplateSelected()"
       (onClick)="createRecordIfNotYetCreated(true)" />
@@ -63,6 +65,7 @@
               label="Add data"
               icon="fas fa-upload"
               iconPos="right"
+              severity="primary"
               data-cy="gn-new-record-button-step-data"
               [disabled]="!isTemplateSelected()"
               (onClick)="activateCallback(2)" />
@@ -211,7 +214,7 @@
                     [(ngModel)]="layername"
                     (onChange)="onLayerChange()"
                     placeholder="Select a dataset"
-                    [appendTo]="newRecordStep2"/>
+                    [appendTo]="newRecordStep2" />
                 </div>
               }
             </div>
@@ -242,6 +245,7 @@
               label="Analyze dataset"
               icon="fas fa-magnifying-glass"
               iconPos="right"
+              severity="primary"
               (onClick)="activateCallback(3)" />
 
             <ng-container

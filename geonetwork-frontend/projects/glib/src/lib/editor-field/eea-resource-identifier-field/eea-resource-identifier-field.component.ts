@@ -74,6 +74,9 @@ export class EeaResourceIdentifierFieldComponent implements OnInit {
             ?.filter((date: Date) => {
               return date !== null;
             })
+            .map((date: any) => {
+              return date instanceof Date ? date.getFullYear() : date;
+            })
             .join('-'),
           'v' + this.resourceIdentifier!.version(),
           'r' + this.resourceIdentifier!.revision(),

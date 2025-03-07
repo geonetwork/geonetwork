@@ -104,9 +104,7 @@ export class NewRecordPanelComponent implements OnInit {
   activeStep = signal(1);
   newRecordId = signal('');
 
-  datasource = signal(
-    ''
-  );
+  datasource = signal('');
   datasourceFile = signal('');
 
   datasourceTypes = [
@@ -202,7 +200,7 @@ export class NewRecordPanelComponent implements OnInit {
   isDatasourceAndTemplateSelected = computed(() => {
     return (
       this.template() !== '' &&
-      this.datasource() !== '' &&
+      (this.datasource() !== '' || this.datasourceFile() != '') &&
       this.layername() !== ''
     );
   });
