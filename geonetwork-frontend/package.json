@@ -39,13 +39,13 @@
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@ngrx/operators": "^19.0.0",
     "@ngrx/signals": "^19.0.0",
-    "@primeng/themes": "^19.0.8",
-    "primeng": "^19.0.8",
+    "@primeng/themes": "^19.0.9",
+    "primeng": "^19.0.9",
     "jsonpath-plus": "^10.2.0",
     "ngx-ace-wrapper": "^17.0.0",
     "papaparse": "^5.4.1",
     "rxjs": "~7.8.0",
-    "tailwindcss-primeui": "^0.3.4",
+    "tailwindcss-primeui": "^0.5.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
