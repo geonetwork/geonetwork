@@ -12,6 +12,7 @@ import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -45,7 +46,7 @@ public class JwtSigning {
     public static PrivateKey getPrivateKey(String url) throws Exception {
         String privateKeyBase64;
         try (var stream = new URI(url).toURL().openStream()) {
-            privateKeyBase64 = IOUtils.toString(stream);
+            privateKeyBase64 = IOUtils.toString(stream, StandardCharsets.UTF_8);
         }
         if (privateKeyBase64.startsWith("-----BEGIN PRIVATE KEY-----")) {
             privateKeyBase64 = privateKeyBase64.replace("-----BEGIN PRIVATE KEY-----", "");
