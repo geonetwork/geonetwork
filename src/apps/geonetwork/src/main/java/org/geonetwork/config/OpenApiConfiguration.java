@@ -10,15 +10,14 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /** OpenAPI configuration. */
 @Configuration
 public class OpenApiConfiguration {
-    @Value("${geonetwork.openapi.url:'http://localhost:7979'}")
-    private String serverUrl;
+    //    @Value("${geonetwork.openapi.url:'http://localhost:7979'}")
+    //    private String serverUrl;
 
     /** OpenAPI configuration. */
     @Bean

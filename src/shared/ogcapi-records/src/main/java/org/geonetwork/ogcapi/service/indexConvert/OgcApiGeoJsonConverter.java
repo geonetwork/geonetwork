@@ -93,7 +93,9 @@ public class OgcApiGeoJsonConverter {
         result.setConformsTo(new ArrayList<>());
         result.getConformsTo().add("http://www.opengis.net/spec/ogcapi-records-1/1.0/req/record-core");
 
-        Metadata metadataRecord = metadataRepository.findOneByUuid(elasticIndexJsonRecord.getMetadataIdentifier());
+        Metadata metadataRecord = metadataRepository
+                .findOneByUuid(elasticIndexJsonRecord.getMetadataIdentifier())
+                .get();
 
         result.setMetadataRecordText(metadataRecord.getData());
         result.setGeoNetworkElasticIndexRecord(elasticIndexJsonRecord);
