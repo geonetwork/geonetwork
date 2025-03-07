@@ -53,10 +53,12 @@ public class MetadataBuilder {
                     List<BigDecimal> extent =
                             datasetLayer.getGeometryFields().getFirst().getExtent();
 
-                    replacements.put("west", extent.get(0).toString());
-                    replacements.put("south", extent.get(1).toString());
-                    replacements.put("east", extent.get(2).toString());
-                    replacements.put("north", extent.get(3).toString());
+                    if (extent != null) {
+                        replacements.put("west", extent.get(0).toString());
+                        replacements.put("south", extent.get(1).toString());
+                        replacements.put("east", extent.get(2).toString());
+                        replacements.put("north", extent.get(3).toString());
+                    }
                 }
                 break;
             case "spatialRepresentationType":

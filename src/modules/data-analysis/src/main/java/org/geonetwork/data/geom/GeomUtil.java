@@ -14,12 +14,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 
+@Slf4j
 public class GeomUtil {
 
     public static final int NUMBER_OF_DECIMALS_IN_WGS84 = 6;
@@ -78,6 +80,7 @@ public class GeomUtil {
 
                 return wgs84Geom;
             } catch (TransformException | FactoryException e) {
+                log.atWarn().log("Error transforming bbox with source CRS {}: {}", crs, e.getMessage());
                 return null;
             }
         }

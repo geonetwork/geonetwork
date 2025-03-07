@@ -6,6 +6,8 @@
 
 package org.geonetwork.data.model;
 
+import static org.geonetwork.data.model.DatasetInfo.buildTitle;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,7 @@ public class RasterInfo extends BaseDataInfo {
 
     public IndexRecord toIndexRecord(String datasource, String layer) {
         Map<String, String> resourceTitle = new HashMap<>();
-        resourceTitle.put("default", FilenameUtils.getBaseName(datasource));
+        resourceTitle.put("default", buildTitle(FilenameUtils.getBaseName(datasource)));
 
         Link link = buildDatasourceLink(datasource);
 

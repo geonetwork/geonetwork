@@ -354,7 +354,9 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                                 .geometryFields(l.getGeometryFields().stream()
                                         .map(f -> {
                                             var crs = f.getCoordinateSystem().isPresent()
-                                                && f.getCoordinateSystem().get() != null
+                                                            && f.getCoordinateSystem()
+                                                                            .get()
+                                                                    != null
                                                     ? f.getCoordinateSystem()
                                                             .get()
                                                             .getWkt()
@@ -371,18 +373,20 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                                                     .crs(crs)
                                                     .nullable(f.getNullable());
 
-                                            List<Double> wgs84Extent = GeomUtil.calculateWgs84Bbox(
-                                                    GeomUtil.parseCrsCode(crs),
-                                                    f.getExtent().stream()
-                                                            .map(BigDecimal::doubleValue)
+                                            if (f.getExtent() != null) {
+                                                List<Double> wgs84Extent = GeomUtil.calculateWgs84Bbox(
+                                                        GeomUtil.parseCrsCode(crs),
+                                                        f.getExtent().stream()
+                                                                .map(BigDecimal::doubleValue)
+                                                                .toList());
+                                                if (wgs84Extent != null) {
+                                                    datasetLayerGeomFieldBuilder.extent(wgs84Extent.stream()
+                                                            .map(d -> BigDecimal.valueOf(d)
+                                                                    .setScale(
+                                                                            NUMBER_OF_DECIMALS_IN_WGS84,
+                                                                            RoundingMode.HALF_UP))
                                                             .toList());
-                                            if (wgs84Extent != null) {
-                                                datasetLayerGeomFieldBuilder.extent(wgs84Extent.stream()
-                                                        .map(d -> BigDecimal.valueOf(d)
-                                                                .setScale(
-                                                                        NUMBER_OF_DECIMALS_IN_WGS84,
-                                                                        RoundingMode.HALF_UP))
-                                                        .toList());
+                                                }
                                             }
                                             return datasetLayerGeomFieldBuilder.build();
                                         })

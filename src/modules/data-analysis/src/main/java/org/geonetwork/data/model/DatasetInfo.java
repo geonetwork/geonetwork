@@ -35,7 +35,7 @@ public class DatasetInfo extends BaseDataInfo {
         DatasetLayer datasetLayer = getLayers().get(0);
 
         Map<String, String> resourceTitle = new HashMap<>();
-        resourceTitle.put("default", layer);
+        resourceTitle.put("default", buildTitle(layer));
 
         var link = buildDatasourceLink(datasource);
 
@@ -47,16 +47,19 @@ public class DatasetInfo extends BaseDataInfo {
                 .formats(List.of(getFormat()))
                 .links(List.of(link));
 
-        if (datasetLayer.getGeometryFields().size() > 0) {
+        if (!datasetLayer.getGeometryFields().isEmpty()) {
             String crs = GeomUtil.parseCrsCode(
                     datasetLayer.getGeometryFields().get(0).getCrs());
-            calculateIndexRecordGeomInfo(
-                    indexRecord,
-                    crs,
-                    datasetLayer.getGeometryFields().getFirst().getExtent().stream()
-                            .map(BigDecimal::doubleValue)
-                            .collect(Collectors.toList()),
-                    null);
+
+            if (datasetLayer.getGeometryFields().getFirst().getExtent() != null) {
+                calculateIndexRecordGeomInfo(
+                        indexRecord,
+                        crs,
+                        datasetLayer.getGeometryFields().getFirst().getExtent().stream()
+                                .map(BigDecimal::doubleValue)
+                                .collect(Collectors.toList()),
+                        null);
+            }
 
             indexRecord.codelist(
                     "cl_geometricObjectType",
@@ -82,5 +85,10 @@ public class DatasetInfo extends BaseDataInfo {
         indexRecord.otherProperties(additionalProperties);
 
         return indexRecord.build();
+    }
+
+    /** Remove common special characters from layer name or filename by space. */
+    public static String buildTitle(String title) {
+        return title.replaceAll("[_\\-\\:]", " ");
     }
 }
