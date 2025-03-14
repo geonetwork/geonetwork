@@ -59,6 +59,17 @@ export class AppComponent implements OnInit, AfterViewInit {
   aggregationConfig = this.uiConfiguration?.mods.search.facetConfig;
 
   gn4baseUrl = buildGn4BaseUrl(environment.baseUrl);
+  gn4mapConfig = JSON.stringify(
+    environment.gn4mapConfig || {
+      mods: {
+        global: { hotkeys: false },
+        home: { enabled: false },
+        search: { enabled: false },
+        footer: { enabled: false },
+        header: { enabled: false },
+      },
+    }
+  );
 
   constructor(
     private router: Router,

@@ -23,13 +23,7 @@
           style="height: calc(100dvh - 90px); width: 100%; border: 0"
           class="clear-both flex-grow inline-block overflow-hidden"
           [class.hidden]="!isMapRoute()"
-          config='{"mods": {
-                        "global": {"hotkeys": false},
-                        "home": {"enabled": false},
-                        "search": {"enabled": false},
-                        "footer": {"enabled": false},
-                        "header": {"enabled": false}
-                        }}'
+          [attr.config]="gn4mapConfig"
           portal="srv"
           [attr.url]="gn4baseUrl"></gn-app-frame>
       }
