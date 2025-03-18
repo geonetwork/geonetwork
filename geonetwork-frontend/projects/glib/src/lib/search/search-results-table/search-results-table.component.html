@@ -90,10 +90,16 @@
                       [field]="hit | gJsonpath: col.field" />
                   }
                   @default {
-                    @if (col.field.startsWith('link')) {
+                    @if (
+                      col.field.startsWith('link') ||
+                      col.field.startsWith('$._source.link')
+                    ) {
                       <g-record-field-links
                         [links]="hit | gJsonpath: col.field" />
-                    } @else if (col.field.startsWith('th_')) {
+                    } @else if (
+                      col.field.startsWith('th_') ||
+                      col.field.startsWith('$._source.th_')
+                    ) {
                       <g-record-field-keywords
                         [field]="hit | gJsonpath: col.field" />
                     } @else {

@@ -129,20 +129,42 @@ export class GWebcomponentsDocComponent implements OnInit {
 
   filteredFields: field[] = [];
 
+  jsonPrefix = '$._source';
+
   listOfFieldsSimple: field[] = [
-    { label: 'Aperçu', path: 'overview[*]', order: 1 },
-    { label: 'Titre', path: 'resourceTitleObject.default', order: 2 },
-    { label: 'Type', path: 'resourceType[0]', order: 3 },
-    { label: 'Mot clé', path: 'th_gemet[*]', order: 4 },
-    { label: 'Status', path: 'cl_status[0].default', order: 5 },
-    { label: 'Légende', path: "link[?(@.function == 'legend')]", order: 6 },
-    { label: 'Visualiser', path: "link[?(@.protocol == 'OGC:WMS')]", order: 7 },
+    { label: 'Aperçu', path: this.jsonPrefix + '.overview[*]', order: 1 },
+    {
+      label: 'Titre',
+      path: this.jsonPrefix + '.resourceTitleObject.default',
+      order: 2,
+    },
+    { label: 'Type', path: this.jsonPrefix + '.resourceType[0]', order: 3 },
+    { label: 'Mot clé', path: this.jsonPrefix + '.th_gemet[*]', order: 4 },
+    {
+      label: 'Status',
+      path: this.jsonPrefix + '.cl_status[0].default',
+      order: 5,
+    },
+    {
+      label: 'Légende',
+      path: this.jsonPrefix + ".link[?(@.function == 'legend')]",
+      order: 6,
+    },
+    {
+      label: 'Visualiser',
+      path: this.jsonPrefix + ".link[?(@.protocol == 'OGC:WMS')]",
+      order: 7,
+    },
     {
       label: 'Gestionnaire',
-      path: 'custodianOrgForResourceObject[*].default',
+      path: this.jsonPrefix + '.custodianOrgForResourceObject[*].default',
       order: 8,
     },
-    { label: 'Crédit', path: 'resourceCreditObject.default', order: 9 },
+    {
+      label: 'Crédit',
+      path: this.jsonPrefix + '.resourceCreditObject.default',
+      order: 9,
+    },
   ];
 
   listOfFieldsAsText = signal(
