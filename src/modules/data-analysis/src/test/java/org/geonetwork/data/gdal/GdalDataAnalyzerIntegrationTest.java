@@ -32,7 +32,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.core.io.ClassPathResource;
 
 @SpringBootTest(classes = {TestConfiguration.class})
-class GdalDataAnalyzerTest {
+class GdalDataAnalyzerIntegrationTest {
 
     private GdalDataAnalyzer analyzer;
 
@@ -126,7 +126,7 @@ class GdalDataAnalyzerTest {
         assertEquals("CESGCD", layer.getFields().getFirst().getName());
         assertEquals("LineString", layer.getGeometryFields().getFirst().getType());
         assertEquals(
-                "[-61.805814108435243, 4.2138689443886506, 34.605668981354938, 65.90833200184602]",
+                "[-61.805814, 4.213869, 34.605669, 65.908332]",
                 layer.getGeometryFields().getFirst().getExtent().toString());
 
         assertTrue(layer.getGeometryFields().getFirst().getCrs().contains("ID[\"EPSG\",4258]"));

@@ -62,7 +62,7 @@ import org.springframework.test.context.ActiveProfiles;
 @WithMockUser(username = "mock_test_admin")
 @EnableConfigurationProperties({SchemaConfiguration.class})
 @ActiveProfiles({"prod", "test"})
-class BatchEditsControllerTest {
+class BatchEditsControllerIntegrationTest {
     @MockBean
     private UserRepository userRepository;
 

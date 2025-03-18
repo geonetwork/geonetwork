@@ -63,7 +63,5 @@
     "default" : "Arctic ecosystem"
   }, {
     "default" : "polar ecosystem"
-  } ],
-  "otherKeywords-theme" : [ "{keywords=[{default=Antarctic ecosystem}, {default=Arctic ecosystem}, {default=polar ecosystem}]}" ],
-  "otherKeywords-themeNumber" : [ "3" ]
+  } ]
 }

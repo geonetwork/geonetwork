@@ -30,7 +30,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = {GeonetworkTestingApplication.class})
 @ActiveProfiles(value = {"test"})
-class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
+class IndexingServiceIntegrationTest extends ElasticsearchBasedIntegrationTest {
 
     @Autowired
     IndexingRecordService indexingRecordService;

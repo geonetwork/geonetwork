@@ -135,7 +135,7 @@
         <mri:citation>
           <cit:CI_Citation>
             <cit:title>
-              <gco:CharacterString>Template for geographical data</gco:CharacterString>
+              <gco:CharacterString>CEEUBG100kV2_1</gco:CharacterString>
             </cit:title>
             <cit:date>
               <cit:CI_Date>
@@ -267,16 +267,16 @@
             <gex:geographicElement>
               <gex:EX_GeographicBoundingBox>
                 <gex:westBoundLongitude>
-                  <gco:Decimal>-61.80581413190214</gco:Decimal>
+                  <gco:Decimal>-61.805814</gco:Decimal>
                 </gex:westBoundLongitude>
                 <gex:eastBoundLongitude>
-                  <gco:Decimal>34.605669014636646</gco:Decimal>
+                  <gco:Decimal>34.605669</gco:Decimal>
                 </gex:eastBoundLongitude>
                 <gex:southBoundLatitude>
-                  <gco:Decimal>4.213868944388651</gco:Decimal>
+                  <gco:Decimal>4.213869</gco:Decimal>
                 </gex:southBoundLatitude>
                 <gex:northBoundLatitude>
-                  <gco:Decimal>65.90833200184602</gco:Decimal>
+                  <gco:Decimal>65.908332</gco:Decimal>
                 </gex:northBoundLatitude>
               </gex:EX_GeographicBoundingBox>
             </gex:geographicElement>

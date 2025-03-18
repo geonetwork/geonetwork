@@ -74,7 +74,8 @@ public class HttpProxyConfiguration {
                                     stringStringMultiValueMap.putAll(Stream.of(StringUtils.split(uri.getQuery(), "&"))
                                             .map(param -> {
                                                 String[] parts = StringUtils.split(param, "=");
-                                                return new AbstractMap.SimpleEntry<>(parts[0], parts.length == 2 ? parts[1] : null);
+                                                return new AbstractMap.SimpleEntry<>(
+                                                        parts[0], parts.length == 2 ? parts[1] : null);
                                             })
                                             .collect(groupingBy(
                                                     Map.Entry::getKey, mapping(Map.Entry::getValue, toList()))));

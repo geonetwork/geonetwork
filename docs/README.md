@@ -50,7 +50,7 @@ The quality assurance checks have been broken out into different profiles so you
 
 * [Spotless](https://github.com/diffplug/spotless) - code formatting indentation
   
-  ```
+  ```bash
   ./mvnw spotless:apply
   ```
   
@@ -58,31 +58,31 @@ The quality assurance checks have been broken out into different profiles so you
 
 * [CheckStyle](https://checkstyle.org) - code formatting to check naming conventions
   
-  ```
+  ```bash
   ./mvnw -DskipTests verify -Pcheckstyle
   ```
  
 * [SpotBugs](https://spotbugs.github.io/) - post-compile bytecode analyzer common programming mistakes.
 
-  ```
+  ```bash
   ./mvnw verify -Pspotbugs
   ```
   
   It is highly recommended to use the spotbugs-gui to review test results:
 
-  ```
+  ```bash
   ./mvnw spotbugs:gui
   ```
     
 * [Find Security Bugs](https://find-sec-bugs.github.io) SpotBugs plugin for security audits of Java web applications.
 
-  ```
+  ```bash
   ./mvnw verify -Pspotbugs-security
   ```
 
 * [Maven License Plugin](https://oss.carbou.me/license-maven-plugin/) check headers
 
-  ```
+  ```bash
   ./mvnw verify -Pcheck-headers
   ```
 
@@ -90,5 +90,13 @@ The quality assurance checks have been broken out into different profiles so you
   
 ### Integration tests
 
+When writing integration tests which use `@SpringBootTest`, name the class file with `IntegrationTest` suffix.
+
 If the test requires GeoNetwork 4, a Postgres database and Elasticsearch extends `GeoNetwork4BasedIntegrationTest`.
 If the test only requires Elasticsearch extends `ElasticsearchBasedIntegrationTest`.
+
+To skip integration tests, use the `-DskipITs` command:
+
+  ```bash
+  ./mvnw clean install -DskipITs
+  ```
