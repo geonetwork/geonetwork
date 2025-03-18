@@ -11,6 +11,9 @@ export class GJsonpathPipe implements PipeTransform {
     if (!path) {
       return;
     }
+    if (path.indexOf('related') !== 0) {
+      path = '_source.' + path;
+    }
     return JSONPath({ path, json });
   }
 }
