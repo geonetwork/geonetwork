@@ -1,4 +1,19 @@
 geonetwork:
+  data:
+    analyzer:
+      gdal:
+        # GeoNetwork data directory
+        # baseDir:
+        # Use GDAL on the system
+        command:
+        mountPoint:
+        # Use GDAL in a Docker container
+        # https://github.com/OSGeo/gdal/tree/master/docker for images and supported formats
+        #command: docker run --rm -v /tmp:/data ghcr.io/osgeo/gdal:alpine-normal-latest
+        # Mount point for the data directory
+        #mountPoint: /data
+        processTimeoutInSeconds: 60
+        cacheTimeoutInMilliseconds: 30000
   tasks:
     data-ingester:
 # Data analyzer configuration use the batch API to inject information in the metadata.
@@ -7,7 +22,7 @@ geonetwork:
         - type: "dataset"
           properties:
             - name: "name"
-              help: "Set the title of the dataset if not set and not starts with 'Copy of' prefix."
+              help: "Set the title of the dataset"
               context: "DatasetLayer"
               operations:
                 - schema: "iso19115-3.2018"

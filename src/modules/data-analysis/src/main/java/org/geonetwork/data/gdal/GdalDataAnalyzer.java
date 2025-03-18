@@ -45,6 +45,9 @@ import org.locationtech.jts.geom.Polygon;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -152,6 +155,17 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
         return List.of();
     }
 
+    /**
+     * Data analysis cache contains information about the analyzed data sources and layers.
+     *
+     * <p>This cache is used to avoid unnecessary calls to the GDAL utilities when user run preview and then apply the
+     * analysis to a record.
+     */
+    @CacheEvict(value = "data-analysis", allEntries = true)
+    @Scheduled(fixedRateString = "${geonetwork.data.analyzer.gdal.cacheTimeoutInMilliseconds:30000}")
+    public void emptyCache() {}
+
+    @Cacheable(cacheNames = "data-analysis")
     @Override
     public Optional<DatasetInfo> getLayerProperties(String dataSource, String layer) {
         return GdalUtils.executeCommand(
@@ -165,6 +179,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                 .map(this::parseDatasetInfo);
     }
 
+    @Cacheable(cacheNames = "data-analysis")
     @Override
     public Optional<RasterInfo> getRasterProperties(String rasterSource) {
         return GdalUtils.executeCommand(

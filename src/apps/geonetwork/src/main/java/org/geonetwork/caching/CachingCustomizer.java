@@ -28,6 +28,6 @@ public class CachingCustomizer implements CacheManagerCustomizer<ConcurrentMapCa
 
     @Override
     public void customize(ConcurrentMapCacheManager cacheManager) {
-        cacheManager.setCacheNames(List.of("schema-codelists", "source-portal-ids"));
+        cacheManager.setCacheNames(List.of("schema-codelists", "source-portal-ids", "data-analysis"));
     }
 }
