@@ -55,7 +55,7 @@ public class GeoNetwork4BasedIntegrationTest implements ApplicationContextInitia
     @Override
     public void initialize(ConfigurableApplicationContext ctx) {
         TestPropertyValues.of(
-                        "geonetwork.4.url=" + getGeoNetworkCoreUrl(),
+                        "geonetwork.4.url=" + getGeoNetwork4Url(),
                         "spring.datasource.url=" + getGeoNetworkDatabaseUrl(),
                         "spring.datasource.username=geonetwork",
                         "spring.datasource.password=geonetwork",
@@ -64,12 +64,12 @@ public class GeoNetwork4BasedIntegrationTest implements ApplicationContextInitia
                 .applyTo(ctx.getEnvironment());
     }
 
-    protected String getGeoNetworkCoreUrl() {
+    protected String getGeoNetwork4Url() {
         String serviceHost = environment.getServiceHost(GEONETWORK4_SERVICE, GEONETWORK4_PORT);
         Integer servicePort = environment.getServicePort(GEONETWORK4_SERVICE, GEONETWORK4_PORT);
-        String geonetworkCoreUrl = "http://" + serviceHost + ":" + servicePort + "/geonetwork";
-        log.atInfo().log("Running with GeoNetwork 4 at URL {}", geonetworkCoreUrl);
-        return geonetworkCoreUrl;
+        String geonetwork4Url = "http://" + serviceHost + ":" + servicePort + "/geonetwork";
+        log.atInfo().log("Running with GeoNetwork 4 at URL {}", geonetwork4Url);
+        return geonetwork4Url;
     }
 
     protected String getGeoNetworkDatabaseUrl() {

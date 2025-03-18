@@ -29,7 +29,7 @@ geonetwork:
           totalFields: 10000
   indexing:
     chunksize: 500
-    poolsize: 10
+    poolsize: 4
     bulktimeout: 45s
     requestimeout: 45000
     # Elasticsearch Bulk Async API

@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -115,7 +116,8 @@ class MetadataBuilderIntegrationTest {
 
         String uuid = "uuid1";
         String template = IOUtils.toString(
-                new ClassPathResource("schemas/iso19115-3.2018/templates/geodata.xml").getInputStream());
+                new ClassPathResource("schemas/iso19115-3.2018/templates/geodata.xml").getInputStream(),
+                StandardCharsets.UTF_8);
 
         Metadata metadata = new Metadata();
         metadata.setUuid(uuid);
@@ -133,7 +135,8 @@ class MetadataBuilderIntegrationTest {
         String builtMetadata = metadataBuilder.buildMetadata(
                 uuid, metadata.getSchemaid(), layerProperties.get(), BatchEditMode.PREVIEW);
         String expected = Files.readString(
-                Path.of(new ClassPathResource("data/samples/test_data_analysis_injected_in_template.xml").getURI()));
+                Path.of(new ClassPathResource("data/samples/test_data_analysis_injected_in_template.xml").getURI()),
+                StandardCharsets.UTF_8);
 
         Diff diff = DiffBuilder.compare(Input.fromString(expected))
                 .withTest(Input.fromString(builtMetadata))
@@ -142,7 +145,7 @@ class MetadataBuilderIntegrationTest {
                 .ignoreComments()
                 .checkForSimilar()
                 .build();
-        assertFalse(diff.hasDifferences(), String.format("%s. Differences: %s", layerFile, diff.toString()));
+        assertFalse(diff.hasDifferences(), String.format("%s. Differences: %s", layerFile, diff));
     }
 
     @ParameterizedTest
@@ -179,7 +182,8 @@ class MetadataBuilderIntegrationTest {
                         : analyzer.getRasterProperties(filePath).get(),
                 BatchEditMode.PREVIEW);
         String expected = IOUtils.toString(
-                new ClassPathResource(String.format("data/samples/%s-%s.xml", layerName, schema)).getInputStream());
+                new ClassPathResource(String.format("data/samples/%s-%s.xml", layerName, schema)).getInputStream(),
+                StandardCharsets.UTF_8);
 
         Diff diff = DiffBuilder.compare(Input.fromString(expected))
                 .withTest(Input.fromString(builtMetadata))
