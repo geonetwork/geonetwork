@@ -130,26 +130,63 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
     @Override
     public List<String> getDatasourceLayers(String dataSource) {
+        boolean datasourceHasRasterExtension = hasRasterExtension(dataSource);
+
+        DataAnalyzerException vectorException = null;
+        DataAnalyzerException rasterException = null;
+
         try {
-            Optional<List<String>> vectorLayers = GdalUtils.executeCommand(
-                            buildUtilityCommand(OGR_INFO_APP), timeoutInSeconds, "-ro", buildDataSourcePath(dataSource))
-                    .map(GdalUtils::parseLayers);
-            if (vectorLayers.isPresent() && !vectorLayers.get().isEmpty()) {
-                return vectorLayers.get();
+            if (datasourceHasRasterExtension) {
+                return getDatasourceRasterLayers(dataSource);
+            } else {
+                return getDatasourceVectorLayers(dataSource);
             }
-        } catch (DataAnalyzerException vectorException) {
-            try {
-                Optional<List<String>> rasterLayers = GdalUtils.executeCommand(
-                                buildUtilityCommand(GDAL_INFO_APP), timeoutInSeconds, buildDataSourcePath(dataSource))
-                        .map(GdalUtils::parseRasterLayers);
-                if (rasterLayers.isPresent() && !rasterLayers.get().isEmpty()) {
-                    return rasterLayers.get();
-                }
-            } catch (DataAnalyzerException rasterException) {
-                throw new DataAnalyzerException(String.format(
-                        "Error while collecting layers in datasource %s.%n* Vector analysis error: %s%n* Raster analysis error: %s",
-                        dataSource, vectorException.getMessage(), rasterException.getMessage()));
+        } catch (DataAnalyzerException dataAnalyzerException) {
+            if (datasourceHasRasterExtension) {
+                rasterException = dataAnalyzerException;
+            } else {
+                vectorException = dataAnalyzerException;
             }
+        }
+
+        // Fallback
+        try {
+            if (datasourceHasRasterExtension) {
+                return getDatasourceVectorLayers(dataSource);
+            } else {
+                return getDatasourceRasterLayers(dataSource);
+            }
+        } catch (DataAnalyzerException dataAnalyzerException) {
+            if (datasourceHasRasterExtension) {
+                vectorException = dataAnalyzerException;
+            } else {
+                rasterException = dataAnalyzerException;
+            }
+        }
+
+        throw new DataAnalyzerException(String.format(
+            "Error while collecting layers in datasource %s.%n* Vector analysis error: %s%n* Raster analysis error: %s",
+            dataSource, vectorException.getMessage(), rasterException.getMessage()));
+
+    }
+
+    private List<String> getDatasourceRasterLayers(String dataSource) {
+        Optional<List<String>> rasterLayers = GdalUtils.executeCommand(
+                buildUtilityCommand(GDAL_INFO_APP), timeoutInSeconds, buildDataSourcePath(dataSource))
+            .map(GdalUtils::parseRasterLayers);
+        if (rasterLayers.isPresent() && !rasterLayers.get().isEmpty()) {
+            return rasterLayers.get();
+        }
+
+        return List.of();
+    }
+
+    private List<String> getDatasourceVectorLayers(String dataSource) {
+        Optional<List<String>> vectorLayers = GdalUtils.executeCommand(
+                buildUtilityCommand(OGR_INFO_APP), timeoutInSeconds, "-ro", buildDataSourcePath(dataSource))
+            .map(GdalUtils::parseLayers);
+        if (vectorLayers.isPresent() && !vectorLayers.get().isEmpty()) {
+            return vectorLayers.get();
         }
 
         return List.of();
@@ -489,5 +526,14 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
             }
         }
         return List.of();
+    }
+
+    private boolean hasRasterExtension(String datasource) {
+        String datasourceValue = datasource.toLowerCase();
+
+        return (datasourceValue.endsWith(".tiff") ||
+            datasourceValue.endsWith(".tif")) ||
+            datasourceValue.endsWith(".jpg") ||
+            datasourceValue.endsWith(".jpeg");
     }
 }
