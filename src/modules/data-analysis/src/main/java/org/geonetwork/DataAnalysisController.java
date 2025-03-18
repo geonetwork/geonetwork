@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
+
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -40,6 +42,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -107,166 +110,130 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
 
     @GetMapping(path = "/layers", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
-            summary = "Get the list of layers for a datasource",
-            description = """
+        summary = "Get the list of layers for a datasource",
+        description = """
     Raster datasets have a single layer named 'RASTER_LAYER'.
 """)
-    // TODO: Split into RASTER analysis and VECTOR analysis?
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<List<String>> layers(
+            @RequestParam(required = false) String metadataUuid,
+            @RequestParam(required = false) MetadataResourceVisibility visibility,
             @RequestParam
-                    @Parameter(
-                            // TODO: Can we ruse this description for all methods?
-                            description = DataAnalysisController.API_DATASOURCE_DESCRIPTION,
-                            // TODO: Should we add restriction on drivers?
-                            examples = {
-                                @ExampleObject(name = "Local file", value = "/path/to/file.shp"),
-                                @ExampleObject(
-                                        name = "URL to a RASTER dataset in TIFF format",
-                                        value =
-                                                "https://sdi.eea.europa.eu/webdav/datastore/public/eea_r_3035_1_km_landscan-eurmed2_p_2008_v01_r00/lspop2008_laea.tif"),
-                                @ExampleObject(
-                                        name = "URL to a CSV file",
-                                        value =
-                                                "https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv"),
-                                @ExampleObject(
-                                        name = "URL to a GeoJSON file",
-                                        value =
-                                                "https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:vejmidte_geodk_labels&outputFormat=json&SRSNAME=EPSG:4326"),
-                                @ExampleObject(
-                                        name = "URL to a WFS datasource",
-                                        value = "WFS:https://service.pdok.nl/rvo/wetlands/wfs/v1_0"),
-                                @ExampleObject(
-                                        name = "URL to a zipped shapefile",
-                                        value =
-                                                "/vsizip//vsicurl/https://naciscdn.org/naturalearth/50m/physical/ne_50m_glaciated_areas.zip"),
-                                @ExampleObject(
-                                        name = "URL to a PostGIS database",
-                                        value = "postgresql://www-data:www-data@localhost:5432/geo")
-                            })
-                    String datasource) {
-        return new ResponseEntity<>(analyzer.getDatasourceLayers(datasource), HttpStatus.OK);
-    }
+            @Parameter(
+                // TODO: Can we ruse this description for all methods?
+                description = DataAnalysisController.API_DATASOURCE_DESCRIPTION,
+                // TODO: Should we add restriction on drivers?
+                examples = {
+                    @ExampleObject(name = "Local file", value = "/path/to/file.shp"),
+                    @ExampleObject(
+                        name = "URL to a RASTER dataset in TIFF format",
+                        value =
+                            "https://sdi.eea.europa.eu/webdav/datastore/public/eea_r_3035_1_km_landscan-eurmed2_p_2008_v01_r00/lspop2008_laea.tif"),
+                    @ExampleObject(
+                        name = "URL to a CSV file",
+                        value =
+                            "https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv"),
+                    @ExampleObject(
+                        name = "URL to a GeoJSON file",
+                        value =
+                            "https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:vejmidte_geodk_labels&outputFormat=json&SRSNAME=EPSG:4326"),
+                    @ExampleObject(
+                        name = "URL to a WFS datasource",
+                        value = "WFS:https://service.pdok.nl/rvo/wetlands/wfs/v1_0"),
+                    @ExampleObject(
+                        name = "URL to a zipped shapefile",
+                        value =
+                            "/vsizip//vsicurl/https://naciscdn.org/naturalearth/50m/physical/ne_50m_glaciated_areas.zip"),
+                    @ExampleObject(
+                        name = "URL to a PostGIS database",
+                        value = "postgresql://www-data:www-data@localhost:5432/geo")
+                }) String datasource,
+            @RequestParam(required = false, defaultValue = "true") boolean approved) {
+        if (StringUtils.hasLength(metadataUuid)) {
+            if (visibility == null) {
+                throw new InvalidParameterException("Metadata visibility is required");
+            }
 
-    // TODO: Combine with previous?
-    @GetMapping(path = "/layersMetadataResource", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('Editor')")
-    public ResponseEntity<List<String>> layersMetadataResource(
-            @RequestParam String metadataUuid,
-            @RequestParam MetadataResourceVisibility visibility,
-            @RequestParam String datasource,
-            @RequestParam boolean approved) {
-        try {
-            Store.ResourceHolder resourceHolder =
+            try {
+                Store.ResourceHolder resourceHolder =
                     metadataStore.getResource(metadataUuid, visibility, datasource, approved);
 
-            return new ResponseEntity<>(
+                return new ResponseEntity<>(
                     analyzer.getDatasourceLayers(
-                            buildLocalDatasourceUrl(resourceHolder.getPath().toString())),
+                        buildLocalDatasourceUrl(resourceHolder.getPath().toString())),
                     HttpStatus.OK);
-        } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch (ResourceNotFoundException ex) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } catch (Exception ex) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity<>(analyzer.getDatasourceLayers(datasource), HttpStatus.OK);
         }
+
     }
 
-    // TODO: Remove
-    //    @GetMapping(path = "/execute", produces = MediaType.APPLICATION_JSON_VALUE)
-    //    @ApiResponses(
-    //            value = {
-    //                @ApiResponse(
-    //                        responseCode = "200",
-    //                        description = "Analysis executed successfully",
-    //                        content = {
-    //                            @Content(
-    //                                    mediaType = "application/json",
-    //                                    schema = @Schema(oneOf = {DatasetInfo.class, RasterInfo.class}))
-    //                        }),
-    //            })
-    //    @PreAuthorize("hasRole('Editor')")
-    //    public ResponseEntity<BaseDataInfo> analysisSynch(@RequestParam String datasource, @RequestParam String layer)
-    // {
-    //        return internalAnalysisSynch(datasource, layer);
-    //    }
-
-    // TODO: Make distinction between raster and vector analysis in the following methods
-    @GetMapping(path = "/executeIndexRecord", produces = MediaType.APPLICATION_JSON_VALUE)
+    // TODO: Make distinction between raster and vector analysis in the following method
+    @GetMapping(path = "/execute", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Execute analysis and return layer properties as an index record")
-    @ApiResponses(
-            value = {
-                @ApiResponse(responseCode = "200", description = "Analysis executed successfully"),
-            })
-    @PreAuthorize("hasRole('Editor')")
-    public ResponseEntity<IndexRecord> analysisSynchIndexRecord(
-            @RequestParam String datasource, @RequestParam String layer) {
-        return internalAnalysisSynchIndexRecord(datasource, layer);
-    }
-
-    // TODO: Combine with previous?
-    @GetMapping(path = "/executeMetadataResource", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Analysis executed successfully")})
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<IndexRecord> analysisSynchMetadataResource(
-            @RequestParam String metadataUuid,
-            @RequestParam MetadataResourceVisibility visibility,
+            @RequestParam(required = false) String metadataUuid,
+            @RequestParam(required = false) MetadataResourceVisibility visibility,
             @RequestParam String datasource,
-            @RequestParam boolean approved,
+            @RequestParam(required = false, defaultValue = "true") boolean approved,
             @RequestParam String layer) {
-        String datasourceToUse;
-        try {
-            Store.ResourceHolder resourceHolder =
-                    metadataStore.getResource(metadataUuid, visibility, datasource, approved);
-            datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
-        } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        if (StringUtils.hasLength(metadataUuid)) {
+            if (visibility == null) {
+                throw new InvalidParameterException("Metadata visibility is required");
+            }
+
+            String datasourceToUse;
+            try {
+                datasourceToUse = calculateLocalDatasourcePath(metadataUuid, visibility, datasource, approved);
+            } catch (ResourceNotFoundException ex) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } catch (Exception ex) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            return internalAnalysisSynchIndexRecord(datasourceToUse, layer);
+        } else {
+            return internalAnalysisSynchIndexRecord(datasource, layer);
         }
 
-        return internalAnalysisSynchIndexRecord(datasourceToUse, layer);
     }
 
     @GetMapping(path = "/preview", produces = MediaType.TEXT_PLAIN_VALUE)
     @Operation(
-            summary = "Preview metadata record updated with layer properties",
-            description = """
+        summary = "Preview metadata record updated with layer properties",
+        description = """
         The metadata record is not saved.
 """)
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<String> previewDataAnalysisOnRecord(
-            @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer)
-            throws MetadataNotFoundException {
-        Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(uuid, false);
-        BatchEditMode editMode = BatchEditMode.PREVIEW;
-        ResponseEntity<String> builtMetadata =
-                applyDataAnalysisOnRecord(metadataRecord.getUuid(), datasource, layer, metadataRecord, editMode);
-        if (builtMetadata != null) return builtMetadata;
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    // TODO: Combine with previous?
-    @GetMapping(path = "/previewForMetadataResource", produces = MediaType.TEXT_PLAIN_VALUE)
-    @PreAuthorize("hasRole('Editor')")
-    public ResponseEntity<String> previewDataAnalysisOnRecordForMetadataResource(
             @RequestParam String metadataUuid,
-            @RequestParam MetadataResourceVisibility visibility,
+            @RequestParam(required = false) MetadataResourceVisibility visibility,
             @RequestParam String datasource,
-            @RequestParam boolean approved,
+            @RequestParam(required = false, defaultValue = "false")  boolean approved,
             @RequestParam String layer)
             throws MetadataNotFoundException {
+
         Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(metadataUuid, approved);
-
         String datasourceToUse;
-        try {
-            Store.ResourceHolder resourceHolder =
-                    metadataStore.getResource(metadataUuid, visibility, datasource, approved);
 
-            datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
-        } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (isRemoteDatasource(datasource)) {
+            datasourceToUse = datasource;
+        } else {
+            try {
+                datasourceToUse = calculateLocalDatasourcePath(metadataUuid, visibility, datasource, approved);
+            } catch (ResourceNotFoundException ex) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } catch (Exception ex) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
 
         BatchEditMode editMode = BatchEditMode.PREVIEW;
@@ -278,43 +245,38 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
 
     @PostMapping(path = "/apply", produces = MediaType.TEXT_PLAIN_VALUE)
     @Operation(
-            summary = "Update metadata record with layer properties",
-            description = """
+        summary = "Update metadata record with layer properties",
+        description = """
         The metadata record is saved.
 """)
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<String> applyDataAnalysisOnRecord(
-            @RequestParam String uuid, @RequestParam String datasource, @RequestParam String layer)
-            throws MetadataNotFoundException {
-        Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(uuid, false);
-        BatchEditMode editMode = BatchEditMode.SAVE;
-        ResponseEntity<String> builtMetadata =
-                applyDataAnalysisOnRecord(metadataRecord.getUuid(), datasource, layer, metadataRecord, editMode);
-        if (builtMetadata != null) return builtMetadata;
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    // TODO: Combine with previous?
-    @PostMapping(path = "/applyForMetadataResource", produces = MediaType.TEXT_PLAIN_VALUE)
-    @PreAuthorize("hasRole('Editor')")
-    public ResponseEntity<String> applyDataAnalysisOnRecordForMetadataResource(
             @RequestParam String uuid,
-            @RequestParam MetadataResourceVisibility visibility,
+            @RequestParam(required = false) MetadataResourceVisibility visibility,
             @RequestParam String datasource,
-            @RequestParam boolean approved,
+            @RequestParam(required = false, defaultValue = "false") boolean approved,
             @RequestParam String layer)
             throws MetadataNotFoundException {
-        Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(uuid, false);
 
+        Metadata metadataRecord = metadataManager.findMetadataByUuidOrId(uuid, approved);
         String datasourceToUse;
-        try {
-            Store.ResourceHolder resourceHolder = metadataStore.getResource(uuid, visibility, datasource, approved);
 
-            datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
-        } catch (ResourceNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (isRemoteDatasource(datasource)) {
+            datasourceToUse = datasource;
+        } else {
+            if (visibility == null) {
+                throw new InvalidParameterException("Metadata visibility is required");
+            }
+
+            try {
+                Store.ResourceHolder resourceHolder = metadataStore.getResource(uuid, visibility, datasource, approved);
+
+                datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
+            } catch (ResourceNotFoundException ex) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } catch (Exception ex) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
 
         BatchEditMode editMode = BatchEditMode.SAVE;
@@ -382,26 +344,6 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
         }
         return null;
     }
-
-    // TODO: Remove?
-    //    private ResponseEntity<BaseDataInfo> internalAnalysisSynch(String datasource, String layer) {
-    //        try {
-    //            Optional<DatasetInfo> layerProperties = analyzer.getLayerProperties(datasource, layer);
-    //            if (layerProperties.isPresent()) {
-    //                return new ResponseEntity<>(layerProperties.get(), HttpStatus.OK);
-    //            }
-    //        } catch (Exception vectorException) {
-    //            try {
-    //                Optional<RasterInfo> rasterProperties = analyzer.getRasterProperties(datasource);
-    //                if (rasterProperties.isPresent()) {
-    //                    return new ResponseEntity<>(rasterProperties.get(), HttpStatus.OK);
-    //                }
-    //            } catch (Exception rasterException) {
-    //                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //            }
-    //        }
-    //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //    }
 
     private ResponseEntity<IndexRecord> internalAnalysisSynchIndexRecord(String datasource, String layer) {
         try {
@@ -475,8 +417,7 @@ The overview is a small image representing the layer.
 
         String datasourceToUse;
         try {
-            Store.ResourceHolder resourceHolder = metadataStore.getResource(uuid, visibility, datasource, approved);
-            datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
+            datasourceToUse = calculateLocalDatasourcePath(uuid, visibility, datasource, approved);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -489,4 +430,29 @@ The overview is a small image representing the layer.
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    private String calculateLocalDatasourcePath(String metadataUuid, MetadataResourceVisibility visibility,
+                                                String datasource, boolean approved) throws Exception {
+        Store.ResourceHolder resourceHolder =
+            metadataStore.getResource(metadataUuid, visibility, datasource, approved);
+
+        return buildLocalDatasourceUrl(resourceHolder.getPath().toString());
+    }
+
+    /**
+     * Checks if a datasource is a remote datasource.
+     *
+     * @param datasource Datasource reference.
+     * @return true if the datasource is remote, otherwise false.
+     */
+    private boolean isRemoteDatasource(String datasource) {
+        String datasourceValue = datasource.toLowerCase();
+
+        return datasourceValue.startsWith("http://") ||
+            datasourceValue.startsWith("https://") ||
+            datasourceValue.startsWith("wfs:") ||
+            datasourceValue.startsWith("postgresql:") ||
+            datasourceValue.startsWith("/vsizip//vsicurl");
+    }
+
 }

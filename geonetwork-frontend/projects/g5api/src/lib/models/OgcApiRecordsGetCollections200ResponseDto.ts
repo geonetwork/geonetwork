@@ -15,94 +15,77 @@
 import { mapValues } from '../runtime';
 import type { OgcApiRecordsLinkTemplateDto } from './OgcApiRecordsLinkTemplateDto';
 import {
-  OgcApiRecordsLinkTemplateDtoFromJSON,
-  OgcApiRecordsLinkTemplateDtoFromJSONTyped,
-  OgcApiRecordsLinkTemplateDtoToJSON,
+    OgcApiRecordsLinkTemplateDtoFromJSON,
+    OgcApiRecordsLinkTemplateDtoFromJSONTyped,
+    OgcApiRecordsLinkTemplateDtoToJSON,
 } from './OgcApiRecordsLinkTemplateDto';
 import type { OgcApiRecordsLinkDto } from './OgcApiRecordsLinkDto';
 import {
-  OgcApiRecordsLinkDtoFromJSON,
-  OgcApiRecordsLinkDtoFromJSONTyped,
-  OgcApiRecordsLinkDtoToJSON,
+    OgcApiRecordsLinkDtoFromJSON,
+    OgcApiRecordsLinkDtoFromJSONTyped,
+    OgcApiRecordsLinkDtoToJSON,
 } from './OgcApiRecordsLinkDto';
 
 /**
- *
+ * 
  * @export
  * @interface OgcApiRecordsGetCollections200ResponseDto
  */
 export interface OgcApiRecordsGetCollections200ResponseDto {
-  /**
-   *
-   * @type {Array<OgcApiRecordsLinkDto>}
-   * @memberof OgcApiRecordsGetCollections200ResponseDto
-   */
-  links: Array<OgcApiRecordsLinkDto>;
-  /**
-   *
-   * @type {Array<object>}
-   * @memberof OgcApiRecordsGetCollections200ResponseDto
-   */
-  collections: Array<object>;
-  /**
-   *
-   * @type {Array<OgcApiRecordsLinkTemplateDto>}
-   * @memberof OgcApiRecordsGetCollections200ResponseDto
-   */
-  linkTemplates?: Array<OgcApiRecordsLinkTemplateDto>;
+    /**
+     * 
+     * @type {Array<OgcApiRecordsLinkDto>}
+     * @memberof OgcApiRecordsGetCollections200ResponseDto
+     */
+    links: Array<OgcApiRecordsLinkDto>;
+    /**
+     * 
+     * @type {Array<object>}
+     * @memberof OgcApiRecordsGetCollections200ResponseDto
+     */
+    collections: Array<object>;
+    /**
+     * 
+     * @type {Array<OgcApiRecordsLinkTemplateDto>}
+     * @memberof OgcApiRecordsGetCollections200ResponseDto
+     */
+    linkTemplates?: Array<OgcApiRecordsLinkTemplateDto>;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsGetCollections200ResponseDto interface.
  */
-export function instanceOfOgcApiRecordsGetCollections200ResponseDto(
-  value: object
-): value is OgcApiRecordsGetCollections200ResponseDto {
-  if (!('links' in value) || value['links'] === undefined) return false;
-  if (!('collections' in value) || value['collections'] === undefined)
-    return false;
-  return true;
+export function instanceOfOgcApiRecordsGetCollections200ResponseDto(value: object): value is OgcApiRecordsGetCollections200ResponseDto {
+    if (!('links' in value) || value['links'] === undefined) return false;
+    if (!('collections' in value) || value['collections'] === undefined) return false;
+    return true;
 }
 
-export function OgcApiRecordsGetCollections200ResponseDtoFromJSON(
-  json: any
-): OgcApiRecordsGetCollections200ResponseDto {
-  return OgcApiRecordsGetCollections200ResponseDtoFromJSONTyped(json, false);
+export function OgcApiRecordsGetCollections200ResponseDtoFromJSON(json: any): OgcApiRecordsGetCollections200ResponseDto {
+    return OgcApiRecordsGetCollections200ResponseDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsGetCollections200ResponseDtoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): OgcApiRecordsGetCollections200ResponseDto {
-  if (json == null) {
-    return json;
-  }
-  return {
-    links: (json['links'] as Array<any>).map(OgcApiRecordsLinkDtoFromJSON),
-    collections: json['collections'],
-    linkTemplates:
-      json['linkTemplates'] == null
-        ? undefined
-        : (json['linkTemplates'] as Array<any>).map(
-            OgcApiRecordsLinkTemplateDtoFromJSON
-          ),
-  };
+export function OgcApiRecordsGetCollections200ResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsGetCollections200ResponseDto {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'links': ((json['links'] as Array<any>).map(OgcApiRecordsLinkDtoFromJSON)),
+        'collections': json['collections'],
+        'linkTemplates': json['linkTemplates'] == null ? undefined : ((json['linkTemplates'] as Array<any>).map(OgcApiRecordsLinkTemplateDtoFromJSON)),
+    };
 }
 
-export function OgcApiRecordsGetCollections200ResponseDtoToJSON(
-  value?: OgcApiRecordsGetCollections200ResponseDto | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    links: (value['links'] as Array<any>).map(OgcApiRecordsLinkDtoToJSON),
-    collections: value['collections'],
-    linkTemplates:
-      value['linkTemplates'] == null
-        ? undefined
-        : (value['linkTemplates'] as Array<any>).map(
-            OgcApiRecordsLinkTemplateDtoToJSON
-          ),
-  };
+export function OgcApiRecordsGetCollections200ResponseDtoToJSON(value?: OgcApiRecordsGetCollections200ResponseDto | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'links': ((value['links'] as Array<any>).map(OgcApiRecordsLinkDtoToJSON)),
+        'collections': value['collections'],
+        'linkTemplates': value['linkTemplates'] == null ? undefined : ((value['linkTemplates'] as Array<any>).map(OgcApiRecordsLinkTemplateDtoToJSON)),
+    };
 }
+

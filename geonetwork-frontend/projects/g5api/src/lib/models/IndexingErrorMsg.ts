@@ -14,65 +14,63 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface IndexingErrorMsg
  */
 export interface IndexingErrorMsg {
-  /**
-   *
-   * @type {string}
-   * @memberof IndexingErrorMsg
-   */
-  string?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof IndexingErrorMsg
-   */
-  type?: string;
-  /**
-   *
-   * @type {{ [key: string]: string; }}
-   * @memberof IndexingErrorMsg
-   */
-  values?: { [key: string]: string };
+    /**
+     * 
+     * @type {string}
+     * @memberof IndexingErrorMsg
+     */
+    string?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof IndexingErrorMsg
+     */
+    type?: string;
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof IndexingErrorMsg
+     */
+    values?: { [key: string]: string; };
 }
 
 /**
  * Check if a given object implements the IndexingErrorMsg interface.
  */
-export function instanceOfIndexingErrorMsg(
-  value: object
-): value is IndexingErrorMsg {
-  return true;
+export function instanceOfIndexingErrorMsg(value: object): value is IndexingErrorMsg {
+    return true;
 }
 
 export function IndexingErrorMsgFromJSON(json: any): IndexingErrorMsg {
-  return IndexingErrorMsgFromJSONTyped(json, false);
+    return IndexingErrorMsgFromJSONTyped(json, false);
 }
 
-export function IndexingErrorMsgFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): IndexingErrorMsg {
-  if (json == null) {
-    return json;
-  }
-  return {
-    string: json['string'] == null ? undefined : json['string'],
-    type: json['type'] == null ? undefined : json['type'],
-    values: json['values'] == null ? undefined : json['values'],
-  };
+export function IndexingErrorMsgFromJSONTyped(json: any, ignoreDiscriminator: boolean): IndexingErrorMsg {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'string': json['string'] == null ? undefined : json['string'],
+        'type': json['type'] == null ? undefined : json['type'],
+        'values': json['values'] == null ? undefined : json['values'],
+    };
 }
 
 export function IndexingErrorMsgToJSON(value?: IndexingErrorMsg | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    string: value['string'],
-    type: value['type'],
-    values: value['values'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'string': value['string'],
+        'type': value['type'],
+        'values': value['values'],
+    };
 }
+

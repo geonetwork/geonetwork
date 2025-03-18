@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './DataAnalysisControllerApi';
+export * from './DataAnalysisApi';
 export * from './IndexingControllerApi';
 export * from './LoginEndpointApi';
 export * from './MeApiApi';

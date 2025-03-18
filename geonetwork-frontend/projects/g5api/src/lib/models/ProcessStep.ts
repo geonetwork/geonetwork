@@ -15,96 +15,83 @@
 import { mapValues } from '../runtime';
 import type { ProcessStepSource } from './ProcessStepSource';
 import {
-  ProcessStepSourceFromJSON,
-  ProcessStepSourceFromJSONTyped,
-  ProcessStepSourceToJSON,
+    ProcessStepSourceFromJSON,
+    ProcessStepSourceFromJSONTyped,
+    ProcessStepSourceToJSON,
 } from './ProcessStepSource';
 import type { Contact } from './Contact';
 import {
-  ContactFromJSON,
-  ContactFromJSONTyped,
-  ContactToJSON,
+    ContactFromJSON,
+    ContactFromJSONTyped,
+    ContactToJSON,
 } from './Contact';
 
 /**
- *
+ * 
  * @export
  * @interface ProcessStep
  */
 export interface ProcessStep {
-  /**
-   *
-   * @type {{ [key: string]: string; }}
-   * @memberof ProcessStep
-   */
-  descriptionObject?: { [key: string]: string };
-  /**
-   *
-   * @type {string}
-   * @memberof ProcessStep
-   */
-  date?: string;
-  /**
-   *
-   * @type {Array<ProcessStepSource>}
-   * @memberof ProcessStep
-   */
-  source?: Array<ProcessStepSource>;
-  /**
-   *
-   * @type {Array<Contact>}
-   * @memberof ProcessStep
-   */
-  processor?: Array<Contact>;
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof ProcessStep
+     */
+    descriptionObject?: { [key: string]: string; };
+    /**
+     * 
+     * @type {string}
+     * @memberof ProcessStep
+     */
+    date?: string;
+    /**
+     * 
+     * @type {Array<ProcessStepSource>}
+     * @memberof ProcessStep
+     */
+    source?: Array<ProcessStepSource>;
+    /**
+     * 
+     * @type {Array<Contact>}
+     * @memberof ProcessStep
+     */
+    processor?: Array<Contact>;
 }
 
 /**
  * Check if a given object implements the ProcessStep interface.
  */
 export function instanceOfProcessStep(value: object): value is ProcessStep {
-  return true;
+    return true;
 }
 
 export function ProcessStepFromJSON(json: any): ProcessStep {
-  return ProcessStepFromJSONTyped(json, false);
+    return ProcessStepFromJSONTyped(json, false);
 }
 
-export function ProcessStepFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): ProcessStep {
-  if (json == null) {
-    return json;
-  }
-  return {
-    descriptionObject:
-      json['descriptionObject'] == null ? undefined : json['descriptionObject'],
-    date: json['date'] == null ? undefined : json['date'],
-    source:
-      json['source'] == null
-        ? undefined
-        : (json['source'] as Array<any>).map(ProcessStepSourceFromJSON),
-    processor:
-      json['processor'] == null
-        ? undefined
-        : (json['processor'] as Array<any>).map(ContactFromJSON),
-  };
+export function ProcessStepFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessStep {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'descriptionObject': json['descriptionObject'] == null ? undefined : json['descriptionObject'],
+        'date': json['date'] == null ? undefined : json['date'],
+        'source': json['source'] == null ? undefined : ((json['source'] as Array<any>).map(ProcessStepSourceFromJSON)),
+        'processor': json['processor'] == null ? undefined : ((json['processor'] as Array<any>).map(ContactFromJSON)),
+    };
 }
 
 export function ProcessStepToJSON(value?: ProcessStep | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    descriptionObject: value['descriptionObject'],
-    date: value['date'],
-    source:
-      value['source'] == null
-        ? undefined
-        : (value['source'] as Array<any>).map(ProcessStepSourceToJSON),
-    processor:
-      value['processor'] == null
-        ? undefined
-        : (value['processor'] as Array<any>).map(ContactToJSON),
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'descriptionObject': value['descriptionObject'],
+        'date': value['date'],
+        'source': value['source'] == null ? undefined : ((value['source'] as Array<any>).map(ProcessStepSourceToJSON)),
+        'processor': value['processor'] == null ? undefined : ((value['processor'] as Array<any>).map(ContactToJSON)),
+    };
 }
+

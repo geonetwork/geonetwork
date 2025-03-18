@@ -14,62 +14,56 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface OgcApiRecordsExceptionDto
  */
 export interface OgcApiRecordsExceptionDto {
-  /**
-   *
-   * @type {string}
-   * @memberof OgcApiRecordsExceptionDto
-   */
-  code: string;
-  /**
-   *
-   * @type {string}
-   * @memberof OgcApiRecordsExceptionDto
-   */
-  description?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OgcApiRecordsExceptionDto
+     */
+    code: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OgcApiRecordsExceptionDto
+     */
+    description?: string;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsExceptionDto interface.
  */
-export function instanceOfOgcApiRecordsExceptionDto(
-  value: object
-): value is OgcApiRecordsExceptionDto {
-  if (!('code' in value) || value['code'] === undefined) return false;
-  return true;
+export function instanceOfOgcApiRecordsExceptionDto(value: object): value is OgcApiRecordsExceptionDto {
+    if (!('code' in value) || value['code'] === undefined) return false;
+    return true;
 }
 
-export function OgcApiRecordsExceptionDtoFromJSON(
-  json: any
-): OgcApiRecordsExceptionDto {
-  return OgcApiRecordsExceptionDtoFromJSONTyped(json, false);
+export function OgcApiRecordsExceptionDtoFromJSON(json: any): OgcApiRecordsExceptionDto {
+    return OgcApiRecordsExceptionDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsExceptionDtoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): OgcApiRecordsExceptionDto {
-  if (json == null) {
-    return json;
-  }
-  return {
-    code: json['code'],
-    description: json['description'] == null ? undefined : json['description'],
-  };
+export function OgcApiRecordsExceptionDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsExceptionDto {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'code': json['code'],
+        'description': json['description'] == null ? undefined : json['description'],
+    };
 }
 
-export function OgcApiRecordsExceptionDtoToJSON(
-  value?: OgcApiRecordsExceptionDto | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    code: value['code'],
-    description: value['description'],
-  };
+export function OgcApiRecordsExceptionDtoToJSON(value?: OgcApiRecordsExceptionDto | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'code': value['code'],
+        'description': value['description'],
+    };
 }
+

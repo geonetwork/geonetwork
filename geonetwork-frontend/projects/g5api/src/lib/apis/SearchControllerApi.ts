@@ -12,184 +12,155 @@
  * Do not edit the class manually.
  */
 
+
 import * as runtime from '../runtime';
-import type { IndexRecord, RelatedItemType } from '../models/index';
+import type {
+  IndexRecord,
+  RelatedItemType,
+} from '../models/index';
 import {
-  IndexRecordFromJSON,
-  IndexRecordToJSON,
-  RelatedItemTypeFromJSON,
-  RelatedItemTypeToJSON,
+    IndexRecordFromJSON,
+    IndexRecordToJSON,
+    RelatedItemTypeFromJSON,
+    RelatedItemTypeToJSON,
 } from '../models/index';
 
 export interface GetIndexDocumentRequest {
-  uuid: string;
+    uuid: string;
 }
 
 export interface GetQueryRequest {
-  q?: string;
-  from?: number;
-  size?: number;
+    q?: string;
+    from?: number;
+    size?: number;
 }
 
 export interface QueryRequest {
-  body: string;
-  bucket?: string;
-  relatedType?: Array<RelatedItemType>;
+    body: string;
+    bucket?: string;
+    relatedType?: Array<RelatedItemType>;
 }
 
 /**
- *
+ * 
  */
 export class SearchControllerApi extends runtime.BaseAPI {
-  /**
-   */
-  async getIndexDocumentRaw(
-    requestParameters: GetIndexDocumentRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<IndexRecord>> {
-    if (requestParameters['uuid'] == null) {
-      throw new runtime.RequiredError(
-        'uuid',
-        'Required parameter "uuid" was null or undefined when calling getIndexDocument().'
-      );
+
+    /**
+     */
+    async getIndexDocumentRaw(requestParameters: GetIndexDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<IndexRecord>> {
+        if (requestParameters['uuid'] == null) {
+            throw new runtime.RequiredError(
+                'uuid',
+                'Required parameter "uuid" was null or undefined when calling getIndexDocument().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/search/doc/{uuid}`.replace(`{${"uuid"}}`, encodeURIComponent(String(requestParameters['uuid']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => IndexRecordFromJSON(jsonValue));
     }
 
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/api/search/doc/{uuid}`.replace(
-          `{${'uuid'}}`,
-          encodeURIComponent(String(requestParameters['uuid']))
-        ),
-        method: 'GET',
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, jsonValue =>
-      IndexRecordFromJSON(jsonValue)
-    );
-  }
-
-  /**
-   */
-  async getIndexDocument(
-    requestParameters: GetIndexDocumentRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<IndexRecord> {
-    const response = await this.getIndexDocumentRaw(
-      requestParameters,
-      initOverrides
-    );
-    return await response.value();
-  }
-
-  /**
-   */
-  async getQueryRaw(
-    requestParameters: GetQueryRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<string>> {
-    const queryParameters: any = {};
-
-    if (requestParameters['q'] != null) {
-      queryParameters['q'] = requestParameters['q'];
+    /**
+     */
+    async getIndexDocument(requestParameters: GetIndexDocumentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<IndexRecord> {
+        const response = await this.getIndexDocumentRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
-    if (requestParameters['from'] != null) {
-      queryParameters['from'] = requestParameters['from'];
+    /**
+     */
+    async getQueryRaw(requestParameters: GetQueryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: any = {};
+
+        if (requestParameters['q'] != null) {
+            queryParameters['q'] = requestParameters['q'];
+        }
+
+        if (requestParameters['from'] != null) {
+            queryParameters['from'] = requestParameters['from'];
+        }
+
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/search`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
     }
 
-    if (requestParameters['size'] != null) {
-      queryParameters['size'] = requestParameters['size'];
+    /**
+     */
+    async getQuery(requestParameters: GetQueryRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.getQueryRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
-    const headerParameters: runtime.HTTPHeaders = {};
+    /**
+     */
+    async queryRaw(requestParameters: QueryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        if (requestParameters['body'] == null) {
+            throw new runtime.RequiredError(
+                'body',
+                'Required parameter "body" was null or undefined when calling query().'
+            );
+        }
 
-    const response = await this.request(
-      {
-        path: `/api/search`,
-        method: 'GET',
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
+        const queryParameters: any = {};
 
-    if (this.isJsonMime(response.headers.get('content-type'))) {
-      return new runtime.JSONApiResponse<string>(response);
-    } else {
-      return new runtime.TextApiResponse(response) as any;
-    }
-  }
+        if (requestParameters['bucket'] != null) {
+            queryParameters['bucket'] = requestParameters['bucket'];
+        }
 
-  /**
-   */
-  async getQuery(
-    requestParameters: GetQueryRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<string> {
-    const response = await this.getQueryRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
+        if (requestParameters['relatedType'] != null) {
+            queryParameters['relatedType'] = requestParameters['relatedType'];
+        }
 
-  /**
-   */
-  async queryRaw(
-    requestParameters: QueryRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<string>> {
-    if (requestParameters['body'] == null) {
-      throw new runtime.RequiredError(
-        'body',
-        'Required parameter "body" was null or undefined when calling query().'
-      );
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/search`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters['body'] as any,
+        }, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
     }
 
-    const queryParameters: any = {};
-
-    if (requestParameters['bucket'] != null) {
-      queryParameters['bucket'] = requestParameters['bucket'];
+    /**
+     */
+    async query(requestParameters: QueryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.queryRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
-    if (requestParameters['relatedType'] != null) {
-      queryParameters['relatedType'] = requestParameters['relatedType'];
-    }
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters['Content-Type'] = 'application/json';
-
-    const response = await this.request(
-      {
-        path: `/api/search`,
-        method: 'POST',
-        headers: headerParameters,
-        query: queryParameters,
-        body: requestParameters['body'] as any,
-      },
-      initOverrides
-    );
-
-    if (this.isJsonMime(response.headers.get('content-type'))) {
-      return new runtime.JSONApiResponse<string>(response);
-    } else {
-      return new runtime.TextApiResponse(response) as any;
-    }
-  }
-
-  /**
-   */
-  async query(
-    requestParameters: QueryRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<string> {
-    const response = await this.queryRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
 }

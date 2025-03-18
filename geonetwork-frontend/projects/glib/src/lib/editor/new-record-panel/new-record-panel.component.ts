@@ -19,19 +19,14 @@ import {
 } from 'gapi';
 import {
   AnalysisSynchMetadataResourceRequest,
-  ApplyDataAnalysisOnRecordForMetadataResourceRequest,
-  DataAnalysisControllerApi,
   DataFormat,
   GetAllResourcesRequest,
-  LayersMetadataResourceRequest,
-  LayersMetadataResourceVisibilityEnum,
   LayersRequest,
   MetadataResource,
-  PreviewDataAnalysisOnRecordForMetadataResourceRequest,
   PreviewDataAnalysisOnRecordRequest,
   PutResourceRequest,
   RecordsApi as RecordsApi5,
-  IndexRecord,
+  IndexRecord, DataAnalysisApi, LayersVisibilityEnum,
 } from 'g5api';
 
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -150,7 +145,7 @@ export class NewRecordPanelComponent implements OnInit {
   http = inject(HttpClient);
 
   dataAnalysisApi = computed(() => {
-    return new DataAnalysisControllerApi(this.api5Configuration());
+    return new DataAnalysisApi(this.api5Configuration());
   });
 
   recordsDataStoreApi = computed(() => {
@@ -354,15 +349,15 @@ export class NewRecordPanelComponent implements OnInit {
     this.isFetchingLayers.set(true);
     this.errorFetchingLayers.set('');
 
-    const layersRequest: LayersMetadataResourceRequest = {
+    const layersRequest: LayersRequest = {
       metadataUuid: this.newRecordId(),
       datasource: this.datasourceFile(),
-      visibility: LayersMetadataResourceVisibilityEnum.Public,
+      visibility: LayersVisibilityEnum.Public,
       approved: true,
     };
 
     this.dataAnalysisApi()
-      .layersMetadataResource(layersRequest)
+      .layers(layersRequest)
       .then(
         response => {
           this.layers.set(response);
@@ -394,7 +389,7 @@ export class NewRecordPanelComponent implements OnInit {
       ? {
           metadataUuid: this.newRecordId(),
           datasource: this.datasourceFile(),
-          visibility: LayersMetadataResourceVisibilityEnum.Public,
+          visibility: LayersVisibilityEnum.Public,
           approved: true,
           layer: this.layername(),
         }
@@ -403,11 +398,9 @@ export class NewRecordPanelComponent implements OnInit {
           layer: this.layername(),
         };
 
-    const analysisMethod = this.datasourceFile()
-      ? this.dataAnalysisApi().analysisSynchMetadataResource(
-          analysisRequest as AnalysisSynchMetadataResourceRequest
-        )
-      : this.dataAnalysisApi().analysisSynchIndexRecord(analysisRequest);
+    const analysisMethod = this.dataAnalysisApi().analysisSynchMetadataResource(
+      analysisRequest as AnalysisSynchMetadataResourceRequest
+    );
 
     analysisMethod.then(
       response => {
@@ -443,7 +436,7 @@ export class NewRecordPanelComponent implements OnInit {
         this.api5Configuration().basePath + '/api/data/analysis/overview',
       overviewUrl = !this.datasourceFile()
         ? `${baseUrl}?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
-        : `${baseUrl}ForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersMetadataResourceVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
+        : `${baseUrl}ForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
     this.http
       .get(overviewUrl, {
         responseType: 'blob',
@@ -479,7 +472,7 @@ export class NewRecordPanelComponent implements OnInit {
       ? {
           metadataUuid: this.newRecordId(),
           datasource: this.datasourceFile(),
-          visibility: LayersMetadataResourceVisibilityEnum.Public,
+          visibility: LayersVisibilityEnum.Public,
           approved: true,
           layer: this.layername(),
         }
@@ -489,13 +482,9 @@ export class NewRecordPanelComponent implements OnInit {
           layer: this.layername(),
         };
 
-    const previewMethod = this.datasourceFile()
-      ? this.dataAnalysisApi().previewDataAnalysisOnRecordForMetadataResource(
-          previewAnalysisRequest as PreviewDataAnalysisOnRecordForMetadataResourceRequest
-        )
-      : this.dataAnalysisApi().previewDataAnalysisOnRecord(
-          previewAnalysisRequest as PreviewDataAnalysisOnRecordRequest
-        );
+    const previewMethod = this.dataAnalysisApi().previewDataAnalysisOnRecord(
+      previewAnalysisRequest as PreviewDataAnalysisOnRecordRequest
+    )
 
     previewMethod.then(
       response => {
@@ -521,7 +510,7 @@ export class NewRecordPanelComponent implements OnInit {
       ? {
           uuid: this.newRecordId(),
           datasource: this.datasourceFile(),
-          visibility: LayersMetadataResourceVisibilityEnum.Public,
+          visibility: LayersVisibilityEnum.Public,
           approved: true,
           layer: this.layername(),
         }
@@ -531,11 +520,7 @@ export class NewRecordPanelComponent implements OnInit {
           layer: this.layername(),
         };
 
-    const applyAnalysis = this.datasourceFile()
-      ? this.dataAnalysisApi().applyDataAnalysisOnRecordForMetadataResource(
-          analysisRequest as ApplyDataAnalysisOnRecordForMetadataResourceRequest
-        )
-      : this.dataAnalysisApi().applyDataAnalysisOnRecord(analysisRequest);
+    const applyAnalysis = this.dataAnalysisApi().applyDataAnalysisOnRecord(analysisRequest);
 
     applyAnalysis.then(
       () => {

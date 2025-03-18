@@ -14,55 +14,48 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface OgcApiRecordsConfClassesDto
  */
 export interface OgcApiRecordsConfClassesDto {
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof OgcApiRecordsConfClassesDto
-   */
-  conformsTo: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OgcApiRecordsConfClassesDto
+     */
+    conformsTo: Array<string>;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsConfClassesDto interface.
  */
-export function instanceOfOgcApiRecordsConfClassesDto(
-  value: object
-): value is OgcApiRecordsConfClassesDto {
-  if (!('conformsTo' in value) || value['conformsTo'] === undefined)
-    return false;
-  return true;
+export function instanceOfOgcApiRecordsConfClassesDto(value: object): value is OgcApiRecordsConfClassesDto {
+    if (!('conformsTo' in value) || value['conformsTo'] === undefined) return false;
+    return true;
 }
 
-export function OgcApiRecordsConfClassesDtoFromJSON(
-  json: any
-): OgcApiRecordsConfClassesDto {
-  return OgcApiRecordsConfClassesDtoFromJSONTyped(json, false);
+export function OgcApiRecordsConfClassesDtoFromJSON(json: any): OgcApiRecordsConfClassesDto {
+    return OgcApiRecordsConfClassesDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsConfClassesDtoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): OgcApiRecordsConfClassesDto {
-  if (json == null) {
-    return json;
-  }
-  return {
-    conformsTo: json['conformsTo'],
-  };
+export function OgcApiRecordsConfClassesDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsConfClassesDto {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'conformsTo': json['conformsTo'],
+    };
 }
 
-export function OgcApiRecordsConfClassesDtoToJSON(
-  value?: OgcApiRecordsConfClassesDto | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    conformsTo: value['conformsTo'],
-  };
+export function OgcApiRecordsConfClassesDtoToJSON(value?: OgcApiRecordsConfClassesDto | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'conformsTo': value['conformsTo'],
+    };
 }
+

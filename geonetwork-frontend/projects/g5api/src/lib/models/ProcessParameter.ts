@@ -14,57 +14,55 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface ProcessParameter
  */
 export interface ProcessParameter {
-  /**
-   *
-   * @type {string}
-   * @memberof ProcessParameter
-   */
-  name?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof ProcessParameter
-   */
-  type?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProcessParameter
+     */
+    name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProcessParameter
+     */
+    type?: string;
 }
 
 /**
  * Check if a given object implements the ProcessParameter interface.
  */
-export function instanceOfProcessParameter(
-  value: object
-): value is ProcessParameter {
-  return true;
+export function instanceOfProcessParameter(value: object): value is ProcessParameter {
+    return true;
 }
 
 export function ProcessParameterFromJSON(json: any): ProcessParameter {
-  return ProcessParameterFromJSONTyped(json, false);
+    return ProcessParameterFromJSONTyped(json, false);
 }
 
-export function ProcessParameterFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): ProcessParameter {
-  if (json == null) {
-    return json;
-  }
-  return {
-    name: json['name'] == null ? undefined : json['name'],
-    type: json['type'] == null ? undefined : json['type'],
-  };
+export function ProcessParameterFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessParameter {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'name': json['name'] == null ? undefined : json['name'],
+        'type': json['type'] == null ? undefined : json['type'],
+    };
 }
 
 export function ProcessParameterToJSON(value?: ProcessParameter | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    name: value['name'],
-    type: value['type'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'name': value['name'],
+        'type': value['type'],
+    };
 }
+

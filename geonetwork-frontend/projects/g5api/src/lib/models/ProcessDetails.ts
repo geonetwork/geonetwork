@@ -14,57 +14,55 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface ProcessDetails
  */
 export interface ProcessDetails {
-  /**
-   *
-   * @type {string}
-   * @memberof ProcessDetails
-   */
-  process?: string;
-  /**
-   *
-   * @type {{ [key: string]: string; }}
-   * @memberof ProcessDetails
-   */
-  parameters?: { [key: string]: string };
+    /**
+     * 
+     * @type {string}
+     * @memberof ProcessDetails
+     */
+    process?: string;
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof ProcessDetails
+     */
+    parameters?: { [key: string]: string; };
 }
 
 /**
  * Check if a given object implements the ProcessDetails interface.
  */
-export function instanceOfProcessDetails(
-  value: object
-): value is ProcessDetails {
-  return true;
+export function instanceOfProcessDetails(value: object): value is ProcessDetails {
+    return true;
 }
 
 export function ProcessDetailsFromJSON(json: any): ProcessDetails {
-  return ProcessDetailsFromJSONTyped(json, false);
+    return ProcessDetailsFromJSONTyped(json, false);
 }
 
-export function ProcessDetailsFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): ProcessDetails {
-  if (json == null) {
-    return json;
-  }
-  return {
-    process: json['process'] == null ? undefined : json['process'],
-    parameters: json['parameters'] == null ? undefined : json['parameters'],
-  };
+export function ProcessDetailsFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessDetails {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'process': json['process'] == null ? undefined : json['process'],
+        'parameters': json['parameters'] == null ? undefined : json['parameters'],
+    };
 }
 
 export function ProcessDetailsToJSON(value?: ProcessDetails | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    process: value['process'],
-    parameters: value['parameters'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'process': value['process'],
+        'parameters': value['parameters'],
+    };
 }
+

@@ -12,40 +12,36 @@
  * Do not edit the class manually.
  */
 
+
 import * as runtime from '../runtime';
 
 /**
- *
+ * 
  */
 export class MeApiApi extends runtime.BaseAPI {
-  /**
-   */
-  async userRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<{ [key: string]: object }>> {
-    const queryParameters: any = {};
 
-    const headerParameters: runtime.HTTPHeaders = {};
+    /**
+     */
+    async userRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: object; }>> {
+        const queryParameters: any = {};
 
-    const response = await this.request(
-      {
-        path: `/api/me`,
-        method: 'GET',
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
+        const headerParameters: runtime.HTTPHeaders = {};
 
-    return new runtime.JSONApiResponse<any>(response);
-  }
+        const response = await this.request({
+            path: `/api/me`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
 
-  /**
-   */
-  async user(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<{ [key: string]: object }> {
-    const response = await this.userRaw(initOverrides);
-    return await response.value();
-  }
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     */
+    async user(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: object; }> {
+        const response = await this.userRaw(initOverrides);
+        return await response.value();
+    }
+
 }

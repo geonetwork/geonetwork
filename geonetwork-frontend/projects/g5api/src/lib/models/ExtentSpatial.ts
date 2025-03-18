@@ -19,60 +19,61 @@ import { mapValues } from '../runtime';
  * @interface ExtentSpatial
  */
 export interface ExtentSpatial {
-  /**
-   * One or more bounding boxes that describe the spatial extent of the dataset. In the Core only a single bounding box is supported.  Extensions may support additional areas. The first bounding box describes the overall spatial extent of the data. All subsequent bounding boxes describe more precise bounding boxes, e.g., to identify clusters of data. Clients only interested in the overall spatial extent will only need to access the first bounding box in the array.
-   * @type {Array<object>}
-   * @memberof ExtentSpatial
-   */
-  bbox?: Array<object>;
-  /**
-   * Coordinate reference system of the coordinates in the spatial extent (property `bbox`). The default reference system is WGS 84 longitude/latitude. In the Core the only other supported coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height for coordinates with height. Extensions may support additional coordinate reference systems and add additional enum values.
-   * @type {string}
-   * @memberof ExtentSpatial
-   */
-  crs?: ExtentSpatialCrsEnum;
+    /**
+     * One or more bounding boxes that describe the spatial extent of the dataset. In the Core only a single bounding box is supported.  Extensions may support additional areas. The first bounding box describes the overall spatial extent of the data. All subsequent bounding boxes describe more precise bounding boxes, e.g., to identify clusters of data. Clients only interested in the overall spatial extent will only need to access the first bounding box in the array.
+     * @type {Array<object>}
+     * @memberof ExtentSpatial
+     */
+    bbox?: Array<object>;
+    /**
+     * Coordinate reference system of the coordinates in the spatial extent (property `bbox`). The default reference system is WGS 84 longitude/latitude. In the Core the only other supported coordinate reference system is WGS 84 longitude/latitude/ellipsoidal height for coordinates with height. Extensions may support additional coordinate reference systems and add additional enum values.
+     * @type {string}
+     * @memberof ExtentSpatial
+     */
+    crs?: ExtentSpatialCrsEnum;
 }
+
 
 /**
  * @export
  */
 export const ExtentSpatialCrsEnum = {
-  _13Crs84: 'http://www.opengis.net/def/crs/OGC/1.3/CRS84',
-  _0Crs84h: 'http://www.opengis.net/def/crs/OGC/0/CRS84h',
+    _13Crs84: 'http://www.opengis.net/def/crs/OGC/1.3/CRS84',
+    _0Crs84h: 'http://www.opengis.net/def/crs/OGC/0/CRS84h'
 } as const;
-export type ExtentSpatialCrsEnum =
-  (typeof ExtentSpatialCrsEnum)[keyof typeof ExtentSpatialCrsEnum];
+export type ExtentSpatialCrsEnum = typeof ExtentSpatialCrsEnum[keyof typeof ExtentSpatialCrsEnum];
+
 
 /**
  * Check if a given object implements the ExtentSpatial interface.
  */
 export function instanceOfExtentSpatial(value: object): value is ExtentSpatial {
-  return true;
+    return true;
 }
 
 export function ExtentSpatialFromJSON(json: any): ExtentSpatial {
-  return ExtentSpatialFromJSONTyped(json, false);
+    return ExtentSpatialFromJSONTyped(json, false);
 }
 
-export function ExtentSpatialFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): ExtentSpatial {
-  if (json == null) {
-    return json;
-  }
-  return {
-    bbox: json['bbox'] == null ? undefined : json['bbox'],
-    crs: json['crs'] == null ? undefined : json['crs'],
-  };
+export function ExtentSpatialFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExtentSpatial {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'bbox': json['bbox'] == null ? undefined : json['bbox'],
+        'crs': json['crs'] == null ? undefined : json['crs'],
+    };
 }
 
 export function ExtentSpatialToJSON(value?: ExtentSpatial | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    bbox: value['bbox'],
-    crs: value['crs'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'bbox': value['bbox'],
+        'crs': value['crs'],
+    };
 }
+

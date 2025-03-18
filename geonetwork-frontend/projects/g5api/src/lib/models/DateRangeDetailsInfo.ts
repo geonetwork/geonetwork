@@ -14,79 +14,71 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface DateRangeDetailsInfo
  */
 export interface DateRangeDetailsInfo {
-  /**
-   *
-   * @type {string}
-   * @memberof DateRangeDetailsInfo
-   */
-  date?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof DateRangeDetailsInfo
-   */
-  frame?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof DateRangeDetailsInfo
-   */
-  calendarEraName?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof DateRangeDetailsInfo
-   */
-  indeterminatePosition?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DateRangeDetailsInfo
+     */
+    date?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DateRangeDetailsInfo
+     */
+    frame?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DateRangeDetailsInfo
+     */
+    calendarEraName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DateRangeDetailsInfo
+     */
+    indeterminatePosition?: string;
 }
 
 /**
  * Check if a given object implements the DateRangeDetailsInfo interface.
  */
-export function instanceOfDateRangeDetailsInfo(
-  value: object
-): value is DateRangeDetailsInfo {
-  return true;
+export function instanceOfDateRangeDetailsInfo(value: object): value is DateRangeDetailsInfo {
+    return true;
 }
 
 export function DateRangeDetailsInfoFromJSON(json: any): DateRangeDetailsInfo {
-  return DateRangeDetailsInfoFromJSONTyped(json, false);
+    return DateRangeDetailsInfoFromJSONTyped(json, false);
 }
 
-export function DateRangeDetailsInfoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): DateRangeDetailsInfo {
-  if (json == null) {
-    return json;
-  }
-  return {
-    date: json['date'] == null ? undefined : json['date'],
-    frame: json['frame'] == null ? undefined : json['frame'],
-    calendarEraName:
-      json['calendarEraName'] == null ? undefined : json['calendarEraName'],
-    indeterminatePosition:
-      json['indeterminatePosition'] == null
-        ? undefined
-        : json['indeterminatePosition'],
-  };
+export function DateRangeDetailsInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): DateRangeDetailsInfo {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'date': json['date'] == null ? undefined : json['date'],
+        'frame': json['frame'] == null ? undefined : json['frame'],
+        'calendarEraName': json['calendarEraName'] == null ? undefined : json['calendarEraName'],
+        'indeterminatePosition': json['indeterminatePosition'] == null ? undefined : json['indeterminatePosition'],
+    };
 }
 
-export function DateRangeDetailsInfoToJSON(
-  value?: DateRangeDetailsInfo | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    date: value['date'],
-    frame: value['frame'],
-    calendarEraName: value['calendarEraName'],
-    indeterminatePosition: value['indeterminatePosition'],
-  };
+export function DateRangeDetailsInfoToJSON(value?: DateRangeDetailsInfo | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'date': value['date'],
+        'frame': value['frame'],
+        'calendarEraName': value['calendarEraName'],
+        'indeterminatePosition': value['indeterminatePosition'],
+    };
 }
+

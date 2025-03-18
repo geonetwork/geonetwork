@@ -13,7 +13,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import {
   AttributeStatistics,
-  DataAnalysisControllerApi,
+  DataAnalysisApi,
   DateRangeDetails,
   IndexRecord,
   VerticalRange,
@@ -58,7 +58,7 @@ export class DataAnalysisPanelComponent {
 
   api5Configuration = inject(API5_CONFIGURATION);
   dataAnalysisApi = computed(() => {
-    return new DataAnalysisControllerApi(this.api5Configuration());
+    return new DataAnalysisApi(this.api5Configuration());
   });
 
   uuid = input.required<string>();

@@ -14,61 +14,55 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface ApiUserSigninPostRequest
  */
 export interface ApiUserSigninPostRequest {
-  /**
-   *
-   * @type {string}
-   * @memberof ApiUserSigninPostRequest
-   */
-  username?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof ApiUserSigninPostRequest
-   */
-  password?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ApiUserSigninPostRequest
+     */
+    username?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ApiUserSigninPostRequest
+     */
+    password?: string;
 }
 
 /**
  * Check if a given object implements the ApiUserSigninPostRequest interface.
  */
-export function instanceOfApiUserSigninPostRequest(
-  value: object
-): value is ApiUserSigninPostRequest {
-  return true;
+export function instanceOfApiUserSigninPostRequest(value: object): value is ApiUserSigninPostRequest {
+    return true;
 }
 
-export function ApiUserSigninPostRequestFromJSON(
-  json: any
-): ApiUserSigninPostRequest {
-  return ApiUserSigninPostRequestFromJSONTyped(json, false);
+export function ApiUserSigninPostRequestFromJSON(json: any): ApiUserSigninPostRequest {
+    return ApiUserSigninPostRequestFromJSONTyped(json, false);
 }
 
-export function ApiUserSigninPostRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): ApiUserSigninPostRequest {
-  if (json == null) {
-    return json;
-  }
-  return {
-    username: json['username'] == null ? undefined : json['username'],
-    password: json['password'] == null ? undefined : json['password'],
-  };
+export function ApiUserSigninPostRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ApiUserSigninPostRequest {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'username': json['username'] == null ? undefined : json['username'],
+        'password': json['password'] == null ? undefined : json['password'],
+    };
 }
 
-export function ApiUserSigninPostRequestToJSON(
-  value?: ApiUserSigninPostRequest | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    username: value['username'],
-    password: value['password'],
-  };
+export function ApiUserSigninPostRequestToJSON(value?: ApiUserSigninPostRequest | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'username': value['username'],
+        'password': value['password'],
+    };
 }
+

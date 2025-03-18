@@ -14,55 +14,55 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface AuthProvider
  */
 export interface AuthProvider {
-  /**
-   *
-   * @type {string}
-   * @memberof AuthProvider
-   */
-  clientId?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof AuthProvider
-   */
-  endpoint?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthProvider
+     */
+    clientId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthProvider
+     */
+    endpoint?: string;
 }
 
 /**
  * Check if a given object implements the AuthProvider interface.
  */
 export function instanceOfAuthProvider(value: object): value is AuthProvider {
-  return true;
+    return true;
 }
 
 export function AuthProviderFromJSON(json: any): AuthProvider {
-  return AuthProviderFromJSONTyped(json, false);
+    return AuthProviderFromJSONTyped(json, false);
 }
 
-export function AuthProviderFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): AuthProvider {
-  if (json == null) {
-    return json;
-  }
-  return {
-    clientId: json['clientId'] == null ? undefined : json['clientId'],
-    endpoint: json['endpoint'] == null ? undefined : json['endpoint'],
-  };
+export function AuthProviderFromJSONTyped(json: any, ignoreDiscriminator: boolean): AuthProvider {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'clientId': json['clientId'] == null ? undefined : json['clientId'],
+        'endpoint': json['endpoint'] == null ? undefined : json['endpoint'],
+    };
 }
 
 export function AuthProviderToJSON(value?: AuthProvider | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    clientId: value['clientId'],
-    endpoint: value['endpoint'],
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'clientId': value['clientId'],
+        'endpoint': value['endpoint'],
+    };
 }
+

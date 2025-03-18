@@ -19,60 +19,51 @@ import { mapValues } from '../runtime';
  * @interface OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
  */
 export interface OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
-  /**
-   * A reference to an authority or identifier for a knowledge organization system from which the external identifier was obtained. It is recommended that the identifier be a resolvable URI.
-   * @type {string}
-   * @memberof OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
-   */
-  scheme?: string;
-  /**
-   * The value of the identifier.
-   * @type {string}
-   * @memberof OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
-   */
-  value: string;
+    /**
+     * A reference to an authority or identifier for a knowledge organization system from which the external identifier was obtained. It is recommended that the identifier be a resolvable URI.
+     * @type {string}
+     * @memberof OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
+     */
+    scheme?: string;
+    /**
+     * The value of the identifier.
+     * @type {string}
+     * @memberof OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto
+     */
+    value: string;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto interface.
  */
-export function instanceOfOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto(
-  value: object
-): value is OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
-  if (!('value' in value) || value['value'] === undefined) return false;
-  return true;
+export function instanceOfOgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto(value: object): value is OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
+    if (!('value' in value) || value['value'] === undefined) return false;
+    return true;
 }
 
-export function OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON(
-  json: any
-): OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
-  return OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped(
-    json,
-    false
-  );
+export function OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSON(json: any): OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
+    return OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
-  if (json == null) {
-    return json;
-  }
-  return {
-    scheme: json['scheme'] == null ? undefined : json['scheme'],
-    value: json['value'],
-  };
+export function OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'scheme': json['scheme'] == null ? undefined : json['scheme'],
+        'value': json['value'],
+    };
 }
 
-export function OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON(
-  value?: OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    scheme: value['scheme'],
-    value: value['value'],
-  };
+export function OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDtoToJSON(value?: OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'scheme': value['scheme'],
+        'value': value['value'],
+    };
 }
+

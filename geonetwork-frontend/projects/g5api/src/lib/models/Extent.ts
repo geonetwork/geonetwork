@@ -15,15 +15,15 @@
 import { mapValues } from '../runtime';
 import type { ExtentSpatial } from './ExtentSpatial';
 import {
-  ExtentSpatialFromJSON,
-  ExtentSpatialFromJSONTyped,
-  ExtentSpatialToJSON,
+    ExtentSpatialFromJSON,
+    ExtentSpatialFromJSONTyped,
+    ExtentSpatialToJSON,
 } from './ExtentSpatial';
 import type { ExtentTemporal } from './ExtentTemporal';
 import {
-  ExtentTemporalFromJSON,
-  ExtentTemporalFromJSONTyped,
-  ExtentTemporalToJSON,
+    ExtentTemporalFromJSON,
+    ExtentTemporalFromJSONTyped,
+    ExtentTemporalToJSON,
 } from './ExtentTemporal';
 
 /**
@@ -32,56 +32,50 @@ import {
  * @interface Extent
  */
 export interface Extent {
-  /**
-   *
-   * @type {ExtentSpatial}
-   * @memberof Extent
-   */
-  spatial?: ExtentSpatial;
-  /**
-   *
-   * @type {ExtentTemporal}
-   * @memberof Extent
-   */
-  temporal?: ExtentTemporal;
+    /**
+     * 
+     * @type {ExtentSpatial}
+     * @memberof Extent
+     */
+    spatial?: ExtentSpatial;
+    /**
+     * 
+     * @type {ExtentTemporal}
+     * @memberof Extent
+     */
+    temporal?: ExtentTemporal;
 }
 
 /**
  * Check if a given object implements the Extent interface.
  */
 export function instanceOfExtent(value: object): value is Extent {
-  return true;
+    return true;
 }
 
 export function ExtentFromJSON(json: any): Extent {
-  return ExtentFromJSONTyped(json, false);
+    return ExtentFromJSONTyped(json, false);
 }
 
-export function ExtentFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): Extent {
-  if (json == null) {
-    return json;
-  }
-  return {
-    spatial:
-      json['spatial'] == null
-        ? undefined
-        : ExtentSpatialFromJSON(json['spatial']),
-    temporal:
-      json['temporal'] == null
-        ? undefined
-        : ExtentTemporalFromJSON(json['temporal']),
-  };
+export function ExtentFromJSONTyped(json: any, ignoreDiscriminator: boolean): Extent {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'spatial': json['spatial'] == null ? undefined : ExtentSpatialFromJSON(json['spatial']),
+        'temporal': json['temporal'] == null ? undefined : ExtentTemporalFromJSON(json['temporal']),
+    };
 }
 
 export function ExtentToJSON(value?: Extent | null): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    spatial: ExtentSpatialToJSON(value['spatial']),
-    temporal: ExtentTemporalToJSON(value['temporal']),
-  };
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'spatial': ExtentSpatialToJSON(value['spatial']),
+        'temporal': ExtentTemporalToJSON(value['temporal']),
+    };
 }
+

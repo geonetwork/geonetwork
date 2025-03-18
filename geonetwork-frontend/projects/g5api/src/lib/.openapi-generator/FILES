@@ -1,4 +1,4 @@
-apis/DataAnalysisControllerApi.ts
+apis/DataAnalysisApi.ts
 apis/IndexingControllerApi.ts
 apis/LoginEndpointApi.ts
 apis/MeApiApi.ts
@@ -9,7 +9,6 @@ apis/RecordsApi.ts
 apis/SearchControllerApi.ts
 apis/index.ts
 index.ts
-models/AnalysisSynch200Response.ts
 models/ApiUserSigninPostRequest.ts
 models/AttributeStatistics.ts
 models/AttributeTable.ts
@@ -19,10 +18,6 @@ models/CodeListValue.ts
 models/Contact.ts
 models/CrsDetails.ts
 models/DataFormat.ts
-models/DatasetInfo.ts
-models/DatasetLayer.ts
-models/DatasetLayerField.ts
-models/DatasetLayerGeomField.ts
 models/DateRange.ts
 models/DateRangeDetails.ts
 models/DateRangeDetailsInfo.ts
@@ -69,9 +64,6 @@ models/ProcessParameter.ts
 models/ProcessReport.ts
 models/ProcessStep.ts
 models/ProcessStepSource.ts
-models/RasterBand.ts
-models/RasterCornerCoordinates.ts
-models/RasterInfo.ts
 models/RecordLink.ts
 models/RelatedItemType.ts
 models/ResourceDate.ts

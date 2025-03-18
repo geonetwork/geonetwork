@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './AnalysisSynch200Response';
 export * from './ApiUserSigninPostRequest';
 export * from './AttributeStatistics';
 export * from './AttributeTable';
@@ -10,10 +9,6 @@ export * from './CodeListValue';
 export * from './Contact';
 export * from './CrsDetails';
 export * from './DataFormat';
-export * from './DatasetInfo';
-export * from './DatasetLayer';
-export * from './DatasetLayerField';
-export * from './DatasetLayerGeomField';
 export * from './DateRange';
 export * from './DateRangeDetails';
 export * from './DateRangeDetailsInfo';
@@ -60,9 +55,6 @@ export * from './ProcessParameter';
 export * from './ProcessReport';
 export * from './ProcessStep';
 export * from './ProcessStepSource';
-export * from './RasterBand';
-export * from './RasterCornerCoordinates';
-export * from './RasterInfo';
 export * from './RecordLink';
 export * from './RelatedItemType';
 export * from './ResourceDate';

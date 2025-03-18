@@ -14,85 +14,79 @@
 
 import { mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface SpecificationConformance
  */
 export interface SpecificationConformance {
-  /**
-   *
-   * @type {string}
-   * @memberof SpecificationConformance
-   */
-  link?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof SpecificationConformance
-   */
-  title?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof SpecificationConformance
-   */
-  explanation?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof SpecificationConformance
-   */
-  date?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof SpecificationConformance
-   */
-  pass?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SpecificationConformance
+     */
+    link?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SpecificationConformance
+     */
+    title?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SpecificationConformance
+     */
+    explanation?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SpecificationConformance
+     */
+    date?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SpecificationConformance
+     */
+    pass?: string;
 }
 
 /**
  * Check if a given object implements the SpecificationConformance interface.
  */
-export function instanceOfSpecificationConformance(
-  value: object
-): value is SpecificationConformance {
-  return true;
+export function instanceOfSpecificationConformance(value: object): value is SpecificationConformance {
+    return true;
 }
 
-export function SpecificationConformanceFromJSON(
-  json: any
-): SpecificationConformance {
-  return SpecificationConformanceFromJSONTyped(json, false);
+export function SpecificationConformanceFromJSON(json: any): SpecificationConformance {
+    return SpecificationConformanceFromJSONTyped(json, false);
 }
 
-export function SpecificationConformanceFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean
-): SpecificationConformance {
-  if (json == null) {
-    return json;
-  }
-  return {
-    link: json['link'] == null ? undefined : json['link'],
-    title: json['title'] == null ? undefined : json['title'],
-    explanation: json['explanation'] == null ? undefined : json['explanation'],
-    date: json['date'] == null ? undefined : json['date'],
-    pass: json['pass'] == null ? undefined : json['pass'],
-  };
+export function SpecificationConformanceFromJSONTyped(json: any, ignoreDiscriminator: boolean): SpecificationConformance {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'link': json['link'] == null ? undefined : json['link'],
+        'title': json['title'] == null ? undefined : json['title'],
+        'explanation': json['explanation'] == null ? undefined : json['explanation'],
+        'date': json['date'] == null ? undefined : json['date'],
+        'pass': json['pass'] == null ? undefined : json['pass'],
+    };
 }
 
-export function SpecificationConformanceToJSON(
-  value?: SpecificationConformance | null
-): any {
-  if (value == null) {
-    return value;
-  }
-  return {
-    link: value['link'],
-    title: value['title'],
-    explanation: value['explanation'],
-    date: value['date'],
-    pass: value['pass'],
-  };
+export function SpecificationConformanceToJSON(value?: SpecificationConformance | null): any {
+    if (value == null) {
+        return value;
+    }
+    return {
+        
+        'link': value['link'],
+        'title': value['title'],
+        'explanation': value['explanation'],
+        'date': value['date'],
+        'pass': value['pass'],
+    };
 }
+
