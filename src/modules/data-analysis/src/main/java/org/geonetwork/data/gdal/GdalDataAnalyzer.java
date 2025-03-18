@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -165,15 +166,14 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
         }
 
         throw new DataAnalyzerException(String.format(
-            "Error while collecting layers in datasource %s.%n* Vector analysis error: %s%n* Raster analysis error: %s",
-            dataSource, vectorException.getMessage(), rasterException.getMessage()));
-
+                "Error while collecting layers in datasource %s.%n* Vector analysis error: %s%n* Raster analysis error: %s",
+                dataSource, vectorException.getMessage(), rasterException.getMessage()));
     }
 
     private List<String> getDatasourceRasterLayers(String dataSource) {
         Optional<List<String>> rasterLayers = GdalUtils.executeCommand(
-                buildUtilityCommand(GDAL_INFO_APP), timeoutInSeconds, buildDataSourcePath(dataSource))
-            .map(GdalUtils::parseRasterLayers);
+                        buildUtilityCommand(GDAL_INFO_APP), timeoutInSeconds, buildDataSourcePath(dataSource))
+                .map(GdalUtils::parseRasterLayers);
         if (rasterLayers.isPresent() && !rasterLayers.get().isEmpty()) {
             return rasterLayers.get();
         }
@@ -183,8 +183,8 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
 
     private List<String> getDatasourceVectorLayers(String dataSource) {
         Optional<List<String>> vectorLayers = GdalUtils.executeCommand(
-                buildUtilityCommand(OGR_INFO_APP), timeoutInSeconds, "-ro", buildDataSourcePath(dataSource))
-            .map(GdalUtils::parseLayers);
+                        buildUtilityCommand(OGR_INFO_APP), timeoutInSeconds, "-ro", buildDataSourcePath(dataSource))
+                .map(GdalUtils::parseLayers);
         if (vectorLayers.isPresent() && !vectorLayers.get().isEmpty()) {
             return vectorLayers.get();
         }
@@ -529,11 +529,10 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     }
 
     private boolean hasRasterExtension(String datasource) {
-        String datasourceValue = datasource.toLowerCase();
+        String datasourceValue = datasource.toLowerCase(Locale.ROOT);
 
-        return (datasourceValue.endsWith(".tiff") ||
-            datasourceValue.endsWith(".tif")) ||
-            datasourceValue.endsWith(".jpg") ||
-            datasourceValue.endsWith(".jpeg");
+        return (datasourceValue.endsWith(".tiff") || datasourceValue.endsWith(".tif"))
+                || datasourceValue.endsWith(".jpg")
+                || datasourceValue.endsWith(".jpeg");
     }
 }

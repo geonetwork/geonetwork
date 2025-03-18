@@ -15,9 +15,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
-
 import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.geonetwork.data.DataAnalyzerException;
@@ -110,8 +110,8 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
 
     @GetMapping(path = "/layers", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
-        summary = "Get the list of layers for a datasource",
-        description = """
+            summary = "Get the list of layers for a datasource",
+            description = """
     Raster datasets have a single layer named 'RASTER_LAYER'.
 """)
     @PreAuthorize("hasRole('Editor')")
@@ -119,35 +119,36 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
             @RequestParam(required = false) String metadataUuid,
             @RequestParam(required = false) MetadataResourceVisibility visibility,
             @RequestParam
-            @Parameter(
-                // TODO: Can we ruse this description for all methods?
-                description = DataAnalysisController.API_DATASOURCE_DESCRIPTION,
-                // TODO: Should we add restriction on drivers?
-                examples = {
-                    @ExampleObject(name = "Local file", value = "/path/to/file.shp"),
-                    @ExampleObject(
-                        name = "URL to a RASTER dataset in TIFF format",
-                        value =
-                            "https://sdi.eea.europa.eu/webdav/datastore/public/eea_r_3035_1_km_landscan-eurmed2_p_2008_v01_r00/lspop2008_laea.tif"),
-                    @ExampleObject(
-                        name = "URL to a CSV file",
-                        value =
-                            "https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv"),
-                    @ExampleObject(
-                        name = "URL to a GeoJSON file",
-                        value =
-                            "https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:vejmidte_geodk_labels&outputFormat=json&SRSNAME=EPSG:4326"),
-                    @ExampleObject(
-                        name = "URL to a WFS datasource",
-                        value = "WFS:https://service.pdok.nl/rvo/wetlands/wfs/v1_0"),
-                    @ExampleObject(
-                        name = "URL to a zipped shapefile",
-                        value =
-                            "/vsizip//vsicurl/https://naciscdn.org/naturalearth/50m/physical/ne_50m_glaciated_areas.zip"),
-                    @ExampleObject(
-                        name = "URL to a PostGIS database",
-                        value = "postgresql://www-data:www-data@localhost:5432/geo")
-                }) String datasource,
+                    @Parameter(
+                            // TODO: Can we ruse this description for all methods?
+                            description = DataAnalysisController.API_DATASOURCE_DESCRIPTION,
+                            // TODO: Should we add restriction on drivers?
+                            examples = {
+                                @ExampleObject(name = "Local file", value = "/path/to/file.shp"),
+                                @ExampleObject(
+                                        name = "URL to a RASTER dataset in TIFF format",
+                                        value =
+                                                "https://sdi.eea.europa.eu/webdav/datastore/public/eea_r_3035_1_km_landscan-eurmed2_p_2008_v01_r00/lspop2008_laea.tif"),
+                                @ExampleObject(
+                                        name = "URL to a CSV file",
+                                        value =
+                                                "https://sdi.eea.europa.eu/webdav/datastore/public/coe_t_emerald_p_2021-2022_v05_r00/Emerald_2022_BIOREGION.csv"),
+                                @ExampleObject(
+                                        name = "URL to a GeoJSON file",
+                                        value =
+                                                "https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:vejmidte_geodk_labels&outputFormat=json&SRSNAME=EPSG:4326"),
+                                @ExampleObject(
+                                        name = "URL to a WFS datasource",
+                                        value = "WFS:https://service.pdok.nl/rvo/wetlands/wfs/v1_0"),
+                                @ExampleObject(
+                                        name = "URL to a zipped shapefile",
+                                        value =
+                                                "/vsizip//vsicurl/https://naciscdn.org/naturalearth/50m/physical/ne_50m_glaciated_areas.zip"),
+                                @ExampleObject(
+                                        name = "URL to a PostGIS database",
+                                        value = "postgresql://www-data:www-data@localhost:5432/geo")
+                            })
+                    String datasource,
             @RequestParam(required = false, defaultValue = "true") boolean approved) {
         if (StringUtils.hasLength(metadataUuid)) {
             if (visibility == null) {
@@ -156,12 +157,12 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
 
             try {
                 Store.ResourceHolder resourceHolder =
-                    metadataStore.getResource(metadataUuid, visibility, datasource, approved);
+                        metadataStore.getResource(metadataUuid, visibility, datasource, approved);
 
                 return new ResponseEntity<>(
-                    analyzer.getDatasourceLayers(
-                        buildLocalDatasourceUrl(resourceHolder.getPath().toString())),
-                    HttpStatus.OK);
+                        analyzer.getDatasourceLayers(
+                                buildLocalDatasourceUrl(resourceHolder.getPath().toString())),
+                        HttpStatus.OK);
             } catch (ResourceNotFoundException ex) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } catch (Exception ex) {
@@ -170,7 +171,6 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
         } else {
             return new ResponseEntity<>(analyzer.getDatasourceLayers(datasource), HttpStatus.OK);
         }
-
     }
 
     // TODO: Make distinction between raster and vector analysis in the following method
@@ -203,13 +203,12 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
         } else {
             return internalAnalysisSynchIndexRecord(datasource, layer);
         }
-
     }
 
     @GetMapping(path = "/preview", produces = MediaType.TEXT_PLAIN_VALUE)
     @Operation(
-        summary = "Preview metadata record updated with layer properties",
-        description = """
+            summary = "Preview metadata record updated with layer properties",
+            description = """
         The metadata record is not saved.
 """)
     @PreAuthorize("hasRole('Editor')")
@@ -217,7 +216,7 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
             @RequestParam String metadataUuid,
             @RequestParam(required = false) MetadataResourceVisibility visibility,
             @RequestParam String datasource,
-            @RequestParam(required = false, defaultValue = "false")  boolean approved,
+            @RequestParam(required = false, defaultValue = "false") boolean approved,
             @RequestParam String layer)
             throws MetadataNotFoundException {
 
@@ -245,8 +244,8 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
 
     @PostMapping(path = "/apply", produces = MediaType.TEXT_PLAIN_VALUE)
     @Operation(
-        summary = "Update metadata record with layer properties",
-        description = """
+            summary = "Update metadata record with layer properties",
+            description = """
         The metadata record is saved.
 """)
     @PreAuthorize("hasRole('Editor')")
@@ -271,7 +270,8 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
             try {
                 Store.ResourceHolder resourceHolder = metadataStore.getResource(uuid, visibility, datasource, approved);
 
-                datasourceToUse = buildLocalDatasourceUrl(resourceHolder.getPath().toString());
+                datasourceToUse =
+                        buildLocalDatasourceUrl(resourceHolder.getPath().toString());
             } catch (ResourceNotFoundException ex) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } catch (Exception ex) {
@@ -431,10 +431,10 @@ The overview is a small image representing the layer.
         }
     }
 
-    private String calculateLocalDatasourcePath(String metadataUuid, MetadataResourceVisibility visibility,
-                                                String datasource, boolean approved) throws Exception {
-        Store.ResourceHolder resourceHolder =
-            metadataStore.getResource(metadataUuid, visibility, datasource, approved);
+    private String calculateLocalDatasourcePath(
+            String metadataUuid, MetadataResourceVisibility visibility, String datasource, boolean approved)
+            throws Exception {
+        Store.ResourceHolder resourceHolder = metadataStore.getResource(metadataUuid, visibility, datasource, approved);
 
         return buildLocalDatasourceUrl(resourceHolder.getPath().toString());
     }
@@ -446,13 +446,12 @@ The overview is a small image representing the layer.
      * @return true if the datasource is remote, otherwise false.
      */
     private boolean isRemoteDatasource(String datasource) {
-        String datasourceValue = datasource.toLowerCase();
+        String datasourceValue = datasource.toLowerCase(Locale.ROOT);
 
-        return datasourceValue.startsWith("http://") ||
-            datasourceValue.startsWith("https://") ||
-            datasourceValue.startsWith("wfs:") ||
-            datasourceValue.startsWith("postgresql:") ||
-            datasourceValue.startsWith("/vsizip//vsicurl");
+        return datasourceValue.startsWith("http://")
+                || datasourceValue.startsWith("https://")
+                || datasourceValue.startsWith("wfs:")
+                || datasourceValue.startsWith("postgresql:")
+                || datasourceValue.startsWith("/vsizip//vsicurl");
     }
-
 }
