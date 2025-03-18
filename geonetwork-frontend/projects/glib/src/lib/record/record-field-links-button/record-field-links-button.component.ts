@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, Input } from '@angular/core';
-import { GnLink, LinkActionTypes, LinkTypes } from 'gapi';
+import { LinkActionTypes } from 'gapi';
 import { Button } from 'primeng/button';
 import { Gn4MapService } from '../../shared/gn4-map.service';
 import { KeyValuePipe, NgTemplateOutlet } from '@angular/common';
@@ -8,6 +8,7 @@ import { Menu } from 'primeng/menu';
 import { MenuItem, MessageService, PrimeTemplate } from 'primeng/api';
 import { RecordLinkService } from '../record-link.service';
 import { RecordLinkActionIconPipe } from '../record-link-action-icon.pipe';
+import { Link } from 'g5api';
 
 @Component({
   selector: 'g-record-field-links-button',
@@ -25,7 +26,7 @@ import { RecordLinkActionIconPipe } from '../record-link-action-icon.pipe';
   providers: [MessageService],
 })
 export class RecordFieldLinksButtonComponent {
-  links = input<GnLink[] | null>();
+  links = input<Link[] | null>();
 
   gn4MapService = inject(Gn4MapService);
 
@@ -35,7 +36,7 @@ export class RecordFieldLinksButtonComponent {
     return this.distributionService.linksByType(this.links());
   });
 
-  buildMenuItems(links: GnLink[], type: string): MenuItem[] | undefined {
+  buildMenuItems(links: Link[], type: string): MenuItem[] | undefined {
     return links.map(link => {
       const menuItem: MenuItem = {
         label:
@@ -54,7 +55,7 @@ export class RecordFieldLinksButtonComponent {
     });
   }
 
-  getLinkAction(link: GnLink, type: LinkActionTypes) {
+  getLinkAction(link: Link, type: LinkActionTypes) {
     return this.distributionService.getLinkAction(link, type);
   }
 }

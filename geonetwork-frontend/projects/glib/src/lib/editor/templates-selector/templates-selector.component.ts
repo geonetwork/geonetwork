@@ -10,8 +10,8 @@ import {
 import { SearchContextDirective } from '../../search/search-context.directive';
 import { SearchResultsComponent } from '../../search/search-results/search-results.component';
 import { SearchAggLayout } from '../../search/search-agg/search-agg.component';
-import { GnIndexRecord } from 'gapi';
 import { estypes } from '@elastic/elasticsearch';
+import { IndexRecord } from 'g5api';
 
 @Component({
   selector: 'g-templates-selector',
@@ -32,7 +32,7 @@ export class TemplatesSelectorComponent {
   templateType = model<string>();
 
   filter = input('');
-  response = signal<estypes.SearchResponse<GnIndexRecord> | null>(null);
+  response = signal<estypes.SearchResponse<IndexRecord> | null>(null);
 
   numberOfTemplates = model<number>();
 

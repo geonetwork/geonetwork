@@ -7,7 +7,8 @@ import {
 } from './search.state';
 import { SearchService } from './search.service';
 import { API_CONFIGURATION } from '../config/config.loader';
-import { elasticsearch, GnIndexRecord } from 'gapi';
+import { elasticsearch } from 'gapi';
+import { IndexRecord } from 'g5api';
 
 @Directive({
   selector: '[gSearchContext]',
@@ -22,7 +23,7 @@ export class SearchContextDirective implements OnInit {
   size = input<number>(DEFAULT_PAGE_SIZE);
   sort = input<elasticsearch.Sort>(DEFAULT_SORT);
   filter = input<string>('');
-  response = model<elasticsearch.SearchResponse<GnIndexRecord> | null>();
+  response = model<elasticsearch.SearchResponse<IndexRecord> | null>();
 
   #searchStore = inject(SearchStore);
   #searchService = inject(SearchService);

@@ -9,13 +9,14 @@ import {
 } from '@angular/core';
 import { JsonPipe, NgTemplateOutlet } from '@angular/common';
 import { API_CONFIGURATION } from '../../config/config.loader';
-import { GnIndexRecord, SearchApi } from 'gapi';
+import { SearchApi } from 'gapi';
 import { TabViewModule } from 'primeng/tabview';
 import { RecordFieldOverviewComponent } from '../record-field-overview/record-field-overview.component';
 import { RecordFieldKeywordsComponent } from '../record-field-keywords/record-field-keywords.component';
 import { AccordionModule } from 'primeng/accordion';
 import { RecordFieldLinksComponent } from '../record-field-links/record-field-links.component';
 import { Fieldset } from 'primeng/fieldset';
+import { IndexRecord } from 'g5api';
 
 @Component({
   selector: 'g-record-view',
@@ -43,7 +44,7 @@ export class RecordViewComponent implements OnInit {
     return new SearchApi(this.apiConfiguration());
   });
 
-  record = signal<GnIndexRecord | undefined>(undefined);
+  record = signal<IndexRecord | undefined>(undefined);
 
   recordStatus = signal<string | undefined>(undefined);
 

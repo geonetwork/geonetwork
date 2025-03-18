@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { GnLink } from 'gapi';
 import { Router } from '@angular/router';
+import { Link } from 'g5api';
 
 interface Gn4MapCommand {
   url: string;
@@ -13,7 +13,7 @@ interface Gn4MapCommand {
 export class Gn4MapService {
   router = inject(Router);
 
-  addMap = (link: GnLink) => {
+  addMap = (link: Link) => {
     if (link.urlObject) {
       this.applyCommand(`map=${encodeURIComponent(link.urlObject.default)}`);
     } else {
@@ -21,7 +21,7 @@ export class Gn4MapService {
     }
   };
 
-  addWmsLayers = (links: GnLink | GnLink[]) => {
+  addWmsLayers = (links: Link | Link[]) => {
     if (!Array.isArray(links)) {
       links = [links];
     }

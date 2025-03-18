@@ -76,28 +76,46 @@ See [package.json](package.json) for more details.
 * [FortAwesome](https://fontawesome.com/) is used for the icons.
 * [Elasticsearch search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-with-elasticsearch.html)
 
-### The OpenAPI client
+### The OpenAPI clients
 
-The `gapi` project is an OpenAPI client generated from the OpenAPI specification of the GeoNetwork REST API.
-The [OpenAPI specification](projects/gapi/gapi.json) can be updated from http://localhost:8080/geonetwork/srv/api/doc 
-Then run the following command to update and generate the client.
+One for GeoNetwork 4 in `gapi` project, the [OpenAPI specification](projects/gapi/gapi.json) can be updated from http://localhost:8080/geonetwork/srv/api/doc.
+One for GeoNetwork 5 in `g5api` project, the [OpenAPI specification](projects/g5api/g5api.json) can be updated from http://localhost:8080/geonetwork/v3/api-docs.
+
+To update run the following commands:
 
 ```bash
 curl http://localhost:8080/geonetwork/srv/api/doc > projects/gapi/gapi.json
-npm run openapi-generator
+npm run openapi-generator-g4api
+curl http://localhost:8080/geonetwork/v3/api-docs > projects/g5api/g5api.json
+npm run openapi-generator-g5api
 npm run prettier
 ```
 Java is required to build the OpenAPI client with [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator).
 
 
+Items to be improved in the OpenAPI specification:
+* in GeoNetwork 5, the IndexRecord model does not contain the `additionalProperties` field (cf. [commit](https://github.com/geonetwork/geonetwork/commit/afb1b923befd2564dad349b6982beb87a3b35901#diff-d9cfcd6cc9d2800df4ef55f435ed0b0a93d4fcc8c97f2cd8a7bfa177cf6ed799L36)). Update the model in the OpenAPI specification `g5api.json` before generating the client.
 
-Items to be improved:
+```json
+      "IndexRecord": {
+         "type": "object",
+         "additionalProperties": true,
+```
+
 * in [projects/gapi/src/lib/apis/SearchApi.ts](projects/gapi/src/lib/apis/SearchApi.ts), Elasticsearch types are manually added in order to have a better typing for search requests and responses.
 * some errors in the generated code to fix manually
     * enum issue (eg. PutResourceVisibilityEnum)
     * runtime.js override
-    * `headerParameters['Accept'] = 'application/json';` to support `Accept: */*` related to Spring error `Could not find acceptable representation`
-* [projects/gapi/src/lib/model-index](projects/gapi/src/lib/model-index) is the index document model (produced by GeoNetwork 5) generated using `npm run openapi-generatortest`
+```ts
+override name: 'FetchError' = 'FetchError';
+   constructor(
+     public override cause: Error,
+     msg?: string
+   ) {
+     super(msg);
+   }
+```
+  * `headerParameters['Accept'] = 'application/json';` to support `Accept: */*` related to Spring error `Could not find acceptable representation`
 * [projects/gapi/src/lib/ui-settings.ts](projects/gapi/src/lib/ui-settings.ts) is the model of the UI settings (to be created server side)
 
 To configure and use the OpenAPI client, use the following code (eg. [in the search service](projects/glib/src/lib/search/search.service.ts)):
@@ -310,51 +328,3 @@ Error: connect ECONNREFUSED 127.0.0.1:8080
 GeoNetwork is not running or the proxy is not correctly configured.
 
  
-
-# Experimenting
-
-## Components and styling
-
-```bash
-npm install primeng
-npm install @fortawesome/fontawesome-free
-
-# https://tailwindcss.com/docs/installation
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init
-```
-
-## OpenAPI
-
-Convert OpenAPI 3.0 to TypeScript interfaces by installing dependencies
-
-```bash
-npm install @hey-api/openapi-ts --save-dev
-npm install @hey-api/client-fetch
-npm install @elastic/elasticsearch
-```
-
-and then running
-
-```bash
-npx openapi-ts -i path/to/openapi.yaml -o path/to/output.ts
-```
-
-To fix on OpenAPI
-
-```
- TS1102: 'delete' cannot be called on an identifier in strict mode. [
-```
-
-
-Adjust request parameters and response types for Elasticsearch queries.
-In `types.gen.ts`
-
-```typescript
-export type SearchData = {
-    ...
-    requestBody: estypes.SearchRequest;
-};
-
-export type SearchResponse = estypes.SearchResponse<any>;
-```

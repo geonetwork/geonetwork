@@ -1,7 +1,7 @@
 import { Component, computed, input, signal } from '@angular/core';
 import { ImageModule } from 'primeng/image';
 import { GalleriaModule } from 'primeng/galleria';
-import { GnOverview } from 'gapi';
+import { Overview } from 'g5api';
 
 @Component({
   selector: 'g-record-field-overview',
@@ -10,8 +10,8 @@ import { GnOverview } from 'gapi';
   imports: [ImageModule, GalleriaModule],
 })
 export class RecordFieldOverviewComponent {
-  field = input<GnOverview | GnOverview[] | null>();
-  overviewList = computed<GnOverview[]>(() => {
+  field = input<Overview | Overview[] | null>();
+  overviewList = computed<Overview[]>(() => {
     const field = this.field();
     if (!field) {
       return [];

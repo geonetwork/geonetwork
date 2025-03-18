@@ -14,12 +14,8 @@
 
 import * as runtime from '../runtime';
 import type { RelatedItemType } from '../models/index';
-import {
-  RelatedItemTypeFromJSON,
-  RelatedItemTypeToJSON,
-} from '../models/index';
 import { estypes } from '@elastic/elasticsearch';
-import { GnIndexRecord } from '../model-index';
+import { IndexRecord } from 'g5api';
 
 export interface MsearchRequest {
   body: estypes.MsearchRequest;
@@ -103,7 +99,7 @@ export class SearchApi extends runtime.BaseAPI {
   async searchRaw(
     requestParameters: SearchRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<estypes.SearchResponse<GnIndexRecord>>> {
+  ): Promise<runtime.ApiResponse<estypes.SearchResponse<IndexRecord>>> {
     if (requestParameters['body'] == null) {
       throw new runtime.RequiredError(
         'body',
@@ -137,7 +133,7 @@ export class SearchApi extends runtime.BaseAPI {
     );
 
     if (this.isJsonMime(response.headers.get('content-type'))) {
-      return new runtime.JSONApiResponse<estypes.SearchResponse<GnIndexRecord>>(
+      return new runtime.JSONApiResponse<estypes.SearchResponse<IndexRecord>>(
         response
       );
     } else {
@@ -152,7 +148,7 @@ export class SearchApi extends runtime.BaseAPI {
   async search(
     requestParameters: SearchRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<estypes.SearchResponse<GnIndexRecord>> {
+  ): Promise<estypes.SearchResponse<IndexRecord>> {
     const response = await this.searchRaw(requestParameters, initOverrides);
     return await response.value();
   }

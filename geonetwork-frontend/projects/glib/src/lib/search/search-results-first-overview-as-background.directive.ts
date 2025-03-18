@@ -2,7 +2,7 @@ import { computed, Directive, inject, input, OnInit } from '@angular/core';
 import { SearchService } from './search.service';
 import { SearchStoreType } from './search.state';
 import { elasticsearch } from 'gapi';
-import { GnIndexRecord, GnOverview } from 'gapi';
+import { IndexRecord, Overview } from 'g5api';
 
 @Directive({
   selector: '[gSearchResultsFirstOverviewAsBackground]',
@@ -20,10 +20,10 @@ export class SearchResultsFirstOverviewAsBackgroundDirective implements OnInit {
     const overviewList =
       this.search
         .response()
-        ?.hits.hits.map((h: elasticsearch.SearchHit<GnIndexRecord>) => {
+        ?.hits.hits.map((h: elasticsearch.SearchHit<IndexRecord>) => {
           return h._source?.overview;
         })
-        .reduce((acc: GnOverview[], value: GnOverview[] | undefined) => {
+        .reduce((acc: Overview[], value: Overview[] | undefined) => {
           return value ? acc.concat(value) : acc;
         }, []) || [];
 

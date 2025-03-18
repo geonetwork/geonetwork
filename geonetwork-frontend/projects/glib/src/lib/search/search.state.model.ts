@@ -1,5 +1,5 @@
 import { elasticsearch } from 'gapi';
-import { GnIndexRecord } from 'gapi';
+import { IndexRecord } from 'g5api';
 
 export enum SearchFilterValueState {
   ON = 'ON',
@@ -48,7 +48,7 @@ export interface Search {
   trackTotalHits?: boolean;
   filters: SearchFilterList;
   filter: string;
-  response: elasticsearch.SearchResponse<GnIndexRecord> | null;
+  response: elasticsearch.SearchResponse<IndexRecord> | null;
   aggregation: Record<
     elasticsearch.AggregateName,
     elasticsearch.AggregationsAggregate

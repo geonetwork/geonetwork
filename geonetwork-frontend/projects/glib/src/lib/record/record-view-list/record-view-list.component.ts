@@ -1,7 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { ChipModule } from 'primeng/chip';
 import { elasticsearch } from 'gapi';
-import { GnIndexRecord } from 'gapi';
 import { RecordFieldOverviewComponent } from '../record-field-overview/record-field-overview.component';
 import {
   RecordFieldResourceTypeComponent,
@@ -11,9 +10,8 @@ import { RecordFieldRange } from '../record-field-range.pipe';
 import { RouterLink } from '@angular/router';
 import { FirstSentencePipe } from '../../shared/first-sentence.pipe';
 import { RecordFieldKeywordsComponent } from '../record-field-keywords/record-field-keywords.component';
-import { Button } from 'primeng/button';
-import { Gn4MapService } from '../../shared/gn4-map.service';
 import { RecordFieldLinksButtonComponent } from '../record-field-links-button/record-field-links-button.component';
+import { IndexRecord } from 'g5api';
 
 @Component({
   selector: 'g-record-view-list',
@@ -32,7 +30,7 @@ import { RecordFieldLinksButtonComponent } from '../record-field-links-button/re
 })
 export class RecordViewListComponent {
   protected readonly ResourceTypeLayout = ResourceTypeLayout;
-  hit = input<elasticsearch.SearchHit<GnIndexRecord>>();
+  hit = input<elasticsearch.SearchHit<IndexRecord>>();
   landingPage = input<string>('');
   landingPageLinkOn = input<string>();
   landingPageLabel = input<string>('Read more');

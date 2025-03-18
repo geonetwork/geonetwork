@@ -81,23 +81,23 @@
                 @switch (col.field) {
                   @case ('overview[*]') {
                     <g-record-field-overview
-                      [field]="hit._source | gJsonpath: col.field"
+                      [field]="hit | gJsonpath: col.field"
                       styleClass="max-w-14" />
                   }
                   @case ('resourceType[0]') {
                     <g-record-field-resource-type
                       [layout]="ResourceTypeLayout.ICON"
-                      [field]="hit._source | gJsonpath: col.field" />
+                      [field]="hit | gJsonpath: col.field" />
                   }
                   @default {
                     @if (col.field.startsWith('link')) {
                       <g-record-field-links
-                        [links]="hit._source | gJsonpath: col.field" />
+                        [links]="hit | gJsonpath: col.field" />
                     } @else if (col.field.startsWith('th_')) {
                       <g-record-field-keywords
-                        [field]="hit._source | gJsonpath: col.field" />
+                        [field]="hit | gJsonpath: col.field" />
                     } @else {
-                      {{ hit._source | gJsonpath: col.field }}
+                      {{ hit | gJsonpath: col.field }}
                     }
                   }
                 }

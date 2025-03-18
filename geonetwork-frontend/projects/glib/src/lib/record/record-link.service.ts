@@ -1,8 +1,9 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { Gn4MapService } from '../shared/gn4-map.service';
-import { GnLink, LinkActionTypes, LinkTypes } from 'gapi';
 import { ConfigService } from '../shared/config.service';
 import { APPLICATION_CONFIGURATION } from '../config/config.loader';
+import { Link } from 'g5api';
+import { LinkActionTypes, LinkTypes } from 'gapi';
 
 interface LinkType {
   icon: string;
@@ -41,8 +42,8 @@ export class RecordLinkService {
 
   types = Object.keys(this.linkTypesProtocols);
 
-  linksByType = (links: GnLink[] | null | undefined) => {
-    const linksByType: { [key in LinkActionTypes]?: GnLink[] } = {};
+  linksByType = (links: Link[] | null | undefined) => {
+    const linksByType: { [key in LinkActionTypes]?: Link[] } = {};
     if (!links) {
       return linksByType;
     }
@@ -69,8 +70,8 @@ export class RecordLinkService {
   //       'protocol:OGC:WMS|OGC:WMTS|ESRI:.*|atom.*|REST|OGC API Maps|OGC API Records',
   //     title: 'API',
   //   },
-  linksBySections = (links: GnLink[] | null | undefined) => {
-    const linksBySections: { [key: string]: GnLink[] } = {};
+  linksBySections = (links: Link[] | null | undefined) => {
+    const linksBySections: { [key: string]: Link[] } = {};
     if (!links) {
       return linksBySections;
     }
@@ -92,7 +93,7 @@ export class RecordLinkService {
     return linksBySections;
   };
 
-  getLinkAction(link: GnLink, type: string) {
+  getLinkAction(link: Link, type: string) {
     const linkType = this.linkTypesActions[type as LinkActionTypes];
     return linkType?.action || undefined;
   }

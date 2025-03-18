@@ -4,7 +4,6 @@ import {
   AutoCompleteCompleteEvent,
   AutoCompleteSelectEvent,
 } from 'primeng/autocomplete';
-import { GnIndexRecordToJSON } from 'gapi';
 import { Fieldset } from 'primeng/fieldset';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputText } from 'primeng/inputtext';
@@ -17,6 +16,7 @@ import { GcSearchResultsTableComponent } from '../gc-search-results-table/gc-sea
 import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { GcNewRecordPanelComponent } from '../gc-new-record-panel/gc-new-record-panel.component';
+import { IndexRecordToJSON } from 'g5api';
 
 interface field {
   label: string;
@@ -92,7 +92,7 @@ export class GWebcomponentsDocComponent implements OnInit {
 
   selectionMode = SELECTION_MODE_LIST[0].type;
 
-  indexRecordProperties = Object.keys(GnIndexRecordToJSON({}));
+  indexRecordProperties = Object.keys(IndexRecordToJSON({}));
 
   fullTextSearch = signal(true);
   searchFilter = signal('+isTemplate:n');

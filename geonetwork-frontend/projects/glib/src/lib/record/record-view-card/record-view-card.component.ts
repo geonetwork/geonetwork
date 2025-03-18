@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
 import { elasticsearch } from 'gapi';
-import { GnIndexRecord } from 'gapi';
 import { DatePipe } from '@angular/common';
 import { Button } from 'primeng/button';
 import { RouterLink } from '@angular/router';
@@ -8,6 +7,7 @@ import { CardModule } from 'primeng/card';
 import { RecordFieldOverviewComponent } from '../record-field-overview/record-field-overview.component';
 import { GJsonpathPipe } from '../../shared/g-jsonpath.pipe';
 import { UrlPlaceholderPipe } from '../../shared/url-placeholder.pipe';
+import { IndexRecord } from 'g5api';
 
 @Component({
   selector: 'g-record-view-card',
@@ -25,7 +25,7 @@ import { UrlPlaceholderPipe } from '../../shared/url-placeholder.pipe';
   ],
 })
 export class RecordViewCardComponent {
-  hit = input<elasticsearch.SearchHit<GnIndexRecord>>();
+  hit = input<elasticsearch.SearchHit<IndexRecord>>();
   landingPage = input<string>();
   landingPageLinkPath = input<string>();
   landingPageLabel = input<string>('Read more');

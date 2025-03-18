@@ -1,5 +1,5 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { GnIndexRecord, SearchApi } from 'gapi';
+import { RelatedItemType, SearchApi } from 'gapi';
 import { SearchStoreType } from './search.state';
 import { elasticsearch } from 'gapi';
 import {
@@ -8,6 +8,7 @@ import {
 } from './search.state.model';
 import { API5_CONFIGURATION, API_CONFIGURATION } from '../config/config.loader';
 import { estypes } from '@elastic/elasticsearch';
+import { IndexRecord } from 'g5api';
 
 export interface SearchRegistry {
   [searchId: string]: SearchStoreType;
@@ -48,16 +49,18 @@ export class SearchService {
 
   search(
     searchRequestParameters: SearchRequestParameters
-  ): Promise<estypes.SearchResponse<GnIndexRecord>> {
+  ): Promise<estypes.SearchResponse<IndexRecord>> {
     return this.searchApi().search({
+      relatedType: [RelatedItemType.Services, RelatedItemType.Associated],
       body: this.buildQuery(searchRequestParameters),
     });
   }
 
   page(
     searchRequestParameters: SearchRequestParameters
-  ): Promise<estypes.SearchResponse<GnIndexRecord>> {
+  ): Promise<estypes.SearchResponse<IndexRecord>> {
     return this.searchApi().search({
+      relatedType: [RelatedItemType.Services, RelatedItemType.Associated],
       body: this.buildPageQuery(searchRequestParameters),
     });
   }

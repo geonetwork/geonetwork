@@ -24,7 +24,7 @@
           [href]="
             landingPage()
               ? (landingPage() | gUrlPlaceholder: hit._id)
-              : (hit._source | gJsonpath: landingPageLinkPath())
+              : (hit | gJsonpath: landingPageLinkPath())
           ">
           {{ landingPageLabel() }}
         </a>

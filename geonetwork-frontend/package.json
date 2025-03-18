@@ -17,7 +17,7 @@
     "prettier:check": "prettier --check \"**/*.{ts,html,scss,css}\"",
     "prettier": "prettier --write \"**/*.{ts,html,scss,css,json}\"",
     "test": "ng test glib",
-    "openapi-generator": "openapi-generator-cli generate -i projects/gapi/gapi.json  -g typescript-fetch -o  projects/gapi/src/lib  --skip-validate-spec",
+    "openapi-generator-g4api": "openapi-generator-cli generate -i projects/gapi/gapi.json  -g typescript-fetch -o  projects/gapi/src/lib  --skip-validate-spec",
     "openapi-generator-g5api": "openapi-generator-cli generate -i projects/g5api/g5api.json  -g typescript-fetch -o  projects/g5api/src/lib  --skip-validate-spec",
     "lint": "ng lint",
     "e2e": "ng e2e",
