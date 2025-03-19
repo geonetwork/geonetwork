@@ -189,25 +189,6 @@
         [column-selection]="allowColumnsSelection()"
         [selection-mode]="selectionMode" />
 
-      <gc-search-results-table
-        [api-url]="apiUrl"
-        [full-text-search]="fullTextSearch()"
-        [sort]="sort()"
-        [filter]="searchFilter()"
-        [size]="pageSize()"
-        [list-of-label]="'resourceTitleObject,mw-gp-localIdentifier,service'"
-        [list-of-field]="
-          '$._source.resourceTitleObject.default,$._source[\'mw-gp-localIdentifier\'],$.related.services[*]._source.resourceTitleObject.langfre'
-        "
-        [list-of-filter]="listOfFilters()"
-        [list-of-filter-placeholder]="listOfFilterPlaceholders()"
-        [list-of-filter-layout]="listOfFilterLayouts()"
-        [export]="allowResultsTableExport()"
-        landing-page="${apiUrl}/records/${uuid}"
-        landing-page-link-on="resourceTitleObject.default"
-        scroll-height="80vh"
-        [column-selection]="allowColumnsSelection()"
-        [selection-mode]="selectionMode" />
 
       <g-webcomponents-doc-embed>
         <pre class="whitespace-pre-wrap">
