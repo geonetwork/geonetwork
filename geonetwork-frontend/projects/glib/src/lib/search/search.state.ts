@@ -319,13 +319,16 @@ export const SearchStore = signalStore(
           tap(() => patchState(store, { isSearching: true, error: null })),
           switchMap(searchRequestPageParameters =>
             from(
-              searchService.page({
-                ...store.searchFilterParameters(),
-                ...searchRequestPageParameters,
-                sort: store.sort(),
-                functionScore: store.functionScore(),
-                filter: store.filter(),
-              })
+              searchService.page(
+                {
+                  ...store.searchFilterParameters(),
+                  ...searchRequestPageParameters,
+                  sort: store.sort(),
+                  functionScore: store.functionScore(),
+                  filter: store.filter(),
+                },
+                store.associatedResources()
+              )
             ).pipe(
               tap(console.log),
               tapResponse({
