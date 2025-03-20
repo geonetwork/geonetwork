@@ -7,7 +7,7 @@ import {
 } from './search.state';
 import { SearchService } from './search.service';
 import { API_CONFIGURATION } from '../config/config.loader';
-import { elasticsearch } from 'gapi';
+import { elasticsearch, RelatedItemType } from 'gapi';
 import { IndexRecord } from 'g5api';
 
 @Directive({
@@ -23,6 +23,7 @@ export class SearchContextDirective implements OnInit {
   size = input<number>(DEFAULT_PAGE_SIZE);
   sort = input<elasticsearch.Sort>(DEFAULT_SORT);
   filter = input<string>('');
+  associatedResources = input<RelatedItemType[] | undefined>(undefined);
   response = model<elasticsearch.SearchResponse<IndexRecord> | null>();
 
   #searchStore = inject(SearchStore);
@@ -56,6 +57,7 @@ export class SearchContextDirective implements OnInit {
       this.size(),
       this.sort(),
       this.filter(),
+      this.associatedResources(),
       this.routing()
     );
     this.#searchService.register(this.scope(), this.#searchStore);

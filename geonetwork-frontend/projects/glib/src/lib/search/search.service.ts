@@ -48,19 +48,21 @@ export class SearchService {
   }
 
   search(
-    searchRequestParameters: SearchRequestParameters
+    searchRequestParameters: SearchRequestParameters,
+    associatedResources: RelatedItemType[] | undefined = undefined
   ): Promise<estypes.SearchResponse<IndexRecord>> {
     return this.searchApi().search({
-      relatedType: [RelatedItemType.Services, RelatedItemType.Associated],
+      relatedType: associatedResources,
       body: this.buildQuery(searchRequestParameters),
     });
   }
 
   page(
-    searchRequestParameters: SearchRequestParameters
+    searchRequestParameters: SearchRequestParameters,
+    associatedResources: RelatedItemType[] | undefined = undefined
   ): Promise<estypes.SearchResponse<IndexRecord>> {
     return this.searchApi().search({
-      relatedType: [RelatedItemType.Services, RelatedItemType.Associated],
+      relatedType: associatedResources,
       body: this.buildPageQuery(searchRequestParameters),
     });
   }

@@ -1,4 +1,4 @@
-import { elasticsearch } from 'gapi';
+import { elasticsearch, RelatedItemType } from 'gapi';
 import { IndexRecord } from 'g5api';
 
 export enum SearchFilterValueState {
@@ -47,6 +47,7 @@ export interface Search {
   sort: elasticsearch.Sort;
   trackTotalHits?: boolean;
   filters: SearchFilterList;
+  associatedResources: RelatedItemType[] | undefined;
   filter: string;
   response: elasticsearch.SearchResponse<IndexRecord> | null;
   aggregation: Record<

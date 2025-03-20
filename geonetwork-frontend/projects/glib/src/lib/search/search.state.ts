@@ -1,4 +1,4 @@
-import { elasticsearch } from 'gapi';
+import { elasticsearch, RelatedItemType } from 'gapi';
 import {
   patchState,
   signalStore,
@@ -8,7 +8,7 @@ import {
   withProps,
   withState,
 } from '@ngrx/signals';
-import { computed, inject } from '@angular/core';
+import { computed, effect, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
   debounceTime,
@@ -57,6 +57,7 @@ const initialSearchState: Search = {
   pageSize: DEFAULT_PAGE_SIZE,
   sort: DEFAULT_SORT,
   filters: {},
+  associatedResources: undefined,
   filter: '',
   response: null,
   aggregation: {},
@@ -114,6 +115,7 @@ export const SearchStore = signalStore(
         size: number,
         sort: elasticsearch.Sort,
         filter: string,
+        associatedResources: RelatedItemType[] | undefined,
         routing: boolean = false
       ) {
         patchState(store, {
@@ -123,6 +125,7 @@ export const SearchStore = signalStore(
           size: size,
           pageSize: size,
           filter: filter,
+          associatedResources: associatedResources,
           sort: sort || DEFAULT_SORT,
           routing: routing,
         });
@@ -184,14 +187,17 @@ export const SearchStore = signalStore(
           ),
           switchMap(searchFilterParameters =>
             from(
-              searchService.search({
-                ...searchFilterParameters,
-                from: store.from() || 0,
-                size: store.size(),
-                sort: store.sort(),
-                functionScore: store.functionScore(),
-                filter: store.filter(),
-              } as SearchRequestParameters)
+              searchService.search(
+                {
+                  ...searchFilterParameters,
+                  from: store.from() || 0,
+                  size: store.size(),
+                  sort: store.sort(),
+                  functionScore: store.functionScore(),
+                  filter: store.filter(),
+                } as SearchRequestParameters,
+                store.associatedResources()
+              )
             ).pipe(
               tapResponse({
                 next: response => {

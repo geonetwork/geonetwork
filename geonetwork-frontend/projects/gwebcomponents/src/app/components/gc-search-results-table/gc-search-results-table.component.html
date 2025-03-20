@@ -3,7 +3,8 @@
     gSearchContext="{{ searchId }}"
     [sort]="currentSort()"
     [size]="currentSize()"
-    [filter]="currentFilter()">
+    [filter]="currentFilter()"
+    [associatedResources]="associatedResources()">
     <g-search-bar-simple
       [scope]="searchId"
       [fullTextSearchEnabled]="fullTextSearchEnabled()"

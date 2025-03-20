@@ -96,9 +96,14 @@
                     ) {
                       <g-record-field-links
                         [links]="hit | gJsonpath: col.field" />
+                    } @else if (col.field.startsWith('$._source.overview')) {
+                      <g-record-field-overview
+                        [field]="hit | gJsonpath: col.field"
+                        styleClass="max-w-14" />
                     } @else if (
                       col.field.startsWith('th_') ||
-                      col.field.startsWith('$._source.th_')
+                      col.field.startsWith('$._source.th_') ||
+                      col.field.startsWith("$._source['th_")
                     ) {
                       <g-record-field-keywords
                         [field]="hit | gJsonpath: col.field" />

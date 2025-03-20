@@ -1,5 +1,5 @@
 import { Component, Input, signal, SimpleChanges } from '@angular/core';
-import { DefaultConfig } from 'gapi';
+import { DefaultConfig, RelatedItemType, RelatedItemTypeFromJSON } from 'gapi';
 import {
   API_CONFIGURATION,
   DEFAULT_PAGE_SIZE,
@@ -25,6 +25,7 @@ export class GcBaseSearchComponent extends GcBaseComponent {
   @Input({ alias: 'list-of-filter-placeholder' })
   listOfFilterPlaceholders: string;
   @Input({ alias: 'list-of-filter-layout' }) listOfFilterLayouts: string;
+  @Input({ alias: 'associated-resources' }) listOfAssociatedResources: string;
   @Input({ alias: 'landing-page' }) landingPage: string;
   @Input({ alias: 'landing-page-link-on' }) landingPageLinkOn: string;
   @Input({ alias: 'selection-mode' }) selectionMode:
@@ -39,6 +40,7 @@ export class GcBaseSearchComponent extends GcBaseComponent {
   filters = signal<string[]>([]);
   filterPlaceholders = signal<string[]>([]);
   filterLayouts = signal<string[]>([]);
+  associatedResources = signal<RelatedItemType[] | undefined>(undefined);
 
   inputToField: Record<string, string> = {
     listOfFilter: 'filters',
@@ -52,7 +54,17 @@ export class GcBaseSearchComponent extends GcBaseComponent {
     this.fullTextSearchEnabled.set(this.fullTextSearch);
     this.currentSize.set(this.size);
     this.#parseSortField();
+    this.#parseAssociatedResourcesField();
     // this.listOfFilter && this.filters.set(this.listOfFilter.split(','));
+  }
+
+  #parseAssociatedResourcesField() {
+    this.listOfAssociatedResources &&
+      this.associatedResources.set(
+        this.listOfAssociatedResources.split(',').map(resource => {
+          return RelatedItemTypeFromJSON(resource);
+        })
+      );
   }
 
   #parseSortField() {
@@ -79,6 +91,8 @@ export class GcBaseSearchComponent extends GcBaseComponent {
         this['currentSize'].set(changes[prop].currentValue);
       } else if (prop == 'sort') {
         this.#parseSortField();
+      } else if (prop == 'listOfAssociatedResources') {
+        this.#parseAssociatedResourcesField();
       } else if (prop == 'fullTextSearch') {
         this.fullTextSearchEnabled.set(changes[prop].currentValue);
       } else if (this.inputToField[prop]) {

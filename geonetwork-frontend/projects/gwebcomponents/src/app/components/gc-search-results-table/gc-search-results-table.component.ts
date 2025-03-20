@@ -1,5 +1,5 @@
 import { Component, Input, signal, ViewEncapsulation } from '@angular/core';
-import { DefaultConfig } from 'gapi';
+import { DefaultConfig, RelatedItemType, RelatedItemTypeFromJSON } from 'gapi';
 import {
   API_CONFIGURATION,
   SearchAggLayout,

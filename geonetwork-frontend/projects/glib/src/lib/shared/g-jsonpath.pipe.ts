@@ -12,7 +12,14 @@ export class GJsonpathPipe implements PipeTransform {
       return;
     }
 
-    const query = new JSONPathJS(path);
-    return query.find(json);
+    try {
+      const query = new JSONPathJS(path);
+      return query.find(json);
+    } catch (e) {
+      console.error(
+        `Error occurred with JSONPath ${path}. Check the expression.`,
+        e
+      );
+    }
   }
 }
