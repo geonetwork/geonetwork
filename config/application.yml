@@ -12,6 +12,7 @@ geonetwork:
       /criticalhealthcheck,
       /warninghealthcheck,
       /xml/,
+      /index/,
       /doc/api/index.html,
       /doc/api/swagger-ui.css,
       /doc/api/swagger-ui-bundle.js,
