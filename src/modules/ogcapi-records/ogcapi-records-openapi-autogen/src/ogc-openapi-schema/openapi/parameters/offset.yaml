@@ -1,0 +1,12 @@
+#not in the spec, but required for use with limit
+name: offset
+in: query
+description: |-
+  Minimum = 0.   Default = 0.
+required: false
+schema:
+  type: integer
+  minimum: 0
+  default: 0
+style: form
+explode: false
