@@ -8,6 +8,7 @@ package org.geonetwork.testing;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Duration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,8 @@ public class ElasticsearchBasedIntegrationTest {
     @Container
     protected static ElasticsearchContainer elasticsearchContainer = new ElasticsearchTestContainer()
             .withEnv("xpack.security.enabled", "false")
-            .withExposedPorts(9211);
+            .withExposedPorts(9211)
+            .withStartupTimeout(Duration.ofSeconds(90));
 
     @BeforeAll
     static void setUp() {

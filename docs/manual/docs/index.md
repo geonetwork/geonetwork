@@ -15,3 +15,12 @@ Welcome to GeoNetwork 5.
 
     Integrating GN5 and GN4 via the proxy gateway.
 </div>
+
+<div class="grid cards" markdown>
+
+-   :fontawesome-solid-signs-post:   [OGCAPI-Records](OGCAPI-Records/index.md)
+
+    ---
+
+    OGCAPI-Records implementation.
+</div>

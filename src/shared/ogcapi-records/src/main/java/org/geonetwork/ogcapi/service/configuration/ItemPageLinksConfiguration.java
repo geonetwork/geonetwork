@@ -1,0 +1,14 @@
+/*
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
+package org.geonetwork.ogcapi.service.configuration;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+/** simple configuration for links in ogcapi-records = /collections/{collectionId}/items/{itemid} */
+@Configuration
+@ConfigurationProperties(prefix = "geonetwork.openapi-records.links.item")
+public class ItemPageLinksConfiguration extends BasicLinksConfiguration {}

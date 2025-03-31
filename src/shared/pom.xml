@@ -32,6 +32,7 @@
     <module>index-client</module>
     <module>index-model</module>
     <module>process-manager</module>
+    <module>ogcapi-records</module>
     <module>metadata-manager</module>
     <module>data-directory</module>
   </modules>

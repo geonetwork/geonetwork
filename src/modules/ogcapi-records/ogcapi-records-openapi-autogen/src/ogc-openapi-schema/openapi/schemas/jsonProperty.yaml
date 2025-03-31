@@ -1,0 +1,24 @@
+---
+type: object
+properties:
+  title:
+    type: string
+  type:
+    type: string
+  description:
+    type: string
+  format:
+    type: string
+  enumeration:
+    type: array
+    items:
+      type: string
+  item:
+    $ref: 'jsonItem.yaml'
+  x-ogc-role:
+    type: string
+  x-gn-elastic:
+    type: array
+    items:
+      $ref: 'gnElastic.yaml'
+
