@@ -245,6 +245,8 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                                 .addArgument("-json")
                                 .addArgument("-features")
                                 .addArgument("-ro")
+                                .addArgument("-dialect")
+                                .addArgument("SQLite")
                                 .addArgument("-sql")
                                 .addArgument(query, false)
                                 .addArgument(buildDataSourcePath(dataSource)),
@@ -261,6 +263,8 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                                 .addArgument("-json")
                                 .addArgument("-features")
                                 .addArgument("-ro")
+                                .addArgument("-dialect")
+                                .addArgument("SQLite")
                                 .addArgument("-sql")
                                 .addArgument(query, false)
                                 .addArgument(buildDataSourcePath(dataSource)),
