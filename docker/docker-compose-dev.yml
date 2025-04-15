@@ -72,8 +72,8 @@ services:
   database:
     image: postgres:17
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: geonetwork
+      POSTGRES_PASSWORD: geonetwork
       POSTGRES_DB: geonetwork
     command: [ "postgres",
                "-c", "log_statement=all",
