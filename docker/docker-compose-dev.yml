@@ -94,7 +94,7 @@ services:
     networks:
       - gn-network
 
-  geonetwork:
+  geonetwork4:
     <<: *default-service-geonetwork
     environment:
       << : *default-geonetwork-environment

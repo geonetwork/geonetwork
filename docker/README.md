@@ -7,7 +7,7 @@ This composition includes:
 
 |Service|Functionality|Port|
 |:-----------|:-------------------------|:-----|
-|geonetwork|GeoNetwork 4 "sidecar" for GN5 (used for harvesting etc.)|8080|
+|geonetwork4|GeoNetwork 4 "sidecar" for GN5 (used for harvesting etc.)|8080|
 |database|PostgreSQL — Database backend for GeoNetwork|5432|
 |elasticsearch|Elasticsearch — Search engine backend|9200|
 
@@ -26,10 +26,10 @@ docker compose -f docker-compose-dev.yml up -d
 docker compose -f docker-compose-dev.yml down
 ```
 
-## 🚀 Full Stack Setup (docker-compose-full.yml)
+## 🚀 Full Stack Setup
 Before running this setup, make sure to build the GeoNetwork 5 Docker image (instructions below).
 
-This composition includes:
+This composition includes also GeoNetwork 5:
 
 
 |Service|Functionality|Port|
@@ -44,13 +44,13 @@ This setup is intended for full-feature testing of GN5 in an environment that mi
 ▶️ Start the stack
 
 ```bash
-docker compose -f docker-compose-full.yml up -d
+docker compose -f docker-compose-dev.yml -f docker-compose-full.yml up -d
 ```
 
 ⏹️ Stop the stack
 
 ```bash
-docker compose -f docker-compose-full.yml down
+docker compose -f docker-compose-dev.yml -f docker-compose-full.yml down
 ```
 
 ## 🛠️ Build the GeoNetwork 5 Docker Image
