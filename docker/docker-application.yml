@@ -61,7 +61,7 @@ geonetwork:
         - "*"
   core:
     url: ${GN4_BASE_URL:http://localhost:8080/geonetwork}
-  url: http://localhost:8080/geonetwork
+  url: ${GN4_DOCKER_URL:http://localhost:8080/geonetwork}
   index:
     url: ${ELASTIC_URL:http://localhost:9200}
     indexPrefix: gn5-
