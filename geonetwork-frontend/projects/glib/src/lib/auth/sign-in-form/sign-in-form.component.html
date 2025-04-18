@@ -59,7 +59,7 @@
       }
     </div>
 
-    @if (authProviders()) {
+    @if (authProviders().length > 0) {
       <g-separator label="Or" />
 
       @for (provider of authProviders(); track provider) {
