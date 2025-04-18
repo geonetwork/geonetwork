@@ -31,7 +31,7 @@ export class TemplatesSelectorComponent {
   template = model<string>();
   templateType = model<string>();
 
-  filter = input('');
+  filter = input('+isTemplate:y');
   response = signal<estypes.SearchResponse<IndexRecord> | null>(null);
 
   numberOfTemplates = model<number>();

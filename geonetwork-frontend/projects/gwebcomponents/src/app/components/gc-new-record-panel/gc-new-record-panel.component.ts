@@ -1,4 +1,10 @@
-import { Component, signal, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  input,
+  Input,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 import { GcBaseComponent } from '../gc-base-component';
 import { NewRecordPanelComponent } from 'glib';
 
@@ -9,4 +15,6 @@ import { NewRecordPanelComponent } from 'glib';
   styleUrl: './gc-new-record-panel.component.css',
   // encapsulation: ViewEncapsulation.ShadowDom,
 })
-export class GcNewRecordPanelComponent extends GcBaseComponent {}
+export class GcNewRecordPanelComponent extends GcBaseComponent {
+  searchFilter = input<string | undefined>();
+}

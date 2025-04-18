@@ -52,7 +52,7 @@
               <g-templates-selector
                 [(template)]="template"
                 [(numberOfTemplates)]="numberOfTemplates"
-                filter=" +resourceType:(dataset OR nonGeographicDataset) +documentStandard:iso19115-3.2018"></g-templates-selector>
+                [filter]="searchActiveFilter()"></g-templates-selector>
             </div>
             <div class="basis-1/4">
               Choose a type of resource to describe (eg. geospatial, tabular,

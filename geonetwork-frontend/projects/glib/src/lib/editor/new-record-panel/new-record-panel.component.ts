@@ -3,6 +3,7 @@ import {
   computed,
   effect,
   inject,
+  input,
   OnInit,
   signal,
   ViewChild,
@@ -103,6 +104,14 @@ export class NewRecordPanelComponent implements OnInit {
 
   datasource = signal('');
   datasourceFile = signal('');
+
+  searchFilter = input<string | undefined>();
+  searchActiveFilter = computed(() => {
+    return (
+      this.searchFilter() ||
+      '+isTemplate:y +resourceType:(dataset OR nonGeographicDataset) +documentStandard:iso19115-3.2018'
+    );
+  });
 
   datasourceTypes = [
     {
