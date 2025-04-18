@@ -36,9 +36,7 @@
   "paths": {
     "/api/records/{metadataUuid}/attachments": {
       "get": {
-        "tags": [
-          "records"
-        ],
+        "tags": ["records"],
         "summary": "List all metadata attachments",
         "description": "\u003Ca href='https://docs.geonetwork-opensource.org/latest/user-guide/associating-resources/using-filestore/'\u003EMore info\u003C/a\u003E",
         "operationId": "getAllResources",
@@ -61,10 +59,7 @@
             "schema": {
               "type": "string",
               "default": "name",
-              "enum": [
-                "type",
-                "name"
-              ]
+              "enum": ["type", "name"]
             },
             "example": "type"
           },
@@ -119,9 +114,7 @@
         }
       },
       "put": {
-        "tags": [
-          "records"
-        ],
+        "tags": ["records"],
         "summary": "Create a new resource from a URL for a given metadata",
         "operationId": "putResourceFromURL",
         "parameters": [
@@ -143,10 +136,7 @@
             "schema": {
               "type": "string",
               "default": "public",
-              "enum": [
-                "public",
-                "private"
-              ]
+              "enum": ["public", "private"]
             },
             "example": "public"
           },
@@ -196,9 +186,7 @@
         }
       },
       "post": {
-        "tags": [
-          "records"
-        ],
+        "tags": ["records"],
         "summary": "Create a new resource for a given metadata",
         "operationId": "putResource",
         "parameters": [
@@ -220,10 +208,7 @@
             "schema": {
               "type": "string",
               "default": "public",
-              "enum": [
-                "public",
-                "private"
-              ]
+              "enum": ["public", "private"]
             },
             "example": "public"
           },
@@ -243,9 +228,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "file"
-                ],
+                "required": ["file"],
                 "type": "object",
                 "properties": {
                   "file": {
@@ -282,9 +265,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "records"
-        ],
+        "tags": ["records"],
         "summary": "Delete all uploaded metadata resources",
         "operationId": "delResources",
         "parameters": [
@@ -322,9 +303,7 @@
     },
     "/api/records/batchediting": {
       "put": {
-        "tags": [
-          "records"
-        ],
+        "tags": ["records"],
         "summary": "Batch edit one or more records",
         "description": "Batch editing API allows to apply multiple edits to one or more record.\n\n**Warning: You can break things here. When defining xpath and using delete or replace mode,\nbe sure to test on a single record before applying changes to a lot of records.\nIf needed, back up your record first and use the preview mode to check the processing.**\n\nChanges are defined on a per standard basis so it is recommended to apply changes\non records which are encoded using the same standard.\n\nWhen applying changes, user privileges apply, so if the user cannot edit a selected record,\nbatch edits will not be applied to that record.\n\nThis operations applies the `update-fixed-info.xsl` transformation for the metadata schema and\n updates the change date if the parameter `updateDateStamp` is set to `true`.\n\n## Changes with GeoNetwork 4\n\n* `diffType` not yet supported.\n\n```\n",
         "operationId": "batchEdit",
@@ -430,9 +409,7 @@
     },
     "/api/process": {
       "get": {
-        "tags": [
-          "process-controller"
-        ],
+        "tags": ["process-controller"],
         "operationId": "list",
         "responses": {
           "200": {
@@ -451,9 +428,7 @@
         }
       },
       "put": {
-        "tags": [
-          "process-controller"
-        ],
+        "tags": ["process-controller"],
         "operationId": "execute",
         "requestBody": {
           "content": {
@@ -482,9 +457,7 @@
     },
     "/api/search": {
       "get": {
-        "tags": [
-          "search-controller"
-        ],
+        "tags": ["search-controller"],
         "operationId": "getQuery",
         "parameters": [
           {
@@ -531,9 +504,7 @@
         }
       },
       "post": {
-        "tags": [
-          "search-controller"
-        ],
+        "tags": ["search-controller"],
         "operationId": "query",
         "parameters": [
           {
@@ -585,9 +556,7 @@
     },
     "/api/records/batchediting/preview": {
       "post": {
-        "tags": [
-          "records"
-        ],
+        "tags": ["records"],
         "summary": "Preview batch editing results.",
         "description": "Batch editing API allows to apply multiple edits to one or more record.\n\n**Warning: You can break things here. When defining xpath and using delete or replace mode,\nbe sure to test on a single record before applying changes to a lot of records.\nIf needed, back up your record first and use the preview mode to check the processing.**\n\nChanges are defined on a per standard basis so it is recommended to apply changes\non records which are encoded using the same standard.\n\nWhen applying changes, user privileges apply, so if the user cannot edit a selected record,\nbatch edits will not be applied to that record.\n\nThis operations applies the `update-fixed-info.xsl` transformation for the metadata schema and\n updates the change date if the parameter `updateDateStamp` is set to `true`.\n\n## Changes with GeoNetwork 4\n\n* `diffType` not yet supported.\n\n```\n",
         "operationId": "previewBatchEdit",
@@ -654,9 +623,7 @@
     },
     "/api/data/analysis/apply": {
       "post": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "summary": "Update metadata record with layer properties",
         "description": "        The metadata record is saved.\n",
         "operationId": "applyDataAnalysisOnRecord",
@@ -675,10 +642,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "public",
-                "private"
-              ]
+              "enum": ["public", "private"]
             }
           },
           {
@@ -723,9 +687,7 @@
     },
     "/api/records/{metadataUuid}/attachments/{resourceId}": {
       "get": {
-        "tags": [
-          "records"
-        ],
+        "tags": ["records"],
         "summary": "Get a metadata resource",
         "operationId": "getResource",
         "parameters": [
@@ -789,9 +751,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "records"
-        ],
+        "tags": ["records"],
         "summary": "Delete a metadata resource",
         "operationId": "delResource",
         "parameters": [
@@ -836,9 +796,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "records"
-        ],
+        "tags": ["records"],
         "summary": "Update the metadata resource visibility",
         "operationId": "patchResource",
         "parameters": [
@@ -868,10 +826,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": [
-                "public",
-                "private"
-              ]
+              "enum": ["public", "private"]
             },
             "example": "public"
           },
@@ -913,9 +868,7 @@
     },
     "/ogcapi/records/conformance": {
       "get": {
-        "tags": [
-          "OGC API Records"
-        ],
+        "tags": ["OGC API Records"],
         "summary": "information about specifications that this API conforms to",
         "description": "A list of all conformance classes specified in a standard that the server conforms to.",
         "operationId": "getConformanceDeclaration",
@@ -955,9 +908,7 @@
     },
     "/ogcapi/records/collections": {
       "get": {
-        "tags": [
-          "OGC API Records"
-        ],
+        "tags": ["OGC API Records"],
         "summary": "the record collections",
         "description": "Fetch list of catalogs offered by this API",
         "operationId": "getCollections",
@@ -997,9 +948,7 @@
     },
     "/ogcapi/records/collections/{catalogId}": {
       "get": {
-        "tags": [
-          "OGC API Records"
-        ],
+        "tags": ["OGC API Records"],
         "summary": "describe the record collection with id `catalogId`",
         "description": "Fetch a detailed description of the catalog with id `catalogId`.",
         "operationId": "describeCollection",
@@ -1065,9 +1014,7 @@
     },
     "/ogcapi/records/collections/{catalogId}/sortables": {
       "get": {
-        "tags": [
-          "OGC API Records"
-        ],
+        "tags": ["OGC API Records"],
         "summary": "get the list of sortable properties",
         "description": "Fetch the list of properties which can be used to sort the getRecords response.",
         "operationId": "getSortables",
@@ -1133,9 +1080,7 @@
     },
     "/ogcapi/records/collections/{catalogId}/items": {
       "get": {
-        "tags": [
-          "OGC API Records"
-        ],
+        "tags": ["OGC API Records"],
         "summary": "fetch records",
         "description": "Fetch records of the record collection with id `catalogId`.  Every record in a dataset belongs to a collection. A dataset may consist of multiple record collections. A record collection is often a collection of records of a similar type, based on a common schema.  Use content negotiation to request HTML or GeoJSON.",
         "operationId": "getRecords",
@@ -1329,9 +1274,7 @@
     },
     "/ogcapi/records/collections/{catalogId}/items/{recordId}": {
       "get": {
-        "tags": [
-          "OGC API Records"
-        ],
+        "tags": ["OGC API Records"],
         "summary": "fetch a single record",
         "description": "Fetch the record with id `recordId` in the record collection with id `catalogId`.  Use content negotiation to request HTML or GeoJSON.",
         "operationId": "getRecord",
@@ -1421,9 +1364,7 @@
     },
     "/ogcapi/records/": {
       "get": {
-        "tags": [
-          "OGC API Records"
-        ],
+        "tags": ["OGC API Records"],
         "summary": "landing page",
         "description": "The landing page provides links to the API definition, the conformance statements and to the record collections in this dataset.",
         "operationId": "getLandingPage",
@@ -1463,9 +1404,7 @@
     },
     "/api/user/auth-providers": {
       "get": {
-        "tags": [
-          "login-endpoint"
-        ],
+        "tags": ["login-endpoint"],
         "operationId": "getAuthProviders",
         "responses": {
           "200": {
@@ -1486,9 +1425,7 @@
     },
     "/api/search/doc/{uuid}": {
       "get": {
-        "tags": [
-          "search-controller"
-        ],
+        "tags": ["search-controller"],
         "operationId": "getIndexDocument",
         "parameters": [
           {
@@ -1516,9 +1453,7 @@
     },
     "/api/records/{uuid}/formatters/{formatterId}": {
       "get": {
-        "tags": [
-          "record-controller"
-        ],
+        "tags": ["record-controller"],
         "operationId": "getRecord_1",
         "parameters": [
           {
@@ -1569,9 +1504,7 @@
     },
     "/api/records/{uuid}": {
       "get": {
-        "tags": [
-          "record-controller"
-        ],
+        "tags": ["record-controller"],
         "operationId": "getRecord_2",
         "parameters": [
           {
@@ -1614,9 +1547,7 @@
     },
     "/api/process/status/{executionJobId}": {
       "get": {
-        "tags": [
-          "process-controller"
-        ],
+        "tags": ["process-controller"],
         "operationId": "analysisExecutionStatus",
         "parameters": [
           {
@@ -1655,9 +1586,7 @@
     },
     "/api/process/result/{executionJobId}": {
       "get": {
-        "tags": [
-          "process-controller"
-        ],
+        "tags": ["process-controller"],
         "operationId": "analysisExecutionResult",
         "parameters": [
           {
@@ -1686,9 +1615,7 @@
     },
     "/api/me": {
       "get": {
-        "tags": [
-          "me-api"
-        ],
+        "tags": ["me-api"],
         "operationId": "user",
         "responses": {
           "200": {
@@ -1709,9 +1636,7 @@
     },
     "/api/indexing/setup": {
       "get": {
-        "tags": [
-          "indexing-controller"
-        ],
+        "tags": ["indexing-controller"],
         "operationId": "setupIndex",
         "parameters": [
           {
@@ -1740,9 +1665,7 @@
     },
     "/api/indexing/index": {
       "get": {
-        "tags": [
-          "indexing-controller"
-        ],
+        "tags": ["indexing-controller"],
         "operationId": "indexRecords",
         "parameters": [
           {
@@ -1774,9 +1697,7 @@
     },
     "/api/data/analysis/version": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "summary": "Get the version of the data analyzer",
         "description": "For GDAL, version 3.7.0+ is required (added support for JSON output in info commands).\n",
         "operationId": "getVersion",
@@ -1796,9 +1717,7 @@
     },
     "/api/data/analysis/status": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "summary": "Get the status of the data analyzer",
         "operationId": "status",
         "responses": {
@@ -1817,9 +1736,7 @@
     },
     "/api/data/analysis/preview": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "summary": "Preview metadata record updated with layer properties",
         "description": "        The metadata record is not saved.\n",
         "operationId": "previewDataAnalysisOnRecord",
@@ -1838,10 +1755,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "public",
-                "private"
-              ]
+              "enum": ["public", "private"]
             }
           },
           {
@@ -1886,9 +1800,7 @@
     },
     "/api/data/analysis/overview": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "summary": "Build an overview of a layer",
         "description": "The overview is a small image representing the layer.\n\n* For RASTER, `gdal_translate` is used to convert the layer to a PNG image.\n* For VECTOR, `gdal_rasterize` is used to rasterize the layer and `gdal_translate` to convert it to a PNG image.\n\n",
         "operationId": "buildOverview",
@@ -1914,9 +1826,7 @@
           "200": {
             "description": "Overview built successfully",
             "content": {
-              "image/png": {
-
-              }
+              "image/png": {}
             }
           }
         }
@@ -1924,9 +1834,7 @@
     },
     "/api/data/analysis/overviewForMetadataResource": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "operationId": "buildOverview_1",
         "parameters": [
           {
@@ -1943,10 +1851,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": [
-                "public",
-                "private"
-              ]
+              "enum": ["public", "private"]
             }
           },
           {
@@ -1978,9 +1883,7 @@
           "200": {
             "description": "Overview built successfully",
             "content": {
-              "image/png": {
-
-              }
+              "image/png": {}
             }
           }
         }
@@ -1988,9 +1891,7 @@
     },
     "/api/data/analysis/layers": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "operationId": "layers",
         "parameters": [
           {
@@ -2007,10 +1908,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "public",
-                "private"
-              ]
+              "enum": ["public", "private"]
             }
           },
           {
@@ -2081,9 +1979,7 @@
     },
     "/api/data/analysis/formats": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "summary": "Get the list of supported formats",
         "operationId": "formats",
         "responses": {
@@ -2105,9 +2001,7 @@
     },
     "/api/data/analysis/execute": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "summary": "Execute analysis and return layer properties as an index record",
         "operationId": "analysisSynchMetadataResource",
         "parameters": [
@@ -2125,10 +2019,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "public",
-                "private"
-              ]
+              "enum": ["public", "private"]
             }
           },
           {
@@ -2173,9 +2064,7 @@
     },
     "/api/data/analysis/attribute/statistics": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "summary": "Get statistics for an attribute",
         "description": "        Return the min and max value of the attribute.\n",
         "operationId": "attributeStatistics",
@@ -2224,9 +2113,7 @@
     },
     "/api/data/analysis/attribute/codelist": {
       "get": {
-        "tags": [
-          "Data analysis"
-        ],
+        "tags": ["Data analysis"],
         "summary": "Get a list of unique values for an attribute",
         "description": "        Values are order alphabetically and limited to 10 by default.\n",
         "operationId": "attributeCodelist",
@@ -2286,9 +2173,7 @@
     },
     "/api/user/signin": {
       "post": {
-        "tags": [
-          "login-endpoint"
-        ],
+        "tags": ["login-endpoint"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2347,10 +2232,7 @@
           },
           "visibility": {
             "type": "string",
-            "enum": [
-              "public",
-              "private"
-            ]
+            "enum": ["public", "private"]
           },
           "filename": {
             "type": "string"
@@ -2375,18 +2257,12 @@
           },
           "validationStatus": {
             "type": "string",
-            "enum": [
-              "UNKNOWN",
-              "VALID",
-              "INCOMPLETE"
-            ]
+            "enum": ["UNKNOWN", "VALID", "INCOMPLETE"]
           }
         }
       },
       "BatchEditParameter": {
-        "required": [
-          "value"
-        ],
+        "required": ["value"],
         "type": "object",
         "properties": {
           "xpath": {
@@ -2442,9 +2318,7 @@
         ]
       },
       "OgcApiRecordsConfClassesDto": {
-        "required": [
-          "conformsTo"
-        ],
+        "required": ["conformsTo"],
         "type": "object",
         "properties": {
           "conformsTo": {
@@ -2462,9 +2336,7 @@
         }
       },
       "OgcApiRecordsExceptionDto": {
-        "required": [
-          "code"
-        ],
+        "required": ["code"],
         "type": "object",
         "properties": {
           "code": {
@@ -2479,10 +2351,7 @@
         }
       },
       "OgcApiRecordsGetCollections200ResponseDto": {
-        "required": [
-          "collections",
-          "links"
-        ],
+        "required": ["collections", "links"],
         "type": "object",
         "properties": {
           "links": {
@@ -2509,10 +2378,7 @@
         }
       },
       "OgcApiRecordsLinkDto": {
-        "required": [
-          "href",
-          "rel"
-        ],
+        "required": ["href", "rel"],
         "type": "object",
         "properties": {
           "href": {
@@ -2545,9 +2411,7 @@
         }
       },
       "OgcApiRecordsLinkTemplateDto": {
-        "required": [
-          "uriTemplate"
-        ],
+        "required": ["uriTemplate"],
         "type": "object",
         "properties": {
           "rel": {
@@ -2609,11 +2473,7 @@
         }
       },
       "OgcApiRecordsCatalog1Dto": {
-        "required": [
-          "id",
-          "links",
-          "type"
-        ],
+        "required": ["id", "links", "type"],
         "type": "object",
         "properties": {
           "conformsTo": {
@@ -2639,9 +2499,7 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "Catalog"
-            ]
+            "enum": ["Catalog"]
           },
           "title": {
             "type": "string",
@@ -2805,9 +2663,7 @@
         }
       },
       "OgcApiRecordsLicenseDto": {
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object",
         "properties": {
           "name": {
@@ -2864,9 +2720,7 @@
         }
       },
       "OgcApiRecordsRecordCommonPropertiesExternalIdsInnerDto": {
-        "required": [
-          "value"
-        ],
+        "required": ["value"],
         "type": "object",
         "properties": {
           "scheme": {
@@ -2884,12 +2738,7 @@
         }
       },
       "OgcApiRecordsRecordGeoJSONDto": {
-        "required": [
-          "geometry",
-          "id",
-          "properties",
-          "type"
-        ],
+        "required": ["geometry", "id", "properties", "type"],
         "type": "object",
         "properties": {
           "id": {
@@ -2898,9 +2747,7 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "Feature"
-            ]
+            "enum": ["Feature"]
           },
           "time": {
             "$ref": "#/components/schemas/OgcApiRecordsRecordGeoJSONTimeDto"
@@ -3047,9 +2894,7 @@
         }
       },
       "OgcApiRecordsThemeConceptsInnerDto": {
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "type": "object",
         "properties": {
           "id": {
@@ -3076,10 +2921,7 @@
         }
       },
       "OgcApiRecordsThemeDto": {
-        "required": [
-          "concepts",
-          "scheme"
-        ],
+        "required": ["concepts", "scheme"],
         "type": "object",
         "properties": {
           "concepts": {
@@ -3169,9 +3011,7 @@
           "trs": {
             "type": "string",
             "description": "Coordinate reference system of the coordinates in the temporal extent (property `interval`). The default reference system is the Gregorian calendar. In the Core this is the only supported temporal coordinate reference system. Extensions may support additional temporal coordinate reference systems and add additional enum values.",
-            "enum": [
-              "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
-            ]
+            "enum": ["http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"]
           }
         },
         "description": "The temporal extent of the features in the collection.",
@@ -3180,9 +3020,7 @@
         }
       },
       "language": {
-        "required": [
-          "code"
-        ],
+        "required": ["code"],
         "type": "object",
         "properties": {
           "code": {
@@ -3205,12 +3043,7 @@
           "dir": {
             "type": "string",
             "description": "The direction for text in this language. The default, `ltr` (left-to-right), represents the most common situation. However, care should be taken to set the value of `dir` appropriately if the language direction is not `ltr`. Other values supported are `rtl` (right-to-left), `ttb` (top-to-bottom), and `btt` (bottom-to-top).",
-            "enum": [
-              "ltr",
-              "rtl",
-              "ttb",
-              "btt"
-            ]
+            "enum": ["ltr", "rtl", "ttb", "btt"]
           }
         },
         "description": "The language used for textual values in this record.",
@@ -3254,9 +3087,7 @@
         }
       },
       "OgcApiRecordsExternalDocumentationDto": {
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "type": "object",
         "properties": {
           "description": {
@@ -3271,10 +3102,7 @@
         }
       },
       "OgcApiRecordsInfoDto": {
-        "required": [
-          "title",
-          "version"
-        ],
+        "required": ["title", "version"],
         "type": "object",
         "properties": {
           "title": {
@@ -3307,9 +3135,7 @@
         }
       },
       "OgcApiRecordsServerDto": {
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "type": "object",
         "properties": {
           "url": {
@@ -3330,9 +3156,7 @@
         }
       },
       "OgcApiRecordsServerVariableDto": {
-        "required": [
-          "default"
-        ],
+        "required": ["default"],
         "type": "object",
         "properties": {
           "description": {
@@ -3356,9 +3180,7 @@
         }
       },
       "OgcApiRecordsTagDto": {
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object",
         "properties": {
           "name": {
@@ -3376,11 +3198,7 @@
         }
       },
       "schema": {
-        "required": [
-          "info",
-          "openapi",
-          "paths"
-        ],
+        "required": ["info", "openapi", "paths"],
         "type": "object",
         "properties": {
           "openapi": {
@@ -3425,17 +3243,12 @@
         }
       },
       "OgcApiRecordsGetRecords200ResponseDto": {
-        "required": [
-          "features",
-          "type"
-        ],
+        "required": ["features", "type"],
         "type": "object",
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "FeatureCollection"
-            ]
+            "enum": ["FeatureCollection"]
           },
           "features": {
             "type": "array",
@@ -3481,9 +3294,7 @@
         }
       },
       "OgcApiRecordsLandingPageDto": {
-        "required": [
-          "links"
-        ],
+        "required": ["links"],
         "type": "object",
         "properties": {
           "title": {
@@ -3696,10 +3507,7 @@
         "properties": {
           "docType": {
             "type": "string",
-            "enum": [
-              "metadata",
-              "features"
-            ]
+            "enum": ["metadata", "features"]
           },
           "document": {
             "type": "string"
@@ -4430,10 +4238,7 @@
           },
           "origin": {
             "type": "string",
-            "enum": [
-              "remote",
-              "catalog"
-            ]
+            "enum": ["remote", "catalog"]
           },
           "to": {
             "type": "string"

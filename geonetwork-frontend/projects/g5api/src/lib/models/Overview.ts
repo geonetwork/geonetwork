@@ -14,63 +14,63 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface Overview
  */
 export interface Overview {
-    /**
-     * 
-     * @type {string}
-     * @memberof Overview
-     */
-    url?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Overview
-     */
-    data?: string;
-    /**
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof Overview
-     */
-    nameObject?: { [key: string]: string; };
+  /**
+   *
+   * @type {string}
+   * @memberof Overview
+   */
+  url?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Overview
+   */
+  data?: string;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof Overview
+   */
+  nameObject?: { [key: string]: string };
 }
 
 /**
  * Check if a given object implements the Overview interface.
  */
 export function instanceOfOverview(value: object): value is Overview {
-    return true;
+  return true;
 }
 
 export function OverviewFromJSON(json: any): Overview {
-    return OverviewFromJSONTyped(json, false);
+  return OverviewFromJSONTyped(json, false);
 }
 
-export function OverviewFromJSONTyped(json: any, ignoreDiscriminator: boolean): Overview {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'url': json['url'] == null ? undefined : json['url'],
-        'data': json['data'] == null ? undefined : json['data'],
-        'nameObject': json['nameObject'] == null ? undefined : json['nameObject'],
-    };
+export function OverviewFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): Overview {
+  if (json == null) {
+    return json;
+  }
+  return {
+    url: json['url'] == null ? undefined : json['url'],
+    data: json['data'] == null ? undefined : json['data'],
+    nameObject: json['nameObject'] == null ? undefined : json['nameObject'],
+  };
 }
 
 export function OverviewToJSON(value?: Overview | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'url': value['url'],
-        'data': value['data'],
-        'nameObject': value['nameObject'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    url: value['url'],
+    data: value['data'],
+    nameObject: value['nameObject'],
+  };
 }
-

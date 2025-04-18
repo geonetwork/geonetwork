@@ -14,63 +14,63 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface CodeListValue
  */
 export interface CodeListValue {
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeListValue
-     */
-    label?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeListValue
-     */
-    definition?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeListValue
-     */
-    code?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CodeListValue
+   */
+  label?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CodeListValue
+   */
+  definition?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CodeListValue
+   */
+  code?: string;
 }
 
 /**
  * Check if a given object implements the CodeListValue interface.
  */
 export function instanceOfCodeListValue(value: object): value is CodeListValue {
-    return true;
+  return true;
 }
 
 export function CodeListValueFromJSON(json: any): CodeListValue {
-    return CodeListValueFromJSONTyped(json, false);
+  return CodeListValueFromJSONTyped(json, false);
 }
 
-export function CodeListValueFromJSONTyped(json: any, ignoreDiscriminator: boolean): CodeListValue {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'label': json['label'] == null ? undefined : json['label'],
-        'definition': json['definition'] == null ? undefined : json['definition'],
-        'code': json['code'] == null ? undefined : json['code'],
-    };
+export function CodeListValueFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): CodeListValue {
+  if (json == null) {
+    return json;
+  }
+  return {
+    label: json['label'] == null ? undefined : json['label'],
+    definition: json['definition'] == null ? undefined : json['definition'],
+    code: json['code'] == null ? undefined : json['code'],
+  };
 }
 
 export function CodeListValueToJSON(value?: CodeListValue | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'label': value['label'],
-        'definition': value['definition'],
-        'code': value['code'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    label: value['label'],
+    definition: value['definition'],
+    code: value['code'],
+  };
 }
-

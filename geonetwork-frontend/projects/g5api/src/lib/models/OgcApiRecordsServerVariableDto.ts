@@ -14,64 +14,70 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface OgcApiRecordsServerVariableDto
  */
 export interface OgcApiRecordsServerVariableDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsServerVariableDto
-     */
-    description?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OgcApiRecordsServerVariableDto
-     */
-    _default: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OgcApiRecordsServerVariableDto
-     */
-    _enum?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsServerVariableDto
+   */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OgcApiRecordsServerVariableDto
+   */
+  _default: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof OgcApiRecordsServerVariableDto
+   */
+  _enum?: Array<string>;
 }
 
 /**
  * Check if a given object implements the OgcApiRecordsServerVariableDto interface.
  */
-export function instanceOfOgcApiRecordsServerVariableDto(value: object): value is OgcApiRecordsServerVariableDto {
-    if (!('_default' in value) || value['_default'] === undefined) return false;
-    return true;
+export function instanceOfOgcApiRecordsServerVariableDto(
+  value: object
+): value is OgcApiRecordsServerVariableDto {
+  if (!('_default' in value) || value['_default'] === undefined) return false;
+  return true;
 }
 
-export function OgcApiRecordsServerVariableDtoFromJSON(json: any): OgcApiRecordsServerVariableDto {
-    return OgcApiRecordsServerVariableDtoFromJSONTyped(json, false);
+export function OgcApiRecordsServerVariableDtoFromJSON(
+  json: any
+): OgcApiRecordsServerVariableDto {
+  return OgcApiRecordsServerVariableDtoFromJSONTyped(json, false);
 }
 
-export function OgcApiRecordsServerVariableDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): OgcApiRecordsServerVariableDto {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'description': json['description'] == null ? undefined : json['description'],
-        '_default': json['default'],
-        '_enum': json['enum'] == null ? undefined : json['enum'],
-    };
+export function OgcApiRecordsServerVariableDtoFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OgcApiRecordsServerVariableDto {
+  if (json == null) {
+    return json;
+  }
+  return {
+    description: json['description'] == null ? undefined : json['description'],
+    _default: json['default'],
+    _enum: json['enum'] == null ? undefined : json['enum'],
+  };
 }
 
-export function OgcApiRecordsServerVariableDtoToJSON(value?: OgcApiRecordsServerVariableDto | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'description': value['description'],
-        'default': value['_default'],
-        'enum': value['_enum'],
-    };
+export function OgcApiRecordsServerVariableDtoToJSON(
+  value?: OgcApiRecordsServerVariableDto | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    description: value['description'],
+    default: value['_default'],
+    enum: value['_enum'],
+  };
 }
-

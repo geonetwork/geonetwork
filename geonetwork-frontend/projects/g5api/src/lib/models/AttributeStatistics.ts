@@ -14,55 +14,59 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface AttributeStatistics
  */
 export interface AttributeStatistics {
-    /**
-     * 
-     * @type {string}
-     * @memberof AttributeStatistics
-     */
-    name?: string;
-    /**
-     * 
-     * @type {{ [key: string]: object; }}
-     * @memberof AttributeStatistics
-     */
-    statistics?: { [key: string]: object; };
+  /**
+   *
+   * @type {string}
+   * @memberof AttributeStatistics
+   */
+  name?: string;
+  /**
+   *
+   * @type {{ [key: string]: object; }}
+   * @memberof AttributeStatistics
+   */
+  statistics?: { [key: string]: object };
 }
 
 /**
  * Check if a given object implements the AttributeStatistics interface.
  */
-export function instanceOfAttributeStatistics(value: object): value is AttributeStatistics {
-    return true;
+export function instanceOfAttributeStatistics(
+  value: object
+): value is AttributeStatistics {
+  return true;
 }
 
 export function AttributeStatisticsFromJSON(json: any): AttributeStatistics {
-    return AttributeStatisticsFromJSONTyped(json, false);
+  return AttributeStatisticsFromJSONTyped(json, false);
 }
 
-export function AttributeStatisticsFromJSONTyped(json: any, ignoreDiscriminator: boolean): AttributeStatistics {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'name': json['name'] == null ? undefined : json['name'],
-        'statistics': json['statistics'] == null ? undefined : json['statistics'],
-    };
+export function AttributeStatisticsFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): AttributeStatistics {
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json['name'] == null ? undefined : json['name'],
+    statistics: json['statistics'] == null ? undefined : json['statistics'],
+  };
 }
 
-export function AttributeStatisticsToJSON(value?: AttributeStatistics | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'name': value['name'],
-        'statistics': value['statistics'],
-    };
+export function AttributeStatisticsToJSON(
+  value?: AttributeStatistics | null
+): any {
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value['name'],
+    statistics: value['statistics'],
+  };
 }
-

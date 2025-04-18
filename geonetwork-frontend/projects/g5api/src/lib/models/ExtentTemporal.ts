@@ -19,60 +19,62 @@ import { mapValues } from '../runtime';
  * @interface ExtentTemporal
  */
 export interface ExtentTemporal {
-    /**
-     * One or more time intervals that describe the temporal extent of the dataset. In the Core only a single time interval is supported.  Extensions may support multiple intervals. The first time interval describes the overall temporal extent of the data. All subsequent time intervals describe more precise time intervals, e.g., to identify clusters of data. Clients only interested in the overall temporal extent will only need to access the first time interval in the array (a pair of lower and upper bound instants).
-     * @type {Array<Array<Date>>}
-     * @memberof ExtentTemporal
-     */
-    interval?: Array<Array<Date>>;
-    /**
-     * Coordinate reference system of the coordinates in the temporal extent (property `interval`). The default reference system is the Gregorian calendar. In the Core this is the only supported temporal coordinate reference system. Extensions may support additional temporal coordinate reference systems and add additional enum values.
-     * @type {string}
-     * @memberof ExtentTemporal
-     */
-    trs?: ExtentTemporalTrsEnum;
+  /**
+   * One or more time intervals that describe the temporal extent of the dataset. In the Core only a single time interval is supported.  Extensions may support multiple intervals. The first time interval describes the overall temporal extent of the data. All subsequent time intervals describe more precise time intervals, e.g., to identify clusters of data. Clients only interested in the overall temporal extent will only need to access the first time interval in the array (a pair of lower and upper bound instants).
+   * @type {Array<Array<Date>>}
+   * @memberof ExtentTemporal
+   */
+  interval?: Array<Array<Date>>;
+  /**
+   * Coordinate reference system of the coordinates in the temporal extent (property `interval`). The default reference system is the Gregorian calendar. In the Core this is the only supported temporal coordinate reference system. Extensions may support additional temporal coordinate reference systems and add additional enum values.
+   * @type {string}
+   * @memberof ExtentTemporal
+   */
+  trs?: ExtentTemporalTrsEnum;
 }
-
 
 /**
  * @export
  */
 export const ExtentTemporalTrsEnum = {
-    HttpWwwOpengisNetDefUomIso86010Gregorian: 'http://www.opengis.net/def/uom/ISO-8601/0/Gregorian'
+  HttpWwwOpengisNetDefUomIso86010Gregorian:
+    'http://www.opengis.net/def/uom/ISO-8601/0/Gregorian',
 } as const;
-export type ExtentTemporalTrsEnum = typeof ExtentTemporalTrsEnum[keyof typeof ExtentTemporalTrsEnum];
-
+export type ExtentTemporalTrsEnum =
+  (typeof ExtentTemporalTrsEnum)[keyof typeof ExtentTemporalTrsEnum];
 
 /**
  * Check if a given object implements the ExtentTemporal interface.
  */
-export function instanceOfExtentTemporal(value: object): value is ExtentTemporal {
-    return true;
+export function instanceOfExtentTemporal(
+  value: object
+): value is ExtentTemporal {
+  return true;
 }
 
 export function ExtentTemporalFromJSON(json: any): ExtentTemporal {
-    return ExtentTemporalFromJSONTyped(json, false);
+  return ExtentTemporalFromJSONTyped(json, false);
 }
 
-export function ExtentTemporalFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExtentTemporal {
-    if (json == null) {
-        return json;
-    }
-    return {
-        
-        'interval': json['interval'] == null ? undefined : json['interval'],
-        'trs': json['trs'] == null ? undefined : json['trs'],
-    };
+export function ExtentTemporalFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ExtentTemporal {
+  if (json == null) {
+    return json;
+  }
+  return {
+    interval: json['interval'] == null ? undefined : json['interval'],
+    trs: json['trs'] == null ? undefined : json['trs'],
+  };
 }
 
 export function ExtentTemporalToJSON(value?: ExtentTemporal | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        
-        'interval': value['interval'],
-        'trs': value['trs'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    interval: value['interval'],
+    trs: value['trs'],
+  };
 }
-

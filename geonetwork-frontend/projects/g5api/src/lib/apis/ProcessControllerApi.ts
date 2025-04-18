@@ -12,165 +12,208 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  IProcess,
-  ProcessDetails,
-  ProcessReport,
-} from '../models/index';
+import type { IProcess, ProcessDetails, ProcessReport } from '../models/index';
 import {
-    IProcessFromJSON,
-    IProcessToJSON,
-    ProcessDetailsFromJSON,
-    ProcessDetailsToJSON,
-    ProcessReportFromJSON,
-    ProcessReportToJSON,
+  IProcessFromJSON,
+  IProcessToJSON,
+  ProcessDetailsFromJSON,
+  ProcessDetailsToJSON,
+  ProcessReportFromJSON,
+  ProcessReportToJSON,
 } from '../models/index';
 
 export interface AnalysisExecutionResultRequest {
-    executionJobId: number;
+  executionJobId: number;
 }
 
 export interface AnalysisExecutionStatusRequest {
-    executionJobId: number;
+  executionJobId: number;
 }
 
 export interface ExecuteRequest {
-    processDetails: ProcessDetails;
+  processDetails: ProcessDetails;
 }
 
 /**
- * 
+ *
  */
 export class ProcessControllerApi extends runtime.BaseAPI {
-
-    /**
-     */
-    async analysisExecutionResultRaw(requestParameters: AnalysisExecutionResultRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessReport>> {
-        if (requestParameters['executionJobId'] == null) {
-            throw new runtime.RequiredError(
-                'executionJobId',
-                'Required parameter "executionJobId" was null or undefined when calling analysisExecutionResult().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/process/result/{executionJobId}`.replace(`{${"executionJobId"}}`, encodeURIComponent(String(requestParameters['executionJobId']))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessReportFromJSON(jsonValue));
+  /**
+   */
+  async analysisExecutionResultRaw(
+    requestParameters: AnalysisExecutionResultRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ProcessReport>> {
+    if (requestParameters['executionJobId'] == null) {
+      throw new runtime.RequiredError(
+        'executionJobId',
+        'Required parameter "executionJobId" was null or undefined when calling analysisExecutionResult().'
+      );
     }
 
-    /**
-     */
-    async analysisExecutionResult(requestParameters: AnalysisExecutionResultRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessReport> {
-        const response = await this.analysisExecutionResultRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/process/result/{executionJobId}`.replace(
+          `{${'executionJobId'}}`,
+          encodeURIComponent(String(requestParameters['executionJobId']))
+        ),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, jsonValue =>
+      ProcessReportFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   */
+  async analysisExecutionResult(
+    requestParameters: AnalysisExecutionResultRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ProcessReport> {
+    const response = await this.analysisExecutionResultRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   */
+  async analysisExecutionStatusRaw(
+    requestParameters: AnalysisExecutionStatusRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<string>> {
+    if (requestParameters['executionJobId'] == null) {
+      throw new runtime.RequiredError(
+        'executionJobId',
+        'Required parameter "executionJobId" was null or undefined when calling analysisExecutionStatus().'
+      );
     }
 
-    /**
-     */
-    async analysisExecutionStatusRaw(requestParameters: AnalysisExecutionStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['executionJobId'] == null) {
-            throw new runtime.RequiredError(
-                'executionJobId',
-                'Required parameter "executionJobId" was null or undefined when calling analysisExecutionStatus().'
-            );
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    const response = await this.request(
+      {
+        path: `/api/process/status/{executionJobId}`.replace(
+          `{${'executionJobId'}}`,
+          encodeURIComponent(String(requestParameters['executionJobId']))
+        ),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
 
-        const response = await this.request({
-            path: `/api/process/status/{executionJobId}`.replace(`{${"executionJobId"}}`, encodeURIComponent(String(requestParameters['executionJobId']))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
+    if (this.isJsonMime(response.headers.get('content-type'))) {
+      return new runtime.JSONApiResponse<string>(response);
+    } else {
+      return new runtime.TextApiResponse(response) as any;
+    }
+  }
 
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<string>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
+  /**
+   */
+  async analysisExecutionStatus(
+    requestParameters: AnalysisExecutionStatusRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<string> {
+    const response = await this.analysisExecutionStatusRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   */
+  async executeRaw(
+    requestParameters: ExecuteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<number>> {
+    if (requestParameters['processDetails'] == null) {
+      throw new runtime.RequiredError(
+        'processDetails',
+        'Required parameter "processDetails" was null or undefined when calling execute().'
+      );
     }
 
-    /**
-     */
-    async analysisExecutionStatus(requestParameters: AnalysisExecutionStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
-        const response = await this.analysisExecutionStatusRaw(requestParameters, initOverrides);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters['Content-Type'] = 'application/json';
+
+    const response = await this.request(
+      {
+        path: `/api/process`,
+        method: 'PUT',
+        headers: headerParameters,
+        query: queryParameters,
+        body: ProcessDetailsToJSON(requestParameters['processDetails']),
+      },
+      initOverrides
+    );
+
+    if (this.isJsonMime(response.headers.get('content-type'))) {
+      return new runtime.JSONApiResponse<number>(response);
+    } else {
+      return new runtime.TextApiResponse(response) as any;
     }
+  }
 
-    /**
-     */
-    async executeRaw(requestParameters: ExecuteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<number>> {
-        if (requestParameters['processDetails'] == null) {
-            throw new runtime.RequiredError(
-                'processDetails',
-                'Required parameter "processDetails" was null or undefined when calling execute().'
-            );
-        }
+  /**
+   */
+  async execute(
+    requestParameters: ExecuteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<number> {
+    const response = await this.executeRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
 
-        const queryParameters: any = {};
+  /**
+   */
+  async listRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<IProcess>>> {
+    const queryParameters: any = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        headerParameters['Content-Type'] = 'application/json';
+    const response = await this.request(
+      {
+        path: `/api/process`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
 
-        const response = await this.request({
-            path: `/api/process`,
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: ProcessDetailsToJSON(requestParameters['processDetails']),
-        }, initOverrides);
+    return new runtime.JSONApiResponse(response, jsonValue =>
+      jsonValue.map(IProcessFromJSON)
+    );
+  }
 
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<number>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
-    }
-
-    /**
-     */
-    async execute(requestParameters: ExecuteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<number> {
-        const response = await this.executeRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async listRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<IProcess>>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/process`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(IProcessFromJSON));
-    }
-
-    /**
-     */
-    async list(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<IProcess>> {
-        const response = await this.listRaw(initOverrides);
-        return await response.value();
-    }
-
+  /**
+   */
+  async list(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<IProcess>> {
+    const response = await this.listRaw(initOverrides);
+    return await response.value();
+  }
 }

@@ -12,76 +12,90 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  ApiUserSigninPostRequest,
-  AuthProvider,
-} from '../models/index';
+import type { ApiUserSigninPostRequest, AuthProvider } from '../models/index';
 import {
-    ApiUserSigninPostRequestFromJSON,
-    ApiUserSigninPostRequestToJSON,
-    AuthProviderFromJSON,
-    AuthProviderToJSON,
+  ApiUserSigninPostRequestFromJSON,
+  ApiUserSigninPostRequestToJSON,
+  AuthProviderFromJSON,
+  AuthProviderToJSON,
 } from '../models/index';
 
 export interface ApiUserSigninPostOperationRequest {
-    apiUserSigninPostRequest?: ApiUserSigninPostRequest;
+  apiUserSigninPostRequest?: ApiUserSigninPostRequest;
 }
 
 /**
- * 
+ *
  */
 export class LoginEndpointApi extends runtime.BaseAPI {
+  /**
+   */
+  async apiUserSigninPostRaw(
+    requestParameters: ApiUserSigninPostOperationRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    const queryParameters: any = {};
 
-    /**
-     */
-    async apiUserSigninPostRaw(requestParameters: ApiUserSigninPostOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    headerParameters['Content-Type'] = 'application/json';
 
-        headerParameters['Content-Type'] = 'application/json';
+    const response = await this.request(
+      {
+        path: `/api/user/signin`,
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+        body: ApiUserSigninPostRequestToJSON(
+          requestParameters['apiUserSigninPostRequest']
+        ),
+      },
+      initOverrides
+    );
 
-        const response = await this.request({
-            path: `/api/user/signin`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: ApiUserSigninPostRequestToJSON(requestParameters['apiUserSigninPostRequest']),
-        }, initOverrides);
+    return new runtime.VoidApiResponse(response);
+  }
 
-        return new runtime.VoidApiResponse(response);
-    }
+  /**
+   */
+  async apiUserSigninPost(
+    requestParameters: ApiUserSigninPostOperationRequest = {},
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.apiUserSigninPostRaw(requestParameters, initOverrides);
+  }
 
-    /**
-     */
-    async apiUserSigninPost(requestParameters: ApiUserSigninPostOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiUserSigninPostRaw(requestParameters, initOverrides);
-    }
+  /**
+   */
+  async getAuthProvidersRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<AuthProvider>>> {
+    const queryParameters: any = {};
 
-    /**
-     */
-    async getAuthProvidersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AuthProvider>>> {
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    const response = await this.request(
+      {
+        path: `/api/user/auth-providers`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
 
-        const response = await this.request({
-            path: `/api/user/auth-providers`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
+    return new runtime.JSONApiResponse(response, jsonValue =>
+      jsonValue.map(AuthProviderFromJSON)
+    );
+  }
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AuthProviderFromJSON));
-    }
-
-    /**
-     */
-    async getAuthProviders(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AuthProvider>> {
-        const response = await this.getAuthProvidersRaw(initOverrides);
-        return await response.value();
-    }
-
+  /**
+   */
+  async getAuthProviders(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<AuthProvider>> {
+    const response = await this.getAuthProvidersRaw(initOverrides);
+    return await response.value();
+  }
 }

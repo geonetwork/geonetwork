@@ -15,99 +15,95 @@
 import { mapValues } from '../runtime';
 import type { ProcessStep } from './ProcessStep';
 import {
-    ProcessStepFromJSON,
-    ProcessStepFromJSONTyped,
-    ProcessStepToJSON,
+  ProcessStepFromJSON,
+  ProcessStepFromJSONTyped,
+  ProcessStepToJSON,
 } from './ProcessStep';
 import type { SpecificationConformance } from './SpecificationConformance';
 import {
-    SpecificationConformanceFromJSON,
-    SpecificationConformanceFromJSONTyped,
-    SpecificationConformanceToJSON,
+  SpecificationConformanceFromJSON,
+  SpecificationConformanceFromJSONTyped,
+  SpecificationConformanceToJSON,
 } from './SpecificationConformance';
 import type { FeatureType } from './FeatureType';
 import {
-    FeatureTypeFromJSON,
-    FeatureTypeFromJSONTyped,
-    FeatureTypeToJSON,
+  FeatureTypeFromJSON,
+  FeatureTypeFromJSONTyped,
+  FeatureTypeToJSON,
 } from './FeatureType';
 import type { IndexingErrorMsg } from './IndexingErrorMsg';
 import {
-    IndexingErrorMsgFromJSON,
-    IndexingErrorMsgFromJSONTyped,
-    IndexingErrorMsgToJSON,
+  IndexingErrorMsgFromJSON,
+  IndexingErrorMsgFromJSONTyped,
+  IndexingErrorMsgToJSON,
 } from './IndexingErrorMsg';
 import type { ResourceDate } from './ResourceDate';
 import {
-    ResourceDateFromJSON,
-    ResourceDateFromJSONTyped,
-    ResourceDateToJSON,
+  ResourceDateFromJSON,
+  ResourceDateFromJSONTyped,
+  ResourceDateToJSON,
 } from './ResourceDate';
 import type { Overview } from './Overview';
 import {
-    OverviewFromJSON,
-    OverviewFromJSONTyped,
-    OverviewToJSON,
+  OverviewFromJSON,
+  OverviewFromJSONTyped,
+  OverviewToJSON,
 } from './Overview';
 import type { Maintenance } from './Maintenance';
 import {
-    MaintenanceFromJSON,
-    MaintenanceFromJSONTyped,
-    MaintenanceToJSON,
+  MaintenanceFromJSON,
+  MaintenanceFromJSONTyped,
+  MaintenanceToJSON,
 } from './Maintenance';
 import type { RecordLink } from './RecordLink';
 import {
-    RecordLinkFromJSON,
-    RecordLinkFromJSONTyped,
-    RecordLinkToJSON,
+  RecordLinkFromJSON,
+  RecordLinkFromJSONTyped,
+  RecordLinkToJSON,
 } from './RecordLink';
 import type { ResourceIdentifier } from './ResourceIdentifier';
 import {
-    ResourceIdentifierFromJSON,
-    ResourceIdentifierFromJSONTyped,
-    ResourceIdentifierToJSON,
+  ResourceIdentifierFromJSON,
+  ResourceIdentifierFromJSONTyped,
+  ResourceIdentifierToJSON,
 } from './ResourceIdentifier';
 import type { DateRange } from './DateRange';
 import {
-    DateRangeFromJSON,
-    DateRangeFromJSONTyped,
-    DateRangeToJSON,
+  DateRangeFromJSON,
+  DateRangeFromJSONTyped,
+  DateRangeToJSON,
 } from './DateRange';
 import type { DateRangeDetails } from './DateRangeDetails';
 import {
-    DateRangeDetailsFromJSON,
-    DateRangeDetailsFromJSONTyped,
-    DateRangeDetailsToJSON,
+  DateRangeDetailsFromJSON,
+  DateRangeDetailsFromJSONTyped,
+  DateRangeDetailsToJSON,
 } from './DateRangeDetails';
 import type { CrsDetails } from './CrsDetails';
 import {
-    CrsDetailsFromJSON,
-    CrsDetailsFromJSONTyped,
-    CrsDetailsToJSON,
+  CrsDetailsFromJSON,
+  CrsDetailsFromJSONTyped,
+  CrsDetailsToJSON,
 } from './CrsDetails';
 import type { Thesaurus } from './Thesaurus';
 import {
-    ThesaurusFromJSON,
-    ThesaurusFromJSONTyped,
-    ThesaurusToJSON,
+  ThesaurusFromJSON,
+  ThesaurusFromJSONTyped,
+  ThesaurusToJSON,
 } from './Thesaurus';
 import type { Measure } from './Measure';
 import {
-    MeasureFromJSON,
-    MeasureFromJSONTyped,
-    MeasureToJSON,
+  MeasureFromJSON,
+  MeasureFromJSONTyped,
+  MeasureToJSON,
 } from './Measure';
 import type { Link } from './Link';
-import {
-    LinkFromJSON,
-    LinkFromJSONTyped,
-    LinkToJSON,
-} from './Link';
+import { LinkFromJSON, LinkFromJSONTyped, LinkToJSON } from './Link';
 import type { VerticalRange } from './VerticalRange';
 import {
-    VerticalRangeFromJSON,
-    VerticalRangeFromJSONTyped,
-    VerticalRangeToJSON,
+  VerticalRangeFromJSON,
+  VerticalRangeFromJSONTyped,
+  VerticalRangeToJSON,
 } from './VerticalRange';
 
 /**
@@ -126,855 +122,1075 @@ import {
  * @interface IndexRecord
  */
 export interface IndexRecord {
-    [key: string]: any | any;
+  [key: string]: any | any;
 
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    docType?: IndexRecordDocTypeEnum;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    document?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    metadataIdentifier?: string;
-    /**
-     *
-     * @type {{ [key: string]: string; }}
-     * @memberof IndexRecord
-     */
-    standardNameObject?: { [key: string]: string; };
-    /**
-     *
-     * @type {{ [key: string]: string; }}
-     * @memberof IndexRecord
-     */
-    standardVersionObject?: { [key: string]: string; };
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    indexingDate?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    dateStamp?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    mainLanguage?: string;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    resourceType?: Array<string>;
-    /**
-     *
-     * @type {{ [key: string]: string; }}
-     * @memberof IndexRecord
-     */
-    resourceTypeNameObject?: { [key: string]: string; };
-    /**
-     *
-     * @type {{ [key: string]: string; }}
-     * @memberof IndexRecord
-     */
-    resourceTitleObject?: { [key: string]: string; };
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    resourceAltTitleObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<ResourceDate>}
-     * @memberof IndexRecord
-     */
-    resourceDate?: Array<ResourceDate>;
-    /**
-     *
-     * @type {Array<DateRange>}
-     * @memberof IndexRecord
-     */
-    resourceTemporalDateRange?: Array<DateRange>;
-    /**
-     *
-     * @type {Array<ResourceIdentifier>}
-     * @memberof IndexRecord
-     */
-    resourceIdentifier?: Array<ResourceIdentifier>;
-    /**
-     *
-     * @type {{ [key: string]: string; }}
-     * @memberof IndexRecord
-     */
-    resourceAbstractObject?: { [key: string]: string; };
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    supplementalInformationObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    purposeObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    tag?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {boolean}
-     * @memberof IndexRecord
-     */
-    isOpenData?: boolean;
-    /**
-     *
-     * @type {{ [key: string]: Thesaurus; }}
-     * @memberof IndexRecord
-     */
-    allKeywords?: { [key: string]: Thesaurus; };
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    resolutionDistance?: Array<string>;
-    /**
-     *
-     * @type {Array<number>}
-     * @memberof IndexRecord
-     */
-    resolutionScaleDenominator?: Array<number>;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    extentIdentifierObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    extentDescriptionObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    shape?: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    shapeParsingError?: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    geom?: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    location?: Array<string>;
-    /**
-     *
-     * @type {Array<DateRange>}
-     * @memberof IndexRecord
-     */
-    resourceTemporalExtentDateRange?: Array<DateRange>;
-    /**
-     *
-     * @type {Array<DateRangeDetails>}
-     * @memberof IndexRecord
-     */
-    resourceTemporalExtentDetails?: Array<DateRangeDetails>;
-    /**
-     *
-     * @type {Array<VerticalRange>}
-     * @memberof IndexRecord
-     */
-    resourceVerticalRange?: Array<VerticalRange>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    coordinateSystem?: Array<string>;
-    /**
-     *
-     * @type {Array<CrsDetails>}
-     * @memberof IndexRecord
-     */
-    crsDetails?: Array<CrsDetails>;
-    /**
-     *
-     * @type {Array<FeatureType>}
-     * @memberof IndexRecord
-     */
-    featureTypes?: Array<FeatureType>;
-    /**
-     *
-     * @type {Array<Link>}
-     * @memberof IndexRecord
-     */
-    link?: Array<Link>;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    lineageObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    hassource?: Array<string>;
-    /**
-     *
-     * @type {Array<RecordLink>}
-     * @memberof IndexRecord
-     */
-    recordLink?: Array<RecordLink>;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    sourceDescriptionObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<ProcessStep>}
-     * @memberof IndexRecord
-     */
-    processSteps?: Array<ProcessStep>;
-    /**
-     *
-     * @type {Array<Measure>}
-     * @memberof IndexRecord
-     */
-    measure?: Array<Measure>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    format?: Array<string>;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    orderingInstructionsObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    recordGroup?: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    parentUuid?: Array<string>;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    recordOwner?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    uuid?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    harvesterUuid?: string;
-    /**
-     *
-     * @type {Array<number>}
-     * @memberof IndexRecord
-     */
-    groupPublishedId?: Array<number>;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    popularity?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    userinfo?: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof IndexRecord
-     */
-    isPublishedToAll?: boolean;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    draft?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    changeDate?: string;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    id?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    createDate?: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof IndexRecord
-     */
-    isPublishedToIntranet?: boolean;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    valid?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    isTemplate?: string;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    feedbackCount?: number;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    rating?: number;
-    /**
-     *
-     * @type {boolean}
-     * @memberof IndexRecord
-     */
-    isHarvested?: boolean;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    userSavedCount?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    sourceCatalogue?: string;
-    /**
-     *
-     * @type {Array<Overview>}
-     * @memberof IndexRecord
-     */
-    overview?: Array<Overview>;
-    /**
-     *
-     * @type {{ [key: string]: Array<object>; }}
-     * @memberof IndexRecord
-     */
-    otherProperties?: { [key: string]: Array<object>; };
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    documentStandard?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    root?: string;
-    /**
-     *
-     * @type {Array<IndexingErrorMsg>}
-     * @memberof IndexRecord
-     */
-    indexingErrorMsg?: Array<IndexingErrorMsg>;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    owner?: number;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    groupOwner?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    logo?: string;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    otherLanguage?: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    otherLanguageId?: Array<string>;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    resourceEdition?: string;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    displayOrder?: number;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    licenseObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<Maintenance>}
-     * @memberof IndexRecord
-     */
-    maintenance?: Array<Maintenance>;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    resourceCreditObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    cat?: Array<string>;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    tagNumber?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    mdStatus?: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof IndexRecord
-     */
-    isPublishedToGuest?: boolean;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    groupPublished?: Array<string>;
-    /**
-     *
-     * @type {boolean}
-     * @memberof IndexRecord
-     */
-    hasxlinks?: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof IndexRecord
-     */
-    inspireConformResource?: boolean;
-    /**
-     *
-     * @type {number}
-     * @memberof IndexRecord
-     */
-    validInspire?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    inspireReportUrl?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRecord
-     */
-    inspireValidationDate?: string;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    resourceLanguage?: Array<string>;
-    /**
-     *
-     * @type {Array<{ [key: string]: string; }>}
-     * @memberof IndexRecord
-     */
-    orgObject?: Array<{ [key: string]: string; }>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    recordOperateOn?: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    aggAssociated?: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    childUuid?: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    linkUrl?: Array<string>;
-    /**
-     *
-     * @type {Set<string>}
-     * @memberof IndexRecord
-     */
-    linkProtocol?: Set<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    serviceType?: Array<string>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    serviceTypeVersion?: Array<string>;
-    /**
-     *
-     * @type {Array<SpecificationConformance>}
-     * @memberof IndexRecord
-     */
-    specificationConformance?: Array<SpecificationConformance>;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRecord
-     */
-    hasfeaturecat?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  docType?: IndexRecordDocTypeEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  document?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  metadataIdentifier?: string;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof IndexRecord
+   */
+  standardNameObject?: { [key: string]: string };
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof IndexRecord
+   */
+  standardVersionObject?: { [key: string]: string };
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  indexingDate?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  dateStamp?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  mainLanguage?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  resourceType?: Array<string>;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof IndexRecord
+   */
+  resourceTypeNameObject?: { [key: string]: string };
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof IndexRecord
+   */
+  resourceTitleObject?: { [key: string]: string };
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  resourceAltTitleObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<ResourceDate>}
+   * @memberof IndexRecord
+   */
+  resourceDate?: Array<ResourceDate>;
+  /**
+   *
+   * @type {Array<DateRange>}
+   * @memberof IndexRecord
+   */
+  resourceTemporalDateRange?: Array<DateRange>;
+  /**
+   *
+   * @type {Array<ResourceIdentifier>}
+   * @memberof IndexRecord
+   */
+  resourceIdentifier?: Array<ResourceIdentifier>;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof IndexRecord
+   */
+  resourceAbstractObject?: { [key: string]: string };
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  supplementalInformationObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  purposeObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  tag?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof IndexRecord
+   */
+  isOpenData?: boolean;
+  /**
+   *
+   * @type {{ [key: string]: Thesaurus; }}
+   * @memberof IndexRecord
+   */
+  allKeywords?: { [key: string]: Thesaurus };
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  resolutionDistance?: Array<string>;
+  /**
+   *
+   * @type {Array<number>}
+   * @memberof IndexRecord
+   */
+  resolutionScaleDenominator?: Array<number>;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  extentIdentifierObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  extentDescriptionObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  shape?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  shapeParsingError?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  geom?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  location?: Array<string>;
+  /**
+   *
+   * @type {Array<DateRange>}
+   * @memberof IndexRecord
+   */
+  resourceTemporalExtentDateRange?: Array<DateRange>;
+  /**
+   *
+   * @type {Array<DateRangeDetails>}
+   * @memberof IndexRecord
+   */
+  resourceTemporalExtentDetails?: Array<DateRangeDetails>;
+  /**
+   *
+   * @type {Array<VerticalRange>}
+   * @memberof IndexRecord
+   */
+  resourceVerticalRange?: Array<VerticalRange>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  coordinateSystem?: Array<string>;
+  /**
+   *
+   * @type {Array<CrsDetails>}
+   * @memberof IndexRecord
+   */
+  crsDetails?: Array<CrsDetails>;
+  /**
+   *
+   * @type {Array<FeatureType>}
+   * @memberof IndexRecord
+   */
+  featureTypes?: Array<FeatureType>;
+  /**
+   *
+   * @type {Array<Link>}
+   * @memberof IndexRecord
+   */
+  link?: Array<Link>;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  lineageObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  hassource?: Array<string>;
+  /**
+   *
+   * @type {Array<RecordLink>}
+   * @memberof IndexRecord
+   */
+  recordLink?: Array<RecordLink>;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  sourceDescriptionObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<ProcessStep>}
+   * @memberof IndexRecord
+   */
+  processSteps?: Array<ProcessStep>;
+  /**
+   *
+   * @type {Array<Measure>}
+   * @memberof IndexRecord
+   */
+  measure?: Array<Measure>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  format?: Array<string>;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  orderingInstructionsObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  recordGroup?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  parentUuid?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  recordOwner?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  uuid?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  harvesterUuid?: string;
+  /**
+   *
+   * @type {Array<number>}
+   * @memberof IndexRecord
+   */
+  groupPublishedId?: Array<number>;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  popularity?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  userinfo?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof IndexRecord
+   */
+  isPublishedToAll?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  draft?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  changeDate?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  id?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  createDate?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof IndexRecord
+   */
+  isPublishedToIntranet?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  valid?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  isTemplate?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  feedbackCount?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  rating?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof IndexRecord
+   */
+  isHarvested?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  userSavedCount?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  sourceCatalogue?: string;
+  /**
+   *
+   * @type {Array<Overview>}
+   * @memberof IndexRecord
+   */
+  overview?: Array<Overview>;
+  /**
+   *
+   * @type {{ [key: string]: Array<object>; }}
+   * @memberof IndexRecord
+   */
+  otherProperties?: { [key: string]: Array<object> };
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  documentStandard?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  root?: string;
+  /**
+   *
+   * @type {Array<IndexingErrorMsg>}
+   * @memberof IndexRecord
+   */
+  indexingErrorMsg?: Array<IndexingErrorMsg>;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  owner?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  groupOwner?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  logo?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  otherLanguage?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  otherLanguageId?: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  resourceEdition?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  displayOrder?: number;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  licenseObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<Maintenance>}
+   * @memberof IndexRecord
+   */
+  maintenance?: Array<Maintenance>;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  resourceCreditObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  cat?: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  tagNumber?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  mdStatus?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof IndexRecord
+   */
+  isPublishedToGuest?: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  groupPublished?: Array<string>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof IndexRecord
+   */
+  hasxlinks?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof IndexRecord
+   */
+  inspireConformResource?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof IndexRecord
+   */
+  validInspire?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  inspireReportUrl?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRecord
+   */
+  inspireValidationDate?: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  resourceLanguage?: Array<string>;
+  /**
+   *
+   * @type {Array<{ [key: string]: string; }>}
+   * @memberof IndexRecord
+   */
+  orgObject?: Array<{ [key: string]: string }>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  recordOperateOn?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  aggAssociated?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  childUuid?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  linkUrl?: Array<string>;
+  /**
+   *
+   * @type {Set<string>}
+   * @memberof IndexRecord
+   */
+  linkProtocol?: Set<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  serviceType?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  serviceTypeVersion?: Array<string>;
+  /**
+   *
+   * @type {Array<SpecificationConformance>}
+   * @memberof IndexRecord
+   */
+  specificationConformance?: Array<SpecificationConformance>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRecord
+   */
+  hasfeaturecat?: Array<string>;
 }
-
 
 /**
  * @export
  */
 export const IndexRecordDocTypeEnum = {
-    Metadata: 'metadata',
-    Features: 'features'
+  Metadata: 'metadata',
+  Features: 'features',
 } as const;
-export type IndexRecordDocTypeEnum = typeof IndexRecordDocTypeEnum[keyof typeof IndexRecordDocTypeEnum];
-
+export type IndexRecordDocTypeEnum =
+  (typeof IndexRecordDocTypeEnum)[keyof typeof IndexRecordDocTypeEnum];
 
 /**
  * Check if a given object implements the IndexRecord interface.
  */
 export function instanceOfIndexRecord(value: object): value is IndexRecord {
-    return true;
+  return true;
 }
 
 export function IndexRecordFromJSON(json: any): IndexRecord {
-    return IndexRecordFromJSONTyped(json, false);
+  return IndexRecordFromJSONTyped(json, false);
 }
 
-export function IndexRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): IndexRecord {
-    if (json == null) {
-        return json;
-    }
-    return {
-        ...json,
-        'docType': json['docType'] == null ? undefined : json['docType'],
-        'document': json['document'] == null ? undefined : json['document'],
-        'metadataIdentifier': json['metadataIdentifier'] == null ? undefined : json['metadataIdentifier'],
-        'standardNameObject': json['standardNameObject'] == null ? undefined : json['standardNameObject'],
-        'standardVersionObject': json['standardVersionObject'] == null ? undefined : json['standardVersionObject'],
-        'indexingDate': json['indexingDate'] == null ? undefined : json['indexingDate'],
-        'dateStamp': json['dateStamp'] == null ? undefined : json['dateStamp'],
-        'mainLanguage': json['mainLanguage'] == null ? undefined : json['mainLanguage'],
-        'resourceType': json['resourceType'] == null ? undefined : json['resourceType'],
-        'resourceTypeNameObject': json['resourceTypeNameObject'] == null ? undefined : json['resourceTypeNameObject'],
-        'resourceTitleObject': json['resourceTitleObject'] == null ? undefined : json['resourceTitleObject'],
-        'resourceAltTitleObject': json['resourceAltTitleObject'] == null ? undefined : json['resourceAltTitleObject'],
-        'resourceDate': json['resourceDate'] == null ? undefined : ((json['resourceDate'] as Array<any>).map(ResourceDateFromJSON)),
-        'resourceTemporalDateRange': json['resourceTemporalDateRange'] == null ? undefined : ((json['resourceTemporalDateRange'] as Array<any>).map(DateRangeFromJSON)),
-        'resourceIdentifier': json['resourceIdentifier'] == null ? undefined : ((json['resourceIdentifier'] as Array<any>).map(ResourceIdentifierFromJSON)),
-        'resourceAbstractObject': json['resourceAbstractObject'] == null ? undefined : json['resourceAbstractObject'],
-        'supplementalInformationObject': json['supplementalInformationObject'] == null ? undefined : json['supplementalInformationObject'],
-        'purposeObject': json['purposeObject'] == null ? undefined : json['purposeObject'],
-        'tag': json['tag'] == null ? undefined : json['tag'],
-        'isOpenData': json['isOpenData'] == null ? undefined : json['isOpenData'],
-        'allKeywords': json['allKeywords'] == null ? undefined : (mapValues(json['allKeywords'], ThesaurusFromJSON)),
-        'resolutionDistance': json['resolutionDistance'] == null ? undefined : json['resolutionDistance'],
-        'resolutionScaleDenominator': json['resolutionScaleDenominator'] == null ? undefined : json['resolutionScaleDenominator'],
-        'extentIdentifierObject': json['extentIdentifierObject'] == null ? undefined : json['extentIdentifierObject'],
-        'extentDescriptionObject': json['extentDescriptionObject'] == null ? undefined : json['extentDescriptionObject'],
-        'shape': json['shape'] == null ? undefined : json['shape'],
-        'shapeParsingError': json['shapeParsingError'] == null ? undefined : json['shapeParsingError'],
-        'geom': json['geom'] == null ? undefined : json['geom'],
-        'location': json['location'] == null ? undefined : json['location'],
-        'resourceTemporalExtentDateRange': json['resourceTemporalExtentDateRange'] == null ? undefined : ((json['resourceTemporalExtentDateRange'] as Array<any>).map(DateRangeFromJSON)),
-        'resourceTemporalExtentDetails': json['resourceTemporalExtentDetails'] == null ? undefined : ((json['resourceTemporalExtentDetails'] as Array<any>).map(DateRangeDetailsFromJSON)),
-        'resourceVerticalRange': json['resourceVerticalRange'] == null ? undefined : ((json['resourceVerticalRange'] as Array<any>).map(VerticalRangeFromJSON)),
-        'coordinateSystem': json['coordinateSystem'] == null ? undefined : json['coordinateSystem'],
-        'crsDetails': json['crsDetails'] == null ? undefined : ((json['crsDetails'] as Array<any>).map(CrsDetailsFromJSON)),
-        'featureTypes': json['featureTypes'] == null ? undefined : ((json['featureTypes'] as Array<any>).map(FeatureTypeFromJSON)),
-        'link': json['link'] == null ? undefined : ((json['link'] as Array<any>).map(LinkFromJSON)),
-        'lineageObject': json['lineageObject'] == null ? undefined : json['lineageObject'],
-        'hassource': json['hassource'] == null ? undefined : json['hassource'],
-        'recordLink': json['recordLink'] == null ? undefined : ((json['recordLink'] as Array<any>).map(RecordLinkFromJSON)),
-        'sourceDescriptionObject': json['sourceDescriptionObject'] == null ? undefined : json['sourceDescriptionObject'],
-        'processSteps': json['processSteps'] == null ? undefined : ((json['processSteps'] as Array<any>).map(ProcessStepFromJSON)),
-        'measure': json['measure'] == null ? undefined : ((json['measure'] as Array<any>).map(MeasureFromJSON)),
-        'format': json['format'] == null ? undefined : json['format'],
-        'orderingInstructionsObject': json['orderingInstructionsObject'] == null ? undefined : json['orderingInstructionsObject'],
-        'recordGroup': json['recordGroup'] == null ? undefined : json['recordGroup'],
-        'parentUuid': json['parentUuid'] == null ? undefined : json['parentUuid'],
-        'recordOwner': json['recordOwner'] == null ? undefined : json['recordOwner'],
-        'uuid': json['uuid'] == null ? undefined : json['uuid'],
-        'harvesterUuid': json['harvesterUuid'] == null ? undefined : json['harvesterUuid'],
-        'groupPublishedId': json['groupPublishedId'] == null ? undefined : json['groupPublishedId'],
-        'popularity': json['popularity'] == null ? undefined : json['popularity'],
-        'userinfo': json['userinfo'] == null ? undefined : json['userinfo'],
-        'isPublishedToAll': json['isPublishedToAll'] == null ? undefined : json['isPublishedToAll'],
-        'draft': json['draft'] == null ? undefined : json['draft'],
-        'changeDate': json['changeDate'] == null ? undefined : json['changeDate'],
-        'id': json['id'] == null ? undefined : json['id'],
-        'createDate': json['createDate'] == null ? undefined : json['createDate'],
-        'isPublishedToIntranet': json['isPublishedToIntranet'] == null ? undefined : json['isPublishedToIntranet'],
-        'valid': json['valid'] == null ? undefined : json['valid'],
-        'isTemplate': json['isTemplate'] == null ? undefined : json['isTemplate'],
-        'feedbackCount': json['feedbackCount'] == null ? undefined : json['feedbackCount'],
-        'rating': json['rating'] == null ? undefined : json['rating'],
-        'isHarvested': json['isHarvested'] == null ? undefined : json['isHarvested'],
-        'userSavedCount': json['userSavedCount'] == null ? undefined : json['userSavedCount'],
-        'sourceCatalogue': json['sourceCatalogue'] == null ? undefined : json['sourceCatalogue'],
-        'overview': json['overview'] == null ? undefined : ((json['overview'] as Array<any>).map(OverviewFromJSON)),
-        'otherProperties': json['otherProperties'] == null ? undefined : json['otherProperties'],
-        'documentStandard': json['documentStandard'] == null ? undefined : json['documentStandard'],
-        'root': json['root'] == null ? undefined : json['root'],
-        'indexingErrorMsg': json['indexingErrorMsg'] == null ? undefined : ((json['indexingErrorMsg'] as Array<any>).map(IndexingErrorMsgFromJSON)),
-        'owner': json['owner'] == null ? undefined : json['owner'],
-        'groupOwner': json['groupOwner'] == null ? undefined : json['groupOwner'],
-        'logo': json['logo'] == null ? undefined : json['logo'],
-        'otherLanguage': json['otherLanguage'] == null ? undefined : json['otherLanguage'],
-        'otherLanguageId': json['otherLanguageId'] == null ? undefined : json['otherLanguageId'],
-        'resourceEdition': json['resourceEdition'] == null ? undefined : json['resourceEdition'],
-        'displayOrder': json['displayOrder'] == null ? undefined : json['displayOrder'],
-        'licenseObject': json['licenseObject'] == null ? undefined : json['licenseObject'],
-        'maintenance': json['maintenance'] == null ? undefined : ((json['maintenance'] as Array<any>).map(MaintenanceFromJSON)),
-        'resourceCreditObject': json['resourceCreditObject'] == null ? undefined : json['resourceCreditObject'],
-        'cat': json['cat'] == null ? undefined : json['cat'],
-        'tagNumber': json['tagNumber'] == null ? undefined : json['tagNumber'],
-        'mdStatus': json['mdStatus'] == null ? undefined : json['mdStatus'],
-        'isPublishedToGuest': json['isPublishedToGuest'] == null ? undefined : json['isPublishedToGuest'],
-        'groupPublished': json['groupPublished'] == null ? undefined : json['groupPublished'],
-        'hasxlinks': json['hasxlinks'] == null ? undefined : json['hasxlinks'],
-        'inspireConformResource': json['inspireConformResource'] == null ? undefined : json['inspireConformResource'],
-        'validInspire': json['valid_inspire'] == null ? undefined : json['valid_inspire'],
-        'inspireReportUrl': json['inspireReportUrl'] == null ? undefined : json['inspireReportUrl'],
-        'inspireValidationDate': json['inspireValidationDate'] == null ? undefined : json['inspireValidationDate'],
-        'resourceLanguage': json['resourceLanguage'] == null ? undefined : json['resourceLanguage'],
-        'orgObject': json['OrgObject'] == null ? undefined : json['OrgObject'],
-        'recordOperateOn': json['recordOperateOn'] == null ? undefined : json['recordOperateOn'],
-        'aggAssociated': json['agg_associated'] == null ? undefined : json['agg_associated'],
-        'childUuid': json['childUuid'] == null ? undefined : json['childUuid'],
-        'linkUrl': json['linkUrl'] == null ? undefined : json['linkUrl'],
-        'linkProtocol': json['linkProtocol'] == null ? undefined : json['linkProtocol'],
-        'serviceType': json['serviceType'] == null ? undefined : json['serviceType'],
-        'serviceTypeVersion': json['serviceTypeVersion'] == null ? undefined : json['serviceTypeVersion'],
-        'specificationConformance': json['specificationConformance'] == null ? undefined : ((json['specificationConformance'] as Array<any>).map(SpecificationConformanceFromJSON)),
-        'hasfeaturecat': json['hasfeaturecat'] == null ? undefined : json['hasfeaturecat'],
-    };
+export function IndexRecordFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): IndexRecord {
+  if (json == null) {
+    return json;
+  }
+  return {
+    ...json,
+    docType: json['docType'] == null ? undefined : json['docType'],
+    document: json['document'] == null ? undefined : json['document'],
+    metadataIdentifier:
+      json['metadataIdentifier'] == null
+        ? undefined
+        : json['metadataIdentifier'],
+    standardNameObject:
+      json['standardNameObject'] == null
+        ? undefined
+        : json['standardNameObject'],
+    standardVersionObject:
+      json['standardVersionObject'] == null
+        ? undefined
+        : json['standardVersionObject'],
+    indexingDate:
+      json['indexingDate'] == null ? undefined : json['indexingDate'],
+    dateStamp: json['dateStamp'] == null ? undefined : json['dateStamp'],
+    mainLanguage:
+      json['mainLanguage'] == null ? undefined : json['mainLanguage'],
+    resourceType:
+      json['resourceType'] == null ? undefined : json['resourceType'],
+    resourceTypeNameObject:
+      json['resourceTypeNameObject'] == null
+        ? undefined
+        : json['resourceTypeNameObject'],
+    resourceTitleObject:
+      json['resourceTitleObject'] == null
+        ? undefined
+        : json['resourceTitleObject'],
+    resourceAltTitleObject:
+      json['resourceAltTitleObject'] == null
+        ? undefined
+        : json['resourceAltTitleObject'],
+    resourceDate:
+      json['resourceDate'] == null
+        ? undefined
+        : (json['resourceDate'] as Array<any>).map(ResourceDateFromJSON),
+    resourceTemporalDateRange:
+      json['resourceTemporalDateRange'] == null
+        ? undefined
+        : (json['resourceTemporalDateRange'] as Array<any>).map(
+            DateRangeFromJSON
+          ),
+    resourceIdentifier:
+      json['resourceIdentifier'] == null
+        ? undefined
+        : (json['resourceIdentifier'] as Array<any>).map(
+            ResourceIdentifierFromJSON
+          ),
+    resourceAbstractObject:
+      json['resourceAbstractObject'] == null
+        ? undefined
+        : json['resourceAbstractObject'],
+    supplementalInformationObject:
+      json['supplementalInformationObject'] == null
+        ? undefined
+        : json['supplementalInformationObject'],
+    purposeObject:
+      json['purposeObject'] == null ? undefined : json['purposeObject'],
+    tag: json['tag'] == null ? undefined : json['tag'],
+    isOpenData: json['isOpenData'] == null ? undefined : json['isOpenData'],
+    allKeywords:
+      json['allKeywords'] == null
+        ? undefined
+        : mapValues(json['allKeywords'], ThesaurusFromJSON),
+    resolutionDistance:
+      json['resolutionDistance'] == null
+        ? undefined
+        : json['resolutionDistance'],
+    resolutionScaleDenominator:
+      json['resolutionScaleDenominator'] == null
+        ? undefined
+        : json['resolutionScaleDenominator'],
+    extentIdentifierObject:
+      json['extentIdentifierObject'] == null
+        ? undefined
+        : json['extentIdentifierObject'],
+    extentDescriptionObject:
+      json['extentDescriptionObject'] == null
+        ? undefined
+        : json['extentDescriptionObject'],
+    shape: json['shape'] == null ? undefined : json['shape'],
+    shapeParsingError:
+      json['shapeParsingError'] == null ? undefined : json['shapeParsingError'],
+    geom: json['geom'] == null ? undefined : json['geom'],
+    location: json['location'] == null ? undefined : json['location'],
+    resourceTemporalExtentDateRange:
+      json['resourceTemporalExtentDateRange'] == null
+        ? undefined
+        : (json['resourceTemporalExtentDateRange'] as Array<any>).map(
+            DateRangeFromJSON
+          ),
+    resourceTemporalExtentDetails:
+      json['resourceTemporalExtentDetails'] == null
+        ? undefined
+        : (json['resourceTemporalExtentDetails'] as Array<any>).map(
+            DateRangeDetailsFromJSON
+          ),
+    resourceVerticalRange:
+      json['resourceVerticalRange'] == null
+        ? undefined
+        : (json['resourceVerticalRange'] as Array<any>).map(
+            VerticalRangeFromJSON
+          ),
+    coordinateSystem:
+      json['coordinateSystem'] == null ? undefined : json['coordinateSystem'],
+    crsDetails:
+      json['crsDetails'] == null
+        ? undefined
+        : (json['crsDetails'] as Array<any>).map(CrsDetailsFromJSON),
+    featureTypes:
+      json['featureTypes'] == null
+        ? undefined
+        : (json['featureTypes'] as Array<any>).map(FeatureTypeFromJSON),
+    link:
+      json['link'] == null
+        ? undefined
+        : (json['link'] as Array<any>).map(LinkFromJSON),
+    lineageObject:
+      json['lineageObject'] == null ? undefined : json['lineageObject'],
+    hassource: json['hassource'] == null ? undefined : json['hassource'],
+    recordLink:
+      json['recordLink'] == null
+        ? undefined
+        : (json['recordLink'] as Array<any>).map(RecordLinkFromJSON),
+    sourceDescriptionObject:
+      json['sourceDescriptionObject'] == null
+        ? undefined
+        : json['sourceDescriptionObject'],
+    processSteps:
+      json['processSteps'] == null
+        ? undefined
+        : (json['processSteps'] as Array<any>).map(ProcessStepFromJSON),
+    measure:
+      json['measure'] == null
+        ? undefined
+        : (json['measure'] as Array<any>).map(MeasureFromJSON),
+    format: json['format'] == null ? undefined : json['format'],
+    orderingInstructionsObject:
+      json['orderingInstructionsObject'] == null
+        ? undefined
+        : json['orderingInstructionsObject'],
+    recordGroup: json['recordGroup'] == null ? undefined : json['recordGroup'],
+    parentUuid: json['parentUuid'] == null ? undefined : json['parentUuid'],
+    recordOwner: json['recordOwner'] == null ? undefined : json['recordOwner'],
+    uuid: json['uuid'] == null ? undefined : json['uuid'],
+    harvesterUuid:
+      json['harvesterUuid'] == null ? undefined : json['harvesterUuid'],
+    groupPublishedId:
+      json['groupPublishedId'] == null ? undefined : json['groupPublishedId'],
+    popularity: json['popularity'] == null ? undefined : json['popularity'],
+    userinfo: json['userinfo'] == null ? undefined : json['userinfo'],
+    isPublishedToAll:
+      json['isPublishedToAll'] == null ? undefined : json['isPublishedToAll'],
+    draft: json['draft'] == null ? undefined : json['draft'],
+    changeDate: json['changeDate'] == null ? undefined : json['changeDate'],
+    id: json['id'] == null ? undefined : json['id'],
+    createDate: json['createDate'] == null ? undefined : json['createDate'],
+    isPublishedToIntranet:
+      json['isPublishedToIntranet'] == null
+        ? undefined
+        : json['isPublishedToIntranet'],
+    valid: json['valid'] == null ? undefined : json['valid'],
+    isTemplate: json['isTemplate'] == null ? undefined : json['isTemplate'],
+    feedbackCount:
+      json['feedbackCount'] == null ? undefined : json['feedbackCount'],
+    rating: json['rating'] == null ? undefined : json['rating'],
+    isHarvested: json['isHarvested'] == null ? undefined : json['isHarvested'],
+    userSavedCount:
+      json['userSavedCount'] == null ? undefined : json['userSavedCount'],
+    sourceCatalogue:
+      json['sourceCatalogue'] == null ? undefined : json['sourceCatalogue'],
+    overview:
+      json['overview'] == null
+        ? undefined
+        : (json['overview'] as Array<any>).map(OverviewFromJSON),
+    otherProperties:
+      json['otherProperties'] == null ? undefined : json['otherProperties'],
+    documentStandard:
+      json['documentStandard'] == null ? undefined : json['documentStandard'],
+    root: json['root'] == null ? undefined : json['root'],
+    indexingErrorMsg:
+      json['indexingErrorMsg'] == null
+        ? undefined
+        : (json['indexingErrorMsg'] as Array<any>).map(
+            IndexingErrorMsgFromJSON
+          ),
+    owner: json['owner'] == null ? undefined : json['owner'],
+    groupOwner: json['groupOwner'] == null ? undefined : json['groupOwner'],
+    logo: json['logo'] == null ? undefined : json['logo'],
+    otherLanguage:
+      json['otherLanguage'] == null ? undefined : json['otherLanguage'],
+    otherLanguageId:
+      json['otherLanguageId'] == null ? undefined : json['otherLanguageId'],
+    resourceEdition:
+      json['resourceEdition'] == null ? undefined : json['resourceEdition'],
+    displayOrder:
+      json['displayOrder'] == null ? undefined : json['displayOrder'],
+    licenseObject:
+      json['licenseObject'] == null ? undefined : json['licenseObject'],
+    maintenance:
+      json['maintenance'] == null
+        ? undefined
+        : (json['maintenance'] as Array<any>).map(MaintenanceFromJSON),
+    resourceCreditObject:
+      json['resourceCreditObject'] == null
+        ? undefined
+        : json['resourceCreditObject'],
+    cat: json['cat'] == null ? undefined : json['cat'],
+    tagNumber: json['tagNumber'] == null ? undefined : json['tagNumber'],
+    mdStatus: json['mdStatus'] == null ? undefined : json['mdStatus'],
+    isPublishedToGuest:
+      json['isPublishedToGuest'] == null
+        ? undefined
+        : json['isPublishedToGuest'],
+    groupPublished:
+      json['groupPublished'] == null ? undefined : json['groupPublished'],
+    hasxlinks: json['hasxlinks'] == null ? undefined : json['hasxlinks'],
+    inspireConformResource:
+      json['inspireConformResource'] == null
+        ? undefined
+        : json['inspireConformResource'],
+    validInspire:
+      json['valid_inspire'] == null ? undefined : json['valid_inspire'],
+    inspireReportUrl:
+      json['inspireReportUrl'] == null ? undefined : json['inspireReportUrl'],
+    inspireValidationDate:
+      json['inspireValidationDate'] == null
+        ? undefined
+        : json['inspireValidationDate'],
+    resourceLanguage:
+      json['resourceLanguage'] == null ? undefined : json['resourceLanguage'],
+    orgObject: json['OrgObject'] == null ? undefined : json['OrgObject'],
+    recordOperateOn:
+      json['recordOperateOn'] == null ? undefined : json['recordOperateOn'],
+    aggAssociated:
+      json['agg_associated'] == null ? undefined : json['agg_associated'],
+    childUuid: json['childUuid'] == null ? undefined : json['childUuid'],
+    linkUrl: json['linkUrl'] == null ? undefined : json['linkUrl'],
+    linkProtocol:
+      json['linkProtocol'] == null ? undefined : json['linkProtocol'],
+    serviceType: json['serviceType'] == null ? undefined : json['serviceType'],
+    serviceTypeVersion:
+      json['serviceTypeVersion'] == null
+        ? undefined
+        : json['serviceTypeVersion'],
+    specificationConformance:
+      json['specificationConformance'] == null
+        ? undefined
+        : (json['specificationConformance'] as Array<any>).map(
+            SpecificationConformanceFromJSON
+          ),
+    hasfeaturecat:
+      json['hasfeaturecat'] == null ? undefined : json['hasfeaturecat'],
+  };
 }
 
 export function IndexRecordToJSON(value?: IndexRecord | null): any {
-    if (value == null) {
-        return value;
-    }
-    return {
-        ...value,
-        'docType': value['docType'],
-        'document': value['document'],
-        'metadataIdentifier': value['metadataIdentifier'],
-        'standardNameObject': value['standardNameObject'],
-        'standardVersionObject': value['standardVersionObject'],
-        'indexingDate': value['indexingDate'],
-        'dateStamp': value['dateStamp'],
-        'mainLanguage': value['mainLanguage'],
-        'resourceType': value['resourceType'],
-        'resourceTypeNameObject': value['resourceTypeNameObject'],
-        'resourceTitleObject': value['resourceTitleObject'],
-        'resourceAltTitleObject': value['resourceAltTitleObject'],
-        'resourceDate': value['resourceDate'] == null ? undefined : ((value['resourceDate'] as Array<any>).map(ResourceDateToJSON)),
-        'resourceTemporalDateRange': value['resourceTemporalDateRange'] == null ? undefined : ((value['resourceTemporalDateRange'] as Array<any>).map(DateRangeToJSON)),
-        'resourceIdentifier': value['resourceIdentifier'] == null ? undefined : ((value['resourceIdentifier'] as Array<any>).map(ResourceIdentifierToJSON)),
-        'resourceAbstractObject': value['resourceAbstractObject'],
-        'supplementalInformationObject': value['supplementalInformationObject'],
-        'purposeObject': value['purposeObject'],
-        'tag': value['tag'],
-        'isOpenData': value['isOpenData'],
-        'allKeywords': value['allKeywords'] == null ? undefined : (mapValues(value['allKeywords'], ThesaurusToJSON)),
-        'resolutionDistance': value['resolutionDistance'],
-        'resolutionScaleDenominator': value['resolutionScaleDenominator'],
-        'extentIdentifierObject': value['extentIdentifierObject'],
-        'extentDescriptionObject': value['extentDescriptionObject'],
-        'shape': value['shape'],
-        'shapeParsingError': value['shapeParsingError'],
-        'geom': value['geom'],
-        'location': value['location'],
-        'resourceTemporalExtentDateRange': value['resourceTemporalExtentDateRange'] == null ? undefined : ((value['resourceTemporalExtentDateRange'] as Array<any>).map(DateRangeToJSON)),
-        'resourceTemporalExtentDetails': value['resourceTemporalExtentDetails'] == null ? undefined : ((value['resourceTemporalExtentDetails'] as Array<any>).map(DateRangeDetailsToJSON)),
-        'resourceVerticalRange': value['resourceVerticalRange'] == null ? undefined : ((value['resourceVerticalRange'] as Array<any>).map(VerticalRangeToJSON)),
-        'coordinateSystem': value['coordinateSystem'],
-        'crsDetails': value['crsDetails'] == null ? undefined : ((value['crsDetails'] as Array<any>).map(CrsDetailsToJSON)),
-        'featureTypes': value['featureTypes'] == null ? undefined : ((value['featureTypes'] as Array<any>).map(FeatureTypeToJSON)),
-        'link': value['link'] == null ? undefined : ((value['link'] as Array<any>).map(LinkToJSON)),
-        'lineageObject': value['lineageObject'],
-        'hassource': value['hassource'],
-        'recordLink': value['recordLink'] == null ? undefined : ((value['recordLink'] as Array<any>).map(RecordLinkToJSON)),
-        'sourceDescriptionObject': value['sourceDescriptionObject'],
-        'processSteps': value['processSteps'] == null ? undefined : ((value['processSteps'] as Array<any>).map(ProcessStepToJSON)),
-        'measure': value['measure'] == null ? undefined : ((value['measure'] as Array<any>).map(MeasureToJSON)),
-        'format': value['format'],
-        'orderingInstructionsObject': value['orderingInstructionsObject'],
-        'recordGroup': value['recordGroup'],
-        'parentUuid': value['parentUuid'],
-        'recordOwner': value['recordOwner'],
-        'uuid': value['uuid'],
-        'harvesterUuid': value['harvesterUuid'],
-        'groupPublishedId': value['groupPublishedId'],
-        'popularity': value['popularity'],
-        'userinfo': value['userinfo'],
-        'isPublishedToAll': value['isPublishedToAll'],
-        'draft': value['draft'],
-        'changeDate': value['changeDate'],
-        'id': value['id'],
-        'createDate': value['createDate'],
-        'isPublishedToIntranet': value['isPublishedToIntranet'],
-        'valid': value['valid'],
-        'isTemplate': value['isTemplate'],
-        'feedbackCount': value['feedbackCount'],
-        'rating': value['rating'],
-        'isHarvested': value['isHarvested'],
-        'userSavedCount': value['userSavedCount'],
-        'sourceCatalogue': value['sourceCatalogue'],
-        'overview': value['overview'] == null ? undefined : ((value['overview'] as Array<any>).map(OverviewToJSON)),
-        'otherProperties': value['otherProperties'],
-        'documentStandard': value['documentStandard'],
-        'root': value['root'],
-        'indexingErrorMsg': value['indexingErrorMsg'] == null ? undefined : ((value['indexingErrorMsg'] as Array<any>).map(IndexingErrorMsgToJSON)),
-        'owner': value['owner'],
-        'groupOwner': value['groupOwner'],
-        'logo': value['logo'],
-        'otherLanguage': value['otherLanguage'],
-        'otherLanguageId': value['otherLanguageId'],
-        'resourceEdition': value['resourceEdition'],
-        'displayOrder': value['displayOrder'],
-        'licenseObject': value['licenseObject'],
-        'maintenance': value['maintenance'] == null ? undefined : ((value['maintenance'] as Array<any>).map(MaintenanceToJSON)),
-        'resourceCreditObject': value['resourceCreditObject'],
-        'cat': value['cat'],
-        'tagNumber': value['tagNumber'],
-        'mdStatus': value['mdStatus'],
-        'isPublishedToGuest': value['isPublishedToGuest'],
-        'groupPublished': value['groupPublished'],
-        'hasxlinks': value['hasxlinks'],
-        'inspireConformResource': value['inspireConformResource'],
-        'valid_inspire': value['validInspire'],
-        'inspireReportUrl': value['inspireReportUrl'],
-        'inspireValidationDate': value['inspireValidationDate'],
-        'resourceLanguage': value['resourceLanguage'],
-        'OrgObject': value['orgObject'],
-        'recordOperateOn': value['recordOperateOn'],
-        'agg_associated': value['aggAssociated'],
-        'childUuid': value['childUuid'],
-        'linkUrl': value['linkUrl'],
-        'linkProtocol': value['linkProtocol'] == null ? undefined : Array.from(value['linkProtocol'] as Set<any>),
-        'serviceType': value['serviceType'],
-        'serviceTypeVersion': value['serviceTypeVersion'],
-        'specificationConformance': value['specificationConformance'] == null ? undefined : ((value['specificationConformance'] as Array<any>).map(SpecificationConformanceToJSON)),
-        'hasfeaturecat': value['hasfeaturecat'],
-    };
+  if (value == null) {
+    return value;
+  }
+  return {
+    ...value,
+    docType: value['docType'],
+    document: value['document'],
+    metadataIdentifier: value['metadataIdentifier'],
+    standardNameObject: value['standardNameObject'],
+    standardVersionObject: value['standardVersionObject'],
+    indexingDate: value['indexingDate'],
+    dateStamp: value['dateStamp'],
+    mainLanguage: value['mainLanguage'],
+    resourceType: value['resourceType'],
+    resourceTypeNameObject: value['resourceTypeNameObject'],
+    resourceTitleObject: value['resourceTitleObject'],
+    resourceAltTitleObject: value['resourceAltTitleObject'],
+    resourceDate:
+      value['resourceDate'] == null
+        ? undefined
+        : (value['resourceDate'] as Array<any>).map(ResourceDateToJSON),
+    resourceTemporalDateRange:
+      value['resourceTemporalDateRange'] == null
+        ? undefined
+        : (value['resourceTemporalDateRange'] as Array<any>).map(
+            DateRangeToJSON
+          ),
+    resourceIdentifier:
+      value['resourceIdentifier'] == null
+        ? undefined
+        : (value['resourceIdentifier'] as Array<any>).map(
+            ResourceIdentifierToJSON
+          ),
+    resourceAbstractObject: value['resourceAbstractObject'],
+    supplementalInformationObject: value['supplementalInformationObject'],
+    purposeObject: value['purposeObject'],
+    tag: value['tag'],
+    isOpenData: value['isOpenData'],
+    allKeywords:
+      value['allKeywords'] == null
+        ? undefined
+        : mapValues(value['allKeywords'], ThesaurusToJSON),
+    resolutionDistance: value['resolutionDistance'],
+    resolutionScaleDenominator: value['resolutionScaleDenominator'],
+    extentIdentifierObject: value['extentIdentifierObject'],
+    extentDescriptionObject: value['extentDescriptionObject'],
+    shape: value['shape'],
+    shapeParsingError: value['shapeParsingError'],
+    geom: value['geom'],
+    location: value['location'],
+    resourceTemporalExtentDateRange:
+      value['resourceTemporalExtentDateRange'] == null
+        ? undefined
+        : (value['resourceTemporalExtentDateRange'] as Array<any>).map(
+            DateRangeToJSON
+          ),
+    resourceTemporalExtentDetails:
+      value['resourceTemporalExtentDetails'] == null
+        ? undefined
+        : (value['resourceTemporalExtentDetails'] as Array<any>).map(
+            DateRangeDetailsToJSON
+          ),
+    resourceVerticalRange:
+      value['resourceVerticalRange'] == null
+        ? undefined
+        : (value['resourceVerticalRange'] as Array<any>).map(
+            VerticalRangeToJSON
+          ),
+    coordinateSystem: value['coordinateSystem'],
+    crsDetails:
+      value['crsDetails'] == null
+        ? undefined
+        : (value['crsDetails'] as Array<any>).map(CrsDetailsToJSON),
+    featureTypes:
+      value['featureTypes'] == null
+        ? undefined
+        : (value['featureTypes'] as Array<any>).map(FeatureTypeToJSON),
+    link:
+      value['link'] == null
+        ? undefined
+        : (value['link'] as Array<any>).map(LinkToJSON),
+    lineageObject: value['lineageObject'],
+    hassource: value['hassource'],
+    recordLink:
+      value['recordLink'] == null
+        ? undefined
+        : (value['recordLink'] as Array<any>).map(RecordLinkToJSON),
+    sourceDescriptionObject: value['sourceDescriptionObject'],
+    processSteps:
+      value['processSteps'] == null
+        ? undefined
+        : (value['processSteps'] as Array<any>).map(ProcessStepToJSON),
+    measure:
+      value['measure'] == null
+        ? undefined
+        : (value['measure'] as Array<any>).map(MeasureToJSON),
+    format: value['format'],
+    orderingInstructionsObject: value['orderingInstructionsObject'],
+    recordGroup: value['recordGroup'],
+    parentUuid: value['parentUuid'],
+    recordOwner: value['recordOwner'],
+    uuid: value['uuid'],
+    harvesterUuid: value['harvesterUuid'],
+    groupPublishedId: value['groupPublishedId'],
+    popularity: value['popularity'],
+    userinfo: value['userinfo'],
+    isPublishedToAll: value['isPublishedToAll'],
+    draft: value['draft'],
+    changeDate: value['changeDate'],
+    id: value['id'],
+    createDate: value['createDate'],
+    isPublishedToIntranet: value['isPublishedToIntranet'],
+    valid: value['valid'],
+    isTemplate: value['isTemplate'],
+    feedbackCount: value['feedbackCount'],
+    rating: value['rating'],
+    isHarvested: value['isHarvested'],
+    userSavedCount: value['userSavedCount'],
+    sourceCatalogue: value['sourceCatalogue'],
+    overview:
+      value['overview'] == null
+        ? undefined
+        : (value['overview'] as Array<any>).map(OverviewToJSON),
+    otherProperties: value['otherProperties'],
+    documentStandard: value['documentStandard'],
+    root: value['root'],
+    indexingErrorMsg:
+      value['indexingErrorMsg'] == null
+        ? undefined
+        : (value['indexingErrorMsg'] as Array<any>).map(IndexingErrorMsgToJSON),
+    owner: value['owner'],
+    groupOwner: value['groupOwner'],
+    logo: value['logo'],
+    otherLanguage: value['otherLanguage'],
+    otherLanguageId: value['otherLanguageId'],
+    resourceEdition: value['resourceEdition'],
+    displayOrder: value['displayOrder'],
+    licenseObject: value['licenseObject'],
+    maintenance:
+      value['maintenance'] == null
+        ? undefined
+        : (value['maintenance'] as Array<any>).map(MaintenanceToJSON),
+    resourceCreditObject: value['resourceCreditObject'],
+    cat: value['cat'],
+    tagNumber: value['tagNumber'],
+    mdStatus: value['mdStatus'],
+    isPublishedToGuest: value['isPublishedToGuest'],
+    groupPublished: value['groupPublished'],
+    hasxlinks: value['hasxlinks'],
+    inspireConformResource: value['inspireConformResource'],
+    valid_inspire: value['validInspire'],
+    inspireReportUrl: value['inspireReportUrl'],
+    inspireValidationDate: value['inspireValidationDate'],
+    resourceLanguage: value['resourceLanguage'],
+    OrgObject: value['orgObject'],
+    recordOperateOn: value['recordOperateOn'],
+    agg_associated: value['aggAssociated'],
+    childUuid: value['childUuid'],
+    linkUrl: value['linkUrl'],
+    linkProtocol:
+      value['linkProtocol'] == null
+        ? undefined
+        : Array.from(value['linkProtocol'] as Set<any>),
+    serviceType: value['serviceType'],
+    serviceTypeVersion: value['serviceTypeVersion'],
+    specificationConformance:
+      value['specificationConformance'] == null
+        ? undefined
+        : (value['specificationConformance'] as Array<any>).map(
+            SpecificationConformanceToJSON
+          ),
+    hasfeaturecat: value['hasfeaturecat'],
+  };
 }
-

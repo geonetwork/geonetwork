@@ -12,7 +12,6 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
 import type {
   AttributeStatistics,
@@ -20,709 +19,826 @@ import type {
   IndexRecord,
 } from '../models/index';
 import {
-    AttributeStatisticsFromJSON,
-    AttributeStatisticsToJSON,
-    DataFormatFromJSON,
-    DataFormatToJSON,
-    IndexRecordFromJSON,
-    IndexRecordToJSON,
+  AttributeStatisticsFromJSON,
+  AttributeStatisticsToJSON,
+  DataFormatFromJSON,
+  DataFormatToJSON,
+  IndexRecordFromJSON,
+  IndexRecordToJSON,
 } from '../models/index';
 
 export interface AnalysisSynchMetadataResourceRequest {
-    datasource: string;
-    layer: string;
-    metadataUuid?: string;
-    visibility?: AnalysisSynchMetadataResourceVisibilityEnum;
-    approved?: boolean;
+  datasource: string;
+  layer: string;
+  metadataUuid?: string;
+  visibility?: AnalysisSynchMetadataResourceVisibilityEnum;
+  approved?: boolean;
 }
 
 export interface ApplyDataAnalysisOnRecordRequest {
-    uuid: string;
-    datasource: string;
-    layer: string;
-    visibility?: ApplyDataAnalysisOnRecordVisibilityEnum;
-    approved?: boolean;
+  uuid: string;
+  datasource: string;
+  layer: string;
+  visibility?: ApplyDataAnalysisOnRecordVisibilityEnum;
+  approved?: boolean;
 }
 
 export interface AttributeCodelistRequest {
-    datasource: string;
-    layer: string;
-    attribute: string;
-    limit?: number;
+  datasource: string;
+  layer: string;
+  attribute: string;
+  limit?: number;
 }
 
 export interface AttributeStatisticsRequest {
-    datasource: string;
-    layer: string;
-    attribute: string;
+  datasource: string;
+  layer: string;
+  attribute: string;
 }
 
 export interface BuildOverviewRequest {
-    datasource: string;
-    layer: string;
+  datasource: string;
+  layer: string;
 }
 
 export interface BuildOverview1Request {
-    uuid: string;
-    visibility: BuildOverview1VisibilityEnum;
-    datasource: string;
-    approved: boolean;
-    layer: string;
+  uuid: string;
+  visibility: BuildOverview1VisibilityEnum;
+  datasource: string;
+  approved: boolean;
+  layer: string;
 }
 
 export interface LayersRequest {
-    datasource: string;
-    metadataUuid?: string;
-    visibility?: LayersVisibilityEnum;
-    approved?: boolean;
+  datasource: string;
+  metadataUuid?: string;
+  visibility?: LayersVisibilityEnum;
+  approved?: boolean;
 }
 
 export interface PreviewDataAnalysisOnRecordRequest {
-    metadataUuid: string;
-    datasource: string;
-    layer: string;
-    visibility?: PreviewDataAnalysisOnRecordVisibilityEnum;
-    approved?: boolean;
+  metadataUuid: string;
+  datasource: string;
+  layer: string;
+  visibility?: PreviewDataAnalysisOnRecordVisibilityEnum;
+  approved?: boolean;
 }
 
 /**
- * 
+ *
  */
 export class DataAnalysisApi extends runtime.BaseAPI {
-
-    /**
-     * Execute analysis and return layer properties as an index record
-     */
-    async analysisSynchMetadataResourceRaw(requestParameters: AnalysisSynchMetadataResourceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<IndexRecord>> {
-        if (requestParameters['datasource'] == null) {
-            throw new runtime.RequiredError(
-                'datasource',
-                'Required parameter "datasource" was null or undefined when calling analysisSynchMetadataResource().'
-            );
-        }
-
-        if (requestParameters['layer'] == null) {
-            throw new runtime.RequiredError(
-                'layer',
-                'Required parameter "layer" was null or undefined when calling analysisSynchMetadataResource().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['metadataUuid'] != null) {
-            queryParameters['metadataUuid'] = requestParameters['metadataUuid'];
-        }
-
-        if (requestParameters['visibility'] != null) {
-            queryParameters['visibility'] = requestParameters['visibility'];
-        }
-
-        if (requestParameters['datasource'] != null) {
-            queryParameters['datasource'] = requestParameters['datasource'];
-        }
-
-        if (requestParameters['approved'] != null) {
-            queryParameters['approved'] = requestParameters['approved'];
-        }
-
-        if (requestParameters['layer'] != null) {
-            queryParameters['layer'] = requestParameters['layer'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/execute`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => IndexRecordFromJSON(jsonValue));
+  /**
+   * Execute analysis and return layer properties as an index record
+   */
+  async analysisSynchMetadataResourceRaw(
+    requestParameters: AnalysisSynchMetadataResourceRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<IndexRecord>> {
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling analysisSynchMetadataResource().'
+      );
     }
 
-    /**
-     * Execute analysis and return layer properties as an index record
-     */
-    async analysisSynchMetadataResource(requestParameters: AnalysisSynchMetadataResourceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<IndexRecord> {
-        const response = await this.analysisSynchMetadataResourceRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters['layer'] == null) {
+      throw new runtime.RequiredError(
+        'layer',
+        'Required parameter "layer" was null or undefined when calling analysisSynchMetadataResource().'
+      );
     }
 
-    /**
-     *         The metadata record is saved. 
-     * Update metadata record with layer properties
-     */
-    async applyDataAnalysisOnRecordRaw(requestParameters: ApplyDataAnalysisOnRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['uuid'] == null) {
-            throw new runtime.RequiredError(
-                'uuid',
-                'Required parameter "uuid" was null or undefined when calling applyDataAnalysisOnRecord().'
-            );
-        }
+    const queryParameters: any = {};
 
-        if (requestParameters['datasource'] == null) {
-            throw new runtime.RequiredError(
-                'datasource',
-                'Required parameter "datasource" was null or undefined when calling applyDataAnalysisOnRecord().'
-            );
-        }
-
-        if (requestParameters['layer'] == null) {
-            throw new runtime.RequiredError(
-                'layer',
-                'Required parameter "layer" was null or undefined when calling applyDataAnalysisOnRecord().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['uuid'] != null) {
-            queryParameters['uuid'] = requestParameters['uuid'];
-        }
-
-        if (requestParameters['visibility'] != null) {
-            queryParameters['visibility'] = requestParameters['visibility'];
-        }
-
-        if (requestParameters['datasource'] != null) {
-            queryParameters['datasource'] = requestParameters['datasource'];
-        }
-
-        if (requestParameters['approved'] != null) {
-            queryParameters['approved'] = requestParameters['approved'];
-        }
-
-        if (requestParameters['layer'] != null) {
-            queryParameters['layer'] = requestParameters['layer'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/apply`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<string>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
+    if (requestParameters['metadataUuid'] != null) {
+      queryParameters['metadataUuid'] = requestParameters['metadataUuid'];
     }
 
-    /**
-     *         The metadata record is saved. 
-     * Update metadata record with layer properties
-     */
-    async applyDataAnalysisOnRecord(requestParameters: ApplyDataAnalysisOnRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
-        const response = await this.applyDataAnalysisOnRecordRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters['visibility'] != null) {
+      queryParameters['visibility'] = requestParameters['visibility'];
     }
 
-    /**
-     *         Values are order alphabetically and limited to 10 by default. 
-     * Get a list of unique values for an attribute
-     */
-    async attributeCodelistRaw(requestParameters: AttributeCodelistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<object>>> {
-        if (requestParameters['datasource'] == null) {
-            throw new runtime.RequiredError(
-                'datasource',
-                'Required parameter "datasource" was null or undefined when calling attributeCodelist().'
-            );
-        }
-
-        if (requestParameters['layer'] == null) {
-            throw new runtime.RequiredError(
-                'layer',
-                'Required parameter "layer" was null or undefined when calling attributeCodelist().'
-            );
-        }
-
-        if (requestParameters['attribute'] == null) {
-            throw new runtime.RequiredError(
-                'attribute',
-                'Required parameter "attribute" was null or undefined when calling attributeCodelist().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['datasource'] != null) {
-            queryParameters['datasource'] = requestParameters['datasource'];
-        }
-
-        if (requestParameters['layer'] != null) {
-            queryParameters['layer'] = requestParameters['layer'];
-        }
-
-        if (requestParameters['attribute'] != null) {
-            queryParameters['attribute'] = requestParameters['attribute'];
-        }
-
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/attribute/codelist`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
     }
 
-    /**
-     *         Values are order alphabetically and limited to 10 by default. 
-     * Get a list of unique values for an attribute
-     */
-    async attributeCodelist(requestParameters: AttributeCodelistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<object>> {
-        const response = await this.attributeCodelistRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters['approved'] != null) {
+      queryParameters['approved'] = requestParameters['approved'];
     }
 
-    /**
-     *         Return the min and max value of the attribute. 
-     * Get statistics for an attribute
-     */
-    async attributeStatisticsRaw(requestParameters: AttributeStatisticsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AttributeStatistics>>> {
-        if (requestParameters['datasource'] == null) {
-            throw new runtime.RequiredError(
-                'datasource',
-                'Required parameter "datasource" was null or undefined when calling attributeStatistics().'
-            );
-        }
-
-        if (requestParameters['layer'] == null) {
-            throw new runtime.RequiredError(
-                'layer',
-                'Required parameter "layer" was null or undefined when calling attributeStatistics().'
-            );
-        }
-
-        if (requestParameters['attribute'] == null) {
-            throw new runtime.RequiredError(
-                'attribute',
-                'Required parameter "attribute" was null or undefined when calling attributeStatistics().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['datasource'] != null) {
-            queryParameters['datasource'] = requestParameters['datasource'];
-        }
-
-        if (requestParameters['layer'] != null) {
-            queryParameters['layer'] = requestParameters['layer'];
-        }
-
-        if (requestParameters['attribute'] != null) {
-            queryParameters['attribute'] = requestParameters['attribute'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/attribute/statistics`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AttributeStatisticsFromJSON));
+    if (requestParameters['layer'] != null) {
+      queryParameters['layer'] = requestParameters['layer'];
     }
 
-    /**
-     *         Return the min and max value of the attribute. 
-     * Get statistics for an attribute
-     */
-    async attributeStatistics(requestParameters: AttributeStatisticsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AttributeStatistics>> {
-        const response = await this.attributeStatisticsRaw(requestParameters, initOverrides);
-        return await response.value();
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/execute`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, jsonValue =>
+      IndexRecordFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   * Execute analysis and return layer properties as an index record
+   */
+  async analysisSynchMetadataResource(
+    requestParameters: AnalysisSynchMetadataResourceRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<IndexRecord> {
+    const response = await this.analysisSynchMetadataResourceRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   *         The metadata record is saved.
+   * Update metadata record with layer properties
+   */
+  async applyDataAnalysisOnRecordRaw(
+    requestParameters: ApplyDataAnalysisOnRecordRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<string>> {
+    if (requestParameters['uuid'] == null) {
+      throw new runtime.RequiredError(
+        'uuid',
+        'Required parameter "uuid" was null or undefined when calling applyDataAnalysisOnRecord().'
+      );
     }
 
-    /**
-     * The overview is a small image representing the layer.  * For RASTER, `gdal_translate` is used to convert the layer to a PNG image. * For VECTOR, `gdal_rasterize` is used to rasterize the layer and `gdal_translate` to convert it to a PNG image.  
-     * Build an overview of a layer
-     */
-    async buildOverviewRaw(requestParameters: BuildOverviewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['datasource'] == null) {
-            throw new runtime.RequiredError(
-                'datasource',
-                'Required parameter "datasource" was null or undefined when calling buildOverview().'
-            );
-        }
-
-        if (requestParameters['layer'] == null) {
-            throw new runtime.RequiredError(
-                'layer',
-                'Required parameter "layer" was null or undefined when calling buildOverview().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['datasource'] != null) {
-            queryParameters['datasource'] = requestParameters['datasource'];
-        }
-
-        if (requestParameters['layer'] != null) {
-            queryParameters['layer'] = requestParameters['layer'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/overview`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling applyDataAnalysisOnRecord().'
+      );
     }
 
-    /**
-     * The overview is a small image representing the layer.  * For RASTER, `gdal_translate` is used to convert the layer to a PNG image. * For VECTOR, `gdal_rasterize` is used to rasterize the layer and `gdal_translate` to convert it to a PNG image.  
-     * Build an overview of a layer
-     */
-    async buildOverview(requestParameters: BuildOverviewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.buildOverviewRaw(requestParameters, initOverrides);
+    if (requestParameters['layer'] == null) {
+      throw new runtime.RequiredError(
+        'layer',
+        'Required parameter "layer" was null or undefined when calling applyDataAnalysisOnRecord().'
+      );
     }
 
-    /**
-     */
-    async buildOverview1Raw(requestParameters: BuildOverview1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['uuid'] == null) {
-            throw new runtime.RequiredError(
-                'uuid',
-                'Required parameter "uuid" was null or undefined when calling buildOverview1().'
-            );
-        }
+    const queryParameters: any = {};
 
-        if (requestParameters['visibility'] == null) {
-            throw new runtime.RequiredError(
-                'visibility',
-                'Required parameter "visibility" was null or undefined when calling buildOverview1().'
-            );
-        }
-
-        if (requestParameters['datasource'] == null) {
-            throw new runtime.RequiredError(
-                'datasource',
-                'Required parameter "datasource" was null or undefined when calling buildOverview1().'
-            );
-        }
-
-        if (requestParameters['approved'] == null) {
-            throw new runtime.RequiredError(
-                'approved',
-                'Required parameter "approved" was null or undefined when calling buildOverview1().'
-            );
-        }
-
-        if (requestParameters['layer'] == null) {
-            throw new runtime.RequiredError(
-                'layer',
-                'Required parameter "layer" was null or undefined when calling buildOverview1().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['uuid'] != null) {
-            queryParameters['uuid'] = requestParameters['uuid'];
-        }
-
-        if (requestParameters['visibility'] != null) {
-            queryParameters['visibility'] = requestParameters['visibility'];
-        }
-
-        if (requestParameters['datasource'] != null) {
-            queryParameters['datasource'] = requestParameters['datasource'];
-        }
-
-        if (requestParameters['approved'] != null) {
-            queryParameters['approved'] = requestParameters['approved'];
-        }
-
-        if (requestParameters['layer'] != null) {
-            queryParameters['layer'] = requestParameters['layer'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/overviewForMetadataResource`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
+    if (requestParameters['uuid'] != null) {
+      queryParameters['uuid'] = requestParameters['uuid'];
     }
 
-    /**
-     */
-    async buildOverview1(requestParameters: BuildOverview1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.buildOverview1Raw(requestParameters, initOverrides);
+    if (requestParameters['visibility'] != null) {
+      queryParameters['visibility'] = requestParameters['visibility'];
     }
 
-    /**
-     * Get the list of supported formats
-     */
-    async formatsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<DataFormat>>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/formats`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(DataFormatFromJSON));
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
     }
 
-    /**
-     * Get the list of supported formats
-     */
-    async formats(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<DataFormat>> {
-        const response = await this.formatsRaw(initOverrides);
-        return await response.value();
+    if (requestParameters['approved'] != null) {
+      queryParameters['approved'] = requestParameters['approved'];
     }
 
-    /**
-     * For GDAL, version 3.7.0+ is required (added support for JSON output in info commands). 
-     * Get the version of the data analyzer
-     */
-    async getVersionRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/version`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<string>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
+    if (requestParameters['layer'] != null) {
+      queryParameters['layer'] = requestParameters['layer'];
     }
 
-    /**
-     * For GDAL, version 3.7.0+ is required (added support for JSON output in info commands). 
-     * Get the version of the data analyzer
-     */
-    async getVersion(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
-        const response = await this.getVersionRaw(initOverrides);
-        return await response.value();
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/apply`,
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    if (this.isJsonMime(response.headers.get('content-type'))) {
+      return new runtime.JSONApiResponse<string>(response);
+    } else {
+      return new runtime.TextApiResponse(response) as any;
+    }
+  }
+
+  /**
+   *         The metadata record is saved.
+   * Update metadata record with layer properties
+   */
+  async applyDataAnalysisOnRecord(
+    requestParameters: ApplyDataAnalysisOnRecordRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<string> {
+    const response = await this.applyDataAnalysisOnRecordRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   *         Values are order alphabetically and limited to 10 by default.
+   * Get a list of unique values for an attribute
+   */
+  async attributeCodelistRaw(
+    requestParameters: AttributeCodelistRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<object>>> {
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling attributeCodelist().'
+      );
     }
 
-    /**
-     */
-    async layersRaw(requestParameters: LayersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<string>>> {
-        if (requestParameters['datasource'] == null) {
-            throw new runtime.RequiredError(
-                'datasource',
-                'Required parameter "datasource" was null or undefined when calling layers().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['metadataUuid'] != null) {
-            queryParameters['metadataUuid'] = requestParameters['metadataUuid'];
-        }
-
-        if (requestParameters['visibility'] != null) {
-            queryParameters['visibility'] = requestParameters['visibility'];
-        }
-
-        if (requestParameters['datasource'] != null) {
-            queryParameters['datasource'] = requestParameters['datasource'];
-        }
-
-        if (requestParameters['approved'] != null) {
-            queryParameters['approved'] = requestParameters['approved'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/layers`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
+    if (requestParameters['layer'] == null) {
+      throw new runtime.RequiredError(
+        'layer',
+        'Required parameter "layer" was null or undefined when calling attributeCodelist().'
+      );
     }
 
-    /**
-     */
-    async layers(requestParameters: LayersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<string>> {
-        const response = await this.layersRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters['attribute'] == null) {
+      throw new runtime.RequiredError(
+        'attribute',
+        'Required parameter "attribute" was null or undefined when calling attributeCodelist().'
+      );
     }
 
-    /**
-     *         The metadata record is not saved. 
-     * Preview metadata record updated with layer properties
-     */
-    async previewDataAnalysisOnRecordRaw(requestParameters: PreviewDataAnalysisOnRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['metadataUuid'] == null) {
-            throw new runtime.RequiredError(
-                'metadataUuid',
-                'Required parameter "metadataUuid" was null or undefined when calling previewDataAnalysisOnRecord().'
-            );
-        }
+    const queryParameters: any = {};
 
-        if (requestParameters['datasource'] == null) {
-            throw new runtime.RequiredError(
-                'datasource',
-                'Required parameter "datasource" was null or undefined when calling previewDataAnalysisOnRecord().'
-            );
-        }
-
-        if (requestParameters['layer'] == null) {
-            throw new runtime.RequiredError(
-                'layer',
-                'Required parameter "layer" was null or undefined when calling previewDataAnalysisOnRecord().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['metadataUuid'] != null) {
-            queryParameters['metadataUuid'] = requestParameters['metadataUuid'];
-        }
-
-        if (requestParameters['visibility'] != null) {
-            queryParameters['visibility'] = requestParameters['visibility'];
-        }
-
-        if (requestParameters['datasource'] != null) {
-            queryParameters['datasource'] = requestParameters['datasource'];
-        }
-
-        if (requestParameters['approved'] != null) {
-            queryParameters['approved'] = requestParameters['approved'];
-        }
-
-        if (requestParameters['layer'] != null) {
-            queryParameters['layer'] = requestParameters['layer'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/preview`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<string>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
     }
 
-    /**
-     *         The metadata record is not saved. 
-     * Preview metadata record updated with layer properties
-     */
-    async previewDataAnalysisOnRecord(requestParameters: PreviewDataAnalysisOnRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
-        const response = await this.previewDataAnalysisOnRecordRaw(requestParameters, initOverrides);
-        return await response.value();
+    if (requestParameters['layer'] != null) {
+      queryParameters['layer'] = requestParameters['layer'];
     }
 
-    /**
-     * Get the status of the data analyzer
-     */
-    async statusRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/data/analysis/status`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<string>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
+    if (requestParameters['attribute'] != null) {
+      queryParameters['attribute'] = requestParameters['attribute'];
     }
 
-    /**
-     * Get the status of the data analyzer
-     */
-    async status(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
-        const response = await this.statusRaw(initOverrides);
-        return await response.value();
+    if (requestParameters['limit'] != null) {
+      queryParameters['limit'] = requestParameters['limit'];
     }
 
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/attribute/codelist`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse<any>(response);
+  }
+
+  /**
+   *         Values are order alphabetically and limited to 10 by default.
+   * Get a list of unique values for an attribute
+   */
+  async attributeCodelist(
+    requestParameters: AttributeCodelistRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<object>> {
+    const response = await this.attributeCodelistRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   *         Return the min and max value of the attribute.
+   * Get statistics for an attribute
+   */
+  async attributeStatisticsRaw(
+    requestParameters: AttributeStatisticsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<AttributeStatistics>>> {
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling attributeStatistics().'
+      );
+    }
+
+    if (requestParameters['layer'] == null) {
+      throw new runtime.RequiredError(
+        'layer',
+        'Required parameter "layer" was null or undefined when calling attributeStatistics().'
+      );
+    }
+
+    if (requestParameters['attribute'] == null) {
+      throw new runtime.RequiredError(
+        'attribute',
+        'Required parameter "attribute" was null or undefined when calling attributeStatistics().'
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
+    }
+
+    if (requestParameters['layer'] != null) {
+      queryParameters['layer'] = requestParameters['layer'];
+    }
+
+    if (requestParameters['attribute'] != null) {
+      queryParameters['attribute'] = requestParameters['attribute'];
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/attribute/statistics`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, jsonValue =>
+      jsonValue.map(AttributeStatisticsFromJSON)
+    );
+  }
+
+  /**
+   *         Return the min and max value of the attribute.
+   * Get statistics for an attribute
+   */
+  async attributeStatistics(
+    requestParameters: AttributeStatisticsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<AttributeStatistics>> {
+    const response = await this.attributeStatisticsRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   * The overview is a small image representing the layer.  * For RASTER, `gdal_translate` is used to convert the layer to a PNG image. * For VECTOR, `gdal_rasterize` is used to rasterize the layer and `gdal_translate` to convert it to a PNG image.
+   * Build an overview of a layer
+   */
+  async buildOverviewRaw(
+    requestParameters: BuildOverviewRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling buildOverview().'
+      );
+    }
+
+    if (requestParameters['layer'] == null) {
+      throw new runtime.RequiredError(
+        'layer',
+        'Required parameter "layer" was null or undefined when calling buildOverview().'
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
+    }
+
+    if (requestParameters['layer'] != null) {
+      queryParameters['layer'] = requestParameters['layer'];
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/overview`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * The overview is a small image representing the layer.  * For RASTER, `gdal_translate` is used to convert the layer to a PNG image. * For VECTOR, `gdal_rasterize` is used to rasterize the layer and `gdal_translate` to convert it to a PNG image.
+   * Build an overview of a layer
+   */
+  async buildOverview(
+    requestParameters: BuildOverviewRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.buildOverviewRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   */
+  async buildOverview1Raw(
+    requestParameters: BuildOverview1Request,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters['uuid'] == null) {
+      throw new runtime.RequiredError(
+        'uuid',
+        'Required parameter "uuid" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    if (requestParameters['visibility'] == null) {
+      throw new runtime.RequiredError(
+        'visibility',
+        'Required parameter "visibility" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    if (requestParameters['approved'] == null) {
+      throw new runtime.RequiredError(
+        'approved',
+        'Required parameter "approved" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    if (requestParameters['layer'] == null) {
+      throw new runtime.RequiredError(
+        'layer',
+        'Required parameter "layer" was null or undefined when calling buildOverview1().'
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters['uuid'] != null) {
+      queryParameters['uuid'] = requestParameters['uuid'];
+    }
+
+    if (requestParameters['visibility'] != null) {
+      queryParameters['visibility'] = requestParameters['visibility'];
+    }
+
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
+    }
+
+    if (requestParameters['approved'] != null) {
+      queryParameters['approved'] = requestParameters['approved'];
+    }
+
+    if (requestParameters['layer'] != null) {
+      queryParameters['layer'] = requestParameters['layer'];
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/overviewForMetadataResource`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async buildOverview1(
+    requestParameters: BuildOverview1Request,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.buildOverview1Raw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Get the list of supported formats
+   */
+  async formatsRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<DataFormat>>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/formats`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, jsonValue =>
+      jsonValue.map(DataFormatFromJSON)
+    );
+  }
+
+  /**
+   * Get the list of supported formats
+   */
+  async formats(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<DataFormat>> {
+    const response = await this.formatsRaw(initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * For GDAL, version 3.7.0+ is required (added support for JSON output in info commands).
+   * Get the version of the data analyzer
+   */
+  async getVersionRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<string>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/version`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    if (this.isJsonMime(response.headers.get('content-type'))) {
+      return new runtime.JSONApiResponse<string>(response);
+    } else {
+      return new runtime.TextApiResponse(response) as any;
+    }
+  }
+
+  /**
+   * For GDAL, version 3.7.0+ is required (added support for JSON output in info commands).
+   * Get the version of the data analyzer
+   */
+  async getVersion(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<string> {
+    const response = await this.getVersionRaw(initOverrides);
+    return await response.value();
+  }
+
+  /**
+   */
+  async layersRaw(
+    requestParameters: LayersRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<string>>> {
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling layers().'
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters['metadataUuid'] != null) {
+      queryParameters['metadataUuid'] = requestParameters['metadataUuid'];
+    }
+
+    if (requestParameters['visibility'] != null) {
+      queryParameters['visibility'] = requestParameters['visibility'];
+    }
+
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
+    }
+
+    if (requestParameters['approved'] != null) {
+      queryParameters['approved'] = requestParameters['approved'];
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/layers`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse<any>(response);
+  }
+
+  /**
+   */
+  async layers(
+    requestParameters: LayersRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<string>> {
+    const response = await this.layersRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   *         The metadata record is not saved.
+   * Preview metadata record updated with layer properties
+   */
+  async previewDataAnalysisOnRecordRaw(
+    requestParameters: PreviewDataAnalysisOnRecordRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<string>> {
+    if (requestParameters['metadataUuid'] == null) {
+      throw new runtime.RequiredError(
+        'metadataUuid',
+        'Required parameter "metadataUuid" was null or undefined when calling previewDataAnalysisOnRecord().'
+      );
+    }
+
+    if (requestParameters['datasource'] == null) {
+      throw new runtime.RequiredError(
+        'datasource',
+        'Required parameter "datasource" was null or undefined when calling previewDataAnalysisOnRecord().'
+      );
+    }
+
+    if (requestParameters['layer'] == null) {
+      throw new runtime.RequiredError(
+        'layer',
+        'Required parameter "layer" was null or undefined when calling previewDataAnalysisOnRecord().'
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters['metadataUuid'] != null) {
+      queryParameters['metadataUuid'] = requestParameters['metadataUuid'];
+    }
+
+    if (requestParameters['visibility'] != null) {
+      queryParameters['visibility'] = requestParameters['visibility'];
+    }
+
+    if (requestParameters['datasource'] != null) {
+      queryParameters['datasource'] = requestParameters['datasource'];
+    }
+
+    if (requestParameters['approved'] != null) {
+      queryParameters['approved'] = requestParameters['approved'];
+    }
+
+    if (requestParameters['layer'] != null) {
+      queryParameters['layer'] = requestParameters['layer'];
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/preview`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    if (this.isJsonMime(response.headers.get('content-type'))) {
+      return new runtime.JSONApiResponse<string>(response);
+    } else {
+      return new runtime.TextApiResponse(response) as any;
+    }
+  }
+
+  /**
+   *         The metadata record is not saved.
+   * Preview metadata record updated with layer properties
+   */
+  async previewDataAnalysisOnRecord(
+    requestParameters: PreviewDataAnalysisOnRecordRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<string> {
+    const response = await this.previewDataAnalysisOnRecordRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   * Get the status of the data analyzer
+   */
+  async statusRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<string>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/data/analysis/status`,
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    if (this.isJsonMime(response.headers.get('content-type'))) {
+      return new runtime.JSONApiResponse<string>(response);
+    } else {
+      return new runtime.TextApiResponse(response) as any;
+    }
+  }
+
+  /**
+   * Get the status of the data analyzer
+   */
+  async status(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<string> {
+    const response = await this.statusRaw(initOverrides);
+    return await response.value();
+  }
 }
 
 /**
  * @export
  */
 export const AnalysisSynchMetadataResourceVisibilityEnum = {
-    Public: 'public',
-    Private: 'private'
+  Public: 'public',
+  Private: 'private',
 } as const;
-export type AnalysisSynchMetadataResourceVisibilityEnum = typeof AnalysisSynchMetadataResourceVisibilityEnum[keyof typeof AnalysisSynchMetadataResourceVisibilityEnum];
+export type AnalysisSynchMetadataResourceVisibilityEnum =
+  (typeof AnalysisSynchMetadataResourceVisibilityEnum)[keyof typeof AnalysisSynchMetadataResourceVisibilityEnum];
 /**
  * @export
  */
 export const ApplyDataAnalysisOnRecordVisibilityEnum = {
-    Public: 'public',
-    Private: 'private'
+  Public: 'public',
+  Private: 'private',
 } as const;
-export type ApplyDataAnalysisOnRecordVisibilityEnum = typeof ApplyDataAnalysisOnRecordVisibilityEnum[keyof typeof ApplyDataAnalysisOnRecordVisibilityEnum];
+export type ApplyDataAnalysisOnRecordVisibilityEnum =
+  (typeof ApplyDataAnalysisOnRecordVisibilityEnum)[keyof typeof ApplyDataAnalysisOnRecordVisibilityEnum];
 /**
  * @export
  */
 export const BuildOverview1VisibilityEnum = {
-    Public: 'public',
-    Private: 'private'
+  Public: 'public',
+  Private: 'private',
 } as const;
-export type BuildOverview1VisibilityEnum = typeof BuildOverview1VisibilityEnum[keyof typeof BuildOverview1VisibilityEnum];
+export type BuildOverview1VisibilityEnum =
+  (typeof BuildOverview1VisibilityEnum)[keyof typeof BuildOverview1VisibilityEnum];
 /**
  * @export
  */
 export const LayersVisibilityEnum = {
-    Public: 'public',
-    Private: 'private'
+  Public: 'public',
+  Private: 'private',
 } as const;
-export type LayersVisibilityEnum = typeof LayersVisibilityEnum[keyof typeof LayersVisibilityEnum];
+export type LayersVisibilityEnum =
+  (typeof LayersVisibilityEnum)[keyof typeof LayersVisibilityEnum];
 /**
  * @export
  */
 export const PreviewDataAnalysisOnRecordVisibilityEnum = {
-    Public: 'public',
-    Private: 'private'
+  Public: 'public',
+  Private: 'private',
 } as const;
-export type PreviewDataAnalysisOnRecordVisibilityEnum = typeof PreviewDataAnalysisOnRecordVisibilityEnum[keyof typeof PreviewDataAnalysisOnRecordVisibilityEnum];
+export type PreviewDataAnalysisOnRecordVisibilityEnum =
+  (typeof PreviewDataAnalysisOnRecordVisibilityEnum)[keyof typeof PreviewDataAnalysisOnRecordVisibilityEnum];
