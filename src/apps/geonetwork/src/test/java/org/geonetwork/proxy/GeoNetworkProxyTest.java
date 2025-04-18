@@ -24,7 +24,7 @@ class GeoNetworkProxyTest extends GeoNetwork4BasedIntegrationTest {
 
     @Test
     void test_can_access_testcontainer_directly() throws Exception {
-        mockMvc.perform(get(getGeoNetworkCoreUrl() + "/srv/api/me").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(getGeoNetwork4Url() + "/srv/api/me").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
 
