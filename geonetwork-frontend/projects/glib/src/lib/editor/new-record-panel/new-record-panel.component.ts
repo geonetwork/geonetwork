@@ -26,7 +26,9 @@ import {
   PreviewDataAnalysisOnRecordRequest,
   PutResourceRequest,
   RecordsApi as RecordsApi5,
-  IndexRecord, DataAnalysisApi, LayersVisibilityEnum,
+  IndexRecord,
+  DataAnalysisApi,
+  LayersVisibilityEnum,
 } from 'g5api';
 
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -484,7 +486,7 @@ export class NewRecordPanelComponent implements OnInit {
 
     const previewMethod = this.dataAnalysisApi().previewDataAnalysisOnRecord(
       previewAnalysisRequest as PreviewDataAnalysisOnRecordRequest
-    )
+    );
 
     previewMethod.then(
       response => {
@@ -520,7 +522,8 @@ export class NewRecordPanelComponent implements OnInit {
           layer: this.layername(),
         };
 
-    const applyAnalysis = this.dataAnalysisApi().applyDataAnalysisOnRecord(analysisRequest);
+    const applyAnalysis =
+      this.dataAnalysisApi().applyDataAnalysisOnRecord(analysisRequest);
 
     applyAnalysis.then(
       () => {

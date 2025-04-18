@@ -100,6 +100,10 @@ export class DataAnalysisPanelComponent {
     [StatsType.TEMPORAL]: false,
     [StatsType.VERTICAL]: false,
   });
+  hasComputedStatistics = signal<{ [key in StatsType]: boolean }>({
+    [StatsType.TEMPORAL]: false,
+    [StatsType.VERTICAL]: false,
+  });
 
   temporalExtentService = inject(TemporalExtentService);
   verticalExtentService = inject(VerticalExtentService);
@@ -114,6 +118,9 @@ export class DataAnalysisPanelComponent {
     this.isComputingStatistics.update(prev => {
       return { ...prev, [type]: true };
     });
+    this.hasComputedStatistics.update(prev => {
+      return { ...prev, [type]: false };
+    });
     this.dataAnalysisApi()
       .attributeStatistics({
         datasource: this.datasource(),
@@ -124,6 +131,9 @@ export class DataAnalysisPanelComponent {
         response => {
           this.isComputingStatistics.update(prev => {
             return { ...prev, [type]: false };
+          });
+          this.hasComputedStatistics.update(prev => {
+            return { ...prev, [type]: true };
           });
           this[statsField].set(response);
           if (type === StatsType.TEMPORAL) {

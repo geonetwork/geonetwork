@@ -46,6 +46,8 @@ export class InplaceFieldComponent implements OnInit {
   value = model<string | DateRangeDetails | VerticalRange | undefined>();
   initialValue: string | DateRangeDetails | VerticalRange | undefined;
 
+  active = input<boolean>(false);
+
   @ContentChild('display') displayTemplate: TemplateRef<any> | undefined;
   @ContentChild('edit') editTemplate: TemplateRef<any> | undefined;
 

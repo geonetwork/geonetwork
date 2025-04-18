@@ -7,36 +7,35 @@ import { DateRangeDetails } from 'g5api';
 export class TemporalExtentService {
   constructor() {}
 
-  parseDate(dateStr: string | undefined): Date | undefined {
+  private isMsTimestamp(dateStr?: string): boolean {
+    return !!dateStr && /^\d+$/.test(dateStr) && dateStr.length !== 4;
+  }
+
+  private parseDate(dateStr?: string): Date | undefined {
     if (!dateStr) return;
-    const timestamp = Date.parse(dateStr);
+    const timestamp = this.isMsTimestamp(dateStr)
+      ? parseInt(dateStr, 10)
+      : Date.parse(dateStr);
     return isNaN(timestamp) ? undefined : new Date(timestamp);
   }
 
-  isValid(from: string | undefined, to: string | undefined): boolean {
-    let fromDate = this.parseDate(from);
-    let toDate = this.parseDate(to);
-    return !!fromDate && !!toDate;
+  isValid(from?: string, to?: string): boolean {
+    return !!this.parseDate(from) && !!this.parseDate(to);
   }
 
-  buildDateRangeDetails(
-    from: string | undefined,
-    to: string | undefined
-  ): DateRangeDetails {
+  buildDateRangeDetails(from?: string, to?: string): DateRangeDetails {
+    const formatDate = (date?: string) =>
+      this.isMsTimestamp(date)
+        ? String(new Date(parseInt(date!, 10)).getFullYear())
+        : date;
+
     return {
-      start: {
-        date: from,
-        // TODO
-        // "frame": "#ISO-8601",
-        // "indeterminatePosition": "now"
-      },
-      end: {
-        date: to,
-      },
+      start: { date: formatDate(from) },
+      end: { date: formatDate(to) },
     };
   }
 
-  getCalendarRange(from: string | undefined, to: string | undefined) {
+  getCalendarRange(from?: string, to?: string): Date[] {
     return [this.parseDate(from), this.parseDate(to)] as Date[];
   }
 }

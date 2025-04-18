@@ -136,7 +136,8 @@
           <g-inplace-field
             property="dateRangeDetails"
             [(value)]="temporalExtent"
-            [uuid]="uuid()">
+            [uuid]="uuid()"
+            [active]="hasComputedStatistics()[StatsType.TEMPORAL]">
             <ng-template #display>
               <span class="font-bold">
                 {{ temporalExtent()?.start.date }} -
@@ -182,7 +183,8 @@
           <g-inplace-field
             property="resourceVerticalRange"
             [(value)]="resourceVerticalRange"
-            [uuid]="uuid()">
+            [uuid]="uuid()"
+            [active]="hasComputedStatistics()[StatsType.VERTICAL]">
             <ng-template #display>
               <span class="font-bold">
                 {{ resourceVerticalRange()?.gte }} -
