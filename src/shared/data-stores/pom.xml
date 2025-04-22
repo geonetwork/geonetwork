@@ -14,11 +14,32 @@
     <version>5.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>gn-data-directory</artifactId>
+  <artifactId>gn-data-stores</artifactId>
   <packaging>jar</packaging>
-  <name>GeoNetwork data directory</name>
+  <name>GeoNetwork data stores</name>
 
   <dependencies>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-domain</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-data-directory</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-metadata-manager</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-legacy-utility</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

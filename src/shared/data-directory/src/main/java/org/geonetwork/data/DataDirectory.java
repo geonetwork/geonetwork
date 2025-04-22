@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class DataDirectory {
-
-    @Value("${geonetwork.directory.data}")
     private String dataDir;
 
     public Path getDataDir() {
@@ -26,7 +24,8 @@ public class DataDirectory {
         return Paths.get(dataDir).resolve("metadata_data");
     }
 
-    public DataDirectory() {
+    public DataDirectory(@Value("${geonetwork.directory.data}") String dataDir) {
+        this.dataDir = dataDir;
         log.info("DataDirectory initialized");
         log.info(String.format("  Data directory: %s", this.dataDir));
     }

@@ -18,20 +18,36 @@ import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.domain.repository.OperationRepository;
 import org.geonetwork.domain.repository.OperationallowedRepository;
+import org.geonetwork.metadata.datadir.IMetadataDirProcessor;
+import org.geonetwork.metadata.datadir.MetadataDirPrivileges;
 import org.geonetwork.utility.TypeUtil;
 import org.geonetwork.utility.date.ISODate;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 public class MetadataManager implements IMetadataManager {
     private final MetadataRepository metadataRepository;
     private final OperationRepository operationRepository;
     private final OperationallowedRepository operationallowedRepository;
+    private final IMetadataDirProcessor metadataDirProcessor;
+    private final MetadataDirPrivileges metadataDirectoryPrivileges;
+
+    public MetadataManager(MetadataRepository metadataRepository,
+                           OperationRepository operationRepository,
+                           OperationallowedRepository operationallowedRepository,
+                           IMetadataDirProcessor metadataDirProcessor,
+                           @Value("${geonetwork.directory.metadata.privileges: 'DEFAULT'}") MetadataDirPrivileges metadataDirectoryPrivileges) {
+        this.metadataRepository = metadataRepository;
+        this.operationRepository = operationRepository;
+        this.operationallowedRepository = operationallowedRepository;
+        this.metadataDirProcessor = metadataDirProcessor;
+        this.metadataDirectoryPrivileges = metadataDirectoryPrivileges;
+    }
 
     @Override
     public Metadata findMetadataById(int metadataId) throws MetadataNotFoundException {
@@ -154,19 +170,14 @@ public class MetadataManager implements IMetadataManager {
     }
 
     @Override
-    public Path getMetadataDir(Path metadataDataDirectory, int metadataId) {
-        String group = pad(metadataId / 100, 3);
-        String groupDir = group + "00-" + group + "99";
-        return metadataDataDirectory.resolve(groupDir).resolve(String.valueOf(metadataId));
+    public Path getMetadataDir(Path metadataDataDirectory, int metadataId) throws MetadataNotFoundException {
+        return this.metadataDirProcessor.calculatePath(metadataDataDirectory, metadataId);
     }
 
     @Override
-    public Path getMetadataDir(Path metadataDataDirectory, String access, int metadataId) {
-        Path metadataDir = getMetadataDir(metadataDataDirectory, metadataId);
-
-        // TODO: Create Enum
-        String subDir = "public".equals(access) ? "public" : "private";
-        return metadataDir.resolve(subDir);
+    public Path getMetadataDir(Path metadataDataDirectory, String access, int metadataId)
+            throws MetadataNotFoundException {
+        return metadataDirProcessor.calculatePathWithAccess(metadataDataDirectory, access, metadataId);
     }
 
     @Override
@@ -178,13 +189,5 @@ public class MetadataManager implements IMetadataManager {
                         operationallowed.getId().getOperationid().equals(ReservedOperation.editing.getId()))
                 .map(operationallowed -> operationallowed.getId().getGroupid())
                 .collect(Collectors.toList());
-    }
-
-    private String pad(int group, int length) {
-        String text = Integer.toString(group);
-
-        while (text.length() < length) text = "0" + text;
-
-        return text;
     }
 }

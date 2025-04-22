@@ -53,7 +53,7 @@ public interface IMetadataManager {
 
     List<Integer> getEditableGroups(int metadataId);
 
-    Path getMetadataDir(Path metadataDataDirectory, int metadataId);
+    Path getMetadataDir(Path metadataDataDirectory, int metadataId) throws MetadataNotFoundException;
 
-    Path getMetadataDir(Path metadataDataDirectory, String access, int metadataId);
+    Path getMetadataDir(Path metadataDataDirectory, String access, int metadataId) throws MetadataNotFoundException;
 }

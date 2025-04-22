@@ -70,7 +70,7 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
-      <artifactId>gn-data-directory</artifactId>
+      <artifactId>gn-data-stores</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

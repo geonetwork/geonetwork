@@ -70,14 +70,14 @@ public class FilesystemStore extends AbstractStore {
             throws Exception {
         int metadataId = canDownload(metadataUuid, visibility, approved);
 
-        Path metadataDir = this.metadataManager.getMetadataDir(dataDirectory.getMetadataDir(), metadataId);
-        Path resourceTypeDir = metadataDir.resolve(visibility.toString());
+        Path metadataDir =
+                this.metadataManager.getMetadataDir(dataDirectory.getMetadataDir(), visibility.toString(), metadataId);
 
         List<MetadataResource> resourceList = new ArrayList<>();
         if (filter == null) {
             filter = FilesystemStore.DEFAULT_FILTER;
         }
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(resourceTypeDir, filter)) {
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(metadataDir, filter)) {
             for (Path path : directoryStream) {
                 String filePathName = "";
 
@@ -336,19 +336,19 @@ public class FilesystemStore extends AbstractStore {
 
     private Path ensureDirectory(
             final int metadataId, final String resourceId, final MetadataResourceVisibility visibility)
-            throws IOException {
-        final Path metadataDir = this.metadataManager.getMetadataDir(this.dataDirectory.getMetadataDir(), metadataId);
-        final Path newFolderPath = metadataDir.resolve(visibility.toString());
-        if (!Files.exists(newFolderPath)) {
+            throws Exception {
+        final Path metadataDir = this.metadataManager.getMetadataDir(
+                this.dataDirectory.getMetadataDir(), visibility.toString(), metadataId);
+        if (!Files.exists(metadataDir)) {
             try {
-                Files.createDirectories(newFolderPath);
+                Files.createDirectories(metadataDir);
             } catch (Exception e) {
                 throw new IOException(String.format(
                         "Can't create folder '%s' to store resource with name '%s' for metadata '%d'.",
                         visibility, resourceId, metadataId));
             }
         }
-        return newFolderPath;
+        return metadataDir;
     }
 
     private static class ResourceHolderImpl implements ResourceHolder {

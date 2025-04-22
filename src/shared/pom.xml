@@ -34,6 +34,7 @@
     <module>process-manager</module>
     <module>metadata-manager</module>
     <module>data-directory</module>
+    <module>data-stores</module>
     <module>error-handling</module>
   </modules>
 </project>

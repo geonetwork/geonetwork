@@ -37,6 +37,9 @@ geonetwork:
     asynchronous: false
   directory:
     data: /private/tmp/core-geonetwork-main/web/src/main/webapp/WEB-INF/data/data
+    #metadata:
+    #  layout: DEFAULT|UUID
+    #  privileges: DEFAULT|NONE
   openapi:
     url: http://localhost:7979
   settings:

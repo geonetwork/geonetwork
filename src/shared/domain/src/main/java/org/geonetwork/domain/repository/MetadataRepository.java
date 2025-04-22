@@ -14,6 +14,7 @@ import org.geonetwork.domain.Metadata;
 import org.hibernate.jpa.AvailableHints;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 
 public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
@@ -34,4 +35,9 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
 
     @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
     Stream<Metadata> streamAllByUuidIn(List<String> uuid, Sort sortBy);
+
+    Metadata findMetadataById(Integer id);
+
+    @Query("SELECT m.uuid FROM Metadata m WHERE m.id = :id")
+    String findUuidById(Integer id);
 }
