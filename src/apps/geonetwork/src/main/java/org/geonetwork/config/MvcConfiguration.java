@@ -6,6 +6,7 @@
 package org.geonetwork.config;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,7 +14,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /** MVC configuration. */
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
+    private String homeUrl;
 
+    public MvcConfiguration(@Value("${geonetwork.home: '/'}") String homeUrl) {
+        this.homeUrl = homeUrl;
+    }
     /**
      * Add view controllers.
      *
@@ -22,7 +27,12 @@ public class MvcConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        List<String> jsAppList = List.of("/webcomponents/", "/");
+        List<String> jsAppList = List.of("/webcomponents/");
+        if (homeUrl.equals("/")) {
+            jsAppList.add("/");
+        } else {
+            registry.addViewController("/").setViewName("redirect:" + homeUrl);
+        }
         jsAppList.forEach(app -> {
             registry.addViewController(app + "{path1:[a-zA-Z0-9_-]+}").setViewName("forward:" + app + "index.html");
             registry.addViewController(app + "{path1}/{path2:[a-zA-Z0-9_-]+}")
