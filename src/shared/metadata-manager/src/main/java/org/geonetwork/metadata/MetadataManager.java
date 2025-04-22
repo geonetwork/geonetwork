@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.Operation;
@@ -19,12 +18,10 @@ import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.domain.repository.OperationRepository;
 import org.geonetwork.domain.repository.OperationallowedRepository;
 import org.geonetwork.metadata.datadir.IMetadataDirProcessor;
-import org.geonetwork.metadata.datadir.MetadataDirPrivileges;
 import org.geonetwork.utility.TypeUtil;
 import org.geonetwork.utility.date.ISODate;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -35,18 +32,16 @@ public class MetadataManager implements IMetadataManager {
     private final OperationRepository operationRepository;
     private final OperationallowedRepository operationallowedRepository;
     private final IMetadataDirProcessor metadataDirProcessor;
-    private final MetadataDirPrivileges metadataDirectoryPrivileges;
 
-    public MetadataManager(MetadataRepository metadataRepository,
-                           OperationRepository operationRepository,
-                           OperationallowedRepository operationallowedRepository,
-                           IMetadataDirProcessor metadataDirProcessor,
-                           @Value("${geonetwork.directory.metadata.privileges: 'DEFAULT'}") MetadataDirPrivileges metadataDirectoryPrivileges) {
+    public MetadataManager(
+            MetadataRepository metadataRepository,
+            OperationRepository operationRepository,
+            OperationallowedRepository operationallowedRepository,
+            IMetadataDirProcessor metadataDirProcessor) {
         this.metadataRepository = metadataRepository;
         this.operationRepository = operationRepository;
         this.operationallowedRepository = operationallowedRepository;
         this.metadataDirProcessor = metadataDirProcessor;
-        this.metadataDirectoryPrivileges = metadataDirectoryPrivileges;
     }
 
     @Override

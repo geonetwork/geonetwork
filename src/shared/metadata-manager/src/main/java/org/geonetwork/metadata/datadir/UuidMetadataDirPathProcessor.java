@@ -14,8 +14,8 @@ public class UuidMetadataDirPathProcessor implements IMetadataDirProcessor {
     private final MetadataRepository metadataRepository;
     private final MetadataDirPrivileges metadataDirectoryPrivileges;
 
-    public UuidMetadataDirPathProcessor(MetadataDirPrivileges metadataDirectoryPrivileges,
-                                        MetadataRepository metadataRepository) {
+    public UuidMetadataDirPathProcessor(
+            MetadataDirPrivileges metadataDirectoryPrivileges, MetadataRepository metadataRepository) {
         this.metadataDirectoryPrivileges = metadataDirectoryPrivileges;
         this.metadataRepository = metadataRepository;
     }

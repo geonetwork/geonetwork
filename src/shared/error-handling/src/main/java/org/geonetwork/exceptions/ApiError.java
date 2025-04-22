@@ -6,15 +6,20 @@
 package org.geonetwork.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.geonetwork.utility.date.ISODate;
 import org.springframework.http.HttpStatus;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Setter(onMethod_ = @SuppressFBWarnings({"EI_EXPOSE_REP2", "EI_EXPOSE_REP"}))
+@Getter(onMethod_ = @SuppressFBWarnings({"EI_EXPOSE_REP2", "EI_EXPOSE_REP"}))
 public class ApiError {
     private String timestamp;
 

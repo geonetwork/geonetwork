@@ -6,7 +6,6 @@
 package org.geonetwork.metadata.datadir;
 
 import java.nio.file.Path;
-
 import org.geonetwork.metadata.MetadataNotFoundException;
 
 public class DefaultMetadataDirPathProcessor implements IMetadataDirProcessor {

@@ -21,7 +21,8 @@ public class MetadataDirConfig {
     @Bean
     public IMetadataDirProcessor metadataDirProcessor(
             @Value("${geonetwork.directory.metadata.layout: 'DEFAULT'}") MetadataDirLayout metadataDirectoryLayout,
-            @Value("${geonetwork.directory.metadata.privileges: 'DEFAULT'}") MetadataDirPrivileges metadataDirPrivileges,
+            @Value("${geonetwork.directory.metadata.privileges: 'DEFAULT'}")
+                    MetadataDirPrivileges metadataDirPrivileges,
             MetadataRepository metadataRepository) {
         if (metadataDirectoryLayout == MetadataDirLayout.DEFAULT) {
             return new DefaultMetadataDirPathProcessor(metadataDirPrivileges);
