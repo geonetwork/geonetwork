@@ -1,5 +1,6 @@
 geonetwork:
   url: http://localhost:7979
+  url_with_context: http://localhost:7979/geonetwork
   home: /
   4:
     url: http://localhost:8080/geonetwork
@@ -133,8 +134,9 @@ spring:
     gateway:
       mvc:
         routes:
-          - id: geonetwork4_api_migrated
-            uri: ${geonetwork.url}
+          - id: geonetwork4_api_migrated_redirect_to_gn5
+            uri: ${geonetwork.url_with_context}
+#  FIXME: This does not work uri: ${geonetwork.url}${server.servlet.context-path}
             predicates:
               - Path=/srv/api/records/{uuid}/attachments/**
             filters:
