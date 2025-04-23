@@ -28,6 +28,7 @@ import { TemporalExtentService } from '../../editor-field/temporal-extent-field/
 import { VerticalExtentFieldComponent } from '../../editor-field/vertical-extent-field/vertical-extent-field.component';
 import { JsonPipe } from '@angular/common';
 import { VerticalExtentService } from '../../editor-field/vertical-extent-field/vertical-extent.service';
+import { DataAnalysisService } from '../data-analysis.service';
 
 enum StatsType {
   TEMPORAL = 'temporalExtent',
@@ -57,6 +58,9 @@ export class DataAnalysisPanelComponent {
   @Input() layername!: WritableSignal<string>;
 
   api5Configuration = inject(API5_CONFIGURATION);
+
+  dataAnalysisService = inject(DataAnalysisService);
+
   dataAnalysisApi = computed(() => {
     return new DataAnalysisApi(this.api5Configuration());
   });
@@ -123,7 +127,9 @@ export class DataAnalysisPanelComponent {
     });
     this.dataAnalysisApi()
       .attributeStatistics({
-        datasource: this.datasource(),
+        datasource: this.dataAnalysisService.buildDatasourceParameter(
+          this.datasource()
+        ),
         layer: this.layername(),
         attribute: $event.value,
         uuid: this.uuid(),

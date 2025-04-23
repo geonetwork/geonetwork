@@ -115,7 +115,7 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<List<String>> layers(
             @RequestParam(required = false) String uuid,
-            @RequestParam(required = false) MetadataResourceVisibility visibility,
+            @RequestParam(required = false, defaultValue = "public") MetadataResourceVisibility visibility,
             @RequestParam(required = false, defaultValue = "true") boolean approved,
             @RequestParam
                     @Parameter(
@@ -160,7 +160,7 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<IndexRecord> analysisSynchMetadataResource(
             @RequestParam(required = false) String uuid,
-            @RequestParam(required = false) MetadataResourceVisibility visibility,
+            @RequestParam(required = false, defaultValue = "public") MetadataResourceVisibility visibility,
             @RequestParam(required = false, defaultValue = "true") boolean approved,
             @RequestParam String datasource,
             @RequestParam String layer)
@@ -178,8 +178,8 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<String> previewDataAnalysisOnRecord(
             @RequestParam String uuid,
-            @RequestParam(required = false) MetadataResourceVisibility visibility,
-            @RequestParam(required = false, defaultValue = "false") boolean approved,
+            @RequestParam(required = false, defaultValue = "public") MetadataResourceVisibility visibility,
+            @RequestParam(required = false, defaultValue = "true") boolean approved,
             @RequestParam String datasource,
             @RequestParam String layer)
             throws MetadataNotFoundException, ResourceNotFoundException {
@@ -203,8 +203,8 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<String> applyDataAnalysisOnRecord(
             @RequestParam String uuid,
-            @RequestParam(required = false) MetadataResourceVisibility visibility,
-            @RequestParam(required = false, defaultValue = "false") boolean approved,
+            @RequestParam(required = false, defaultValue = "public") MetadataResourceVisibility visibility,
+            @RequestParam(required = false, defaultValue = "true") boolean approved,
             @RequestParam String datasource,
             @RequestParam String layer)
             throws MetadataNotFoundException, ResourceNotFoundException {
@@ -228,8 +228,8 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
     @PreAuthorize("hasRole('Editor')")
     public List<AttributeStatistics> attributeStatistics(
             @RequestParam(required = false) String uuid,
-            @RequestParam(required = false) MetadataResourceVisibility visibility,
-            @RequestParam(required = false, defaultValue = "false") boolean approved,
+            @RequestParam(required = false, defaultValue = "public") MetadataResourceVisibility visibility,
+            @RequestParam(required = false, defaultValue = "true") boolean approved,
             @RequestParam String datasource,
             @RequestParam String layer,
             @RequestParam String attribute)
@@ -247,8 +247,8 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
     @PreAuthorize("hasRole('Editor')")
     public List<Object> attributeCodelist(
             @RequestParam(required = false) String uuid,
-            @RequestParam(required = false) MetadataResourceVisibility visibility,
-            @RequestParam(required = false, defaultValue = "false") boolean approved,
+            @RequestParam(required = false, defaultValue = "public") MetadataResourceVisibility visibility,
+            @RequestParam(required = false, defaultValue = "true") boolean approved,
             @RequestParam String datasource,
             @RequestParam String layer,
             @RequestParam String attribute,
@@ -325,8 +325,8 @@ The overview is a small image representing the layer.
     @PreAuthorize("hasRole('Editor')")
     public ResponseEntity<byte[]> buildOverview(
             @RequestParam(required = false) String uuid,
-            @RequestParam(required = false) MetadataResourceVisibility visibility,
-            @RequestParam(required = false, defaultValue = "false") boolean approved,
+            @RequestParam(required = false, defaultValue = "public") MetadataResourceVisibility visibility,
+            @RequestParam(required = false, defaultValue = "true") boolean approved,
             @RequestParam String datasource,
             @RequestParam String layer)
             throws MetadataNotFoundException, ResourceNotFoundException {
