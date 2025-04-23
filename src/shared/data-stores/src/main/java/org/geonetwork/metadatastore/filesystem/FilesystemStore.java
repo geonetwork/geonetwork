@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.data.DataDirectory;
 import org.geonetwork.metadata.IMetadataAccessManager;
 import org.geonetwork.metadata.IMetadataManager;
+import org.geonetwork.metadata.config.MetadataDirConfig;
 import org.geonetwork.metadatastore.AbstractStore;
 import org.geonetwork.metadatastore.MetadataResource;
 import org.geonetwork.metadatastore.MetadataResourceContainer;
@@ -60,8 +61,9 @@ public class FilesystemStore extends AbstractStore {
     public FilesystemStore(
             final IMetadataManager metadataManager,
             final IMetadataAccessManager metadataAccessManager,
-            final DataDirectory dataDirectory) {
-        super(metadataManager, metadataAccessManager, dataDirectory);
+            final DataDirectory dataDirectory,
+            final MetadataDirConfig metadataDirConfig) {
+        super(metadataManager, metadataAccessManager, dataDirectory, metadataDirConfig);
     }
 
     @Override
@@ -257,7 +259,7 @@ public class FilesystemStore extends AbstractStore {
             throws Exception {
         final Path folderPath = ensureDirectory(metadataId, fileName, visibility);
         Path filePath = folderPath.resolve(fileName);
-        if (Files.exists(filePath) && !approved) {
+        if (Files.exists(filePath) && Boolean.TRUE.equals(!approved)) {
             throw new ResourceAlreadyExistException(String.format(
                     "A resource with name '%s' and status '%s' already exists for metadata '%d'.",
                     fileName, visibility, metadataId));
@@ -353,7 +355,7 @@ public class FilesystemStore extends AbstractStore {
 
     private static class ResourceHolderImpl implements ResourceHolder {
         private final Path path;
-        private MetadataResource metadata;
+        private final MetadataResource metadata;
 
         private ResourceHolderImpl(Path path, final MetadataResource metadata) {
             this.path = path;

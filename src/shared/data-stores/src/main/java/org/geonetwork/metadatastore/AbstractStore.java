@@ -23,6 +23,8 @@ import org.geonetwork.domain.Metadata;
 import org.geonetwork.metadata.IMetadataAccessManager;
 import org.geonetwork.metadata.IMetadataManager;
 import org.geonetwork.metadata.MetadataNotFoundException;
+import org.geonetwork.metadata.config.MetadataDirConfig;
+import org.geonetwork.metadata.datadir.MetadataDirPrivileges;
 import org.springframework.web.multipart.MultipartFile;
 
 // TODO: Add access manager support
@@ -33,14 +35,17 @@ public abstract class AbstractStore implements Store {
     protected final IMetadataManager metadataManager;
     protected final IMetadataAccessManager metadataAccessManager;
     protected final DataDirectory dataDirectory;
+    protected final MetadataDirConfig metadataDirConfig;
 
     protected AbstractStore(
             final IMetadataManager metadataManager,
             final IMetadataAccessManager metadataAccessManager,
-            final DataDirectory dataDirectory) {
+            final DataDirectory dataDirectory,
+            final MetadataDirConfig metadataDirConfig) {
         this.metadataManager = metadataManager;
         this.metadataAccessManager = metadataAccessManager;
         this.dataDirectory = dataDirectory;
+        this.metadataDirConfig = metadataDirConfig;
     }
 
     @Override
@@ -49,10 +54,17 @@ public abstract class AbstractStore implements Store {
         int metadataId = getAndCheckMetadataId(metadataUuid, approved);
         boolean canEdit = this.metadataAccessManager.canEdit(metadataId);
 
-        List<MetadataResource> resourceList =
-                new ArrayList<>(getResources(metadataUuid, MetadataResourceVisibility.PUBLIC, filter, approved));
-        if (canEdit) {
-            resourceList.addAll(getResources(metadataUuid, MetadataResourceVisibility.PRIVATE, filter, approved));
+        List<MetadataResource> resourceList;
+
+        if (metadataDirConfig.getMetadataDirPrivileges() == MetadataDirPrivileges.DEFAULT) {
+            resourceList =
+                    new ArrayList<>(getResources(metadataUuid, MetadataResourceVisibility.PUBLIC, filter, approved));
+            if (canEdit) {
+                resourceList.addAll(getResources(metadataUuid, MetadataResourceVisibility.PRIVATE, filter, approved));
+            }
+        } else {
+            resourceList =
+                    new ArrayList<>(getResources(metadataUuid, MetadataResourceVisibility.PUBLIC, filter, approved));
         }
 
         if (sort == Sort.name) {

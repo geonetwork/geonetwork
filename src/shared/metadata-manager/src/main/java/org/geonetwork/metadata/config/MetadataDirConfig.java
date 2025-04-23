@@ -5,6 +5,7 @@
  */
 package org.geonetwork.metadata.config;
 
+import lombok.Getter;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.metadata.datadir.DefaultMetadataDirPathProcessor;
 import org.geonetwork.metadata.datadir.IMetadataDirProcessor;
@@ -16,7 +17,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Getter
 public class MetadataDirConfig {
+    private final MetadataDirLayout metadataDirLayout;
+    private final MetadataDirPrivileges metadataDirPrivileges;
+
+    public MetadataDirConfig(
+            @Value("${geonetwork.directory.metadata.layout: 'DEFAULT'}") MetadataDirLayout metadataDirectoryLayout,
+            @Value("${geonetwork.directory.metadata.privileges: 'DEFAULT'}")
+                    MetadataDirPrivileges metadataDirPrivileges) {
+        this.metadataDirLayout = metadataDirectoryLayout;
+        this.metadataDirPrivileges = metadataDirPrivileges;
+    }
 
     @Bean
     public IMetadataDirProcessor metadataDirProcessor(
