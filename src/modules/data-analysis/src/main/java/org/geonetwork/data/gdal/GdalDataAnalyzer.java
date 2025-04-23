@@ -107,7 +107,7 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
         }
         if (!isValidVersion(version.get())) {
             throw new DataAnalyzerException(
-                    "API_DA_ERROR_GDAL_VERSION_NOT_SUPPORTED");
+                    "API_DA_ERROR_GDAL_VERSION_NOT_SUPPORTED", new Object[]{});
         }
         return version.get();
     }
