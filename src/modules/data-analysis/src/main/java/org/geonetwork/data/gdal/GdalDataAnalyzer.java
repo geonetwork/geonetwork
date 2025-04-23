@@ -103,11 +103,11 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
     public String getVersion() {
         Optional<String> version = GdalUtils.execute(getVersionCommand(), timeoutInSeconds);
         if (version.isEmpty()) {
-            throw new DataAnalyzerException("GDAL version not found");
+            throw new DataAnalyzerException("API_DA_ERROR_GDAL_VERSION");
         }
         if (!isValidVersion(version.get())) {
             throw new DataAnalyzerException(
-                    "GDAL version is not supported. JSON output is available since version 3.7");
+                    "API_DA_ERROR_GDAL_VERSION_NOT_SUPPORTED");
         }
         return version.get();
     }
@@ -165,9 +165,8 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
             }
         }
 
-        throw new DataAnalyzerException(String.format(
-                "Error while collecting layers in datasource %s.%n* Vector analysis error: %s%n* Raster analysis error: %s",
-                dataSource, vectorException.getMessage(), rasterException.getMessage()));
+        throw new DataAnalyzerException("API_DA_ERROR_DATASOURCE_COLLECT_LAYERS",
+                new Object[] {dataSource, vectorException.getMessage(), rasterException.getMessage()});
     }
 
     private List<String> getDatasourceRasterLayers(String dataSource) {

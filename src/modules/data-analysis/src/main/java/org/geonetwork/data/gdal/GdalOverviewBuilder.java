@@ -93,17 +93,14 @@ public class GdalOverviewBuilder {
                             .addArgument("-l")
                             .addArgument(layer)
                             .addArgument(gdalDataAnalyzer.buildDataSourcePath(datasource))
-                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(
-                                    temporaryTiffFile)),
+                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(temporaryTiffFile)),
                     gdalDataAnalyzer.getTimeoutInSeconds());
 
             GdalUtils.execute(
                     new CommandLine(gdalDataAnalyzer.buildUtilityCommand(GDAL_TRANSLATE_APP))
                             .addArgument("-q")
-                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(
-                                    temporaryTiffFile))
-                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(
-                                    temporaryPngFile)),
+                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(temporaryTiffFile))
+                            .addArgument(gdalDataAnalyzer.buildDataSourceTempPath(temporaryPngFile)),
                     gdalDataAnalyzer.getTimeoutInSeconds());
 
             imageBytes = Files.readAllBytes(Paths.get(temporaryPngFile));

@@ -25,22 +25,37 @@ public class ApiError {
 
     private HttpStatus status;
     private int statusCode;
+    private String errorCode;
+    private String details;
+    private String hint;
     private String message;
     private List<String> errors;
 
-    public ApiError(HttpStatus status, String message, List<String> errors) {
+    public ApiError(
+            HttpStatus status, String message, List<String> errors, String errorCode, String details, String hint) {
         this.status = status;
         this.statusCode = status.value();
+        this.errorCode = errorCode;
+        this.details = details;
+        this.hint = hint;
         this.message = message;
         this.errors = errors;
         this.timestamp = new ISODate().toString();
     }
 
+    public ApiError(HttpStatus status, String message, List<String> errors) {
+        this(status, message, errors, "", "", "");
+    }
+
     public ApiError(HttpStatus status, String message, String error) {
-        this(status, message, Arrays.asList(error));
+        this(status, message, Arrays.asList(error), "", "", "");
     }
 
     public ApiError(HttpStatus status, String message) {
-        this(status, message, new ArrayList<>());
+        this(status, message, new ArrayList<>(), "", "", "");
+    }
+
+    public ApiError(HttpStatus status, String message, String errorCode, String details, String hint) {
+        this(status, message, new ArrayList<>(), errorCode, details, hint);
     }
 }

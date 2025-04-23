@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -176,11 +177,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler({BaseApplicationException.class})
+    public ResponseEntity<Object> handleBaseApplicationException(BaseApplicationException exception) {
+        final String errorMessage = getMessageSource()
+                .getMessage(
+                        exception.getErrorCode(),
+                        exception.getArgs(),
+                        exception.getLocalizedMessage(),
+                        LocaleContextHolder.getLocale());
+        final String errorDetails = getMessageSource()
+                .getMessage(exception.getErrorCode() + "_DETAILS", null, "", LocaleContextHolder.getLocale());
+        final String errorHint = getMessageSource()
+                .getMessage(exception.getErrorCode() + "_HINT", null, "", LocaleContextHolder.getLocale());
+
+        final ApiError apiError = new ApiError(
+                exception.getHttpStatus(), errorMessage, exception.getErrorCode(), errorDetails, errorHint);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
     // 500
 
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {
-
         final ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, exception.getLocalizedMessage());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
