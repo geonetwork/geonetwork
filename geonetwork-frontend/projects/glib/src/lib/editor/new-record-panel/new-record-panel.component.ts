@@ -361,7 +361,7 @@ export class NewRecordPanelComponent implements OnInit {
     this.errorFetchingLayers.set('');
 
     const layersRequest: LayersRequest = {
-      metadataUuid: this.newRecordId(),
+      uuid: this.newRecordId(),
       datasource: this.datasourceFile(),
       visibility: LayersVisibilityEnum.Public,
       approved: true,
@@ -398,7 +398,7 @@ export class NewRecordPanelComponent implements OnInit {
 
     const analysisRequest = this.datasourceFile()
       ? {
-          metadataUuid: this.newRecordId(),
+          uuid: this.newRecordId(),
           datasource: this.datasourceFile(),
           visibility: LayersVisibilityEnum.Public,
           approved: true,
@@ -481,7 +481,7 @@ export class NewRecordPanelComponent implements OnInit {
 
     const previewAnalysisRequest = this.datasourceFile()
       ? {
-          metadataUuid: this.newRecordId(),
+          uuid: this.newRecordId(),
           datasource: this.datasourceFile(),
           visibility: LayersVisibilityEnum.Public,
           approved: true,
@@ -678,8 +678,10 @@ export class NewRecordPanelComponent implements OnInit {
       .getAllResources(getAllResourcesRequest)
       .then(
         response => {
+          console.log(response);
           this.metadataFiles.set(response);
 
+          console.log(this.metadataFiles());
           if (response.length > 0 && selectFile) {
             this.datasourceFile.set(response[0].filename!);
             this.getLayerListForMetadataResource();

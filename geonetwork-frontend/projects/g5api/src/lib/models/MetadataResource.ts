@@ -28,6 +28,36 @@ import {
 export interface MetadataResource {
   /**
    *
+   * @type {MetadataResourceExternalManagementProperties}
+   * @memberof MetadataResource
+   */
+  metadataResourceExternalManagementProperties?: MetadataResourceExternalManagementProperties;
+  /**
+   *
+   * @type {boolean}
+   * @memberof MetadataResource
+   */
+  approved?: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof MetadataResource
+   */
+  lastModification?: Date;
+  /**
+   *
+   * @type {number}
+   * @memberof MetadataResource
+   */
+  metadataId?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof MetadataResource
+   */
+  visibility?: MetadataResourceVisibilityEnum;
+  /**
+   *
    * @type {string}
    * @memberof MetadataResource
    */
@@ -55,43 +85,13 @@ export interface MetadataResource {
    * @type {string}
    * @memberof MetadataResource
    */
-  metadataUuid?: string;
-  /**
-   *
-   * @type {boolean}
-   * @memberof MetadataResource
-   */
-  approved?: boolean;
-  /**
-   *
-   * @type {number}
-   * @memberof MetadataResource
-   */
-  metadataId?: number;
-  /**
-   *
-   * @type {string}
-   * @memberof MetadataResource
-   */
-  visibility?: MetadataResourceVisibilityEnum;
-  /**
-   *
-   * @type {string}
-   * @memberof MetadataResource
-   */
   filename?: string;
   /**
    *
-   * @type {MetadataResourceExternalManagementProperties}
+   * @type {string}
    * @memberof MetadataResource
    */
-  metadataResourceExternalManagementProperties?: MetadataResourceExternalManagementProperties;
-  /**
-   *
-   * @type {Date}
-   * @memberof MetadataResource
-   */
-  lastModification?: Date;
+  metadataUuid?: string;
 }
 
 /**
@@ -125,26 +125,26 @@ export function MetadataResourceFromJSONTyped(
     return json;
   }
   return {
-    id: json['id'] == null ? undefined : json['id'],
-    size: json['size'] == null ? undefined : json['size'],
-    version: json['version'] == null ? undefined : json['version'],
-    url: json['url'] == null ? undefined : json['url'],
-    metadataUuid:
-      json['metadataUuid'] == null ? undefined : json['metadataUuid'],
-    approved: json['approved'] == null ? undefined : json['approved'],
-    metadataId: json['metadataId'] == null ? undefined : json['metadataId'],
-    visibility: json['visibility'] == null ? undefined : json['visibility'],
-    filename: json['filename'] == null ? undefined : json['filename'],
     metadataResourceExternalManagementProperties:
       json['metadataResourceExternalManagementProperties'] == null
         ? undefined
         : MetadataResourceExternalManagementPropertiesFromJSON(
             json['metadataResourceExternalManagementProperties']
           ),
+    approved: json['approved'] == null ? undefined : json['approved'],
     lastModification:
       json['lastModification'] == null
         ? undefined
         : new Date(json['lastModification']),
+    metadataId: json['metadataId'] == null ? undefined : json['metadataId'],
+    visibility: json['visibility'] == null ? undefined : json['visibility'],
+    id: json['id'] == null ? undefined : json['id'],
+    size: json['size'] == null ? undefined : json['size'],
+    version: json['version'] == null ? undefined : json['version'],
+    url: json['url'] == null ? undefined : json['url'],
+    filename: json['filename'] == null ? undefined : json['filename'],
+    metadataUuid:
+      json['metadataUuid'] == null ? undefined : json['metadataUuid'],
   };
 }
 
@@ -153,22 +153,22 @@ export function MetadataResourceToJSON(value?: MetadataResource | null): any {
     return value;
   }
   return {
-    id: value['id'],
-    size: value['size'],
-    version: value['version'],
-    url: value['url'],
-    metadataUuid: value['metadataUuid'],
-    approved: value['approved'],
-    metadataId: value['metadataId'],
-    visibility: value['visibility'],
-    filename: value['filename'],
     metadataResourceExternalManagementProperties:
       MetadataResourceExternalManagementPropertiesToJSON(
         value['metadataResourceExternalManagementProperties']
       ),
+    approved: value['approved'],
     lastModification:
       value['lastModification'] == null
         ? undefined
         : value['lastModification'].toISOString(),
+    metadataId: value['metadataId'],
+    visibility: value['visibility'],
+    id: value['id'],
+    size: value['size'],
+    version: value['version'],
+    url: value['url'],
+    filename: value['filename'],
+    metadataUuid: value['metadataUuid'],
   };
 }

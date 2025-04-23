@@ -38,7 +38,7 @@
       "get": {
         "tags": ["records"],
         "summary": "List all metadata attachments",
-        "description": "\u003Ca href='https://docs.geonetwork-opensource.org/latest/user-guide/associating-resources/using-filestore/'\u003EMore info\u003C/a\u003E",
+        "description": "<a href='https://docs.geonetwork-opensource.org/latest/user-guide/associating-resources/using-filestore/'>More info</a>",
         "operationId": "getAllResources",
         "parameters": [
           {
@@ -356,7 +356,7 @@
                   "value": [
                     {
                       "xpath": ".//gmd:onLine[*/gmd:protocol/*/text() = 'OGC:WMS']",
-                      "value": "\u003Cgn_delete\u003E\u003C/gn_delete\u003E"
+                      "value": "<gn_delete></gn_delete>"
                     }
                   ]
                 },
@@ -365,7 +365,7 @@
                   "value": [
                     {
                       "xpath": "/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords",
-                      "value": "\u003Cgn_add\u003E\u003Cgmd:descriptiveKeywords xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\"\u003E\u003Cgmd:MD_Keywords\u003E\u003Cgmd:keyword\u003E\u003Cgco:CharacterString\u003EWaste water\u003C/gco:CharacterString\u003E\u003C/gmd:keyword\u003E\u003Cgmd:type\u003E\u003Cgmd:MD_KeywordTypeCode codeList=\"./resources/codeList.xml#MD_KeywordTypeCode\" codeListValue=\"theme\"/\u003E\u003C/gmd:type\u003E\u003C/gmd:MD_Keywords\u003E\u003C/gmd:descriptiveKeywords\u003E\u003C/gn_add\u003E"
+                      "value": "<gn_add><gmd:descriptiveKeywords xmlns:gmd=\"http://www.isotc211.org/2005/gmd\" xmlns:gco=\"http://www.isotc211.org/2005/gco\"><gmd:MD_Keywords><gmd:keyword><gco:CharacterString>Waste water</gco:CharacterString></gmd:keyword><gmd:type><gmd:MD_KeywordTypeCode codeList=\"./resources/codeList.xml#MD_KeywordTypeCode\" codeListValue=\"theme\"/></gmd:type></gmd:MD_Keywords></gmd:descriptiveKeywords></gn_add>"
                     }
                   ]
                 },
@@ -374,7 +374,7 @@
                   "value": [
                     {
                       "xpath": ".//gmd:keyword/gco:CharacterString[text() = 'wastewater']",
-                      "value": "\u003Cgn_replace\u003EWaste water\u003C/gn_replace\u003E"
+                      "value": "<gn_replace>Waste water</gn_replace>"
                     }
                   ]
                 }
@@ -609,7 +609,7 @@
             }
           },
           "200": {
-            "description": "In preview mode, the response is an XML document with the modified records.\n\n```xml\n\u003Cpreview\u003E\n    \u003Cgmd:MD_Metadata ...\n    \u003Cgmd:MD_Metadata ...\n\u003C/preview\u003E\n```\n",
+            "description": "In preview mode, the response is an XML document with the modified records.\n\n```xml\n<preview>\n    <gmd:MD_Metadata ...\n    <gmd:MD_Metadata ...\n</preview>\n```\n",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1742,7 +1742,7 @@
         "operationId": "previewDataAnalysisOnRecord",
         "parameters": [
           {
-            "name": "metadataUuid",
+            "name": "uuid",
             "in": "query",
             "required": true,
             "schema": {
@@ -1806,38 +1806,6 @@
         "operationId": "buildOverview",
         "parameters": [
           {
-            "name": "datasource",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "layer",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Overview built successfully",
-            "content": {
-              "image/png": {}
-            }
-          }
-        }
-      }
-    },
-    "/api/data/analysis/overviewForMetadataResource": {
-      "get": {
-        "tags": ["Data analysis"],
-        "operationId": "buildOverview_1",
-        "parameters": [
-          {
             "name": "uuid",
             "in": "query",
             "required": true,
@@ -1892,10 +1860,12 @@
     "/api/data/analysis/layers": {
       "get": {
         "tags": ["Data analysis"],
+        "summary": "Get the list of layers for a datasource",
+        "description": "    Raster datasets have a single layer named 'RASTER_LAYER'.\n",
         "operationId": "layers",
         "parameters": [
           {
-            "name": "metadataUuid",
+            "name": "uuid",
             "in": "query",
             "required": false,
             "schema": {
@@ -2006,7 +1976,7 @@
         "operationId": "analysisSynchMetadataResource",
         "parameters": [
           {
-            "name": "metadataUuid",
+            "name": "uuid",
             "in": "query",
             "required": false,
             "schema": {
@@ -2070,6 +2040,32 @@
         "operationId": "attributeStatistics",
         "parameters": [
           {
+            "name": "uuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["public", "private"]
+            }
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "name": "datasource",
             "in": "query",
             "required": true,
@@ -2118,6 +2114,32 @@
         "description": "        Values are order alphabetically and limited to 10 by default.\n",
         "operationId": "attributeCodelist",
         "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["public", "private"]
+            }
+          },
+          {
+            "name": "approved",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
           {
             "name": "datasource",
             "in": "query",
@@ -2207,6 +2229,24 @@
       "MetadataResource": {
         "type": "object",
         "properties": {
+          "metadataResourceExternalManagementProperties": {
+            "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
+          },
+          "approved": {
+            "type": "boolean"
+          },
+          "lastModification": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadataId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": ["public", "private"]
+          },
           "id": {
             "type": "string"
           },
@@ -2220,29 +2260,11 @@
           "url": {
             "type": "string"
           },
-          "metadataUuid": {
-            "type": "string"
-          },
-          "approved": {
-            "type": "boolean"
-          },
-          "metadataId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "visibility": {
-            "type": "string",
-            "enum": ["public", "private"]
-          },
           "filename": {
             "type": "string"
           },
-          "metadataResourceExternalManagementProperties": {
-            "$ref": "#/components/schemas/MetadataResourceExternalManagementProperties"
-          },
-          "lastModification": {
-            "type": "string",
-            "format": "date-time"
+          "metadataUuid": {
+            "type": "string"
           }
         }
       },

@@ -126,6 +126,7 @@ export class DataAnalysisPanelComponent {
         datasource: this.datasource(),
         layer: this.layername(),
         attribute: $event.value,
+        uuid: this.uuid(),
       })
       .then(
         response => {

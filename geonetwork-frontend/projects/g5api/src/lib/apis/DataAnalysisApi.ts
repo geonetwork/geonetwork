@@ -30,7 +30,7 @@ import {
 export interface AnalysisSynchMetadataResourceRequest {
   datasource: string;
   layer: string;
-  metadataUuid?: string;
+  uuid?: string;
   visibility?: AnalysisSynchMetadataResourceVisibilityEnum;
   approved?: boolean;
 }
@@ -44,26 +44,27 @@ export interface ApplyDataAnalysisOnRecordRequest {
 }
 
 export interface AttributeCodelistRequest {
+  uuid: string;
   datasource: string;
   layer: string;
   attribute: string;
+  visibility?: AttributeCodelistVisibilityEnum;
+  approved?: boolean;
   limit?: number;
 }
 
 export interface AttributeStatisticsRequest {
+  uuid: string;
   datasource: string;
   layer: string;
   attribute: string;
+  visibility?: AttributeStatisticsVisibilityEnum;
+  approved?: boolean;
 }
 
 export interface BuildOverviewRequest {
-  datasource: string;
-  layer: string;
-}
-
-export interface BuildOverview1Request {
   uuid: string;
-  visibility: BuildOverview1VisibilityEnum;
+  visibility: BuildOverviewVisibilityEnum;
   datasource: string;
   approved: boolean;
   layer: string;
@@ -71,13 +72,13 @@ export interface BuildOverview1Request {
 
 export interface LayersRequest {
   datasource: string;
-  metadataUuid?: string;
+  uuid?: string;
   visibility?: LayersVisibilityEnum;
   approved?: boolean;
 }
 
 export interface PreviewDataAnalysisOnRecordRequest {
-  metadataUuid: string;
+  uuid: string;
   datasource: string;
   layer: string;
   visibility?: PreviewDataAnalysisOnRecordVisibilityEnum;
@@ -111,8 +112,8 @@ export class DataAnalysisApi extends runtime.BaseAPI {
 
     const queryParameters: any = {};
 
-    if (requestParameters['metadataUuid'] != null) {
-      queryParameters['metadataUuid'] = requestParameters['metadataUuid'];
+    if (requestParameters['uuid'] != null) {
+      queryParameters['uuid'] = requestParameters['uuid'];
     }
 
     if (requestParameters['visibility'] != null) {
@@ -255,6 +256,13 @@ export class DataAnalysisApi extends runtime.BaseAPI {
     requestParameters: AttributeCodelistRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<object>>> {
+    if (requestParameters['uuid'] == null) {
+      throw new runtime.RequiredError(
+        'uuid',
+        'Required parameter "uuid" was null or undefined when calling attributeCodelist().'
+      );
+    }
+
     if (requestParameters['datasource'] == null) {
       throw new runtime.RequiredError(
         'datasource',
@@ -277,6 +285,18 @@ export class DataAnalysisApi extends runtime.BaseAPI {
     }
 
     const queryParameters: any = {};
+
+    if (requestParameters['uuid'] != null) {
+      queryParameters['uuid'] = requestParameters['uuid'];
+    }
+
+    if (requestParameters['visibility'] != null) {
+      queryParameters['visibility'] = requestParameters['visibility'];
+    }
+
+    if (requestParameters['approved'] != null) {
+      queryParameters['approved'] = requestParameters['approved'];
+    }
 
     if (requestParameters['datasource'] != null) {
       queryParameters['datasource'] = requestParameters['datasource'];
@@ -332,6 +352,13 @@ export class DataAnalysisApi extends runtime.BaseAPI {
     requestParameters: AttributeStatisticsRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<AttributeStatistics>>> {
+    if (requestParameters['uuid'] == null) {
+      throw new runtime.RequiredError(
+        'uuid',
+        'Required parameter "uuid" was null or undefined when calling attributeStatistics().'
+      );
+    }
+
     if (requestParameters['datasource'] == null) {
       throw new runtime.RequiredError(
         'datasource',
@@ -354,6 +381,18 @@ export class DataAnalysisApi extends runtime.BaseAPI {
     }
 
     const queryParameters: any = {};
+
+    if (requestParameters['uuid'] != null) {
+      queryParameters['uuid'] = requestParameters['uuid'];
+    }
+
+    if (requestParameters['visibility'] != null) {
+      queryParameters['visibility'] = requestParameters['visibility'];
+    }
+
+    if (requestParameters['approved'] != null) {
+      queryParameters['approved'] = requestParameters['approved'];
+    }
 
     if (requestParameters['datasource'] != null) {
       queryParameters['datasource'] = requestParameters['datasource'];
@@ -407,10 +446,31 @@ export class DataAnalysisApi extends runtime.BaseAPI {
     requestParameters: BuildOverviewRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters['uuid'] == null) {
+      throw new runtime.RequiredError(
+        'uuid',
+        'Required parameter "uuid" was null or undefined when calling buildOverview().'
+      );
+    }
+
+    if (requestParameters['visibility'] == null) {
+      throw new runtime.RequiredError(
+        'visibility',
+        'Required parameter "visibility" was null or undefined when calling buildOverview().'
+      );
+    }
+
     if (requestParameters['datasource'] == null) {
       throw new runtime.RequiredError(
         'datasource',
         'Required parameter "datasource" was null or undefined when calling buildOverview().'
+      );
+    }
+
+    if (requestParameters['approved'] == null) {
+      throw new runtime.RequiredError(
+        'approved',
+        'Required parameter "approved" was null or undefined when calling buildOverview().'
       );
     }
 
@@ -423,8 +483,20 @@ export class DataAnalysisApi extends runtime.BaseAPI {
 
     const queryParameters: any = {};
 
+    if (requestParameters['uuid'] != null) {
+      queryParameters['uuid'] = requestParameters['uuid'];
+    }
+
+    if (requestParameters['visibility'] != null) {
+      queryParameters['visibility'] = requestParameters['visibility'];
+    }
+
     if (requestParameters['datasource'] != null) {
       queryParameters['datasource'] = requestParameters['datasource'];
+    }
+
+    if (requestParameters['approved'] != null) {
+      queryParameters['approved'] = requestParameters['approved'];
     }
 
     if (requestParameters['layer'] != null) {
@@ -455,93 +527,6 @@ export class DataAnalysisApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
     await this.buildOverviewRaw(requestParameters, initOverrides);
-  }
-
-  /**
-   */
-  async buildOverview1Raw(
-    requestParameters: BuildOverview1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<void>> {
-    if (requestParameters['uuid'] == null) {
-      throw new runtime.RequiredError(
-        'uuid',
-        'Required parameter "uuid" was null or undefined when calling buildOverview1().'
-      );
-    }
-
-    if (requestParameters['visibility'] == null) {
-      throw new runtime.RequiredError(
-        'visibility',
-        'Required parameter "visibility" was null or undefined when calling buildOverview1().'
-      );
-    }
-
-    if (requestParameters['datasource'] == null) {
-      throw new runtime.RequiredError(
-        'datasource',
-        'Required parameter "datasource" was null or undefined when calling buildOverview1().'
-      );
-    }
-
-    if (requestParameters['approved'] == null) {
-      throw new runtime.RequiredError(
-        'approved',
-        'Required parameter "approved" was null or undefined when calling buildOverview1().'
-      );
-    }
-
-    if (requestParameters['layer'] == null) {
-      throw new runtime.RequiredError(
-        'layer',
-        'Required parameter "layer" was null or undefined when calling buildOverview1().'
-      );
-    }
-
-    const queryParameters: any = {};
-
-    if (requestParameters['uuid'] != null) {
-      queryParameters['uuid'] = requestParameters['uuid'];
-    }
-
-    if (requestParameters['visibility'] != null) {
-      queryParameters['visibility'] = requestParameters['visibility'];
-    }
-
-    if (requestParameters['datasource'] != null) {
-      queryParameters['datasource'] = requestParameters['datasource'];
-    }
-
-    if (requestParameters['approved'] != null) {
-      queryParameters['approved'] = requestParameters['approved'];
-    }
-
-    if (requestParameters['layer'] != null) {
-      queryParameters['layer'] = requestParameters['layer'];
-    }
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/api/data/analysis/overviewForMetadataResource`,
-        method: 'GET',
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.VoidApiResponse(response);
-  }
-
-  /**
-   */
-  async buildOverview1(
-    requestParameters: BuildOverview1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<void> {
-    await this.buildOverview1Raw(requestParameters, initOverrides);
   }
 
   /**
@@ -619,6 +604,8 @@ export class DataAnalysisApi extends runtime.BaseAPI {
   }
 
   /**
+   *     Raster datasets have a single layer named \'RASTER_LAYER\'.
+   * Get the list of layers for a datasource
    */
   async layersRaw(
     requestParameters: LayersRequest,
@@ -633,8 +620,8 @@ export class DataAnalysisApi extends runtime.BaseAPI {
 
     const queryParameters: any = {};
 
-    if (requestParameters['metadataUuid'] != null) {
-      queryParameters['metadataUuid'] = requestParameters['metadataUuid'];
+    if (requestParameters['uuid'] != null) {
+      queryParameters['uuid'] = requestParameters['uuid'];
     }
 
     if (requestParameters['visibility'] != null) {
@@ -665,6 +652,8 @@ export class DataAnalysisApi extends runtime.BaseAPI {
   }
 
   /**
+   *     Raster datasets have a single layer named \'RASTER_LAYER\'.
+   * Get the list of layers for a datasource
    */
   async layers(
     requestParameters: LayersRequest,
@@ -682,10 +671,10 @@ export class DataAnalysisApi extends runtime.BaseAPI {
     requestParameters: PreviewDataAnalysisOnRecordRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<string>> {
-    if (requestParameters['metadataUuid'] == null) {
+    if (requestParameters['uuid'] == null) {
       throw new runtime.RequiredError(
-        'metadataUuid',
-        'Required parameter "metadataUuid" was null or undefined when calling previewDataAnalysisOnRecord().'
+        'uuid',
+        'Required parameter "uuid" was null or undefined when calling previewDataAnalysisOnRecord().'
       );
     }
 
@@ -705,8 +694,8 @@ export class DataAnalysisApi extends runtime.BaseAPI {
 
     const queryParameters: any = {};
 
-    if (requestParameters['metadataUuid'] != null) {
-      queryParameters['metadataUuid'] = requestParameters['metadataUuid'];
+    if (requestParameters['uuid'] != null) {
+      queryParameters['uuid'] = requestParameters['uuid'];
     }
 
     if (requestParameters['visibility'] != null) {
@@ -818,12 +807,30 @@ export type ApplyDataAnalysisOnRecordVisibilityEnum =
 /**
  * @export
  */
-export const BuildOverview1VisibilityEnum = {
+export const AttributeCodelistVisibilityEnum = {
   Public: 'public',
   Private: 'private',
 } as const;
-export type BuildOverview1VisibilityEnum =
-  (typeof BuildOverview1VisibilityEnum)[keyof typeof BuildOverview1VisibilityEnum];
+export type AttributeCodelistVisibilityEnum =
+  (typeof AttributeCodelistVisibilityEnum)[keyof typeof AttributeCodelistVisibilityEnum];
+/**
+ * @export
+ */
+export const AttributeStatisticsVisibilityEnum = {
+  Public: 'public',
+  Private: 'private',
+} as const;
+export type AttributeStatisticsVisibilityEnum =
+  (typeof AttributeStatisticsVisibilityEnum)[keyof typeof AttributeStatisticsVisibilityEnum];
+/**
+ * @export
+ */
+export const BuildOverviewVisibilityEnum = {
+  Public: 'public',
+  Private: 'private',
+} as const;
+export type BuildOverviewVisibilityEnum =
+  (typeof BuildOverviewVisibilityEnum)[keyof typeof BuildOverviewVisibilityEnum];
 /**
  * @export
  */
