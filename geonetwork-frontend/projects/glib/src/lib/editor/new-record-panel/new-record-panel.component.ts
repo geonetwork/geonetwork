@@ -61,6 +61,7 @@ import { Message } from 'primeng/message';
 import { OverviewSelectorComponent } from '../overview-selector/overview-selector.component';
 import { HttpClient } from '@angular/common/http';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { DataAnalysisService } from '../data-analysis.service';
 
 @Component({
   selector: 'g-new-record-panel',
@@ -103,7 +104,7 @@ export class NewRecordPanelComponent implements OnInit {
   newRecordId = signal('');
 
   datasource = signal('');
-  datasourceFile = signal('');
+  selectedDatasourceFile = signal('');
 
   searchFilter = input<string | undefined>();
   searchActiveFilter = computed(() => {
@@ -153,6 +154,7 @@ export class NewRecordPanelComponent implements OnInit {
   api5Configuration = inject(API5_CONFIGURATION);
   apiConfiguration = inject(API_CONFIGURATION);
 
+  dataAnalysisService = inject(DataAnalysisService);
   http = inject(HttpClient);
 
   dataAnalysisApi = computed(() => {
@@ -206,13 +208,13 @@ export class NewRecordPanelComponent implements OnInit {
   isDatasourceAndTemplateSelected = computed(() => {
     return (
       this.template() !== '' &&
-      (this.datasource() !== '' || this.datasourceFile() != '') &&
+      this.datasource() !== '' &&
       this.layername() !== ''
     );
   });
 
   isDatasourceFileSelected = computed(() => {
-    return this.datasourceFile() !== '';
+    return this.dataAnalysisService.isLocalDatasource(this.datasource());
   });
 
   errorFetchingLayers = signal('');
@@ -353,7 +355,7 @@ export class NewRecordPanelComponent implements OnInit {
    * Retrieves the layers list for a datasource uploaded to a metadata.
    */
   private getLayerListForMetadataResource() {
-    if (!this.datasourceFile()) {
+    if (!this.dataAnalysisService.isLocalDatasource(this.datasource())) {
       return;
     }
 
@@ -362,7 +364,9 @@ export class NewRecordPanelComponent implements OnInit {
 
     const layersRequest: LayersRequest = {
       uuid: this.newRecordId(),
-      datasource: this.datasourceFile(),
+      datasource: this.dataAnalysisService.buildDatasourceParameter(
+        this.datasource()
+      ),
       visibility: LayersVisibilityEnum.Public,
       approved: true,
     };
@@ -396,10 +400,14 @@ export class NewRecordPanelComponent implements OnInit {
     this.isExecutingAnalysis.set(true);
     this.errorExecutingAnalysis.set('');
 
-    const analysisRequest = this.datasourceFile()
+    const analysisRequest = this.dataAnalysisService.isLocalDatasource(
+      this.datasource()
+    )
       ? {
           uuid: this.newRecordId(),
-          datasource: this.datasourceFile(),
+          datasource: this.dataAnalysisService.buildDatasourceParameter(
+            this.datasource()
+          ),
           visibility: LayersVisibilityEnum.Public,
           approved: true,
           layer: this.layername(),
@@ -445,9 +453,11 @@ export class NewRecordPanelComponent implements OnInit {
 
     const baseUrl =
         this.api5Configuration().basePath + '/api/data/analysis/overview',
-      overviewUrl = !this.datasourceFile()
+      overviewUrl = !this.dataAnalysisService.isLocalDatasource(
+        this.datasource()
+      )
         ? `${baseUrl}?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
-        : `${baseUrl}?uuid=${this.newRecordId()}&visibility=${LayersVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
+        : `${baseUrl}?uuid=${this.newRecordId()}&visibility=${LayersVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.dataAnalysisService.buildDatasourceParameter(this.datasource()))}&layer=${this.layername()}`;
     this.http
       .get(overviewUrl, {
         responseType: 'blob',
@@ -479,10 +489,14 @@ export class NewRecordPanelComponent implements OnInit {
     this.isCreatingPreview.set(true);
     this.errorPreviewingAnalysis.set('');
 
-    const previewAnalysisRequest = this.datasourceFile()
+    const previewAnalysisRequest = this.dataAnalysisService.isLocalDatasource(
+      this.datasource()
+    )
       ? {
           uuid: this.newRecordId(),
-          datasource: this.datasourceFile(),
+          datasource: this.dataAnalysisService.buildDatasourceParameter(
+            this.datasource()
+          ),
           visibility: LayersVisibilityEnum.Public,
           approved: true,
           layer: this.layername(),
@@ -517,10 +531,14 @@ export class NewRecordPanelComponent implements OnInit {
    * Updates the metadata record with the dataset analysis result.
    */
   applyAnalysisToRecord() {
-    const analysisRequest = this.datasourceFile()
+    const analysisRequest = this.dataAnalysisService.isLocalDatasource(
+      this.datasource()
+    )
       ? {
           uuid: this.newRecordId(),
-          datasource: this.datasourceFile(),
+          datasource: this.dataAnalysisService.buildDatasourceParameter(
+            this.datasource()
+          ),
           visibility: LayersVisibilityEnum.Public,
           approved: true,
           layer: this.layername(),
@@ -562,7 +580,6 @@ export class NewRecordPanelComponent implements OnInit {
 
   onDatasourceChange() {
     this.layername.set('');
-    this.datasourceFile.set('');
 
     // Reset layers and analysis values
     this.layers.set([]);
@@ -631,9 +648,13 @@ export class NewRecordPanelComponent implements OnInit {
    */
   onMetadataFileSelectedChange($event: ListboxChangeEvent) {
     if ($event.value) {
-      this.datasourceFile.set($event.value);
+      this.selectedDatasourceFile.set($event.value);
+      this.datasource.set(
+        this.dataAnalysisService.getLocalDatasourceString($event.value)
+      );
       this.getLayerListForMetadataResource();
     } else {
+      this.datasource.set('');
       this.onDatasourceChange();
     }
   }
@@ -678,12 +699,14 @@ export class NewRecordPanelComponent implements OnInit {
       .getAllResources(getAllResourcesRequest)
       .then(
         response => {
-          console.log(response);
           this.metadataFiles.set(response);
-
-          console.log(this.metadataFiles());
           if (response.length > 0 && selectFile) {
-            this.datasourceFile.set(response[0].filename!);
+            this.datasource.set(
+              this.dataAnalysisService.getLocalDatasourceString(
+                response[0].filename!
+              )
+            );
+            this.selectedDatasourceFile.set(response[0].filename!);
             this.getLayerListForMetadataResource();
           }
         },

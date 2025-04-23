@@ -187,6 +187,8 @@
                 >
               }
 
+              datasource: {{ datasource() }}
+
               @if (metadataFiles().length > 0) {
                 <div class="mb-10">
                   <div class="w-full">
@@ -195,7 +197,7 @@
                   <p-listbox
                     [options]="metadataFiles()"
                     (onChange)="onMetadataFileSelectedChange($event)"
-                    [(ngModel)]="datasourceFile"
+                    [(ngModel)]="selectedDatasourceFile"
                     optionLabel="filename"
                     optionValue="filename" />
                 </div>
