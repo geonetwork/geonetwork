@@ -9,9 +9,9 @@ geonetwork:
         mountPoint:
         # Use GDAL in a Docker container
         # https://github.com/OSGeo/gdal/tree/master/docker for images and supported formats
-        #command: docker run --rm -v /tmp:/data ghcr.io/osgeo/gdal:alpine-normal-latest
+#        command: docker run --rm -v /tmp:/data/tmp -v /catalogue/data:/data ghcr.io/osgeo/gdal:alpine-normal-latest
         # Mount point for the data directory
-        #mountPoint: /data
+#        mountPoint: /data
         processTimeoutInSeconds: 60
         cacheTimeoutInMilliseconds: 30000
   tasks:

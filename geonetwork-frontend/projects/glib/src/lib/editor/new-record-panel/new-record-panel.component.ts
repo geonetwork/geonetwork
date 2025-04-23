@@ -447,7 +447,7 @@ export class NewRecordPanelComponent implements OnInit {
         this.api5Configuration().basePath + '/api/data/analysis/overview',
       overviewUrl = !this.datasourceFile()
         ? `${baseUrl}?datasource=${encodeURIComponent(this.datasourceWithPrefix())}&layer=${this.layername()}`
-        : `${baseUrl}ForMetadataResource?uuid=${this.newRecordId()}&visibility=${LayersVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
+        : `${baseUrl}?uuid=${this.newRecordId()}&visibility=${LayersVisibilityEnum.Public}&approved=true&datasource=${encodeURIComponent(this.datasourceFile())}&layer=${this.layername()}`;
     this.http
       .get(overviewUrl, {
         responseType: 'blob',

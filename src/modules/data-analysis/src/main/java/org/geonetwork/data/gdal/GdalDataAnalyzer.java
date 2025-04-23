@@ -302,8 +302,8 @@ public class GdalDataAnalyzer implements RasterDataAnalyzer, VectorDataAnalyzer 
                 : dataSource.replace(baseDir, mountPoint);
     }
 
-    protected String buildDataSourceTempPath(String dataSource, String tempDir) {
-        return mountPoint.isEmpty() ? dataSource : dataSource.replace(tempDir, mountPoint);
+    protected String buildDataSourceTempPath(String dataSource) {
+        return mountPoint.isEmpty() ? dataSource : mountPoint + dataSource;
     }
 
     protected CommandLine buildUtilityCommand(String utility) {
