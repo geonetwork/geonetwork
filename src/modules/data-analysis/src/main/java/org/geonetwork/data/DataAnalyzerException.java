@@ -9,13 +9,10 @@ import org.geonetwork.exceptions.BaseApplicationException;
 import org.springframework.http.HttpStatus;
 
 public class DataAnalyzerException extends BaseApplicationException {
-    public DataAnalyzerException(String errorMessage) {
-        super(errorMessage);
+    public DataAnalyzerException(String errorCode) {
+        super(errorCode);
     }
 
-    public DataAnalyzerException(String errorMessage, HttpStatus httpStatus) {
-        super(errorMessage, httpStatus);
-    }
 
     public DataAnalyzerException(String errorCode, Object[] args) {
         super(errorCode, args);

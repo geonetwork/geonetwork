@@ -14,24 +14,16 @@ public abstract class BaseApplicationException extends RuntimeException {
     private final String errorCode;
     private final Object[] args;
 
-    public BaseApplicationException(String errorMessage) {
-        this("", new Object[] {}, errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    public BaseApplicationException(String errorMessage, HttpStatus httpStatus) {
-        this("", new Object[] {}, errorMessage, httpStatus);
+    public BaseApplicationException(String errorCode) {
+        this(errorCode, new Object[] {}, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public BaseApplicationException(String errorCode, Object[] args) {
-        this(errorCode, args, "", HttpStatus.INTERNAL_SERVER_ERROR);
+        this(errorCode, args, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public BaseApplicationException(String errorCode, Object[] args, HttpStatus httpStatus) {
-        this(errorCode, args, "", httpStatus);
-    }
-
-    private BaseApplicationException(String errorCode, Object[] args, String errorMessage, HttpStatus httpStatus) {
-        super(errorMessage);
+        super(errorCode);
         this.errorCode = errorCode;
         this.args = args;
         this.httpStatus = httpStatus;
