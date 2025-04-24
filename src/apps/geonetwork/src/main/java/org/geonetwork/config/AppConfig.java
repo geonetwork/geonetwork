@@ -1,3 +1,8 @@
+/*
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
 package org.geonetwork.config;
 
 import java.io.IOException;
@@ -10,6 +15,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
@@ -20,7 +26,7 @@ public class AppConfig {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 
         ResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
-        Resource [] resources = patternResolver.getResources("classpath*:messages.properties");
+        Resource[] resources = patternResolver.getResources("classpath*:messages.properties");
 
         Path classpath = Path.of(
                 org.apache.commons.lang3.StringUtils.substringBefore(System.getProperty("java.class.path"), ":"));
@@ -32,10 +38,15 @@ public class AppConfig {
             if (resource instanceof FileSystemResource) { // The executable is class file (target/classes etc).
                 // Extract class path to find resource name.
                 basename = classpath.relativize(resource.getFile().toPath()).toString();
-            } else if (resource instanceof ClassPathResource) { // The process is jar-like single file.
-                basename = ((ClassPathResource) resource).getPath();
+            } else if (resource
+                    instanceof ClassPathResource classPathResource) { // The process is jar-like single file.
+                basename = classPathResource.getPath();
+            } else if (resource instanceof UrlResource urlResource) {
+                basename = urlResource.getURL().getPath();
             } else {
-                throw new IllegalStateException("Resource must be either FileSystemResource or ClassPathResource.");
+                throw new IllegalStateException(String.format(
+                        "Resource must be either FileSystemResource or ClassPathResource. %s [Class: %s]",
+                        resource.getURL().toString(), resource.getClass()));
             }
 
             // Remove file extension and language code from file name.
