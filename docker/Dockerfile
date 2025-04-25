@@ -16,6 +16,7 @@ RUN apt-get -y update && \
     apt-get -y install --no-install-recommends \
         curl \
         unzip && \
+    userdmod -aG www-data jetty && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p ${DATA_DIR} && \
     chown -R jetty:jetty ${DATA_DIR} && \
