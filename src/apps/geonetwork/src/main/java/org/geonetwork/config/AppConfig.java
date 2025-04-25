@@ -42,7 +42,7 @@ public class AppConfig {
                     instanceof ClassPathResource classPathResource) { // The process is jar-like single file.
                 basename = classPathResource.getPath();
             } else if (resource instanceof UrlResource urlResource) {
-                basename = urlResource.getURL().getPath();
+                basename = urlResource.getURL().toString();
             } else {
                 throw new IllegalStateException(String.format(
                         "Resource must be either FileSystemResource or ClassPathResource. %s [Class: %s]",
