@@ -297,8 +297,9 @@ For GDAL, version 3.7.0+ is required (added support for JSON output in info comm
                     return new ResponseEntity<>(indexRecord, HttpStatus.OK);
                 }
             } catch (Exception rasterException) {
-                throw new DataAnalyzerException("API_DA_ERROR_DATASOURCE_ANALYSIS",
-                    new Object[] {datasource, vectorException.getMessage(), rasterException.getMessage()});
+                throw new DataAnalyzerException(
+                        "API_DA_ERROR_DATASOURCE_ANALYSIS",
+                        new Object[] {datasource, vectorException.getMessage(), rasterException.getMessage()});
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

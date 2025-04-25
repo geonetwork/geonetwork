@@ -13,7 +13,6 @@ public class DataAnalyzerException extends BaseApplicationException {
         super(errorCode);
     }
 
-
     public DataAnalyzerException(String errorCode, Object[] args) {
         super(errorCode, args);
     }
