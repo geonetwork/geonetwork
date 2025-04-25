@@ -27,18 +27,16 @@ public class MvcConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        List<String> jsAppList = List.of("/webcomponents/");
-        if (homeUrl.equals("/")) {
-            jsAppList.add("/");
-        } else {
+        List<String> jsAppList = List.of("/webcomponents/", "/");
+        if (!homeUrl.equals("/")) {
+            jsAppList = List.of("/webcomponents/");
             registry.addViewController("/").setViewName("redirect:" + homeUrl);
         }
         jsAppList.forEach(app -> {
-            registry.addViewController(app + "{path1:[a-zA-Z0-9_-]+}").setViewName("forward:" + app + "index.html");
-            registry.addViewController(app + "{path1}/{path2:[a-zA-Z0-9_-]+}")
-                    .setViewName("forward:" + app + "index.html");
-            registry.addViewController(app + "{path1}/{path2}/{path3:[a-zA-Z0-9_-]+}")
-                    .setViewName("forward:" + app + "index.html");
+            String indexPath = "forward:" + app + "index.html";
+            registry.addViewController(app + "{path1:[a-zA-Z0-9_-]+}").setViewName(indexPath);
+            registry.addViewController(app + "{path1}/{path2:[a-zA-Z0-9_-]+}").setViewName(indexPath);
+            registry.addViewController(app + "{path1}/{path2}/{path3:[a-zA-Z0-9_-]+}").setViewName(indexPath);
         });
         registry.addViewController("/signin").setViewName("signin");
     }
