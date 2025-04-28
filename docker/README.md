@@ -1,6 +1,11 @@
 # 🐳 Docker Compose for GeoNetwork 5 Development & Testing
 This project provides Docker Compose configurations to simplify local development and testing of GeoNetwork 5. It helps set up all necessary services without dealing with infrastructure dependencies manually.
 
+> [!IMPORTANT]
+> These configurations are created for the sole purpose of testing GeoNetwork 5 locally. Geonetwork 4 is accessible on port 8080, and this should be avoided in a production environment. Also it would be better to use [JWT Headers](https://github.com/geonetwork/geonetwork/blob/main/docs/manual/docs/GN4-Integration/index.md#setting-up-gn5-and-gn4).
+
+
+
 ## ⚙️ Development Setup (docker-compose-dev.yml)
 This composition includes:
 
