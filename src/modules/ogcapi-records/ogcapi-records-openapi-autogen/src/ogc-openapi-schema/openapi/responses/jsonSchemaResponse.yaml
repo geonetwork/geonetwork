@@ -1,0 +1,9 @@
+---
+description: JSON Schema response
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/jsonSchema.yaml'
+  text/html:
+    schema:
+      type: string

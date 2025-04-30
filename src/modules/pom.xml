@@ -23,5 +23,10 @@
     <module>indexing</module>
     <module>searching</module>
     <module>editing</module>
+    <module>ogcapi-records</module>
   </modules>
+
+  <properties>
+    <swagger.version>2.1.2</swagger.version>
+  </properties>
 </project>

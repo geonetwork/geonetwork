@@ -17,18 +17,20 @@
   <artifactId>gn-main-app</artifactId>
   <name>GeoNetwork main app</name>
   <description>The main GeoNetwork application</description>
-
   <dependencies>
+
     <dependency>
       <groupId>org.geonetwork</groupId>
-      <artifactId>gn-index-client</artifactId>
+      <artifactId>gn-ogcapi-records-implementation</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.geonetwork</groupId>
-      <artifactId>gn-index-model</artifactId>
+      <artifactId>ogcapi-records-shared</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-indexing</artifactId>
@@ -37,6 +39,11 @@
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-searching</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-editing</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -126,6 +133,7 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
     </dependency>
+
     <!-- Patched XML Resolver 1.2 from apache xml-commons - fixes problems
                with windows URLs
     <dependency>
@@ -167,16 +175,6 @@
       <artifactId>spring-boot-starter-batch</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.geonetwork</groupId>
-      <artifactId>gn-schemas</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geonetwork</groupId>
-      <artifactId>gn-constants</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
@@ -201,7 +199,6 @@
       <artifactId>spring-boot-test</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
