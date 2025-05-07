@@ -41,14 +41,14 @@ public class FormattingController {
     private final IdentityFormatter identityFormatter;
     //    private static final String PARAM_LANGUAGE_ALL_VALUES = "all";
 
-    @GetMapping(
-            value = {"{formatterId:.+}"},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @io.swagger.v3.oas.annotations.Operation(
             summary = "Get available formatter for the metadata record depending on the metadata schema.")
     @ResponseBody
     public void getRecordFormatterList() {
-        // TODO
+        // TODO: Get metadata schema and list available formatters for the schemas.
+        // Maybe adding a redirect to a new /standards/{schema}/formatters endpoint could make sense
+        // This can be consistent with list of formats advertised in OGC API Records link
     }
 
     @GetMapping(
