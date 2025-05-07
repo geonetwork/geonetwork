@@ -62,33 +62,22 @@
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
     </dependency>
-
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>33.3.1-jre</version>
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>5.10.3</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.geonetwork</groupId>
-      <artifactId>gn-index-model</artifactId>
-      <version>${project.version}</version>
-      <scope>compile</scope>
-    </dependency>
-
   </dependencies>
 
   <build>
