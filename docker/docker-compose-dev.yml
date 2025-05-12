@@ -1,0 +1,6 @@
+services:
+  geonetwork4:
+    ports:
+      - 8080:8080
+
+
