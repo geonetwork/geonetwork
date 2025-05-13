@@ -55,6 +55,7 @@ public class GeoNetwork4BasedIntegrationTest implements ApplicationContextInitia
     @Override
     public void initialize(ConfigurableApplicationContext ctx) {
         TestPropertyValues.of(
+                        "geonetwork.4.url=" + getGeoNetworkCoreUrl(),
                         "geonetwork.url=" + getGeoNetworkCoreUrl(),
                         "spring.datasource.url=" + getGeoNetworkDatabaseUrl(),
                         "spring.datasource.username=geonetwork",
