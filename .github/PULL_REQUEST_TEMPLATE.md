@@ -3,8 +3,10 @@
   Keep it concise and focused.
 -->
 
+<!--
+    As PR title use a short, descriptive title in imperative form (e.g., "Fix map zoom regression").
+-->
 # PR Title
-A short, descriptive title in imperative form (e.g., "Fix map zoom regression").
 
 ## Description
 <!-- Describe what the change does and why. Keep it to 1–2 sentences. -->
