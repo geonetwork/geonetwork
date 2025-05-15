@@ -49,7 +49,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class FilesystemStore extends AbstractStore {
-    public static final String DEFAULT_FILTER = "*.*";
+    public static final String DEFAULT_FILTER = "*";
 
     // TODO: Use settingManager.getNodeURL()?
     @Value("${geonetwork.url}")

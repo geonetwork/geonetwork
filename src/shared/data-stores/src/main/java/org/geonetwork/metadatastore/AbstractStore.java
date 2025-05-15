@@ -8,7 +8,9 @@ package org.geonetwork.metadatastore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -25,6 +27,8 @@ import org.geonetwork.metadata.IMetadataManager;
 import org.geonetwork.metadata.MetadataNotFoundException;
 import org.geonetwork.metadata.config.MetadataDirConfig;
 import org.geonetwork.metadata.datadir.MetadataDirPrivileges;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.multipart.MultipartFile;
 
 // TODO: Add access manager support
@@ -162,7 +166,36 @@ public abstract class AbstractStore implements Store {
     public final MetadataResource putResource(
             String metadataUuid, URL fileUrl, MetadataResourceVisibility visibility, Boolean approved)
             throws Exception {
-        return putResource(metadataUuid, getFilenameFromUrl(fileUrl), fileUrl.openStream(), null, visibility, approved);
+
+        HttpURLConnection connection = (HttpURLConnection) fileUrl.openConnection();
+        connection.setInstanceFollowRedirects(true);
+        connection.setRequestMethod("GET");
+        int responseCode = connection.getResponseCode();
+        if (responseCode != HttpURLConnection.HTTP_OK) {
+            throw new IOException("Unexpected response code: " + responseCode);
+        }
+
+        // Extract filename from Content-Disposition header if present otherwise use the filename from the URL
+        String contentDisposition = connection.getHeaderField(HttpHeaders.CONTENT_DISPOSITION);
+        String filename = null;
+        if (contentDisposition != null) {
+            filename = ContentDisposition.parse(contentDisposition).getFilename();
+        }
+        // If follow redirect, get the filename from the redirected URL
+        if (filename == null && connection.getInstanceFollowRedirects()) {
+            String redirectUrl = connection.getURL().toString();
+            if (redirectUrl != null) {
+                filename = getFilenameFromUrl(new URL(redirectUrl));
+            }
+        }
+        if (filename == null || filename.isEmpty()) {
+            filename = getFilenameFromUrl(fileUrl);
+        }
+
+        MetadataResource metadataResource =
+                putResource(metadataUuid, filename, connection.getInputStream(), null, visibility, approved);
+        connection.disconnect();
+        return metadataResource;
     }
 
     @Override
