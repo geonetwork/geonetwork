@@ -5,12 +5,15 @@
  */
 package org.geonetwork.exceptions;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -178,20 +181,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({BaseApplicationException.class})
+    @SuppressFBWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
     public ResponseEntity<Object> handleBaseApplicationException(BaseApplicationException exception) {
-        final String errorMessage = getMessageSource()
-                .getMessage(
-                        exception.getErrorCode(),
-                        exception.getArgs(),
-                        exception.getLocalizedMessage(),
-                        LocaleContextHolder.getLocale());
-        final String errorDetails = getMessageSource()
-                .getMessage(exception.getErrorCode() + "_DETAILS", null, "", LocaleContextHolder.getLocale());
-        final String errorHint = getMessageSource()
-                .getMessage(exception.getErrorCode() + "_HINT", null, "", LocaleContextHolder.getLocale());
+        final Locale locale = LocaleContextHolder.getLocale();
 
-        final ApiError apiError = new ApiError(
-                exception.getHttpStatus(), errorMessage, exception.getErrorCode(), errorDetails, errorHint);
+        MessageSource messageSource = getMessageSource();
+        if (messageSource != null) {
+            final String errorMessage = messageSource.getMessage(
+                    exception.getErrorCode(), exception.getArgs(), exception.getLocalizedMessage(), locale);
+            final String errorDetails =
+                    messageSource.getMessage(exception.getErrorCode() + "_DETAILS", null, "", locale);
+            final String errorHint = messageSource.getMessage(exception.getErrorCode() + "_HINT", null, "", locale);
+
+            final ApiError apiError = new ApiError(
+                    exception.getHttpStatus(), errorMessage, exception.getErrorCode(), errorDetails, errorHint);
+            return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+        }
+        final ApiError apiError =
+                new ApiError(exception.getHttpStatus(), exception.getLocalizedMessage(), exception.getErrorCode());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 

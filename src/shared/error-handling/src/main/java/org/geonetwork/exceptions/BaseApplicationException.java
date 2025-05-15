@@ -5,10 +5,11 @@
  */
 package org.geonetwork.exceptions;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
+@Getter(onMethod_ = @SuppressFBWarnings({"EI_EXPOSE_REP"}))
 public abstract class BaseApplicationException extends RuntimeException {
     private final HttpStatus httpStatus;
     private final String errorCode;

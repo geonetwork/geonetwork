@@ -36,7 +36,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
             String indexPath = "forward:" + app + "index.html";
             registry.addViewController(app + "{path1:[a-zA-Z0-9_-]+}").setViewName(indexPath);
             registry.addViewController(app + "{path1}/{path2:[a-zA-Z0-9_-]+}").setViewName(indexPath);
-            registry.addViewController(app + "{path1}/{path2}/{path3:[a-zA-Z0-9_-]+}").setViewName(indexPath);
+            registry.addViewController(app + "{path1}/{path2}/{path3:[a-zA-Z0-9_-]+}")
+                    .setViewName(indexPath);
         });
         registry.addViewController("/signin").setViewName("signin");
     }
