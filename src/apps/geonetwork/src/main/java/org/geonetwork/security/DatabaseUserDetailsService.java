@@ -25,7 +25,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 
 @Slf4j
 public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticationProvider
@@ -90,12 +89,12 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
 
         org.geonetwork.domain.User currentUser = user.get();
 
-        OAuth2UserAuthority authority = geoNetworkUserService.buildUserAuthority(user.get());
+        var authority = geoNetworkUserService.buildUserAuthority(user.get());
 
         return org.springframework.security.core.userdetails.User.withUsername(currentUser.getUsername())
                 .password(currentUser.getPassword())
                 .authorities(Collections.singletonList(authority))
-                .roles(currentUser.getProfile().name())
+                //  .roles(currentUser.getProfile().name())
                 .build();
     }
 
