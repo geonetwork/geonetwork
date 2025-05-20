@@ -24,7 +24,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CachingPortalIds {
 
-    @Autowired
     SourceRepository sourceRepository;
 
     @Autowired
@@ -43,14 +42,6 @@ public class CachingPortalIds {
                 sourceRepository.findAll().stream().map(x -> x.getUuid()).toList();
         return portalUUIDs;
     }
-
-    //    @Autowired
-    //    CacheManager cacheManager;
-    //
-    //    /** Clean cache NOW. */
-    //    public void clear() {
-    //        cacheManager.getCache("source-portal-ids").invalidate();
-    //    }
 
     /** Clean cache NOW. */
     @CacheEvict("source-portal-ids")
