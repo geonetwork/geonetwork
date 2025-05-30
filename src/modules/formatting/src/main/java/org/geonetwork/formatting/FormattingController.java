@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.Metadata;
@@ -36,19 +37,25 @@ import org.springframework.web.context.request.NativeWebRequest;
 public class FormattingController {
     private final IMetadataManager metadataManager;
     private final IMetadataAccessManager metadataAccessManager;
-    private final XsltFormatter xsltFormatter;
-    private final IndexFormatter indexFormatter;
-    private final IdentityFormatter identityFormatter;
+    private final FormatterFactory formatterFactory;
+
     //    private static final String PARAM_LANGUAGE_ALL_VALUES = "all";
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @io.swagger.v3.oas.annotations.Operation(
             summary = "Get available formatter for the metadata record depending on the metadata schema.")
     @ResponseBody
-    public void getRecordFormatterList() {
-        // TODO: Get metadata schema and list available formatters for the schemas.
-        // Maybe adding a redirect to a new /standards/{schema}/formatters endpoint could make sense
-        // This can be consistent with list of formats advertised in OGC API Records link
+    public List<String> getRecordFormatterList(
+            @Parameter(description = API_PARAM_RECORD_UUID, required = true) @PathVariable String metadataUuid,
+            @RequestParam(required = false, defaultValue = "true") boolean approved)
+            throws Exception {
+        Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
+
+        if (!metadataAccessManager.canView(metadata.getId())) {
+            throw new AccessDeniedException("User is not permitted to access this resource");
+        }
+
+        return formatterFactory.getAvailableFormatters(metadata);
     }
 
     @GetMapping(
@@ -94,6 +101,12 @@ public class FormattingController {
         // ApplicationContextHolder.get().getBean(MetadataRepository.class).findOneByUuid(metadataUuid);
         //        }
 
+        if (!formatterFactory.getAvailableFormatters(metadata).contains(formatterId)) {
+            throw new FormatterException(String.format(
+              "Formatter not found. Hint: Available formatters for %s standard are: %s",
+              metadata.getSchemaid(), formatterFactory.getAvailableFormatters(metadata)));
+        }
+
         String acceptHeader = StringUtils.isBlank(request.getHeader(HttpHeaders.ACCEPT))
                 ? MediaType.TEXT_HTML_VALUE
                 : request.getHeader(HttpHeaders.ACCEPT);
@@ -130,16 +143,7 @@ public class FormattingController {
 
         servletResponse.setContentType(formatType.contentType);
 
-        switch (formatterId) {
-            case "xml":
-                identityFormatter.format(metadata, formatterId, servletResponse.getOutputStream());
-                break;
-            case "json":
-                indexFormatter.format(metadata, formatterId, servletResponse.getOutputStream());
-                break;
-            default:
-                xsltFormatter.format(metadata, formatterId, servletResponse.getOutputStream());
-                break;
-        }
+        Formatter formatter = formatterFactory.getFormatter(metadata, formatterId);
+        formatter.format(metadata, formatterId, servletResponse.getOutputStream());
     }
 }

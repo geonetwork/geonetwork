@@ -65,7 +65,7 @@
                 xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:datacite="http://datacite.org/schema/kernel-4"
-                version="2.0"
+                version="3.0"
                 exclude-result-prefixes="#all">
 
   <xsl:output method="xml"

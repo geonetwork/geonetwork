@@ -18,4 +18,9 @@ public class IdentityFormatter implements Formatter {
     public void format(Metadata metadata, String formatterId, OutputStream outputStream) throws IOException {
         outputStream.write(metadata.getData().getBytes(StandardCharsets.UTF_8));
     }
+
+    @Override
+    public boolean isFormatterAvailable(Metadata metadata, String formatterId) {
+        return true;
+    }
 }

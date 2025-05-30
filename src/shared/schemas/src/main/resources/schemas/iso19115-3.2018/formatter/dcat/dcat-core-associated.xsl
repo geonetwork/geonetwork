@@ -6,7 +6,7 @@
     available at the root application directory.
 
 -->
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
@@ -90,6 +90,8 @@
   -->
   <xsl:template mode="iso19115-3-to-dcat"
                 match="mdb:identificationInfo/*/mri:associatedResource">
+    <!--
+    Disabled / See dcat-core-resource using the related API
     <xsl:variable name="associationType"
                   select="*/mri:associationType/*/@codeListValue"/>
     <xsl:variable name="initiativeType"
@@ -113,6 +115,6 @@
                            select="*/mri:metadataReference|*/mri:aggregateDataSetIdentifier">
         <xsl:with-param name="isAbout" select="false()"/>
       </xsl:apply-templates>
-    </xsl:element>
+    </xsl:element>-->
   </xsl:template>
 </xsl:stylesheet>

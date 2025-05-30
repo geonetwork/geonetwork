@@ -64,7 +64,7 @@
                 xmlns:tr="java:org.fao.geonet.api.records.formatters.SchemaLocalizations"
                 xmlns:saxon="http://saxon.sf.net/"
                 xmlns:gn="http://www.fao.org/geonetwork"
-                version="2.0"
+                version="3.0"
                 extension-element-prefixes="saxon"
                 exclude-result-prefixes="#all">
 

@@ -8,6 +8,7 @@ package org.geonetwork.schemas;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,6 +16,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +70,7 @@ public class MetadataSchema {
     private boolean canEdit = false;
     private boolean readwriteUUID = false;
     private List<Element> rootAppInfoElements;
+    private List<String> xslFormatters = new ArrayList<>();
 
     //    private SchematronRepository schemaRepo;
     //    private SchematronCriteriaGroupRepository criteriaGroupRepository;
@@ -118,6 +121,10 @@ public class MetadataSchema {
         this.schemaPlugin = SchemaManager.getSchemaPlugin(schemaName);
     }
 
+    public List<String> getFormatters() {
+        return xslFormatters;
+    }
+
     @JsonIgnore
     @SuppressWarnings("unused")
     public Editor getConfigEditor() {
@@ -144,6 +151,11 @@ public class MetadataSchema {
     /** Set schema directory */
     public void setSchemaDir(Path schemaDir) {
         this.schemaDir = schemaDir;
+
+        Path formatterDir = schemaDir.resolve("formatter");
+        xslFormatters = Arrays.stream(new File(formatterDir.toString()).listFiles(File::isDirectory))
+                .map(File::getName)
+                .collect(Collectors.toList());
     }
 
     // ---------------------------------------------------------------------------

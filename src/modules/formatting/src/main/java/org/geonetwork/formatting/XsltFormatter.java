@@ -18,9 +18,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class XsltFormatter implements Formatter {
+
     @Override
     public void format(Metadata metadata, String formatterId, OutputStream outputStream) {
-        String formatterXslt = String.format("schemas/%s/formatter/%s/view.xsl", metadata.getSchemaid(), formatterId);
+        String formatterXslt = getFormatterXslt(metadata, formatterId);
         try {
             XsltUtil.transformXmlAsOutputStream(
                     metadata.getData(), new ClassPathResource(formatterXslt), new HashMap<>(), outputStream);
@@ -31,5 +32,15 @@ public class XsltFormatter implements Formatter {
                             formatterId, metadata.getSchemaid(), "..."),
                     e);
         }
+    }
+
+    @Override
+    public boolean isFormatterAvailable(Metadata metadata, String formatterId) {
+        String formatterXslt = String.format("schemas/%s/formatter/%s/view.xsl", metadata.getSchemaid(), formatterId);
+        return new ClassPathResource(formatterXslt).exists();
+    }
+
+    private String getFormatterXslt(Metadata metadata, String formatterId) {
+        return String.format("schemas/%s/formatter/%s/view.xsl", metadata.getSchemaid(), formatterId);
     }
 }

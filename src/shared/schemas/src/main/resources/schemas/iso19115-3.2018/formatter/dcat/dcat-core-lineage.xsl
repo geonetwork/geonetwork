@@ -6,7 +6,7 @@
     available at the root application directory.
 
 -->
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0"
                 xmlns:adms="http://www.w3.org/ns/adms#"
@@ -33,11 +33,11 @@
           <xsl:variable name="parentName"
                         select="local-name(*)"/>
 
-          <xsl:for-each select="$languages/@iso3code">
+          <xsl:for-each select="$languages">
             <xsl:variable name="codelistTranslation"
-                                select="util:getCodelistTranslation($parentName, string($codelistKey), string(current()))"/>
+                                select="util:getCodelistTranslation($parentName, string($codelistKey), string(current()/@iso3code))"/>
 
-            <skos:prefLabel xml:lang="{current()}"><xsl:value-of select="$codelistTranslation"/></skos:prefLabel>
+            <skos:prefLabel xml:lang="{current()/@iso2code}"><xsl:value-of select="$codelistTranslation"/></skos:prefLabel>
           </xsl:for-each>
         </xsl:if>
       </skos:Concept>
