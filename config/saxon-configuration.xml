@@ -14,5 +14,7 @@
     <extensionFunction>org.geonetwork.utility.xml.xslt.GmlToGeoJsonFn</extensionFunction>
     <extensionFunction>org.geonetwork.utility.xml.xslt.Md5HexFn</extensionFunction>
     <extensionFunction>org.geonetwork.utility.xml.xslt.GetCodeListTranslationFn</extensionFunction>
+    <extensionFunction>org.geonetwork.utility.xml.xslt.TwoCharLangCodeFn</extensionFunction>
+    <extensionFunction>org.geonetwork.utility.xml.xslt.GetServerURLFn</extensionFunction>
   </resources>
 </configuration>

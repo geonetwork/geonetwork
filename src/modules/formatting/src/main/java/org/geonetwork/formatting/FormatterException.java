@@ -6,6 +6,10 @@
 package org.geonetwork.formatting;
 
 public class FormatterException extends RuntimeException {
+    public FormatterException(String message) {
+        super(message);
+    }
+
     public FormatterException(String message, Exception e) {
         super(message, e);
     }

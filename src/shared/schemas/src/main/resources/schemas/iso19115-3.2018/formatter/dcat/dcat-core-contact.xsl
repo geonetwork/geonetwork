@@ -6,7 +6,7 @@
     available at the root application directory.
 
 -->
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
@@ -110,8 +110,8 @@
                   as="xs:boolean"
                   select="local-name() = 'CI_Individual'"/>
     <xsl:variable name="individualName"
-                  as="xs:string?"
-                  select="if ($isindividual) then cit:name/*/text() else ''"/>
+                  as="node()?"
+                  select="if ($isindividual) then cit:name else ()"/>
     <xsl:variable name="organisation"
                   as="node()?"
                   select="if ($isindividual) then ancestor::cit:CI_Organisation else ."/>
@@ -120,9 +120,12 @@
       <xsl:call-template name="rdf-object-ref-attribute"/>
 
       <rdf:type rdf:resource="http://www.w3.org/2006/vcard/ns#Organization"/>
-      <xsl:if test="$individualName != ''">
-        <vcard:fn><xsl:value-of select="$individualName"/></vcard:fn>
-      </xsl:if>
+
+      <xsl:for-each select="$individualName">
+        <xsl:call-template name="rdf-localised">
+        <xsl:with-param name="nodeName" select="'vcard:fn'"/>      </xsl:call-template>
+      </xsl:for-each>
+
       <xsl:for-each select="$organisation/cit:name">
         <vcard:org>
           <rdf:Description>
@@ -187,8 +190,8 @@
                   as="xs:boolean"
                   select="local-name() = 'CI_Individual'"/>
     <xsl:variable name="individualName"
-                  as="xs:string?"
-                  select="if ($isindividual) then cit:name/*/text() else ''"/>
+                  as="node()?"
+                  select="if ($isindividual) then cit:name else ()"/>
     <xsl:variable name="organisation"
                   as="node()?"
                   select="if ($isindividual) then ancestor::cit:CI_Organisation else ."/>
@@ -206,11 +209,13 @@
         <xsl:with-param name="reference" select="$reference"/>
       </xsl:call-template>
       <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/{if ($isindividual) then 'Person' else 'Organization'}"/>
-      <rdf:type rdf:resource="http://www.w3.org/ns/prov#Agent"/>
 
       <xsl:choose>
         <xsl:when test="$isindividual">
-          <foaf:name><xsl:value-of select="$individualName"/></foaf:name>
+          <xsl:for-each select="$individualName">
+            <xsl:call-template name="rdf-localised">
+              <xsl:with-param name="nodeName" select="'foaf:name'"/>            </xsl:call-template>
+          </xsl:for-each>
           <org:memberOf>
             <xsl:for-each select="$organisation/cit:name">
               <foaf:Organization>
