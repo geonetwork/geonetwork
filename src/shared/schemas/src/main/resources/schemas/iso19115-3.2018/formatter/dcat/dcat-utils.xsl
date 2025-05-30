@@ -6,7 +6,7 @@
     available at the root application directory.
 
 -->
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0"
@@ -25,6 +25,7 @@
                 xmlns:adms="http://www.w3.org/ns/adms#"
                 xmlns:skos="http://www.w3.org/2004/02/skos/core#"
                 xmlns:gn-fn-dcat="http://geonetwork-opensource.org/xsl/functions/dcat"
+                xmlns:util="https://geonetwork-opensource.org/xsl-extension"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 exclude-result-prefixes="#all">
 
@@ -43,7 +44,7 @@
 
     <xsl:if test="*/text() != ''">
       <xsl:element name="{$nodeName}">
-        <xsl:attribute name="xml:lang" select="$languages[@default]/@iso3code"/>
+        <xsl:attribute name="xml:lang" select="$languages[@default]/@iso2code"/>
         <xsl:value-of select="*/text()"/>
       </xsl:element>
     </xsl:if>
@@ -62,7 +63,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:element name="{$nodeName}">
-            <xsl:attribute name="xml:lang" select="$languages[concat('#', @id) = $translationLanguage]/@iso3code"/>
+            <xsl:attribute name="xml:lang" select="$languages[concat('#', @id) = $translationLanguage]/@iso2code"/>
             <xsl:value-of select="text()"/>
           </xsl:element>
         </xsl:otherwise>
@@ -70,6 +71,20 @@
     </xsl:for-each>
   </xsl:template>
 
+  <xsl:template name="rdf-index-field-localised">
+    <xsl:param name="nodeName"
+               as="xs:string"/>
+    <xsl:param name="field"
+               as="node()"/>
+
+    <xsl:for-each select="$field/*[starts-with(local-name(.), 'lang')]">
+      <xsl:variable name="language" select="substring-after(local-name(.), 'lang')"/>
+      <xsl:element name="{$nodeName}">
+        <xsl:attribute name="xml:lang" select="util:twoCharLangCode($language)"/>
+        <xsl:value-of select="."/>
+      </xsl:element>
+    </xsl:for-each>
+  </xsl:template>
 
   <xsl:template name="rdf-not-localised">
     <xsl:param name="nodeName"

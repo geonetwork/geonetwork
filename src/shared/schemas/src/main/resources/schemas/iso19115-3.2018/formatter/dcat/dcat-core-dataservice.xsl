@@ -6,7 +6,7 @@
     available at the root application directory.
 
 -->
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -38,7 +38,8 @@
   <xsl:template mode="iso19115-3-to-dcat"
                 match="srv:containsOperations/*/srv:connectPoint/*[not(
                                 matches(cit:protocol/(gco:CharacterString|gcx:Anchor)/text(), $endpointDescriptionProtocolsExpression, 'i')
-                                or matches(cit:linkage/(gco:CharacterString|gcx:Anchor)/text(), $endpointDescriptionUrlExpression, 'i'))]/cit:linkage">
+                                or matches(cit:linkage/(gco:CharacterString|gcx:Anchor)/text(), $endpointDescriptionUrlExpression, 'i')
+                                or cit:function/*/@codeListValue = 'information')]/cit:linkage">
 
     <dcat:endpointURL rdf:resource="{normalize-space((gco:CharacterString|gcx:Anchor)/text())}"/>
   </xsl:template>
@@ -61,7 +62,8 @@
   <xsl:template mode="iso19115-3-to-dcat"
                 match="srv:containsOperations/*/srv:connectPoint/*[
                                 matches(cit:protocol/(gco:CharacterString|gcx:Anchor)/text(), $endpointDescriptionProtocolsExpression, 'i')
-                                or matches(cit:linkage/(gco:CharacterString|gcx:Anchor)/text(), $endpointDescriptionUrlExpression, 'i')]/cit:linkage">
+                                or matches(cit:linkage/(gco:CharacterString|gcx:Anchor)/text(), $endpointDescriptionUrlExpression, 'i')
+                                or cit:function/*/@codeListValue = 'information']/cit:linkage">
     <dcat:endpointDescription rdf:resource="{normalize-space((gco:CharacterString|gcx:Anchor)/text())}"/>
   </xsl:template>
 
@@ -72,8 +74,13 @@
   -->
   <xsl:template mode="iso19115-3-to-dcat"
                 match="srv:operatesOn">
+    <!--
+    Can be disabled for catalogues describing services and
+    associating them with datasets.
+    See related API in dcat-core-resource
     <dcat:servesDataset>
       <dcat:Dataset rdf:about="{if (@xlink:href) then @xlink:href else @uuidref}"/>
     </dcat:servesDataset>
+    -->
   </xsl:template>
 </xsl:stylesheet>

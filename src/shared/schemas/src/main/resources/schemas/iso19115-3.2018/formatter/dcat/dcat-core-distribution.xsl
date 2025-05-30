@@ -6,7 +6,7 @@
     available at the root application directory.
 
 -->
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
@@ -129,13 +129,15 @@
                             |mpc:portrayalCatalogueCitation/*/cit:onlineResource
                             |mrl:additionalDocumentation/*/cit:onlineResource
                             |mdq:reportReference/*/cit:onlineResource
+                            |mdq:reportReference/*/cit:title[gcx:Anchor/@xlink:href]
                             |mdq:specification/*/cit:onlineResource
+                            |mdq:specification/*/cit:title[gcx:Anchor/@xlink:href]
                             |mrc:featureCatalogueCitation/*/cit:onlineResource">
     <xsl:param name="additionalProperties"
                as="node()*"/>
 
     <xsl:variable name="url"
-                  select="*/cit:linkage/gco:CharacterString/text()"/>
+                  select="(*/cit:linkage/gco:CharacterString/text()|gcx:Anchor/@xlink:href)[1]"/>
 
     <xsl:variable name="protocol"
                   select="*/cit:protocol/*/text()"/>
@@ -170,8 +172,9 @@
           </foaf:Document>
         </foaf:documentation>
       </xsl:when>
-      <xsl:when test="$function = ('information', 'search', 'completeMetadata', 'browseGraphic', 'upload', 'emailService')
-                                 or (not($function) and matches($protocol, 'WWW:LINK.*'))">
+      <xsl:when test="$function = ('information', 'information.content', 'search', 'completeMetadata', 'browseGraphic', 'upload', 'emailService')
+                                 or ($function = ('browsing') and matches($protocol, 'WWW:LINK.*'))
+                                 or ((not($function) or $function = '') and (matches($protocol, 'WWW:LINK.*') or not($protocol) or $protocol = ''))">
         <foaf:page>
           <foaf:Document rdf:about="{$url}">
             <xsl:apply-templates mode="iso19115-3-to-dcat"
@@ -198,8 +201,8 @@
              RDF Property:	dcterms:issued
              Definition:	Date of formal issuance (e.g., publication) of the distribution.
             -->
-            <xsl:for-each
-              select="ancestor::mrd:MD_Distributor/mrd:distributionOrderProcess/*/mrd:plannedAvailableDateTime">
+            <xsl:for-each select="ancestor::mrd:MD_Distributor/mrd:distributionOrderProcess/*/mrd:plannedAvailableDateTime|
+                                               ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:citation/*/cit:date/*[cit:dateType/*/@codeListValue = 'publication']">
               <xsl:apply-templates mode="iso19115-3-to-dcat"
                                    select=".">
                 <xsl:with-param name="dateType" select="'publication'"/>
@@ -210,9 +213,13 @@
             RDF Property:	dcterms:modified
             Definition:	Most recent date on which the distribution was changed, updated or modified.
             Range:	rdfs:Literal encoded using the relevant ISO 8601 Date and Time compliant string [DATETIME] and typed using the appropriate XML Schema datatype [XMLSCHEMA11-2] (xsd:gYear, xsd:gYearMonth, xsd:date, or xsd:dateTime).
-
-            Not supported
             -->
+            <xsl:for-each select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:citation/*/cit:date/*[cit:dateType/*/@codeListValue = 'revision']">
+              <xsl:apply-templates mode="iso19115-3-to-dcat"
+                                   select=".">
+                <xsl:with-param name="dateType" select="'revision'"/>
+              </xsl:apply-templates>
+            </xsl:for-each>
 
 
             <!--
@@ -280,6 +287,8 @@
              Definition:	A data service that gives access to the distribution of the dataset
              Range:	dcat:DataService
              Usage note:	dcat:accessService SHOULD be used to link to a description of a dcat:DataService that can provide access to this distribution.
+
+             DataService can be better described by an associated service metadata record.
             -->
             <xsl:if test="$function = ('download', 'offlineAccess', 'order', 'browsing', 'fileAccess')
                           or matches($protocol, 'OGC:WMS|OGC:WFS|OGC:WCS|OGC:WPS|OGC API Features|OGC API Coverages|ESRI:REST')">
@@ -338,9 +347,22 @@
               <xsl:otherwise>
                 <xsl:choose>
                   <xsl:when test="starts-with($protocol, 'WWW:DOWNLOAD:')">
+                    <xsl:variable name="format"
+                                    select="substring-after($protocol, 'WWW:DOWNLOAD:')"/>
+
+                      <!-- The file format of the Distribution. -->
                     <xsl:call-template name="rdf-format-as-mediatype">
-                      <xsl:with-param name="format" select="substring-after($protocol, 'WWW:DOWNLOAD:')"/>
+                      <xsl:with-param name="format" select="$format"/>
                     </xsl:call-template>
+
+                      <!-- The media type of the Distribution as defined in the official register of media types managed by IANA. -->
+                      <xsl:if test="matches($format, '\w+/[-+.\w]+')">
+                        <dcat:mediaType>
+                          <dct:MediaType>
+                            <rdfs:label><xsl:value-of select="$format"/></rdfs:label>
+                          </dct:MediaType>
+                        </dcat:mediaType>
+                      </xsl:if>
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:apply-templates mode="iso19115-3-to-dcat-distribution"
@@ -356,6 +378,7 @@
 
             <xsl:if test="$isCopyingDatasetInfoToDistribution">
               <!--
+              [mco:useConstraints]
               RDF Property:	dcterms:license
               Definition:	A legal document under which the distribution is made available.
               Range:	dcterms:LicenseDocument
@@ -366,17 +389,15 @@
               for a Distribution of that Dataset SHOULD be avoided as this can create legal conflicts.
               See also guidance at 9. License and rights statements.
               -->
-              <xsl:apply-templates mode="iso19115-3-to-dcat"
-                                   select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*[mco:useConstraints]"/>
-
               <!--
+             [mco:accessConstraints]
               RDF Property:	dcterms:accessRights
               Definition:	A rights statement that concerns how the distribution is accessed.
               Range:	dcterms:RightsStatement
               Usage note:	Information about licenses and rights MAY be provided for the Distribution. See also guidance at 9. License and rights statements.
               -->
               <xsl:apply-templates mode="iso19115-3-to-dcat"
-                                   select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*[mco:accessConstraints]"/>
+                                   select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*"/>
 
               <!--
               RDF Property:	dcterms:rights
@@ -418,6 +439,9 @@
               -->
               <xsl:apply-templates mode="iso19115-3-to-dcat"
                                    select="ancestor::mdb:MD_Metadata/mdb:dataQualityInfo/*/mdq:report/*/mdq:result[mdq:DQ_ConformanceResult and mdq:DQ_ConformanceResult/mdq:pass/*/text() = 'true']"/>
+
+              <xsl:apply-templates mode="iso19115-3-to-dcat"
+                                   select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:defaultLocale"/>
             </xsl:if>
 
             <xsl:copy-of select="$additionalProperties"/>
@@ -451,7 +475,7 @@
 
     <xsl:variable name="formatUri"
                   as="xs:string?"
-                  select="($formatLabelToUri[lower-case($format) = text()]/@key)[1]"/>
+                  select="($formatLabelToUri[lower-case($format) = lower-case(text())]/@key)[1]"/>
 
     <xsl:variable name="rangeName"
                   as="xs:string"

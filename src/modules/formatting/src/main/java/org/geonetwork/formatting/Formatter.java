@@ -10,5 +10,7 @@ import java.io.OutputStream;
 import org.geonetwork.domain.Metadata;
 
 public interface Formatter {
-    public void format(Metadata metadata, String formatterId, OutputStream outputStream) throws IOException;
+    void format(Metadata metadata, String formatterId, OutputStream outputStream) throws IOException;
+
+    boolean isFormatterAvailable(Metadata metadata, String formatterId);
 }

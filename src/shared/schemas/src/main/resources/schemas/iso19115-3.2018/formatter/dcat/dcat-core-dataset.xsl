@@ -6,7 +6,7 @@
     available at the root application directory.
 
 -->
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0"
@@ -154,15 +154,16 @@
   <!--
   http://publications.europa.eu/resource/authority/frequency
   -->
-  <xsl:variable name="euUpdateFrquencyToUri" as="node()*">
+  <xsl:variable name="euUpdateFrequencyToUri" as="node()*">
     <entry key="BIDECENNIAL">http://publications.europa.eu/resource/authority/frequency/BIDECENNIAL</entry>
     <entry key="TRIDECENNIAL">http://publications.europa.eu/resource/authority/frequency/TRIDECENNIAL</entry>
     <entry key="BIHOURLY">http://publications.europa.eu/resource/authority/frequency/BIHOURLY</entry>
     <entry key="TRIHOURLY">http://publications.europa.eu/resource/authority/frequency/TRIHOURLY</entry>
-    <entry key="OTHER">http://publications.europa.eu/resource/authority/frequency/OTHER</entry>
     <entry key="WEEKLY">http://publications.europa.eu/resource/authority/frequency/WEEKLY</entry>
     <entry key="NOT_PLANNED">http://publications.europa.eu/resource/authority/frequency/NOT_PLANNED</entry>
+    <entry key="NOTPLANNED">http://publications.europa.eu/resource/authority/frequency/NOT_PLANNED</entry>
     <entry key="AS_NEEDED">http://publications.europa.eu/resource/authority/frequency/AS_NEEDED</entry>
+    <entry key="ASNEEDED">http://publications.europa.eu/resource/authority/frequency/AS_NEEDED</entry>
     <entry key="HOURLY">http://publications.europa.eu/resource/authority/frequency/HOURLY</entry>
     <entry key="QUADRENNIAL">http://publications.europa.eu/resource/authority/frequency/QUADRENNIAL</entry>
     <entry key="QUINQUENNIAL">http://publications.europa.eu/resource/authority/frequency/QUINQUENNIAL</entry>
@@ -171,13 +172,16 @@
     <entry key="WEEKLY_3">http://publications.europa.eu/resource/authority/frequency/WEEKLY_3</entry>
     <entry key="UNKNOWN">http://publications.europa.eu/resource/authority/frequency/UNKNOWN</entry>
     <entry key="UPDATE_CONT">http://publications.europa.eu/resource/authority/frequency/UPDATE_CONT</entry>
+    <entry key="CONTINUAL">http://publications.europa.eu/resource/authority/frequency/UPDATE_CONT</entry>
     <entry key="QUARTERLY">http://publications.europa.eu/resource/authority/frequency/QUARTERLY</entry>
     <entry key="TRIENNIAL">http://publications.europa.eu/resource/authority/frequency/TRIENNIAL</entry>
     <entry key="NEVER">http://publications.europa.eu/resource/authority/frequency/NEVER</entry>
     <entry key="OP_DATPRO">http://publications.europa.eu/resource/authority/frequency/OP_DATPRO</entry>
     <entry key="MONTHLY_2">http://publications.europa.eu/resource/authority/frequency/MONTHLY_2</entry>
+    <entry key="SEMIMONTHLY">http://publications.europa.eu/resource/authority/frequency/MONTHLY_2</entry>
     <entry key="MONTHLY_3">http://publications.europa.eu/resource/authority/frequency/MONTHLY_3</entry>
     <entry key="IRREG">http://publications.europa.eu/resource/authority/frequency/IRREG</entry>
+    <entry key="IRREGULAR">http://publications.europa.eu/resource/authority/frequency/IRREG</entry>
     <entry key="MONTHLY">http://publications.europa.eu/resource/authority/frequency/MONTHLY</entry>
     <entry key="DAILY">http://publications.europa.eu/resource/authority/frequency/DAILY</entry>
     <entry key="DAILY_2">http://publications.europa.eu/resource/authority/frequency/DAILY_2</entry>
@@ -186,8 +190,14 @@
     <entry key="BIENNIAL">http://publications.europa.eu/resource/authority/frequency/BIENNIAL</entry>
     <entry key="BIMONTHLY">http://publications.europa.eu/resource/authority/frequency/BIMONTHLY</entry>
     <entry key="ANNUAL_2">http://publications.europa.eu/resource/authority/frequency/ANNUAL_2</entry>
+    <entry key="BIANNUALLY">http://publications.europa.eu/resource/authority/frequency/ANNUAL_2</entry>
     <entry key="ANNUAL_3">http://publications.europa.eu/resource/authority/frequency/ANNUAL_3</entry>
     <entry key="ANNUAL">http://publications.europa.eu/resource/authority/frequency/ANNUAL</entry>
+  <entry key="ANNUALLY">http://publications.europa.eu/resource/authority/frequency/ANNUAL</entry>
+    <entry key="OTHER">http://publications.europa.eu/resource/authority/frequency/OTHER</entry>
+    <entry key="FORTNIGHTLY">http://publications.europa.eu/resource/authority/frequency/OTHER</entry>
+    <entry key="PERIODIC">http://publications.europa.eu/resource/authority/frequency/OTHER</entry>
+    <entry key="BIENNIALLY">http://publications.europa.eu/resource/authority/frequency/OTHER</entry>
   </xsl:variable>
 
   <!--
@@ -249,7 +259,7 @@
 
             <xsl:variable name="dcatFrequencyUri"
                           as="xs:string?"
-                          select="$euUpdateFrquencyToUri[@key = current()/*/@codeListValue]"/>
+                          select="$euUpdateFrequencyToUri[@key = upper-case(current()/*/@codeListValue)]"/>
 
             <xsl:variable name="mobilityDcatApUpdateFrequencyUri"
                           as="xs:string?"
