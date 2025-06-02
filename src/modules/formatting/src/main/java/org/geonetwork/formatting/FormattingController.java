@@ -16,12 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.geonetwork.domain.Metadata;
-import org.geonetwork.metadata.IMetadataAccessManager;
-import org.geonetwork.metadata.IMetadataManager;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,11 +31,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 @RestController
 @RequiredArgsConstructor
 public class FormattingController {
-    private final IMetadataManager metadataManager;
-    private final IMetadataAccessManager metadataAccessManager;
-    private final FormatterFactory formatterFactory;
 
-    //    private static final String PARAM_LANGUAGE_ALL_VALUES = "all";
+    private final FormatterApi formatterApi;
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @io.swagger.v3.oas.annotations.Operation(
@@ -49,13 +42,8 @@ public class FormattingController {
             @Parameter(description = API_PARAM_RECORD_UUID, required = true) @PathVariable String metadataUuid,
             @RequestParam(required = false, defaultValue = "true") boolean approved)
             throws Exception {
-        Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
 
-        if (!metadataAccessManager.canView(metadata.getId())) {
-            throw new AccessDeniedException("User is not permitted to access this resource");
-        }
-
-        return formatterFactory.getAvailableFormatters(metadata);
+        return formatterApi.getRecordFormatterList(metadataUuid, approved);
     }
 
     @GetMapping(
@@ -91,28 +79,13 @@ public class FormattingController {
             HttpServletResponse servletResponse)
             throws Exception {
 
-        Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
-
-        if (!metadataAccessManager.canView(metadata.getId())) {
-            throw new AccessDeniedException("User is not permitted to access this resource");
-        }
-        // TODO     if (approved) {
-        //            metadata =
-        // ApplicationContextHolder.get().getBean(MetadataRepository.class).findOneByUuid(metadataUuid);
-        //        }
-
-        if (!formatterFactory.getAvailableFormatters(metadata).contains(formatterId)) {
-            throw new FormatterException(String.format(
-              "Formatter not found. Hint: Available formatters for %s standard are: %s",
-              metadata.getSchemaid(), formatterFactory.getAvailableFormatters(metadata)));
-        }
-
         String acceptHeader = StringUtils.isBlank(request.getHeader(HttpHeaders.ACCEPT))
                 ? MediaType.TEXT_HTML_VALUE
                 : request.getHeader(HttpHeaders.ACCEPT);
         if (MediaType.ALL_VALUE.equals(acceptHeader)) {
             acceptHeader = MediaType.TEXT_HTML_VALUE;
         }
+
         if (formatType == null) {
             formatType = FormatType.findByFormatterKey(formatterId);
         }
@@ -123,27 +96,7 @@ public class FormattingController {
             formatType = FormatType.xml;
         }
 
-        //        String language;
-        //        if (StringUtils.isNotEmpty(iso3lang)) {
-        //            if (PARAM_LANGUAGE_ALL_VALUES.equalsIgnoreCase(iso3lang)) {
-        //                language = iso3lang;
-        // TODO           } else if (languageUtils.getUiLanguages().contains(iso3lang)) {
-        //                language = isoLanguagesMapper.iso639_2T_to_iso639_2B(iso3lang);
-        //            } else {
-        //                language = languageUtils.getDefaultUiLanguage();
-        //            }
-        //        } else {
-        //                        language = isoLanguagesMapper.iso639_2T_to_iso639_2B(locale.getISO3Language());
-        //        }
-
-        // TODO      Boolean hideWithheld = !context.getBean(AccessManager.class).canEdit(context,
-        // String.valueOf(metadata.getId()));
-
-        //  TODO Cache?
-
         servletResponse.setContentType(formatType.contentType);
-
-        Formatter formatter = formatterFactory.getFormatter(metadata, formatterId);
-        formatter.format(metadata, formatterId, servletResponse.getOutputStream());
+        formatterApi.getRecordFormattedBy(metadataUuid, formatterId, approved, servletResponse.getOutputStream());
     }
 }
