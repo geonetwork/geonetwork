@@ -6,18 +6,18 @@
     available at the root application directory.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geonetwork</groupId>
-    <artifactId>gn-extensions</artifactId>
+    <artifactId>gn-shared</artifactId>
     <version>5.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>gn-formatting</artifactId>
+  <artifactId>gn-formatting-shared</artifactId>
   <packaging>jar</packaging>
-  <name>GeoNetwork formatting module</name>
-
+  <name>GeoNetwork formatting module (shared)</name>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -54,13 +54,6 @@
       <artifactId>gn-schemas</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>org.geonetwork</groupId>
-      <artifactId>gn-formatting-shared</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-constants</artifactId>
@@ -87,6 +80,18 @@
       <version>5.0.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
-
   </dependencies>
+
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <plugins>
+
+      <!--      <plugin>-->
+      <!--        <groupId>org.springframework.boot</groupId>-->
+      <!--        <artifactId>spring-boot-maven-plugin</artifactId>-->
+      <!--        <configuration></configuration>-->
+      <!--      </plugin>-->
+    </plugins>
+  </build>
+
 </project>
