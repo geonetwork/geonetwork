@@ -10,6 +10,7 @@ import jakarta.persistence.Cacheable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,6 +32,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geonetwork.domain.converter.BooleanToYN;
 
 @Builder
 @AllArgsConstructor
@@ -48,8 +50,9 @@ public class User {
     private Integer id;
 
     @NotNull
-    @Column(name = "isenabled", nullable = false, length = Integer.MAX_VALUE)
-    private String isenabled;
+    @Column(name = "isenabled", nullable = false)
+    @Convert(converter = BooleanToYN.class)
+    private Boolean isenabled;
 
     @Size(max = 16)
     @Column(name = "kind", length = 16)

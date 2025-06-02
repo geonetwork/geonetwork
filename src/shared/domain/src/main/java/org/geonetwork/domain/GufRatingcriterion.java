@@ -6,6 +6,7 @@
 package org.geonetwork.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geonetwork.domain.converter.BooleanToYN;
 
 @Builder
 @AllArgsConstructor
@@ -35,7 +37,8 @@ public class GufRatingcriterion {
     private Integer id;
 
     @NotNull
-    @Column(name = "isinternal", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "isinternal", nullable = false)
+    @Convert(converter = BooleanToYN.class)
     private String isinternal;
 
     @Size(max = 32)
