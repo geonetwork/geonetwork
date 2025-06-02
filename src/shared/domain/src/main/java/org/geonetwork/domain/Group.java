@@ -7,6 +7,7 @@ package org.geonetwork.domain;
 
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +29,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geonetwork.domain.converter.BooleanToYN;
 
 @Builder
 @AllArgsConstructor
@@ -52,8 +54,9 @@ public class Group {
     @Column(name = "email", length = 128)
     private String email;
 
-    @Column(name = "enablecategoriesrestriction", length = Integer.MAX_VALUE)
-    private String enablecategoriesrestriction;
+    @Column(name = "enablecategoriesrestriction")
+    @Convert(converter = BooleanToYN.class)
+    private Boolean enablecategoriesrestriction;
 
     @Size(max = 255)
     @Column(name = "logo")
