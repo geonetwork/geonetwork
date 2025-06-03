@@ -21,6 +21,12 @@
 
     <dependency>
       <groupId>org.geonetwork</groupId>
+      <artifactId>gn-formatting</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geonetwork</groupId>
       <artifactId>gn-ogcapi-records-implementation</artifactId>
       <version>${project.version}</version>
     </dependency>
