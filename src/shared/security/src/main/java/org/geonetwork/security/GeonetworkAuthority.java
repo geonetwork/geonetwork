@@ -18,6 +18,9 @@ import lombok.Setter;
 import org.geonetwork.domain.Profile;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.domain.repository.UsergroupRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -108,8 +111,16 @@ public class GeonetworkAuthority implements GrantedAuthority {
     @AllArgsConstructor
     public static class GeonetworkAuthorityBuilder {
 
-        UserRepository userRepository;
-        UsergroupRepository usergroupRepository;
+        private final UserRepository userRepository;
+        private final UsergroupRepository usergroupRepository;
+
+        //TIME-TO-LIVE for the geonetworkAuthority builder cache
+        @CacheEvict(allEntries = true, cacheNames = { "geonetworkAuthority-db-builder" })
+        @Scheduled(fixedDelay = 300000)
+        public void cacheEvict() {
+          //handled by method annotations
+        }
+
 
         /**
          * builds a GeonetworkAuthority from the database.
@@ -117,6 +128,7 @@ public class GeonetworkAuthority implements GrantedAuthority {
          * @param username DB table `users`.
          * @return GeonetworkAuthority from the database.
          */
+        @Cacheable("geonetworkAuthority-db-builder")
         public GeonetworkAuthority build(String username) {
             if (StringUtils.isBlank(username)) {
                 return GeonetworkAuthority.GUESTAUTHORITY;
