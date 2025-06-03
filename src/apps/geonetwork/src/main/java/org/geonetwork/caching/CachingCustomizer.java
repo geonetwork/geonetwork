@@ -6,7 +6,6 @@
 
 package org.geonetwork.caching;
 
-import java.util.List;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizer;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,7 @@ public class CachingCustomizer implements CacheManagerCustomizer<ConcurrentMapCa
 
     @Override
     public void customize(ConcurrentMapCacheManager cacheManager) {
-      // don't use  cacheManager.setCacheNames(List.of("mycache"));
-      // this will put the cache manager in to `static` mode (instead of `dynamic`).
+        // don't use  cacheManager.setCacheNames(List.of("mycache"));
+        // this will put the cache manager in to `static` mode (instead of `dynamic`).
     }
 }
