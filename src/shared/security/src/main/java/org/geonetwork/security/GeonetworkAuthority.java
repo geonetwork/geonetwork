@@ -114,13 +114,14 @@ public class GeonetworkAuthority implements GrantedAuthority {
         private final UserRepository userRepository;
         private final UsergroupRepository usergroupRepository;
 
-        //TIME-TO-LIVE for the geonetworkAuthority builder cache
-        @CacheEvict(allEntries = true, cacheNames = { "geonetworkAuthority-db-builder" })
+        // TIME-TO-LIVE for the geonetworkAuthority builder cache
+        @CacheEvict(
+                allEntries = true,
+                cacheNames = {"geonetworkAuthority-db-builder"})
         @Scheduled(fixedDelay = 300000)
         public void cacheEvict() {
-          //handled by method annotations
+            // handled by method annotations
         }
-
 
         /**
          * builds a GeonetworkAuthority from the database.
