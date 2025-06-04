@@ -23,11 +23,18 @@ public class FormatterApi {
     private final IMetadataAccessManager metadataAccessManager;
     private final FormatterFactory formatterFactory;
 
-    Map<String, String> getRecordFormatters(String metadataUuid) throws Exception {
-        return getRecordFormatters(metadataUuid, true);
+    Map<String, String> getRecordFormattersForMetadata(String metadataUuid) throws Exception {
+        return getRecordFormattersForMetadata(metadataUuid, true);
     }
 
-    Map<String, String> getRecordFormatters(String metadataUuid, boolean approved) throws Exception {
+    Map<String, String> getAvailableFormattersForSchema(String schemaId)  {
+      return formatterFactory.getAvailableFormattersForSchema(schemaId);
+    }
+
+
+
+
+    Map<String, String> getRecordFormattersForMetadata(String metadataUuid, boolean approved) throws Exception {
         Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
 
         if (!metadataAccessManager.canView(metadata.getId())) {
