@@ -207,4 +207,8 @@
     <Class name="org.geonetwork.utility.xml.XsltTransformerFactory"/>
     <Bug pattern="MS_EXPOSE_REP" />
   </Match>
+
+  <Match>
+    <package name="org.geonetwork.schemas.model.schemaident"/>
+  </Match>
 </FindBugsFilter>
