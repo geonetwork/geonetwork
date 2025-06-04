@@ -32,7 +32,22 @@ public class FormattingController {
 
     private final FormatterApi formatterApi;
 
-    @GetMapping(value = "/api/records/{metadataUuid}/formatters", produces = {MediaType.APPLICATION_JSON_VALUE})
+
+  @GetMapping(
+    value = "/api/records/formatters",
+    produces = {MediaType.APPLICATION_JSON_VALUE})
+  @io.swagger.v3.oas.annotations.Operation(
+    summary = "Get all available formatters and their mime types.")
+  @ResponseBody
+  public Map<String, FormatterInfo> getAllFormatters()
+    throws Exception {
+
+    return formatterApi.getAllFormatters();
+  }
+
+    @GetMapping(
+            value = "/api/records/{metadataUuid}/formatters",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @io.swagger.v3.oas.annotations.Operation(
             summary = "Get available formatter for the metadata record depending on the metadata schema.")
     @ResponseBody
@@ -44,9 +59,11 @@ public class FormattingController {
         return formatterApi.getRecordFormattersForMetadata(metadataUuid, approved);
     }
 
-    @GetMapping(value = "/api/records/formatters/{schemaId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(
+            value = "/api/records/formatters/{schemaId}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @io.swagger.v3.oas.annotations.Operation(
-      summary = "Get available formatter for the metadata record depending on the metadata schema.")
+            summary = "Get available formatter for the metadata record depending on the metadata schema.")
     @ResponseBody
     public Map<String, String> getRecordFormatterListForSchema(
             @Parameter(description = API_PARAM_RECORD_UUID, required = true) @PathVariable String schemaId) {
