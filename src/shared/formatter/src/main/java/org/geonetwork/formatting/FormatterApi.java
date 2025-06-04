@@ -26,31 +26,30 @@ public class FormatterApi {
     private final FormatterFactory formatterFactory;
     private final SchemaManager schemaManager;
 
+    public Map<String, FormatterInfo> getAllFormatters() throws Exception {
+        var result = new HashMap<String, FormatterInfo>();
+        var schemaNames = schemaManager.getSchemas();
 
-    public Map<String,FormatterInfo> getAllFormatters() throws Exception {
-       var result = new HashMap<String,FormatterInfo>();
-       var schemaNames = schemaManager.getSchemas();
+        schemaNames.forEach(schemaName -> {
+            var schemaInfo = getAvailableFormattersForSchema(schemaName);
+            schemaInfo.entrySet().forEach(entry -> {
+                var formatterName = entry.getKey();
+                var mimeType = entry.getValue();
+                if (!result.containsKey(formatterName)) {
+                    var formatterInfo = new FormatterInfo();
+                    formatterInfo.setMimeType(mimeType);
+                    result.put(formatterName, formatterInfo);
+                }
+                var finfo = result.get(formatterName);
+                if (!finfo.getMimeType().equals(mimeType)) {
+                    throw new RuntimeException("inconsistent formatter mime type - " + formatterName + ", mime="
+                            + finfo.getMimeType() + ", other mime=" + mimeType);
+                }
+                finfo.getSchemas().add(schemaName);
+            });
+        });
 
-       schemaNames.forEach(schemaName -> {
-         var schemaInfo = getAvailableFormattersForSchema(schemaName);
-         schemaInfo.entrySet().forEach(entry -> {
-           var formatterName = entry.getKey();
-           var mimeType = entry.getValue();
-           if (!result.containsKey(formatterName)) {
-             var formatterInfo = new FormatterInfo();
-             formatterInfo.setMimeType(mimeType);
-             result.put(formatterName,formatterInfo);
-           }
-           var finfo = result.get(formatterName);
-           if (!finfo.getMimeType().equals(mimeType)) {
-               throw new RuntimeException("inconsistent formatter mime type - "+formatterName+", mime="+finfo.getMimeType()+", other mime="+mimeType);
-           }
-           finfo.getSchemas().add(schemaName);
-
-         });
-       });
-
-       return result;
+        return result;
     }
 
     public Map<String, String> getRecordFormattersForMetadata(String metadataUuid) throws Exception {

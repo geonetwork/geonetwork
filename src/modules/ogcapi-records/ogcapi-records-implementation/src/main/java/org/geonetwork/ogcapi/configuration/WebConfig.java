@@ -15,6 +15,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
+import lombok.SneakyThrows;
+import org.geonetwork.formatting.FormatterInfo;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonItemDto;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -31,6 +37,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    private FormatterApiMessageWriter<OgcApiRecordsJsonItemDto> formatterApiMessageWriter2;
+
+    @Autowired
+    private BeanFactory beanFactory;
+    // todo - remove this.
+    // There is a circular dependency because Formatter depends on WebConfig
+    void setupFormatterApiMessageWriter() {
+        if (formatterApiMessageWriter2 == null) {
+            formatterApiMessageWriter2 = beanFactory.getBean(FormatterApiMessageWriter.class);
+        }
+    }
+
+    @SneakyThrows
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer
@@ -45,12 +64,25 @@ public class WebConfig implements WebMvcConfigurer {
                 .mediaType("json", MediaType.APPLICATION_JSON)
                 .mediaType("geojson", MediaType.valueOf("application/geo+json"))
                 .defaultContentType(MediaType.APPLICATION_JSON);
-        ;
+
+        // add the FormatterApi media types.  We allows   f=<formatterId> or f=<formatter mime type>
+        setupFormatterApiMessageWriter();
+        Map<String, FormatterInfo> formats = this.formatterApiMessageWriter2.getFormatNamesAndMimeTypes();
+        for (var format : formats.entrySet()) {
+            // f=eu-dcat-ap -> application/rdf+xml;subtype=dcat-ap
+            configurer.mediaType(
+                    format.getKey(), MediaType.valueOf(format.getValue().getMimeType()));
+            // f=application/rdf+xml;subtype=dcat-ap -> application/rdf+xml;subtype=dcat-ap
+            configurer.mediaType(
+                    format.getValue().getMimeType(),
+                    MediaType.valueOf(format.getValue().getMimeType()));
+        }
     }
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
         messageConverters.add(new TrivialHtmlMessageWriter(MediaType.TEXT_HTML));
+        messageConverters.add(formatterApiMessageWriter2);
     }
 
     @Bean

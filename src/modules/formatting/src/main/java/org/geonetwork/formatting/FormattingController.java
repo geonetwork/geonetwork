@@ -32,18 +32,15 @@ public class FormattingController {
 
     private final FormatterApi formatterApi;
 
+    @GetMapping(
+            value = "/api/records/formatters",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @io.swagger.v3.oas.annotations.Operation(summary = "Get all available formatters and their mime types.")
+    @ResponseBody
+    public Map<String, FormatterInfo> getAllFormatters() throws Exception {
 
-  @GetMapping(
-    value = "/api/records/formatters",
-    produces = {MediaType.APPLICATION_JSON_VALUE})
-  @io.swagger.v3.oas.annotations.Operation(
-    summary = "Get all available formatters and their mime types.")
-  @ResponseBody
-  public Map<String, FormatterInfo> getAllFormatters()
-    throws Exception {
-
-    return formatterApi.getAllFormatters();
-  }
+        return formatterApi.getAllFormatters();
+    }
 
     @GetMapping(
             value = "/api/records/{metadataUuid}/formatters",
