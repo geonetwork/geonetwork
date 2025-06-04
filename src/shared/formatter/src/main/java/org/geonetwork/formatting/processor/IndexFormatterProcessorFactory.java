@@ -6,6 +6,8 @@
 package org.geonetwork.formatting.processor;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +23,8 @@ public class IndexFormatterProcessorFactory {
                 .orElse(null);
     }
 
-    public List<String> getAvailableFormatterProcessors() {
-        return processors.stream().map(IndexFormatterProcessor::getId).toList();
+    public Map<String, String> getAvailableFormatterProcessors() {
+        return processors.stream()
+                .collect(Collectors.toMap(IndexFormatterProcessor::getId, IndexFormatterProcessor::getContentType));
     }
 }

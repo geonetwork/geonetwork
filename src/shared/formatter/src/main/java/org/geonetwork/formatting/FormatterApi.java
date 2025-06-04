@@ -6,7 +6,7 @@
 package org.geonetwork.formatting;
 
 import java.io.OutputStream;
-import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.metadata.IMetadataAccessManager;
@@ -23,11 +23,11 @@ public class FormatterApi {
     private final IMetadataAccessManager metadataAccessManager;
     private final FormatterFactory formatterFactory;
 
-    List<String> getRecordFormatterList(String metadataUuid) throws Exception {
-        return getRecordFormatterList(metadataUuid, true);
+    Map<String, String> getRecordFormatters(String metadataUuid) throws Exception {
+        return getRecordFormatters(metadataUuid, true);
     }
 
-    List<String> getRecordFormatterList(String metadataUuid, boolean approved) throws Exception {
+    Map<String, String> getRecordFormatters(String metadataUuid, boolean approved) throws Exception {
         Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
 
         if (!metadataAccessManager.canView(metadata.getId())) {
@@ -42,6 +42,16 @@ public class FormatterApi {
             throws Exception {
 
         Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
+
+        if (!metadataAccessManager.canView(metadata.getId())) {
+            throw new AccessDeniedException("User is not permitted to access this resource");
+        }
+
+        if (!formatterFactory.getAvailableFormatters(metadata).containsKey(formatterId)) {
+            throw new FormatterException(String.format(
+                    "Formatter not found. Hint: Available formatters for %s standard are: %s",
+                    metadata.getSchemaid(), formatterFactory.getAvailableFormatters(metadata)));
+        }
 
         //        String language;
         //        if (StringUtils.isNotEmpty(iso3lang)) {

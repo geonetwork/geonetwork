@@ -5,15 +5,17 @@
  */
 package org.geonetwork.schemas;
 
-import static org.geonetwork.utility.JarFileCopy.*;
+import static org.geonetwork.utility.JarFileCopy.copyFolder;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -25,10 +27,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Constants;
 import org.geonetwork.constants.Geonet;
+import org.geonetwork.schemas.model.schemaident.Description;
+import org.geonetwork.schemas.model.schemaident.Filter;
+import org.geonetwork.schemas.model.schemaident.Filters;
+import org.geonetwork.schemas.model.schemaident.Formatter;
+import org.geonetwork.schemas.model.schemaident.SchemaIdentificationInfo;
+import org.geonetwork.schemas.model.schemaident.StandardUrl;
+import org.geonetwork.schemas.model.schemaident.Title;
 import org.geonetwork.utility.ApplicationContextProvider;
 import org.geonetwork.utility.legacy.Pair;
 import org.geonetwork.utility.legacy.exceptions.NoSchemaMatchesException;
@@ -42,7 +52,6 @@ import org.jdom.Attribute;
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.springframework.context.ApplicationContext;
@@ -293,11 +302,7 @@ public class SchemaManager {
         try {
             Schema schema = hmSchemas.get(name);
             if (schema != null) { // if it is null then that is a config error
-                List<Element> dependsList = schema.getDependElements();
-                for (Element depends : dependsList) {
-                    String depSchemaName = depends.getText();
-                    dependencies.add(depSchemaName);
-                }
+                dependencies.addAll(schema.getDependElements());
             }
             return dependencies;
         } finally {
@@ -790,12 +795,12 @@ public class SchemaManager {
                     // (If preferredSchema is an ISO profil a fragment or subtemplate
                     // may match ISO core schema and should not be rejected).
                     Schema sch = hmSchemas.get(schema);
-                    List<Element> dependsList = sch.getDependElements();
-                    for (Element depends : dependsList) {
+                    List<String> dependsList = sch.getDependElements();
+                    for (String depends : dependsList) {
                         if (log.isDebugEnabled()) {
-                            log.debug("  checkNamespace for dependency: " + depends.getText());
+                            log.debug("  checkNamespace for dependency: " + depends);
                         }
-                        return checkNamespace(md, depends.getText());
+                        return checkNamespace(md, depends);
                     }
                 }
             }
@@ -983,11 +988,15 @@ public class SchemaManager {
         //      }
         //    }
 
-        Pair<String, String> idInfo = extractIdInfo(xmlIdFile, schemaName);
+        SchemaIdentificationInfo schemaIdentificationInfo = getSchemaIdentificationInfo(xmlIdFile);
 
-        extractMetadata(mds, xmlIdFile);
-        mds.setReadwriteUUID(extractReadWriteUuid(xmlIdFile));
-        mds.setOperationFilters(extractOperationFilters(xmlIdFile));
+        Pair<String, String> idInfo = extractIdInfo(schemaIdentificationInfo, schemaName);
+
+        extractMetadata(mds, schemaIdentificationInfo);
+        mds.setReadwriteUUID(extractReadWriteUuid(schemaIdentificationInfo));
+        mds.setOperationFilters(extractOperationFilters(schemaIdentificationInfo));
+        mds.setFormatters(schemaIdentificationInfo.getFormatters().getFormatters().stream()
+                .collect(Collectors.toMap(Formatter::getName, Formatter::getContentType)));
 
         log.debug("  UUID is read/write mode: " + mds.isReadwriteUUID());
 
@@ -1001,9 +1010,9 @@ public class SchemaManager {
                 extractADElements(xmlIdFile),
                 //        xfMap,
                 true, // all schemas are plugin schemas now
-                extractSchemaLocation(xmlIdFile),
+                extractSchemaLocation(schemaIdentificationInfo),
                 extractConvElements(conversionsFile),
-                extractDepends(xmlIdFile));
+                extractDepends(schemaIdentificationInfo));
 
         if (log.isDebugEnabled()) {
             log.debug("Property "
@@ -1217,7 +1226,7 @@ public class SchemaManager {
             boolean isPlugin,
             String schemaLocation,
             List<Element> convElems,
-            List<Element> dependElems) {
+            List<String> dependElems) {
 
         Schema schema = new Schema();
 
@@ -1420,9 +1429,9 @@ public class SchemaManager {
             if (schemaInfoToTest.getKey().equals(schemaName)) continue;
 
             Schema schema = schemaInfoToTest.getValue();
-            List<Element> dependsList = schema.getDependElements();
-            for (Element depends : dependsList) {
-                if (depends.getText().equals(schemaName)) {
+            List<String> dependsList = schema.getDependElements();
+            for (String depends : dependsList) {
+                if (depends.equals(schemaName)) {
                     myDepends.add(schemaInfoToTest.getKey());
                 }
             }
@@ -1437,10 +1446,9 @@ public class SchemaManager {
      * @param thisSchema Schema being checked
      * @param dependsList List of depend elements for schema.
      */
-    private void checkDepends(String thisSchema, List<Element> dependsList) throws Exception {
+    private void checkDepends(String thisSchema, List<String> dependsList) {
         // process each dependency to see whether it is present
-        for (Element depends : dependsList) {
-            String schema = depends.getText();
+        for (String schema : dependsList) {
             if (StringUtils.isNotBlank(schema)) {
                 if (!hmSchemas.containsKey(schema)) {
                     throw new IllegalArgumentException(
@@ -1453,50 +1461,51 @@ public class SchemaManager {
     /**
      * Extract schema dependencies (depend elements).
      *
-     * @param xmlIdFile name of schema XML identification file
+     * @param schemaIdentificationInfo schema identification info
      * @return depends elements as a List
      */
     @SuppressWarnings("unchecked")
-    private List<Element> extractDepends(Path xmlIdFile) throws Exception {
-        Element root = Xml.loadFile(xmlIdFile);
-
-        // get list of depends elements from schema-ident.xml
-        List<Element> dependsList = root.getChildren("depends", GEONET_SCHEMA_NS);
-        if (dependsList.isEmpty()) {
-            dependsList = root.getChildren("depends", GEONET_SCHEMA_PREFIX_NS);
-        }
-        return dependsList;
+    private List<String> extractDepends(SchemaIdentificationInfo schemaIdentificationInfo) throws Exception {
+        return schemaIdentificationInfo.getDepends();
     }
 
     /**
      * true if schema requires to synch the uuid column schema info with the uuid in the metadata record (updated on
      * editing or in UFO).
      */
-    private boolean extractReadWriteUuid(Path xmlIdFile) throws Exception {
-        Element root = Xml.loadFile(xmlIdFile);
+    private boolean extractReadWriteUuid(SchemaIdentificationInfo schemaIdentificationInfo) {
+        Boolean readwriteUuid = schemaIdentificationInfo.isReadwriteUuid();
 
-        String id = root.getChildText("readwriteUuid", GEONET_SCHEMA_NS);
-        if (id == null) {
-            return false;
-        } else {
-            if ("true".equals(id)) {
-                return true;
-            }
-        }
-        return false;
+        return readwriteUuid != null ? readwriteUuid.booleanValue() : false;
     }
 
     /** Extract metadata schema informations (eg. title, description, url). */
-    private void extractMetadata(MetadataSchema mds, Path xmlIdFile) throws JDOMException, NoSuchFileException {
-        Element root = Xml.loadFile(xmlIdFile);
-        mds.setStandardUrl(root.getChildText("standardUrl", GEONET_SCHEMA_NS));
-        mds.setTitles(getSchemaIdentMultilingualProperty(root, "title"));
-        mds.setDescriptions(getSchemaIdentMultilingualProperty(root, "description"));
+    private SchemaIdentificationInfo getSchemaIdentificationInfo(Path xmlIdFile) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(SchemaIdentificationInfo.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            return (SchemaIdentificationInfo) unmarshaller.unmarshal(xmlIdFile.toFile());
+        } catch (JAXBException e) {
+            log.error(" Get config editor. Error is " + e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
 
-        mds.setVersion(root.getChildText("version", GEONET_SCHEMA_NS));
-        mds.setAppMinorVersionSupported(root.getChildText("appMinorVersionSupported", GEONET_SCHEMA_NS));
-        mds.setAppMajorVersionSupported(root.getChildText("appMajorVersionSupported", GEONET_SCHEMA_NS));
-        mds.setDependsOn(root.getChildText("depends", GEONET_SCHEMA_NS));
+    private void extractMetadata(MetadataSchema mds, SchemaIdentificationInfo schemaIdentificationInfo) {
+        mds.setStandardUrl(schemaIdentificationInfo.getStandardUrls().stream()
+                .map(StandardUrl::getValue)
+                .collect(Collectors.toList()));
+        mds.setTitles(schemaIdentificationInfo.getTitles().stream()
+                .collect(Collectors.toMap(Title::getLang, Title::getValue)));
+        mds.setDescriptions(schemaIdentificationInfo.getDescriptions().stream()
+                .collect(Collectors.toMap(Description::getLang, Description::getValue)));
+
+        mds.setVersion(schemaIdentificationInfo.getVersion());
+        mds.setAppMinorVersionSupported(schemaIdentificationInfo.getAppMinorVersionSupported());
+        mds.setAppMajorVersionSupported(schemaIdentificationInfo.getAppMajorVersionSupported());
+        if (!schemaIdentificationInfo.getDepends().isEmpty()) {
+            mds.setDependsOn(schemaIdentificationInfo.getDepends().get(0));
+        }
     }
 
     private Map<String, String> getSchemaIdentMultilingualProperty(Element root, String propName) {
@@ -1517,25 +1526,22 @@ public class SchemaManager {
      * true if schema requires to synch the uuid column schema info with the uuid in the metadata record (updated on
      * editing or in UFO).
      */
-    private Map<String, MetadataSchemaOperationFilter> extractOperationFilters(Path xmlIdFile) throws Exception {
-        Element root = Xml.loadFile(xmlIdFile);
-        Element filters = root.getChild("filters", GEONET_SCHEMA_NS);
+    private Map<String, MetadataSchemaOperationFilter> extractOperationFilters(
+            SchemaIdentificationInfo schemaIdentificationInfo) throws Exception {
+        Filters filters = schemaIdentificationInfo.getFilters();
         Map<String, MetadataSchemaOperationFilter> filterRules = new HashMap<>();
-        if (filters == null) {
+        if (filters.getFilters().isEmpty()) {
             return filterRules;
         } else {
-            for (Object rule : filters.getChildren("filter", GEONET_SCHEMA_NS)) {
-                if (rule instanceof Element ruleElement) {
-                    String xpath = ruleElement.getAttributeValue("xpath");
-                    String jsonpath = ruleElement.getAttributeValue("jsonpath");
-                    String ifNotOperation = ruleElement.getAttributeValue("ifNotOperation");
-                    Element markedElement = ruleElement.getChild("keepMarkedElement", GEONET_SCHEMA_NS);
-
-                    if (StringUtils.isNotBlank(ifNotOperation) && StringUtils.isNotBlank(xpath)) {
-                        MetadataSchemaOperationFilter filter =
-                                new MetadataSchemaOperationFilter(xpath, jsonpath, ifNotOperation, markedElement);
-                        filterRules.put(ifNotOperation, filter);
-                    }
+            for (Filter filter : filters.getFilters()) {
+                String xpath = filter.getXpath();
+                String jsonpath = filter.getJsonpath();
+                String ifNotOperation = filter.getIfNotOperation();
+                Filter.KeepMarkedElement keepMarkedElement = filter.getKeepMarkedElement();
+                if (StringUtils.isNotBlank(ifNotOperation) && StringUtils.isNotBlank(xpath)) {
+                    MetadataSchemaOperationFilter metadataSchemaOperationFilter =
+                            new MetadataSchemaOperationFilter(xpath, jsonpath, ifNotOperation, keepMarkedElement);
+                    filterRules.put(ifNotOperation, metadataSchemaOperationFilter);
                 }
             }
         }
@@ -1546,28 +1552,17 @@ public class SchemaManager {
      * Extract schema version and uuid info from identification file and compare specified name with name in
      * identification file.
      *
-     * @param xmlIdFile name of schema XML identification file
+     * @param schemaIdentificationInfo schema identification info
+     * @param name name of schema to check
      */
-    private Pair<String, String> extractIdInfo(Path xmlIdFile, String name) throws Exception {
-        // FIXME: should be validating parser
-        Element root = Xml.loadFile(xmlIdFile);
-
-        Element id = root.getChild("id", GEONET_SCHEMA_NS);
-        if (id == null) id = root.getChild("id", GEONET_SCHEMA_PREFIX_NS);
-
-        Element version = root.getChild("version", GEONET_SCHEMA_NS);
-        if (version == null) version = root.getChild("version", GEONET_SCHEMA_PREFIX_NS);
-
-        Element idName = root.getChild("name", GEONET_SCHEMA_NS);
-        if (idName == null) idName = root.getChild("name", GEONET_SCHEMA_PREFIX_NS);
-
-        if (!idName.getText().equals(name))
+    private Pair<String, String> extractIdInfo(SchemaIdentificationInfo schemaIdentificationInfo, String name) {
+        if (!schemaIdentificationInfo.getName().equals(name))
             throw new IllegalArgumentException("Schema name supplied "
                     + name
                     + " does not match the name of the schema in the schema-id.xml file "
-                    + idName.getText());
+                    + schemaIdentificationInfo.getName());
 
-        return Pair.read(id.getText(), version.getText());
+        return Pair.read(schemaIdentificationInfo.getId(), schemaIdentificationInfo.getVersion());
     }
 
     /**
@@ -1608,13 +1603,10 @@ public class SchemaManager {
     /**
      * Extract schemaLocation info from identification file.
      *
-     * @param xmlIdFile name of schema XML identification file
+     * @param schemaIdentificationInfo schema identification info
      */
-    private String extractSchemaLocation(Path xmlIdFile) throws Exception {
-        Element root = Xml.loadFile(xmlIdFile);
-        Element schemaLocElem = root.getChild("schemaLocation", GEONET_SCHEMA_NS);
-        if (schemaLocElem == null) schemaLocElem = root.getChild("schemaLocation", GEONET_SCHEMA_PREFIX_NS);
-        return schemaLocElem.getTextNormalize();
+    private String extractSchemaLocation(SchemaIdentificationInfo schemaIdentificationInfo) {
+        return schemaIdentificationInfo.getSchemaLocation();
     }
 
     /**

@@ -22,6 +22,11 @@ public class IndexRecordFormatterProcessor implements IndexFormatterProcessor {
     }
 
     @Override
+    public String getContentType() {
+        return "application/json";
+    }
+
+    @Override
     public void process(IndexRecord indexRecord, OutputStream out) throws IOException {
         out.write(JsonpUtils.toJsonString(indexRecord, new JacksonJsonpMapper()).getBytes(UTF_8));
     }

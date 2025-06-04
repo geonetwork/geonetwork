@@ -27,6 +27,11 @@ public class OgcApiGeoJsonIndexFormatter implements IndexFormatterProcessor {
     }
 
     @Override
+    public String getContentType() {
+        return "application/geo+json";
+    }
+
+    @Override
     public void process(IndexRecord indexRecord, OutputStream out) throws IOException {
         String lang = "eng";
         var result = ogcApiGeoJsonConverter.convert(indexRecord, lang);

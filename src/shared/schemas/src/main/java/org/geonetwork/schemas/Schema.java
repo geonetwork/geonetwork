@@ -20,14 +20,14 @@ public class Schema {
     private String id;
     private String version;
     private String schemaLocation;
-    private List<Element> autodetectElements = new ArrayList<Element>();
+    private List<Element> autodetectElements = new ArrayList<>();
     //    private Map<String, XmlFile> schemaInfo = new HashMap<String, XmlFile>();
     private Path dir;
     private MetadataSchema mds;
     private SchemaSuggestions sugg;
     private boolean plugin = false;
-    private List<Element> conversionElements = new ArrayList<Element>();
-    private List<Element> dependElements = new ArrayList<Element>();
+    private List<Element> conversionElements = new ArrayList<>();
+    private List<String> dependElements = new ArrayList<>();
 
     /** Get id of this schema. */
     public String getId() {
@@ -183,17 +183,17 @@ public class Schema {
         this.conversionElements = conversionElements;
     }
 
-    /** Get List of XML elements whose text values are the names of schemas that this schema depends upon. */
-    public List<Element> getDependElements() {
+    /** Get List of values that that are the names of schemas that this schema depends upon. */
+    public List<String> getDependElements() {
         return dependElements;
     }
 
     /**
-     * Set List of XML elements whose text values are the names of schemas that this schema depends upon.
+     * Set List of values that are the names of schemas that this schema depends upon.
      *
      * @param dependElements of JDOM elements
      */
-    public void setDependElements(List<Element> dependElements) {
+    public void setDependElements(List<String> dependElements) {
         this.dependElements = dependElements;
     }
 }

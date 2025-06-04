@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
@@ -38,12 +38,12 @@ public class FormattingController {
     @io.swagger.v3.oas.annotations.Operation(
             summary = "Get available formatter for the metadata record depending on the metadata schema.")
     @ResponseBody
-    public List<String> getRecordFormatterList(
+    public Map<String, String> getRecordFormatterList(
             @Parameter(description = API_PARAM_RECORD_UUID, required = true) @PathVariable String metadataUuid,
             @RequestParam(required = false, defaultValue = "true") boolean approved)
             throws Exception {
 
-        return formatterApi.getRecordFormatterList(metadataUuid, approved);
+        return formatterApi.getRecordFormatters(metadataUuid, approved);
     }
 
     @GetMapping(

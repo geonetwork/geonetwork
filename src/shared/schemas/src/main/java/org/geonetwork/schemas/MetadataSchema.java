@@ -8,7 +8,6 @@ package org.geonetwork.schemas;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,7 +15,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +57,7 @@ public class MetadataSchema {
     private Map<String, MetadataSchemaOperationFilter> hmOperationFilters = new HashMap<>();
     private String schemaName;
     private Path schemaDir;
-    private String standardUrl;
+    private List<String> standardUrl;
     private String version;
     private String appMinorVersionSupported;
     private String appMajorVersionSupported;
@@ -70,7 +68,7 @@ public class MetadataSchema {
     private boolean canEdit = false;
     private boolean readwriteUUID = false;
     private List<Element> rootAppInfoElements;
-    private List<String> xslFormatters = new ArrayList<>();
+    private Map<String, String> formatters = new HashMap<>();
 
     //    private SchematronRepository schemaRepo;
     //    private SchematronCriteriaGroupRepository criteriaGroupRepository;
@@ -121,8 +119,12 @@ public class MetadataSchema {
         this.schemaPlugin = SchemaManager.getSchemaPlugin(schemaName);
     }
 
-    public List<String> getFormatters() {
-        return xslFormatters;
+    public Map<String, String> getFormatters() {
+        return formatters;
+    }
+
+    public void setFormatters(Map<String, String> formatters) {
+        this.formatters = formatters;
     }
 
     @JsonIgnore
@@ -151,11 +153,6 @@ public class MetadataSchema {
     /** Set schema directory */
     public void setSchemaDir(Path schemaDir) {
         this.schemaDir = schemaDir;
-
-        Path formatterDir = schemaDir.resolve("formatter");
-        xslFormatters = Arrays.stream(new File(formatterDir.toString()).listFiles(File::isDirectory))
-                .map(File::getName)
-                .collect(Collectors.toList());
     }
 
     // ---------------------------------------------------------------------------
@@ -556,11 +553,11 @@ public class MetadataSchema {
         this.readwriteUUID = readwriteUUID;
     }
 
-    public String getStandardUrl() {
+    public List<String> getStandardUrl() {
         return standardUrl;
     }
 
-    public void setStandardUrl(String standardUrl) {
+    public void setStandardUrl(List<String> standardUrl) {
         this.standardUrl = standardUrl;
     }
 

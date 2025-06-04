@@ -168,4 +168,13 @@ Ce schéma est également composé des normes :
             jsonpath="$['link'][?(@.protocol =~ /OGC:WMS.*?/i)]"
             ifNotOperation="dynamic"/>
   </filters>
+  <formatters>
+    <formatter name="xml" contentType="application/xml"/>
+    <formatter name="json" contentType="application/json"/>
+    <formatter name="datacite" contentType="application/xml"/>
+    <formatter name="dcat" contentType="application/rdf+xml"/>
+    <formatter name="eu-dcat-ap" contentType="application/rdf+xml"/>
+    <formatter name="eu-dcat-ap-hvd" contentType="application/rdf+xml"/>
+    <formatter name="eu-geodcat-ap" contentType="application/rdf+xml"/>
+  </formatters>
 </schema>

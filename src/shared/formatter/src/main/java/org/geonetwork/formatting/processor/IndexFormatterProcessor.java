@@ -12,5 +12,7 @@ import org.geonetwork.index.model.record.IndexRecord;
 public interface IndexFormatterProcessor {
     String getId();
 
+    String getContentType();
+
     void process(IndexRecord indexRecord, OutputStream out) throws IOException;
 }
