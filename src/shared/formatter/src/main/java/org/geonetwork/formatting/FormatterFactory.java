@@ -55,10 +55,27 @@ public class FormatterFactory {
      */
     public Map<String, String> getAvailableFormatters(Metadata metadata) {
         Map<String, String> formatters = new HashMap<>();
-        // formatters.add("xml"); // Always available
         formatters.putAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
 
         MetadataSchema metadataSchema = schemaManager.getSchema(metadata.getSchemaid());
+        formatters.putAll(metadataSchema.getFormatters());
+
+        return formatters;
+    }
+
+    /**
+     * Returns a list of available formatters based on the metadata. Always includes "xml" and all available index and
+     * xslt formatters.
+     *
+     * @param schemaId Metadata schema ID to determine available formatters.
+     * @return List of available formatter IDs.
+     */
+    public Map<String, String> getAvailableFormattersForSchema(String schemaId) {
+        Map<String, String> formatters = new HashMap<>();
+
+        formatters.putAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
+
+        MetadataSchema metadataSchema = schemaManager.getSchema(schemaId);
         formatters.putAll(metadataSchema.getFormatters());
 
         return formatters;

@@ -20,13 +20,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
-@RequestMapping(value = {"/api/records/{metadataUuid}/formatters"})
 @Tag(name = API_CLASS_RECORD_TAG, description = API_CLASS_RECORD_OPS)
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +32,7 @@ public class FormattingController {
 
     private final FormatterApi formatterApi;
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/api/records/{metadataUuid}/formatters", produces = {MediaType.APPLICATION_JSON_VALUE})
     @io.swagger.v3.oas.annotations.Operation(
             summary = "Get available formatter for the metadata record depending on the metadata schema.")
     @ResponseBody
@@ -43,11 +41,21 @@ public class FormattingController {
             @RequestParam(required = false, defaultValue = "true") boolean approved)
             throws Exception {
 
-        return formatterApi.getRecordFormatters(metadataUuid, approved);
+        return formatterApi.getRecordFormattersForMetadata(metadataUuid, approved);
+    }
+
+    @GetMapping(value = "/api/records/formatters/{schemaId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @io.swagger.v3.oas.annotations.Operation(
+      summary = "Get available formatter for the metadata record depending on the metadata schema.")
+    @ResponseBody
+    public Map<String, String> getRecordFormatterListForSchema(
+            @Parameter(description = API_PARAM_RECORD_UUID, required = true) @PathVariable String schemaId) {
+
+        return formatterApi.getAvailableFormattersForSchema(schemaId);
     }
 
     @GetMapping(
-            value = {"{formatterId:.+}"},
+            value = {"\"/api/records/{metadataUuid}/formatters/{formatterId:.+}"},
             produces = {
                 MediaType.TEXT_HTML_VALUE,
                 MediaType.APPLICATION_XHTML_XML_VALUE,
