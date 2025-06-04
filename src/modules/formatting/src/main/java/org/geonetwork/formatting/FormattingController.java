@@ -55,7 +55,7 @@ public class FormattingController {
     }
 
     @GetMapping(
-            value = {"\"/api/records/{metadataUuid}/formatters/{formatterId:.+}"},
+            value = {"/api/records/{metadataUuid}/formatters/{formatterId:.+}"},
             produces = {
                 MediaType.TEXT_HTML_VALUE,
                 MediaType.APPLICATION_XHTML_XML_VALUE,
