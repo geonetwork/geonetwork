@@ -6,11 +6,13 @@
 package org.geonetwork.formatting;
 
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.metadata.IMetadataAccessManager;
 import org.geonetwork.metadata.IMetadataManager;
+import org.geonetwork.schemas.SchemaManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
@@ -22,19 +24,44 @@ public class FormatterApi {
     private final IMetadataManager metadataManager;
     private final IMetadataAccessManager metadataAccessManager;
     private final FormatterFactory formatterFactory;
+    private final SchemaManager schemaManager;
+
+
+    public Map<String,FormatterInfo> getAllFormatters() throws Exception {
+       var result = new HashMap<String,FormatterInfo>();
+       var schemaNames = schemaManager.getSchemas();
+
+       schemaNames.forEach(schemaName -> {
+         var schemaInfo = getAvailableFormattersForSchema(schemaName);
+         schemaInfo.entrySet().forEach(entry -> {
+           var formatterName = entry.getKey();
+           var mimeType = entry.getValue();
+           if (!result.containsKey(formatterName)) {
+             var formatterInfo = new FormatterInfo();
+             formatterInfo.setMimeType(mimeType);
+             result.put(formatterName,formatterInfo);
+           }
+           var finfo = result.get(formatterName);
+           if (!finfo.getMimeType().equals(mimeType)) {
+               throw new RuntimeException("inconsistent formatter mime type - "+formatterName+", mime="+finfo.getMimeType()+", other mime="+mimeType);
+           }
+           finfo.getSchemas().add(schemaName);
+
+         });
+       });
+
+       return result;
+    }
 
     public Map<String, String> getRecordFormattersForMetadata(String metadataUuid) throws Exception {
         return getRecordFormattersForMetadata(metadataUuid, true);
     }
 
-    public Map<String, String> getAvailableFormattersForSchema(String schemaId)  {
-      return formatterFactory.getAvailableFormattersForSchema(schemaId);
+    public Map<String, String> getAvailableFormattersForSchema(String schemaId) {
+        return formatterFactory.getAvailableFormattersForSchema(schemaId);
     }
 
-
-
-
-  public Map<String, String> getRecordFormattersForMetadata(String metadataUuid, boolean approved) throws Exception {
+    public Map<String, String> getRecordFormattersForMetadata(String metadataUuid, boolean approved) throws Exception {
         Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
 
         if (!metadataAccessManager.canView(metadata.getId())) {
