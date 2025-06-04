@@ -87,6 +87,6 @@ of data.]]>
     <formatter name="dcat" contentType="application/rdf+xml;subtype=dcat"/>
     <formatter name="eu-dcat-ap" contentType="application/rdf+xml;subtype=dcat-ap"/>
     <formatter name="eu-dcat-ap-hvd" contentType="application/rdf+xml;subtype=dcat-ap-hvd"/>
-    <formatter name="eu-geodcat-ap" contentType="application/rdf+xml;subtype=getdcat-ap"/>
+    <formatter name="eu-geodcat-ap" contentType="application/rdf+xml;subtype=geodcat-ap"/>
   </formatters>
 </schema>
