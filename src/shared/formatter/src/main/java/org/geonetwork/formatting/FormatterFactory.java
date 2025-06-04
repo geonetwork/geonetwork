@@ -5,8 +5,8 @@
  */
 package org.geonetwork.formatting;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.formatting.processor.IndexFormatterProcessorFactory;
@@ -53,13 +53,13 @@ public class FormatterFactory {
      * @param metadata Metadata object to determine available formatters.
      * @return List of available formatter IDs.
      */
-    public List<String> getAvailableFormatters(Metadata metadata) {
-        List<String> formatters = new ArrayList<>();
-        formatters.add("xml"); // Always available
-        formatters.addAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
+    public Map<String, String> getAvailableFormatters(Metadata metadata) {
+        Map<String, String> formatters = new HashMap<>();
+        // formatters.add("xml"); // Always available
+        formatters.putAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
 
         MetadataSchema metadataSchema = schemaManager.getSchema(metadata.getSchemaid());
-        formatters.addAll(metadataSchema.getFormatters());
+        formatters.putAll(metadataSchema.getFormatters());
 
         return formatters;
     }

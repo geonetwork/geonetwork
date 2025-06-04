@@ -72,6 +72,7 @@
       <xs:element name="autodetect" type="gns:autodetectType"
                   minOccurs="1" maxOccurs="1"/>
       <xs:element name="filters" type="gns:filters" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="formatters" type="gns:formatters" minOccurs="0" maxOccurs="1"/>
       <xs:element name="readwriteUuid" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:complexType>
@@ -254,6 +255,38 @@
           <xs:enumeration value="authenticated" />
         </xs:restriction>
       </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="formatters">
+    <xs:annotation>
+      <xs:documentation>
+        Define the formatters for the metadata records using this schema.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="formatter" type="gns:formatter" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="formatter">
+    <xs:annotation>
+      <xs:documentation>A formatter defines an export of the metadata record to another format.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="name" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Formatter name. It should correspond to the formatter folder name of the schema.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="contentType">
+      <xs:annotation>
+        <xs:documentation>
+          Formatter output content-type.
+        </xs:documentation>
+      </xs:annotation>
     </xs:attribute>
   </xs:complexType>
 </xs:schema>

@@ -5,19 +5,20 @@
  */
 package org.geonetwork.schemas;
 
-import org.jdom.Element;
+import org.geonetwork.schemas.model.schemaident.Filter;
 
 public class MetadataSchemaOperationFilter {
     private String xpath;
     private String jsonpath;
     private String ifNotOperation;
-    private Element markedElement;
+    private Filter.KeepMarkedElement markedElement;
 
     public MetadataSchemaOperationFilter(String xpath, String jsonpath, String ifNotOperation) {
         this(xpath, jsonpath, ifNotOperation, null);
     }
 
-    public MetadataSchemaOperationFilter(String xpath, String jsonpath, String ifNotOperation, Element markedElement) {
+    public MetadataSchemaOperationFilter(
+            String xpath, String jsonpath, String ifNotOperation, Filter.KeepMarkedElement markedElement) {
         this.xpath = xpath;
         this.jsonpath = jsonpath;
         this.ifNotOperation = ifNotOperation;
@@ -36,7 +37,7 @@ public class MetadataSchemaOperationFilter {
         return ifNotOperation;
     }
 
-    public Element getMarkedElement() {
+    public Filter.KeepMarkedElement getMarkedElement() {
         return markedElement;
     }
 }
