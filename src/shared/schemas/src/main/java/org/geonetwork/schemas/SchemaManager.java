@@ -1508,20 +1508,6 @@ public class SchemaManager {
         }
     }
 
-    private Map<String, String> getSchemaIdentMultilingualProperty(Element root, String propName) {
-        Map<String, String> props = new HashMap<>();
-        List<?> children = root.getChildren(propName, GEONET_SCHEMA_NS);
-        children.forEach(o -> {
-            if (o instanceof Element e) {
-                String lang = e.getAttributeValue("lang", Geonet.Namespaces.XML);
-                if (lang != null) {
-                    props.put(lang, e.getTextNormalize());
-                }
-            }
-        });
-        return props;
-    }
-
     /**
      * true if schema requires to synch the uuid column schema info with the uuid in the metadata record (updated on
      * editing or in UFO).
