@@ -31,23 +31,34 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * configuration for the Spring Boot app.
  *
- * <p>This contains some beans and some overrides for setting up spring.
+ * <p>This sets up the ContentNegotiation. 1. We have some simple/generic mimetype. 2. We register the very specific
+ * mimetype (and formatterid) for the FormatterApi 3. We register some message writers (specifically the
+ * FormatterApiMessageWriter)
+ *
+ * <p>NOTE/TODO: There is a circular dependency because WebConfig -> FormatterApiMessageWriter -> FormatterApi -> ... ->
+ * IndexClient -> WebConfig. I've just explicitly gotten the FormatterApi at runtime instead of at instantiation. This
+ * is a bit ugly, but ...
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private FormatterApiMessageWriter formatterApiMessageWriter2;
+    private FormatterApiMessageWriter formatterApiMessageWriter;
 
     @Autowired
     private BeanFactory beanFactory;
     // todo - remove this.
     // There is a circular dependency because Formatter depends on WebConfig
     void setupFormatterApiMessageWriter() {
-        if (formatterApiMessageWriter2 == null) {
-            formatterApiMessageWriter2 = beanFactory.getBean(FormatterApiMessageWriter.class);
+        if (formatterApiMessageWriter == null) {
+            formatterApiMessageWriter = beanFactory.getBean(FormatterApiMessageWriter.class);
         }
     }
 
+    /**
+     * configures the `?f=<...>` format requests.
+     *
+     * @param configurer
+     */
     @SneakyThrows
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
@@ -66,7 +77,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         // add the FormatterApi media types.  We allows   f=<formatterId> or f=<formatter mime type>
         setupFormatterApiMessageWriter();
-        Map<String, FormatterInfo> formats = this.formatterApiMessageWriter2.getFormatNamesAndMimeTypes();
+        Map<String, FormatterInfo> formats = this.formatterApiMessageWriter.getFormatNamesAndMimeTypes();
         for (var format : formats.entrySet()) {
             // f=eu-dcat-ap -> application/rdf+xml;subtype=dcat-ap
             configurer.mediaType(
@@ -81,9 +92,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
         messageConverters.add(new TrivialHtmlMessageWriter(MediaType.TEXT_HTML));
-        messageConverters.add(formatterApiMessageWriter2);
+        messageConverters.add(formatterApiMessageWriter);
     }
 
+    /** Generic object mapper to use in the system */
     @Bean
     @Primary
     public ObjectMapper objectMapper() {
