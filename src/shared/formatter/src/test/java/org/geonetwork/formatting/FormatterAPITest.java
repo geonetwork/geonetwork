@@ -18,7 +18,6 @@ import java.util.Set;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.metadata.IMetadataAccessManager;
 import org.geonetwork.metadata.IMetadataManager;
-import org.geonetwork.schemas.MetadataSchema;
 import org.geonetwork.schemas.SchemaManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -49,8 +48,8 @@ class FormatterApiTest {
     @Mock
     private Formatter formatter;
 
-    @Mock
-    private MetadataSchema metadataSchema;
+    //    @Mock
+    //    private MetadataSchema metadataSchema;
 
     // Test data
     private static final String TEST_UUID = "test-uuid-123";

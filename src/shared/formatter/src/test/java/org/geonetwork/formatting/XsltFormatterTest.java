@@ -23,6 +23,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.core.io.ClassPathResource;
 
+@SuppressWarnings("unchecked") // added to make test case easier to read (and to build)
 @DisplayName("XsltFormatter Unit Tests")
 class XsltFormatterTest {
 
