@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.geonetwork.formatting.FormatterInfo;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonItemDto;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +36,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private FormatterApiMessageWriter<OgcApiRecordsJsonItemDto> formatterApiMessageWriter2;
+    private FormatterApiMessageWriter formatterApiMessageWriter2;
 
     @Autowired
     private BeanFactory beanFactory;
