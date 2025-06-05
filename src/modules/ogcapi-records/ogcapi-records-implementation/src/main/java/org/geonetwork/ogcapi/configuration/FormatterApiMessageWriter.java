@@ -63,14 +63,14 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
      * wrapper around FormatterApi#getAllFormatters()
      *
      * @return metadata about all the formatterApi formats
-     * @throws Exception
      */
     public Map<String, FormatterInfo> getFormatNamesAndMimeTypes() throws Exception {
         return formatterApi.getAllFormatters();
     }
 
     /** we do not support read - always false */
-    public boolean canRead(Class<?> clazz, MediaType mediaType) {
+    @Override
+    public boolean canRead(@NotNull Class<?> clazz, MediaType mediaType) {
         return false;
     }
 
@@ -81,6 +81,7 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
      * @param mediaType what mime type do we want
      * @return if we can write this object with this mediatype
      */
+    @Override
     public boolean canWrite(Class<?> clazz, MediaType mediaType) {
         if (!clazz.equals(OgcApiRecordsRecordGeoJSONDto.class)) {
             return false;
@@ -94,6 +95,7 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
      * @param clazz object type (should be OgcApiRecordsRecordGeoJSONDto)
      * @return what formats do we support for that object
      */
+    @Override
     public @NotNull List<MediaType> getSupportedMediaTypes(Class<?> clazz) {
         if (clazz.equals(OgcApiRecordsRecordGeoJSONDto.class)) {
             return supportedMediaTypes;
@@ -102,6 +104,7 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
     }
 
     /** we don't support reading */
+    @Override
     public @NotNull OgcApiRecordsRecordGeoJSONDto read(
             @NotNull Class<? extends OgcApiRecordsRecordGeoJSONDto> clazz, @NotNull HttpInputMessage inputMessage)
             throws IOException, HttpMessageNotReadableException {
