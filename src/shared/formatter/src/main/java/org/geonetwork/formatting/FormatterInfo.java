@@ -5,8 +5,9 @@
  */
 package org.geonetwork.formatting;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 import lombok.*;
 
 @Getter
@@ -14,9 +15,9 @@ import lombok.*;
 public class FormatterInfo {
 
     String mimeType;
-    List<String> schemas;
+    Set<String> schemas;
 
     public FormatterInfo() {
-        schemas = new ArrayList<>();
+        schemas = new HashSet<>();
     }
 }
