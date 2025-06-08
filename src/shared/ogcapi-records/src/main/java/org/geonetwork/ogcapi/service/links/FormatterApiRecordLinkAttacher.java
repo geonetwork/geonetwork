@@ -31,7 +31,7 @@ public class FormatterApiRecordLinkAttacher {
                     + URLEncoder.encode(collectionId, StandardCharsets.UTF_8)
                     + "/items/" + URLEncoder.encode(record.getId(), StandardCharsets.UTF_8);
 
-            url += "?format=" + formatterName;
+            url += "?f=" + formatterName;
             var link = new OgcApiRecordsLinkDto();
             try {
                 link.setHref(new URI(url));
