@@ -74,7 +74,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             method = RequestMethod.GET,
             value = "/collections/{catalogId}/items/{recordId}",
             produces = {"application/geo+json", "text/html", "application/json", "*/*"})
-    public ResponseEntity<OgcApiRecordsRecordGeoJSONDto> getRecord(String catalogId, String recordId) {
+    public ResponseEntity<OgcApiRecordsRecordGeoJSONDto> getRecord(
+            String catalogId, String recordId, List<String> profile) {
         var result = itemsApi.getRecord(catalogId, recordId);
 
         return new ResponseEntity<OgcApiRecordsRecordGeoJSONDto>(result, HttpStatusCode.valueOf(200));

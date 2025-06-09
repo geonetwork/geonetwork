@@ -208,6 +208,7 @@ paths:
       parameters:
         - $ref: 'parameters/catalogId.yaml'
         - $ref: 'parameters/recordId.yaml'
+        - $ref: 'parameters/profile.yaml'
       responses:
         '200':
           $ref: 'responses/Record.yaml'
