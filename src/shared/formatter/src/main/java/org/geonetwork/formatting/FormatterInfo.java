@@ -7,7 +7,6 @@ package org.geonetwork.formatting;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import lombok.*;
 
 @Getter
