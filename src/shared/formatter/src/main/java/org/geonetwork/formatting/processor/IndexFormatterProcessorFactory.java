@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.geonetwork.schemas.model.schemaident.Formatter;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,8 +24,14 @@ public class IndexFormatterProcessorFactory {
                 .orElse(null);
     }
 
-    public Map<String, String> getAvailableFormatterProcessors() {
+    public List<Formatter> getAvailableFormatterProcessors() {
         return processors.stream()
-                .collect(Collectors.toMap(IndexFormatterProcessor::getId, IndexFormatterProcessor::getContentType));
+                .map(p -> {
+                  Formatter f = new Formatter();
+                  f.setName(p.getId());
+                  f.setProfile(p.getId());
+                  f.setContentType(p.getContentType());
+                  return f;
+                }).collect(Collectors.toList());
     }
 }

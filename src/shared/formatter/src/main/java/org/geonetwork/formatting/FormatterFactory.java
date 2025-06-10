@@ -5,8 +5,9 @@
  */
 package org.geonetwork.formatting;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.formatting.processor.IndexFormatterProcessorFactory;
@@ -53,12 +54,13 @@ public class FormatterFactory {
      * @param metadata Metadata object to determine available formatters.
      * @return List of available formatter IDs.
      */
-    public Map<String, String> getAvailableFormatters(Metadata metadata) {
-        Map<String, String> formatters = new HashMap<>();
-        formatters.putAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
+    public List<org.geonetwork.schemas.model.schemaident.Formatter> getAvailableFormatters(Metadata metadata) {
+        List<org.geonetwork.schemas.model.schemaident.Formatter> formatters = new ArrayList<>();
+
+        formatters.addAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
 
         MetadataSchema metadataSchema = schemaManager.getSchema(metadata.getSchemaid());
-        formatters.putAll(metadataSchema.getFormatters());
+        formatters.addAll(metadataSchema.getFormatters());
 
         return formatters;
     }
@@ -70,13 +72,13 @@ public class FormatterFactory {
      * @param schemaId Metadata schema ID to determine available formatters.
      * @return List of available formatter IDs.
      */
-    public Map<String, String> getAvailableFormattersForSchema(String schemaId) {
-        Map<String, String> formatters = new HashMap<>();
+    public List<org.geonetwork.schemas.model.schemaident.Formatter> getAvailableFormattersForSchema(String schemaId) {
+        List<org.geonetwork.schemas.model.schemaident.Formatter> formatters = new ArrayList<>();
 
-        formatters.putAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
+        formatters.addAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
 
         MetadataSchema metadataSchema = schemaManager.getSchema(schemaId);
-        formatters.putAll(metadataSchema.getFormatters());
+        formatters.addAll(metadataSchema.getFormatters());
 
         return formatters;
     }

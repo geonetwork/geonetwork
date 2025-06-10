@@ -24,6 +24,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Geonet;
 import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.schemas.editorconfig.Editor;
+import org.geonetwork.schemas.model.schemaident.Description;
+import org.geonetwork.schemas.model.schemaident.Formatter;
+import org.geonetwork.schemas.model.schemaident.SchemaIdentificationInfo;
+import org.geonetwork.schemas.model.schemaident.StandardUrl;
+import org.geonetwork.schemas.model.schemaident.Title;
 import org.geonetwork.schemas.plugin.SavedQuery;
 import org.geonetwork.utility.legacy.exceptions.ResourceNotFoundException;
 import org.geonetwork.utility.legacy.xml.Xml;
@@ -69,6 +74,8 @@ public class MetadataSchema {
     private boolean readwriteUUID = false;
     private List<Element> rootAppInfoElements;
     private Map<String, String> formatters = new HashMap<>();
+
+    private SchemaIdentificationInfo schemaIdentificationInfo;
 
     //    private SchematronRepository schemaRepo;
     //    private SchematronCriteriaGroupRepository criteriaGroupRepository;
@@ -119,14 +126,14 @@ public class MetadataSchema {
         this.schemaPlugin = SchemaManager.getSchemaPlugin(schemaName);
     }
 
-    public Map<String, String> getFormatters() {
-        return formatters;
+
+    public void setSchemaIdentificationInfo(SchemaIdentificationInfo schemaIdentificationInfo) {
+      this.schemaIdentificationInfo = schemaIdentificationInfo;
     }
 
-    public void setFormatters(Map<String, String> formatters) {
-        this.formatters = formatters;
+    public List<Formatter> getFormatters() {
+        return this.schemaIdentificationInfo.getFormatters().getFormatters();
     }
-
     @JsonIgnore
     @SuppressWarnings("unused")
     public Editor getConfigEditor() {
@@ -546,67 +553,43 @@ public class MetadataSchema {
      * editing or in UFO).
      */
     public boolean isReadwriteUUID() {
-        return readwriteUUID;
-    }
-
-    public void setReadwriteUUID(boolean readwriteUUID) {
-        this.readwriteUUID = readwriteUUID;
+        return Boolean.TRUE.equals(schemaIdentificationInfo.isReadwriteUuid());
     }
 
     public List<String> getStandardUrl() {
-        return standardUrl;
-    }
-
-    public void setStandardUrl(List<String> standardUrl) {
-        this.standardUrl = standardUrl;
+        return schemaIdentificationInfo.getStandardUrls().stream()
+          .map(StandardUrl::getValue)
+          .collect(Collectors.toList());
     }
 
     public String getVersion() {
-        return version;
+        return schemaIdentificationInfo.getVersion();
     }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
 
     public String getAppMinorVersionSupported() {
-        return appMinorVersionSupported;
-    }
-
-    public void setAppMinorVersionSupported(String appMinorVersionSupported) {
-        this.appMinorVersionSupported = appMinorVersionSupported;
+        return schemaIdentificationInfo.getAppMinorVersionSupported();
     }
 
     public String getAppMajorVersionSupported() {
-        return appMajorVersionSupported;
-    }
-
-    public void setAppMajorVersionSupported(String appMajorVersionSupported) {
-        this.appMajorVersionSupported = appMajorVersionSupported;
+        return schemaIdentificationInfo.getAppMajorVersionSupported();
     }
 
     public String getDependsOn() {
-        return dependsOn;
-    }
-
-    public void setDependsOn(String depends) {
-        this.dependsOn = depends;
+      if (!schemaIdentificationInfo.getDepends().isEmpty()) {
+        return schemaIdentificationInfo.getDepends().get(0);
+      }
+      return "";
     }
 
     public Map<String, String> getTitles() {
-        return titles;
-    }
-
-    public void setTitles(Map<String, String> titles) {
-        this.titles = titles;
+        return schemaIdentificationInfo.getTitles().stream()
+          .collect(Collectors.toMap(Title::getLang, Title::getValue));
     }
 
     public Map<String, String> getDescriptions() {
-        return descriptions;
-    }
-
-    public void setDescriptions(Map<String, String> descriptions) {
-        this.descriptions = descriptions;
+        return schemaIdentificationInfo.getDescriptions().stream()
+          .collect(Collectors.toMap(Description::getLang, Description::getValue));
     }
 
     /** Schematron rules filename is like "schematron-rules-iso.xsl */

@@ -128,14 +128,14 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
 
         try {
             // from the mimetype, find out how to call the formatter api
-            var formats = formatterApi.getRecordFormattersForMetadata(ogcApiRecordsJsonItemDto.getId(), approved);
-            var formatEntry = formats.entrySet().stream()
-                    .filter(entry -> entry.getValue().equals(contentType.toString()))
+            var formatters = formatterApi.getRecordFormattersForMetadata(ogcApiRecordsJsonItemDto.getId(), approved);
+            var formatEntry = formatters.stream()
+                    .filter(entry -> entry.getContentType().equals(contentType.toString()))
                     .findFirst();
             if (formatEntry.isEmpty()) {
                 throw new Exception("no formatter found for format " + contentType);
             }
-            var formatterId = formatEntry.get().getKey();
+            var formatterId = formatEntry.get().getName();
 
             outputMessage.getHeaders().setContentType(contentType);
 

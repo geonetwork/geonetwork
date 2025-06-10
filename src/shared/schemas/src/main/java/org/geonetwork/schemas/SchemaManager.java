@@ -54,6 +54,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -107,6 +108,9 @@ public class SchemaManager {
 
     private Path schemaPublicationDir;
     private int numberOfCoreSchemasAdded = 0;
+
+    @Autowired
+    private final List<SchemaPlugin> schemaPlugins = new ArrayList<>();
 
     public static Path registerXmlCatalogFiles(Path basePath, Path schemapluginUriCatalog) throws IOException {
         //    Path webInf = webappDir.resolve("WEB-INF");
@@ -989,15 +993,10 @@ public class SchemaManager {
         //    }
 
         SchemaIdentificationInfo schemaIdentificationInfo = getSchemaIdentificationInfo(xmlIdFile);
+        mds.setSchemaIdentificationInfo(schemaIdentificationInfo);
+        mds.setOperationFilters(extractOperationFilters(schemaIdentificationInfo));
 
         Pair<String, String> idInfo = extractIdInfo(schemaIdentificationInfo, schemaName);
-
-        extractMetadata(mds, schemaIdentificationInfo);
-        mds.setReadwriteUUID(extractReadWriteUuid(schemaIdentificationInfo));
-        mds.setOperationFilters(extractOperationFilters(schemaIdentificationInfo));
-        mds.setFormatters(schemaIdentificationInfo.getFormatters().getFormatters().stream()
-                .collect(Collectors.toMap(Formatter::getName, Formatter::getContentType)));
-
         log.debug("  UUID is read/write mode: " + mds.isReadwriteUUID());
 
         putSchemaInfo(
@@ -1488,23 +1487,6 @@ public class SchemaManager {
         } catch (JAXBException e) {
             log.error(" Get config editor. Error is " + e.getMessage(), e);
             throw new RuntimeException(e);
-        }
-    }
-
-    private void extractMetadata(MetadataSchema mds, SchemaIdentificationInfo schemaIdentificationInfo) {
-        mds.setStandardUrl(schemaIdentificationInfo.getStandardUrls().stream()
-                .map(StandardUrl::getValue)
-                .collect(Collectors.toList()));
-        mds.setTitles(schemaIdentificationInfo.getTitles().stream()
-                .collect(Collectors.toMap(Title::getLang, Title::getValue)));
-        mds.setDescriptions(schemaIdentificationInfo.getDescriptions().stream()
-                .collect(Collectors.toMap(Description::getLang, Description::getValue)));
-
-        mds.setVersion(schemaIdentificationInfo.getVersion());
-        mds.setAppMinorVersionSupported(schemaIdentificationInfo.getAppMinorVersionSupported());
-        mds.setAppMajorVersionSupported(schemaIdentificationInfo.getAppMajorVersionSupported());
-        if (!schemaIdentificationInfo.getDepends().isEmpty()) {
-            mds.setDependsOn(schemaIdentificationInfo.getDepends().get(0));
         }
     }
 
