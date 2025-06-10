@@ -11,24 +11,18 @@ import static org.geonetwork.constants.ApiParams.API_PARAM_RECORD_UUID;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.schemas.model.schemaident.Formatter;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.NativeWebRequest;
 
 @Tag(name = API_CLASS_RECORD_TAG, description = API_CLASS_RECORD_OPS)
 @RestController
@@ -42,7 +36,7 @@ public class FormattingController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     @io.swagger.v3.oas.annotations.Operation(summary = "Get all available formatters and their mime types.")
     @ResponseBody
-    public Map<String, FormatterInfo> getAllFormatters() throws Exception {
+    public Map<String, Map<String, FormatterInfo>> getAllFormatters() throws Exception {
         return formatterApi.getAllFormatters();
     }
 
@@ -99,12 +93,14 @@ public class FormattingController {
             @Parameter(description = "Download the approved version", required = false)
                     @RequestParam(required = false, defaultValue = "true")
                     boolean approved,
+            @Parameter(description = "profile to use", required = false) @RequestParam(required = false) String profile,
             HttpServletResponse servletResponse)
             throws Exception {
 
-
         List<Formatter> formatters = formatterApi.getRecordFormattersForMetadata(metadataUuid);
-        Optional<Formatter> formatterOptional = formatters.stream().filter(formatter -> formatter.getProfile().equals(formatterId)).findFirst();
+        Optional<Formatter> formatterOptional = formatters.stream()
+                .filter(formatter -> formatter.getProfile().equals(formatterId))
+                .findFirst();
 
         if (!formatterOptional.isPresent()) {
             throw new FormatterException(
@@ -114,6 +110,7 @@ public class FormattingController {
         String contentType = formatterOptional.get().getContentType();
 
         servletResponse.setContentType(contentType);
-        formatterApi.getRecordFormattedBy(metadataUuid, formatterId, approved, servletResponse.getOutputStream());
+        formatterApi.getRecordFormattedBy(
+                metadataUuid, formatterId, profile, approved, servletResponse.getOutputStream());
     }
 }

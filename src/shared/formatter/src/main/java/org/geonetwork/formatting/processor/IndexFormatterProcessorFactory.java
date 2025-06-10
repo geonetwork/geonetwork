@@ -6,7 +6,6 @@
 package org.geonetwork.formatting.processor;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.geonetwork.schemas.model.schemaident.Formatter;
@@ -19,7 +18,7 @@ public class IndexFormatterProcessorFactory {
 
     public IndexFormatterProcessor getFormatterProcessor(String id) {
         return processors.stream()
-                .filter(processor -> processor.getId().equals(id))
+                .filter(processor -> processor.getName().equals(id))
                 .findFirst()
                 .orElse(null);
     }
@@ -27,11 +26,15 @@ public class IndexFormatterProcessorFactory {
     public List<Formatter> getAvailableFormatterProcessors() {
         return processors.stream()
                 .map(p -> {
-                  Formatter f = new Formatter();
-                  f.setName(p.getId());
-                  f.setProfile(p.getId());
-                  f.setContentType(p.getContentType());
-                  return f;
-                }).collect(Collectors.toList());
+                    Formatter f = new Formatter();
+                    f.setName(p.getName());
+                    f.setProfile(p.getName());
+                    f.setContentType(p.getContentType());
+                    f.setTitle(p.getTitle());
+                    f.setOfficialProfileName(p.getOfficialProfileName());
+                    f.setProfile(p.getProfileName());
+                    return f;
+                })
+                .collect(Collectors.toList());
     }
 }

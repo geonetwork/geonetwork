@@ -9,10 +9,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import org.geonetwork.index.model.record.IndexRecord;
 
+/** See schema-ident.xml and schema-ident.xsd. */
 public interface IndexFormatterProcessor {
-    String getId();
+    String getName();
 
     String getContentType();
+
+    String getTitle();
+
+    String getOfficialProfileName();
+
+    String getProfileName();
 
     void process(IndexRecord indexRecord, OutputStream out) throws IOException;
 }

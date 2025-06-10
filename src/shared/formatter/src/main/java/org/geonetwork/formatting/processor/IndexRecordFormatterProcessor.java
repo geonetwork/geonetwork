@@ -17,13 +17,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndexRecordFormatterProcessor implements IndexFormatterProcessor {
     @Override
-    public String getId() {
-        return "json";
+    public String getName() {
+        return "elastic-json-index";
     }
 
     @Override
     public String getContentType() {
         return "application/json";
+    }
+
+    @Override
+    public String getTitle() {
+        return "GeoNetwork Elastic JSON Index for a Record";
+    }
+
+    @Override
+    public String getOfficialProfileName() {
+        return "[geonetwork:elastic-json-index]";
+    }
+
+    @Override
+    public String getProfileName() {
+        return "elastic-json-index";
     }
 
     @Override

@@ -7,7 +7,6 @@ package org.geonetwork.formatting;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.formatting.processor.IndexFormatterProcessorFactory;

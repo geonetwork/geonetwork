@@ -52,6 +52,14 @@ public class Formatter {
     @XmlSchemaType(name = "anySimpleType")
     protected String contentType;
 
+    @XmlAttribute(name = "title", required = false)
+    @XmlSchemaType(name = "anySimpleType")
+    protected String title;
+
+    @XmlAttribute(name = "officialProfileName", required = false)
+    @XmlSchemaType(name = "anySimpleType")
+    protected String officialProfileName;
+
     /**
      * Gets the value of the name property.
      *
@@ -104,5 +112,21 @@ public class Formatter {
      */
     public void setContentType(String value) {
         this.contentType = value;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getOfficialProfileName() {
+        return officialProfileName;
+    }
+
+    public void setOfficialProfileName(String officialProfileName) {
+        this.officialProfileName = officialProfileName;
     }
 }

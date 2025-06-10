@@ -22,22 +22,51 @@ public class FormatterApiRecordLinkAttacher {
     private final OgcApiLinkConfiguration linkConfiguration;
     private final FormatterApi formatterApi;
 
+    //    public void attachLinks(OgcApiRecordsRecordGeoJSONDto record, String collectionId, Object page) throws
+    // Exception {
+    //
+    //        var availableFormatters = formatterApi.getRecordFormattersForMetadata(record.getId());
+    //
+    //        availableFormatters.forEach(formatter -> {
+    //            var url = linkConfiguration.getOgcApiRecordsBaseUrl() + "collections/"
+    //                    + URLEncoder.encode(collectionId, StandardCharsets.UTF_8)
+    //                    + "/items/" + URLEncoder.encode(record.getId(), StandardCharsets.UTF_8);
+    //
+    //            url += "?f=" + formatter.getName();
+    //            var link = new OgcApiRecordsLinkDto();
+    //            try {
+    //                link.setHref(new URI(url));
+    //                link.setRel("alternative");
+    //                link.setHreflang("eng");
+    //                link.setType("application/UNKNOWN_MIME_TYPE");
+    //                addLink(page, link);
+    //            } catch (Exception e) {
+    //                throw new RuntimeException(e);
+    //            }
+    //        });
+    //    }
+
     public void attachLinks(OgcApiRecordsRecordGeoJSONDto record, String collectionId, Object page) throws Exception {
 
-        var availableFormatters =
-                formatterApi.getRecordFormattersForMetadata(record.getId());
-        availableFormatters.forEach(formatter -> {
+        var availableFormatters = formatterApi.getRecordFormattersForMetadataByMediaType(record.getId());
+
+        availableFormatters.values().forEach(profileInfos -> {
             var url = linkConfiguration.getOgcApiRecordsBaseUrl() + "collections/"
                     + URLEncoder.encode(collectionId, StandardCharsets.UTF_8)
                     + "/items/" + URLEncoder.encode(record.getId(), StandardCharsets.UTF_8);
 
-            url += "?f=" + formatter.getName();
+            //
+            var mimeType = profileInfos.getFirst().getMimeType();
+            url += "?f=" + mimeType;
             var link = new OgcApiRecordsLinkDto();
             try {
                 link.setHref(new URI(url));
-                link.setRel("self");
+                link.setRel("alternative");
                 link.setHreflang("eng");
-                link.setType("application/UNKNOWN_MIME_TYPE");
+                link.setType(mimeType);
+                link.setProfile(profileInfos.stream()
+                        .map(x -> x.getOfficialProfileName())
+                        .toList());
                 addLink(page, link);
             } catch (Exception e) {
                 throw new RuntimeException(e);

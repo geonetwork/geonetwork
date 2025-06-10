@@ -77,15 +77,13 @@ public class WebConfig implements WebMvcConfigurer {
 
         // add the FormatterApi media types.  We allows   f=<formatterId> or f=<formatter mime type>
         setupFormatterApiMessageWriter();
-        Map<String, FormatterInfo> formats = this.formatterApiMessageWriter.getFormatNamesAndMimeTypes();
-        for (var format : formats.entrySet()) {
-            // f=eu-dcat-ap -> application/rdf+xml;subtype=dcat-ap
-            configurer.mediaType(
-                    format.getKey(), MediaType.valueOf(format.getValue().getMimeType()));
-            // f=application/rdf+xml;subtype=dcat-ap -> application/rdf+xml;subtype=dcat-ap
-            configurer.mediaType(
-                    format.getValue().getMimeType(),
-                    MediaType.valueOf(format.getValue().getMimeType()));
+        Map<String, Map<String, FormatterInfo>> formats = this.formatterApiMessageWriter.getFormatNamesAndMimeTypes();
+        for (var format : formats.keySet()) {
+            configurer.mediaType(format, MediaType.valueOf(format));
+            if (format.contains("+")) {
+                var f = format.replace("+", " ");
+                configurer.mediaType(f, MediaType.valueOf(format));
+            }
         }
     }
 
