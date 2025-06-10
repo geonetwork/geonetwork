@@ -35,6 +35,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRecordsRecordGeoJSONDto> {
 
+
+  private static final String PROFILE_HEADER_NAME= "GN5.OGCAPI-RECORDS.REQUEST-PROFILES";
+
     /** actually does the formatting work and knows what formatters are available */
     private final FormatterApi formatterApi;
 
@@ -128,7 +131,10 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
 
         try {
             // from the mimetype, find out how to call the formatter api
-            var formatters = formatterApi.getRecordFormattersForMetadata(ogcApiRecordsJsonItemDto.getId(), approved);
+          var profile = outputMessage.getHeaders().get(PROFILE_HEADER_NAME);
+          outputMessage.getHeaders().remove(PROFILE_HEADER_NAME);
+
+          var formatters = formatterApi.getRecordFormattersForMetadata(ogcApiRecordsJsonItemDto.getId(), approved);
             var formatEntry = formatters.stream()
                     .filter(entry -> entry.getContentType().equals(contentType.toString()))
                     .findFirst();

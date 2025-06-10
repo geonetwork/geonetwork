@@ -19,6 +19,7 @@ import org.geonetwork.ogcapi.service.ogcapi.OgcApiItemsApi;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.querybuilder.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,7 +79,12 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             String catalogId, String recordId, List<String> profile) {
         var result = itemsApi.getRecord(catalogId, recordId);
 
-        return new ResponseEntity<OgcApiRecordsRecordGeoJSONDto>(result, HttpStatusCode.valueOf(200));
+        HttpHeaders responseHeaders = new HttpHeaders();
+        if (profile != null && !profile.isEmpty()) {
+            responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-PROFILES",  profile);
+        }
+
+        return new ResponseEntity<OgcApiRecordsRecordGeoJSONDto>(result, responseHeaders, HttpStatusCode.valueOf(200));
     }
 
     @Override
