@@ -65,7 +65,7 @@ geonetwork:
   index:
     url: ${ELASTIC_URL:http://localhost:9200}
     indexPrefix: gn5-
-    indexRecordName: gn5-records
+    indexRecordName: gn-records
     username: elastic
     password: changeme
     elasticsearch:
@@ -101,7 +101,7 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5433/geonetwork-5
+    url: jdbc:postgresql://localhost:5432/gn
     driverClassName: org.postgresql.Driver
     #    url: jdbc:h2:mem:gn5
     #    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE
