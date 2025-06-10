@@ -126,14 +126,14 @@ public class MetadataSchema {
         this.schemaPlugin = SchemaManager.getSchemaPlugin(schemaName);
     }
 
-
     public void setSchemaIdentificationInfo(SchemaIdentificationInfo schemaIdentificationInfo) {
-      this.schemaIdentificationInfo = schemaIdentificationInfo;
+        this.schemaIdentificationInfo = schemaIdentificationInfo;
     }
 
     public List<Formatter> getFormatters() {
         return this.schemaIdentificationInfo.getFormatters().getFormatters();
     }
+
     @JsonIgnore
     @SuppressWarnings("unused")
     public Editor getConfigEditor() {
@@ -558,14 +558,13 @@ public class MetadataSchema {
 
     public List<String> getStandardUrl() {
         return schemaIdentificationInfo.getStandardUrls().stream()
-          .map(StandardUrl::getValue)
-          .collect(Collectors.toList());
+                .map(StandardUrl::getValue)
+                .collect(Collectors.toList());
     }
 
     public String getVersion() {
         return schemaIdentificationInfo.getVersion();
     }
-
 
     public String getAppMinorVersionSupported() {
         return schemaIdentificationInfo.getAppMinorVersionSupported();
@@ -576,20 +575,19 @@ public class MetadataSchema {
     }
 
     public String getDependsOn() {
-      if (!schemaIdentificationInfo.getDepends().isEmpty()) {
-        return schemaIdentificationInfo.getDepends().get(0);
-      }
-      return "";
+        if (!schemaIdentificationInfo.getDepends().isEmpty()) {
+            return schemaIdentificationInfo.getDepends().get(0);
+        }
+        return "";
     }
 
     public Map<String, String> getTitles() {
-        return schemaIdentificationInfo.getTitles().stream()
-          .collect(Collectors.toMap(Title::getLang, Title::getValue));
+        return schemaIdentificationInfo.getTitles().stream().collect(Collectors.toMap(Title::getLang, Title::getValue));
     }
 
     public Map<String, String> getDescriptions() {
         return schemaIdentificationInfo.getDescriptions().stream()
-          .collect(Collectors.toMap(Description::getLang, Description::getValue));
+                .collect(Collectors.toMap(Description::getLang, Description::getValue));
     }
 
     /** Schematron rules filename is like "schematron-rules-iso.xsl */

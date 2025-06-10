@@ -22,13 +22,28 @@ public class OgcApiGeoJsonIndexFormatter implements IndexFormatterProcessor {
     private final ObjectMapper objectMapper;
 
     @Override
-    public String getId() {
+    public String getName() {
         return "OgcApiGeoJson";
     }
 
     @Override
     public String getContentType() {
         return "application/geo+json";
+    }
+
+    @Override
+    public String getTitle() {
+        return "OGCAPI-Records GeoJSON output.";
+    }
+
+    @Override
+    public String getOfficialProfileName() {
+        return "http://www.opengis.net/def/profile/OGC/0/ogc-catalog";
+    }
+
+    @Override
+    public String getProfileName() {
+        return "ogc-catalog";
     }
 
     @Override

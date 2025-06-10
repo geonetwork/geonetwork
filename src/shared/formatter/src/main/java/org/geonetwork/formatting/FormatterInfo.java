@@ -7,7 +7,8 @@ package org.geonetwork.formatting;
 
 import java.util.HashSet;
 import java.util.Set;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -15,8 +16,11 @@ public class FormatterInfo {
 
     String mimeType;
     Set<String> schemas;
+    ProfileInfo profile;
 
-    public FormatterInfo() {
+    public FormatterInfo(String mimeType, ProfileInfo profile) {
+        this.mimeType = mimeType;
+        this.profile = profile;
         schemas = new HashSet<>();
     }
 }

@@ -81,7 +81,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
 
         HttpHeaders responseHeaders = new HttpHeaders();
         if (profile != null && !profile.isEmpty()) {
-            responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-PROFILES",  profile);
+            responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-PROFILES", profile);
         }
 
         return new ResponseEntity<OgcApiRecordsRecordGeoJSONDto>(result, responseHeaders, HttpStatusCode.valueOf(200));
