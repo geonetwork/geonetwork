@@ -7,7 +7,10 @@ package org.geonetwork.formatting;
 
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.metadata.IMetadataAccessManager;
@@ -31,36 +34,36 @@ public class FormatterApi {
         var schemaNames = schemaManager.getSchemas();
 
         schemaNames.forEach(schemaName -> {
-            var schemaInfo = getAvailableFormattersForSchema(schemaName);
-            schemaInfo.entrySet().forEach(entry -> {
-                var formatterName = entry.getKey();
-                var mimeType = entry.getValue();
-                if (!result.containsKey(formatterName)) {
-                    var formatterInfo = new FormatterInfo();
-                    formatterInfo.setMimeType(mimeType);
-                    result.put(formatterName, formatterInfo);
-                }
-                var finfo = result.get(formatterName);
-                if (!finfo.getMimeType().equals(mimeType)) {
-                    throw new RuntimeException("inconsistent formatter mime type - " + formatterName + ", mime="
-                            + finfo.getMimeType() + ", other mime=" + mimeType);
-                }
-                finfo.getSchemas().add(schemaName);
-            });
+          List<org.geonetwork.schemas.model.schemaident.Formatter> schemaInfo = getAvailableFormattersForSchema(schemaName);
+          schemaInfo.forEach(formatter -> {
+            var formatterName = formatter.getName();
+            var mimeType = formatter.getContentType();
+            if (!result.containsKey(formatterName)) {
+              var formatterInfo = new FormatterInfo();
+              formatterInfo.setMimeType(mimeType);
+              result.put(formatterName, formatterInfo);
+            }
+            var finfo = result.get(formatterName);
+            if (!finfo.getMimeType().equals(mimeType)) {
+              throw new RuntimeException("inconsistent formatter mime type - " + formatterName + ", mime="
+                + finfo.getMimeType() + ", other mime=" + mimeType);
+            }
+            finfo.getSchemas().add(schemaName);
+          });
         });
 
         return result;
     }
 
-    public Map<String, String> getRecordFormattersForMetadata(String metadataUuid) throws Exception {
+    public List<org.geonetwork.schemas.model.schemaident.Formatter> getRecordFormattersForMetadata(String metadataUuid) throws Exception {
         return getRecordFormattersForMetadata(metadataUuid, true);
     }
 
-    public Map<String, String> getAvailableFormattersForSchema(String schemaId) {
+    public List<org.geonetwork.schemas.model.schemaident.Formatter> getAvailableFormattersForSchema(String schemaId) {
         return formatterFactory.getAvailableFormattersForSchema(schemaId);
     }
 
-    public Map<String, String> getRecordFormattersForMetadata(String metadataUuid, boolean approved) throws Exception {
+    public List<org.geonetwork.schemas.model.schemaident.Formatter> getRecordFormattersForMetadata(String metadataUuid, boolean approved) throws Exception {
         Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
 
         if (!metadataAccessManager.canView(metadata.getId())) {
@@ -80,7 +83,9 @@ public class FormatterApi {
             throw new AccessDeniedException("User is not permitted to access this resource");
         }
 
-        if (!formatterFactory.getAvailableFormatters(metadata).containsKey(formatterId)) {
+        Optional<org.geonetwork.schemas.model.schemaident.Formatter> formatterOptional = formatterFactory.getAvailableFormatters(metadata).stream().filter(formatter -> formatter.getProfile().equals(formatterId)).findFirst();
+
+        if (!formatterOptional.isPresent()) {
             throw new FormatterException(String.format(
                     "Formatter not found. Hint: Available formatters for %s standard are: %s",
                     metadata.getSchemaid(), formatterFactory.getAvailableFormatters(metadata)));

@@ -169,12 +169,12 @@ Ce schéma est également composé des normes :
             ifNotOperation="dynamic"/>
   </filters>
   <formatters>
-    <formatter name="xml" contentType="application/xml;subtype=raw"/>
-    <formatter name="json" contentType="application/json;subtype=raw"/>
-    <formatter name="datacite" contentType="application/xml;subtype=datacite"/>
-    <formatter name="dcat" contentType="application/rdf+xml;subtype=dcat"/>
-    <formatter name="eu-dcat-ap" contentType="application/rdf+xml;subtype=dcat-ap"/>
-    <formatter name="eu-dcat-ap-hvd" contentType="application/rdf+xml;subtype=dcat-ap-hvd"/>
-    <formatter name="eu-geodcat-ap" contentType="application/rdf+xml;subtype=geodcat-ap"/>
+    <formatter name="xml" profile="xml" contentType="application/xml"/>
+    <formatter name="json" profile="json" contentType="application/json"/>
+    <formatter name="datacite" profile="datacite" contentType="application/xml"/>
+    <formatter name="dcat" profile="dcat" contentType="application/rdf+xml"/>
+    <formatter name="dcat" profile="eu-dcat-ap" contentType="application/rdf+xml"/>
+    <formatter name="dcat" profile="eu-dcat-ap-hvd" contentType="application/rdf+xml"/>
+    <formatter name="dcat" profile="eu-geodcat-ap" contentType="application/rdf+xml"/>
   </formatters>
 </schema>

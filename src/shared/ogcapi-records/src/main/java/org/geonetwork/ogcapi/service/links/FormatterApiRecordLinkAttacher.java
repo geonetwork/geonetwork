@@ -25,13 +25,13 @@ public class FormatterApiRecordLinkAttacher {
     public void attachLinks(OgcApiRecordsRecordGeoJSONDto record, String collectionId, Object page) throws Exception {
 
         var availableFormatters =
-                formatterApi.getRecordFormattersForMetadata(record.getId()).keySet();
-        availableFormatters.forEach(formatterName -> {
+                formatterApi.getRecordFormattersForMetadata(record.getId());
+        availableFormatters.forEach(formatter -> {
             var url = linkConfiguration.getOgcApiRecordsBaseUrl() + "collections/"
                     + URLEncoder.encode(collectionId, StandardCharsets.UTF_8)
                     + "/items/" + URLEncoder.encode(record.getId(), StandardCharsets.UTF_8);
 
-            url += "?f=" + formatterName;
+            url += "?f=" + formatter.getName();
             var link = new OgcApiRecordsLinkDto();
             try {
                 link.setHref(new URI(url));
