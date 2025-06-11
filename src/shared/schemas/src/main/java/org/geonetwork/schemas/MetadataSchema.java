@@ -62,26 +62,16 @@ public class MetadataSchema {
     private Map<String, MetadataSchemaOperationFilter> hmOperationFilters = new HashMap<>();
     private String schemaName;
     private Path schemaDir;
-    private List<String> standardUrl;
-    private String version;
-    private String appMinorVersionSupported;
-    private String appMajorVersionSupported;
-    private Map<String, String> titles = new HashMap<>();
-    private Map<String, String> descriptions = new HashMap<>();
     private String primeNS;
     private String[] schematronRules;
     private boolean canEdit = false;
-    private boolean readwriteUUID = false;
     private List<Element> rootAppInfoElements;
-    private Map<String, String> formatters = new HashMap<>();
 
     private SchemaIdentificationInfo schemaIdentificationInfo;
 
     //    private SchematronRepository schemaRepo;
     //    private SchematronCriteriaGroupRepository criteriaGroupRepository;
     private SchemaPlugin schemaPlugin;
-
-    private String dependsOn;
 
     // ---------------------------------------------------------------------------
     // ---

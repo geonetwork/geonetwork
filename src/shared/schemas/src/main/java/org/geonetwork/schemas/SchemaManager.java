@@ -103,8 +103,6 @@ public class SchemaManager {
     private Path schemaPublicationDir;
     private int numberOfCoreSchemasAdded = 0;
 
-    private final List<SchemaPlugin> schemaPlugins = new ArrayList<>();
-
     public static Path registerXmlCatalogFiles(Path basePath, Path schemapluginUriCatalog) throws IOException {
         //    Path webInf = webappDir.resolve("WEB-INF");
 
@@ -1459,16 +1457,6 @@ public class SchemaManager {
     @SuppressWarnings("unchecked")
     private List<String> extractDepends(SchemaIdentificationInfo schemaIdentificationInfo) throws Exception {
         return schemaIdentificationInfo.getDepends();
-    }
-
-    /**
-     * true if schema requires to synch the uuid column schema info with the uuid in the metadata record (updated on
-     * editing or in UFO).
-     */
-    private boolean extractReadWriteUuid(SchemaIdentificationInfo schemaIdentificationInfo) {
-        Boolean readwriteUuid = schemaIdentificationInfo.isReadwriteUuid();
-
-        return readwriteUuid != null ? readwriteUuid.booleanValue() : false;
     }
 
     /** Extract metadata schema informations (eg. title, description, url). */
