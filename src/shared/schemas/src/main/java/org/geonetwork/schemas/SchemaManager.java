@@ -49,7 +49,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -104,7 +103,6 @@ public class SchemaManager {
     private Path schemaPublicationDir;
     private int numberOfCoreSchemasAdded = 0;
 
-    @Autowired
     private final List<SchemaPlugin> schemaPlugins = new ArrayList<>();
 
     public static Path registerXmlCatalogFiles(Path basePath, Path schemapluginUriCatalog) throws IOException {
