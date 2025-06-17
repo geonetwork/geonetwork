@@ -111,11 +111,10 @@ public class ItemPageLinks extends BasicLinks {
     public void addCollectionsLinks(
             MediaTypeAndProfile mediaTypeAndProfile, String catalogId, OgcApiRecordsRecordGeoJSONDto page) {
 
-
-       var formats =  itemsPageLinksConfiguration.getMimeFormats().keySet()
-           .stream()
-           .map(x->new MediaTypeAndProfile(contentNegotiationManager.getMediaTypeMappings().get(x), null))
-            .toList();
+        var formats = itemsPageLinksConfiguration.getMimeFormats().keySet().stream()
+                .map(x -> new MediaTypeAndProfile(
+                        contentNegotiationManager.getMediaTypeMappings().get(x), null))
+                .toList();
         addStandardLinks(
                 mediaTypeAndProfile,
                 linkConfiguration.getOgcApiRecordsBaseUrl(),
