@@ -8,6 +8,7 @@ package org.geonetwork.ogcapi.service.indexConvert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.geonetwork.formatting.processor.IndexFormatterProcessor;
@@ -54,6 +55,9 @@ public class OgcApiGeoJsonIndexFormatter implements IndexFormatterProcessor {
     @Override
     public void process(IndexRecord indexRecord, OutputStream out, Map<String, Object> config) throws IOException {
         String lang = "eng";
+        if (config == null) {
+            config = new HashMap<>();
+        }
         var result = ogcApiGeoJsonConverter.convert(indexRecord, lang);
 
         ItemPageLinks itemPageLinks = beanFactory.getBean(ItemPageLinks.class);

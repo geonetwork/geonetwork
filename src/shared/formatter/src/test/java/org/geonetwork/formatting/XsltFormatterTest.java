@@ -74,7 +74,7 @@ class XsltFormatterTest {
                     });
 
             // When
-            xsltFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream);
+            xsltFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream, null);
 
             // Then
             String result = outputStream.toString(StandardCharsets.UTF_8);
@@ -111,7 +111,7 @@ class XsltFormatterTest {
 
             // When & Then
             FormatterException exception = assertThrows(FormatterException.class, () -> {
-                xsltFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream);
+                xsltFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream, null);
             });
 
             assertTrue(exception.getMessage().contains("Formatter html not found"));
@@ -151,7 +151,7 @@ class XsltFormatterTest {
 
             // When
             try {
-                xsltFormatter.format(testMetadata, customFormatterId, outputStream);
+                xsltFormatter.format(testMetadata, customFormatterId, outputStream, null);
             } catch (FormatterException e) {
                 // Expected if file doesn't exist
             }
@@ -194,7 +194,7 @@ class XsltFormatterTest {
 
             // When
             try {
-                xsltFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream);
+                xsltFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream, null);
             } catch (FormatterException e) {
                 // Expected if transformation fails
             }
