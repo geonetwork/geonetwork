@@ -48,7 +48,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "docker rmi ${env.DOCKER_IMAG_COMMIT} || true"
+                    sh "docker rmi ${env.DOCKER_IMAGE_COMMIT} || true"
                     sh "docker rmi ${env.DOCKER_IMAGE_BRANCH} || true"
                 }
             }
