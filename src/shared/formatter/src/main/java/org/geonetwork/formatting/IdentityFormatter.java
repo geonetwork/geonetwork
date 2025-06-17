@@ -8,6 +8,7 @@ package org.geonetwork.formatting;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import org.geonetwork.domain.Metadata;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class IdentityFormatter implements Formatter {
     @Override
-    public void format(Metadata metadata, String formatterId, OutputStream outputStream) throws IOException {
+    public void format(Metadata metadata, String formatterId, OutputStream outputStream, Map<String, Object> config)
+            throws IOException {
         outputStream.write(metadata.getData().getBytes(StandardCharsets.UTF_8));
     }
 

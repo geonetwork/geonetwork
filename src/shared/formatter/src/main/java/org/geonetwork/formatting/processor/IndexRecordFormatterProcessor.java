@@ -11,6 +11,7 @@ import co.elastic.clients.json.JsonpUtils;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +43,7 @@ public class IndexRecordFormatterProcessor implements IndexFormatterProcessor {
     }
 
     @Override
-    public void process(IndexRecord indexRecord, OutputStream out) throws IOException {
+    public void process(IndexRecord indexRecord, OutputStream out, Map<String, Object> config) throws IOException {
         out.write(JsonpUtils.toJsonString(indexRecord, new JacksonJsonpMapper()).getBytes(UTF_8));
     }
 }

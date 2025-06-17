@@ -8,8 +8,9 @@ package org.geonetwork.ogcapi.service.links;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import lombok.SneakyThrows;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
+import org.geonetwork.utility.MediaTypeAndProfile;
+import org.geonetwork.utility.MediaTypeAndProfileBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -28,15 +29,9 @@ public class BasicLinks {
     @Autowired
     ContentNegotiationManager contentNegotiationManager;
 
-    /**
-     * this adds the "standard" links - which is to "self" and "alternative" versions of the landing page.
-     *
-     * @param nativeWebRequest from user
-     * @param baseUrl baseURL for the system
-     * @param endpointLoc which endpoint is this for
-     * @param page where to attach the links?
-     * @param formatNames what formats should we use
-     */
+    @Autowired
+    MediaTypeAndProfileBuilder mediaTypeAndProfileBuilder;
+
     public void addStandardLinks(
             NativeWebRequest nativeWebRequest,
             String baseUrl,
@@ -45,8 +40,31 @@ public class BasicLinks {
             List<String> formatNames,
             String selfName,
             String altName) {
+        var mediaTypeAndName = mediaTypeAndProfileBuilder.build(nativeWebRequest);
+        var formats = formatNames.stream()
+                .map(x -> new MediaTypeAndProfile(MediaType.valueOf(x), null))
+                .toList();
+        addStandardLinks(mediaTypeAndName, baseUrl, endpointLoc, page, formats, selfName, altName);
+    }
+    /**
+     * this adds the "standard" links - which is to "self" and "alternative" versions of the landing page.
+     *
+     * @param mediaTypeAndProfile request's media type and profile info
+     * @param baseUrl baseURL for the system
+     * @param endpointLoc which endpoint is this for
+     * @param page where to attach the links?
+     * @param formatNames what formats should we use
+     */
+    public void addStandardLinks(
+            MediaTypeAndProfile mediaTypeAndProfile,
+            String baseUrl,
+            String endpointLoc,
+            Object page,
+            List<MediaTypeAndProfile> formatNames,
+            String selfName,
+            String altName) {
         var links =
-                this.createSelfRelativeLinks(nativeWebRequest, baseUrl, endpointLoc, formatNames, selfName, altName);
+                this.createSelfRelativeLinks(mediaTypeAndProfile, baseUrl, endpointLoc, formatNames, selfName, altName);
 
         // the objects are auto-generated from yaml, so we have to use reflection
         try {
@@ -64,10 +82,10 @@ public class BasicLinks {
     }
 
     public List<OgcApiRecordsLinkDto> createSelfRelativeLinks(
-            NativeWebRequest nativeWebRequest,
+            MediaTypeAndProfile mediaTypeAndProfile,
             String baseUrl,
             String endpointLocation,
-            List<String> mediaNames,
+            List<MediaTypeAndProfile> mediaNames,
             String selfName,
             String altName) {
         var url = baseUrl + endpointLocation;
@@ -76,21 +94,23 @@ public class BasicLinks {
         } else {
             url += "&";
         }
-        var requestMediaInfo = this.getMediaTypeAndName(nativeWebRequest);
+
         var mediaMappings = contentNegotiationManager.getMediaTypeMappings();
 
         String finalUrl = url;
 
         var links = mediaNames.stream()
                 .map(x -> {
-                    if (x.equals(requestMediaInfo.getName())) {
+                    if (x.getMediaType().equals(mediaTypeAndProfile.getMediaType())) {
                         // self
                         var link = new OgcApiRecordsLinkDto();
                         try {
                             link.rel(selfName)
-                                    .type(mediaMappings.get(x).toString())
+                                    .type(mediaTypeAndProfile.getMediaType().toString())
                                     .hreflang("eng")
-                                    .href(new URI(finalUrl + "f=" + x));
+                                    .profile(x.getProfile())
+                                    .href(new URI(
+                                            finalUrl + "f=" + x.getMediaType().toString()));
                             return link;
                         } catch (URISyntaxException e) {
                             throw new RuntimeException(e);
@@ -100,9 +120,11 @@ public class BasicLinks {
                         var link = new OgcApiRecordsLinkDto();
                         try {
                             link.rel(altName)
-                                    .type(mediaMappings.get(x).toString())
+                                    .type(x.getMediaType().toString())
                                     .hreflang("eng")
-                                    .href(new URI(finalUrl + "f=" + x));
+                                    .profile(x.getProfile())
+                                    .href(new URI(
+                                            finalUrl + "f=" + x.getMediaType().toString()));
                             return link;
                         } catch (URISyntaxException e) {
                             throw new RuntimeException(e);
@@ -112,54 +134,5 @@ public class BasicLinks {
                 .toList();
 
         return links;
-    }
-
-    /**
-     * given a mediatype, what is its "name" (i.e. "html", "json") based on the contentNegotiationManager?
-     *
-     * @param mediaType media type to search for
-     * @return name of the media type
-     */
-    public String getMediaName(MediaType mediaType) {
-        var matching = contentNegotiationManager.getMediaTypeMappings().entrySet().stream()
-                .filter(e -> e.getValue().equals(mediaType))
-                .findFirst();
-
-        if (matching.isEmpty()) {
-            return null;
-        }
-        return matching.get().getKey();
-    }
-
-    /**
-     * given a request, find (using the contentNegotiationManager) the resulting mediatype this request will create.
-     *
-     * @param nativeWebRequest current request
-     * @return which media type it will be producing
-     */
-    @SneakyThrows
-    public MediaType getRequestMediaType(NativeWebRequest nativeWebRequest) {
-        var types = contentNegotiationManager.resolveMediaTypes(nativeWebRequest);
-        if (types.isEmpty()) {
-            return MediaType.TEXT_HTML;
-        }
-        return types.getFirst();
-    }
-
-    /**
-     * Given a request, find the name ("json") and mediatype ("application/json") that this request will result in. use
-     * the contentNegotiationManager to do this work.
-     *
-     * @param nativeWebRequest from user
-     * @return the name and mediatype
-     */
-    public MediaTypeAndName getMediaTypeAndName(NativeWebRequest nativeWebRequest) {
-        var mediaType = getRequestMediaType(nativeWebRequest);
-        if (mediaType == null) {
-            return null;
-        }
-        var name = getMediaName(mediaType);
-
-        return new MediaTypeAndName(mediaType, name);
     }
 }

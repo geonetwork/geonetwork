@@ -46,9 +46,13 @@ geonetwork:
           - geojson
           - json
       item:
-        formats:
-          - geojson
-          - json
+        #formats taken from the formatter api
+        # this defines the default profile for
+        profileDefaults:
+            - mimetype: application/geo+json
+              defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-catalog
+            - mimetype: application/rdf+xml
+              defaultProfile: [geonetwork:dcat]
     search:
       # This query filter is always added to all queries
       queryFilter: '+isTemplate:n'

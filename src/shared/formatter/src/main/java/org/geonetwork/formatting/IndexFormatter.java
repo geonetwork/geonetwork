@@ -10,6 +10,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import co.elastic.clients.json.JsonpUtils;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import java.io.OutputStream;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.formatting.processor.IndexFormatterProcessor;
@@ -26,13 +27,13 @@ public class IndexFormatter implements Formatter {
     IndexFormatterProcessorFactory indexFormatterProcessorFactory;
 
     @Override
-    public void format(Metadata metadata, String formatterId, OutputStream outputStream) {
+    public void format(Metadata metadata, String formatterId, OutputStream outputStream, Map<String, Object> config) {
         try {
             IndexRecord indexDocument = searchController.getIndexDocument(metadata.getUuid());
             IndexFormatterProcessor processor = indexFormatterProcessorFactory.getFormatterProcessor(formatterId);
 
             if (processor != null) {
-                processor.process(indexDocument, outputStream);
+                processor.process(indexDocument, outputStream, config);
             } else {
                 outputStream.write(JsonpUtils.toJsonString(indexDocument, new JacksonJsonpMapper())
                         .getBytes(UTF_8));

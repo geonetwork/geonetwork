@@ -5,10 +5,18 @@
  */
 package org.geonetwork.ogcapi.service.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /** simple configuration for links in ogcapi-records = /collections/{collectionId}/items/{itemid} */
 @Configuration
 @ConfigurationProperties(prefix = "geonetwork.openapi-records.links.item")
-public class ItemPageLinksConfiguration extends BasicLinksConfiguration {}
+@Getter
+@Setter
+public class ItemPageLinksConfiguration {
+    List<ProfileDefault> profileDefaults = new ArrayList<>();
+}

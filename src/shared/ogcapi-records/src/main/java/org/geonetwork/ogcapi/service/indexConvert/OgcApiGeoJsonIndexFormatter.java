@@ -8,9 +8,13 @@ package org.geonetwork.ogcapi.service.indexConvert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.geonetwork.formatting.processor.IndexFormatterProcessor;
 import org.geonetwork.index.model.record.IndexRecord;
+import org.geonetwork.ogcapi.service.links.ItemPageLinks;
+import org.geonetwork.utility.MediaTypeAndProfile;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.stereotype.Component;
 
 /** simple wrapper around OgcApiGeoJsonIndexFormatter so it can be used as an output format. */
@@ -20,6 +24,7 @@ public class OgcApiGeoJsonIndexFormatter implements IndexFormatterProcessor {
 
     private final OgcApiGeoJsonConverter ogcApiGeoJsonConverter;
     private final ObjectMapper objectMapper;
+    private final BeanFactory beanFactory;
 
     @Override
     public String getName() {
@@ -47,9 +52,14 @@ public class OgcApiGeoJsonIndexFormatter implements IndexFormatterProcessor {
     }
 
     @Override
-    public void process(IndexRecord indexRecord, OutputStream out) throws IOException {
+    public void process(IndexRecord indexRecord, OutputStream out, Map<String, Object> config) throws IOException {
         String lang = "eng";
         var result = ogcApiGeoJsonConverter.convert(indexRecord, lang);
+
+        ItemPageLinks itemPageLinks = beanFactory.getBean(ItemPageLinks.class);
+        itemPageLinks.addLinks(
+                (MediaTypeAndProfile) config.get("mediaTypeAndProfile"), (String) config.get("collectionId"), result);
+
         objectMapper.writeValue(out, result);
     }
 }

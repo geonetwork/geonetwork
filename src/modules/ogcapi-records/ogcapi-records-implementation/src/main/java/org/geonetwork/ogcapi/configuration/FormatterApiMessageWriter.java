@@ -6,6 +6,7 @@
 package org.geonetwork.ogcapi.configuration;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import lombok.SneakyThrows;
 import org.geonetwork.formatting.FormatterApi;
 import org.geonetwork.formatting.FormatterInfo;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
+import org.geonetwork.utility.MediaTypeAndProfile;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -35,9 +37,12 @@ import org.springframework.stereotype.Component;
 public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRecordsRecordGeoJSONDto> {
 
     private static final String PROFILE_HEADER_NAME = "GN5.OGCAPI-RECORDS.REQUEST-PROFILES";
+    private static final String COLLECTION_ID_HEADER_NAME = "GN5.OGCAPI-RECORDS.REQUEST-COLLECTIONID";
 
     /** actually does the formatting work and knows what formatters are available */
     private final FormatterApi formatterApi;
+
+    private final ProfileSelector profileSelector;
 
     /**
      * what media types we can output - from the FormatterApi -- GETTER -- what media types do we support
@@ -48,8 +53,9 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
     private final List<MediaType> supportedMediaTypes;
 
     @SneakyThrows
-    public FormatterApiMessageWriter(FormatterApi formatterApi) {
+    public FormatterApiMessageWriter(FormatterApi formatterApi, ProfileSelector profileSelector) {
         this.formatterApi = formatterApi;
+        this.profileSelector = profileSelector;
 
         supportedMediaTypes = formatterApi.getAllFormatters().keySet().stream()
                 .map(x -> MediaType.valueOf(x))
@@ -125,18 +131,29 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
 
         try {
             // from the mimetype, find out how to call the formatter api
-            var profileList = outputMessage.getHeaders().get(PROFILE_HEADER_NAME);
-            var _profile = "";
-            if (profileList != null && !profileList.isEmpty()) {
-                _profile = profileList.get(0);
-            }
-            var profile = _profile;
-            outputMessage.getHeaders().remove(PROFILE_HEADER_NAME);
+            var _collectionId = outputMessage.getHeaders().get(COLLECTION_ID_HEADER_NAME);
+            String collectionId = null;
+            if (_collectionId != null && !_collectionId.isEmpty()) {
 
-            var formatters = formatterApi.getRecordFormattersForMetadata(ogcApiRecordsJsonItemDto.getId(), approved);
-            var formatEntry = formatters.stream()
+                collectionId = _collectionId.getFirst();
+            }
+            var profileList = outputMessage.getHeaders().get(PROFILE_HEADER_NAME);
+            var mediaTypeAndProfile = new MediaTypeAndProfile(contentType, profileList);
+            //            var _profile = "";
+            //            if (profileList != null && !profileList.isEmpty()) {
+            //                _profile = profileList.get(0);
+            //            }
+            //            var profile = _profile;
+            outputMessage.getHeaders().remove(PROFILE_HEADER_NAME);
+            outputMessage.getHeaders().remove(COLLECTION_ID_HEADER_NAME);
+
+            var allformatters = formatterApi.getRecordFormattersForMetadata(ogcApiRecordsJsonItemDto.getId(), approved);
+            var formatters = allformatters.stream()
                     .filter(entry -> entry.getContentType().equals(contentType.toString()))
-                    .filter(entry -> entry.getOfficialProfileName().equals(profile))
+                    .toList();
+            var profileName = profileSelector.chooseProfile(contentType, profileList, formatters);
+            var formatEntry = formatters.stream()
+                    .filter(entry -> entry.getOfficialProfileName().equals(profileName))
                     .findFirst();
             if (formatEntry.isEmpty()) {
                 throw new Exception("no formatter found for format " + contentType);
@@ -146,13 +163,18 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
 
             outputMessage.getHeaders().setContentType(contentType);
 
+            var formatterConfig = new HashMap<String, Object>();
+            formatterConfig.put("mediaTypeAndProfile", mediaTypeAndProfile);
+            formatterConfig.put("collectionId", collectionId);
+
             // do the actual formatting and output it
             formatterApi.getRecordFormattedBy(
                     ogcApiRecordsJsonItemDto.getId(),
                     formatterId,
                     officialProfileName,
                     approved,
-                    outputMessage.getBody());
+                    outputMessage.getBody(),
+                    formatterConfig);
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);
         }
