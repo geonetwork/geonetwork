@@ -22,10 +22,10 @@ public class ProfileSelector {
      * + return first possibleFormatters profile 3. if requested profile: go through the profiles: + is this a possible
      * formatter profile -> return that 4. if there's default -> return that 5. return first possbileFormatter (guess)
      *
-     * @param mediaType
-     * @param requestedProfiles
-     * @param possibleFormatters
-     * @return
+     * @param mediaType media type of request
+     * @param requestedProfiles what profile(s) the user wanted
+     * @param possibleFormatters formatters for that media type
+     * @return best matching formatter
      */
     public String chooseProfile(
             MediaType mediaType, List<String> requestedProfiles, List<Formatter> possibleFormatters) {

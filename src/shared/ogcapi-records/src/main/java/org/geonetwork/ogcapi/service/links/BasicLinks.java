@@ -95,8 +95,6 @@ public class BasicLinks {
             url += "&";
         }
 
-        var mediaMappings = contentNegotiationManager.getMediaTypeMappings();
-
         String finalUrl = url;
 
         var links = mediaNames.stream()

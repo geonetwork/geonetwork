@@ -18,7 +18,6 @@ import org.geonetwork.ogcapi.service.configuration.CollectionPageLinksConfigurat
 import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
 import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
 import org.geonetwork.utility.MediaTypeAndProfile;
-import org.geonetwork.utility.MediaTypeAndProfileBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -35,9 +34,6 @@ public class ItemPageLinks extends BasicLinks {
 
     @Autowired
     CollectionPageLinksConfiguration collectionPageLinksConfiguration;
-
-    @Autowired
-    MediaTypeAndProfileBuilder mediaTypeAndProfileBuilder;
 
     @Autowired
     FormatterApi formatterApi;
