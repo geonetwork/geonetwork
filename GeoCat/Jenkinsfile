@@ -24,7 +24,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    sh "./mvnw -B -f src/apps/geonetwork/pom.xml spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${DOCKER_IMAGE}"
+                    sh "./mvnw -B -f src/apps/geonetwork/pom.xml spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${DOCKER_IMAGE_COMMIT}"
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://${env.REGISTRY}", 'docker-registry-credentials') {
-                        def newImage = docker.image("${env.DOCKER_IMAGE}")
+                        def newImage = docker.image("${env.DOCKER_IMAGE_COMMIT}")
                         newImage.push()
                         newImage.push("${env.SAFE_BRANCH}")
                     }
