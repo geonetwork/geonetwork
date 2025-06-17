@@ -44,12 +44,12 @@ public class OgcApiGeoJsonIndexFormatter implements IndexFormatterProcessor {
 
     @Override
     public String getOfficialProfileName() {
-        return "http://www.opengis.net/def/profile/OGC/0/ogc-catalog";
+        return "http://www.opengis.net/def/profile/OGC/0/ogc-record";
     }
 
     @Override
     public String getProfileName() {
-        return "ogc-catalog";
+        return "ogc-record";
     }
 
     @Override
