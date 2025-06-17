@@ -163,9 +163,8 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
 
             outputMessage.getHeaders().setContentType(contentType);
             if (officialProfileName != null) {
-              outputMessage.getHeaders().set("Link", "<"+officialProfileName+">; rel=\"profile\"");
+                outputMessage.getHeaders().set("Link", "<" + officialProfileName + ">; rel=\"profile\"");
             }
-
 
             var formatterConfig = new HashMap<String, Object>();
             formatterConfig.put("mediaTypeAndProfile", mediaTypeAndProfile);

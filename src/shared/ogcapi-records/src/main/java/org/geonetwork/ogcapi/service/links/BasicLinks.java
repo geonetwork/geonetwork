@@ -12,7 +12,6 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
 import org.geonetwork.utility.MediaTypeAndProfile;
 import org.geonetwork.utility.MediaTypeAndProfileBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -42,7 +41,8 @@ public class BasicLinks {
             String altName) {
         var mediaTypeAndName = mediaTypeAndProfileBuilder.build(nativeWebRequest);
         var formats = formatNames.stream()
-                .map(x -> new MediaTypeAndProfile(contentNegotiationManager.getMediaTypeMappings().get(x), null))
+                .map(x -> new MediaTypeAndProfile(
+                        contentNegotiationManager.getMediaTypeMappings().get(x), null))
                 .toList();
         addStandardLinks(mediaTypeAndName, baseUrl, endpointLoc, page, formats, selfName, altName);
     }
