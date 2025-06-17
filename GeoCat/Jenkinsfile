@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    environment {
+        REGISTRY = 'docker-registry.geocat.net:5000'
+        DOCKER_IMAGE = "${env.REGISTRY}/geocatlive/gn5:${env.BRANCH_NAME}-${env.GIT_COMMIT}"
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                sh './mvnw -B clean install -Drelax'
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                script {
+                    sh "./mvnw -B -f src/apps/geonetwork/pom.xml spring-boot:build-image -DskipTests -Dimage.name=${DOCKER_IMAGE}"
+                }
+            }
+        }
+        stage('Docker Push') {
+            when {
+                expression { env.BRANCH_NAME != null && env.GIT_COMMIT != null }
+            }
+            steps {
+                docker.withRegistry("https://${env.REGISTRY}", 'docker-registry-credentials') {
+                    newImage = docker.image("${env.DOCKER_IMAGE}")
+                    newImage.push()
+                    newImage.push("${env.BRANCH_NAME}")
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
