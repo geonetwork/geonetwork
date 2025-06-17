@@ -50,7 +50,7 @@ geonetwork:
         # this defines the default profile for a mime type
         profileDefaults:
             - mimetype: application/geo+json
-              defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-catalog
+              defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
             - mimetype: application/rdf+xml
               defaultProfile: '[geonetwork:dcat]'
             - mimetype: application/xml

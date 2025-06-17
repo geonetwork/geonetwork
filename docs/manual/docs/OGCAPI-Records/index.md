@@ -13,6 +13,7 @@ GeoNetwork 5 has an [OGCAPI-Records](https://ogcapi.ogc.org/records/#:~:text=OGC
 | [Configuring GN5's OGCAPI-Records](config.md) | Learn about some of the configuration options. |
 | [Deploying GN5's OGCAPI-Records](deploy.md) | See some of the configuration options for easier deployment |
 | [Learn some technical details](develop.md) | For developers, this is a technical overview of the implementation.
+| [Content Negotiation and Profiles](content-negotiation.md) | For developers, this is a technical overview of the implementation.
 
 
  
