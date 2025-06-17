@@ -73,6 +73,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .mediaType("html", MediaType.TEXT_HTML)
                 .mediaType("json", MediaType.APPLICATION_JSON)
                 .mediaType("geojson", MediaType.valueOf("application/geo+json"))
+
+              .mediaType(MediaType.APPLICATION_XML.toString(), MediaType.APPLICATION_XML)
+              .mediaType(MediaType.TEXT_HTML.toString(), MediaType.TEXT_HTML)
+              .mediaType(MediaType.APPLICATION_JSON.toString(), MediaType.APPLICATION_JSON)
+              .mediaType("application/geo+json", MediaType.valueOf("application/geo+json"))
+
                 .defaultContentType(MediaType.APPLICATION_JSON);
 
         // add the FormatterApi media types.  We allows   f=<formatterId> or f=<formatter mime type>

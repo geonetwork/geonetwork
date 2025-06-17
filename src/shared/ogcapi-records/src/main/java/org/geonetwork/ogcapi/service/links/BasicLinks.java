@@ -42,7 +42,7 @@ public class BasicLinks {
             String altName) {
         var mediaTypeAndName = mediaTypeAndProfileBuilder.build(nativeWebRequest);
         var formats = formatNames.stream()
-                .map(x -> new MediaTypeAndProfile(MediaType.valueOf(x), null))
+                .map(x -> new MediaTypeAndProfile(contentNegotiationManager.getMediaTypeMappings().get(x), null))
                 .toList();
         addStandardLinks(mediaTypeAndName, baseUrl, endpointLoc, page, formats, selfName, altName);
     }
