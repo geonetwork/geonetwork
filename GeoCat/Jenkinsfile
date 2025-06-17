@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        jdk 'jdk-21'
+    }
     environment {
         REGISTRY = 'docker-registry.geocat.net:5000'
         SAFE_BRANCH = "${env.BRANCH_NAME.replaceAll('/', '_')}"
