@@ -3,8 +3,9 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.ogcapi.service.links;
+package org.geonetwork.utility;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ import org.springframework.http.MediaType;
 @NoArgsConstructor
 @AllArgsConstructor
 // NOTE: see the spotbugs excludes for this class (EI_EXPOSE_REP2 and EI_EXPOSE_REP)
-public class MediaTypeAndName {
+public class MediaTypeAndProfile {
     private MediaType mediaType;
-    private String name;
+    private List<String> profile;
 }

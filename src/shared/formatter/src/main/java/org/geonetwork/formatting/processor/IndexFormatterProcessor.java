@@ -7,6 +7,7 @@ package org.geonetwork.formatting.processor;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 import org.geonetwork.index.model.record.IndexRecord;
 
 /** See schema-ident.xml and schema-ident.xsd. */
@@ -21,5 +22,5 @@ public interface IndexFormatterProcessor {
 
     String getProfileName();
 
-    void process(IndexRecord indexRecord, OutputStream out) throws IOException;
+    void process(IndexRecord indexRecord, OutputStream out, Map<String, Object> config) throws IOException;
 }

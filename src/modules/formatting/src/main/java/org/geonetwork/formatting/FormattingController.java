@@ -12,12 +12,15 @@ import static org.geonetwork.constants.ApiParams.API_PARAM_RECORD_UUID;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.geonetwork.schemas.model.schemaident.Formatter;
+import org.geonetwork.utility.MediaTypeAndProfileBuilder;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FormattingController {
 
     private final FormatterApi formatterApi;
+    private final MediaTypeAndProfileBuilder mediaTypeAndProfileBuilder;
 
     @GetMapping(
             value = "/api/records/formatters",
@@ -98,19 +102,27 @@ public class FormattingController {
             throws Exception {
 
         List<Formatter> formatters = formatterApi.getRecordFormattersForMetadata(metadataUuid);
-        Optional<Formatter> formatterOptional = formatters.stream()
-                .filter(formatter -> formatter.getProfile().equals(formatterId))
-                .findFirst();
 
-        if (!formatterOptional.isPresent()) {
+        var query = formatters.stream().filter(formatter -> formatter.getName().equals(formatterId));
+        if (StringUtils.hasText(profile)) {
+            query = query.filter(f -> profile.equals(f.getProfile()) || profile.equals(f.getOfficialProfileName()));
+        }
+
+        Optional<Formatter> formatterOptional = query.findFirst();
+
+        if (formatterOptional.isEmpty()) {
             throw new FormatterException(
                     String.format("Formatter '%s' not found for metadata record '%s'.", formatterId, metadataUuid));
         }
 
         String contentType = formatterOptional.get().getContentType();
+        var mediaTypeAndProfile = mediaTypeAndProfileBuilder.build(MediaType.valueOf(contentType), profile);
+
+        var formatterConfig = new HashMap<String, Object>();
+        formatterConfig.put("mediaTypeAndProfile", mediaTypeAndProfile);
 
         servletResponse.setContentType(contentType);
         formatterApi.getRecordFormattedBy(
-                metadataUuid, formatterId, profile, approved, servletResponse.getOutputStream());
+                metadataUuid, formatterId, profile, approved, servletResponse.getOutputStream(), formatterConfig);
     }
 }

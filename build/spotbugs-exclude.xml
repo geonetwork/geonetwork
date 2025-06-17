@@ -29,7 +29,7 @@
   </Match>
 
   <Match>
-    <Class name="org.geonetwork.ogcapi.service.links.MediaTypeAndName"/>
+    <Class name="org.geonetwork.ogcapi.service.links.MediaTypeAndProfile"/>
     <Or>
       <Bug pattern="EI_EXPOSE_REP2"/>
       <Bug pattern="EI_EXPOSE_REP"/>

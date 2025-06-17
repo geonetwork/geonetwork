@@ -122,7 +122,8 @@ public class FormatterApi {
             final String formatterId,
             final String profile,
             boolean approved,
-            OutputStream outputStream)
+            OutputStream outputStream,
+            Map<String, Object> config)
             throws Exception {
 
         Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
@@ -164,6 +165,6 @@ public class FormatterApi {
         //  TODO Cache?
 
         var formatter = formatterFactory.getFormatter(metadata, formatterId);
-        formatter.format(metadata, formatterId, outputStream);
+        formatter.format(metadata, formatterId, outputStream, config);
     }
 }

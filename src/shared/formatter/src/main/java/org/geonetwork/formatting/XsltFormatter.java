@@ -7,6 +7,7 @@ package org.geonetwork.formatting;
 
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Map;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.utility.xml.XsltUtil;
 import org.springframework.core.io.ClassPathResource;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class XsltFormatter implements Formatter {
 
     @Override
-    public void format(Metadata metadata, String formatterId, OutputStream outputStream) {
+    public void format(Metadata metadata, String formatterId, OutputStream outputStream, Map<String, Object> config) {
         String formatterXslt = getFormatterXslt(metadata, formatterId);
         try {
             XsltUtil.transformXmlAsOutputStream(

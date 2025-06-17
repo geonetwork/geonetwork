@@ -7,10 +7,12 @@ package org.geonetwork.formatting;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 import org.geonetwork.domain.Metadata;
 
 public interface Formatter {
-    void format(Metadata metadata, String formatterId, OutputStream outputStream) throws IOException;
+    void format(Metadata metadata, String formatterId, OutputStream outputStream, Map<String, Object> config)
+            throws IOException;
 
     boolean isFormatterAvailable(Metadata metadata, String formatterId);
 }

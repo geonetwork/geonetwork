@@ -6,6 +6,7 @@
 package org.geonetwork.ogcapi.records;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.geonetwork.ogcapi.records.generated.CollectionsApi;
@@ -83,6 +84,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         if (profile != null && !profile.isEmpty()) {
             responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-PROFILES", profile);
         }
+        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-COLLECTIONID", Collections.singletonList(catalogId));
+        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-RECORDID", Collections.singletonList(recordId));
 
         return new ResponseEntity<OgcApiRecordsRecordGeoJSONDto>(result, responseHeaders, HttpStatusCode.valueOf(200));
     }
