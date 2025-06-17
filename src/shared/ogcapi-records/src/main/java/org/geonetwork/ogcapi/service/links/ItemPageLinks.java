@@ -16,6 +16,7 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200R
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
 import org.geonetwork.ogcapi.service.configuration.CollectionPageLinksConfiguration;
 import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
+import org.geonetwork.ogcapi.service.configuration.ItemsPageLinksConfiguration;
 import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
 import org.geonetwork.utility.MediaTypeAndProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class ItemPageLinks extends BasicLinks {
 
     @Autowired
     ItemPageLinksConfiguration itemPageLinksConfiguration;
+
+    @Autowired
+    ItemsPageLinksConfiguration itemsPageLinksConfiguration;
 
     @Autowired
     CollectionPageLinksConfiguration collectionPageLinksConfiguration;
@@ -106,12 +110,18 @@ public class ItemPageLinks extends BasicLinks {
      */
     public void addCollectionsLinks(
             MediaTypeAndProfile mediaTypeAndProfile, String catalogId, OgcApiRecordsRecordGeoJSONDto page) {
+
+
+       var formats =  itemsPageLinksConfiguration.getMimeFormats().keySet()
+           .stream()
+           .map(x->new MediaTypeAndProfile(contentNegotiationManager.getMediaTypeMappings().get(x), null))
+            .toList();
         addStandardLinks(
                 mediaTypeAndProfile,
                 linkConfiguration.getOgcApiRecordsBaseUrl(),
                 "collections/" + URLEncoder.encode(catalogId, StandardCharsets.UTF_8),
                 page,
-                getFormats(),
+                formats,
                 "collection",
                 "collection");
     }
