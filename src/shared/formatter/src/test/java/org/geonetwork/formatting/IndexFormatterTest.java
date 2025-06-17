@@ -81,10 +81,10 @@ class IndexFormatterTest {
                     return null;
                 })
                 .when(indexFormatterProcessor)
-                .process(eq(indexRecord), eq(outputStream));
+                .process(eq(indexRecord), eq(outputStream), eq(null));
 
         // When
-        indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream);
+        indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream, null);
 
         // Then
         String result = outputStream.toString(StandardCharsets.UTF_8);
@@ -92,7 +92,7 @@ class IndexFormatterTest {
 
         verify(searchController).getIndexDocument(TEST_UUID);
         verify(indexFormatterProcessorFactory).getFormatterProcessor(TEST_FORMATTER_ID);
-        verify(indexFormatterProcessor).process(indexRecord, outputStream);
+        verify(indexFormatterProcessor).process(indexRecord, outputStream, null);
     }
 
     @Test
@@ -113,7 +113,7 @@ class IndexFormatterTest {
                     .thenReturn(expectedJson);
 
             // When
-            indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream);
+            indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream, null);
 
             // Then
             String result = outputStream.toString(StandardCharsets.UTF_8);
@@ -134,7 +134,7 @@ class IndexFormatterTest {
 
         // When & Then
         FormatterException exception = assertThrows(FormatterException.class, () -> {
-            indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream);
+            indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream, null);
         });
 
         assertTrue(exception.getMessage().contains("Error occur while formatting record"));
@@ -153,11 +153,11 @@ class IndexFormatterTest {
 
         doThrow(new IOException("Processing failed"))
                 .when(indexFormatterProcessor)
-                .process(any(), any());
+                .process(any(), any(), eq(null));
 
         // When & Then
         FormatterException exception = assertThrows(FormatterException.class, () -> {
-            indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream);
+            indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream, null);
         });
 
         assertTrue(exception.getMessage().contains("Error occur while formatting record"));
@@ -214,10 +214,10 @@ class IndexFormatterTest {
                     .thenReturn(processor);
 
             // When
-            indexFormatter.format(testMetadata, formatterId, outputStream);
+            indexFormatter.format(testMetadata, formatterId, outputStream, null);
 
             // Then
-            verify(processor).process(indexRecord, outputStream);
+            verify(processor).process(indexRecord, outputStream, null);
         }
     }
 
@@ -237,7 +237,7 @@ class IndexFormatterTest {
                     .thenReturn("null");
 
             // When
-            indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream);
+            indexFormatter.format(testMetadata, TEST_FORMATTER_ID, outputStream, null);
 
             // Then
             String result = outputStream.toString(StandardCharsets.UTF_8);
