@@ -6,7 +6,7 @@ pipeline {
     environment {
         REGISTRY = 'docker-registry.geocat.net:5000'
         SAFE_BRANCH = "${env.BRANCH_NAME.replaceAll('/', '_')}"
-        DOCKER_IMAGE = "${env.REGISTRY}/geocatlive/gn5:${env.SAFE_BRANCH}-${env.GIT_COMMIT}"
+        DOCKER_IMAGE = "${env.REGISTRY}/geocatlive/gn5:${env.SAFE_BRANCH}-${env.GIT_COMMIT[0..7]}"
     }
     stages {
         stage('Checkout') {
@@ -22,7 +22,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    sh "./mvnw -B -f src/apps/geonetwork/pom.xml spring-boot:build-image -DskipTests -Dimage.name=${DOCKER_IMAGE}"
+                    sh "./mvnw -B -f src/apps/geonetwork/pom.xml spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${DOCKER_IMAGE}"
                 }
             }
         }
