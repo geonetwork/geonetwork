@@ -28,10 +28,12 @@ pipeline {
                 expression { env.BRANCH_NAME != null && env.GIT_COMMIT != null }
             }
             steps {
-                docker.withRegistry("https://${env.REGISTRY}", 'docker-registry-credentials') {
-                    newImage = docker.image("${env.DOCKER_IMAGE}")
-                    newImage.push()
-                    newImage.push("${env.SAFE_BRANCH}")
+                script {
+                    docker.withRegistry("https://${env.REGISTRY}", 'docker-registry-credentials') {
+                        def newImage = docker.image("${env.DOCKER_IMAGE}")
+                        newImage.push()
+                        newImage.push("${env.SAFE_BRANCH}")
+                    }
                 }
             }
         }
