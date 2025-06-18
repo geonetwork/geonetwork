@@ -38,6 +38,7 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
 
     private static final String PROFILE_HEADER_NAME = "GN5.OGCAPI-RECORDS.REQUEST-PROFILES";
     private static final String COLLECTION_ID_HEADER_NAME = "GN5.OGCAPI-RECORDS.REQUEST-COLLECTIONID";
+    private static final String RECORD_ID_HEADER_NAME = "GN5.OGCAPI-RECORDS.REQUEST-RECORDID";
 
     /** actually does the formatting work and knows what formatters are available */
     private final FormatterApi formatterApi;
@@ -139,13 +140,9 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
             }
             var profileList = outputMessage.getHeaders().get(PROFILE_HEADER_NAME);
             var mediaTypeAndProfile = new MediaTypeAndProfile(contentType, profileList);
-            //            var _profile = "";
-            //            if (profileList != null && !profileList.isEmpty()) {
-            //                _profile = profileList.get(0);
-            //            }
-            //            var profile = _profile;
             outputMessage.getHeaders().remove(PROFILE_HEADER_NAME);
             outputMessage.getHeaders().remove(COLLECTION_ID_HEADER_NAME);
+            outputMessage.getHeaders().remove(RECORD_ID_HEADER_NAME);
 
             var allformatters = formatterApi.getRecordFormattersForMetadata(ogcApiRecordsJsonItemDto.getId(), approved);
             var formatters = allformatters.stream()
