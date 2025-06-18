@@ -67,6 +67,11 @@ public class BasicLinks {
                 this.createSelfRelativeLinks(mediaTypeAndProfile, baseUrl, endpointLoc, formatNames, selfName, altName);
 
         // the objects are auto-generated from yaml, so we have to use reflection
+        addLinksReflect(links, page);
+    }
+
+    public void addLinksReflect(List<OgcApiRecordsLinkDto> links, Object page) {
+        // the objects are auto-generated from yaml, so we have to use reflection
         try {
             var method = page.getClass().getMethod("addLinksItem", OgcApiRecordsLinkDto.class);
             links.forEach(x -> {
