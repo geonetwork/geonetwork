@@ -12,6 +12,9 @@
 
 geonetwork:
   openapi-records:
+    ogcapi-records-json:
+      includeRawXML: true
+      includeElasticJson: true
     links:
       # Where is GN5's ogcapi-records located?
       # should end in "/" and shouldn't have "//" in the path

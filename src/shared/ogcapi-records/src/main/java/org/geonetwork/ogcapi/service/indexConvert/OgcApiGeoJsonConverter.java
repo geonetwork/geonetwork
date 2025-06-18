@@ -21,6 +21,7 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsPolygonDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONPropertiesDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsTimeDto;
+import org.geonetwork.ogcapi.service.configuration.OgcApiRecordsOutputConfig;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,9 @@ public class OgcApiGeoJsonConverter {
     /** access to the DB metadata table */
     @Autowired
     MetadataRepository metadataRepository;
+
+    @Autowired
+    OgcApiRecordsOutputConfig ogcApiRecordsOutputConfig;
 
     /**
      * builder to construct a polygon from a bounding box.
@@ -97,8 +101,12 @@ public class OgcApiGeoJsonConverter {
                 .findOneByUuid(elasticIndexJsonRecord.getMetadataIdentifier())
                 .get();
 
-        result.setMetadataRecordText(metadataRecord.getData());
-        result.setGeoNetworkElasticIndexRecord(elasticIndexJsonRecord);
+        if (ogcApiRecordsOutputConfig.includeRawXML) {
+            result.setMetadataRecordText(metadataRecord.getData());
+        }
+        if (ogcApiRecordsOutputConfig.includeElasticJson) {
+            result.setGeoNetworkElasticIndexRecord(elasticIndexJsonRecord);
+        }
 
         result.setType("Feature");
         result.getProperties().setType("unknown");
