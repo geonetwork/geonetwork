@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.geonetwork.formatting.FormatterInfo;
+import org.geonetwork.ogcapi.service.formatter.FormatterApiMessageWriter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
