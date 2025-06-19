@@ -21,11 +21,11 @@ In general, you can add `?f=<mime type>` to OGCAPI-Records requests to get conte
 
 For example;
 
-http://localhost:7979/ogcapi-records/collections/%3CcollectionId%3E/items/%3CitemId%3E?f=application/rdf+xml&profile=%5Bgeonetwork:eu-dcat-ap%5D
+http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Frdf%2Bxml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Feu-dcat-ap-hvd
 
-We are requesting MimeType `application/rdf` (DCAT RDF) with the profile `[geonetwork:eu-dcat-ap]` (in safe CURIE format).
+We are requesting MimeType `application/rdf` (DCAT RDF) with the profile `http://geonetwork.net/def/profile/eu-geodcat-ap` (url encoded).
 
-NOTE: use `%5B` ("`[`") and `%5D` ("`]`") because square brackets aren't valid in URLs.
+ 
 
 ### Default Profiles for Mime Types
 
@@ -36,11 +36,11 @@ profileDefaults:
     - mimetype: application/geo+json
         defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
     - mimetype: application/rdf+xml
-        defaultProfile: '[geonetwork:dcat]'
+        defaultProfile: http://geonetwork.net/def/profile/dcat
     - mimetype: application/xml
-        defaultProfile: '[geonetwork:raw-xml]'
+        defaultProfile: http://geonetwork.net/def/profile/raw-xml
     - mimetype: application/json
-        defaultProfile: '[geonetwork:elastic-json-index]'
+        defaultProfile: http://geonetwork.net/def/profile/elastic-json-index
 ```
 
 If someone doesn't put a Profile in the request, then this will choose the profile.
@@ -50,90 +50,117 @@ If someone doesn't put a Profile in the request, then this will choose the profi
 When requesting in the `ogcapi-record` JSON format, Record documents will have links like:
 
 ```
-"links": [
+ "links": [
     {
-        "rel": "alternative",
-        "type": "application/xml",
-        "hreflang": "eng",
-        "profile": [
-        "[geonetwork:raw-xml]",
-        "[geonetwork:datacite]"
-        ],
-        "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/6fa96b57-7ae3-4b58-85eb-e957f54ec915?f=application/xml"
+      "rel": "alternative",
+      "type": "application/xml",
+      "hreflang": "eng",
+      "profile": [
+        "http://geonetwork.net/def/profile/raw-xml"
+      ],
+      "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Fxml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Fraw-xml"
     },
     {
-        "rel": "self",
-        "type": "application/json",
-        "hreflang": "eng",
-        "profile": [
-        "[geonetwork:elastic-json-index]",
-        "[geonetwork:raw-json]"
-        ],
-        "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/6fa96b57-7ae3-4b58-85eb-e957f54ec915?f=application/json"
+      "rel": "alternative",
+      "type": "application/xml",
+      "hreflang": "eng",
+      "profile": [
+        "http://geonetwork.net/def/profile/datacite"
+      ],
+      "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Fxml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Fdatacite"
     },
     {
-        "rel": "alternative",
-        "type": "application/rdf+xml",
-        "hreflang": "eng",
-        "profile": [
-        "[geonetwork:eu-dcat-ap-hvd]",
-        "[geonetwork:eu-geodcat-ap]",
-        "[geonetwork:dcat]",
-        "[geonetwork:eu-dcat-ap]"
-        ],
-        "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/6fa96b57-7ae3-4b58-85eb-e957f54ec915?f=application/rdf+xml"
+      "rel": "alternative",
+      "type": "application/json",
+      "hreflang": "eng",
+      "profile": [
+        "http://geonetwork.net/def/profile/elastic-json-index"
+      ],
+      "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Fjson&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Felastic-json-index"
     },
     {
-        "rel": "alternative",
-        "type": "application/geo+json",
-        "hreflang": "eng",
-        "profile": [
-        "http://www.opengis.net/def/profile/OGC/0/ogc-catalog"
-        ],
-        "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/6fa96b57-7ae3-4b58-85eb-e957f54ec915?f=application/geo+json"
+      "rel": "alternative",
+      "type": "application/rdf+xml",
+      "hreflang": "eng",
+      "profile": [
+        "http://geonetwork.net/def/profile/eu-dcat-ap-hvd"
+      ],
+      "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Frdf%2Bxml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Feu-dcat-ap-hvd"
     },
+    {
+      "rel": "alternative",
+      "type": "application/rdf+xml",
+      "hreflang": "eng",
+      "profile": [
+        "http://geonetwork.net/def/profile/eu-geodcat-ap"
+      ],
+      "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Frdf%2Bxml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Feu-geodcat-ap"
+    },
+    ...
 ]
  ```
 
-
-
-
- Notice that the link's `href` does NOT have a `&profile...` part.  Its the user's responsibility to attach that to the `href` when requesting the document.  If the user does not do this, then the default profile (defined in `application.yaml`) will be used.
+ Notice that the link's `href` has a `&profile...` part. If it is missing, the system will choose the default profile for that mime type (configured inside `application.yaml`)
 
  Looking at the `RDF+XML` content type in the links, above:
  ```
- {
-    "rel": "alternative",
-    "type": "application/rdf+xml",
-    "hreflang": "eng",
-    "profile": [
-    "[geonetwork:eu-dcat-ap-hvd]",
-    "[geonetwork:eu-geodcat-ap]",
-    "[geonetwork:dcat]",
-    "[geonetwork:eu-dcat-ap]"
-    ],
-    "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/6fa96b57-7ae3-4b58-85eb-e957f54ec915?f=application/rdf+xml"
-},
+{
+      "rel": "alternative",
+      "type": "application/rdf+xml",
+      "hreflang": "eng",
+      "profile": [
+        "http://geonetwork.net/def/profile/eu-dcat-ap-hvd"
+      ],
+      "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Frdf%2Bxml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Feu-dcat-ap-hvd"
+    },
+    {
+      "rel": "alternative",
+      "type": "application/rdf+xml",
+      "hreflang": "eng",
+      "profile": [
+        "http://geonetwork.net/def/profile/eu-geodcat-ap"
+      ],
+      "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Frdf%2Bxml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Feu-geodcat-ap"
+    },
+    {
+      "rel": "alternative",
+      "type": "application/rdf+xml",
+      "hreflang": "eng",
+      "profile": [
+        "http://geonetwork.net/def/profile/dcat"
+      ],
+      "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Frdf%2Bxml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Fdcat"
+    },
+    {
+      "rel": "alternative",
+      "type": "application/rdf+xml",
+      "hreflang": "eng",
+      "profile": [
+        "http://geonetwork.net/def/profile/eu-dcat-ap"
+      ],
+      "href": "http:/localhost:7979/ogcapi-records/collections/1402ea86-2900-4cf7-b58a-f8d78bc051e4/items/51c6b2ac-3658-40b3-9a8f-0131ee74443f?f=application%2Frdf%2Bxml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Feu-dcat-ap"
+    },
 ```
 
-This shows that there are 4 profiles available (all in safe CURIE format):
+This shows that there are 4 profiles available (all in url format):
 
-*   `[geonetwork:eu-dcat-ap-hvd]`
-*   `[geonetwork:eu-geodcat-ap]`
-*   `[geonetwork:dcat]`
-*   `[geonetwork:eu-dcat-ap]`
+*   `http://geonetwork.net/def/profile/eu-dcat-ap-hvd`
+*   `http://geonetwork.net/def/profile/eu-geodcat-ap`
+*   `http://geonetwork.net/def/profile/dcat`
+*   `http://geonetwork.net/def/profile/eu-dcat-ap`
 
+NOTE: these will likely change to a more authoritative URL.
 
-To get the `[geonetwork:eu-dcat-ap]` profile, use:
+To get the `http://geonetwork.net/def/profile/eu-dcat-ap` profile, use:
 
-    http://localhost:7979/ogcapi-records/collections/<collectionId>/items/<itemId>?f=application/rdf+xml&profile=%5Bgeonetwork:eu-dcat-ap%5D
+    http://localhost:7979/ogcapi-records/collections/<collectionId>/items/<itemId>?f=application/rdf+xml&profile=http%3A%2F%2Fgeonetwork.net%2Fdef%2Fprofile%2Feu-geodcat-ap
+
+NOTE: the profile name (url) has been url-encoded
 
 To get the default (defined in `application.yaml`) profile, use:
 
     http://localhost:7979/ogcapi-records/collections/<collectionId>/items/<itemId>?f=application/rdf+xml
 
-
-NOTE: use `%5B` ("`[`") and `%5D` ("`]`") because square brackets aren't valid in URLs.
 
 ## Headers
 
@@ -142,7 +169,7 @@ When requesting a Record (`item` endpoint), a `Link` header will be set in this 
 ```
 HTTP/1.1 200
 Content-Type: application/rdf+xml
-Link: <[geonetwork:eu-dcat-ap]>; rel="profile"
+Link: <http://geonetwork.net/def/profile/eu-geodcat-ap>; rel="profile"
 ```
 
 Or, for the standard OGCAPI-Records `ogcapi-record` output:
@@ -150,7 +177,7 @@ Or, for the standard OGCAPI-Records `ogcapi-record` output:
 ```
 HTTP/1.1 200
 Content-Type: application/json
-Link: <[geonetwork:eu-dcat-ap]>; rel="profile"
+Link: <http://www.opengis.net/def/profile/OGC/0/ogc-record>; rel="profile"
 ```
 
 ## More Information

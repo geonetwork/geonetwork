@@ -55,11 +55,11 @@ geonetwork:
             - mimetype: application/geo+json
               defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
             - mimetype: application/rdf+xml
-              defaultProfile: '[geonetwork:dcat]'
+              defaultProfile: http://geonetwork.net/def/profile/dcat
             - mimetype: application/xml
-              defaultProfile: '[geonetwork:raw-xml]'
+              defaultProfile: http://geonetwork.net/def/profile/raw-xml
             - mimetype: application/json
-              defaultProfile: '[geonetwork:elastic-json-index]'
+              defaultProfile: http://geonetwork.net/def/profile/elastic-json-index
     search:
       # This query filter is always added to all queries
       queryFilter: '+isTemplate:n'
