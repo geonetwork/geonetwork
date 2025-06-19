@@ -47,11 +47,11 @@ public class BasicLinksTest {
                 .get();
 
         assertEquals("text/html", altLink.getType());
-        assertEquals("baseurlendpointPath?f=text/html", altLink.getHref().toString());
+        assertEquals("baseurlendpointPath?f=text%2Fhtml", altLink.getHref().toString());
 
         assertEquals("application/json", selfLink.getType());
         assertEquals(
-                "baseurlendpointPath?f=application/json", selfLink.getHref().toString());
+                "baseurlendpointPath?f=application%2Fjson", selfLink.getHref().toString());
     }
 
     @Test
@@ -84,9 +84,10 @@ public class BasicLinksTest {
                 .get();
 
         assertEquals("text/html", selfLink.getType());
-        assertEquals("baseurlendpointPath?f=text/html", selfLink.getHref().toString());
+        assertEquals("baseurlendpointPath?f=text%2Fhtml", selfLink.getHref().toString());
 
         assertEquals("application/json", altLink.getType());
-        assertEquals("baseurlendpointPath?f=application/json", altLink.getHref().toString());
+        assertEquals(
+                "baseurlendpointPath?f=application%2Fjson", altLink.getHref().toString());
     }
 }
