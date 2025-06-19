@@ -34,7 +34,7 @@ public class IndexRecordFormatterProcessor implements IndexFormatterProcessor {
 
     @Override
     public String getOfficialProfileName() {
-        return "[geonetwork:elastic-json-index]";
+        return "http://geonetwork.net/def/profile/elastic-json-index";
     }
 
     @Override

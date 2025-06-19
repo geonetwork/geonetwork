@@ -169,12 +169,12 @@ Ce schéma est également composé des normes :
             ifNotOperation="dynamic"/>
   </filters>
   <formatters>
-    <formatter name="xml"       title=""  officialProfileName="[geonetwork:raw-xml]"         profile="xml" contentType="application/xml"/>
+    <formatter name="xml"       title=""  officialProfileName="http://geonetwork.net/def/profile/raw-xml"         profile="xml" contentType="application/xml"/>
 <!--    <formatter name="json"      title=""  officialProfileName="[geonetwork:raw-json]"        profile="json" contentType="application/json"/>-->
-    <formatter name="datacite"  title=""  officialProfileName="[geonetwork:datacite]"        profile="datacite" contentType="application/xml"/>
-    <formatter name="dcat"      title=""  officialProfileName="[geonetwork:dcat]"            profile="dcat" contentType="application/rdf+xml"/>
-    <formatter name="dcat"      title=""  officialProfileName="[geonetwork:eu-dcat-ap]"      profile="eu-dcat-ap" contentType="application/rdf+xml"/>
-    <formatter name="dcat"      title=""  officialProfileName="[geonetwork:eu-dcat-ap-hvd]"  profile="eu-dcat-ap-hvd" contentType="application/rdf+xml"/>
-    <formatter name="dcat"      title=""  officialProfileName="[geonetwork:eu-geodcat-ap]"   profile="eu-geodcat-ap" contentType="application/rdf+xml"/>
+    <formatter name="datacite"  title=""  officialProfileName="http://geonetwork.net/def/profile/datacite"        profile="datacite" contentType="application/xml"/>
+    <formatter name="dcat"      title=""  officialProfileName="http://geonetwork.net/def/profile/dcat"            profile="dcat" contentType="application/rdf+xml"/>
+    <formatter name="dcat"      title=""  officialProfileName="http://geonetwork.net/def/profile/eu-dcat-ap"      profile="eu-dcat-ap" contentType="application/rdf+xml"/>
+    <formatter name="dcat"      title=""  officialProfileName="http://geonetwork.net/def/profile/eu-dcat-ap-hvd"  profile="eu-dcat-ap-hvd" contentType="application/rdf+xml"/>
+    <formatter name="dcat"      title=""  officialProfileName="http://geonetwork.net/def/profile/eu-geodcat-ap"   profile="eu-geodcat-ap" contentType="application/rdf+xml"/>
   </formatters>
 </schema>
