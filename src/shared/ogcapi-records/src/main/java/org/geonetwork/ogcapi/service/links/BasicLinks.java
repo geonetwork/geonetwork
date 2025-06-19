@@ -6,10 +6,8 @@
 package org.geonetwork.ogcapi.service.links;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
@@ -106,8 +104,10 @@ public class BasicLinks {
 
         var result = new ArrayList<OgcApiRecordsLinkDto>();
 
-        var requestProfile = (mediaTypeAndProfile.getProfile() == null || mediaTypeAndProfile.getProfile().isEmpty())
-                ? null : mediaTypeAndProfile.getProfile().getFirst();
+        var requestProfile = (mediaTypeAndProfile.getProfile() == null
+                        || mediaTypeAndProfile.getProfile().isEmpty())
+                ? null
+                : mediaTypeAndProfile.getProfile().getFirst();
         var requestMediaType = mediaTypeAndProfile.getMediaType();
         String finalUrl = url;
 
@@ -120,83 +120,86 @@ public class BasicLinks {
             }
             for (var _profile : profiles) {
                 try {
-                    if (_mediaTypeAndProfile.getMediaType().equals(requestMediaType) && _profile != null && _profile.equals(requestProfile)) {
-                        var link = new OgcApiRecordsLinkDto();
-                        var href =new URI(finalUrl + "f=" + URLEncoder.encode(_mediaTypeAndProfile.getMediaType().toString(), StandardCharsets.UTF_8));
-                        if (_profile != null) {
-                            href =new URI(href.toString() + "&profile=" + URLEncoder.encode(_profile, StandardCharsets.UTF_8));
+                    var isSelf = _mediaTypeAndProfile.getMediaType().equals(requestMediaType);
+                    if (isSelf) {
+                        if (_profile == null && requestProfile == null) {
+                            isSelf = true;
+                        } else if (_profile != null && requestProfile == null) {
+                            isSelf = false;
+                        } else if (_profile == null && requestProfile != null) {
+                            isSelf = false;
+                        } else if (_profile.equals(requestProfile)) {
+                            isSelf = true;
+                        } else {
+                            isSelf = false;
                         }
-                        link.rel(selfName)
-                                .type(_mediaTypeAndProfile.getMediaType().toString())
-                                .hreflang("eng")
-                                .href(href);
-                        if (_profile != null) {
-                             link.profile(List.of(_profile));
-                        }
-                        result.add(link);
-                    } else {
-                        var link = new OgcApiRecordsLinkDto();
-                        var href =new URI(finalUrl + "f=" + URLEncoder.encode(_mediaTypeAndProfile.getMediaType().toString(), StandardCharsets.UTF_8));
-                        if (_profile != null) {
-                            href =new URI(href.toString() + "&profile=" + URLEncoder.encode(_profile, StandardCharsets.UTF_8));
-                        }
-                        link.rel(altName)
-                                .type(_mediaTypeAndProfile.getMediaType().toString())
-                                .hreflang("eng")
-                                .href(href);
-                        if (_profile != null) {
-                            link.profile(List.of(_profile));
-                        }
-                        result.add(link);
                     }
-                }
-                catch (Exception e) {
+
+                    var linkRel = isSelf ? "self" : "alternative";
+
+                    var link = new OgcApiRecordsLinkDto();
+                    var href = new URI(finalUrl + "f="
+                            + URLEncoder.encode(
+                                    _mediaTypeAndProfile.getMediaType().toString(), StandardCharsets.UTF_8));
+                    if (_profile != null) {
+                        href = new URI(
+                                href.toString() + "&profile=" + URLEncoder.encode(_profile, StandardCharsets.UTF_8));
+                    }
+                    link.rel(linkRel)
+                            .type(_mediaTypeAndProfile.getMediaType().toString())
+                            .hreflang("eng")
+                            .href(href);
+                    if (_profile != null) {
+                        link.profile(List.of(_profile));
+                    }
+                    result.add(link);
+
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
-
         }
 
         return result;
 
-//        var links = mediaNames.stream()
-//                .map(x -> {
-//
-//                    if (x.getMediaType().equals(mediaTypeAndProfile.getMediaType())) {
-//                        // self
-//                        var _links = new ArrayList<OgcApiRecordsLinkDto>();
-//                        var link = new OgcApiRecordsLinkDto();
-//                        try {
-//                            link.rel(selfName)
-//                                    .type(mediaTypeAndProfile.getMediaType().toString())
-//                                    .hreflang("eng")
-//                                    .profile(x.getProfile())
-//                                    .href(new URI(
-//                                            finalUrl + "f=" + x.getMediaType().toString()));
-//                            _links.add(link);
-//
-//                        } catch (URISyntaxException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        return _links;
-//                    } else {
-//                        // alternative
-//                        var link = new OgcApiRecordsLinkDto();
-//                        try {
-//                            link.rel(altName)
-//                                    .type(x.getMediaType().toString())
-//                                    .hreflang("eng")
-//                                    .profile(x.getProfile())
-//                                    .href(new URI(
-//                                            finalUrl + "f=" + x.getMediaType().toString()));
-//                            return link;
-//                        } catch (URISyntaxException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//                })
-//                .toList();
-//
-//        return links;
+        //        var links = mediaNames.stream()
+        //                .map(x -> {
+        //
+        //                    if (x.getMediaType().equals(mediaTypeAndProfile.getMediaType())) {
+        //                        // self
+        //                        var _links = new ArrayList<OgcApiRecordsLinkDto>();
+        //                        var link = new OgcApiRecordsLinkDto();
+        //                        try {
+        //                            link.rel(selfName)
+        //                                    .type(mediaTypeAndProfile.getMediaType().toString())
+        //                                    .hreflang("eng")
+        //                                    .profile(x.getProfile())
+        //                                    .href(new URI(
+        //                                            finalUrl + "f=" + x.getMediaType().toString()));
+        //                            _links.add(link);
+        //
+        //                        } catch (URISyntaxException e) {
+        //                            throw new RuntimeException(e);
+        //                        }
+        //                        return _links;
+        //                    } else {
+        //                        // alternative
+        //                        var link = new OgcApiRecordsLinkDto();
+        //                        try {
+        //                            link.rel(altName)
+        //                                    .type(x.getMediaType().toString())
+        //                                    .hreflang("eng")
+        //                                    .profile(x.getProfile())
+        //                                    .href(new URI(
+        //                                            finalUrl + "f=" + x.getMediaType().toString()));
+        //                            return link;
+        //                        } catch (URISyntaxException e) {
+        //                            throw new RuntimeException(e);
+        //                        }
+        //                    }
+        //                })
+        //                .toList();
+        //
+        //        return links;
     }
 }
