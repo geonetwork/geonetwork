@@ -183,3 +183,5 @@ Link: <http://www.opengis.net/def/profile/OGC/0/ogc-record>; rel="profile"
 ## More Information
 
 See the [OGCAPI-Records](https://ogcapi.ogc.org/records/#:~:text=OGC%20API%20%2D%20Records%20is%20a,resources%20(metadata)%20are%20exposed.) specification.
+
+See [this discussion](https://github.com/opengeospatial/ogcapi-records/issues/481) on OGCAPI-Records and Profiles.
