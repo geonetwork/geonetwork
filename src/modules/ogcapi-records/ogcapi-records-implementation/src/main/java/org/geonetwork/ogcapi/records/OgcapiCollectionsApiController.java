@@ -92,6 +92,10 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
 
     @Override
     @SneakyThrows
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/collections/{catalogId}/items",
+            produces = {"application/geo+json", "text/html", "application/json", "*/*"})
     public ResponseEntity<OgcApiRecordsGetRecords200ResponseDto> getRecords(
             String catalogId,
             List<BigDecimal> bbox,
@@ -106,7 +110,12 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         var query = queryBuilder.buildFromRequest(
                 catalogId, bbox, datetime, limit, offset, type, q, ids, externalId, sortby, request.getParameterMap());
         var result = itemsApi.getRecords(query);
-        return new ResponseEntity<OgcApiRecordsGetRecords200ResponseDto>(result, HttpStatusCode.valueOf(200));
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("GN5.OGCAPI-RECORDS.REQUEST-OFFSET", offset.toString());
+
+        return new ResponseEntity<OgcApiRecordsGetRecords200ResponseDto>(
+                result, responseHeaders, HttpStatusCode.valueOf(200));
     }
 
     @Override
