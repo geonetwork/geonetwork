@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.geonetwork.formatting.FormatterInfo;
+import org.geonetwork.ogcapi.service.formatter.CswCollectionMessageWriter;
 import org.geonetwork.ogcapi.service.formatter.FormatterApiMessageWriter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private FormatterApiMessageWriter formatterApiMessageWriter;
+    private CswCollectionMessageWriter cswCollectionMessageWriter;
 
     @Autowired
     private BeanFactory beanFactory;
@@ -52,6 +54,9 @@ public class WebConfig implements WebMvcConfigurer {
     void setupFormatterApiMessageWriter() {
         if (formatterApiMessageWriter == null) {
             formatterApiMessageWriter = beanFactory.getBean(FormatterApiMessageWriter.class);
+        }
+        if (cswCollectionMessageWriter == null) {
+            cswCollectionMessageWriter = beanFactory.getBean(CswCollectionMessageWriter.class);
         }
     }
 
@@ -96,6 +101,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
         messageConverters.add(new TrivialHtmlMessageWriter(MediaType.TEXT_HTML));
         messageConverters.add(formatterApiMessageWriter);
+        messageConverters.add(cswCollectionMessageWriter);
     }
 
     /** Generic object mapper to use in the system */
