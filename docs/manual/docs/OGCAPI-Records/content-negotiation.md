@@ -185,3 +185,59 @@ Link: <http://www.opengis.net/def/profile/OGC/0/ogc-record>; rel="profile"
 See the [OGCAPI-Records](https://ogcapi.ogc.org/records/#:~:text=OGC%20API%20%2D%20Records%20is%20a,resources%20(metadata)%20are%20exposed.) specification.
 
 See [this discussion](https://github.com/opengeospatial/ogcapi-records/issues/481) on OGCAPI-Records and Profiles.
+
+
+# Technical Discussion of Content Negotiation
+
+This is a technical discussion of how the Content Negotiation is working in the OGCAPI-Records and how it integrates with Spring Boot.
+
+One of the difficulties is that there are multiple output "profiles" for a single mime type.  For example, `application/rdf+xml` (i.e. DCAT) has several "flavours" of output (i.e. GEODCAT, DCAT, and country-specific DCAT-AP).  This is a bit more advanced for how spring boot does its Content Negotiation.
+
+## Simple Spring Boot Content Negotiation
+
+In a typical spring boot application, there is a 1:1 correlation between the mime type in the request (i.e. either an `Accepts: ...` header or a `?f=<mime type>` parameter). 
+
+This is setup with the `ContentNegotiationConfigurer` (cf. `WebConfig.java`) and registering a set of `HttpMessageConverter`.
+
+`ContentNegotiationConfigurer` - This sets up how spring processes incoming requests and determines what Mime Type to use.  For example, it converts `&f=json` into `application/json`.
+
+`HttpMessageConverter` - These convert an object (i.e. result from the controller endpoint) into the corresponding Mime Type format.  Typically, for an `application/json` request, it will use the Jackson `ObjectMapper` to convert to an actual JSON string.
+
+In summary, the typical spring boot content negotiation is:
+
+ a) controller's result object - this is the main work of the OGCAPI-Records codebase <br>
+ b) user's requested Mime Type - the `ContentNegotiationConfigurer` determines this <br>
+ c) respond with the converted result object - this is done with a `HttpMessageConverter` 
+
+Spring boot will take the incoming request, determines the requested MimeType (`ContentNegotiationConfigurer`), then execute the controller endpoint.  The result object is then passed to the correct `HttpMessageConverter` which will write the output to the Http Response.
+
+NOTE:
+
+If you look at the `HttpMessageConverter`, its only really given the controllers result object and the Mime Type.  Is very disconnected from the original request.
+
+## GN5's OGCAPI-Records Content Negotiation
+
+There are a few complexities with OGCAPI-Records and how its integrated into the GN5 `FormatterApi`.  
+
+1. The output configuration is dynamic - OGCAPI-Records doesn't *apriori* know the MimeType (and profiles) that it supports.
+2. The output requires both the MimeType (i.e. `application/rdf+xml`) and a *profile* (i.e. `dcat-ap-nl`).
+
+The OGCAPI team recently added support for profiles (and profile negotiation).
+
+Internally, on startup, the `FormatterApi` is queried for the supported MimeTypes (cf. `WebConfig.java`) and the `FormatterApiMessageWriter` is created.
+
+`FormatterApiMessageWriter` is configured (by querying the `FormatterApi`) with what Mime Types it supports.  It, also, only knows how to process `OgcApiRecordsRecordGeoJSONDto` objects.  This object is a **single** metadata record (i.e. from the `/collections/<CollectionId>/items/<ItemId>` endpoint).
+
+The main problem is that the `FormatterApiMessageWriter` doesn't have access to the user's request - just the expected Mime Type and the `OgcApiRecordsRecordGeoJSONDto` object.  The main issue is that it doesn't know what profile the user requested.
+
+Currently, I've modified the Controller and have it add information to the output headers (which is available both to the controller and the `HttpMessageConverter`).  This is a bit of a hack.
+
+Alternative Hacks:
+
+1. add a `"requestedProfiles"` field to the `OgcApiRecordsRecordGeoJSONDto` object
+2. try to put the information into a thread local or try to get access to the current http request
+3. try to set "strange" mime types that could be parsed by the `FormatterApiMessageWriter`
+
+None of these solutions is great - please let us know if there are other, better, options.
+
+NOTE:  The implementation uses spring's `BeanFactory` to break some implied circular dependencies.  This is mostly because of the `WebConfig -> Formatter -> Index Formatter - > Elastic Indexing -> WebConfig` chain.
