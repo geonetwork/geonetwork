@@ -12,8 +12,8 @@ import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
-import { Tooltip } from 'primeng/tooltip';
 import { InputGroup } from 'primeng/inputgroup';
+import { Button } from 'primeng/button';
 
 export interface EEAResourceIdentifier {
   provider: WritableSignal<string>;
@@ -37,14 +37,19 @@ export interface EEAResourceIdentifier {
     InputNumber,
     InputText,
     Select,
-    Tooltip,
     InputGroup,
+    Button,
   ],
   templateUrl: './eea-resource-identifier-field.component.html',
   styleUrl: './eea-resource-identifier-field.component.css',
 })
 export class EeaResourceIdentifierFieldComponent implements OnInit {
   value = model.required<string>();
+
+  epsgList = [
+    { code: 4326, label: 'WGS84' },
+    { code: 3035, label: 'ETRS89 / ETRS-LAEA' },
+  ];
 
   resourceIdentifier: EEAResourceIdentifier = {
     provider: signal(''),

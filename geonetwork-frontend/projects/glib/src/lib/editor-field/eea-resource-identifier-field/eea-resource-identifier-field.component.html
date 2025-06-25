@@ -1,130 +1,183 @@
-<p-inputgroup #resourceIdentifierField>
-  <input
-    placeholder="Provider"
-    pTooltip="This element refers to the data provider and shall be coded with its abbreviation."
-    tooltipPosition="top"
-    pInputText
-    [(ngModel)]="resourceIdentifier.provider" />
-  <p-inputgroup-addon>
-    <span>_</span>
-  </p-inputgroup-addon>
-  <p-select
-    placeholder="Data type"
-    pTooltip="Data type of the resource."
-    tooltipPosition="top"
-    [options]="eeaDataTypes"
-    optionLabel="code"
-    optionValue="code"
-    [(ngModel)]="resourceIdentifier.dataType"
-    [appendTo]="resourceIdentifierField">
-    <ng-template let-type #item>
-      <span>{{ type.code }} - {{ type.name }}</span>
-    </ng-template>
-  </p-select>
-  <p-inputgroup-addon>
-    <span>_</span>
-  </p-inputgroup-addon>
-  <p-input-number
-    placeholder="EPSG code"
-    pTooltip="EPSG code. This element refers to the Coordinate Reference System, which shall be referred to in this element only with its EPSG code. [Geospatial data only]"
-    tooltipPosition="top"
-    [min]="0"
-    [maxFractionDigits]="0"
-    [useGrouping]="false"
-    [(ngModel)]="resourceIdentifier.epsg" />
-  <p-inputgroup-addon>
-    <span>_</span>
-  </p-inputgroup-addon>
-  <p-input-number
-    placeholder="Scale resolution"
-    pTooltip="Scale resolution expressed as a number. [Geospatial data only]"
-    tooltipPosition="top"
-    [min]="0"
-    [maxFractionDigits]="0"
-    [format]="false"
-    [(ngModel)]="resourceIdentifier.scale">
-  </p-input-number>
-  <p-inputgroup-addon>
-    <span>_</span>
-  </p-inputgroup-addon>
-  <p-select
-    title="Scale resolution unit"
-    pTooltip="Unit used to express the resolution or multiplier factor in case of a scale [Geospatial data only]"
-    tooltipPosition="top"
-    [options]="eeaScaleResolutionUnits"
-    optionLabel="code"
-    optionValue="code"
-    [(ngModel)]="resourceIdentifier.scaleUnit"
-    [appendTo]="resourceIdentifierField">
-    <ng-template let-unit #item>
-      <span>{{ unit.code }} - {{ unit.name }}</span>
-    </ng-template>
-  </p-select>
-  <p-inputgroup-addon>
-    <span>_</span>
-  </p-inputgroup-addon>
-  <input
-    placeholder="Short name"
-    title="Dataset short name"
-    pTooltip="Dataset name should be the same whenever new versions or revisions of the dataset supersede previous ones.
-                      Different parts of the shortname will be separated by '-'
-                      A short name may include a reference year when this is relevant to distinguish it from other datasets. The year should also be separated from the string using '-'"
-    tooltipPosition="top"
-    pInputText
-    [(ngModel)]="resourceIdentifier.shortName" />
-  <p-inputgroup-addon>
-    <span>_</span>
-  </p-inputgroup-addon>
-  <p-select
-    placeholder="Public or internal"
-    pTooltip="Public or internal. This element shall express whether the dataset is publically available (normally on the website) or is a dataset only available for internal use by the EEA (normally with a restrictive data sharing policy such as sensitive data). [Geospatial data, Tabular data]"
-    tooltipPosition="top"
-    [options]="eeaDataAccessTypes"
-    optionLabel="code"
-    optionValue="code"
-    [(ngModel)]="resourceIdentifier.access"
-    [appendTo]="resourceIdentifierField">
-    <ng-template let-type #item>
-      <span [title]="type.title">{{ type.code }} - {{ type.name }}</span>
-    </ng-template>
-  </p-select>
-  <p-inputgroup-addon>
-    <span>_</span>
-  </p-inputgroup-addon>
-  <p-datePicker
-    placeholder="Temporal extent"
-    [(ngModel)]="resourceIdentifier.temporalCoverage"
-    view="year"
-    selectionMode="range"
-    dataType="string"
-    dateFormat="yy"
-    multipleSeparator="-"
-    styleClass="w-full"
-    inputStyleClass="w-full"
-    [appendTo]="resourceIdentifierField">
-  </p-datePicker>
-  <p-inputgroup-addon>
-    <span>_v</span>
-  </p-inputgroup-addon>
-  <p-input-number
-    placeholder="Version"
-    pTooltip="Version of the dataset. Changes in the version numbering are normally stemming from significant updates in the temporal or spatial coverage (adding or removing features). [Geospatial data, Tabular data]"
-    tooltipPosition="top"
-    [min]="0"
-    [maxFractionDigits]="0"
-    [(ngModel)]="resourceIdentifier.version">
-  </p-input-number>
-  <p-inputgroup-addon>
-    <span>_r</span>
-  </p-inputgroup-addon>
-  <p-input-number
-    placeholder="Revision"
-    pTooltip="Amendments or corrigenda on a specific version. [Geospatial data, Tabular data]"
-    tooltipPosition="top"
-    [min]="0"
-    [maxFractionDigits]="0"
-    [(ngModel)]="resourceIdentifier.revision">
-  </p-input-number>
-</p-inputgroup>
+<div class="grid grid-cols-1 gap-5" #resourceIdentifierField>
+  <div class="grid grid-cols-1">
+    <label class="text-gray-800 font-semibold">Provider</label>
+    <div>
+      <input
+        class="w-full"
+        pInputText
+        [(ngModel)]="resourceIdentifier.provider" />
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        This element refers to the data provider and shall be coded with its
+        abbreviation.
+      </p>
+    </div>
+  </div>
 
-{{ value() }}
+  <div class="grid grid-cols-1">
+    <label class="text-gray-800 font-semibold"> Data type</label>
+    <div>
+      <p-select
+        [options]="eeaDataTypes"
+        optionLabel="code"
+        optionValue="code"
+        [(ngModel)]="resourceIdentifier.dataType"
+        [appendTo]="resourceIdentifierField">
+        <ng-template let-type #item>
+          <span>{{ type.code }} - {{ type.name }}</span>
+        </ng-template>
+      </p-select>
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        Data type of the resource.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <label class="text-gray-800 font-semibold"> EPSG code</label>
+    <div>
+      <p-input-number
+        placeholder="EPSG code"
+        [min]="0"
+        [maxFractionDigits]="0"
+        [useGrouping]="false"
+        [(ngModel)]="resourceIdentifier.epsg" />
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        EPSG code. This element refers to the Coordinate Reference System, which
+        shall be referred to in this element only with its EPSG code. Common
+        values are:
+        @for (epsg of epsgList; track epsg.code) {
+          <p-button
+            (onClick)="resourceIdentifier.epsg.set(epsg.code)"
+            variant="text"
+            >{{ epsg.label }} ({{ epsg.code }})</p-button
+          >
+        }
+
+        [Geospatial data only]
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <label class="text-gray-800 font-semibold"> Scale resolution</label>
+    <div>
+      <p-input-group>
+        <p-input-number
+          [min]="0"
+          [maxFractionDigits]="0"
+          [format]="false"
+          [(ngModel)]="resourceIdentifier.scale">
+        </p-input-number>
+
+        <p-select
+          [options]="eeaScaleResolutionUnits"
+          optionLabel="code"
+          optionValue="code"
+          [(ngModel)]="resourceIdentifier.scaleUnit"
+          [appendTo]="resourceIdentifierField">
+          <ng-template let-unit #item>
+            <span>{{ unit.code }} - {{ unit.name }}</span>
+          </ng-template>
+        </p-select>
+      </p-input-group>
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        Scale resolution expressed as a number. Unit used to express the
+        resolution or multiplier factor in case of a scale [Geospatial data
+        only].
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <label class="text-gray-800 font-semibold"> Short name</label>
+    <div>
+      <input
+        class="w-full"
+        title="Dataset short name"
+        pInputText
+        [(ngModel)]="resourceIdentifier.shortName" />
+
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        Dataset name should be the same whenever new versions or revisions of
+        the dataset supersede previous ones. Different parts of the shortname
+        will be separated by '-' A short name may include a reference year when
+        this is relevant to distinguish it from other datasets. The year should
+        also be separated from the string using '-'
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <label class="text-gray-800 font-semibold"> Public or internal </label>
+    <div>
+      <p-select
+        [options]="eeaDataAccessTypes"
+        optionLabel="code"
+        optionValue="code"
+        [(ngModel)]="resourceIdentifier.access"
+        [appendTo]="resourceIdentifierField">
+        <ng-template let-type #item>
+          <span [title]="type.title">{{ type.code }} - {{ type.name }}</span>
+        </ng-template>
+      </p-select>
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        Public or internal. This element shall express whether the dataset is
+        publically available (normally on the website) or is a dataset only
+        available for internal use by the EEA (normally with a restrictive data
+        sharing policy such as sensitive data). [Geospatial data, Tabular data]
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <label class="text-gray-800 font-semibold"> Temporal extent </label>
+    <div>
+      <p-datePicker
+        placeholder="Temporal extent"
+        [(ngModel)]="resourceIdentifier.temporalCoverage"
+        view="year"
+        selectionMode="range"
+        dataType="string"
+        dateFormat="yy"
+        multipleSeparator="-"
+        styleClass="w-full"
+        inputStyleClass="w-full"
+        [appendTo]="resourceIdentifierField">
+      </p-datePicker>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <label class="text-gray-800 font-semibold"> Version & revision </label>
+    <div>
+      <p-input-group>
+        <p-input-number
+          placeholder="Version"
+          [min]="0"
+          [maxFractionDigits]="0"
+          [(ngModel)]="resourceIdentifier.version">
+        </p-input-number>
+        <p-inputgroup-addon>.</p-inputgroup-addon>
+        <p-input-number
+          placeholder="Revision"
+          [min]="0"
+          [maxFractionDigits]="0"
+          [(ngModel)]="resourceIdentifier.revision">
+        </p-input-number>
+      </p-input-group>
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        Version of the dataset. Changes in the version numbering are normally
+        stemming from significant updates in the temporal or spatial coverage
+        (adding or removing features). Revision is the amendments or corrigenda
+        on a specific version. [Geospatial data, Tabular data]
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 border-t-2 pt-5">
+    <label class="text-gray-800 font-semibold"> Resource identifier </label>
+    <div class="text-gray-800 font-semibold py-2">
+      {{ value() }}
+    </div>
+  </div>
+</div>

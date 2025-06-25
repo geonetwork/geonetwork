@@ -1,7 +1,7 @@
 @if (analysisResult()) {
-  <div class="grid grid-cols-8 gap-4 items-center" #dataAnalysisPanel>
-    <div class="font-medium">Title</div>
-    <div class="col-span-7">
+  <div class="grid grid-cols-1 gap-5" #dataAnalysisPanel>
+    <div class="grid grid-cols-1 items-center">
+      <label class="text-gray-800 font-semibold">Title</label>
       <div class="inline-flex items-center">
         <g-inplace-field
           property="resourceTitleObject"
@@ -17,89 +17,117 @@
         }
       </div>
     </div>
-  </div>
-  <div class="grid grid-cols-8 gap-4 items-center">
-    <div class="font-medium">Source</div>
-    <div class="col-span-7">
-      {{ analysisResult().link[0].urlObject.default }}
+
+    <div class="grid grid-cols-1 items-center">
+      <label class="text-gray-800 font-semibold">Source</label>
+      <div class="">
+        {{ analysisResult().link[0].urlObject.default }}
+      </div>
     </div>
 
-    <div class="font-medium">Format</div>
-    <div class="col-span-7">{{ analysisResult().format[0] }}</div>
+    <div>
+      <label class="text-gray-800 font-semibold">Format</label>
+      <div class="">{{ analysisResult().format[0] }}</div>
+    </div>
 
     @if (spatialRepresentation) {
-      <div class="font-medium">Spatial representation</div>
-      <div class="col-span-7">
-        <i
-          [attr.class]="
-            isVector() ? 'fa fa-fw fa-vector-square' : 'fa fa-fw fa-table-cells'
-          "></i>
-        {{ spatialRepresentation }}
+      <div>
+        <label class="text-gray-800 font-semibold"
+          >Spatial representation</label
+        >
+        <div class="">
+          <i
+            [attr.class]="
+              isVector()
+                ? 'fa fa-fw fa-vector-square'
+                : 'fa fa-fw fa-table-cells'
+            "></i>
+          {{ spatialRepresentation }}
+        </div>
       </div>
     }
     @if (analysisResult().resolutionDistance) {
-      <div class="font-medium">Resolution</div>
-      <div class="col-span-7">
-        @for (resolution of analysisResult().resolutionDistance; track $index) {
-          {{ resolution }}
-        }
+      <div>
+        <label class="text-gray-800 font-semibold">Resolution</label>
+        <div class="grid grid-cols-2 gap-5">
+          @for (
+            resolution of analysisResult().resolutionDistance;
+            track $index
+          ) {
+            {{ resolution }}
+          }
+        </div>
       </div>
     }
     @if (analysisResult().dimensionSizeY && analysisResult().dimensionSizeX) {
-      <div class="font-medium">Dimension</div>
-      <div class="col-span-7">
-        {{ analysisResult().dimensionSizeX[0] }} x
-        {{ analysisResult().dimensionSizeY[0] }}
+      <div>
+        <label class="text-gray-800 font-semibold">Dimension</label>
+        <div class="grid grid-cols-2 gap-5">
+          {{ analysisResult().dimensionSizeX[0] }} x
+          {{ analysisResult().dimensionSizeY[0] }}
+        </div>
       </div>
     }
 
     @if (isVector() && analysisResult().geom) {
-      <div class="font-medium">Geometry type</div>
-      <div class="col-span-7">
-        {{ analysisResult().cl_geometricObjectType[0].key }}
+      <div>
+        <label class="text-gray-800 font-semibold">Geometry type</label>
+        <div class="grid grid-cols-2 gap-5">
+          {{ analysisResult().cl_geometricObjectType[0].key }}
+        </div>
       </div>
-
-      <div class="font-medium">Spatial extent</div>
-      <div class="col-span-7">
-        {{ analysisResult().geom }}
+      <div>
+        <label class="text-gray-800 font-semibold">Spatial extent</label>
+        <div class="grid grid-cols-2 gap-5">
+          {{ analysisResult().geom }}
+        </div>
       </div>
     }
 
     @if (isRaster()) {
       @if (analysisResult().geom) {
-        <div class="font-medium">Spatial extent</div>
-        <div class="col-span-7">
-          {{ analysisResult().geom }}
+        <div>
+          <label class="text-gray-800 font-semibold">Spatial extent</label>
+          <div class="grid grid-cols-2 gap-5">
+            {{ analysisResult().geom }}
+          </div>
         </div>
       }
       @if (analysisResult()?.shape) {
-        <div class="font-medium">Foot print</div>
-        <div class="col-span-7">
-          {{ analysisResult().shape | json }}
+        <div>
+          <label class="text-gray-800 font-semibold">Foot print</label>
+          <div class="grid grid-cols-2 gap-5">
+            {{ analysisResult().shape | json }}
+          </div>
         </div>
       }
       @if (analysisResult().size) {
-        <div class="font-medium">Dimensions</div>
-        <div class="col-span-7">
-          X: {{ analysisResult().size[0] }} / Y: {{ analysisResult().size[1] }}
+        <div>
+          <label class="text-gray-800 font-semibold">Dimensions</label>
+          <div class="grid grid-cols-2 gap-5">
+            X: {{ analysisResult().size[0] }} / Y:
+            {{ analysisResult().size[1] }}
+          </div>
         </div>
       }
     }
 
     @for (crs of analysisResult().coordinateSystem; track $index) {
-      <div class="font-medium">Coordinate system</div>
-      <div class="col-span-7">
-        <a
-          href="http://epsg.io/{{ crs.replace('EPSG:', '') }}"
-          target="_blank"
-          >{{ crs }}</a
-        >
+      <div>
+        <label class="text-gray-800 font-semibold">Coordinate system</label>
+        <div class="grid grid-cols-2 gap-5">
+          <a
+            href="http://epsg.io/{{ crs.replace('EPSG:', '') }}"
+            target="_blank"
+            >{{ crs }}</a
+          >
+        </div>
       </div>
     }
 
     @if (isVector()) {
-      <div class="font-medium">Data model</div>
-      <div class="col-span-7">
+      <div>
+        <label class="text-gray-800 font-semibold">Data model</label>
         <p-table
           [value]="analysisResult().featureTypes"
           styleClass="w-full"
@@ -118,10 +146,9 @@
           </ng-template>
         </p-table>
       </div>
-
       <!--      @if (!analysisResult().geom) {
-        <div class="font-medium">Spatial extent?</div>
-        <div class="col-span-7">
+        <label class="text-gray-800 font-semibold">Spatial extent?</label>
+        <div class="grid grid-cols-2 gap-5">
           <p-select
             [options]="analysisResult().featureTypes"
             placeholder="Compute spatial extent from attribute"
@@ -131,13 +158,105 @@
       }-->
 
       @if (analysisResult().featureTypes) {
-        <div class="font-medium">Temporal extent?</div>
-        <div class="col-span-7 flex gap-2">
+        <div>
+          <label class="text-gray-800 font-semibold">Temporal extent?</label>
+          <div class="grid grid-cols-2 gap-5">
+            <g-inplace-field
+              property="dateRangeDetails"
+              [(value)]="temporalExtent"
+              [uuid]="uuid()"
+              [active]="hasComputedStatistics()[StatsType.TEMPORAL]">
+              <ng-template #display>
+                <span class="font-bold">
+                  {{ temporalExtent()?.start.date }} -
+                  {{ temporalExtent()?.end.date }}
+                </span>
+              </ng-template>
+              <ng-template #edit let-onFieldValueChange="onFieldValueChange">
+                <g-temporal-extent-field
+                  [from]="
+                    temporalExtentStats()
+                      ? String(temporalExtentStats()![0].statistics.MIN)
+                      : undefined
+                  "
+                  [to]="
+                    temporalExtentStats()
+                      ? String(temporalExtentStats()![0].statistics.MAX)
+                      : undefined
+                  "
+                  (onChange)="onFieldValueChange($event)"
+                  [appendTo]="dataAnalysisPanel" />
+              </ng-template>
+            </g-inplace-field>
+
+            <p-select
+              [options]="analysisResult().featureTypes"
+              (onChange)="getStatistics($event, StatsType.TEMPORAL)"
+              placeholder="Analyse column"
+              tooltip="Select the column to compute the temporal extent from"
+              tooltipPosition="bottom"
+              optionLabel="code"
+              optionValue="code"
+              [appendTo]="dataAnalysisPanel" />
+
+            @if (isComputingStatistics()[StatsType.TEMPORAL]) {
+              <p-progressBar
+                mode="indeterminate"
+                [style]="{ height: '6px' }"
+                class="flex-auto" />
+            }
+          </div>
+        </div>
+        <div>
+          <label class="text-gray-800 font-semibold">Vertical extent?</label>
+          <div class="grid grid-cols-2 gap-5">
+            <g-inplace-field
+              property="resourceVerticalRange"
+              [(value)]="resourceVerticalRange"
+              [uuid]="uuid()"
+              [active]="hasComputedStatistics()[StatsType.VERTICAL]">
+              <ng-template #display>
+                <span class="font-bold">
+                  {{ resourceVerticalRange()?.gte }} -
+                  {{ resourceVerticalRange()?.lte }}
+                  {{ resourceVerticalRange()?.unit }}
+                </span>
+              </ng-template>
+              <ng-template #edit let-onFieldValueChange="onFieldValueChange">
+                <g-vertical-extent-field
+                  [gte]="resourceVerticalRange()?.gte"
+                  [lte]="resourceVerticalRange()?.lte"
+                  (onChange)="onFieldValueChange($event)" />
+              </ng-template>
+            </g-inplace-field>
+
+            <p-select
+              [options]="analysisResult().featureTypes"
+              placeholder="Analyse column"
+              tooltip="Select the column to compute the vertical extent from"
+              tooltipPosition="bottom"
+              (onChange)="getStatistics($event, StatsType.VERTICAL)"
+              optionLabel="code"
+              optionValue="code"
+              [appendTo]="dataAnalysisPanel" />
+
+            @if (isComputingStatistics()[StatsType.VERTICAL]) {
+              <p-progressBar
+                mode="indeterminate"
+                [style]="{ height: '6px' }"
+                class="flex-auto" />
+            }
+          </div>
+        </div>
+      }
+    } @else {
+      <div>
+        <label class="text-gray-800 font-semibold">Temporal extent?</label>
+        <div class="grid grid-cols-2 gap-5">
           <g-inplace-field
             property="dateRangeDetails"
             [(value)]="temporalExtent"
-            [uuid]="uuid()"
-            [active]="hasComputedStatistics()[StatsType.TEMPORAL]">
+            [uuid]="uuid()">
             <ng-template #display>
               <span class="font-bold">
                 {{ temporalExtent()?.start.date }} -
@@ -146,101 +265,16 @@
             </ng-template>
             <ng-template #edit let-onFieldValueChange="onFieldValueChange">
               <g-temporal-extent-field
-                [from]="
-                  temporalExtentStats()
-                    ? String(temporalExtentStats()![0].statistics.MIN)
-                    : undefined
-                "
-                [to]="
-                  temporalExtentStats()
-                    ? String(temporalExtentStats()![0].statistics.MAX)
-                    : undefined
-                "
                 (onChange)="onFieldValueChange($event)"
                 [appendTo]="dataAnalysisPanel" />
             </ng-template>
           </g-inplace-field>
-
-          <p-select
-            [options]="analysisResult().featureTypes"
-            (onChange)="getStatistics($event, StatsType.TEMPORAL)"
-            placeholder="Analyse column"
-            tooltip="Select the column to compute the temporal extent from"
-            optionLabel="code"
-            optionValue="code"
-            [appendTo]="dataAnalysisPanel" />
-
-          @if (isComputingStatistics()[StatsType.TEMPORAL]) {
-            <p-progressBar
-              mode="indeterminate"
-              [style]="{ height: '6px' }"
-              class="flex-auto" />
-          }
         </div>
-
-        <div class="font-medium">Vertical extent?</div>
-        <div class="col-span-7 flex gap-2">
-          <g-inplace-field
-            property="resourceVerticalRange"
-            [(value)]="resourceVerticalRange"
-            [uuid]="uuid()"
-            [active]="hasComputedStatistics()[StatsType.VERTICAL]">
-            <ng-template #display>
-              <span class="font-bold">
-                {{ resourceVerticalRange()?.gte }} -
-                {{ resourceVerticalRange()?.lte }}
-                {{ resourceVerticalRange()?.unit }}
-              </span>
-            </ng-template>
-            <ng-template #edit let-onFieldValueChange="onFieldValueChange">
-              <g-vertical-extent-field
-                [gte]="resourceVerticalRange()?.gte"
-                [lte]="resourceVerticalRange()?.lte"
-                (onChange)="onFieldValueChange($event)" />
-            </ng-template>
-          </g-inplace-field>
-
-          <p-select
-            [options]="analysisResult().featureTypes"
-            placeholder="Analyse column"
-            tooltip="Select the column to compute the vertical extent from"
-            (onChange)="getStatistics($event, StatsType.VERTICAL)"
-            optionLabel="code"
-            optionValue="code"
-            [appendTo]="dataAnalysisPanel" />
-
-          @if (isComputingStatistics()[StatsType.VERTICAL]) {
-            <p-progressBar
-              mode="indeterminate"
-              [style]="{ height: '6px' }"
-              class="flex-auto" />
-          }
-        </div>
-      }
-    } @else {
-      <div class="font-medium">Temporal extent?</div>
-      <div class="col-span-7 flex gap-2">
-        <g-inplace-field
-          property="dateRangeDetails"
-          [(value)]="temporalExtent"
-          [uuid]="uuid()">
-          <ng-template #display>
-            <span class="font-bold">
-              {{ temporalExtent()?.start.date }} -
-              {{ temporalExtent()?.end.date }}
-            </span>
-          </ng-template>
-          <ng-template #edit let-onFieldValueChange="onFieldValueChange">
-            <g-temporal-extent-field
-              (onChange)="onFieldValueChange($event)"
-              [appendTo]="dataAnalysisPanel" />
-          </ng-template>
-        </g-inplace-field>
       </div>
     }
 
-    <div class="font-medium">Resource identifier</div>
-    <div class="col-span-7">
+    <div>
+      <label class="text-gray-800 font-semibold">Resource identifier</label>
       <g-inplace-field
         property="resourceIdentifier"
         [uuid]="uuid()"
