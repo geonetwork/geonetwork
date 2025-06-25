@@ -7,9 +7,13 @@ package org.geonetwork.metadatastore;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -17,9 +21,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.data.DataDirectory;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.metadata.IMetadataAccessManager;
@@ -27,6 +36,8 @@ import org.geonetwork.metadata.IMetadataManager;
 import org.geonetwork.metadata.MetadataNotFoundException;
 import org.geonetwork.metadata.config.MetadataDirConfig;
 import org.geonetwork.metadata.datadir.MetadataDirPrivileges;
+import org.geonetwork.utility.legacy.xml.Xml;
+import org.jdom.JDOMException;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.multipart.MultipartFile;
@@ -195,7 +206,89 @@ public abstract class AbstractStore implements Store {
         MetadataResource metadataResource =
                 putResource(metadataUuid, filename, connection.getInputStream(), null, visibility, approved);
         connection.disconnect();
+
+        handleEeaDiscoDataResource(metadataResource, fileUrl);
+
         return metadataResource;
+    }
+
+    /**
+     * EEA specific: When a resource is uploaded from an external URL starting with
+     * https://discodata.eea.europa.eu/download, if the resource is a ZIP, we extract it and if one file found, the file
+     * iis renamed with the resource identifier of the record
+     *
+     * <p>TODO: Remove this method. Would be better to have an event after upload to handle this
+     */
+    @SuppressFBWarnings({"RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"})
+    private void handleEeaDiscoDataResource(MetadataResource metadataResource, URL fileUrl) throws IOException {
+        if (fileUrl.toString().startsWith("https://discodata.eea.europa.eu/download")
+                && metadataResource.getFilename().endsWith(".zip")) {
+            Path metadataDir = dataDirectory.getMetadataDir().resolve(metadataResource.getMetadataUuid());
+            Path uploadedResource = metadataDir.resolve(metadataResource.getFilename());
+
+            try {
+                String resourceIdentifier = Xml.selectString(
+                        Xml.loadString(
+                                metadataManager
+                                        .findMetadataById(metadataResource.getMetadataId())
+                                        .getData(),
+                                false),
+                        ".//*[local-name() = 'identificationInfo']/*/*[local-name() = 'citation']/*/*[local-name() = 'identifier']/*/*[local-name() = 'code']/*/text()[contains(., '_')]");
+
+                if (StringUtils.isEmpty(resourceIdentifier)) {
+                    return;
+                }
+
+                String zipFileName =
+                        FilenameUtils.removeExtension(uploadedResource.toFile().getName());
+                try (ZipFile zipFile = new ZipFile(uploadedResource.toString())) {
+                    for (Enumeration<? extends ZipEntry> entries = zipFile.entries(); entries.hasMoreElements(); ) {
+                        ZipEntry entry = entries.nextElement();
+                        String fileName = FilenameUtils.removeExtension(entry.getName());
+
+                        if (!fileName.equals(zipFileName)) {
+                            continue;
+                        }
+
+                        // Rename the file to the resource identifier
+                        File entryDestination =
+                                new File(metadataDir.toFile(), entry.getName().replace(fileName, resourceIdentifier));
+
+                        // If the file already exists, we try to create a new file with the same name
+                        if (Files.exists(entryDestination.toPath())) {
+                            entryDestination = new File(metadataDir.toFile(), entry.getName());
+                        }
+
+                        // If the file still exists, we skip it - ZIP is uploaded but not extracted
+                        if (Files.exists(entryDestination.toPath())) {
+                            return;
+                        }
+
+                        if (entry.isDirectory()) {
+                            boolean mkdirs = entryDestination.mkdirs();
+                            if (!mkdirs && !entryDestination.isDirectory()) {
+                                throw new IOException("Failed to create directory: " + entryDestination);
+                            }
+                        } else {
+                            entryDestination.getParentFile().mkdirs();
+                            try (InputStream in = zipFile.getInputStream(entry);
+                                    OutputStream out = new FileOutputStream(entryDestination)) {
+                                IOUtils.copy(in, out);
+                            }
+                        }
+                    }
+                    Files.delete(uploadedResource);
+                }
+            } catch (IOException e) {
+                throw new IOException(
+                        String.format(
+                                "Error extracting ZIP resource from discodata download service: %s. Error is: %s",
+                                metadataResource.getFilename(), e.getMessage()),
+                        e);
+            } catch (JDOMException | MetadataNotFoundException e) {
+                return;
+            }
+        }
     }
 
     @Override
