@@ -15,36 +15,17 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSOND
 import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
 import org.springframework.stereotype.Component;
 
+/**
+ *  This handles adding "special" links to the single-record (`.../items/<itemid>`) based on the `FormatterApi`.
+ *
+ *
+ */
 @Component
 @AllArgsConstructor
 public class FormatterApiRecordLinkAttacher {
 
     private final OgcApiLinkConfiguration linkConfiguration;
     private final FormatterApi formatterApi;
-
-    //    public void attachLinks(OgcApiRecordsRecordGeoJSONDto record, String collectionId, Object page) throws
-    // Exception {
-    //
-    //        var availableFormatters = formatterApi.getRecordFormattersForMetadata(record.getId());
-    //
-    //        availableFormatters.forEach(formatter -> {
-    //            var url = linkConfiguration.getOgcApiRecordsBaseUrl() + "collections/"
-    //                    + URLEncoder.encode(collectionId, StandardCharsets.UTF_8)
-    //                    + "/items/" + URLEncoder.encode(record.getId(), StandardCharsets.UTF_8);
-    //
-    //            url += "?f=" + formatter.getName();
-    //            var link = new OgcApiRecordsLinkDto();
-    //            try {
-    //                link.setHref(new URI(url));
-    //                link.setRel("alternative");
-    //                link.setHreflang("eng");
-    //                link.setType("application/UNKNOWN_MIME_TYPE");
-    //                addLink(page, link);
-    //            } catch (Exception e) {
-    //                throw new RuntimeException(e);
-    //            }
-    //        });
-    //    }
 
     public void attachLinks(OgcApiRecordsRecordGeoJSONDto record, String collectionId, Object page) throws Exception {
 

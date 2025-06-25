@@ -27,11 +27,17 @@ import org.springframework.stereotype.Component;
 /**
  * This is the output writer for the FormatterApi.
  *
- * <p>1. We get all the (unique) mime types that the formatter supports. These are the supportedFormats 2. We do not
- * support reading 3. For writing, we canWrite iff + mimetype is what we support (supportedFormats) + the object type is
- * OgcApiRecordsRecordGeoJSONDto 4. For writing, + we get the metadata uuid from the OgcApiRecordsRecordGeoJSONDto + we
- * get the mimetype from the request + convert the request mimetype to the formatter id (i.e. how to run the formatter)
- * 5. We set the response mimetype (to the, long, unique, mime type).
+ * <p>1. We get all the (unique) mime types that the formatter supports. These are the supportedFormats
+ *
+ * <p>2. We do not support reading
+ *
+ * <p>3. For writing, we canWrite iff + mimetype is what we support (supportedFormats) + the object type is
+ * OgcApiRecordsRecordGeoJSONDto
+ *
+ * <p>4. For writing, + we get the metadata uuid from the OgcApiRecordsRecordGeoJSONDto + we get the mimetype from the
+ * request + convert the request mimetype to the formatter id (i.e. how to run the formatter)
+ *
+ * <p>5. We set the response mimetype (to the, long, unique, mime type).
  */
 @Component
 public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRecordsRecordGeoJSONDto> {
@@ -48,7 +54,6 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
     /**
      * what media types we can output - from the FormatterApi -- GETTER -- what media types do we support
      *
-     * @return what media types do we support
      */
     @Getter
     private final List<MediaType> supportedMediaTypes;
@@ -116,11 +121,25 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
     }
 
     /**
-     * write the (formatted) output to the stream.
+     * Write the (formatted) output to the stream.
+     *
+     * <p> ASSUMPTIONS:
+     *
+     * <p> 1.There is a header named `COLLECTION_ID_HEADER_NAME` whose value is the collectionId.
+     *
+     * <p> 2. There is a header named `PROFILE_HEADER_NAME` whose value is list of profiles in the user's request
+     *
+     * <p> 3. There is a header named `RECORD_ID_HEADER_NAME` whose value is the recordID
+     *        NOTE: this isn't actually used since it's available in the ogcApiRecordsJsonItemDto object
+     *
+     *
+     *  <p> NOTE: these headers should be attached to the outputMessage by the Controller.
+     *
+     *  <p> We do content negotiation (`ProfileSelector`) to determine which formatter to use.
      *
      * @param ogcApiRecordsJsonItemDto object to write
      * @param contentType what mimetype are we writing
-     * @param outputMessage where to output the formatted text
+     * @param outputMessage where to output the formatted text.  Also contains the headers (see above).
      */
     @Override
     public void write(
@@ -144,8 +163,8 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
             outputMessage.getHeaders().remove(COLLECTION_ID_HEADER_NAME);
             outputMessage.getHeaders().remove(RECORD_ID_HEADER_NAME);
 
-            var allformatters = formatterApi.getRecordFormattersForMetadata(ogcApiRecordsJsonItemDto.getId(), approved);
-            var formatters = allformatters.stream()
+            var allFormatters = formatterApi.getRecordFormattersForMetadata(ogcApiRecordsJsonItemDto.getId(), approved);
+            var formatters = allFormatters.stream()
                     .filter(entry -> entry.getContentType().equals(contentType.toString()))
                     .toList();
             var profileName = profileSelector.chooseProfile(contentType, profileList, formatters);

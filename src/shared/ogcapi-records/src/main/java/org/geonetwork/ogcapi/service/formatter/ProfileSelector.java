@@ -12,15 +12,30 @@ import org.geonetwork.schemas.model.schemaident.Formatter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 
+/**
+ *  This chooses the correct formatter (official profile name) given the available
+ *  formatters, user-requested media type, user-requested profile(s) (if any), and
+ *  the default (application.yaml) profile for that media type.
+ */
 @Configuration
 @AllArgsConstructor
 public class ProfileSelector {
     final ItemPageLinksConfiguration itemPageLinksConfiguration;
 
     /**
-     * 1. no formatters -> null (no formatters is an error) 2. If no requested profiles: + return default (if available)
-     * + return first possibleFormatters profile 3. if requested profile: go through the profiles: + is this a possible
-     * formatter profile -> return that 4. if there's default -> return that 5. return first possbileFormatter (guess)
+     *  This chooses the correct formatter (official profile name) given the available
+     *  formatters, user-requested media type, user-requested profile(s) (if any), and
+     *  the default (application.yaml) profile for that media type.
+     *
+     * <p> 1. no formatters -> null (no formatters is an error)
+     *
+     * <p> 2. If no requested profiles: + return default (if available)
+     * + return first possibleFormatters profile
+     *
+     * <p> 3. if requested profile: go through the profiles: + is this a possible
+     * formatter profile -> return that
+     *
+     * <p> 4. if there's default -> return that 5. return first possbileFormatter (guess)
      *
      * @param mediaType media type of request
      * @param requestedProfiles what profile(s) the user wanted
