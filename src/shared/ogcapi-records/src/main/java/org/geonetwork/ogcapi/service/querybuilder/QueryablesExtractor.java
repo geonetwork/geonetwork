@@ -85,11 +85,12 @@ public class QueryablesExtractor {
      *
      * <p>QueryableTextAndValue { queryableName:string, // name of the queryable (from arguments) queryableText: string,
      * // what the user is searching for (right of ":", excluding quotes if used) fullText:string // full text of what
-     * the user typed <queryableName>:<search text, including quote> }
+     * the user typed &lt;queryableName&gt;:&lt;search text, including quote&gt; }
      *
      * <p>example - id:abc queryableName id queryableText abc fullText id:abc
      *
-     * <p>example = title:"dave was here" queryableName title queryableText dave was here fullText title:"dave was here"
+     * <p>example = title:"dave was here" queryableName=title queryableText=dave was here" fullText title:"dave was
+     * here"
      *
      * @param text text from user
      * @param queryableName name of the queryable we are looking for
@@ -121,6 +122,7 @@ public class QueryablesExtractor {
         return null;
     }
 
+    /** parses an input query string so that it is broken in a full-text search + all the queryables. */
     @Getter
     @Builder
     @NoArgsConstructor
@@ -138,6 +140,12 @@ public class QueryablesExtractor {
         }
     }
 
+    /**
+     * Simple representation of the result of parsing a query string so the queryables are extracted.
+     *
+     * <p>example = title:"dave was here" queryableName=title queryableText="dave was here" fullText=title:"dave was
+     * here"
+     */
     @Getter
     @Builder
     @NoArgsConstructor

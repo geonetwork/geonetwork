@@ -207,7 +207,7 @@ public final class Geonet {
     /**
      * Parameters that can be used in searches. See the parameters for a more complete description.
      *
-     * @see ../services.util.MainUtil.getDefaultSearch for default values.
+     * @see "../services.util.MainUtil.getDefaultSearch for default values."
      */
     public static final class SearchResult {
         /** Parameter name: {@value #TITLE} - Free text field that searches in the title */

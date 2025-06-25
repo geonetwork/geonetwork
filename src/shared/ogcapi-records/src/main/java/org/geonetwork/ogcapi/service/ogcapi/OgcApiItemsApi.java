@@ -75,7 +75,7 @@ public class OgcApiItemsApi {
         itemPageLinks.addLinks(nativeWebRequest, collectionId, result);
 
         try {
-            formatterApiRecordLinkAttacher.attachLinks(result, collectionId, result);
+            formatterApiRecordLinkAttacher.attachLinks(result, collectionId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -107,7 +107,7 @@ public class OgcApiItemsApi {
 
         features.stream().forEach(x -> {
             try {
-                formatterApiRecordLinkAttacher.attachLinks(x, ogcApiQuery.getCollectionId(), x);
+                formatterApiRecordLinkAttacher.attachLinks(x, ogcApiQuery.getCollectionId());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

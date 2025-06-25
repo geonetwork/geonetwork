@@ -59,7 +59,7 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
      *
      * @param clazz What object are we outputting
      * @param mediaType what mime type do we want
-     * @return if we can write this object with this mediatype
+     * @return if we can write this object with this media type
      */
     @Override
     public boolean canWrite(Class<?> clazz, MediaType mediaType) {
@@ -79,12 +79,16 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
     /**
      * This directly writes the CSW output XML format.
      *
-     * <p><csw:GetRecordsResponse xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
+     * <p>&lt;csw:GetRecordsResponse xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
      * xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0.2"
-     * xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2 http://schemas.opengis.net/csw/2.0.2/CSW-discovery.xsd">
-     * <csw:SearchStatus timestamp="2025-06-23T22:21:13.857456Z"/> <csw:SearchResults numberOfRecordsMatched="10"
-     * numberOfRecordsReturned="5" nextRecord="6" recordSchema="http://www.isotc211.org/2005/gmd" elementSet="full"> ...
-     * xml records from DB (table `metadata`) ... </csw:SearchResults> </csw:GetRecords>
+     * xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2
+     * http://schemas.opengis.net/csw/2.0.2/CSW-discovery.xsd"&gt; <br>
+     * &lt;csw:SearchStatus timestamp="2025-06-23T22:21:13.857456Z"/&gt; <br>
+     * &lt;csw:SearchResults numberOfRecordsMatched="10" numberOfRecordsReturned="5" nextRecord="6"
+     * recordSchema="http://www.isotc211.org/2005/gmd" elementSet="full"&gt; <br>
+     * ... xml records from DB (table `metadata`) ...<br>
+     * &lt;/csw:SearchResults&gt;<br>
+     * &lt;/csw:GetRecords&gt;<br>
      *
      * <p>NOTE: nextRecord is a 1-based index (not a 0-based index).
      *

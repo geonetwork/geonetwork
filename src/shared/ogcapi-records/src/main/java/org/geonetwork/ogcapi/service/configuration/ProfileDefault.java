@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/** Configuration for the default profile for a MimeType. */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

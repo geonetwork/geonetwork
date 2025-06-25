@@ -31,13 +31,20 @@ import org.springframework.stereotype.Component;
  *
  * <p>2. We do not support reading
  *
- * <p>3. For writing, we canWrite iff + mimetype is what we support (supportedFormats) + the object type is
- * OgcApiRecordsRecordGeoJSONDto
+ * <p>3. For writing, we canWrite iff <br>
+ * + mimetype is what we support (supportedFormats) <br>
+ * + the object type is OgcApiRecordsRecordGeoJSONDto
  *
- * <p>4. For writing, + we get the metadata uuid from the OgcApiRecordsRecordGeoJSONDto + we get the mimetype from the
- * request + convert the request mimetype to the formatter id (i.e. how to run the formatter)
+ * <p>4. For writing, <br>
+ * + we get the metadata uuid from the OgcApiRecordsRecordGeoJSONDto <br>
+ * + we get the mimetype from the request <br>
+ * + we do profile negotiation <br>
+ * + get the correct formatter <br>
+ * + convert the request mimetype to the formatter id (i.e. how to run the formatter)
  *
- * <p>5. We set the response mimetype (to the, long, unique, mime type).
+ * <p>5. We set the response mimetype
+ *
+ * <p>6. We set the Header `Link:`
  */
 @Component
 public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRecordsRecordGeoJSONDto> {
@@ -51,10 +58,7 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
 
     private final ProfileSelector profileSelector;
 
-    /**
-     * what media types we can output - from the FormatterApi -- GETTER -- what media types do we support
-     *
-     */
+    /** what media types we can output - from the FormatterApi -- GETTER -- what media types do we support */
     @Getter
     private final List<MediaType> supportedMediaTypes;
 
@@ -123,23 +127,30 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
     /**
      * Write the (formatted) output to the stream.
      *
-     * <p> ASSUMPTIONS:
+     * <p>ASSUMPTIONS:
      *
-     * <p> 1.There is a header named `COLLECTION_ID_HEADER_NAME` whose value is the collectionId.
+     * <p>1.There is a header named `COLLECTION_ID_HEADER_NAME` whose value is the collectionId.
      *
-     * <p> 2. There is a header named `PROFILE_HEADER_NAME` whose value is list of profiles in the user's request
+     * <p>2. There is a header named `PROFILE_HEADER_NAME` whose value is list of profiles in the user's request
      *
-     * <p> 3. There is a header named `RECORD_ID_HEADER_NAME` whose value is the recordID
-     *        NOTE: this isn't actually used since it's available in the ogcApiRecordsJsonItemDto object
+     * <p>3. There is a header named `RECORD_ID_HEADER_NAME` whose value is the recordID NOTE: this isn't actually used
+     * since it's available in the ogcApiRecordsJsonItemDto object
      *
+     * <p>NOTE: these headers should be attached to the outputMessage by the Controller.
      *
-     *  <p> NOTE: these headers should be attached to the outputMessage by the Controller.
+     * <p>We do content negotiation (`ProfileSelector`) to determine which formatter to use.
      *
-     *  <p> We do content negotiation (`ProfileSelector`) to determine which formatter to use.
+     * <p>Basic process is:
+     *
+     * <p>1. Find the correct formatter (compatible with this record's schema, correct mimetype, determine which
+     * profile) <br>
+     * 2. call the formatter, and set these in the config: <br>
+     * + CollectionID (this is to setup links) <br>
+     * + which mimetype/profile we are creating (this is so links can differentiate between `self` and `alternative`
      *
      * @param ogcApiRecordsJsonItemDto object to write
      * @param contentType what mimetype are we writing
-     * @param outputMessage where to output the formatted text.  Also contains the headers (see above).
+     * @param outputMessage where to output the formatted text. Also contains the headers (see above).
      */
     @Override
     public void write(
