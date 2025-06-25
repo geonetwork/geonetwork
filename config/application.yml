@@ -7,6 +7,7 @@
 #  GN4_BASE_URL       http://localhost:8080/geonetwork  Where is GN4?
 #  GN4_PROXY_BASE_URL http://localhost:7979/geonetwork  Where is proxied GN4?
 #  ELASTIC_URL        http://localhost:9200             Where is elastic?
+#  GATEWAY_GEONETWORK_PATH /geonetwork/**               Where is the proxy to GN4?
 #
 #
 
@@ -147,7 +148,7 @@ spring:
           - id: geonetwork_route
             uri: ${geonetwork.url}
             predicates:
-              - Path=/geonetwork/**
+              - Path=${GATEWAY_GEONETWORK_PATH:/geonetwork/**}
             filters:
               - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
