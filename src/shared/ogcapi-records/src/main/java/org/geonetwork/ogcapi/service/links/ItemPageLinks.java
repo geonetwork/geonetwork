@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
+/** Adds in links for the Item Page (single record). This includes the FormatterApi links. */
 @Component
 public class ItemPageLinks extends BasicLinks {
 

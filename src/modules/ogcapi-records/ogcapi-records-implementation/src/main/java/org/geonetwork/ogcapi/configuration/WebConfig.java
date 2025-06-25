@@ -61,7 +61,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     /**
-     * configures the `?f=<...>` format requests.
+     * configures the `?f=&lt;...&gt;` format requests.
      *
      * @param configurer - from Spring Boot
      */

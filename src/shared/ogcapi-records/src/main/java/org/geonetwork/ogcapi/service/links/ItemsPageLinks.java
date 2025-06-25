@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
+/** Adds in links for the items (plural - /collections/collectionId/items). */
 @Component
 public class ItemsPageLinks extends BasicLinks {
 
