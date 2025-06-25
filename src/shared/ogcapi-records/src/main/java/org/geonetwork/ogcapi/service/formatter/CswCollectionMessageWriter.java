@@ -25,6 +25,8 @@ import org.springframework.stereotype.Component;
 /**
  * This writes the `/items` response out as a CSW-xml output.
  *
+ * <p>This is for compatibility with existing CSW-parsers.
+ *
  * <p>see #write(...) for details.
  */
 @Component
@@ -33,7 +35,7 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
     final MetadataRepository metadataRepository;
 
     /**
-     * what media types we can output - from the FormatterApi -- GETTER -- what media types do we support
+     * what media types do we support (we only support application/xml)
      *
      * @return what media types do we support
      */
@@ -53,7 +55,7 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
     }
 
     /**
-     * Can write if the class is OgcApiRecordsRecordGeoJSONDto and we support the media type
+     * Can write if the class is OgcApiRecordsGetRecords200ResponseDto and we support the media type
      *
      * @param clazz What object are we outputting
      * @param mediaType what mime type do we want
