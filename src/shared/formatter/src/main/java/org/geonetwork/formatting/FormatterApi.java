@@ -136,7 +136,7 @@ public class FormatterApi {
                 .filter(formatter -> formatter.getName().equals(formatterId));
         if (profile != null) {
             formatters = formatters.filter(formatter ->
-                    profile.equals(formatter.getOfficialProfileName()) || profile.equals(formatter.getProfile()));
+                    profile.equals(formatter.getOfficialProfileName()) || profile.equals(formatter.getOfficialProfileName()));
         }
         var formatterOptional = formatters.findFirst();
 
