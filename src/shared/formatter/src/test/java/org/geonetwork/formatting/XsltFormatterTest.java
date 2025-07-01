@@ -12,7 +12,6 @@ import java.io.ByteArrayOutputStream;
 import org.geonetwork.domain.Metadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
 
 class XsltFormatterTest {
 
@@ -41,13 +40,6 @@ class XsltFormatterTest {
         // Given
         Metadata metadata = new Metadata();
         metadata.setSchemaid("iso19139");
-
-        ClassPathResource mockResource = mock(ClassPathResource.class);
-        when(mockResource.exists()).thenReturn(true);
-
-        // This test would need PowerMock or similar to mock constructor
-        // For a truly minimal test, we'll test the actual behavior
-        // assuming the XSLT doesn't exist in test resources
 
         // When
         boolean result = xsltFormatter.isFormatterAvailable(metadata, "non-existing-formatter");
