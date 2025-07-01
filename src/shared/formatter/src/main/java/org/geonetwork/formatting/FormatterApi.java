@@ -26,10 +26,10 @@ public class FormatterApi {
     private final SchemaManager schemaManager;
 
     /**
-     * {mimetype -> { profileName -> FormatterInfo} }
+     * Retrieves all available formatters organized by MIME type and profile name.
      *
-     * @return mimetype -> FormatterInfo
-     * @throws Exception schema problem (might be inconsistent schema info)
+     * @return Map of MIME type to Map of profile name to FormatterInfo
+     * @throws Exception if there are schema inconsistencies
      */
     public Map<String, Map<String, FormatterInfo>> getAllFormatters() throws Exception {
         var result = new HashMap<String, Map<String, FormatterInfo>>();
@@ -73,6 +73,13 @@ public class FormatterApi {
         return result;
     }
 
+    /**
+     * Retrieves formatters for a specific metadata record, organized by media type.
+     *
+     * @param metadataUuid UUID of the metadata record
+     * @return Map of MIME type to list of ProfileInfo
+     * @throws Exception if metadata not found or access denied
+     */
     public Map<String, List<ProfileInfo>> getRecordFormattersForMetadataByMediaType(String metadataUuid)
             throws Exception {
         var formatters = getRecordFormattersForMetadata(metadataUuid, true);
@@ -97,15 +104,36 @@ public class FormatterApi {
         return result;
     }
 
+    /**
+     * Retrieves all formatters available for a specific metadata record.
+     *
+     * @param metadataUuid UUID of the metadata record
+     * @return List of available formatters
+     * @throws Exception if metadata not found or access denied
+     */
     public List<org.geonetwork.schemas.model.schemaident.Formatter> getRecordFormattersForMetadata(String metadataUuid)
             throws Exception {
         return getRecordFormattersForMetadata(metadataUuid, true);
     }
 
+    /**
+     * Retrieves all formatters available for a specific schema.
+     *
+     * @param schemaId Schema identifier
+     * @return List of available formatters for the schema
+     */
     public List<org.geonetwork.schemas.model.schemaident.Formatter> getAvailableFormattersForSchema(String schemaId) {
         return formatterFactory.getAvailableFormattersForSchema(schemaId);
     }
 
+    /**
+     * Retrieves formatters for a specific metadata record.
+     *
+     * @param metadataUuid UUID of the metadata record
+     * @param approved Whether to retrieve approved version
+     * @return List of available formatters
+     * @throws Exception if metadata not found or access denied
+     */
     public List<org.geonetwork.schemas.model.schemaident.Formatter> getRecordFormattersForMetadata(
             String metadataUuid, boolean approved) throws Exception {
         Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
@@ -117,6 +145,17 @@ public class FormatterApi {
         return formatterFactory.getAvailableFormatters(metadata);
     }
 
+    /**
+     * Formats a metadata record using the specified formatter and writes to output stream.
+     *
+     * @param metadataUuid UUID of the metadata record
+     * @param formatterId Formatter identifier
+     * @param profile Profile name (optional)
+     * @param approved Whether to use approved version
+     * @param outputStream Output stream to write formatted content
+     * @param config Additional configuration parameters
+     * @throws Exception if metadata not found, access denied, or formatter not found
+     */
     public void getRecordFormattedBy(
             String metadataUuid,
             final String formatterId,
