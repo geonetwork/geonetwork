@@ -135,6 +135,16 @@ paths:
       responses:
         '200':
           $ref: 'responses/jsonSchemaResponse.yaml'
+  '/collections/{catalogId}/facets':
+    get:
+      tags:
+        - Collection
+      operationId: getFacets
+      parameters:
+        - $ref: 'parameters/catalogId.yaml'
+      responses:
+        '200':
+          $ref: 'responses/facetResponse.yaml'
   '/collections/{catalogId}/sortables':
     get:
       tags:

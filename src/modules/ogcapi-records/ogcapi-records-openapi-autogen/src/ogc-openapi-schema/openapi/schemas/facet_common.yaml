@@ -1,0 +1,10 @@
+type: object
+properties:
+  "property":
+    type: string
+    description: Name of the property
+  sortedBy:
+    type: string
+    enum:
+      - count
+      - value
