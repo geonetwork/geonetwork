@@ -13,12 +13,12 @@ import org.geonetwork.domain.Metadata;
 /**
  * Interface for formatting metadata records into various output formats.
  *
+ * <p>You must implement this interface to create custom formatters like IndexFormatter, XsltFormatter, etc.
+ *
  * <p>Implementations of this interface are responsible for transforming metadata records into specific output formats
  * (e.g., XML, JSON, HTML, PDF) based on the formatter identifier and configuration parameters.
  *
  * <p>Formatters should be stateless and thread-safe, as they may be used concurrently by multiple threads.
- *
- * @since 1.0
  */
 public interface Formatter {
 
