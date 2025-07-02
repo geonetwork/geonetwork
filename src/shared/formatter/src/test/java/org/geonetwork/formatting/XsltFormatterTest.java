@@ -36,19 +36,6 @@ class XsltFormatterTest {
     }
 
     @Test
-    void isFormatterAvailable_shouldReturnTrue_whenXsltExists() {
-        // Given
-        Metadata metadata = new Metadata();
-        metadata.setSchemaid("iso19139");
-
-        // When
-        boolean result = xsltFormatter.isFormatterAvailable(metadata, "non-existing-formatter");
-
-        // Then
-        assertFalse(result);
-    }
-
-    @Test
     void isFormatterAvailable_shouldReturnFalse_whenXsltDoesNotExist() {
         // Given
         Metadata metadata = new Metadata();
