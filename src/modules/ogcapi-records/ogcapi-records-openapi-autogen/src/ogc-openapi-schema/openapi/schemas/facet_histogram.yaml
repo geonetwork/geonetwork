@@ -1,0 +1,9 @@
+allOf:
+  - $ref: 'facet_common.yaml'
+  - type: object
+    properties:
+      bucketType:
+        type: string
+        enum:
+          - fixedInterval
+          - fixedBucketCount
