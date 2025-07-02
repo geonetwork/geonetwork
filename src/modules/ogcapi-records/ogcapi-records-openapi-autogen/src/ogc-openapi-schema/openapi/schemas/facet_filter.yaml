@@ -1,0 +1,8 @@
+allOf:
+  - $ref: 'facet_common.yaml'
+  - type: object
+    properties:
+      filters:
+        additionalProperties:
+          type: string
+
