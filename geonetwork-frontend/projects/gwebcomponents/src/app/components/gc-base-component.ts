@@ -1,15 +1,19 @@
 import {
+  AfterViewInit,
   Component,
+  ElementRef,
   inject,
   Input,
   OnChanges,
   OnInit,
   signal,
   SimpleChanges,
+  ViewEncapsulation,
 } from '@angular/core';
 import { Configuration, DefaultConfig } from 'gapi';
 import { API5_CONFIGURATION, API_CONFIGURATION, SearchService } from 'glib';
 import { Configuration as Gn5Configuration } from 'g5api';
+import { GcShadowdomstyleComponentComponent } from './gc-shadowdomstyle-component';
 
 @Component({
   selector: 'gc-base-component',
@@ -19,8 +23,12 @@ import { Configuration as Gn5Configuration } from 'g5api';
     { provide: API5_CONFIGURATION, useValue: signal(Gn5Configuration) },
     SearchService,
   ],
+  encapsulation: ViewEncapsulation.ShadowDom,
 })
-export class GcBaseComponent implements OnInit, OnChanges {
+export class GcBaseComponent
+  extends GcShadowdomstyleComponentComponent
+  implements OnInit, OnChanges
+{
   @Input({ alias: 'api-url' }) apiUrl: string;
 
   apiConfiguration = inject(API_CONFIGURATION);
@@ -42,7 +50,8 @@ export class GcBaseComponent implements OnInit, OnChanges {
     );
   }
 
-  ngOnInit() {
+  override ngOnInit() {
+    super.ngOnInit();
     this.setApiUrl(this.apiUrl);
   }
 

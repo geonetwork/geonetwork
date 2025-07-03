@@ -15,7 +15,6 @@ import { GcBaseSearchComponent } from '../gc-base-search-component';
   selector: 'gc-search',
   templateUrl: './gc-search.component.html',
   styleUrl: './gc-search.component.css',
-  // encapsulation: ViewEncapsulation.ShadowDom,
   providers: [
     { provide: API_CONFIGURATION, useValue: signal(DefaultConfig) },
     SearchService,
@@ -25,6 +24,7 @@ import { GcBaseSearchComponent } from '../gc-base-search-component';
     SearchBarSimpleComponent,
     SearchResultsComponent,
   ],
+  encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class GcSearchComponent extends GcBaseSearchComponent {
   @Input() layout = ResultsLayout.CARD;

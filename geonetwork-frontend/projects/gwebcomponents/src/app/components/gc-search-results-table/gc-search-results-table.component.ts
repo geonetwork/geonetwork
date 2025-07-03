@@ -14,13 +14,13 @@ import { GcBaseSearchComponent } from '../gc-base-search-component';
   selector: 'gc-search-results-table',
   templateUrl: './gc-search-results-table.component.html',
   styleUrl: './gc-search-results-table.component.css',
-  // encapsulation: ViewEncapsulation.ShadowDom,
   providers: [SearchService],
   imports: [
     SearchBarSimpleComponent,
     SearchContextDirective,
     SearchResultsTableComponent,
   ],
+  encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
   @Input({ alias: 'list-of-field' }) listOfField: string;
