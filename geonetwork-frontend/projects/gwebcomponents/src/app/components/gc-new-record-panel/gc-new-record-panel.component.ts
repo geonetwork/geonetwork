@@ -17,4 +17,5 @@ import { NewRecordPanelComponent } from 'glib';
 })
 export class GcNewRecordPanelComponent extends GcBaseComponent {
   searchFilter = input<string | undefined>();
+  groupOwner = input<string | undefined>();
 }

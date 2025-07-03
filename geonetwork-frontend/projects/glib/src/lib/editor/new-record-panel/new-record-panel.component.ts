@@ -62,6 +62,7 @@ import { OverviewSelectorComponent } from '../overview-selector/overview-selecto
 import { HttpClient } from '@angular/common/http';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { DataAnalysisService } from '../data-analysis.service';
+import { Popover } from 'primeng/popover';
 
 @Component({
   selector: 'g-new-record-panel',
@@ -91,6 +92,7 @@ import { DataAnalysisService } from '../data-analysis.service';
     Tab,
     TabPanels,
     TabPanel,
+    Popover,
   ],
   templateUrl: './new-record-panel.component.html',
   styleUrl: './new-record-panel.component.css',
@@ -105,6 +107,10 @@ export class NewRecordPanelComponent implements OnInit {
 
   datasource = signal('');
   selectedDatasourceFile = signal('');
+
+  defaultGroupOwner = '1';
+
+  groupOwner = input<string | undefined>(this.defaultGroupOwner);
 
   searchFilter = input<string | undefined>();
   searchActiveFilter = computed(() => {
@@ -175,17 +181,23 @@ export class NewRecordPanelComponent implements OnInit {
   mainSupportedFormats = computed(() => {
     const DEFAULT_FORMATS = [
       'CSV',
+      'ESRI Shapefile',
       'XLS',
-      'GeoJSON',
       'GPKG',
+      'PGeo',
       'Parquet',
       'SHP',
       'WFS',
       'GTiff',
     ];
 
-    return this.supportedFormats().filter(f =>
-      f.name ? DEFAULT_FORMATS.indexOf(f.name) !== -1 : false
+    return this.supportedFormats()
+      .filter(f => (f.name ? DEFAULT_FORMATS.indexOf(f.name) !== -1 : false))
+      .sort((a, b) => a.name?.localeCompare(b.name || '') || 0);
+  });
+  allSupportedFormats = computed(() => {
+    return this.supportedFormats().sort(
+      (a, b) => a.name?.localeCompare(b.name || '') || 0
     );
   });
   previewResult = signal<string>('');
@@ -288,7 +300,7 @@ export class NewRecordPanelComponent implements OnInit {
     const createRequest: CreateRequest = {
       sourceUuid: this.template(),
       metadataType: CreateMetadataTypeEnum.Metadata,
-      group: '1', // TODO
+      group: this.groupOwner() || this.defaultGroupOwner,
       allowEditGroupMembers: false,
     };
 

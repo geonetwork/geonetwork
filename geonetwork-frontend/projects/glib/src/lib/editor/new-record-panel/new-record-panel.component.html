@@ -70,12 +70,6 @@
               [disabled]="!isTemplateSelected()"
               (onClick)="activateCallback(2)" />
 
-            <ng-container
-              *ngTemplateOutlet="
-                overviewStepButton;
-                context: { $implicit: activateCallback }
-              "></ng-container>
-
             <ng-container *ngTemplateOutlet="editButton"></ng-container>
           </div>
         </ng-template>
@@ -218,19 +212,53 @@
                 </div>
               }
             </div>
-            <div class="basis-1/2">
+            <div class="basis-1/2" #supportedFormats>
               <span
                 >Point to the datasource URL or upload a new file and select the
                 dataset to register.</span
               >
 
-              <h2 class="font-medium mt-10">Supported data formats:</h2>
-              @for (format of mainSupportedFormats(); track format) {
+              <ng-template #formatChip let-format="format">
                 <p-chip
+                  [icon]="
+                    'flex items-center justify-center fa ' +
+                    (format.dataType === 'raster'
+                      ? 'fa-table-cells'
+                      : 'fa-vector-square')
+                  "
                   [title]="format.description + ' - ' + format.dataType"
-                  [label]="format.name"
-                  class="mr-2"></p-chip>
-              }
+                  [label]="format.name"></p-chip>
+              </ng-template>
+
+              <h2 class="font-medium mt-10">Main supported data formats:</h2>
+              <div class="grid grid-cols-4 gap-2">
+                @for (format of mainSupportedFormats(); track format) {
+                  <ng-template
+                    [ngTemplateOutlet]="formatChip"
+                    [ngTemplateOutletContext]="{
+                      format: format,
+                    }"></ng-template>
+                }
+                <p-button
+                  label="..."
+                  title="All supported formats"
+                  [rounded]="true"
+                  severity="secondary"
+                  (click)="opFormats.toggle($event)"></p-button>
+              </div>
+              <p-popover #opFormats [appendTo]="supportedFormats">
+                <h2 class="font-medium">All supported formats:</h2>
+                <div
+                  class="grid grid-cols-4 gap-2 max-h-60 overflow-y-auto overflow-x-hidden">
+                  @for (format of allSupportedFormats(); track format) {
+                    <ng-template
+                      [ngTemplateOutlet]="formatChip"
+                      [ngTemplateOutletContext]="{
+                        format: format,
+                      }"></ng-template>
+                  }
+                </div>
+              </p-popover>
             </div>
           </div>
 
