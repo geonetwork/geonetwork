@@ -29,8 +29,6 @@ x-geonetwork-environment:
     -Des.username=
     -Des.password=
     -Dgeonetwork.ESFeaturesProxy.targetUri=http://elasticsearch:9200/gn-features/{_}
-    -Dgeonetwork.HttpDashboardProxy.targetUri=http://kibana:5601
-    -Dgeonetwork.MicroServicesProxy.targetUri=http://ogc-api-records-service:8080
 
 
   GEONETWORK_DB_TYPE: postgres
@@ -57,7 +55,6 @@ x-service-geonetwork:
       condition: service_healthy
   networks:
     - gn-network
-    - frontend
 
 volumes:
   geonetwork:
@@ -66,8 +63,6 @@ volumes:
 
 networks:
   gn-network:
-    driver: bridge
-  frontend:
     driver: bridge
 services:
   database:
