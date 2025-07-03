@@ -8,12 +8,12 @@ import {
 } from '@angular/core';
 import { DatePicker } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
-import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { InputGroup } from 'primeng/inputgroup';
 import { Button } from 'primeng/button';
+import { InputMask } from 'primeng/inputmask';
 
 export interface EEAResourceIdentifier {
   provider: WritableSignal<string>;
@@ -24,8 +24,8 @@ export interface EEAResourceIdentifier {
   shortName: WritableSignal<string>;
   access: WritableSignal<string>;
   temporalCoverage: WritableSignal<Date[] | undefined>;
-  version: WritableSignal<number | undefined>;
-  revision: WritableSignal<number | undefined>;
+  version: WritableSignal<string | undefined>;
+  revision: WritableSignal<string | undefined>;
 }
 
 @Component({
@@ -33,11 +33,11 @@ export interface EEAResourceIdentifier {
   imports: [
     DatePicker,
     FormsModule,
-    InputGroupAddon,
     InputNumber,
     InputText,
     Select,
     InputGroup,
+    InputMask,
     Button,
   ],
   templateUrl: './eea-resource-identifier-field.component.html',
@@ -60,8 +60,8 @@ export class EeaResourceIdentifierFieldComponent implements OnInit {
     shortName: signal(''),
     access: signal(''),
     temporalCoverage: signal(undefined),
-    version: signal(1),
-    revision: signal(0),
+    version: signal('01'),
+    revision: signal('00'),
   };
 
   constructor() {
@@ -82,6 +82,9 @@ export class EeaResourceIdentifierFieldComponent implements OnInit {
             .map((date: any) => {
               return date instanceof Date ? date.getFullYear() : date;
             })
+            .filter((elem, index, self) => {
+              return self.indexOf(elem) === index;
+            })
             .join('-'),
           'v' + this.resourceIdentifier!.version(),
           'r' + this.resourceIdentifier!.revision(),
@@ -100,15 +103,18 @@ export class EeaResourceIdentifierFieldComponent implements OnInit {
       this.resourceIdentifier.scaleUnit.set(tokens[4]);
       this.resourceIdentifier.shortName.set(tokens[5]);
       this.resourceIdentifier.access.set(tokens[6]);
+
+      const now = new Date();
+      let dateRange = tokens[7]
+        .split('-')
+        .filter(date => !(new Date(date) instanceof Date))
+        .map(date => new Date(date));
       this.resourceIdentifier.temporalCoverage.set(
-        tokens[7].split('-').map(date => new Date(date))
+        dateRange.length === 0 ? [now, now] : dateRange
       );
-      this.resourceIdentifier.version.set(
-        parseInt(tokens[8].substring(1)) || 1
-      );
-      this.resourceIdentifier.revision.set(
-        parseInt(tokens[9].substring(1)) || 0
-      );
+
+      this.resourceIdentifier.version.set(tokens[8] || '01');
+      this.resourceIdentifier.revision.set(tokens[9] || '00');
     }
   }
 
@@ -141,6 +147,7 @@ export class EeaResourceIdentifierFieldComponent implements OnInit {
   ];
 
   eeaScaleResolutionUnits = [
+    { code: '', name: '' },
     { code: 'arcsec', name: 'Only with resolution(distance)' },
     { code: 'arcmin', name: 'Only with resolution(distance)' },
     { code: 'k', name: 'Only with scale denominator' },

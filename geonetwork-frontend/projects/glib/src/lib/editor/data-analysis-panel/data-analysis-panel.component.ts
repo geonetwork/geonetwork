@@ -92,13 +92,26 @@ export class DataAnalysisPanelComponent {
           : '';
     const coordinateSystem =
       this.analysisResult()?.coordinateSystem?.[0].replace('EPSG:', '') || '';
-    const roundedResolution = resolution ? Math.round(Number(resolution)) : '';
-    const temporalExtent = this.temporalExtent()
-      ? `${this.temporalExtent()?.start?.date || ''}-${this.temporalExtent()?.end?.date || ''}`
-      : '';
+    const roundedResolution = resolution ? Math.round(Number(resolution)) : '1';
+    const temporalExtent = this.buildTemporalExtent(this.temporalExtent());
 
-    return `org_${spatialType}_${coordinateSystem}_${roundedResolution}_m__p_${temporalExtent}_1_0`;
+    return `eea_${spatialType}_${coordinateSystem}_${roundedResolution}_km__p_${temporalExtent}_01_00`;
   });
+
+  buildTemporalExtent = function (
+    temporalExtent: DateRangeDetails | undefined
+  ): string {
+    if (temporalExtent) {
+      if (
+        temporalExtent?.start?.date === temporalExtent?.end?.date ||
+        (temporalExtent?.start?.date && !temporalExtent?.end?.date)
+      ) {
+        return `${temporalExtent?.start?.date || ''}`;
+      }
+      return `${temporalExtent?.start?.date || ''}-${temporalExtent?.end?.date || ''}`;
+    }
+    return '';
+  };
 
   isComputingStatistics = signal<{ [key in StatsType]: boolean }>({
     [StatsType.TEMPORAL]: false,
