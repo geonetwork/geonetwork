@@ -11,14 +11,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.text.SimpleDateFormat;
-
 import com.fasterxml.jackson.databind.SerializationFeature;
+import java.text.SimpleDateFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Trivial test case for the `/facets` response.
+ *
+ * <p>See Spec - "Example encoding of a facets response for a given collection" endpoint -
+ * `/collections/<collectionId>/facets`
+ */
 public class FacetsTest {
 
+    // from spec (with minor formatting changes so it matches what jackson produces - see testcase)
     String example = "{\n" + "  \"id\": \"wis2-discovery-metadata\",\n"
             + "  \"title\": \"WIS2 Discovery Metadata\",\n"
             + "  \"defaultBucketCount\": 10,\n"
@@ -55,25 +61,31 @@ public class FacetsTest {
             + "  }\n"
             + "}";
 
+    /**
+     * 1. read in the sample json 2. write it out 3. verify it's the same
+     *
+     * @throws JsonProcessingException json problem
+     */
     @Test
     public void testSpecExampleFacets() throws JsonProcessingException {
         var json = example;
         var obj = mapper.readValue(json, OgcApiRecordsFacetsDto.class);
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         var json2 = mapper.writeValueAsString(obj);
-        json2 = json2.replace("\" :","\":");
+        json2 = json2.replace("\" :", "\":");
         assertEquals(json, json2);
     }
 
     ObjectMapper mapper;
 
+    /** setup object mapper */
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         mapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         mapper.findAndRegisterModules();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 }
