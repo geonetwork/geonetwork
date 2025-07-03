@@ -1,0 +1,14 @@
+type: object
+properties:
+    type:
+      type: string
+    property:
+      type: string
+    buckets:
+      type: array
+      items:
+        $ref: facetResultBucket.yaml
+    more:
+      type: boolean
+
+
