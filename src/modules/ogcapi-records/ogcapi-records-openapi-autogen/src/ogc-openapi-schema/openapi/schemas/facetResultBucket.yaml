@@ -1,0 +1,31 @@
+# From spec:
+#
+# a buckets property (array) where each item contains:
+#
+#a count property identifying the number of matches for a property name on which the facet was computed against.
+#
+#either:
+#
+#a value property identify the name of the bucket
+#or a set of min and max properties identifying the range of values in that bucket.
+#
+# I could have subclassed these, but its more complicated because the discriminator would be in the parent object.
+# This should be fine!
+#
+---
+type: object
+properties:
+  # name of the bucket (min/max will be null)
+  value:
+    type: string
+
+  # bucket range (value will be null)
+  min:
+    type: string
+  max:
+    type: string
+
+  # number of items
+  count:
+    type: integer
+
