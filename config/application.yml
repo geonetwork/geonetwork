@@ -17,9 +17,10 @@ geonetwork:
       includeRawXML: false
       includeElasticJson: false
     links:
+      base-path: /ogcapi-records
       # Where is GN5's ogcapi-records located?
       # should end in "/" and shouldn't have "//" in the path
-      ogcApiRecordsBaseUrl: ${GN5_BASE_URL:http:////localhost:7979/}/ogcapi-records/
+      ogcApiRecordsBaseUrl: ${GN5_BASE_URL:http:////localhost:7979/}${geonetwork.openapi-records.links.base-path}/
       # How to link to GN (can be either GN4 or GN5's GN4 proxy)
       # should end in "/" and shouldn't have "//" in the path
       gnBaseUrl: ${GN4_PROXY_BASE_URL:http:////localhost:7979/geonetwork}/

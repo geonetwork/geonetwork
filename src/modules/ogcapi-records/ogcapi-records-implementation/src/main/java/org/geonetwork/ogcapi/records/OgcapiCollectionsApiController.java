@@ -33,7 +33,7 @@ import org.springframework.web.context.request.NativeWebRequest;
  * /collections/{collectionID}/items and /collections/{collectionID}/items/{itemid} endpoints
  */
 @RestController
-@RequestMapping("/ogcapi-records")
+@RequestMapping("${geonetwork.openapi-records.links.base-path:/ogcapi-records}")
 public class OgcapiCollectionsApiController implements CollectionsApi {
 
     private final NativeWebRequest request;

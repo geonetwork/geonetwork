@@ -20,7 +20,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 /** implements the landing page (/) endpoint */
 @RestController
-@RequestMapping("/ogcapi-records")
+@RequestMapping("${geonetwork.openapi-records.links.base-path:/ogcapi-records}")
 public class OgcapiRecordsDefaultApiController implements DefaultApi {
 
     private final NativeWebRequest request;
