@@ -28,11 +28,9 @@ public class IndexFormatterProcessorFactory {
                 .map(p -> {
                     Formatter f = new Formatter();
                     f.setName(p.getName());
-                    f.setProfile(p.getName());
                     f.setContentType(p.getContentType());
                     f.setTitle(p.getTitle());
                     f.setOfficialProfileName(p.getOfficialProfileName());
-                    f.setProfile(p.getProfileName());
                     return f;
                 })
                 .collect(Collectors.toList());

@@ -44,10 +44,6 @@ public class Formatter {
     @XmlSchemaType(name = "anySimpleType")
     protected String name;
 
-    @XmlAttribute(name = "profile", required = true)
-    @XmlSchemaType(name = "anySimpleType")
-    protected String profile;
-
     @XmlAttribute(name = "contentType", required = true)
     @XmlSchemaType(name = "anySimpleType")
     protected String contentType;
@@ -76,24 +72,6 @@ public class Formatter {
      */
     public void setName(String value) {
         this.name = value;
-    }
-
-    /**
-     * Gets the value of the profile property.
-     *
-     * @return possible object is {@link String }
-     */
-    public String getProfile() {
-        return profile;
-    }
-
-    /**
-     * Sets the value of the profile property.
-     *
-     * @param value allowed object is {@link String }
-     */
-    public void setProfile(String value) {
-        this.profile = value;
     }
 
     /**

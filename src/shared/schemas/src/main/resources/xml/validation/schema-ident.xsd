@@ -300,14 +300,6 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="profile" use="required">
-      <xs:annotation>
-        <xs:documentation>
-          Formatter profile. It should correspond to the profile name of the formatter.
-          This is used to distinguish between different profiles of the same formatter.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
     <xs:attribute name="contentType">
       <xs:annotation>
         <xs:documentation>
