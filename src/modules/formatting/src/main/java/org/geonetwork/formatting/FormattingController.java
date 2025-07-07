@@ -97,7 +97,7 @@ public class FormattingController {
             @Parameter(description = "Download the approved version", required = false)
                     @RequestParam(required = false, defaultValue = "true")
                     boolean approved,
-            @Parameter(description = "profile to use", required = false) @RequestParam(required = false) String profile,
+            @Parameter(description = "format to use", required = false) @RequestParam(required = false) String profile,
             HttpServletResponse servletResponse)
             throws Exception {
 
@@ -105,7 +105,7 @@ public class FormattingController {
 
         var query = formatters.stream().filter(formatter -> formatter.getName().equals(formatterId));
         if (StringUtils.hasText(profile)) {
-            query = query.filter(f -> profile.equals(f.getProfile()) || profile.equals(f.getOfficialProfileName()));
+            query = query.filter(f -> profile.equals(f.getName()) || profile.equals(f.getOfficialProfileName()));
         }
 
         Optional<Formatter> formatterOptional = query.findFirst();

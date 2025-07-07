@@ -114,7 +114,7 @@ public class ProfileSelectorTest {
 
     private Formatter getFormatter1() {
         var formatter = new Formatter();
-        formatter.setProfile("testcase.profile informal");
+        formatter.setName("testcase.profile informal");
         formatter.setTitle("testcase.profile title");
         formatter.setOfficialProfileName("testcase.profile");
         formatter.setContentType("application/testcase");
@@ -123,7 +123,7 @@ public class ProfileSelectorTest {
 
     private Formatter getFormatter2() {
         var formatter = new Formatter();
-        formatter.setProfile("testcase.profile2 informal");
+        formatter.setName("testcase.profile2 informal");
         formatter.setTitle("testcase.profile2 title");
         formatter.setOfficialProfileName("testcase.profile2");
         formatter.setContentType("application/testcase");

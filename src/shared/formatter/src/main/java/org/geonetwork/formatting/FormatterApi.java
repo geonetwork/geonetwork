@@ -41,7 +41,7 @@ public class FormatterApi {
             schemaInfo.forEach(formatter -> {
                 var formatterId = formatter.getName();
                 var mimeType = formatter.getContentType();
-                var profileName = formatter.getProfile();
+                var formatterName = formatter.getName();
                 var officialProfile = formatter.getOfficialProfileName();
                 var title = formatter.getTitle();
 
@@ -50,17 +50,17 @@ public class FormatterApi {
                     result.put(mimeType, new HashMap<>());
                 }
 
-                var finfo = result.get(mimeType).get(profileName);
+                var finfo = result.get(mimeType).get(formatterName);
                 if (finfo == null) {
-                    var profileInfo = new ProfileInfo(formatterId, profileName, officialProfile, title, mimeType);
+                    var profileInfo = new ProfileInfo(formatterId, formatterName, officialProfile, title, mimeType);
                     finfo = new FormatterInfo(mimeType, profileInfo);
-                    result.get(mimeType).put(profileName, finfo);
+                    result.get(mimeType).put(formatterName, finfo);
                 }
                 if (!finfo.getMimeType().equals(mimeType)
                         || !finfo.getProfile().getFormatterName().equals(formatterId)
                         ||
                         //                    !finfo.getProfile().getTitle().equals(title) ||
-                        !finfo.getProfile().getFormatterProfileName().equals(profileName)
+                        !finfo.getProfile().getFormatterProfileName().equals(formatterName)
                         || !finfo.getProfile().getOfficialProfileName().equals(officialProfile)
                         || !finfo.getProfile().getMimeType().equals(mimeType)) {
                     throw new RuntimeException("inconsistent profile info!");
@@ -88,7 +88,7 @@ public class FormatterApi {
         for (var formatter : formatters) {
             var formatterId = formatter.getName();
             var mimeType = formatter.getContentType();
-            var profileName = formatter.getProfile();
+            var formatterName = formatter.getName();
             var officialProfile = formatter.getOfficialProfileName();
             var title = formatter.getTitle();
 
@@ -97,7 +97,7 @@ public class FormatterApi {
             }
             var finfo = result.get(mimeType);
 
-            var profileInfo = new ProfileInfo(formatterId, profileName, officialProfile, title, mimeType);
+            var profileInfo = new ProfileInfo(formatterId, formatterName, officialProfile, title, mimeType);
             finfo.add(profileInfo);
         }
 
@@ -150,7 +150,7 @@ public class FormatterApi {
      *
      * @param metadataUuid UUID of the metadata record
      * @param formatterId Formatter identifier
-     * @param profile Profile name (optional)
+     * @param name Formatter name (optional)
      * @param approved Whether to use approved version
      * @param outputStream Output stream to write formatted content
      * @param config Additional configuration parameters
@@ -159,7 +159,7 @@ public class FormatterApi {
     public void getRecordFormattedBy(
             String metadataUuid,
             final String formatterId,
-            final String profile,
+            final String name,
             boolean approved,
             OutputStream outputStream,
             Map<String, Object> config)
@@ -173,9 +173,9 @@ public class FormatterApi {
 
         var formatters = formatterFactory.getAvailableFormatters(metadata).stream()
                 .filter(formatter -> formatter.getName().equals(formatterId));
-        if (profile != null) {
-            formatters = formatters.filter(formatter ->
-                    profile.equals(formatter.getOfficialProfileName()) || profile.equals(formatter.getProfile()));
+        if (name != null) {
+            formatters = formatters.filter(
+                    formatter -> name.equals(formatter.getOfficialProfileName()) || name.equals(formatter.getName()));
         }
         var formatterOptional = formatters.findFirst();
 
