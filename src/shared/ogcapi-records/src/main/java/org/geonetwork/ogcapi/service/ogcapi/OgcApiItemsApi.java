@@ -98,6 +98,7 @@ public class OgcApiItemsApi {
                 .map(x -> geoJsonConverter.convert(x, null))
                 .toList();
         var response = new OgcApiRecordsGetRecords200ResponseDto();
+        response.setType(OgcApiRecordsGetRecords200ResponseDto.TypeEnum.FEATURE_COLLECTION);
         response.setFeatures(features);
         response.numberMatched((int) totalNumHits);
         response.numberReturned(features.size());
