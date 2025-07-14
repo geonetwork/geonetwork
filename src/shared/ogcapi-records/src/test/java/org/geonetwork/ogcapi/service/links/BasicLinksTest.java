@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
+import org.geonetwork.utility.MediaTypeAndProfileBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -21,6 +22,7 @@ public class BasicLinksTest {
     public void testJsonRequest() {
         BasicLinks links = new BasicLinks();
         links.contentNegotiationManager = configureContentNegotiation();
+        links.mediaTypeAndProfileBuilder = new MediaTypeAndProfileBuilder(links.contentNegotiationManager);
 
         var page = new OgcApiRecordsCatalogDto();
         var nativewebrequest = mock(NativeWebRequest.class);
@@ -31,7 +33,7 @@ public class BasicLinksTest {
                 "baseurl",
                 "endpointPath",
                 page,
-                Arrays.asList("html", "json"),
+                Arrays.asList("text/html", "application/json"),
                 "self",
                 "alternative");
 
@@ -45,28 +47,30 @@ public class BasicLinksTest {
                 .get();
 
         assertEquals("text/html", altLink.getType());
-        assertEquals("baseurlendpointPath?f=html", altLink.getHref().toString());
+        assertEquals("baseurlendpointPath?f=text%2Fhtml", altLink.getHref().toString());
 
         assertEquals("application/json", selfLink.getType());
-        assertEquals("baseurlendpointPath?f=json", selfLink.getHref().toString());
+        assertEquals(
+                "baseurlendpointPath?f=application%2Fjson", selfLink.getHref().toString());
     }
 
     @Test
     public void testHtmlRequest() {
         BasicLinks links = new BasicLinks();
         links.contentNegotiationManager = configureContentNegotiation();
+        links.mediaTypeAndProfileBuilder = new MediaTypeAndProfileBuilder(links.contentNegotiationManager);
 
         var page = new OgcApiRecordsCatalogDto();
         var nativewebrequest = mock(NativeWebRequest.class);
         // defaults to html
-        //    when(nativewebrequest.getParameter("f")).thenReturn("html");
+        when(nativewebrequest.getParameter("f")).thenReturn("html");
 
         links.addStandardLinks(
                 nativewebrequest,
                 "baseurl",
                 "endpointPath",
                 page,
-                Arrays.asList("html", "json"),
+                Arrays.asList("text/html", "application/json"),
                 "self",
                 "alternative");
 
@@ -80,9 +84,10 @@ public class BasicLinksTest {
                 .get();
 
         assertEquals("text/html", selfLink.getType());
-        assertEquals("baseurlendpointPath?f=html", selfLink.getHref().toString());
+        assertEquals("baseurlendpointPath?f=text%2Fhtml", selfLink.getHref().toString());
 
         assertEquals("application/json", altLink.getType());
-        assertEquals("baseurlendpointPath?f=json", altLink.getHref().toString());
+        assertEquals(
+                "baseurlendpointPath?f=application%2Fjson", altLink.getHref().toString());
     }
 }

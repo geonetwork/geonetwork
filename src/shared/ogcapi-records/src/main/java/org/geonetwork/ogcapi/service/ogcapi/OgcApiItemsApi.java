@@ -18,6 +18,7 @@ import org.geonetwork.ogcapi.service.dataaccess.CatalogApi;
 import org.geonetwork.ogcapi.service.dataaccess.ElasticWithUserPermissions;
 import org.geonetwork.ogcapi.service.dataaccess.SimpleElastic;
 import org.geonetwork.ogcapi.service.indexConvert.OgcApiGeoJsonConverter;
+import org.geonetwork.ogcapi.service.links.FormatterApiRecordLinkAttacher;
 import org.geonetwork.ogcapi.service.links.ItemPageLinks;
 import org.geonetwork.ogcapi.service.links.ItemsPageLinks;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
@@ -54,6 +55,9 @@ public class OgcApiItemsApi {
     @Autowired
     private NativeWebRequest nativeWebRequest;
 
+    @Autowired
+    FormatterApiRecordLinkAttacher formatterApiRecordLinkAttacher;
+
     /**
      * gets a record in a collection. collections/{collectionid}/items/{itemid} endpoint
      *
@@ -69,6 +73,13 @@ public class OgcApiItemsApi {
         var result = geoJsonConverter.convert(recordIndexRecord, null);
 
         itemPageLinks.addLinks(nativeWebRequest, collectionId, result);
+
+        try {
+            formatterApiRecordLinkAttacher.attachLinks(result, collectionId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         return result;
     }
 
@@ -93,6 +104,14 @@ public class OgcApiItemsApi {
         response.setTimeStamp(OffsetDateTime.now(ZoneId.of("UTC")));
         itemsPageLinks.addLinks(nativeWebRequest, ogcApiQuery.getCollectionId(), response, ogcApiQuery);
         features.stream().forEach(x -> itemPageLinks.addLinks(nativeWebRequest, ogcApiQuery.getCollectionId(), x));
+
+        features.stream().forEach(x -> {
+            try {
+                formatterApiRecordLinkAttacher.attachLinks(x, ogcApiQuery.getCollectionId());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         return response;
     }

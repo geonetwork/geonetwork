@@ -49,6 +49,10 @@ public class BasicLinksConfigurationTest {
                 .mediaType("html", MediaType.TEXT_HTML)
                 .mediaType("json", MediaType.APPLICATION_JSON)
                 .mediaType("geojson", MediaType.valueOf("application/geo+json"))
+                .mediaType(MediaType.APPLICATION_XML.toString(), MediaType.APPLICATION_XML)
+                .mediaType(MediaType.TEXT_HTML.toString(), MediaType.TEXT_HTML)
+                .mediaType(MediaType.APPLICATION_JSON.toString(), MediaType.APPLICATION_JSON)
+                .mediaType("application/geo+json", MediaType.valueOf("application/geo+json"))
                 .defaultContentType(MediaType.TEXT_HTML);
 
         return configurer.build();

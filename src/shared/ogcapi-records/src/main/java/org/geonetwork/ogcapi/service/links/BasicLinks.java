@@ -6,12 +6,14 @@
 package org.geonetwork.ogcapi.service.links;
 
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.SneakyThrows;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
+import org.geonetwork.utility.MediaTypeAndProfile;
+import org.geonetwork.utility.MediaTypeAndProfileBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -28,15 +30,9 @@ public class BasicLinks {
     @Autowired
     ContentNegotiationManager contentNegotiationManager;
 
-    /**
-     * this adds the "standard" links - which is to "self" and "alternative" versions of the landing page.
-     *
-     * @param nativeWebRequest from user
-     * @param baseUrl baseURL for the system
-     * @param endpointLoc which endpoint is this for
-     * @param page where to attach the links?
-     * @param formatNames what formats should we use
-     */
+    @Autowired
+    MediaTypeAndProfileBuilder mediaTypeAndProfileBuilder;
+
     public void addStandardLinks(
             NativeWebRequest nativeWebRequest,
             String baseUrl,
@@ -45,9 +41,38 @@ public class BasicLinks {
             List<String> formatNames,
             String selfName,
             String altName) {
+        var mediaTypeAndName = mediaTypeAndProfileBuilder.build(nativeWebRequest);
+        var formats = formatNames.stream()
+                .map(x -> new MediaTypeAndProfile(
+                        contentNegotiationManager.getMediaTypeMappings().get(x), null))
+                .toList();
+        addStandardLinks(mediaTypeAndName, baseUrl, endpointLoc, page, formats, selfName, altName);
+    }
+    /**
+     * this adds the "standard" links - which is to "self" and "alternative" versions of the landing page.
+     *
+     * @param mediaTypeAndProfile request's media type and profile info
+     * @param baseUrl baseURL for the system
+     * @param endpointLoc which endpoint is this for
+     * @param page where to attach the links?
+     * @param formatNames what formats should we use
+     */
+    public void addStandardLinks(
+            MediaTypeAndProfile mediaTypeAndProfile,
+            String baseUrl,
+            String endpointLoc,
+            Object page,
+            List<MediaTypeAndProfile> formatNames,
+            String selfName,
+            String altName) {
         var links =
-                this.createSelfRelativeLinks(nativeWebRequest, baseUrl, endpointLoc, formatNames, selfName, altName);
+                this.createSelfRelativeLinks(mediaTypeAndProfile, baseUrl, endpointLoc, formatNames, selfName, altName);
 
+        // the objects are auto-generated from yaml, so we have to use reflection
+        addLinksReflect(links, page);
+    }
+
+    public void addLinksReflect(List<OgcApiRecordsLinkDto> links, Object page) {
         // the objects are auto-generated from yaml, so we have to use reflection
         try {
             var method = page.getClass().getMethod("addLinksItem", OgcApiRecordsLinkDto.class);
@@ -64,10 +89,10 @@ public class BasicLinks {
     }
 
     public List<OgcApiRecordsLinkDto> createSelfRelativeLinks(
-            NativeWebRequest nativeWebRequest,
+            MediaTypeAndProfile mediaTypeAndProfile,
             String baseUrl,
             String endpointLocation,
-            List<String> mediaNames,
+            List<MediaTypeAndProfile> mediaNames,
             String selfName,
             String altName) {
         var url = baseUrl + endpointLocation;
@@ -76,90 +101,105 @@ public class BasicLinks {
         } else {
             url += "&";
         }
-        var requestMediaInfo = this.getMediaTypeAndName(nativeWebRequest);
-        var mediaMappings = contentNegotiationManager.getMediaTypeMappings();
 
+        var result = new ArrayList<OgcApiRecordsLinkDto>();
+
+        var requestProfile = (mediaTypeAndProfile.getProfile() == null
+                        || mediaTypeAndProfile.getProfile().isEmpty())
+                ? null
+                : mediaTypeAndProfile.getProfile().getFirst();
+        var requestMediaType = mediaTypeAndProfile.getMediaType();
         String finalUrl = url;
 
-        var links = mediaNames.stream()
-                .map(x -> {
-                    if (x.equals(requestMediaInfo.getName())) {
-                        // self
-                        var link = new OgcApiRecordsLinkDto();
-                        try {
-                            link.rel(selfName)
-                                    .type(mediaMappings.get(x).toString())
-                                    .hreflang("eng")
-                                    .href(new URI(finalUrl + "f=" + x));
-                            return link;
-                        } catch (URISyntaxException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        // alternative
-                        var link = new OgcApiRecordsLinkDto();
-                        try {
-                            link.rel(altName)
-                                    .type(mediaMappings.get(x).toString())
-                                    .hreflang("eng")
-                                    .href(new URI(finalUrl + "f=" + x));
-                            return link;
-                        } catch (URISyntaxException e) {
-                            throw new RuntimeException(e);
+        for (var _mediaTypeAndProfile : mediaNames) {
+            var profiles = _mediaTypeAndProfile.getProfile();
+            if (profiles == null || profiles.isEmpty()) {
+                // null profiles -> keep going
+                profiles = new ArrayList<>();
+                profiles.add(null);
+            }
+            for (var _profile : profiles) {
+                try {
+                    var isSelf = _mediaTypeAndProfile.getMediaType().equals(requestMediaType);
+                    if (isSelf) {
+                        if (_profile == null && requestProfile == null) {
+                            isSelf = true;
+                        } else if (_profile != null && requestProfile == null) {
+                            isSelf = false;
+                        } else if (_profile == null && requestProfile != null) {
+                            isSelf = false;
+                        } else if (_profile.equals(requestProfile)) {
+                            isSelf = true;
+                        } else {
+                            isSelf = false;
                         }
                     }
-                })
-                .toList();
 
-        return links;
-    }
+                    var linkRel = isSelf ? "self" : "alternative";
 
-    /**
-     * given a mediatype, what is its "name" (i.e. "html", "json") based on the contentNegotiationManager?
-     *
-     * @param mediaType media type to search for
-     * @return name of the media type
-     */
-    public String getMediaName(MediaType mediaType) {
-        var matching = contentNegotiationManager.getMediaTypeMappings().entrySet().stream()
-                .filter(e -> e.getValue().equals(mediaType))
-                .findFirst();
+                    var link = new OgcApiRecordsLinkDto();
+                    var href = new URI(finalUrl + "f="
+                            + URLEncoder.encode(
+                                    _mediaTypeAndProfile.getMediaType().toString(), StandardCharsets.UTF_8));
+                    if (_profile != null) {
+                        href = new URI(
+                                href.toString() + "&profile=" + URLEncoder.encode(_profile, StandardCharsets.UTF_8));
+                    }
+                    link.rel(linkRel)
+                            .type(_mediaTypeAndProfile.getMediaType().toString())
+                            .hreflang("eng")
+                            .href(href);
+                    if (_profile != null) {
+                        link.profile(List.of(_profile));
+                    }
+                    result.add(link);
 
-        if (matching.isEmpty()) {
-            return null;
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
-        return matching.get().getKey();
-    }
 
-    /**
-     * given a request, find (using the contentNegotiationManager) the resulting mediatype this request will create.
-     *
-     * @param nativeWebRequest current request
-     * @return which media type it will be producing
-     */
-    @SneakyThrows
-    public MediaType getRequestMediaType(NativeWebRequest nativeWebRequest) {
-        var types = contentNegotiationManager.resolveMediaTypes(nativeWebRequest);
-        if (types.isEmpty()) {
-            return MediaType.TEXT_HTML;
-        }
-        return types.getFirst();
-    }
+        return result;
 
-    /**
-     * Given a request, find the name ("json") and mediatype ("application/json") that this request will result in. use
-     * the contentNegotiationManager to do this work.
-     *
-     * @param nativeWebRequest from user
-     * @return the name and mediatype
-     */
-    public MediaTypeAndName getMediaTypeAndName(NativeWebRequest nativeWebRequest) {
-        var mediaType = getRequestMediaType(nativeWebRequest);
-        if (mediaType == null) {
-            return null;
-        }
-        var name = getMediaName(mediaType);
-
-        return new MediaTypeAndName(mediaType, name);
+        //        var links = mediaNames.stream()
+        //                .map(x -> {
+        //
+        //                    if (x.getMediaType().equals(mediaTypeAndProfile.getMediaType())) {
+        //                        // self
+        //                        var _links = new ArrayList<OgcApiRecordsLinkDto>();
+        //                        var link = new OgcApiRecordsLinkDto();
+        //                        try {
+        //                            link.rel(selfName)
+        //                                    .type(mediaTypeAndProfile.getMediaType().toString())
+        //                                    .hreflang("eng")
+        //                                    .profile(x.getProfile())
+        //                                    .href(new URI(
+        //                                            finalUrl + "f=" + x.getMediaType().toString()));
+        //                            _links.add(link);
+        //
+        //                        } catch (URISyntaxException e) {
+        //                            throw new RuntimeException(e);
+        //                        }
+        //                        return _links;
+        //                    } else {
+        //                        // alternative
+        //                        var link = new OgcApiRecordsLinkDto();
+        //                        try {
+        //                            link.rel(altName)
+        //                                    .type(x.getMediaType().toString())
+        //                                    .hreflang("eng")
+        //                                    .profile(x.getProfile())
+        //                                    .href(new URI(
+        //                                            finalUrl + "f=" + x.getMediaType().toString()));
+        //                            return link;
+        //                        } catch (URISyntaxException e) {
+        //                            throw new RuntimeException(e);
+        //                        }
+        //                    }
+        //                })
+        //                .toList();
+        //
+        //        return links;
     }
 }

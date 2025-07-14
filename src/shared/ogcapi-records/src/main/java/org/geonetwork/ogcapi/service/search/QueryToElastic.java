@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * This helps to build the "extra" (&property=value) queryables in the OGCAPI search to an Elastic Index query.
+ * This helps to build the "extra" (`"&amp;property=value"`) queryables in the OGCAPI search to an Elastic Index query.
  *
  * <p>see the documentation on "queryables.json" with goes into more depth.
  *
@@ -52,7 +52,8 @@ public class QueryToElastic {
     public QueryablesService queryablesService;
 
     /**
-     * Given an already setup SearchSourceBuilder, add more queries to it for any of the request &param=search-Text.
+     * Given an already setup SearchSourceBuilder, add more queries to it for any of the request &amp;param=search-Text.
+     * <br>
      * WHERE: param is a queryable (cf queryables.json).
      *
      * @param ogcApiQuery information from the search request.

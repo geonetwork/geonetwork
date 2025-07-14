@@ -16,7 +16,7 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsExtentDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLanguageDto;
 
-/** This converts an ElasticIndex (i.e. Elastic JSON Index Record) to the OGCAPI-Records Catalog. */
+/** This converts an ElasticIndex (Elastic JSON Index Record) to the OGCAPI-Records Catalog. */
 public class ElasticIndex2Catalog {
 
     /**

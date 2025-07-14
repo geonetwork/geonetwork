@@ -6,6 +6,7 @@
 package org.geonetwork.ogcapi.records;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.geonetwork.ogcapi.records.generated.CollectionsApi;
@@ -19,9 +20,11 @@ import org.geonetwork.ogcapi.service.ogcapi.OgcApiItemsApi;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.querybuilder.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -30,7 +33,7 @@ import org.springframework.web.context.request.NativeWebRequest;
  * /collections/{collectionID}/items and /collections/{collectionID}/items/{itemid} endpoints
  */
 @RestController
-@RequestMapping("/ogcapi-records")
+@RequestMapping("${geonetwork.openapi-records.links.base-path:/ogcapi-records}")
 public class OgcapiCollectionsApiController implements CollectionsApi {
 
     private final NativeWebRequest request;
@@ -69,14 +72,30 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
 
     @Override
     @SneakyThrows
-    public ResponseEntity<OgcApiRecordsRecordGeoJSONDto> getRecord(String catalogId, String recordId) {
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/collections/{catalogId}/items/{recordId}",
+            produces = {"application/geo+json", "text/html", "application/json", "*/*"})
+    public ResponseEntity<OgcApiRecordsRecordGeoJSONDto> getRecord(
+            String catalogId, String recordId, List<String> profile) {
         var result = itemsApi.getRecord(catalogId, recordId);
 
-        return new ResponseEntity<OgcApiRecordsRecordGeoJSONDto>(result, HttpStatusCode.valueOf(200));
+        HttpHeaders responseHeaders = new HttpHeaders();
+        if (profile != null && !profile.isEmpty()) {
+            responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-PROFILES", profile);
+        }
+        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-COLLECTIONID", Collections.singletonList(catalogId));
+        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-RECORDID", Collections.singletonList(recordId));
+
+        return new ResponseEntity<OgcApiRecordsRecordGeoJSONDto>(result, responseHeaders, HttpStatusCode.valueOf(200));
     }
 
     @Override
     @SneakyThrows
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/collections/{catalogId}/items",
+            produces = {"application/geo+json", "text/html", "application/json", "*/*"})
     public ResponseEntity<OgcApiRecordsGetRecords200ResponseDto> getRecords(
             String catalogId,
             List<BigDecimal> bbox,
@@ -91,7 +110,12 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         var query = queryBuilder.buildFromRequest(
                 catalogId, bbox, datetime, limit, offset, type, q, ids, externalId, sortby, request.getParameterMap());
         var result = itemsApi.getRecords(query);
-        return new ResponseEntity<OgcApiRecordsGetRecords200ResponseDto>(result, HttpStatusCode.valueOf(200));
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("GN5.OGCAPI-RECORDS.REQUEST-OFFSET", offset.toString());
+
+        return new ResponseEntity<OgcApiRecordsGetRecords200ResponseDto>(
+                result, responseHeaders, HttpStatusCode.valueOf(200));
     }
 
     @Override

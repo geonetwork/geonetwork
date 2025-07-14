@@ -17,7 +17,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 /** implements the /conformance endpoint. See ConformanceApi */
 @RestController
-@RequestMapping("/ogcapi-records")
+@RequestMapping("${geonetwork.openapi-records.links.base-path:/ogcapi-records}")
 public class OgcapiConformanceApiController implements ConformanceApi {
 
     @Autowired

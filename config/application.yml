@@ -7,18 +7,23 @@
 #  GN4_BASE_URL       http://localhost:8080/geonetwork  Where is GN4?
 #  GN4_PROXY_BASE_URL http://localhost:7979/geonetwork  Where is proxied GN4?
 #  ELASTIC_URL        http://localhost:9200             Where is elastic?
+#  GATEWAY_GEONETWORK_PATH /geonetwork/**               Where is the proxy to GN4?
 #
 #
 
 geonetwork:
   openapi-records:
+    ogcapi-records-json:
+      includeRawXML: false
+      includeElasticJson: false
     links:
+      base-path: /ogcapi-records
       # Where is GN5's ogcapi-records located?
       # should end in "/" and shouldn't have "//" in the path
-      ogcApiRecordsBaseUrl: ${GN5_BASE_URL:http://localhost:7979/}/ogcapi-records/
+      ogcApiRecordsBaseUrl: ${GN5_BASE_URL:http:////localhost:7979/}${geonetwork.openapi-records.links.base-path}/
       # How to link to GN (can be either GN4 or GN5's GN4 proxy)
       # should end in "/" and shouldn't have "//" in the path
-      gnBaseUrl: ${GN4_PROXY_BASE_URL:http://localhost:7979/geonetwork}/
+      gnBaseUrl: ${GN4_PROXY_BASE_URL:http:////localhost:7979/geonetwork}/
 
       # These define what kinds of links should be shown for the ogcapi-records various documents.
       # You probably will not need to modify these.
@@ -46,9 +51,17 @@ geonetwork:
           - geojson
           - json
       item:
-        formats:
-          - geojson
-          - json
+        #formats taken from the formatter api
+        # this defines the default profile for a mime type
+        profileDefaults:
+            - mimetype: application/geo+json
+              defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
+            - mimetype: application/rdf+xml
+              defaultProfile: http://geonetwork.net/def/profile/dcat
+            - mimetype: application/xml
+              defaultProfile: http://geonetwork.net/def/profile/raw-xml
+            - mimetype: application/json
+              defaultProfile: http://geonetwork.net/def/profile/elastic-json-index
     search:
       # This query filter is always added to all queries
       queryFilter: '+isTemplate:n'
@@ -136,7 +149,7 @@ spring:
           - id: geonetwork_route
             uri: ${geonetwork.url}
             predicates:
-              - Path=/geonetwork/**
+              - Path=${GATEWAY_GEONETWORK_PATH:/geonetwork/**}
             filters:
               - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:

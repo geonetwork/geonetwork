@@ -24,3 +24,12 @@ Welcome to GeoNetwork 5.
 
     OGCAPI-Records implementation.
 </div>
+
+<div class="grid cards" markdown>
+
+-   :fontawesome-solid-signs-post:   [Developer docs](Developer/index.md)
+
+    ---
+
+    Developer docs.
+</div>

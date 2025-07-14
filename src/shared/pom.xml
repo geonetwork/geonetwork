@@ -35,5 +35,7 @@
     <module>ogcapi-records</module>
     <module>metadata-manager</module>
     <module>data-directory</module>
+    <module>setting-manager</module>
+    <module>formatter</module>
   </modules>
 </project>

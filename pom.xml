@@ -213,6 +213,11 @@
         <artifactId>spotbugs-annotations</artifactId>
         <version>4.8.4</version>
       </dependency>
+      <dependency>
+        <groupId>com.neovisionaries</groupId>
+        <artifactId>nv-i18n</artifactId>
+        <version>1.29</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -264,6 +269,15 @@
     </pluginManagement>
 
     <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <doclint>none</doclint>
+        </configuration>
+      </plugin>
+
       <!-- compilation -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -818,4 +832,5 @@
     </profile>
 
   </profiles>
+
 </project>

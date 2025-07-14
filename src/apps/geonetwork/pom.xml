@@ -43,6 +43,11 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
+      <artifactId>gn-formatting</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
       <artifactId>gn-editing</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -63,9 +68,14 @@
       <artifactId>spring-cloud-starter-gateway-mvc</artifactId>
     </dependency>
     <!-- Commented to avoid error:
-    java.lang.ClassCastException: class org.geonetwork.springbatchharvester.HarvesterResult cannot be cast to class org.geonetwork.springbatchharvester.HarvesterResult (org.geonetwork.springbatchharvester.HarvesterResult is in unnamed module of loader 'app'; org.geonetwork.springbatchharvester.HarvesterResult is in unnamed module of loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @2fb46040)
+    java.lang.ClassCastException: class org.geonetwork.springbatchharvester.HarvesterResult cannot be
+    cast to class org.geonetwork.springbatchharvester.HarvesterResult
+    (org.geonetwork.springbatchharvester.HarvesterResult is in unnamed module of loader 'app';
+    org.geonetwork.springbatchharvester.HarvesterResult is in unnamed module of loader
+    org.springframework.boot.devtools.restart.classloader.RestartClassLoader @2fb46040)
 
-    See https://stackoverflow.com/questions/57750294/class-loader-error-unnamed-module-of-loader-org-springframework-boot-devtools
+    See
+    https://stackoverflow.com/questions/57750294/class-loader-error-unnamed-module-of-loader-org-springframework-boot-devtools
     -->
     <!--<dependency>
       <groupId>org.springframework.boot</groupId>

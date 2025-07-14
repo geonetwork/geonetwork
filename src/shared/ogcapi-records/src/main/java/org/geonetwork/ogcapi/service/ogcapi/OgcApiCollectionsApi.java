@@ -90,6 +90,9 @@ public class OgcApiCollectionsApi {
         OgcApiRecordsCatalogDto result = new OgcApiRecordsCatalogDto();
         result.setId(info.getSource().getUuid());
         result.setTitle(info.getSource().getName());
+        // Most of the times itemType is RECORD, but it can also be CATALOG
+        // Since this is not implemented yet, we can assume RECORD for now.
+        result.setItemType(OgcApiRecordsCatalogDto.ItemTypeEnum.RECORD);
 
         if (info.getLinkedIndexRecord() != null) {
             ElasticIndex2Catalog.injectLinkedServiceRecordInfo(result, info.getLinkedIndexRecord(), "eng");
