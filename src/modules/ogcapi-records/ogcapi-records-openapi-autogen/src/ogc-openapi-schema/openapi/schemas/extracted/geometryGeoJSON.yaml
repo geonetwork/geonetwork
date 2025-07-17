@@ -1,5 +1,7 @@
 #from https://schemas.opengis.net/ogcapi/features/part1/1.0/openapi/schemas/geometryGeoJSON.yaml
 
+# this ensures that a "geometry":null is in the jackson json output (some validators require it).
+x-field-extra-annotation: "@JsonInclude(JsonInclude.Include.ALWAYS)"
 discriminator:
   propertyName: type
   mapping:
