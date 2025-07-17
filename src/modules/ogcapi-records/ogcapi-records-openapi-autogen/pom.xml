@@ -86,6 +86,10 @@
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
+        <!--
+          We have customized moustach templates.  If you update this you'll have to, likely, modify them!! :(  See below.
+          There are only a few lines of changes in the templates.
+        -->
         <version>7.10.0</version>
         <executions>
           <execution>
@@ -94,6 +98,12 @@
             </goals>
             <configuration>
               <inputSpec>${project.basedir}/src/ogc-openapi-schema/openapi/ogcapi-records-1-example-ref-schema-repo.yaml</inputSpec>
+              <!--
+              In order to allow for "geometry":null, we had to make some simple changes to the generator's templates.
+              The big issue is that it needs to import a jackson annotation (@JsonInclude(Include.ALWAYS)) - and that isn't really
+              supported with the spring openapi generator (!!!!!!).
+              -->
+              <templateDirectory>${project.basedir}/src/main/resources/openapi/templates</templateDirectory>
               <generatorName>spring</generatorName>
               <generateAliasAsModel>true</generateAliasAsModel>
               <modelNamePrefix>OgcApiRecords</modelNamePrefix>
