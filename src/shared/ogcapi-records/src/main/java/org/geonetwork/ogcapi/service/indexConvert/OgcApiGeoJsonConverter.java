@@ -157,8 +157,6 @@ public class OgcApiGeoJsonConverter {
 
             var bbox = fromBBox(collectionInfo.getExtent().getSpatial().getBbox());
             result.setGeometry(JsonNullable.of(bbox));
-        } else {
-            result.setGeometry(null); // explicitly set this or there will be problems during jackson serialization
         }
 
         if (collectionInfo.getExtent() != null
