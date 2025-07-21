@@ -106,9 +106,25 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             List<String> type,
             List<String> externalId,
             List<String> ids,
-            List<String> sortby) {
+            List<String> sortby,
+            String filter,
+            String filterLang,
+            String filterCrs) {
         var query = queryBuilder.buildFromRequest(
-                catalogId, bbox, datetime, limit, offset, type, q, ids, externalId, sortby, request.getParameterMap());
+                catalogId,
+                bbox,
+                datetime,
+                limit,
+                offset,
+                type,
+                q,
+                ids,
+                externalId,
+                sortby,
+                filter,
+                filterLang,
+                filterCrs,
+                request.getParameterMap());
         var result = itemsApi.getRecords(query);
 
         HttpHeaders responseHeaders = new HttpHeaders();

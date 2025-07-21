@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.geometry.Rectangle;
 import org.geonetwork.ogcapi.service.configuration.OgcApiSearchConfiguration;
+import org.geonetwork.ogcapi.service.cql.CqlToElasticSearch;
 import org.geonetwork.ogcapi.service.dataaccess.ElasticWithUserPermissions;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,9 @@ public class RecordsEsQueryBuilder {
 
     @Autowired
     private ElasticWithUserPermissions elasticWithUserPermissions;
+
+    @Autowired
+    CqlToElasticSearch cqlToElasticSearch;
 
     public RecordsEsQueryBuilder(OgcApiSearchConfiguration configuration) {
         this.configuration = configuration;
@@ -161,7 +165,7 @@ public class RecordsEsQueryBuilder {
      * @param collectionFilter from DB source field
      * @return Query for the user's request.
      */
-    public Query buildUnderlyingQuery(OgcApiQuery ogcApiQuery, String collectionFilter) {
+    public Query buildUnderlyingQuery(OgcApiQuery ogcApiQuery, String collectionFilter) throws Exception {
 
         Query externalIdsQuery = null;
         Query geoQuery = null;
@@ -212,6 +216,8 @@ public class RecordsEsQueryBuilder {
 
         var permissionQuery = elasticWithUserPermissions.createPermissionQuery();
 
+        var cqlQuery = cqlToElasticSearch.create(ogcApiQuery);
+
         var filters = Stream.of(
                         textSearchQuery,
                         externalIdsQuery,
@@ -219,7 +225,8 @@ public class RecordsEsQueryBuilder {
                         configQuery,
                         collectionQuery,
                         queryablesQuery,
-                        permissionQuery)
+                        permissionQuery,
+                        cqlQuery)
                 .filter(Objects::nonNull)
                 .toList();
 
