@@ -3,8 +3,13 @@ properties:
   "property":
     type: string
     description: Name of the property
-  sortedBy:
+  "x-elastic-property":
     type: string
-    enum:
-      - count
-      - value
+  bucketCount:
+    type: integer
+  sortedBy:
+    $ref: facet_sortedBy.yaml
+#    type: string
+#    enum:
+#      - count
+#      - value

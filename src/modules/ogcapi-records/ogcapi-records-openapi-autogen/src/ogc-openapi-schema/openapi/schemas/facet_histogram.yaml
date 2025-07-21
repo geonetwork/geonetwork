@@ -7,3 +7,15 @@ allOf:
         enum:
           - fixedInterval
           - fixedBucketCount
+      "x-elastic-datatype":
+        type: string
+        enum:
+          - number
+          - date
+      "x-interval-number":
+        type: number
+      "x-interval-calendar-interval":
+        type: string
+      "x-minimum-doc-count":
+        type: integer
+
