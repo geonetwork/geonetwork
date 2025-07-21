@@ -66,7 +66,7 @@ public class CqlTest {
     }
 
     public String getEs(String cql) throws CQLException {
-        var fieldMapper = new OgcElasticFieldMapper();
+        var fieldMapper = new TrivialFieldMapper();
 
         var filter = CQL.toFilter(cql);
         filter = DataUtilities.simplifyFilter(new Query("gn", filter)).getFilter();
@@ -74,5 +74,18 @@ public class CqlTest {
         filter.accept(validator, new HashSet<>());
         var result = CswFilter2Es.translate(filter, fieldMapper);
         return result;
+    }
+
+    public class TrivialFieldMapper implements IFieldMapper {
+
+        @Override
+        public String map(String field) {
+            return field.replaceAll("/", ".");
+        }
+
+        @Override
+        public String mapSort(String field) {
+            return "";
+        }
     }
 }
