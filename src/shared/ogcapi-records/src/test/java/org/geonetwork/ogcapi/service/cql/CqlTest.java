@@ -76,7 +76,7 @@ public class CqlTest {
         return result;
     }
 
-    public class TrivialFieldMapper implements IFieldMapper {
+    public static class TrivialFieldMapper implements IFieldMapper {
 
         @Override
         public String map(String field) {
