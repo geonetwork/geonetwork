@@ -193,6 +193,9 @@ paths:
         - $ref: 'parameters/externalId.yaml'
         - $ref: 'parameters/ids.yaml'
         - $ref: 'parameters/sortby.yaml'
+        - $ref: 'parameters/filter.yaml'
+        - $ref: 'parameters/filter-lang.yaml'
+        - $ref: 'parameters/filter-crs.yaml'
       responses:
         '200':
           $ref: 'responses/Records.yaml'

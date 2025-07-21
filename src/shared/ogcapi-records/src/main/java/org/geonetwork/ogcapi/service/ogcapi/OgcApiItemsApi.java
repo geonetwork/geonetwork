@@ -5,6 +5,7 @@
  */
 package org.geonetwork.ogcapi.service.ogcapi;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -131,7 +132,12 @@ public class OgcApiItemsApi {
         SearchResponse<IndexRecord> searchResponse = simpleElastic.search(
                 s -> {
                     recordsEsQueryBuilder.buildSearchRequest(s, ogcApiQuery, Set.of("*"));
-                    var query = recordsEsQueryBuilder.buildUnderlyingQuery(ogcApiQuery, collectionFilter);
+                    Query query = null;
+                    try {
+                        query = recordsEsQueryBuilder.buildUnderlyingQuery(ogcApiQuery, collectionFilter);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     query = elasticWithUserPermissions.createPermissionQuery(query);
                     s.query(query);
                     s.index(simpleElastic.getRecordIndexName());
