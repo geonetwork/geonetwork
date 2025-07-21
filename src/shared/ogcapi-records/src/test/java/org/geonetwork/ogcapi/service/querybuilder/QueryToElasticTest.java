@@ -463,7 +463,7 @@ public class QueryToElasticTest {
 
         // setup Query
         var query = queryBuilder.buildFromRequest(
-                "abc", null, null, null, null, null, null, null, null, null, null, "cql-text", null, paramMap);
+                "abc", null, null, null, null, null, null, null, null, null, null, "cql2-text", null, paramMap);
 
         return query;
     }

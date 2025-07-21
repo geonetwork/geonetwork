@@ -16,6 +16,18 @@ geonetwork:
     ogcapi-records-json:
       includeRawXML: false
       includeElasticJson: false
+    ogcapi-property-mapping:
+      fields:
+        - ogcProperty: spatialRepresentationType
+          elasticProperty: cl_spatialRepresentationType.key
+        - ogcProperty: type
+          elasticProperty: resourceType
+        - ogcProperty: format
+          elasticProperty: format
+        - ogcProperty: keywords
+          elasticProperty: tag.langeng
+        - ogcProperty: updateFrequency
+          elasticProperty: cl_maintenanceAndUpdateFrequency.key
     links:
       base-path: /ogcapi-records
       # Where is GN5's ogcapi-records located?

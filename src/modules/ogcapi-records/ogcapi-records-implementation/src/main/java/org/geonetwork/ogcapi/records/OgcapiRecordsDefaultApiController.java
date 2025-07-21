@@ -46,7 +46,7 @@ public class OgcapiRecordsDefaultApiController implements DefaultApi {
      */
     @RequestMapping(method = RequestMethod.GET, value = "")
     @SneakyThrows
-    public ResponseEntity<OgcApiRecordsLandingPageDto> getLandingPage2() {
+    public ResponseEntity<OgcApiRecordsLandingPageDto> getLandingPageNoSlash() {
         return getLandingPage();
     }
 
