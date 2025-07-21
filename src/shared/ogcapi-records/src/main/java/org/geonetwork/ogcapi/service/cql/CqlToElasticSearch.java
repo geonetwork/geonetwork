@@ -36,8 +36,6 @@ public class CqlToElasticSearch {
             return null;
         }
 
-
-
         var filter = CQL.toFilter(requestQuery.getFilter());
         filter = DataUtilities.simplifyFilter(new org.geotools.api.data.Query("gn", filter))
                 .getFilter();
