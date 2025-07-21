@@ -140,6 +140,12 @@ public class OgcApiQuery {
      */
     private List<String> sortBy;
 
+    /** CQL */
+    private String filterLang;
+
+    private String filterCrs;
+    private String filter;
+
     // ---------------------------------------------------------
 
     public List<String> getSortBy() {
