@@ -13,6 +13,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("UnusedVariable")
 public class CqlTest {
 
     /**

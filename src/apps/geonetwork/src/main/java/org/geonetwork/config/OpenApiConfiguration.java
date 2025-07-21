@@ -10,7 +10,6 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.media.StringSchema;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,11 +43,11 @@ public class OpenApiConfiguration {
     public org.springdoc.core.customizers.OpenApiCustomizer customOpenApiCustomizer() {
         return openAPI -> {
             // Modify Info object
-            var rs = openAPI.getComponents().getSchemas().get("OgcApiRecordsRecordGeoJSONDto");
-            var ps = openAPI.getComponents().getSchemas().get("OgcApiRecordsRecordGeoJSONPropertiesDto");
-
-            var stringSchema = new StringSchema().name("davey");
-            ps.addProperty("davey", stringSchema);
+            //            var rs = openAPI.getComponents().getSchemas().get("OgcApiRecordsRecordGeoJSONDto");
+            //            var ps = openAPI.getComponents().getSchemas().get("OgcApiRecordsRecordGeoJSONPropertiesDto");
+            //
+            //            var stringSchema = new StringSchema().name("davey");
+            //            ps.addProperty("davey", stringSchema);
             // Add a global header parameter
             // openAPI.getComponents().addParameters("X-Custom-Header", new
             // Parameter().in("header").name("X-Custom-Header").description("A custom header"));
