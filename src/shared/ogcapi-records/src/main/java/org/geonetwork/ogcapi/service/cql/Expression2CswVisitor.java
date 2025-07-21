@@ -6,6 +6,7 @@
 package org.geonetwork.ogcapi.service.cql;
 
 import java.util.Deque;
+import lombok.extern.slf4j.Slf4j;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.referencing.FactoryException;
@@ -18,6 +19,7 @@ import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTWriter;
 
+@Slf4j
 public class Expression2CswVisitor extends AbstractExpressionVisitor {
     public static final WKTWriter WKT_WRITER = new WKTWriter();
     private final IFieldMapper fieldMapper;
@@ -62,7 +64,7 @@ public class Expression2CswVisitor extends AbstractExpressionVisitor {
             final MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
             geometry = JTS.transform(geometry, transform);
         } catch (FactoryException | TransformException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
 
         stack.push(geometry.toText());

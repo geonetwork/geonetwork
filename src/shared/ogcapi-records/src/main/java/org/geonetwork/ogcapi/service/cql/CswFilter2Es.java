@@ -68,13 +68,7 @@ public class CswFilter2Es extends AbstractFilterVisitor {
             + "    }";
     private static final String TEMPLATE_IS_LIKE =
             "{\"query_string\": {\n" + "        \"fields\": [\"%s\"],\n" + "        \"query\": \"%s\"\n" + "    }}";
-    private static final String TEMPLATE_SPATIAL =
-            "{ \"geo_shape\": {\"geom\": {\n" + "                        \t\"shape\": {\n"
-                    + "                            \t\"type\": \"%s\",\n"
-                    + "                            \t\"coordinates\" : %s\n"
-                    + "                        \t},\n"
-                    + "                        \t\"relation\": \"%s\"\n"
-                    + "                    \t}}}";
+
     private final StringBuilder outQueryString = new StringBuilder();
     private final Expression2CswVisitor expressionVisitor;
     // Stack to build the Elasticsearch Query
@@ -358,9 +352,16 @@ public class CswFilter2Es extends AbstractFilterVisitor {
      * @param shapeType For example "bbox" or "polygon".
      * @param coords The coordinates in the form needed by shapeType.
      * @param relation Spatial operation, like "intersects".
-     * @return
+     * @return filled template
      */
     private String fillTemplateSpatial(String shapeType, String coords, String relation) {
+        final String TEMPLATE_SPATIAL = "{ \"geo_shape\": {\"geom\": {\n" + "                        \t\"shape\": {\n"
+                + "                            \t\"type\": \"%s\",\n"
+                + "                            \t\"coordinates\" : %s\n"
+                + "                        \t},\n"
+                + "                        \t\"relation\": \"%s\"\n"
+                + "                    \t}}}";
+
         return String.format(TEMPLATE_SPATIAL, shapeType, coords, relation);
     }
 
@@ -401,22 +402,19 @@ public class CswFilter2Es extends AbstractFilterVisitor {
         try {
             Geometry geometryJts = reader.read(geom);
 
-            if (geometryJts instanceof Polygon) {
-                Polygon polygonGeom = (Polygon) geometryJts;
+            if (geometryJts instanceof Polygon polygonGeom) {
 
                 String coordinatesText = buildCoordinatesString(polygonGeom.getCoordinates());
 
                 filterSpatial = fillTemplateSpatial("polygon", String.format("[[%s]]", coordinatesText), geoOperator);
 
-            } else if (geometryJts instanceof Point) {
-                Point pointGeom = (Point) geometryJts;
+            } else if (geometryJts instanceof Point pointGeom) {
 
                 // Use Locale.US to make java use the dot "." as decimal separator.
                 String coordsValue = String.format(Locale.US, "[%f, %f]", pointGeom.getX(), pointGeom.getY());
                 filterSpatial = fillTemplateSpatial("point", coordsValue, geoOperator);
 
-            } else if (geometryJts instanceof LineString) {
-                LineString lineStringGeom = (LineString) geometryJts;
+            } else if (geometryJts instanceof LineString lineStringGeom) {
 
                 String coordinatesText = buildCoordinatesString(lineStringGeom.getCoordinates());
 

@@ -7,6 +7,7 @@ package org.geonetwork.ogcapi.service.cql;
 
 import static java.time.temporal.ChronoField.*;
 
+import com.google.common.base.Splitter;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -16,6 +17,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
@@ -143,7 +145,12 @@ public class DateUtil {
             }
 
             if (durationOrDateTimeString.startsWith("P")) {
-                String[] periodAndDurationArray = durationOrDateTimeString.split("T");
+
+                var periodAndDurationArray_iterable = Splitter.on("T").split(durationOrDateTimeString);
+                var periodAndDurationArray = StreamSupport.stream(periodAndDurationArray_iterable.spliterator(), false)
+                        .toArray(String[]::new);
+
+                //              String[] periodAndDurationArray = durationOrDateTimeString.split("T");
                 String periodString = periodAndDurationArray[0];
                 String durationString = "PT" + periodAndDurationArray[1];
 
@@ -299,8 +306,7 @@ public class DateUtil {
                         stringToParse, ZonedDateTime::from, LocalDateTime::from);
                 if (dt instanceof ZonedDateTime) {
                     result = (ZonedDateTime) dt;
-                } else if (dt instanceof LocalDateTime) {
-                    LocalDateTime ldt = (LocalDateTime) dt;
+                } else if (dt instanceof LocalDateTime ldt) {
                     result = ldt.atZone(TimeZone.getDefault().toZoneId());
                 } else {
                     result = null;
@@ -318,6 +324,10 @@ public class DateUtil {
      * '10:15:30' or '10:15:30+01:00' starting by 'T' or not. If offset is present then it is used set the date in UTC
      * zone. If the time doesn't have an offset it is interpreted as a time in local time and converted to UTC.
      *
+     * <p>todo: this has assumptions about the local machine's timezone (for getting today's day), which might not be
+     * correct since the request-time and this-machine-time might have the current day in a different day. Right now,
+     * I've set it to use the current-day as the UTC current day (`LocalDate.now(ZoneId.of("UTC"))`).
+     *
      * @param time the string to parse
      * @return a date and time in UTC zone with date the being the current day.
      * @throws DateTimeParseException if the time can'\t be parsed.
@@ -327,10 +337,10 @@ public class DateUtil {
         TemporalAccessor ta = DateTimeFormatter.ISO_TIME.parseBest(
                 StringUtils.removeStartIgnoreCase(time, "T"), OffsetTime::from, LocalTime::from);
         if (ta instanceof OffsetTime) {
-            result = ((OffsetTime) ta).atDate(LocalDate.now()).atZoneSameInstant(ZoneOffset.UTC);
+            result = ((OffsetTime) ta).atDate(LocalDate.now(ZoneId.of("UTC"))).atZoneSameInstant(ZoneOffset.UTC);
         } else if (ta instanceof LocalTime) {
             result = ((LocalTime) ta)
-                    .atDate(LocalDate.now())
+                    .atDate(LocalDate.now(ZoneId.of("UTC")))
                     .atZone(ZoneId.systemDefault())
                     .withZoneSameInstant(ZoneOffset.UTC);
         } else {
@@ -340,6 +350,8 @@ public class DateUtil {
     }
 
     /**
+     * Generate a date.
+     *
      * @param year the year
      * @param month the month, from 1 to 12
      * @param day the day of the month, from 1 to 31
