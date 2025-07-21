@@ -47,6 +47,9 @@ public class QueryBuilder {
      * @param ids see {@link OgcApiQuery#ids}
      * @param externalids see {@link OgcApiQuery#externalIds}
      * @param sortby see {@link OgcApiQuery#sortBy}
+     * @param filter
+     * @param filterLang
+     * @param filterCrs
      * @param parameterMap see {@link OgcApiQuery#propValues}
      * @return query object filled in
      */
@@ -61,6 +64,9 @@ public class QueryBuilder {
             List<String> ids,
             List<String> externalids,
             List<String> sortby,
+            String filter,
+            String filterLang,
+            String filterCrs,
             Map<String, String[]> parameterMap) {
 
         var result = new OgcApiQuery();
@@ -84,6 +90,10 @@ public class QueryBuilder {
         injectExtraFromRequest(collectionId, result, parameterMap);
 
         queryablesExtractor.extractQueryables(result);
+
+        result.setFilterLang(filterLang);
+        result.setFilterCrs(filterCrs);
+        result.setFilter(filter);
 
         return result;
     }

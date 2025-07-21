@@ -107,6 +107,9 @@ public class QueryBuilderTest {
                 ids,
                 externalids,
                 sortby,
+                null,
+                "cql-text",
+                null,
                 parameterMap);
     }
 }
