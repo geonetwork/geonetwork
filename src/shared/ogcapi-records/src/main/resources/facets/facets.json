@@ -1,0 +1,104 @@
+// NOTE: lines starting with "//" are pre-processed out of this file so comments are fine.
+//
+{
+  "id": "",
+  "title": "",
+
+  "facets": {
+
+    "type": {
+      "type": "term",
+      "property": "type",
+      "x-elastic-property": "resourceType",
+      "sortedBy": "count",
+      "minOccurs": 1
+    },
+
+
+    "spatialRepresentationType": {
+      "type": "term",
+      "property": "spatialRepresentationType",
+      "x-elastic-property": "cl_spatialRepresentationType.key",
+      "sortedBy": "count",
+      "minOccurs": 1
+    },
+
+    "format": {
+      "type": "term",
+      "property": "format",
+      "x-elastic-property": "format",
+      "sortedBy": "count",
+      "minOccurs": 1,
+      "bucketCount": 50
+    },
+
+    "keywords": {
+      "type": "term",
+      "property": "keywords",
+      "x-elastic-property": "tag.langeng",
+      "sortedBy": "count",
+      "minOccurs": 1,
+      "bucketCount": 50
+    },
+
+
+    "updateFrequency": {
+      "type": "term",
+      "property": "updateFrequency",
+      "x-elastic-property": "cl_maintenanceAndUpdateFrequency.key",
+      "sortedBy": "count",
+      "minOccurs": 1,
+      "bucketCount": 50
+    },
+
+
+
+    "organizations": {
+      "type": "term",
+      "property": "organizations",
+      "x-elastic-property": "OrgForResourceObject.langeng",
+      "sortedBy": "count",
+      "minOccurs": 1,
+      "bucketCount": 50
+    },
+
+
+    "availableInServices": {
+      "type": "filter",
+      "filters": {
+        "availableInDownloadService": "links.type = 'wfs'",
+        "availableInViewService": "links.type = 'wms'"
+      }
+    },
+
+        "resolutionScaleDenominator": {
+          "type": "histogram",
+          "bucketType": "fixedInterval",
+          "sortedBy": "value",
+          "bucketCount": 25,
+          "x-elastic-property": "resolutionScaleDenominator",
+          "x-elastic-datatype": "number",
+          "x-interval-number" : 10000,
+          "x-minimum-doc-count": 1
+        },
+
+    "creationYearForResource": {
+      "type": "histogram",
+      "bucketType": "fixedInterval",
+      "sortedBy": "value",
+      "bucketCount": 25,
+      "x-elastic-property": "creationYearForResource",
+      "x-elastic-datatype": "number",
+      "x-interval-number" : 5,
+      "x-minimum-doc-count": 1
+    }
+
+
+  },
+  "defaultBucketCount": 10,
+
+  "x-ogc-to-elastic": {
+    "links.type = 'wfs'": "+linkProtocol:/OGC:WFS.*/",
+    "links.type = 'wms'": "+linkProtocol:/OGC:WMS.*/"
+  }
+}

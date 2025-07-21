@@ -14,11 +14,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.geotools.data.DataUtilities;
 import org.geotools.filter.text.cql2.CQL;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CqlToElasticSearch {
 
+    @Autowired
+    OgcElasticFieldMapper ogcElasticFieldMapper;
     /**
      * creates a query based on the CQL expression in the request.
      *
@@ -29,18 +32,18 @@ public class CqlToElasticSearch {
 
         if (requestQuery == null
                 || StringUtils.isAllBlank(requestQuery.getFilter())
-                || !Objects.equals(requestQuery.getFilterLang(), "cql-text")) {
+                || !Objects.equals(requestQuery.getFilterLang(), "cql2-text")) {
             return null;
         }
 
-        var fieldMapper = new OgcElasticFieldMapper();
+
 
         var filter = CQL.toFilter(requestQuery.getFilter());
         filter = DataUtilities.simplifyFilter(new org.geotools.api.data.Query("gn", filter))
                 .getFilter();
         var validator = new IsSimpleFilterVisitor();
         filter.accept(validator, new HashSet<>());
-        var strResult = CswFilter2Es.translate(filter, fieldMapper);
+        var strResult = CswFilter2Es.translate(filter, ogcElasticFieldMapper);
 
         try (var inputStream = new ByteArrayInputStream(strResult.getBytes(StandardCharsets.UTF_8))) {
             var result = new Query.Builder().withJson(inputStream);
