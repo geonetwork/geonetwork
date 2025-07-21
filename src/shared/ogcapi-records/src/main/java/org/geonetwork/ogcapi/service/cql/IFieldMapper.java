@@ -6,7 +6,7 @@
 package org.geonetwork.ogcapi.service.cql;
 
 public interface IFieldMapper {
-    String map(String field) ;
+    String map(String field);
 
     String mapSort(String field);
 }

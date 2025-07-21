@@ -1,13 +1,16 @@
+/*
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
 package org.geonetwork.ogcapi.service.configuration;
 
-
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 @ConfigurationProperties(prefix = "geonetwork.openapi-records.ogcapi-property-mapping")
@@ -15,21 +18,21 @@ import java.util.List;
 @Setter
 public class OgcElasticFieldsMapperConfig {
 
-  public List<OgcElasticFieldMapperConfig> fields = new ArrayList<>();
+    public List<OgcElasticFieldMapperConfig> fields = new ArrayList<>();
 
-  public OgcElasticFieldMapperConfig findByOgc(String ogcFieldName) {
-    for (OgcElasticFieldMapperConfig field : fields) {
-      if (field.ogcProperty.equals(ogcFieldName)) {
-        return field;
-      }
+    public OgcElasticFieldMapperConfig findByOgc(String ogcFieldName) {
+        for (OgcElasticFieldMapperConfig field : fields) {
+            if (field.ogcProperty.equals(ogcFieldName)) {
+                return field;
+            }
+        }
+        return null;
     }
-    return null;
-  }
 
-  @Getter
-  @Setter
-  public static class OgcElasticFieldMapperConfig {
-      public String ogcProperty;
-      public String elasticProperty;
-  }
+    @Getter
+    @Setter
+    public static class OgcElasticFieldMapperConfig {
+        public String ogcProperty;
+        public String elasticProperty;
+    }
 }
