@@ -47,9 +47,9 @@ public class QueryBuilder {
      * @param ids see {@link OgcApiQuery#ids}
      * @param externalids see {@link OgcApiQuery#externalIds}
      * @param sortby see {@link OgcApiQuery#sortBy}
-     * @param filter
-     * @param filterLang
-     * @param filterCrs
+     * @param filter see {@link OgcApiQuery#filter}
+     * @param filterLang see {@link OgcApiQuery#filterLang}
+     * @param filterCrs see {@link OgcApiQuery#filterCrs}
      * @param parameterMap see {@link OgcApiQuery#propValues}
      * @return query object filled in
      */
