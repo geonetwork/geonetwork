@@ -41,7 +41,7 @@ public class CollectionsPageLinks extends BasicLinks {
                 new ArrayList<String>(
                         collectionsPageLinksConfiguration.getMimeFormats().keySet()),
                 "self",
-                "alternative");
+                "alternate");
 
         // add in the collection-specific links
         page.getCollections().forEach(x -> collectionPageLinks.addLinks(nativeWebRequest, x));

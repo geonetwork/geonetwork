@@ -54,7 +54,7 @@ public class ItemsPageLinks extends BasicLinks {
                 new ArrayList<String>(
                         itemsPageLinksConfiguration.getMimeFormats().keySet()),
                 "self",
-                "alternative");
+                "alternate");
 
         addCollectionsLinks(nativeWebRequest, collectionId, page);
 
@@ -73,7 +73,8 @@ public class ItemsPageLinks extends BasicLinks {
         if (query.getStartIndex() != 0) {
             int previous = Math.max(query.getStartIndex() - query.getLimit(), 0);
             var uri = URI.create(linkConfiguration.getOgcApiRecordsBaseUrl())
-                    .resolve("collections/" + collectionId + "/items?offset=" + previous);
+                    .resolve(
+                            "collections/" + collectionId + "/items?offset=" + previous + "&limit=" + query.getLimit());
             var link = new OgcApiRecordsLinkDto()
                     .href(uri)
                     .rel("prev")
@@ -85,7 +86,7 @@ public class ItemsPageLinks extends BasicLinks {
         if (query.getStartIndex() + page.getNumberReturned() < page.getNumberMatched()) {
             int next = query.getStartIndex() + page.getNumberReturned();
             var uri = URI.create(linkConfiguration.getOgcApiRecordsBaseUrl())
-                    .resolve("collections/" + collectionId + "/items?offset=" + next);
+                    .resolve("collections/" + collectionId + "/items?offset=" + next + "&limit=" + query.getLimit());
             var link = new OgcApiRecordsLinkDto()
                     .href(uri)
                     .rel("next")
@@ -122,7 +123,7 @@ public class ItemsPageLinks extends BasicLinks {
      * @param collectionId which collection (DB source)
      * @param page where to add the links
      * @param selfName name to give "rel=self" (i.e. same format name)
-     * @param altName name to give "rel=alternative" (i.e. different format name)
+     * @param altName name to give "rel=alternate" (i.e. different format name)
      */
     public void addLinks(
             NativeWebRequest nativeWebRequest,

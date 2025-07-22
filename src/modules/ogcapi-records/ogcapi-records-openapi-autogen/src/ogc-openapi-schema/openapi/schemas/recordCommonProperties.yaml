@@ -104,3 +104,7 @@ properties:
     description:
       A statement that concerns all rights not addressed
       by the license such as a copyright statement.
+  thumbnails:
+    type: array
+    items:
+      $ref: thumbnails.yaml
