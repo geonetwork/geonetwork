@@ -48,7 +48,7 @@ public class CollectionPageLinks extends BasicLinks {
                 new ArrayList<String>(
                         collectionPageLinksConfiguration.getMimeFormats().keySet()),
                 "self",
-                "alternative");
+                "alternate");
 
         addIconLink(page);
         addQueryables(page);
