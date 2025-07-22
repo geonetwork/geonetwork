@@ -135,7 +135,7 @@ public class BasicLinks {
                         }
                     }
 
-                    var linkRel = isSelf ? "self" : "alternate";
+                    var linkRel = isSelf ? selfName : altName;
 
                     var link = new OgcApiRecordsLinkDto();
                     var href = new URI(finalUrl + "f="
