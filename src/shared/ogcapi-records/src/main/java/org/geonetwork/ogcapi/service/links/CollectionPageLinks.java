@@ -48,7 +48,7 @@ public class CollectionPageLinks extends BasicLinks {
                 new ArrayList<String>(
                         collectionPageLinksConfiguration.getMimeFormats().keySet()),
                 "self",
-                "alternative");
+                "alternate");
 
         addIconLink(page);
         addQueryables(page);
@@ -93,8 +93,19 @@ public class CollectionPageLinks extends BasicLinks {
         }
         // assume its a png
         var uri = URI.create(linkConfiguration.getGnBaseUrl()).resolve("images/logos/" + catalogUuid + ".png");
-        var link = new OgcApiRecordsLinkDto().href(uri).rel("icon").type("image/png");
+        var link = new OgcApiRecordsLinkDto()
+                .href(uri)
+                .rel("icon")
+                .type("image/png")
+                .title("collection icon");
 
         page.addLinksItem(link);
+
+        var link2 = new OgcApiRecordsLinkDto()
+                .href(uri)
+                .rel("preview")
+                .type("image/png")
+                .title("collection icon");
+        page.addLinksItem(link2);
     }
 }
