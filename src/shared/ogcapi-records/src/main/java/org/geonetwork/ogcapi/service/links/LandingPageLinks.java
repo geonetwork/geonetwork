@@ -7,7 +7,10 @@ package org.geonetwork.ogcapi.service.links;
 
 import io.micrometer.common.util.StringUtils;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
 import org.geonetwork.ogcapi.service.configuration.ConformancePageLinksConfiguration;
@@ -19,6 +22,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 /** Injects links into the Landing Page response */
 @Component
+@Slf4j
 public class LandingPageLinks extends BasicLinks {
 
     @Autowired
@@ -47,7 +51,7 @@ public class LandingPageLinks extends BasicLinks {
                 new ArrayList<String>(
                         landingPageLinksConfiguration.getMimeFormats().keySet()),
                 "self",
-                "alternative");
+                "alternate");
 
         addOpenApiLink(landingPage);
         addIconLink(landingPage, catalogUuid);
@@ -79,16 +83,18 @@ public class LandingPageLinks extends BasicLinks {
      * @param nativeWebRequest from user
      * @param landingPage which page to attach link to
      */
+    @SuppressWarnings("UnusedVariable")
     private void addConformanceLinks(NativeWebRequest nativeWebRequest, OgcApiRecordsLandingPageDto landingPage) {
-        addStandardLinks(
-                nativeWebRequest,
-                linkConfiguration.getOgcApiRecordsBaseUrl(),
-                "conformance",
-                landingPage,
-                new ArrayList<String>(
-                        conformancePageLinksConfiguration.getMimeFormats().keySet()),
-                "conformance",
-                "conformance");
+        try {
+            var link = new OgcApiRecordsLinkDto()
+                    .href(new URI(linkConfiguration.getOgcApiRecordsBaseUrl() + "conformance"))
+                    .rel("conformance")
+                    .type("application/json")
+                    .title("ogcapi-records conformance documnet");
+            addLinksReflect(List.of(link), landingPage);
+        } catch (URISyntaxException e) {
+            log.error("Invalid conformance link URI", e);
+        }
     }
 
     /**

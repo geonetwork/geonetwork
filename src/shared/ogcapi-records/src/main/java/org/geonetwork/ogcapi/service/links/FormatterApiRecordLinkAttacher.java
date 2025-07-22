@@ -46,7 +46,7 @@ public class FormatterApiRecordLinkAttacher {
             var link = new OgcApiRecordsLinkDto();
             try {
                 link.setHref(new URI(url));
-                link.setRel("alternative");
+                link.setRel("alternate");
                 link.setHreflang("eng");
                 link.setType(mimeType);
                 link.setProfile(profileInfos.stream()
