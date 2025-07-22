@@ -5,14 +5,18 @@
  */
 package org.geonetwork.ogcapi.service.links;
 
-import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.formatting.FormatterApi;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
 import org.geonetwork.ogcapi.service.configuration.CollectionPageLinksConfiguration;
 import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
@@ -25,6 +29,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
 /** Adds in links for the Item Page (single record). This includes the FormatterApi links. */
+@Slf4j
 @Component
 public class ItemPageLinks extends BasicLinks {
 
@@ -97,9 +102,35 @@ public class ItemPageLinks extends BasicLinks {
                 page,
                 getFormats(),
                 "self",
-                "alternative");
+                "alternate");
 
         addCollectionsLinks(mediaTypeAndProfile, collectionId, page);
+        if (page.getProperties().getThumbnails() != null
+                && !page.getProperties().getThumbnails().isEmpty()) {
+            for (var thumbnail : page.getProperties().getThumbnails()) {
+                try {
+                    page.addLinksItem(new OgcApiRecordsLinkDto()
+                            .rel("preview")
+                            .href(new URI(thumbnail.getUrl()))
+                            .type(guessImageType(thumbnail.getUrl()))
+                            .title(thumbnail.getName()));
+                } catch (URISyntaxException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
+        }
+    }
+
+    public String guessImageType(String url) {
+        var result = "image/png";
+        if (url.toLowerCase(Locale.ROOT).endsWith(".gif")) {
+            result = "image/gif";
+        } else if (url.toLowerCase(Locale.ROOT).endsWith(".jpg")) {
+            result = "image/jpeg";
+        } else if (url.toLowerCase(Locale.ROOT).endsWith(".tiff")) {
+            result = "image/tiff";
+        }
+        return result;
     }
 
     /**
@@ -142,7 +173,7 @@ public class ItemPageLinks extends BasicLinks {
                 page,
                 getFormats(),
                 "self",
-                "alternative");
+                "alternate");
     }
 
     /**
@@ -152,7 +183,7 @@ public class ItemPageLinks extends BasicLinks {
      * @param collectionId which collection (DB source)
      * @param page where to add the links
      * @param selfName name to give "rel=self" (i.e. same format name)
-     * @param altName name to give "rel=alternative" (i.e. different format name)
+     * @param altName name to give "rel=alternate" (i.e. different format name)
      */
     public void addLinks(
             MediaTypeAndProfile mediaTypeAndProfile,
