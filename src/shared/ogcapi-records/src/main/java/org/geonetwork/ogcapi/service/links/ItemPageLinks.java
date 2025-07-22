@@ -114,6 +114,11 @@ public class ItemPageLinks extends BasicLinks {
                             .href(new URI(thumbnail.getUrl()))
                             .type(guessImageType(thumbnail.getUrl()))
                             .title(thumbnail.getName()));
+                  page.addLinksItem(new OgcApiRecordsLinkDto()
+                    .rel("icon")
+                    .href(new URI(thumbnail.getUrl()))
+                    .type(guessImageType(thumbnail.getUrl()))
+                    .title(thumbnail.getName()));
                 } catch (URISyntaxException e) {
                     log.error(e.getMessage(), e);
                 }
@@ -121,7 +126,7 @@ public class ItemPageLinks extends BasicLinks {
         }
     }
 
-    public String guessImageType(String url) {
+    public static String guessImageType(String url) {
         var result = "image/png";
         if (url.toLowerCase(Locale.ROOT).endsWith(".gif")) {
             result = "image/gif";
