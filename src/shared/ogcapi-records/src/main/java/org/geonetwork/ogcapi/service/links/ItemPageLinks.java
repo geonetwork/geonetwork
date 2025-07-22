@@ -114,11 +114,11 @@ public class ItemPageLinks extends BasicLinks {
                             .href(new URI(thumbnail.getUrl()))
                             .type(guessImageType(thumbnail.getUrl()))
                             .title(thumbnail.getName()));
-                  page.addLinksItem(new OgcApiRecordsLinkDto()
-                    .rel("icon")
-                    .href(new URI(thumbnail.getUrl()))
-                    .type(guessImageType(thumbnail.getUrl()))
-                    .title(thumbnail.getName()));
+                    page.addLinksItem(new OgcApiRecordsLinkDto()
+                            .rel("icon")
+                            .href(new URI(thumbnail.getUrl()))
+                            .type(guessImageType(thumbnail.getUrl()))
+                            .title(thumbnail.getName()));
                 } catch (URISyntaxException e) {
                     log.error(e.getMessage(), e);
                 }
