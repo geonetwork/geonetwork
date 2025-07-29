@@ -110,8 +110,8 @@ spring:
   #    database-platform: org.hibernate.dialect.H2Dialect
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 2GB
+      max-request-size: 2GB
   security:
     oauth2:
       client:

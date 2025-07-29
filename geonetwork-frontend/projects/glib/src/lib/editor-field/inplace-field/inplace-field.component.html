@@ -23,7 +23,7 @@
   </ng-template>
 
   <ng-template #content let-closeCallback="closeCallback">
-    <div class="inline-flex gap-2">
+    <div>
       <div>
         <ng-container
           *ngTemplateOutlet="
@@ -31,7 +31,7 @@
             context: { onFieldValueChange: onFieldValueChange.bind(this) }
           "></ng-container>
       </div>
-      <div class="inline-flex gap-2">
+      <div>
         <p-button
           title="Save changes"
           (click)="saveEdit($event, closeCallback)"

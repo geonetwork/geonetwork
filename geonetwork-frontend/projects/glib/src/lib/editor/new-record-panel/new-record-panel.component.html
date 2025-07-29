@@ -101,11 +101,12 @@
                         (onRemove)="onRemove($event)"
                         (onClear)="onClear($event)"
                         name="attachement_upload"
+                        auto="true"
                         chooseIcon="fa fa-folder"
                         chooseLabel="Select your file"
                         uploadLabel="Upload"
                         multiple="true"
-                        [maxFileSize]="100 * 1000000">
+                        [maxFileSize]="2000 * 1000000">
                         <ng-template #empty>
                           <div>
                             Drag and drop files to here to upload.
