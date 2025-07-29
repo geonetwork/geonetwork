@@ -228,6 +228,9 @@ public interface Store {
             boolean targetApproved)
             throws Exception;
 
+    MetadataResource renameResource(String metadataUuid, String resourceId, String newName, Boolean approved)
+            throws Exception;
+
     interface ResourceHolder extends Closeable {
         Path getPath();
 

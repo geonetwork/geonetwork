@@ -230,6 +230,23 @@ public class FilesystemStore extends AbstractStore {
     }
 
     @Override
+    public MetadataResource renameResource(String metadataUuid, String resourceId, String newName, Boolean approved)
+            throws Exception {
+        int metadataId = getAndCheckMetadataId(metadataUuid, approved);
+        checkResourceId(newName);
+        try (ResourceHolder filePath = getResource(metadataUuid, resourceId, approved)) {
+            Path newFilePath = getPath(metadataId, MetadataResourceVisibility.PRIVATE, newName, approved);
+            Files.move(filePath.getPath(), newFilePath, StandardCopyOption.REPLACE_EXISTING);
+            return getResourceDescription(metadataUuid, MetadataResourceVisibility.PRIVATE, newFilePath, approved);
+        } catch (IOException e) {
+            log.error(String.format(
+                    "Unable to rename resource '%s' for metadata %d (%s). %s",
+                    resourceId, metadataId, metadataUuid, e.getMessage()));
+        }
+        return null;
+    }
+
+    @Override
     public MetadataResource putResource(
             final String metadataUuid,
             final String filename,

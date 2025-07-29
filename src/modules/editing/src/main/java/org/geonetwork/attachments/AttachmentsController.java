@@ -23,6 +23,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import org.geonetwork.domain.Metadata;
+import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.metadata.IMetadataAccessManager;
 import org.geonetwork.metadata.IMetadataManager;
 import org.geonetwork.metadatastore.MetadataResource;
@@ -64,6 +65,7 @@ public class AttachmentsController {
     private final Store store;
     private final IMetadataManager metadataManager;
     private final IMetadataAccessManager metadataAccessManager;
+    private final MetadataRepository metadataRepository;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -275,7 +277,7 @@ public class AttachmentsController {
         return store.putResource(metadataUuid, url, visibility, approved);
     }
 
-    @io.swagger.v3.oas.annotations.Operation(summary = "Update the metadata resource visibility")
+    @io.swagger.v3.oas.annotations.Operation(summary = "Update the metadata resource visibility or rename a resource")
     @PreAuthorize("hasRole('Editor')")
     @ApiResponses(
             value = {
@@ -293,13 +295,35 @@ public class AttachmentsController {
                     String metadataUuid,
             @Parameter(description = "The resource identifier (ie. filename)", required = true) @PathVariable
                     String resourceId,
-            @Parameter(description = "The visibility", required = true, example = "public")
-                    @RequestParam(required = true)
+            @Parameter(description = "The visibility", required = false, example = "public")
+                    @RequestParam(required = false)
                     MetadataResourceVisibility visibility,
+            @Parameter(description = "The new resource name", required = false) @RequestParam(required = false)
+                    String newResourceName,
             @Parameter(description = "Use approved version or not", example = "true")
                     @RequestParam(required = false, defaultValue = "false")
                     Boolean approved)
             throws Exception {
-        return store.patchResourceStatus(metadataUuid, resourceId, visibility, approved);
+        if (visibility == null && newResourceName == null) {
+            throw new IllegalArgumentException("Either visibility or new resource name must be provided.");
+        }
+
+        MetadataResource metadataResource = null;
+        if (newResourceName != null) {
+            Store.ResourceHolder metadataResourceToUpdate = store.getResource(metadataUuid, resourceId, approved);
+            metadataResource = store.renameResource(metadataUuid, resourceId, newResourceName, approved);
+
+            Metadata metadata = metadataManager.findMetadataByUuidOrId(metadataUuid, approved);
+            metadata.setData(metadata.getData()
+                    .replaceAll(metadataResourceToUpdate.getMetadata().getUrl(), metadataResource.getUrl()));
+            metadataRepository.save(metadata);
+            // TODO Update the metadata references to the resource
+            // Requires to trigger a reindexing of the metadata - to be defined how to do it with GN4&5
+            // metadataIndexer.indexMetadata(String.valueOf(metadata.getId()), true, IndexingMode.full);
+        }
+        if (visibility != null) {
+            metadataResource = store.patchResourceStatus(metadataUuid, resourceId, visibility, approved);
+        }
+        return metadataResource;
     }
 }
