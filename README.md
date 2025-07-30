@@ -6,3 +6,6 @@ Architecture experiment for GeoNetwork 5 development setting up clean Spring Boo
 * Database: H2 database used for local development, PostgreSQL recommended for production
 * Elasticsearch: index and search engine
 * GeoNetwork 4: maintain functionality during architecture transition, using Java 11 and Jetty / Tomcat environment
+
+
+Note: This is a branch for experimenting and learning purposes approaching some of the many topics to analyze toward a transition from 4 to 5...
