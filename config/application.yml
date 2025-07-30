@@ -12,6 +12,7 @@ geonetwork:
       /map/,
       /criticalhealthcheck,
       /warninghealthcheck,
+      /jolokia,
       /xml/,
       /index/,
       /doc/api/index.html,
