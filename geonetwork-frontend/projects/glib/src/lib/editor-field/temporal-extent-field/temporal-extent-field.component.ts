@@ -1,6 +1,5 @@
 import {
   Component,
-  effect,
   inject,
   input,
   OnInit,
@@ -22,7 +21,7 @@ export class TemporalExtentFieldComponent implements OnInit {
   from = input<string>();
   to = input<string>();
   format = input('yy');
-  appendTo = input<string | HTMLElement>('body');
+  appendTo = input<string | HTMLElement>('self');
 
   onChange = output<DateRangeDetails>();
 
@@ -61,6 +60,12 @@ export class TemporalExtentFieldComponent implements OnInit {
         this.calendarRange[0] as string,
         this.calendarRange[1] as string
       );
+    } else {
+      this.onClear();
     }
+  }
+
+  onClear() {
+    this.setValue('', '');
   }
 }

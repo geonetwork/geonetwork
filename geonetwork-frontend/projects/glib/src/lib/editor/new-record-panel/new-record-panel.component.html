@@ -39,7 +39,7 @@
       (onClick)="createRecordIfNotYetCreated(true)" />
   </ng-template>
 
-  <p-stepper [(value)]="activeStep" class="p-10 w-full">
+  <p-stepper [(value)]="activeStep" class="p-10 w-full" #stepper>
     <p-step-item [value]="1">
       <p-step>Choose resource type</p-step>
       <p-step-panel>
@@ -94,7 +94,7 @@
                     <p-tabpanel value="0">
                       <p-fileupload
                         #fileUpload
-                        styleClass="w-full"
+                        styleClass="text-center"
                         [customUpload]="true"
                         (onSelect)="onAttachmentSelected($event)"
                         (uploadHandler)="onUploadHandler($event)"
@@ -108,14 +108,7 @@
                         multiple="true"
                         [maxFileSize]="2000 * 1000000">
                         <ng-template #empty>
-                          <div>
-                            Drag and drop files to here to upload.
-
-                            <p class="font-medium mt-10">
-                              Maximum file size is
-                              <span class="font-bold">100Mo</span>.
-                            </p>
-                          </div>
+                          <div>Drag and drop files to here to upload.</div>
                         </ng-template>
                       </p-fileupload>
                     </p-tabpanel>
@@ -164,6 +157,18 @@
                 </p-tabs>
               </div>
 
+              @if (metadataFiles().length > 0) {
+                <div class="mb-10">
+                  <div class="w-full">Select the dataset file to analyze</div>
+                  <p-listbox
+                    [options]="metadataFiles()"
+                    (onChange)="onMetadataFileSelectedChange($event)"
+                    [(ngModel)]="selectedDatasourceFile"
+                    optionLabel="filename"
+                    optionValue="filename" />
+                </div>
+              }
+
               @if (isFetchingLayers()) {
                 <div>
                   <p-progressBar
@@ -180,20 +185,6 @@
                 <small class="error-message"
                   >Error is: {{ errorFetchingLayers() }}</small
                 >
-              }
-
-              @if (metadataFiles().length > 0) {
-                <div class="mb-10">
-                  <div class="w-full">
-                    Select the metadata dataset file to process
-                  </div>
-                  <p-listbox
-                    [options]="metadataFiles()"
-                    (onChange)="onMetadataFileSelectedChange($event)"
-                    [(ngModel)]="selectedDatasourceFile"
-                    optionLabel="filename"
-                    optionValue="filename" />
-                </div>
               }
 
               @if (layers().length > 0) {

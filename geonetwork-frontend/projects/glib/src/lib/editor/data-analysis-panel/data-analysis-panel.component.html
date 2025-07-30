@@ -177,12 +177,12 @@
                   [from]="
                     temporalExtentStats()
                       ? String(temporalExtentStats()![0].statistics.MIN)
-                      : undefined
+                      : temporalExtent()?.start.date || undefined
                   "
                   [to]="
                     temporalExtentStats()
                       ? String(temporalExtentStats()![0].statistics.MAX)
-                      : undefined
+                      : temporalExtent()?.end.date || undefined
                   "
                   (onChange)="onFieldValueChange($event)"
                   [appendTo]="dataAnalysisPanel" />

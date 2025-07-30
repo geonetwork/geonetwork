@@ -21,15 +21,22 @@
               class="max-w-full p-6" />
 
             <p-button
-              label="Save overview"
+              label="Save generated overview"
               icon="fa fa-save"
               [disabled]="!canSaveOverview()"
               (onClick)="setRecordOverview()"
+              styleClass="w-full"
               class="mt-4"></p-button>
           }
         }
         @case ('overview_upload') {
+          @if (uploadedFile() && overviewType() === 'overview_upload') {
+            <img class="max-w-full p-6" alt="overview" [src]="uploadedFile()" />
+          }
+
           <p-fileupload
+            class="bottom-0"
+            chooseStyleClass="w-full"
             chooseLabel="Upload overview"
             mode="basic"
             auto="true"
@@ -40,10 +47,6 @@
             [maxFileSize]="100 * 1000000"
             (onSelect)="setOverviewFile($event)">
           </p-fileupload>
-
-          @if (uploadedFile() && overviewType() === 'overview_upload') {
-            <img class="max-w-full p-6" alt="overview" [src]="uploadedFile()" />
-          }
         }
       }
     </div>

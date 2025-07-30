@@ -8,7 +8,7 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import { StepperModule } from 'primeng/stepper';
+import { Stepper, StepperModule } from 'primeng/stepper';
 import { Button, ButtonDirective } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -38,6 +38,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import {
   FileRemoveEvent,
   FileSelectEvent,
+  FileUpload,
   FileUploadHandlerEvent,
   FileUploadModule,
 } from 'primeng/fileupload';
@@ -63,6 +64,7 @@ import { HttpClient } from '@angular/common/http';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { DataAnalysisService } from '../data-analysis.service';
 import { Popover } from 'primeng/popover';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'g-new-record-panel',
@@ -98,7 +100,10 @@ import { Popover } from 'primeng/popover';
   styleUrl: './new-record-panel.component.css',
 })
 export class NewRecordPanelComponent implements OnInit {
-  @ViewChild('fileUpload', { static: false }) fileUpload: any;
+  @ViewChild('fileUpload', { static: false }) fileUpload: FileUpload;
+  @ViewChild('stepper', { static: false }) stepper: Stepper;
+
+  activatedRoute = inject(ActivatedRoute);
 
   template = signal('');
   numberOfTemplates = signal<number | undefined>(undefined);
@@ -113,9 +118,11 @@ export class NewRecordPanelComponent implements OnInit {
   groupOwner = input<string | undefined>(this.defaultGroupOwner);
 
   searchFilter = input<string | undefined>();
+  routeFilter = signal<string | undefined>(undefined);
   searchActiveFilter = computed(() => {
     return (
-      this.searchFilter() ||
+      this.routeFilter() ??
+      this.searchFilter() ??
       '+isTemplate:y +resourceType:(dataset OR nonGeographicDataset) +documentStandard:iso19115-3.2018'
     );
   });
@@ -201,7 +208,7 @@ export class NewRecordPanelComponent implements OnInit {
     );
   });
   previewResult = signal<string>('');
-  analysisResult = signal<IndexRecord | undefined | undefined>(undefined);
+  analysisResult = signal<IndexRecord | undefined>(undefined);
   layers = signal<string[]>([]);
 
   isCreatingRecord = signal(false);
@@ -245,6 +252,15 @@ export class NewRecordPanelComponent implements OnInit {
       this.stepEvents[this.activeStep()] &&
         this.stepEvents[this.activeStep()]();
     });
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params.uuid) {
+        this.routeFilter.set(`+uuid:${params.uuid}`);
+        this.template.set(params.uuid);
+        this.newRecordId.set(params.uuid);
+        this.retrieveMetadataFiles();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -255,6 +271,12 @@ export class NewRecordPanelComponent implements OnInit {
       .then(
         response => {
           this.supportedFormats.set(response);
+
+          this.activatedRoute.queryParams.subscribe(params => {
+            if (params.uuid) {
+              this.stepper.updateValue(2);
+            }
+          });
         },
         error => {
           console.log(
@@ -397,7 +419,7 @@ export class NewRecordPanelComponent implements OnInit {
           console.log(
             'Error retrieving the dataset layers: ' + error.response.statusText
           );
-          this.errorFetchingLayers.set(error.statusText);
+          this.errorFetchingLayers.set(error.response.statusText);
           this.isFetchingLayers.set(false);
         }
       );
@@ -702,7 +724,7 @@ export class NewRecordPanelComponent implements OnInit {
     }
   }
 
-  private retrieveMetadataFiles(selectFile: boolean): void {
+  private retrieveMetadataFiles(selectFile: boolean = false): void {
     const getAllResourcesRequest: GetAllResourcesRequest = {
       metadataUuid: this.newRecordId(),
     };

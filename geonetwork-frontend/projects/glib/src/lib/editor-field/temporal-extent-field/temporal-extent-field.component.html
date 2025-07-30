@@ -1,9 +1,12 @@
 <p-datePicker
+  #datePicker
   placeholder=""
   [(ngModel)]="calendarRange"
   (onSelect)="onSelect($event)"
+  (onClear)="onClear()"
   view="year"
   dataType="string"
+  [showClear]="true"
   selectionMode="range"
   [dateFormat]="format()"
   [appendTo]="appendTo()"
