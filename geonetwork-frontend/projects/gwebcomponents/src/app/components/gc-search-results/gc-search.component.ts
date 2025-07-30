@@ -24,7 +24,7 @@ import { GcBaseSearchComponent } from '../gc-base-search-component';
     SearchBarSimpleComponent,
     SearchResultsComponent,
   ],
-  encapsulation: ViewEncapsulation.ShadowDom,
+  // encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class GcSearchComponent extends GcBaseSearchComponent {
   @Input() layout = ResultsLayout.CARD;

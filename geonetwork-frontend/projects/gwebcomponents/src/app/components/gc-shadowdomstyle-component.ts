@@ -4,7 +4,8 @@ import {
   ElementRef,
   inject,
   Input,
-  OnChanges, OnDestroy,
+  OnChanges,
+  OnDestroy,
   OnInit,
   signal,
   SimpleChanges,
@@ -16,6 +17,8 @@ import { Configuration as Gn5Configuration } from 'g5api';
 
 /**
  * Workaround https://github.com/primefaces/primeng/issues/16567
+ * Add missing CSS styles in shadow DOM but it still remains issues with popups and overlays
+ * Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'.
  */
 @Component({
   selector: 'gc-shadowdomstyle-component',

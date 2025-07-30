@@ -17,12 +17,10 @@ import { GcShadowdomstyleComponentComponent } from '../gc-shadowdomstyle-compone
   templateUrl: './gc-data-results-table.component.html',
   styleUrl: './gc-data-results-table.component.css',
   imports: [DataTableComponent],
-  encapsulation: ViewEncapsulation.ShadowDom,
+  // encapsulation: ViewEncapsulation.ShadowDom,
 })
-export class GcDataResultsTableComponent
-  extends GcShadowdomstyleComponentComponent
-  implements OnInit, OnChanges
-{
+// extends GcShadowdomstyleComponentComponent
+export class GcDataResultsTableComponent implements OnInit, OnChanges {
   @Input() source = '';
 
   @Input() export = false;
@@ -30,8 +28,8 @@ export class GcDataResultsTableComponent
   currentSource = signal<string>(this.source);
   isAllowingExport = signal<boolean>(this.export);
 
-  override ngOnInit() {
-    super.ngOnInit();
+  ngOnInit() {
+    //super.ngOnInit();
     this.currentSource.set(this.source);
     this.isAllowingExport.set(this.export);
   }

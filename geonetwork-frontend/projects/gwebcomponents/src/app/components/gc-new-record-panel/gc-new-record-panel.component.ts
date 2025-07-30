@@ -13,9 +13,9 @@ import { NewRecordPanelComponent } from 'glib';
   templateUrl: './gc-new-record-panel.component.html',
   imports: [NewRecordPanelComponent],
   styleUrl: './gc-new-record-panel.component.css',
-  encapsulation: ViewEncapsulation.ShadowDom,
+  // encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class GcNewRecordPanelComponent extends GcBaseComponent {
-  searchFilter = input<string | undefined>();
-  groupOwner = input<string | undefined>();
+  searchFilter = input<string | undefined>(undefined, {alias: "search-filter"});
+  groupOwner = input<string | undefined>(undefined, {alias: "group-owner"});
 }

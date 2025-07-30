@@ -20,7 +20,7 @@ import { GcBaseSearchComponent } from '../gc-base-search-component';
     SearchContextDirective,
     SearchResultsTableComponent,
   ],
-  encapsulation: ViewEncapsulation.ShadowDom,
+  // encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class GcSearchResultsTableComponent extends GcBaseSearchComponent {
   @Input({ alias: 'list-of-field' }) listOfField: string;

@@ -23,12 +23,10 @@ import { GcShadowdomstyleComponentComponent } from './gc-shadowdomstyle-componen
     { provide: API5_CONFIGURATION, useValue: signal(Gn5Configuration) },
     SearchService,
   ],
-  encapsulation: ViewEncapsulation.ShadowDom,
+  // encapsulation: ViewEncapsulation.ShadowDom,
 })
-export class GcBaseComponent
-  extends GcShadowdomstyleComponentComponent
-  implements OnInit, OnChanges
-{
+// extends GcShadowdomstyleComponentComponent
+export class GcBaseComponent implements OnInit, OnChanges {
   @Input({ alias: 'api-url' }) apiUrl: string;
 
   apiConfiguration = inject(API_CONFIGURATION);
@@ -50,8 +48,8 @@ export class GcBaseComponent
     );
   }
 
-  override ngOnInit() {
-    super.ngOnInit();
+  ngOnInit() {
+    // super.ngOnInit();
     this.setApiUrl(this.apiUrl);
   }
 
