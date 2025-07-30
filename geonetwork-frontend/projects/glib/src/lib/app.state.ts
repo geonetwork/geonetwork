@@ -6,19 +6,19 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { MeApi } from 'gapi';
+import { MeResponse } from 'gapi';
 import { computed, inject } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 
 export interface GappState {
   language: string;
-  user: any;
+  user: MeResponse | undefined | null;
   authenticationFailure: boolean | undefined;
 }
 
 const initialAppState: GappState = {
   language: 'en',
-  user: {},
+  user: undefined,
   authenticationFailure: undefined,
 };
 
@@ -27,8 +27,8 @@ export const AppStore = signalStore(
   withState(initialAppState),
   withComputed(store => {
     return {
-      authenticated: computed(() => {
-        return !!store.user()?.id;
+      authenticated: computed<boolean | undefined>(() => {
+        return store.user() === undefined ? undefined : !!store.user()?.id;
       }),
     };
   }),
