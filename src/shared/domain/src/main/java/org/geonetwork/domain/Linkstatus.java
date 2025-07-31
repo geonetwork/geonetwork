@@ -6,6 +6,7 @@
 package org.geonetwork.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geonetwork.domain.converter.BooleanToYN;
 
 @Builder
 @AllArgsConstructor
@@ -46,8 +48,9 @@ public class Linkstatus {
     private String checkdate;
 
     @NotNull
-    @Column(name = "failing", nullable = false, length = Integer.MAX_VALUE)
-    private String failing;
+    @Column(name = "failing", nullable = false)
+    @Convert(converter = BooleanToYN.class)
+    private Boolean failing;
 
     @Column(name = "statusinfo", length = Integer.MAX_VALUE)
     private String statusinfo;

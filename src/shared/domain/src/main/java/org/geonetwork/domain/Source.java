@@ -6,6 +6,7 @@
 package org.geonetwork.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -16,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.geonetwork.domain.converter.BooleanToYN;
 
 @Builder
 @AllArgsConstructor
@@ -62,6 +64,7 @@ public class Source {
     private String servicerecord;
 
     @NotNull
-    @Column(name = "islistableinheaderselector", nullable = false, length = Integer.MAX_VALUE)
-    private String islistableinheaderselector;
+    @Column(name = "islistableinheaderselector", nullable = false)
+    @Convert(converter = BooleanToYN.class)
+    private Boolean islistableinheaderselector;
 }
