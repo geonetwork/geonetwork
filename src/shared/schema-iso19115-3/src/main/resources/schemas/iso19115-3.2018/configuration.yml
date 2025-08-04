@@ -1,0 +1,124 @@
+geonetwork:
+  schemas:
+    iso19115-3:
+      identifier: iso19115-3
+      standardTitle:
+        eng: Geographic information - Metadata
+        fre: Information géographique - Métadonnées
+      standardDescription:
+        eng: |
+          The objective of ISO 19115 is to provide a model for describing information or resources
+          that can have geographic extents. This part of ISO 19115 is intended to be used by information system
+          analysts, program planners, and developers of information systems, as well as others in order to define
+          basic principles and requirements for standardized description of information resources. This part of
+          ISO  19115 defines metadata elements, their properties, and the relationships between elements, and
+          establishes a common set of metadata terminology, definitions, and extension procedures.
+
+          Although the primary purpose of this part of ISO  19115 is to describe digital information that has a
+          geographic extent, it can be used to describe all types of resources including textual documents,
+          initiatives, software, sensors, non-geographic information, product specifications and repositories, i.e. it can be
+          used to describe information resources that do not have geographic extent. Some domains have their
+          own metadata standards, such as the Dublin Core for libraries. If necessary such standards and this part
+          of ISO 19115 could be profiled to create a Community Schema.
+
+          This schema also includes:
+
+          - Describe imagery data (covered by ISO19115-2)
+
+          - Embed data model (feature catalogue) in the dataset record (covered by ISO19110)
+
+          - Data quality described using ISO19157
+
+      standardUrl:
+        eng: http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=32579
+      schemaLocation: http://standards.iso.org/iso/19115/-3/mdb/2.0 https://schemas.isotc211.org/19115/-3/mdb/2.0/mdb.xsd
+      autodetect:
+      #  ISO19115-3 identification is based on the
+      #  root element of the record. It could be a MD_Metadata
+      #  element (for a metadata record) or some other element
+      #  when used as a subtemplate (cf. directory support).
+        type: root
+        name:
+          - mdb:MD_Metadata
+          - cit:CI_Responsibility
+          - cit:CI_Organisation
+          - mcc:MD_BrowseGraphic
+          - mrs:MD_ReferenceSystem
+          - mrd:MD_Format
+          - mdq:DQ_DomainConsistency
+          - mdq:DQ_CompletenessCommission
+          - mdq:DQ_CompletenessOmission
+          - mdq:DQ_ConceptualConsistency
+          - mdq:DQ_FormatConsistency
+          - mdq:DQ_AbsoluteExternalPositionalAccuracy
+          - mdq:DQ_AccuracyOfATimeMeasurement
+          - mdq:DQ_Confidence
+          - mdq:DQ_GriddedDataPositionalAccuracy
+          - mdq:DQ_Homogeneity
+          - mdq:DQ_NonQuantitativeAttributeCorrectness
+          - mdq:DQ_QuantitativeAttributeAccuracy
+          - mdq:DQ_RelativeInternalPositionalAccuracy
+          - mdq:DQ_Representativity
+          - mdq:DQ_TemporalConsistency
+          - mdq:DQ_TemporalValidity
+          - mdq:DQ_ThematicClassificationCorrectness
+          - mdq:DQ_TopologicalConsistency
+          - mdq:DQ_UsabilityElement
+          - mco:MD_Constraints
+          - mco:MD_LegalConstraints
+          - mco:MD_SecurityConstraints
+
+
+      formatters:
+        - name: xml
+          title:
+          officialProfileName: http://geonetwork.net/def/profile/raw-xml
+          contentType: application/xml
+        - name: datacite
+          title:
+          officialProfileName: http://geonetwork.net/def/profile/datacite
+          contentType: application/xml
+        - name: dcat
+          title:
+          officialProfileName: http://geonetwork.net/def/profile/dcat
+          contentType: application/rdf+xml
+        - name: eu-dcat-ap
+          title:
+          officialProfileName: http://geonetwork.net/def/profile/eu-dcat-ap
+          contentType: application/rdf+xml
+        - name: eu-dcat-ap-hvd
+          title:
+          officialProfileName: http://geonetwork.net/def/profile/eu-dcat-ap-hvd
+          contentType: application/rdf+xml
+        - name: eu-geodcat-ap
+          title:
+          officialProfileName: http://geonetwork.net/def/profile/eu-geodcat-ap
+          contentType: application/rdf+xml
+
+      #      Filters defined which elements should be removed
+      #      depending on user privileges.
+      filters:
+        #          All elements having a nilReason attribute
+        #            set to withheld, then users needs to have
+        #            the edit privilege in order to be able to see
+        #            the information. When filtered the element is
+        #            preserved but with no content in.
+        - xpath: .//*[@gco:nilReason = 'withheld']
+          jsonpath: $.*[?(@.nilReason == 'withheld')]
+          ifNotOperation: editing
+          keepMarkedElement: true
+        #          All online source having WMS protocol are filtered
+        #          to user not having dynamic privilege.
+        - xpath: .//mrd:onLine[starts-with(*/cit:protocol/gco:CharacterString, 'OGC:WMS')]
+          jsonpath: $['link'][?(@.protocol =~ /OGC:WMS.*?/i)]
+          ifNotOperation: dynamic
+        #          All online source having the following protocols
+        #          are filtered when user does not have download
+        #          privilege.
+        - xpath: >
+             .//mrd:onLine[contains(*/cit:protocol/gco:CharacterString, 'DOWNLOAD') or
+             */cit:protocol/gco:CharacterString = 'FILE' or
+             */cit:protocol/gco:CharacterString = 'DB' or
+             */cit:protocol/gco:CharacterString = 'COPYFILE']
+          jsonpath: $['link'][?(@.protocol =~ /(DOWNLOAD|FILE|DB|COPYFILE).*?/i)]
+          ifNotOperation: download

@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.geonetwork.schemas.MetadataSchemaConfiguration;
 import org.geonetwork.schemas.SchemaPlugin;
 import org.geonetwork.schemas.plugin.AssociatedResource;
 import org.geonetwork.schemas.plugin.AssociatedResourcesSchemaPlugin;
@@ -30,8 +31,7 @@ import org.springframework.stereotype.Component;
 public class ISO19115_3SchemaPlugin extends SchemaPlugin
         implements AssociatedResourcesSchemaPlugin, MultilingualSchemaPlugin, ExportablePlugin, ISOPlugin {
     //    LinkAwareSchemaPlugin {
-    public static final String IDENTIFIER = "iso19115-3.2018";
-
+    public static final String IDENTIFIER = "iso19115-3";
     private static final Pattern RECORD_ID_PATTERN = Pattern.compile(".*[i|I][d|D]=([_\\w\\-\\.\\{{\\}}]*).*");
     public static Set<Namespace> allNamespaces;
     private static Map<String, Namespace> allTypenames;
@@ -60,8 +60,11 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
         allExportFormats = Map.of("convert/ISO19139/toISO19139.xsl", "metadata-iso19139.xml");
     }
 
-    public ISO19115_3SchemaPlugin() {
+    private MetadataSchemaConfiguration configuration;
+
+    public ISO19115_3SchemaPlugin(ISO19115_3Configuration configuration) {
         super(IDENTIFIER, allNamespaces);
+        this.configuration = configuration;
     }
 
     @Override
