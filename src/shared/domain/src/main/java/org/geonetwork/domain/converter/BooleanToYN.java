@@ -7,6 +7,9 @@ package org.geonetwork.domain.converter;
 
 import org.hibernate.type.CharBooleanConverter;
 
+/**
+ * Handles conversion to/from {@code Boolean} as {@code 'y'} or {@code 'n'}
+ */
 public class BooleanToYN extends CharBooleanConverter {
     public static final BooleanToYN INSTANCE = new BooleanToYN();
     private static final String[] VALUES = new String[] {"n", "y"};
