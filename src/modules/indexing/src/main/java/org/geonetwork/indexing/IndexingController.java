@@ -10,7 +10,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.geonetwork.index.client.IndexClient;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +26,7 @@ public class IndexingController {
 
     /** Create index. */
     @GetMapping(path = "/setup", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('Administrator')")
+    // @PreAuthorize("hasRole('Administrator')")
     public String setupIndex(@RequestParam(defaultValue = "true") boolean dropIfExists) {
         indexClient.setupIndex(dropIfExists);
         return "Index created.";
@@ -35,7 +34,7 @@ public class IndexingController {
 
     /** Index all records. */
     @GetMapping(path = "/index", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('Administrator')")
+    // @PreAuthorize("hasRole('Administrator')")
     public String indexRecords(@RequestParam(defaultValue = "", required = false) String[] uuid) {
 
         indexingService.index(uuid.length > 0 ? List.of(uuid) : null);

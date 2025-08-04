@@ -37,5 +37,7 @@
     <module>data-directory</module>
     <module>setting-manager</module>
     <module>formatter</module>
+    <module>schema-iso19115-3</module>
+    <module>schema-iso19139</module>
   </modules>
 </project>

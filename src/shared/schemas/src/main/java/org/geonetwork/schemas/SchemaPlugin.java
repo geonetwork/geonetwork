@@ -96,4 +96,6 @@ public abstract class SchemaPlugin implements CSWPlugin {
     public Element processElement(Element el, String attributeName, String parsedAttributeName, String attributeValue) {
         return el;
     }
+
+    public abstract String getSchemasResourcePath();
 }

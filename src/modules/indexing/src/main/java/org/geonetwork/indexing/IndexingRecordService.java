@@ -9,9 +9,13 @@ package org.geonetwork.indexing;
 import static java.util.stream.Collectors.groupingBy;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.OP_PREFIX;
 import static org.geonetwork.index.model.record.IndexRecordFieldNames.VALID;
+import static org.geonetwork.utility.JarFileCopy.copyFolder;
 
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +46,7 @@ import org.geonetwork.domain.repository.ValidationRepository;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.index.model.record.IndexRecordFieldNames;
 import org.geonetwork.index.model.record.IndexRecords;
+import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.utility.xml.XsltUtil;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -67,6 +72,20 @@ public class IndexingRecordService {
     private final MetadatacategRepository metadatacategRepository;
     private final ValidationRepository validationRepository;
     private final UsersavedselectionRepository usersavedselectionRepository;
+    private final SchemaManager schemaManager;
+
+    /** initialize and configure schema manager. should only be on startup. */
+    @PostConstruct
+    public void configure() throws Exception {
+        Path basePath = schemaManager.getBasePath();
+
+        URI schemaResource = this.getClass().getResource("/indexing/xslt").toURI();
+
+        copyFolder(
+                schemaResource,
+                "indexing/xslt",
+                basePath.resolve("common/indexing/xslt"));
+    }
 
     /** Build index documents from the database metadata. */
     public IndexRecords buildIndexDocuments(List<Metadata> databaseMetadata) {
@@ -79,7 +98,10 @@ public class IndexingRecordService {
 
     /** Collect properties from the database metadata and apply XSLT to extract fields from XML document.. */
     public IndexRecords collectProperties(String schema, List<Metadata> schemaRecords) {
-        String indexingXsltFileName = String.format("indexing/xslt/%s.xsl", schema);
+        String schemasResourcesPath =
+                schemaManager.getSchemaPluginByIdentifier(schema).getSchemasResourcePath();
+
+        String indexingXsltFileName = String.format("%s/indexing/%s.xsl", schemasResourcesPath, schema);
         URL indexingXsltFile = null;
         try {
             indexingXsltFile = new ClassPathResource(indexingXsltFileName).getURL();

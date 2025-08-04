@@ -13,6 +13,7 @@ import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -49,6 +50,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -102,6 +104,18 @@ public class SchemaManager {
 
     private Path schemaPublicationDir;
     private int numberOfCoreSchemasAdded = 0;
+
+    @Autowired
+    List<? extends SchemaPlugin> schemaPlugins;
+
+    public SchemaPlugin getSchemaPluginByIdentifier(String identifier) {
+        for (SchemaPlugin plugin : schemaPlugins) {
+            if (plugin.getIdentifier().equals(identifier)) {
+                return plugin;
+            }
+        }
+        return null;
+    }
 
     public static Path registerXmlCatalogFiles(Path basePath, Path schemapluginUriCatalog) throws IOException {
         //    Path webInf = webappDir.resolve("WEB-INF");
@@ -190,6 +204,10 @@ public class SchemaManager {
     //            "sharedFormatterDir/", dataDir.getFormatterDir().toAbsolutePath().toUri() + "/"));
     //  }
 
+    public Path getBasePath() {
+        return basePath;
+    }
+
     /** initialize and configure schema manager. should only be on startup. */
     @PostConstruct
     public void configure() throws Exception {
@@ -197,14 +215,24 @@ public class SchemaManager {
         hmSchemas.clear();
 
         // FIXME: Should be in the data directory?
-        Path schemaPath = Path.of("/tmp/gn5-schema/");
+        Path schemaPath = Files.createTempDirectory("gn5-");
         Files.createDirectories(schemaPath);
         this.basePath = schemaPath; // .resolve("usedforschematronrulecompilation");
         //    this.resourcePath = resourcePath;
         this.schemaPublicationDir = schemaPath.resolve("schemapublicationwww");
 
-        // Copy JAR resources to the schema directory
-        copyFolder(new ClassPathResource("/schemas").getURI(), "schemas", schemaPath.resolve("schemaplugins"));
+        // Copy schemas JAR resources to the schema directory
+        for (SchemaPlugin plugin : schemaPlugins) {
+            URI schemaResource = plugin.getClass()
+                    .getResource(plugin.getSchemasResourcePath())
+                    .toURI();
+
+            copyFolder(
+                    schemaResource,
+                    "schemas/" + plugin.getIdentifier(),
+                    schemaPath.resolve("schemaplugins").resolve(plugin.getIdentifier()));
+        }
+
         this.schemaPluginsDir = schemaPath.resolve("schemaplugins");
 
         copyFolder(new ClassPathResource("/xml").getURI(), "xml", schemaPath.resolve("xml"));

@@ -51,6 +51,16 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
+      <artifactId>gn-schema-iso19139</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-schema-iso19115-3</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
       <artifactId>gn-legacy-utility</artifactId>
       <version>${project.version}</version>
     </dependency>
