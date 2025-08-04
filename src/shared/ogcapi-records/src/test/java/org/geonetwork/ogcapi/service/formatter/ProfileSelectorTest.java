@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
 import org.geonetwork.ogcapi.service.configuration.ProfileDefault;
-import org.geonetwork.schemas.model.schemaident.Formatter;
+import org.geonetwork.schemas.MetadataSchemaConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -112,21 +112,21 @@ public class ProfileSelectorTest {
         assertEquals("testcase.profile2", selectedFormatter);
     }
 
-    private Formatter getFormatter1() {
-        var formatter = new Formatter();
-        formatter.setName("testcase.profile informal");
-        formatter.setTitle("testcase.profile title");
-        formatter.setOfficialProfileName("testcase.profile");
-        formatter.setContentType("application/testcase");
-        return formatter;
+    private MetadataSchemaConfiguration.Formatter getFormatter1() {
+        return MetadataSchemaConfiguration.Formatter.builder()
+                .name("testcase.profile informal")
+                .title("testcase.profile title")
+                .officialProfileName("testcase.profile")
+                .contentType("application/testcase")
+                .build();
     }
 
-    private Formatter getFormatter2() {
-        var formatter = new Formatter();
-        formatter.setName("testcase.profile2 informal");
-        formatter.setTitle("testcase.profile2 title");
-        formatter.setOfficialProfileName("testcase.profile2");
-        formatter.setContentType("application/testcase");
-        return formatter;
+    private MetadataSchemaConfiguration.Formatter getFormatter2() {
+        return MetadataSchemaConfiguration.Formatter.builder()
+                .name("testcase.profile2 informal")
+                .title("testcase.profile2 title")
+                .officialProfileName("testcase.profile2")
+                .contentType("application/testcase")
+                .build();
     }
 }

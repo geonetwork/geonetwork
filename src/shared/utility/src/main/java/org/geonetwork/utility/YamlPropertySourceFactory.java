@@ -23,6 +23,7 @@ public class YamlPropertySourceFactory implements PropertySourceFactory {
 
         Properties properties = factory.getObject();
 
-        return new PropertiesPropertySource(encodedResource.getResource().getURI().toString(), properties);
+        return new PropertiesPropertySource(
+                encodedResource.getResource().getURI().toString(), properties);
     }
 }

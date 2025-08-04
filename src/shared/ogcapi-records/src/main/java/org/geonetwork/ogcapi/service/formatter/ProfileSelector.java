@@ -8,7 +8,7 @@ package org.geonetwork.ogcapi.service.formatter;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
-import org.geonetwork.schemas.model.schemaident.Formatter;
+import org.geonetwork.schemas.MetadataSchemaConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 
@@ -39,7 +39,9 @@ public class ProfileSelector {
      * @return best matching formatter
      */
     public String chooseProfile(
-            MediaType mediaType, List<String> requestedProfiles, List<Formatter> possibleFormatters) {
+            MediaType mediaType,
+            List<String> requestedProfiles,
+            List<MetadataSchemaConfiguration.Formatter> possibleFormatters) {
 
         var defaultProfile = itemPageLinksConfiguration.getProfileDefaults().stream()
                 .filter(x -> x.getMimetype().equals(mediaType.toString()))

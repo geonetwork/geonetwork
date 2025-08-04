@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.geonetwork.schemas.model.schemaident.Formatter;
+import org.geonetwork.schemas.MetadataSchemaConfiguration;
 import org.geonetwork.utility.MediaTypeAndProfileBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -50,7 +50,7 @@ public class FormattingController {
     @io.swagger.v3.oas.annotations.Operation(
             summary = "Get available formatter for the metadata record depending on the metadata schema.")
     @ResponseBody
-    public List<Formatter> getRecordFormatterList(
+    public List<MetadataSchemaConfiguration.Formatter> getRecordFormatterList(
             @Parameter(description = API_PARAM_RECORD_UUID, required = true) @PathVariable String metadataUuid,
             @RequestParam(required = false, defaultValue = "true") boolean approved)
             throws Exception {
@@ -64,7 +64,7 @@ public class FormattingController {
     @io.swagger.v3.oas.annotations.Operation(
             summary = "Get available formatter for the metadata record depending on the metadata schema.")
     @ResponseBody
-    public List<Formatter> getRecordFormatterListForSchema(
+    public List<MetadataSchemaConfiguration.Formatter> getRecordFormatterListForSchema(
             @Parameter(description = API_PARAM_RECORD_UUID, required = true) @PathVariable String schemaId) {
 
         return formatterApi.getAvailableFormattersForSchema(schemaId);
@@ -101,14 +101,15 @@ public class FormattingController {
             HttpServletResponse servletResponse)
             throws Exception {
 
-        List<Formatter> formatters = formatterApi.getRecordFormattersForMetadata(metadataUuid);
+        List<MetadataSchemaConfiguration.Formatter> formatters =
+                formatterApi.getRecordFormattersForMetadata(metadataUuid);
 
         var query = formatters.stream().filter(formatter -> formatter.getName().equals(formatterId));
         if (StringUtils.hasText(profile)) {
             query = query.filter(f -> profile.equals(f.getName()) || profile.equals(f.getOfficialProfileName()));
         }
 
-        Optional<Formatter> formatterOptional = query.findFirst();
+        Optional<MetadataSchemaConfiguration.Formatter> formatterOptional = query.findFirst();
 
         if (formatterOptional.isEmpty()) {
             throw new FormatterException(

@@ -1,7 +1,9 @@
 geonetwork:
   schemas:
     iso19139:
-      identifier: iso19139
+      name: iso19139
+      id: 3f95190a-dde4-11df-8626-001c2346de4c</id>
+      version: 1.0
       standardTitle:
         eng: Geographic information - Metadata (iso19139:2007)
         fre: Information géographique - Métadonnées (iso19139:2007)

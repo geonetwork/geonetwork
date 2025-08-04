@@ -81,10 +81,7 @@ public class IndexingRecordService {
 
         URI schemaResource = this.getClass().getResource("/indexing/xslt").toURI();
 
-        copyFolder(
-                schemaResource,
-                "indexing/xslt",
-                basePath.resolve("common/indexing/xslt"));
+        copyFolder(schemaResource, "indexing/xslt", basePath.resolve("common/indexing/xslt"));
     }
 
     /** Build index documents from the database metadata. */

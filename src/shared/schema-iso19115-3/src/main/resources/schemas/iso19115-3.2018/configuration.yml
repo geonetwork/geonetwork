@@ -1,7 +1,9 @@
 geonetwork:
   schemas:
     iso19115-3:
-      identifier: iso19115-3
+      name: iso19115-3
+      id: 93f66207-621a-4610-813f-38494a51d121
+      version: 1.0
       standardTitle:
         eng: Geographic information - Metadata
         fre: Information géographique - Métadonnées

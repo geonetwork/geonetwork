@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.formatting.processor.IndexFormatterProcessorFactory;
 import org.geonetwork.schemas.MetadataSchema;
+import org.geonetwork.schemas.MetadataSchemaConfiguration;
 import org.geonetwork.schemas.SchemaManager;
 import org.springframework.stereotype.Component;
 
@@ -53,13 +54,13 @@ public class FormatterFactory {
      * @param metadata Metadata object to determine available formatters.
      * @return List of available formatter IDs.
      */
-    public List<org.geonetwork.schemas.model.schemaident.Formatter> getAvailableFormatters(Metadata metadata) {
-        List<org.geonetwork.schemas.model.schemaident.Formatter> formatters = new ArrayList<>();
+    public List<MetadataSchemaConfiguration.Formatter> getAvailableFormatters(Metadata metadata) {
+        List<MetadataSchemaConfiguration.Formatter> formatters = new ArrayList<>();
 
         formatters.addAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
 
         MetadataSchema metadataSchema = schemaManager.getSchema(metadata.getSchemaid());
-        formatters.addAll(metadataSchema.getFormatters());
+        formatters.addAll(metadataSchema.getSchemaPlugin().getConfiguration().getFormatters());
 
         return formatters;
     }
@@ -71,8 +72,8 @@ public class FormatterFactory {
      * @param schemaId Metadata schema ID to determine available formatters.
      * @return List of available formatter IDs.
      */
-    public List<org.geonetwork.schemas.model.schemaident.Formatter> getAvailableFormattersForSchema(String schemaId) {
-        List<org.geonetwork.schemas.model.schemaident.Formatter> formatters = new ArrayList<>();
+    public List<MetadataSchemaConfiguration.Formatter> getAvailableFormattersForSchema(String schemaId) {
+        List<MetadataSchemaConfiguration.Formatter> formatters = new ArrayList<>();
 
         formatters.addAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
 

@@ -19,16 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Geonet;
 import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.schemas.editorconfig.Editor;
-import org.geonetwork.schemas.model.schemaident.Description;
-import org.geonetwork.schemas.model.schemaident.Formatter;
-import org.geonetwork.schemas.model.schemaident.SchemaIdentificationInfo;
-import org.geonetwork.schemas.model.schemaident.StandardUrl;
-import org.geonetwork.schemas.model.schemaident.Title;
 import org.geonetwork.schemas.plugin.SavedQuery;
 import org.geonetwork.utility.legacy.exceptions.ResourceNotFoundException;
 import org.geonetwork.utility.legacy.xml.Xml;
@@ -59,7 +55,9 @@ public class MetadataSchema {
     private Map<String, String> hmSubsLink = new HashMap<>();
     private Map<String, Namespace> hmNameSpaces = new HashMap<>();
     private Map<String, Namespace> hmPrefixes = new HashMap<>();
-    private Map<String, MetadataSchemaOperationFilter> hmOperationFilters = new HashMap<>();
+
+    // TODO: Use configuration for operation filters
+    private Map<String, MetadataSchemaConfiguration.Filter> hmOperationFilters = new HashMap<>();
     private String schemaName;
     private Path schemaDir;
     private String primeNS;
@@ -67,10 +65,9 @@ public class MetadataSchema {
     private boolean canEdit = false;
     private List<Element> rootAppInfoElements;
 
-    private SchemaIdentificationInfo schemaIdentificationInfo;
-
     //    private SchematronRepository schemaRepo;
     //    private SchematronCriteriaGroupRepository criteriaGroupRepository;
+    @Setter
     private SchemaPlugin schemaPlugin;
 
     // ---------------------------------------------------------------------------
@@ -83,6 +80,7 @@ public class MetadataSchema {
         //      SchematronRepository schemaRepo, SchematronCriteriaGroupRepository
         // criteriaGroupRepository) {
         schemaName = "UNKNOWN";
+        this.schemaPlugin = schemaPlugin;
         //    this.schemaRepo = schemaRepo;
         //    this.criteriaGroupRepository = criteriaGroupRepository;
     }
@@ -113,15 +111,10 @@ public class MetadataSchema {
 
     public void setName(String inName) {
         schemaName = inName;
-        this.schemaPlugin = SchemaManager.getSchemaPlugin(schemaName);
     }
 
-    public void setSchemaIdentificationInfo(SchemaIdentificationInfo schemaIdentificationInfo) {
-        this.schemaIdentificationInfo = schemaIdentificationInfo;
-    }
-
-    public List<Formatter> getFormatters() {
-        return this.schemaIdentificationInfo.getFormatters().getFormatters();
+    public List<MetadataSchemaConfiguration.Formatter> getFormatters() {
+        return this.schemaPlugin.getConfiguration().getFormatters();
     }
 
     @JsonIgnore
@@ -491,7 +484,7 @@ public class MetadataSchema {
         //    this.schemaRepo.saveAll(updated);
     }
 
-    public void setOperationFilters(Map<String, MetadataSchemaOperationFilter> operationFilters) {
+    public void setOperationFilters(Map<String, MetadataSchemaConfiguration.Filter> operationFilters) {
         this.hmOperationFilters = operationFilters;
     }
 
@@ -500,11 +493,11 @@ public class MetadataSchema {
      *
      * @return The XPath to select element to filter or null
      */
-    public MetadataSchemaOperationFilter getOperationFilter(ReservedOperation operation) {
+    public MetadataSchemaConfiguration.Filter getOperationFilter(ReservedOperation operation) {
         return hmOperationFilters.get(operation.name());
     }
 
-    public MetadataSchemaOperationFilter getOperationFilter(String operation) {
+    public MetadataSchemaConfiguration.Filter getOperationFilter(String operation) {
         return hmOperationFilters.get(operation);
     }
 
@@ -543,41 +536,43 @@ public class MetadataSchema {
      * editing or in UFO).
      */
     public boolean isReadwriteUUID() {
-        return Boolean.TRUE.equals(schemaIdentificationInfo.isReadwriteUuid());
+        return this.schemaPlugin.getConfiguration().isReadwriteUuid();
     }
 
     public List<String> getStandardUrl() {
-        return schemaIdentificationInfo.getStandardUrls().stream()
-                .map(StandardUrl::getValue)
-                .collect(Collectors.toList());
+        return this.schemaPlugin.getConfiguration().getStandardUrl().values().stream()
+                .toList();
     }
 
+    // "GN5 migration / To remove?"
+    @Deprecated
     public String getVersion() {
-        return schemaIdentificationInfo.getVersion();
+        return null;
     }
 
+    @Deprecated
     public String getAppMinorVersionSupported() {
-        return schemaIdentificationInfo.getAppMinorVersionSupported();
+        return null;
     }
 
+    @Deprecated
     public String getAppMajorVersionSupported() {
-        return schemaIdentificationInfo.getAppMajorVersionSupported();
+        return null;
     }
 
     public String getDependsOn() {
-        if (!schemaIdentificationInfo.getDepends().isEmpty()) {
-            return schemaIdentificationInfo.getDepends().get(0);
+        if (!this.schemaPlugin.getConfiguration().getDepends().isEmpty()) {
+            return this.schemaPlugin.getConfiguration().getDepends();
         }
         return "";
     }
 
     public Map<String, String> getTitles() {
-        return schemaIdentificationInfo.getTitles().stream().collect(Collectors.toMap(Title::getLang, Title::getValue));
+        return this.schemaPlugin.getConfiguration().getStandardTitle();
     }
 
     public Map<String, String> getDescriptions() {
-        return schemaIdentificationInfo.getDescriptions().stream()
-                .collect(Collectors.toMap(Description::getLang, Description::getValue));
+        return this.schemaPlugin.getConfiguration().getStandardDescription();
     }
 
     /** Schematron rules filename is like "schematron-rules-iso.xsl */

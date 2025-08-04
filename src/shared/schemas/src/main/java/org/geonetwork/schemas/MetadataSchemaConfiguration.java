@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +21,13 @@ public class MetadataSchemaConfiguration {
      * schema using base-schema-name.profile-name eg. iso19139.mcp.
      */
     @NotBlank
-    String identifier;
+    String name;
+
+    @NotBlank
+    String id;
+
+    @NotBlank
+    String version;
 
     /**
      * Name of other schema that this schema depends on. This schema will fail to load if that schema is not present.
@@ -51,6 +58,7 @@ public class MetadataSchemaConfiguration {
     /** Information used to detect whether a metadata record belongs to this schema */
     AutodetectConfiguration autodetect;
 
+    @Builder
     @Data
     public static class Formatter {
         @NotBlank

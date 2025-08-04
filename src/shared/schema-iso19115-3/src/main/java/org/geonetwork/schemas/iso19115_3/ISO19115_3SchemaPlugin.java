@@ -64,7 +64,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
 
     public ISO19115_3SchemaPlugin(ISO19115_3Configuration configuration) {
         super(IDENTIFIER, allNamespaces);
-        this.configuration = configuration;
+        this.setConfiguration(configuration);
     }
 
     @Override

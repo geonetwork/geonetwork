@@ -14,9 +14,9 @@ import org.springframework.context.annotation.PropertySources;
 
 @Configuration
 @PropertySources({
-@PropertySource(
-        value = "classpath:/schemas/iso19115-3.2018/configuration.yml",
-        factory = YamlPropertySourceFactory.class)
-  })
+    @PropertySource(
+            value = "classpath:/schemas/iso19115-3.2018/configuration.yml",
+            factory = YamlPropertySourceFactory.class)
+})
 @ConfigurationProperties("geonetwork.schemas.iso19115-3")
 public class ISO19115_3Configuration extends MetadataSchemaConfiguration {}

@@ -8,9 +8,6 @@ package org.geonetwork.schemas;
 import static org.geonetwork.utility.JarFileCopy.copyFolder;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
@@ -32,9 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Constants;
 import org.geonetwork.constants.Geonet;
-import org.geonetwork.schemas.model.schemaident.Filter;
-import org.geonetwork.schemas.model.schemaident.Filters;
-import org.geonetwork.schemas.model.schemaident.SchemaIdentificationInfo;
 import org.geonetwork.utility.ApplicationContextProvider;
 import org.geonetwork.utility.legacy.Pair;
 import org.geonetwork.utility.legacy.exceptions.NoSchemaMatchesException;
@@ -975,8 +969,11 @@ public class SchemaManager {
         //    SchematronCriteriaGroupRepository criteriaGroupRepository =
         //        applicationContext.getBean(SchematronCriteriaGroupRepository.class);
         MetadataSchema mds = new SchemaLoader().load(xmlSchemaFile, xmlSubstitutionsFile);
-
         mds.setName(path.getFileName().toString());
+        mds.setSchemaPlugin(this.schemaPlugins.stream().
+                filter(plugin -> plugin.getIdentifier().equals(mds.getName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Schema plugin not found for " + mds.getName())));
         mds.setSchemaDir(path);
         mds.loadSchematronRules(basePath);
 
@@ -987,7 +984,6 @@ public class SchemaManager {
         // -- add cached xml files (schema codelists and label files)
         // -- as Jeeves XmlFile objects (they need not exist)
 
-        final String schemaName = schemaDir.getFileName().toString();
         //    Path locBase = schemaDir.resolve("loc");
         //    //    Map<String, XmlFile> xfMap = new HashMap<>();
         //
@@ -1011,26 +1007,23 @@ public class SchemaManager {
         //      }
         //    }
 
-        SchemaIdentificationInfo schemaIdentificationInfo = getSchemaIdentificationInfo(xmlIdFile);
-        mds.setSchemaIdentificationInfo(schemaIdentificationInfo);
-        mds.setOperationFilters(extractOperationFilters(schemaIdentificationInfo));
-
-        Pair<String, String> idInfo = extractIdInfo(schemaIdentificationInfo, schemaName);
         log.debug("  UUID is read/write mode: " + mds.isReadwriteUUID());
 
         putSchemaInfo(
-                schemaName,
-                idInfo.one(), // uuid of schema
-                idInfo.two(), // version of schema
+                mds.getName(),
+                mds.getSchemaPlugin().getConfiguration().getId(),
+                mds.getSchemaPlugin().getConfiguration().getVersion(),
                 mds,
                 path,
                 new SchemaSuggestions(xmlSuggestFile),
                 extractADElements(xmlIdFile),
                 //        xfMap,
                 true, // all schemas are plugin schemas now
-                extractSchemaLocation(schemaIdentificationInfo),
+                mds.getSchemaPlugin().getConfiguration().getSchemaLocation(),
                 extractConvElements(conversionsFile),
-                extractDepends(schemaIdentificationInfo));
+                // TODO: GN5 / Remove if dependency is limited to one
+          mds.getSchemaPlugin().getConfiguration().getDepends() != null ? List.of(mds.getSchemaPlugin().getConfiguration().getDepends()) : List.of()
+        );
 
         if (log.isDebugEnabled()) {
             log.debug("Property "
@@ -1041,15 +1034,15 @@ public class SchemaManager {
 
         // -- Add entry for presentation xslt to schemaPlugins catalog
         // -- if this schema is a plugin schema
-        int baseNrInt = getHighestSchemaPluginCatalogId(schemaName, schemaPluginCatRoot);
+        int baseNrInt = getHighestSchemaPluginCatalogId(mds.getName(), schemaPluginCatRoot);
         if (baseNrInt == 0) baseNrInt = numberOfCoreSchemasAdded;
         if (baseNrInt != -1) {
-            createUriEntryInSchemaPluginCatalog(schemaName, baseNrInt, schemaPluginCatRoot);
+            createUriEntryInSchemaPluginCatalog(mds.getName(), baseNrInt, schemaPluginCatRoot);
         }
 
         // -- copy schema.xsd and schema directory from schema to
         // -- <web_app_dir>/xml/schemas/<schema_name>
-        copySchemaXSDsToWebApp(schemaName, path);
+        copySchemaXSDsToWebApp(mds.getName(), path);
     }
 
     /**
@@ -1390,40 +1383,41 @@ public class SchemaManager {
         Version appVersion = Version.parseVersionNumber(version);
 
         // process each schema to see whether its dependencies are present
-        for (Map.Entry<String, Schema> schemaInfo : hmSchemas.entrySet()) {
-            Schema schema = schemaInfo.getValue();
-            String minorAppVersionSupported = schema.getMetadataSchema().getAppMinorVersionSupported();
-
-            Version schemaMinorAppVersion = Version.parseVersionNumber(minorAppVersionSupported);
-
-            if (appVersion.compareTo(schemaMinorAppVersion) < 0) {
-                log.error("Schema "
-                        + schemaInfo.getKey()
-                        + " requires min Geonetwork version: "
-                        + minorAppVersionSupported
-                        + ", current is: "
-                        + version
-                        + ". Skip load schema.");
-                removes.add(schemaInfo.getKey());
-                continue;
-            }
-
-            String majorAppVersionSupported = schema.getMetadataSchema().getAppMajorVersionSupported();
-            if (StringUtils.isNotEmpty(majorAppVersionSupported)) {
-                Version schemaMajorAppVersion = Version.parseVersionNumber(majorAppVersionSupported);
-
-                if (appVersion.compareTo(schemaMajorAppVersion) > 0) {
-                    log.error("Schema "
-                            + schemaInfo.getKey()
-                            + " requires max Geonetwork version: "
-                            + majorAppVersionSupported
-                            + ", current is: "
-                            + version
-                            + ". Skip load schema.");
-                    removes.add(schemaInfo.getKey());
-                }
-            }
-        }
+        // TODO: GN5 / Do we need minor/major version checks?
+//        for (Map.Entry<String, Schema> schemaInfo : hmSchemas.entrySet()) {
+//            Schema schema = schemaInfo.getValue();
+//            String minorAppVersionSupported = schema.getMetadataSchema().getAppMinorVersionSupported();
+//
+//            Version schemaMinorAppVersion = Version.parseVersionNumber(minorAppVersionSupported);
+//
+//            if (appVersion.compareTo(schemaMinorAppVersion) < 0) {
+//                log.error("Schema "
+//                        + schemaInfo.getKey()
+//                        + " requires min Geonetwork version: "
+//                        + minorAppVersionSupported
+//                        + ", current is: "
+//                        + version
+//                        + ". Skip load schema.");
+//                removes.add(schemaInfo.getKey());
+//                continue;
+//            }
+//
+//            String majorAppVersionSupported = schema.getMetadataSchema().getAppMajorVersionSupported();
+//            if (StringUtils.isNotEmpty(majorAppVersionSupported)) {
+//                Version schemaMajorAppVersion = Version.parseVersionNumber(majorAppVersionSupported);
+//
+//                if (appVersion.compareTo(schemaMajorAppVersion) > 0) {
+//                    log.error("Schema "
+//                            + schemaInfo.getKey()
+//                            + " requires max Geonetwork version: "
+//                            + majorAppVersionSupported
+//                            + ", current is: "
+//                            + version
+//                            + ". Skip load schema.");
+//                    removes.add(schemaInfo.getKey());
+//                }
+//            }
+//        }
 
         // now remove any that failed the app version test
         for (String removeSchema : removes) {
@@ -1477,72 +1471,6 @@ public class SchemaManager {
     }
 
     /**
-     * Extract schema dependencies (depend elements).
-     *
-     * @param schemaIdentificationInfo schema identification info
-     * @return depends elements as a List
-     */
-    @SuppressWarnings("unchecked")
-    private List<String> extractDepends(SchemaIdentificationInfo schemaIdentificationInfo) throws Exception {
-        return schemaIdentificationInfo.getDepends();
-    }
-
-    /** Extract metadata schema informations (eg. title, description, url). */
-    private SchemaIdentificationInfo getSchemaIdentificationInfo(Path xmlIdFile) {
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(SchemaIdentificationInfo.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            return (SchemaIdentificationInfo) unmarshaller.unmarshal(xmlIdFile.toFile());
-        } catch (JAXBException e) {
-            log.error(" Get config editor. Error is " + e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * true if schema requires to synch the uuid column schema info with the uuid in the metadata record (updated on
-     * editing or in UFO).
-     */
-    private Map<String, MetadataSchemaOperationFilter> extractOperationFilters(
-            SchemaIdentificationInfo schemaIdentificationInfo) throws Exception {
-        Filters filters = schemaIdentificationInfo.getFilters();
-        Map<String, MetadataSchemaOperationFilter> filterRules = new HashMap<>();
-        if (filters.getFilters().isEmpty()) {
-            return filterRules;
-        } else {
-            for (Filter filter : filters.getFilters()) {
-                String xpath = filter.getXpath();
-                String jsonpath = filter.getJsonpath();
-                String ifNotOperation = filter.getIfNotOperation();
-                Filter.KeepMarkedElement keepMarkedElement = filter.getKeepMarkedElement();
-                if (StringUtils.isNotBlank(ifNotOperation) && StringUtils.isNotBlank(xpath)) {
-                    MetadataSchemaOperationFilter metadataSchemaOperationFilter =
-                            new MetadataSchemaOperationFilter(xpath, jsonpath, ifNotOperation, keepMarkedElement);
-                    filterRules.put(ifNotOperation, metadataSchemaOperationFilter);
-                }
-            }
-        }
-        return filterRules;
-    }
-
-    /**
-     * Extract schema version and uuid info from identification file and compare specified name with name in
-     * identification file.
-     *
-     * @param schemaIdentificationInfo schema identification info
-     * @param name name of schema to check
-     */
-    private Pair<String, String> extractIdInfo(SchemaIdentificationInfo schemaIdentificationInfo, String name) {
-        if (!schemaIdentificationInfo.getName().equals(name))
-            throw new IllegalArgumentException("Schema name supplied "
-                    + name
-                    + " does not match the name of the schema in the schema-id.xml file "
-                    + schemaIdentificationInfo.getName());
-
-        return Pair.read(schemaIdentificationInfo.getId(), schemaIdentificationInfo.getVersion());
-    }
-
-    /**
      * Extracts schema autodetect info from identification file.
      *
      * @param xmlIdFile name of schema XML identification file
@@ -1575,15 +1503,6 @@ public class SchemaManager {
             List<Element> result = root.getChildren();
             return result;
         }
-    }
-
-    /**
-     * Extract schemaLocation info from identification file.
-     *
-     * @param schemaIdentificationInfo schema identification info
-     */
-    private String extractSchemaLocation(SchemaIdentificationInfo schemaIdentificationInfo) {
-        return schemaIdentificationInfo.getSchemaLocation();
     }
 
     /**

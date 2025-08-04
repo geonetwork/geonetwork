@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.metadata.IMetadataAccessManager;
 import org.geonetwork.metadata.IMetadataManager;
+import org.geonetwork.schemas.MetadataSchemaConfiguration;
 import org.geonetwork.schemas.SchemaManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
@@ -111,7 +112,7 @@ public class FormatterApi {
      * @return List of available formatters
      * @throws Exception if metadata not found or access denied
      */
-    public List<org.geonetwork.schemas.model.schemaident.Formatter> getRecordFormattersForMetadata(String metadataUuid)
+    public List<MetadataSchemaConfiguration.Formatter> getRecordFormattersForMetadata(String metadataUuid)
             throws Exception {
         return getRecordFormattersForMetadata(metadataUuid, true);
     }
@@ -122,7 +123,7 @@ public class FormatterApi {
      * @param schemaId Schema identifier
      * @return List of available formatters for the schema
      */
-    public List<org.geonetwork.schemas.model.schemaident.Formatter> getAvailableFormattersForSchema(String schemaId) {
+    public List<MetadataSchemaConfiguration.Formatter> getAvailableFormattersForSchema(String schemaId) {
         return formatterFactory.getAvailableFormattersForSchema(schemaId);
     }
 
@@ -134,7 +135,7 @@ public class FormatterApi {
      * @return List of available formatters
      * @throws Exception if metadata not found or access denied
      */
-    public List<org.geonetwork.schemas.model.schemaident.Formatter> getRecordFormattersForMetadata(
+    public List<MetadataSchemaConfiguration.Formatter> getRecordFormattersForMetadata(
             String metadataUuid, boolean approved) throws Exception {
         Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
 

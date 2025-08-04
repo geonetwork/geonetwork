@@ -12,13 +12,17 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import lombok.Data;
 import org.geonetwork.schemas.plugin.CSWPlugin;
 import org.geonetwork.schemas.plugin.HttpLink;
 import org.geonetwork.schemas.plugin.SavedQuery;
 import org.jdom.Element;
 import org.jdom.Namespace;
 
+@Data
 public abstract class SchemaPlugin implements CSWPlugin {
+
+    protected MetadataSchemaConfiguration configuration;
 
     protected SchemaPlugin(String identifier, Set<Namespace> allNamespaces) {
         this.identifier = identifier;
@@ -27,19 +31,7 @@ public abstract class SchemaPlugin implements CSWPlugin {
 
     public final String identifier;
 
-    public String getIdentifier() {
-        return identifier;
-    }
-
     private List<SavedQuery> savedQueries = new ArrayList<>();
-
-    public List<SavedQuery> getSavedQueries() {
-        return savedQueries;
-    }
-
-    public void setSavedQueries(List<SavedQuery> savedQueries) {
-        this.savedQueries = savedQueries;
-    }
 
     public @Nullable SavedQuery getSavedQuery(@Nonnull String queryKey) {
         Iterator<SavedQuery> iterator = this.getSavedQueries().iterator();
@@ -54,36 +46,12 @@ public abstract class SchemaPlugin implements CSWPlugin {
 
     private Set<Namespace> allNamespaces;
 
-    public Set<Namespace> getNamespaces() {
-        return allNamespaces;
-    }
-
     private List<String> xpathTitle;
-
-    public void setXpathTitle(List<String> xpathTitle) {
-        this.xpathTitle = xpathTitle;
-    }
-
-    public List<String> getXpathTitle() {
-        return xpathTitle;
-    }
 
     protected List<String> elementsToProcess = new ArrayList<>();
 
-    public void setElementsToProcess(List<String> elementsToProcess) {
-        this.elementsToProcess = elementsToProcess;
-    }
-
     /** Links to analyze in a metadata record */
     protected List<HttpLink> analyzedLinks;
-
-    public void setAnalyzedLinks(List<HttpLink> analyzedLinks) {
-        this.analyzedLinks = analyzedLinks;
-    }
-
-    public List<HttpLink> getAnalyzedLinks() {
-        return analyzedLinks;
-    }
 
     /**
      * Processes the passed element. This base class just return the same element without modifications but can be
