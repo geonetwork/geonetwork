@@ -38,6 +38,9 @@ public class MetadataSchemaConfiguration {
     @NotBlank
     String schemaLocation;
 
+    @NotBlank
+    String primeNamespace;
+
     Map<String, String> standardTitle;
     Map<String, String> standardDescription;
     Map<String, String> standardUrl;

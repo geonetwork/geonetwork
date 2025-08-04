@@ -40,6 +40,7 @@ geonetwork:
       standardUrl:
         eng: https://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=53798
       schemaLocation: http://www.isotc211.org/2005/gmd http://schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd
+      primeNamespace: http://www.isotc211.org/2005/gmd
       autodetect:
         type: root
         name:
@@ -102,3 +103,13 @@ geonetwork:
              */cit:protocol/gco:CharacterString = 'COPYFILE']
           jsonpath: $['link'][?(@.protocol =~ /(DOWNLOAD|FILE|DB|COPYFILE).*?/i)]
           ifNotOperation: download
+
+
+#TODO: schema-suggestions.xml
+#  <fields>
+#  <field name="gmd:contactInstructions">
+#  <suggest name="gco:CharacterString"/>
+#  <suggest name="gmx:FileName"/>
+#  </field>
+
+#TODO: schema-substitutes.xml

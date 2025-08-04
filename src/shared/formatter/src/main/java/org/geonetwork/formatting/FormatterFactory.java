@@ -10,9 +10,9 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.formatting.processor.IndexFormatterProcessorFactory;
-import org.geonetwork.schemas.MetadataSchema;
 import org.geonetwork.schemas.MetadataSchemaConfiguration;
 import org.geonetwork.schemas.SchemaManager;
+import org.geonetwork.schemas.SchemaPlugin;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -59,8 +59,8 @@ public class FormatterFactory {
 
         formatters.addAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
 
-        MetadataSchema metadataSchema = schemaManager.getSchema(metadata.getSchemaid());
-        formatters.addAll(metadataSchema.getSchemaPlugin().getConfiguration().getFormatters());
+        SchemaPlugin metadataSchema = schemaManager.getSchema(metadata.getSchemaid());
+        formatters.addAll(metadataSchema.getConfiguration().getFormatters());
 
         return formatters;
     }
@@ -77,8 +77,8 @@ public class FormatterFactory {
 
         formatters.addAll(indexFormatterProcessorFactory.getAvailableFormatterProcessors());
 
-        MetadataSchema metadataSchema = schemaManager.getSchema(schemaId);
-        formatters.addAll(metadataSchema.getFormatters());
+        SchemaPlugin metadataSchema = schemaManager.getSchema(schemaId);
+        formatters.addAll(metadataSchema.getConfiguration().getFormatters());
 
         return formatters;
     }

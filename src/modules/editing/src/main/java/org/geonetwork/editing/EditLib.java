@@ -135,7 +135,7 @@ public class EditLib {
 
     /** Given an element, creates all mandatory sub-elements. The given element should be empty. */
     public void fillElement(String schema, Element parent, Element md) throws Exception {
-        fillElement(scm.getSchema(schema), scm.getSchemaSuggestions(schema), parent, md);
+        fillElement(scm.getSchema(schema).getMetadataSchema(), scm.getSchemaSuggestions(schema), parent, md);
     }
 
     /** Given an expanded tree, removes all info added for editing and replaces choice_elements with their children. */
@@ -224,7 +224,7 @@ public class EditLib {
     public void addFragment(String schema, Element targetElement, String qname, String fragment, boolean removeExisting)
             throws Exception {
 
-        MetadataSchema mdSchema = scm.getSchema(schema);
+        MetadataSchema mdSchema = scm.getSchema(schema).getMetadataSchema();
         Element childToAdd;
 
         try {
@@ -1199,7 +1199,7 @@ public class EditLib {
         @SuppressWarnings("JdkObsolete")
         Vector<Element> holder = new Vector<Element>();
 
-        MetadataSchema mdSchema = scm.getSchema(schema);
+        MetadataSchema mdSchema = scm.getSchema(schema).getMetadataSchema();
         String chUQname = getUnqualifiedName(chName);
         String chPrefix = getPrefix(chName);
         String chNS = getNamespace(chName, md, mdSchema);
@@ -1248,7 +1248,7 @@ public class EditLib {
 
         String name = md.getQualifiedName();
         String parentName = getParentNameFromChild(md);
-        MetadataSchema mdSchema = scm.getSchema(schema);
+        MetadataSchema mdSchema = scm.getSchema(schema).getMetadataSchema();
         String typeName = mdSchema.getElementType(name, parentName);
         MetadataType thisType = mdSchema.getTypeInfo(typeName);
 
@@ -1640,7 +1640,7 @@ public class EditLib {
 
         String childQName = child.getQualifiedName();
 
-        MetadataSchema mds = scm.getSchema(schema);
+        MetadataSchema mds = scm.getSchema(schema).getMetadataSchema();
         MetadataType mdt = getType(mds, parent);
 
         int min = -1, max = -1;
@@ -1897,7 +1897,7 @@ public class EditLib {
             log.debug("MD before editing infomation:\n{}", Xml.getString(md));
         }
         enumerateTree(md, id, parent);
-        expandTree(scm.getSchema(schema), md);
+        expandTree(scm.getSchema(schema).getMetadataSchema(), md);
         if (log.isDebugEnabled()) {
             log.debug("MD after editing infomation::\n{}", Xml.getString(md));
         }

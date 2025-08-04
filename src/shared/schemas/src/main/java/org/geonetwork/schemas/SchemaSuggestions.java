@@ -36,6 +36,8 @@ import java.util.Map;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
 
+// TODO: GN5 replace by YML config
+@Deprecated
 public class SchemaSuggestions {
     private Map<String, Element> htFields = new LinkedHashMap<String, Element>();
 

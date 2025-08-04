@@ -19,8 +19,8 @@ import org.geonetwork.domain.Metadata;
 import org.geonetwork.editing.model.AddElemValue;
 import org.geonetwork.editing.model.BatchEditParameter;
 import org.geonetwork.metadata.MetadataManager;
-import org.geonetwork.schemas.MetadataSchema;
 import org.geonetwork.schemas.SchemaManager;
+import org.geonetwork.schemas.SchemaPlugin;
 import org.geonetwork.utility.legacy.Pair;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
@@ -99,7 +99,7 @@ public class BatchEditsService {
                 // Processing
                 try {
                     EditLib editLib = new EditLib(schemaManager);
-                    MetadataSchema metadataSchema = schemaManager.getSchema(record.getSchemaid());
+                    SchemaPlugin schemaPlugin = schemaManager.getSchema(record.getSchemaid());
                     Element metadata = Xml.loadString(record.getData(), false);
                     @SuppressWarnings("unused")
                     String original = Xml.getString(metadata);
@@ -115,7 +115,9 @@ public class BatchEditsService {
                         if (StringUtils.isNotEmpty(batchEditParameter.getCondition())) {
                             applyEdit = false;
                             final Object node = Xml.selectSingle(
-                                    metadata, batchEditParameter.getCondition(), metadataSchema.getNamespaces());
+                                    metadata,
+                                    batchEditParameter.getCondition(),
+                                    schemaPlugin.getAllNamespaces().stream().toList());
                             if (node instanceof Boolean && Boolean.TRUE.equals(node)) {
                                 applyEdit = true;
                             }
@@ -123,7 +125,7 @@ public class BatchEditsService {
                         if (applyEdit) {
                             metadataChanged = editLib.addElementOrFragmentFromXpath(
                                             metadata,
-                                            metadataSchema,
+                                            schemaPlugin.getMetadataSchema(),
                                             batchEditParameter.getXpath(),
                                             propertyValue,
                                             createXpathNodeIfNotExists)

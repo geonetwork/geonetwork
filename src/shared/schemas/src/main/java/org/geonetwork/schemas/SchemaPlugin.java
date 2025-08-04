@@ -24,12 +24,20 @@ public abstract class SchemaPlugin implements CSWPlugin {
 
     protected MetadataSchemaConfiguration configuration;
 
+    MetadataSchema metadataSchema;
+
     protected SchemaPlugin(String identifier, Set<Namespace> allNamespaces) {
         this.identifier = identifier;
         this.allNamespaces = Collections.unmodifiableSet(allNamespaces);
     }
 
     public final String identifier;
+
+    // TODO: GN5 i18n file access
+    //    private Map<String, XmlFile> schemaInfo = new HashMap<String, XmlFile>();
+
+    // TODO: GN5 conversion are in convert/from* and convert/to* files
+    //    private List<Element> conversionElements = new ArrayList<>();
 
     private List<SavedQuery> savedQueries = new ArrayList<>();
 
