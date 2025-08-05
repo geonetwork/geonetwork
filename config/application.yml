@@ -12,6 +12,8 @@
 #
 
 geonetwork:
+  language:
+    default: eng
   openapi-records:
     ogcapi-records-json:
       includeRawXML: false

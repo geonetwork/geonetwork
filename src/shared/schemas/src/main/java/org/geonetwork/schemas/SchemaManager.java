@@ -50,6 +50,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -65,13 +66,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class SchemaManager {
-
-    private static final int MODE_NEEDLE = 0;
-    private static final int MODE_ROOT = 1;
-    private static final int MODE_NEEDLEWITHVALUE = 2;
-    private static final int MODE_ATTRIBUTEWITHVALUE = 3;
-    private static final int MODE_NAMESPACE = 4;
-
     private static final String GEONET_SCHEMA_URI = "http://geonetwork-opensource.org/schemas/schema-ident";
     private static final Namespace GEONET_SCHEMA_PREFIX_NS = Namespace.getNamespace("gns", GEONET_SCHEMA_URI);
     private static final Namespace GEONET_SCHEMA_NS = Namespace.getNamespace(GEONET_SCHEMA_URI);
@@ -86,10 +80,9 @@ public class SchemaManager {
     private Path schemaPluginsCat;
     private boolean createOrUpdateSchemaCatalog;
 
-    @SuppressWarnings("unused")
+    @Value("${geonetwork.language.default:'eng'}")
     private String defaultLang;
 
-    private String defaultSchema;
     private Path basePath;
 
     @SuppressWarnings("unused")
@@ -178,7 +171,6 @@ public class SchemaManager {
     //    this.schemaPluginsDir = dataDir.getSchemaPluginsDir();
     //    this.schemaPluginsCat = schemaPluginsDir.resolve("schemaplugin-uri-catalog.xml");
     //    this.defaultLang = schemaManager.defaultLang;
-    //    this.defaultSchema = schemaManager.defaultSchema;
     //    this.createOrUpdateSchemaCatalog = schemaManager.createOrUpdateSchemaCatalog;
     //
     //    addResolverRewriteDirectives(dataDir);
@@ -240,8 +232,6 @@ public class SchemaManager {
 
         this.schemaPluginsCat = uriCatalogPath;
 
-        this.defaultLang = "eng";
-        this.defaultSchema = "iso19115-3";
         this.createOrUpdateSchemaCatalog = true;
 
         //    final Path configDir = IO.toPath(handlerConfig.getValue(Geonet.Config.CONFIG_DIR));
@@ -1306,9 +1296,6 @@ public class SchemaManager {
         //    return si.getSiteUrl() + context.getBaseUrl() + "/" + relativePath;
     }
 
-    public String getDefaultSchema() {
-        return defaultSchema;
-    }
 
     /**
      * Copy the schema.xsd file and the schema directory from the schema plugin directory to the webapp.
