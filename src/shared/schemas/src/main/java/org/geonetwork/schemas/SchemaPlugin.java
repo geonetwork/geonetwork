@@ -7,6 +7,7 @@ package org.geonetwork.schemas;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -25,6 +26,8 @@ public abstract class SchemaPlugin implements CSWPlugin {
     protected MetadataSchemaConfiguration configuration;
 
     MetadataSchema metadataSchema;
+
+    Path directory;
 
     protected SchemaPlugin(String identifier, Set<Namespace> allNamespaces) {
         this.identifier = identifier;

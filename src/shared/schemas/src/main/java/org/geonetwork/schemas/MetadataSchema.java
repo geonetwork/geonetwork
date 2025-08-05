@@ -5,6 +5,11 @@
  */
 package org.geonetwork.schemas;
 
+import static org.geonetwork.schemas.SchemaManager.SCHEMATRON_DIR;
+import static org.geonetwork.schemas.SchemaManager.SCHEMATRON_RULE_FILE_PREFIX;
+import static org.geonetwork.schemas.SchemaManager.SCH_FILE_EXTENSION;
+import static org.geonetwork.schemas.SchemaManager.XSL_FILE_EXTENSION;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -23,7 +28,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Geonet;
-import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.schemas.plugin.SavedQuery;
 import org.geonetwork.utility.legacy.exceptions.ResourceNotFoundException;
 import org.geonetwork.utility.legacy.xml.Xml;
@@ -43,10 +47,6 @@ import org.jdom.Namespace;
     "schematronRules"
 })
 public class MetadataSchema {
-    public static final String SCHEMATRON_DIR = "schematron";
-    private static final String XSL_FILE_EXTENSION = ".xsl";
-    private static final String SCH_FILE_EXTENSION = ".sch";
-    private static final String SCHEMATRON_RULE_FILE_PREFIX = "schematron-rules";
     private Map<String, List<String>> hmElements = new HashMap<>();
     private Map<String, List<List<String>>> hmRestric = new HashMap<>();
     private Map<String, MetadataType> hmTypes = new HashMap<>();
@@ -55,92 +55,16 @@ public class MetadataSchema {
     private Map<String, Namespace> hmNameSpaces = new HashMap<>();
     private Map<String, Namespace> hmPrefixes = new HashMap<>();
 
-    // TODO: Use configuration for operation filters
-    private Map<String, MetadataSchemaConfiguration.Filter> hmOperationFilters = new HashMap<>();
-    private String schemaName;
-    private Path schemaDir;
-    private String primeNS;
     private String[] schematronRules;
-    private boolean canEdit = false;
-    private List<Element> rootAppInfoElements;
 
-    //    private SchematronRepository schemaRepo;
-    //    private SchematronCriteriaGroupRepository criteriaGroupRepository;
     @Setter
     private SchemaPlugin schemaPlugin;
 
-    // ---------------------------------------------------------------------------
-    // ---
-    // --- Constructor
-    // ---
-    // ---------------------------------------------------------------------------
-
-    MetadataSchema() {
-        //      SchematronRepository schemaRepo, SchematronCriteriaGroupRepository
-        // criteriaGroupRepository) {
-        schemaName = "UNKNOWN";
-        this.schemaPlugin = schemaPlugin;
-        //    this.schemaRepo = schemaRepo;
-        //    this.criteriaGroupRepository = criteriaGroupRepository;
-    }
-
-    // ---------------------------------------------------------------------------
-    // ---
-    // --- API methods
-    // ---
-    // ---------------------------------------------------------------------------
-
-    public boolean canEdit() {
-        return canEdit;
-    }
-
-    // ---------------------------------------------------------------------------
-
-    public void setCanEdit(boolean canEdit) {
-        this.canEdit = canEdit;
-    }
-
-    // ---------------------------------------------------------------------------
-
-    public String getName() {
-        return schemaName;
-    }
-
-    // ---------------------------------------------------------------------------
-
-    public void setName(String inName) {
-        schemaName = inName;
-    }
+    MetadataSchema() {}
 
     public List<MetadataSchemaConfiguration.Formatter> getFormatters() {
         return this.schemaPlugin.getConfiguration().getFormatters();
     }
-
-
-    /** Get schema directory */
-    @JsonIgnore
-    public Path getSchemaDir() {
-        return schemaDir;
-    }
-
-    /** Set schema directory */
-    public void setSchemaDir(Path schemaDir) {
-        this.schemaDir = schemaDir;
-    }
-
-    // ---------------------------------------------------------------------------
-    @JsonProperty(value = "targetNamespace")
-    public String getPrimeNS() {
-        return primeNS;
-    }
-
-    // ---------------------------------------------------------------------------
-
-    public void setPrimeNS(String theNS) {
-        primeNS = theNS;
-    }
-
-    // ---------------------------------------------------------------------------
 
     public MetadataType getTypeInfo(String type) {
         if (hmTypes.get(type) == null) return new MetadataType();
@@ -191,17 +115,11 @@ public class MetadataSchema {
         return null;
     }
 
-    // ---------------------------------------------------------------------------
-
     /** A simple type is a type that has no children and no attributes (but can have restrictions on its value) */
     public boolean isSimpleElement(String elem, String parent) throws Exception {
         String type = getElementType(elem, parent);
         return type != null && !hmTypes.containsKey(type);
     }
-
-    // ---------------------------------------------------------------------------
-
-    // ---------------------------------------------------------------------------
 
     public List<String> getElementValues(String elem, String parent) throws Exception {
 
@@ -219,12 +137,6 @@ public class MetadataSchema {
         // should not happen....
         return childValues.get(0);
     }
-
-    // ---------------------------------------------------------------------------
-    // ---
-    // --- Package protected API methods
-    // ---
-    // ---------------------------------------------------------------------------
 
     void addElement(String name, String type, List<String> alValues, List<String> alSubs, String subLink) {
         // first just add the subs - because these are for global elements we
@@ -295,8 +207,6 @@ public class MetadataSchema {
         return list;
     }
 
-    // ---------------------------------------------------------------------------
-
     public String getPrefix(String theNSUri) {
         Namespace ns = hmPrefixes.get(theNSUri);
         if (ns != null) {
@@ -306,7 +216,6 @@ public class MetadataSchema {
         }
     }
 
-    // ---------------------------------------------------------------------------
     @JsonIgnore
     public List<Namespace> getSchemaNS() {
         return new ArrayList<>(hmPrefixes.values());
@@ -323,17 +232,18 @@ public class MetadataSchema {
         return mapNs;
     }
 
+    // TODO: GN5 Move to dedicated class
     @SuppressWarnings("unused")
-    public void buildchematronRules(Path basePath) {
+    public void buildchematronRules(Path basePath, Path schemaDirectory) {
         Path schematronResourceDir =
                 basePath.resolve("WEB-INF").resolve("classes").resolve(SCHEMATRON_DIR);
-        Path schemaSchematronDir = schemaDir.resolve(SCHEMATRON_DIR);
+        Path schemaSchematronDir = schemaDirectory.resolve(SCHEMATRON_DIR);
         Path schematronCompilationFile = schematronResourceDir.resolve("iso_svrl_for_xslt2.xsl");
         @SuppressWarnings("unused")
         Path schematronExpandFile = schematronResourceDir.resolve("iso_abstract_expand.xsl");
 
         if (log.isDebugEnabled()) {
-            log.debug("     Schematron compilation for schema " + schemaName);
+            log.debug("     Schematron compilation for schema " + schemaPlugin.getIdentifier());
             log.debug("          - compiling with " + schematronCompilationFile);
             log.debug("          - rules location is " + schemaSchematronDir);
         }
@@ -386,9 +296,9 @@ public class MetadataSchema {
      * Compile and register all schematron rules available for current schema. Schematron rules files are in schema
      * schematron directory and start with "schematron-rules" prefix.
      */
-    public void loadSchematronRules(Path basePath) {
+    public void loadSchematronRules(Path basePath, Path schemaDirectory) {
         // Compile schema schematron rules
-        buildchematronRules(basePath);
+        buildchematronRules(basePath, schemaDirectory);
 
         setSchematronRules(new String[] {});
         //    List<String> saSchemas = new ArrayList();
@@ -467,23 +377,6 @@ public class MetadataSchema {
         //    this.schemaRepo.saveAll(updated);
     }
 
-    public void setOperationFilters(Map<String, MetadataSchemaConfiguration.Filter> operationFilters) {
-        this.hmOperationFilters = operationFilters;
-    }
-
-    /**
-     * Get the XPath filter for the reserved operation.
-     *
-     * @return The XPath to select element to filter or null
-     */
-    public MetadataSchemaConfiguration.Filter getOperationFilter(ReservedOperation operation) {
-        return hmOperationFilters.get(operation.name());
-    }
-
-    public MetadataSchemaConfiguration.Filter getOperationFilter(String operation) {
-        return hmOperationFilters.get(operation);
-    }
-
     @JsonIgnore
     public SchemaPlugin getSchemaPlugin() {
         return schemaPlugin;
@@ -502,16 +395,6 @@ public class MetadataSchema {
         if (schematronRules != null) {
             this.schematronRules = schematronRules.clone();
         }
-    }
-
-    public void setRootAppInfoElements(List<Element> rootAppInfoElements) {
-        this.rootAppInfoElements = rootAppInfoElements;
-    }
-
-    // -- this info for profile detection methods
-    @JsonIgnore
-    public List<Element> getSchemaAppInfoElements() {
-        return rootAppInfoElements;
     }
 
     /**
@@ -581,7 +464,7 @@ public class MetadataSchema {
             throw new ResourceNotFoundException(String.format(
                     "Saved query '%s' for schema '%s' not found. Available queries are '%s'.",
                     savedQuery,
-                    getName(),
+                    schemaPlugin.getIdentifier(),
                     schemaPlugin.getSavedQueries().stream()
                             .map(SavedQuery::getId)
                             .collect(Collectors.joining(", "))));

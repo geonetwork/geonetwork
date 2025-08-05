@@ -45,7 +45,6 @@ import java.util.Map;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.constants.Edit;
-import org.geonetwork.constants.Geonet;
 import org.geonetwork.schemas.model.xsd.AttributeEntry;
 import org.geonetwork.schemas.model.xsd.AttributeGroupEntry;
 import org.geonetwork.schemas.model.xsd.ComplexTypeEntry;
@@ -115,24 +114,24 @@ public class SchemaLoader {
 
         MetadataSchema mds = new MetadataSchema();
         //    MetadataSchema mds = new MetadataSchema(schemaRepo, criteriaGroupRepository);
-        mds.setPrimeNS(schemaEditInformation.elFirst.getAttributeValue("targetNamespace"));
 
-        @SuppressWarnings("unchecked")
-        List<Element> annotation = schemaEditInformation.elFirst.getChildren("annotation", Geonet.Namespaces.XSD);
-
-        if (annotation != null) {
-            List<Element> allAppInfo = new ArrayList<Element>();
-
-            for (Element currAnnotation : annotation) {
-                @SuppressWarnings("unchecked")
-                List<Element> currAppInfo = currAnnotation.getChildren("appinfo", Geonet.Namespaces.XSD);
-
-                if (currAppInfo != null) {
-                    allAppInfo.addAll(currAppInfo);
-                }
-            }
-            mds.setRootAppInfoElements(allAppInfo);
-        }
+        // TODO GN5: Remove ? this seems unused in GN4
+        //        List<Element> annotation = schemaEditInformation.elFirst.getChildren("annotation",
+        // Geonet.Namespaces.XSD);
+        //
+        //        if (annotation != null) {
+        //            List<Element> allAppInfo = new ArrayList<Element>();
+        //
+        //            for (Element currAnnotation : annotation) {
+        //                @SuppressWarnings("unchecked")
+        //                List<Element> currAppInfo = currAnnotation.getChildren("appinfo", Geonet.Namespaces.XSD);
+        //
+        //                if (currAppInfo != null) {
+        //                    allAppInfo.addAll(currAppInfo);
+        //                }
+        //            }
+        //            mds.setRootAppInfoElements(allAppInfo);
+        //        }
 
         for (ElementInfo ei : alElementFiles) {
             mds.addNS(ei.targetNSPrefix, ei.targetNS);
@@ -329,9 +328,6 @@ public class SchemaLoader {
             }
             mds.addType(cte.name, mdt);
         }
-
-        // now set the schema to be editable and return
-        mds.setCanEdit(true);
         return mds;
     }
 

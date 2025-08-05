@@ -49,8 +49,7 @@ class IndexRecordTest {
     void test_dataset() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String json =
-                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3_dataset.json").getURI()));
+            String json = Files.readString(Path.of(new ClassPathResource("samples/iso19115-3_dataset.json").getURI()));
 
             IndexRecord indexRecord = objectMapper.readValue(json, IndexRecord.class);
 
@@ -630,8 +629,7 @@ class IndexRecordTest {
     void test_service() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String json =
-                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3_service.json").getURI()));
+            String json = Files.readString(Path.of(new ClassPathResource("samples/iso19115-3_service.json").getURI()));
 
             IndexRecord indexRecord = objectMapper.readValue(json, IndexRecord.class);
             assertEquals("service", indexRecord.getResourceType().getFirst());

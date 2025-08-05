@@ -207,7 +207,8 @@ public class EditLib {
         addChildToParent(mdSchema, el, child, qname, false);
 
         // --- add mandatory sub-tags
-        SchemaSuggestions mdSugg = scm.getSchemaSuggestions(mdSchema.getName());
+        SchemaSuggestions mdSugg =
+                scm.getSchemaSuggestions(mdSchema.getSchemaPlugin().getIdentifier());
         fillElement(mdSchema, mdSugg, el, child);
 
         return child;
@@ -1662,7 +1663,8 @@ public class EditLib {
             throws Exception {
 
         Element child = new Element(RootChild.CHILD, Edit.NAMESPACE);
-        SchemaSuggestions mdSugg = scm.getSchemaSuggestions(schema.getName());
+        SchemaSuggestions mdSugg =
+                scm.getSchemaSuggestions(schema.getSchemaPlugin().getIdentifier());
 
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.NAME, getUnqualifiedName(qname)));
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.PREFIX, getPrefix(qname)));

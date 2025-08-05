@@ -5,7 +5,6 @@
  */
 package org.geonetwork.schemas;
 
-import static org.geonetwork.constants.Geonet.File.SCHEMA_SUGGESTIONS;
 import static org.geonetwork.utility.JarFileCopy.copyFolder;
 
 import jakarta.annotation.PostConstruct;
@@ -66,6 +65,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class SchemaManager {
+    public static final String SCHEMATRON_DIR = "schematron";
+    public static final String SCHEMATRON_RULE_FILE_PREFIX = "schematron-rules";
+    public static final String XSL_FILE_EXTENSION = ".xsl";
+    public static final String SCH_FILE_EXTENSION = ".sch";
     private static final String GEONET_SCHEMA_URI = "http://geonetwork-opensource.org/schemas/schema-ident";
     private static final Namespace GEONET_SCHEMA_PREFIX_NS = Namespace.getNamespace("gns", GEONET_SCHEMA_URI);
     private static final Namespace GEONET_SCHEMA_NS = Namespace.getNamespace(GEONET_SCHEMA_URI);
@@ -673,14 +676,9 @@ public class SchemaManager {
             Path schemaDir,
             Element schemaPluginCatRoot,
             Path xmlSchemaFile,
-            Path xmlSuggestFile,
-            Path xmlSubstitutionsFile,
             Path xmlIdFile,
-            Path oasisCatFile,
-            Path conversionsFile)
+            Path oasisCatFile)
             throws Exception {
-        Path path = schemaDir;
-
         // -- add any oasis catalog files to Jeeves.XML_CATALOG_FILES system
         // -- property for resolver to pick up
         if (Files.exists(oasisCatFile)) {
@@ -699,20 +697,18 @@ public class SchemaManager {
         // applicationContext.getBean(SchematronRepository.class);
         //    SchematronCriteriaGroupRepository criteriaGroupRepository =
         //        applicationContext.getBean(SchematronCriteriaGroupRepository.class);
-        String schemaName = path.getFileName().toString();
+        String schemaName = schemaDir.getFileName().toString();
         SchemaPlugin schemaPlugin = this.schemaPlugins.stream()
                 .filter(plugin -> plugin.getIdentifier().equals(schemaName))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Schema plugin not found for " + schemaName));
 
         MetadataSchema mds = new SchemaLoader().load(xmlSchemaFile, schemaPlugin.getConfiguration());
-        mds.setName(schemaName);
 
         schemaPlugin.setMetadataSchema(mds);
+        schemaPlugin.setDirectory(schemaDir);
         mds.setSchemaPlugin(schemaPlugin);
-
-        mds.setSchemaDir(path);
-        mds.loadSchematronRules(basePath);
+        mds.loadSchematronRules(basePath, schemaDir);
 
         if (mds.getSchemaPlugin() != null && mds.getSchemaPlugin().getCswTypeNames() != null) {
             hmSchemasTypenames.putAll(mds.getSchemaPlugin().getCswTypeNames());
@@ -746,7 +742,7 @@ public class SchemaManager {
 
         log.debug("  UUID is read/write mode: " + mds.isReadwriteUUID());
 
-        putSchemaInfo(mds.getName(), mds);
+        putSchemaInfo(mds.getSchemaPlugin().getIdentifier(), mds);
 
         if (log.isDebugEnabled()) {
             log.debug("Property "
@@ -757,15 +753,15 @@ public class SchemaManager {
 
         // -- Add entry for presentation xslt to schemaPlugins catalog
         // -- if this schema is a plugin schema
-        int baseNrInt = getHighestSchemaPluginCatalogId(mds.getName(), schemaPluginCatRoot);
+        int baseNrInt = getHighestSchemaPluginCatalogId(mds.getSchemaPlugin().getIdentifier(), schemaPluginCatRoot);
         if (baseNrInt == 0) baseNrInt = numberOfCoreSchemasAdded;
         if (baseNrInt != -1) {
-            createUriEntryInSchemaPluginCatalog(mds.getName(), baseNrInt, schemaPluginCatRoot);
+            createUriEntryInSchemaPluginCatalog(mds.getSchemaPlugin().getIdentifier(), baseNrInt, schemaPluginCatRoot);
         }
 
         // -- copy schema.xsd and schema directory from schema to
         // -- <web_app_dir>/xml/schemas/<schema_name>
-        copySchemaXSDsToWebApp(mds.getName(), path);
+        copySchemaXSDsToWebApp(mds.getSchemaPlugin().getIdentifier(), schemaDir);
     }
 
     /**
@@ -953,11 +949,8 @@ public class SchemaManager {
             throws RuntimeException {
 
         Path schemaFile = schemasDir.resolve(Geonet.File.SCHEMA);
-        Path suggestFile = schemasDir.resolve(SCHEMA_SUGGESTIONS);
-        Path substitutesFile = schemasDir.resolve(Geonet.File.SCHEMA_SUBSTITUTES);
         Path idFile = schemasDir.resolve(Geonet.File.SCHEMA_ID);
         Path oasisCatFile = schemasDir.resolve(Geonet.File.SCHEMA_OASIS);
-        Path conversionsFile = schemasDir.resolve(Geonet.File.SCHEMA_CONVERSIONS);
 
         if (!Files.exists(idFile)) {
             log.error("    Skipping : " + schemasDir.getFileName() + " as it doesn't have " + Geonet.File.SCHEMA_ID);
@@ -973,16 +966,7 @@ public class SchemaManager {
                 log.error("Schema " + schemaName + " already exists - cannot add!");
             } else {
                 stage = "adding the schema information";
-                addSchema(
-                        applicationContext,
-                        schemasDir,
-                        schemaPluginCatRoot,
-                        schemaFile,
-                        suggestFile,
-                        substitutesFile,
-                        idFile,
-                        oasisCatFile,
-                        conversionsFile);
+                addSchema(applicationContext, schemasDir, schemaPluginCatRoot, schemaFile, idFile, oasisCatFile);
                 ResolverWrapper.createResolverForSchema(schemasDir.getFileName().toString(), oasisCatFile);
             }
         } catch (Exception e) {
@@ -1295,7 +1279,6 @@ public class SchemaManager {
         return "TODO/" + relativePath;
         //    return si.getSiteUrl() + context.getBaseUrl() + "/" + relativePath;
     }
-
 
     /**
      * Copy the schema.xsd file and the schema directory from the schema plugin directory to the webapp.

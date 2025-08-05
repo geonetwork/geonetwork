@@ -150,11 +150,7 @@ public class MetadataManager implements IMetadataManager {
         String schema = metadataEntity.getSchemaid();
 
         // Inflate metadata
-        Path inflateStyleSheet = schemaManager
-                .getSchema(schema)
-                .getMetadataSchema()
-                .getSchemaDir()
-                .resolve(Geonet.File.INFLATE_METADATA);
+        Path inflateStyleSheet = schemaManager.getSchema(schema).getDirectory().resolve(Geonet.File.INFLATE_METADATA);
         if (Files.exists(inflateStyleSheet)) {
             // --- setup environment
             Element env = new Element("env");
