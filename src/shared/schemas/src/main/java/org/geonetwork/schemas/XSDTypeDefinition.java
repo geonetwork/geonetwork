@@ -37,18 +37,19 @@ import java.util.List;
 import java.util.Set;
 import org.geonetwork.constants.Edit;
 
-public class MetadataType {
+/** Class to hold the definition of a type in an XML schema. */
+public class XSDTypeDefinition {
     public boolean hasContainers = false;
     private String name;
     private boolean isOrType;
-    private ArrayList<String> alElements = new ArrayList<String>();
-    private List<String> alTypes = new ArrayList<String>();
-    private List<Integer> alMinCard = new ArrayList<Integer>();
-    private List<Integer> alMaxCard = new ArrayList<Integer>();
-    private List<MetadataAttribute> alAttribs = new ArrayList<MetadataAttribute>();
-    private List<Boolean> alExamineSubs = new ArrayList<Boolean>();
+    private ArrayList<String> alElements = new ArrayList<>();
+    private List<String> alTypes = new ArrayList();
+    private List<Integer> alMinCard = new ArrayList<>();
+    private List<Integer> alMaxCard = new ArrayList<>();
+    private List<MetadataAttribute> alAttribs = new ArrayList<>();
+    private List<Boolean> alExamineSubs = new ArrayList<>();
 
-    MetadataType() {}
+    XSDTypeDefinition() {}
 
     public int getElementCount() {
         return alElements.size();

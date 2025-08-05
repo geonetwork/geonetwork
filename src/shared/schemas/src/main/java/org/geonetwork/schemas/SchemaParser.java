@@ -62,11 +62,11 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 
 @Slf4j
-public class SchemaLoader {
+public class SchemaParser {
 
-    public SchemaLoader() {}
+    public SchemaParser() {}
 
-    public MetadataSchema load(Path xmlSchemaFile, MetadataSchemaConfiguration config
+    public XSDSchemaDefinition load(Path xmlSchemaFile, MetadataSchemaConfiguration config
             //      SchematronRepository schemaRepo,
             //      SchematronCriteriaGroupRepository criteriaGroupRepository
             ) throws Exception {
@@ -75,7 +75,7 @@ public class SchemaLoader {
 
         schemaEditInformation.ssOverRides = new SchemaSubstitutions(config.getSubstitutes());
 
-        if (!Files.exists(xmlSchemaFile)) return new MetadataSchema();
+        if (!Files.exists(xmlSchemaFile)) return new XSDSchemaDefinition();
         //      return new MetadataSchema(schemaRepo, criteriaGroupRepository);
 
         // --- PHASE 1 : pre-processing
@@ -83,7 +83,7 @@ public class SchemaLoader {
         // --- the xml file is parsed and simplified. Xml schema subtrees are
         // --- wrapped in some classes
 
-        List<ElementInfo> alElementFiles = loadFile(schemaEditInformation, xmlSchemaFile, new HashSet<Path>());
+        List<ElementInfo> alElementFiles = loadFile(schemaEditInformation, xmlSchemaFile, new HashSet<>());
 
         parseElements(schemaEditInformation, alElementFiles);
 
@@ -92,7 +92,7 @@ public class SchemaLoader {
         for (String o : schemaEditInformation.hmSubsGrp.keySet()) {
 
             List<ElementEntry> elements = schemaEditInformation.hmSubsGrp.get(o);
-            List<String> subsNames = new ArrayList<String>();
+            List<String> subsNames = new ArrayList<>();
             schemaEditInformation.hmSubsNames.put(o, subsNames);
             for (ElementEntry ee : elements) {
                 if (ee.type == null) {
@@ -112,7 +112,7 @@ public class SchemaLoader {
 
         // --- PHASE 3 : get appinfo, add namespaces and elements
 
-        MetadataSchema mds = new MetadataSchema();
+        XSDSchemaDefinition mds = new XSDSchemaDefinition();
         //    MetadataSchema mds = new MetadataSchema(schemaRepo, criteriaGroupRepository);
 
         // TODO GN5: Remove ? this seems unused in GN4
@@ -154,7 +154,7 @@ public class SchemaLoader {
             List<String> typeRestr = schemaEditInformation.hmTypeRestr.get(type);
 
             if (elemRestr == null) {
-                elemRestr = new ArrayList<String>();
+                elemRestr = new ArrayList<>();
             }
 
             if (typeRestr != null) {
@@ -163,7 +163,7 @@ public class SchemaLoader {
 
             List<String> elemSubs = schemaEditInformation.hmSubsNames.get(elem);
             if (elemSubs == null) {
-                elemSubs = new ArrayList<String>();
+                elemSubs = new ArrayList<>();
             }
             String elemSubsLink = schemaEditInformation.hmSubsLink.get(elem);
             if (elemSubsLink == null) {
@@ -187,7 +187,7 @@ public class SchemaLoader {
 
         // --- PHASE 5 : check attributes to see whether they should be qualified
 
-        Map<String, AttributeEntry> hmAttrChk = new HashMap<String, AttributeEntry>();
+        Map<String, AttributeEntry> hmAttrChk = new HashMap<>();
         for (AttributeEntry attr : schemaEditInformation.hmAllAttrs.values()) {
             AttributeEntry attrPrev = hmAttrChk.get(attr.unqualifiedName);
             if (attrPrev != null) {
@@ -202,11 +202,11 @@ public class SchemaLoader {
         // ---
         // --- resolve type inheritance and elements
 
-        List<ComplexTypeEntry> alTypes = new ArrayList<ComplexTypeEntry>(schemaEditInformation.hmTypes.values());
+        List<ComplexTypeEntry> alTypes = new ArrayList<>(schemaEditInformation.hmTypes.values());
         for (ListIterator<ComplexTypeEntry> i = alTypes.listIterator(); i.hasNext(); ) {
             ComplexTypeEntry cte = i.next();
 
-            MetadataType mdt = new MetadataType();
+            XSDTypeDefinition mdt = new XSDTypeDefinition();
 
             mdt.setOrType(cte.isOrType);
 
@@ -268,7 +268,7 @@ public class SchemaLoader {
             // --- now add the elements belonging to this complex type to the mdt
 
             for (int j = 0; j < cte.alElements.size(); j++) {
-                ElementEntry ee = (ElementEntry) cte.alElements.get(j);
+                ElementEntry ee = cte.alElements.get(j);
 
                 // Three situations:
                 // 1. element is a container element - group, choice or sequence - so recurse
@@ -293,13 +293,13 @@ public class SchemaLoader {
                     String type = ee.name = baseName + extension + (Integer) j;
                     List<ComplexTypeEntry> newCtes = createTypeAndResolveNestedContainers(
                             schemaEditInformation, mds, elements, baseName, extension, j);
-                    if (newCtes.size() != 0) {
+                    if (!newCtes.isEmpty()) {
                         for (ComplexTypeEntry newCte : newCtes) {
                             i.add(newCte);
                             i.previous();
                         }
                     }
-                    mds.addElement(ee.name, type, new ArrayList<String>(), new ArrayList<String>(), "");
+                    mds.addElement(ee.name, type, new ArrayList<>(), new ArrayList<>(), "");
                     mdt.addElementWithType(ee.name, type, ee.min, ee.max);
 
                     // 2. element is a reference to a global element so check if abstract or
@@ -352,10 +352,10 @@ public class SchemaLoader {
     // ---
     // ---------------------------------------------------------------------------
     private ComplexTypeEntry handleLocalElement(
-            Integer elementNr, String baseName, ElementEntry ee, MetadataType mdt, MetadataSchema mds) {
+            Integer elementNr, String baseName, ElementEntry ee, XSDTypeDefinition mdt, XSDSchemaDefinition mds) {
 
         ComplexTypeEntry cteInt = null;
-        ArrayList<String> elemRestr = new ArrayList<String>();
+        ArrayList<String> elemRestr = new ArrayList<>();
 
         if (ee.type == null) {
             if (ee.complexType != null) {
@@ -372,7 +372,7 @@ public class SchemaLoader {
             }
         }
 
-        mds.addElement(ee.name, ee.type, elemRestr, new ArrayList<String>(), "");
+        mds.addElement(ee.name, ee.type, elemRestr, new ArrayList<>(), "");
         mdt.addElementWithType(ee.name, ee.type, ee.min, ee.max);
 
         return cteInt;
@@ -395,7 +395,7 @@ public class SchemaLoader {
         ArrayList<ElementEntry> subs = schemaEditInformation.hmSubsGrp.get(elementName);
         List<String> ssOs = schemaEditInformation.ssOverRides.getSubstitutes(elementName);
         if (ssOs != null && subs != null) {
-            ArrayList<ElementEntry> results = new ArrayList<ElementEntry>();
+            ArrayList<ElementEntry> results = new ArrayList<>();
             List<String> validSubs = schemaEditInformation.hmSubsNames.get(elementName);
             for (String altSub : ssOs) {
                 if (validSubs != null && !validSubs.contains(altSub)) {
@@ -411,7 +411,7 @@ public class SchemaLoader {
                     }
                 }
             }
-            if (results.size() == 0 && validSubs != null) {
+            if (results.isEmpty() && validSubs != null) {
                 log.warn("WARNING: schema-substitutions.xml has wiped out XSD substitution list for " + elementName);
             }
             return results;
@@ -430,8 +430,8 @@ public class SchemaLoader {
             String baseName,
             boolean choiceType,
             ElementEntry ee,
-            MetadataType mdt,
-            MetadataSchema mds) {
+            XSDTypeDefinition mdt,
+            XSDSchemaDefinition mds) {
 
         String type = schemaEditInformation.hmElements.get(ee.ref);
         boolean isAbstract = schemaEditInformation.hmAbsElems.containsKey(ee.ref);
@@ -443,7 +443,7 @@ public class SchemaLoader {
         if (al == null) al = schemaEditInformation.hmSubsGrp.get(ee.ref);
         else doSubs = false;
 
-        if ((al != null && al.size() > 0) || isAbstract) {
+        if ((al != null && !al.isEmpty()) || isAbstract) {
             if (choiceType) {
                 // The complex type has only one element then make it a choice type if
                 // there are concrete elements in the substitution group
@@ -469,7 +469,7 @@ public class SchemaLoader {
             } else {
                 // The complex type has real elements and/or attributes so make a new
                 // choice element with type and replace this element with it
-                MetadataType mdtc = new MetadataType();
+                XSDTypeDefinition mdtc = new XSDTypeDefinition();
                 Integer elementsAdded = assembleChoiceElements(schemaEditInformation, mdtc, al, doSubs);
                 if (!isAbstract && doSubs) {
                     mdtc.addRefElementWithType(ee.ref, ee.type, ee.min, ee.max);
@@ -479,7 +479,7 @@ public class SchemaLoader {
                 type = ee.ref + Edit.RootChild.CHOICE + elementNr;
                 String name = type;
                 mds.addType(type, mdtc);
-                mds.addElement(name, type, new ArrayList<String>(), new ArrayList<String>(), "");
+                mds.addElement(name, type, new ArrayList<>(), new ArrayList<>(), "");
                 mdt.addElementWithType(name, type, ee.min, ee.max);
             }
         } else if (!isAbstract) {
@@ -496,7 +496,7 @@ public class SchemaLoader {
     /** Recurse on attributeGroups to build a list of AttributeEntry objects. */
     private List<AttributeEntry> resolveNestedAttributeGroups(
             SchemaEditInformation schemaEditInformation, AttributeGroupEntry age) {
-        ArrayList<AttributeEntry> attrs = new ArrayList<AttributeEntry>();
+        ArrayList<AttributeEntry> attrs = new ArrayList<>();
 
         if (age.alAttrGrps.size() > 0) {
             for (int i = 0; i < age.alAttrGrps.size(); i++) {
@@ -514,17 +514,17 @@ public class SchemaLoader {
     /** Descend recursively to deal with nested containers. */
     private List<ComplexTypeEntry> createTypeAndResolveNestedContainers(
             SchemaEditInformation schemaEditInformation,
-            MetadataSchema mds,
+            XSDSchemaDefinition mds,
             List<ElementEntry> al,
             String baseName,
             String extension,
             Integer baseNr) {
 
-        ArrayList<ComplexTypeEntry> complexTypes = new ArrayList<ComplexTypeEntry>();
+        ArrayList<ComplexTypeEntry> complexTypes = new ArrayList<>();
 
         Integer oldBaseNr = baseNr;
         if (al == null) return complexTypes;
-        MetadataType mdt = new MetadataType();
+        XSDTypeDefinition mdt = new XSDTypeDefinition();
         if (extension.contains(Edit.RootChild.CHOICE)) mdt.setOrType(true);
         for (int k = 0; k < al.size(); k++) {
             ElementEntry ee = al.get(k);
@@ -535,9 +535,9 @@ public class SchemaLoader {
                 String newExtension = Edit.RootChild.CHOICE;
                 List<ComplexTypeEntry> newCtes = createTypeAndResolveNestedContainers(
                         schemaEditInformation, mds, ee.alContainerElems, baseName, newExtension, baseNr);
-                if (newCtes.size() > 0) complexTypes.addAll(newCtes);
+                if (!newCtes.isEmpty()) complexTypes.addAll(newCtes);
                 ee.name = ee.type = baseName + newExtension + baseNr;
-                mds.addElement(ee.name, ee.type, new ArrayList<String>(), new ArrayList<String>(), "");
+                mds.addElement(ee.name, ee.type, new ArrayList<>(), new ArrayList<>(), "");
                 mdt.addElementWithType(ee.name, ee.type, ee.min, ee.max);
 
                 // GROUP
@@ -548,9 +548,9 @@ public class SchemaLoader {
                     ArrayList<ElementEntry> alGroupElements = group.alElements;
                     List<ComplexTypeEntry> newCtes = createTypeAndResolveNestedContainers(
                             schemaEditInformation, mds, alGroupElements, baseName, newExtension, baseNr);
-                    if (newCtes.size() > 0) complexTypes.addAll(newCtes);
+                    if (!newCtes.isEmpty()) complexTypes.addAll(newCtes);
                     ee.name = ee.type = baseName + newExtension + baseNr;
-                    mds.addElement(ee.name, ee.type, new ArrayList<String>(), new ArrayList<String>(), "");
+                    mds.addElement(ee.name, ee.type, new ArrayList<>(), new ArrayList<>(), "");
                     mdt.addElementWithType(ee.name, ee.type, ee.min, ee.max);
                 } else {
                     log.warn("WARNING: group element ref is NULL in {}{}{}", baseName, extension, baseNr);
@@ -565,7 +565,7 @@ public class SchemaLoader {
                     complexTypes.addAll(newCtes);
                 }
                 ee.name = ee.type = baseName + newExtension + baseNr;
-                mds.addElement(ee.name, ee.type, new ArrayList<String>(), new ArrayList<String>(), "");
+                mds.addElement(ee.name, ee.type, new ArrayList<>(), new ArrayList<>(), "");
                 mdt.addElementWithType(ee.name, ee.type, ee.min, ee.max);
 
                 // ELEMENT
@@ -588,7 +588,7 @@ public class SchemaLoader {
     // ---
     // ---------------------------------------------------------------------------
     private int assembleChoiceElements(
-            SchemaEditInformation schemaEditInformation, MetadataType mdt, List<ElementEntry> al, boolean doSubs) {
+            SchemaEditInformation schemaEditInformation, XSDTypeDefinition mdt, List<ElementEntry> al, boolean doSubs) {
 
         int number = 0;
         if (al == null) return number;
@@ -667,7 +667,7 @@ public class SchemaLoader {
         // --- collect elements into an array because we have to add elements
         // --- when we encounter the "import" element
 
-        List<ElementInfo> alElementFiles = new ArrayList<ElementInfo>();
+        List<ElementInfo> alElementFiles = new ArrayList<>();
 
         for (Element elChild : children) {
             String name = elChild.getName();
@@ -1072,7 +1072,7 @@ public class SchemaLoader {
         // by ending the recursion
         List<ElementEntry> result = new ArrayList<ElementEntry>();
         if (!cte.complexContent.restriction)
-            result = new ArrayList<ElementEntry>(resolveInheritance(schemaEditInformation, baseCTE));
+            result = new ArrayList<>(resolveInheritance(schemaEditInformation, baseCTE));
 
         result.addAll(cte.complexContent.alElements);
 
@@ -1143,17 +1143,17 @@ public class SchemaLoader {
 
     class SchemaEditInformation {
         Element elFirst = null;
-        Map<String, String> hmElements = new HashMap<String, String>();
-        Map<String, ComplexTypeEntry> hmTypes = new HashMap<String, ComplexTypeEntry>();
-        Map<String, List<AttributeEntry>> hmAttrGrp = new HashMap<String, List<AttributeEntry>>();
-        Map<String, AttributeGroupEntry> hmAttrGpEn = new HashMap<String, AttributeGroupEntry>();
-        Map<String, String> hmAbsElems = new HashMap<String, String>();
-        Map<String, ArrayList<ElementEntry>> hmSubsGrp = new HashMap<String, ArrayList<ElementEntry>>();
-        Map<String, String> hmSubsLink = new HashMap<String, String>();
-        Map<String, List<String>> hmSubsNames = new HashMap<String, List<String>>();
-        Map<String, AttributeEntry> hmAttribs = new HashMap<String, AttributeEntry>();
-        Map<String, AttributeEntry> hmAllAttrs = new HashMap<String, AttributeEntry>();
-        Map<String, GroupEntry> hmGroups = new HashMap<String, GroupEntry>();
+        Map<String, String> hmElements = new HashMap<>();
+        Map<String, ComplexTypeEntry> hmTypes = new HashMap<>();
+        Map<String, List<AttributeEntry>> hmAttrGrp = new HashMap<>();
+        Map<String, AttributeGroupEntry> hmAttrGpEn = new HashMap<>();
+        Map<String, String> hmAbsElems = new HashMap<>();
+        Map<String, ArrayList<ElementEntry>> hmSubsGrp = new HashMap<>();
+        Map<String, String> hmSubsLink = new HashMap<>();
+        Map<String, List<String>> hmSubsNames = new HashMap<>();
+        Map<String, AttributeEntry> hmAttribs = new HashMap<>();
+        Map<String, AttributeEntry> hmAllAttrs = new HashMap<>();
+        Map<String, GroupEntry> hmGroups = new HashMap<>();
 
         SchemaSubstitutions ssOverRides;
 
@@ -1161,12 +1161,12 @@ public class SchemaLoader {
         String targetNSPrefix;
 
         /** Restrictions for simple types (element restriction) */
-        Map<String, List<String>> hmElemRestr = new HashMap<String, List<String>>();
+        Map<String, List<String>> hmElemRestr = new HashMap<>();
 
         /** Restrictions for simple types (type restriction) */
-        Map<String, List<String>> hmTypeRestr = new HashMap<String, List<String>>();
+        Map<String, List<String>> hmTypeRestr = new HashMap<>();
 
-        Map<String, List<String>> hmMemberTypeRestr = new HashMap<String, List<String>>();
+        Map<String, List<String>> hmMemberTypeRestr = new HashMap<>();
     }
 }
 

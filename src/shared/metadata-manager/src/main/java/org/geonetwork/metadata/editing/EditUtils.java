@@ -44,7 +44,6 @@ import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.indexing.IndexingMode;
 import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.metadata.editing.model.AddElemValue;
-import org.geonetwork.schemas.MetadataSchema;
 import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.schemas.SchemaPlugin;
 import org.geonetwork.schemas.iso19139.ISO19139Namespaces;
@@ -208,7 +207,7 @@ public class EditUtils {
                             md,
                             schemaManager
                                     .getSchema(metadataEntity.getSchemaid())
-                                    .getMetadataSchema());
+                                    .getXSDSchemaDefinition());
                     Namespace attrNS = Namespace.getNamespace(prefix, namespace);
                     if (el.getAttribute(localname, attrNS) != null) {
                         el.setAttribute(new Attribute(localname, val, attrNS));
@@ -255,7 +254,7 @@ public class EditUtils {
      */
     protected boolean updatedLocalizedTextElement(Element md, String schema, String ref, String val, EditLib editLib) {
         if (ref.startsWith("lang")) {
-            if (val.length() > 0) {
+            if (!val.isEmpty()) {
 
                 SchemaPlugin schemaPlugin = SchemaManager.getSchemaPlugin(schema);
                 if (schemaPlugin instanceof MultilingualSchemaPlugin msp) {
@@ -393,7 +392,7 @@ public class EditUtils {
             throws Exception {
         Metadata metadataEntity = getMetadataEntity(id);
         String schema = metadataEntity.getSchemaid();
-        MetadataSchema metadataSchema = schemaManager.getSchema(schema).getMetadataSchema();
+        SchemaPlugin schemaPlugin = schemaManager.getSchema(schema);
 
         // --- check if the metadata has been modified from last time
         if (currVersion != null && !editLib.getVersion(id).equals(currVersion)) {
@@ -446,7 +445,6 @@ public class EditUtils {
                 log.error(EditLib.MSG_ELEMENT_NOT_FOUND_AT_REF + originalRef);
                 continue;
             }
-            SchemaPlugin schemaPlugin = SchemaManager.getSchemaPlugin(schema);
             schemaPlugin.processElement(el, originalRef, parsedAttributeName, value);
         }
 
@@ -528,7 +526,7 @@ public class EditUtils {
 
         // Deals with XML fragments and XPath to insert or update
         if (!xmlAndXpathInputs.isEmpty()) {
-            editLib.addElementOrFragmentFromXpaths(md, xmlAndXpathInputs, metadataSchema, true);
+            editLib.addElementOrFragmentFromXpaths(md, xmlAndXpathInputs, schemaPlugin, true);
         }
 
         setMetadataIntoSession((Element) md.clone(), id);
@@ -622,7 +620,7 @@ public class EditUtils {
         }
 
         Element child = null;
-        MetadataSchema mds = schemaManager.getSchema(schema).getMetadataSchema();
+        SchemaPlugin schemaPlugin = schemaManager.getSchema(schema);
         if (childName != null) {
             if (childName.equals("geonet:attribute")) {
                 String defaultValue = "";
@@ -649,15 +647,15 @@ public class EditUtils {
                 child = el;
             } else {
                 // --- normal element
-                child = editLib.addElement(mds, el, name);
-                if (!childName.equals("")) {
+                child = editLib.addElement(schemaPlugin, el, name);
+                if (!childName.isEmpty()) {
                     // --- or element
                     String uChildName = editLib.getUnqualifiedName(childName);
                     String prefix = editLib.getPrefix(childName);
-                    String ns = editLib.getNamespace(childName, md, mds);
-                    if (prefix.equals("")) {
+                    String ns = editLib.getNamespace(childName, md, schemaPlugin.getXSDSchemaDefinition());
+                    if (prefix.isEmpty()) {
                         prefix = editLib.getPrefix(el.getName());
-                        ns = editLib.getNamespace(el.getName(), md, mds);
+                        ns = editLib.getNamespace(el.getName(), md, schemaPlugin.getXSDSchemaDefinition());
                     }
                     Element orChild = new Element(uChildName, prefix, ns);
                     child.addContent(orChild);
@@ -667,13 +665,13 @@ public class EditUtils {
                 }
             }
         } else {
-            child = editLib.addElement(mds, el, name);
+            child = editLib.addElement(schemaPlugin, el, name);
         }
         // --- now enumerate the new child (if not a simple attribute)
         if (childName == null || !childName.equals("geonet:attribute")) {
             int iRef = editLib.findMaximumRef(md);
             editLib.enumerateTreeStartingAt(child, iRef + 1, Integer.parseInt(ref));
-            editLib.expandTree(mds, child);
+            editLib.expandTree(schemaPlugin, child);
         }
         if (info != null) {
             // --- remove and re-attach the info element to the child
@@ -836,7 +834,7 @@ public class EditUtils {
             String namespace = editLib.getNamespace(
                     prefix + ":" + localname,
                     md,
-                    schemaManager.getSchema(schema).getMetadataSchema());
+                    schemaManager.getSchema(schema).getXSDSchemaDefinition());
             attrNS = Namespace.getNamespace(prefix, namespace);
         }
         return Pair.write(attrNS, localname);

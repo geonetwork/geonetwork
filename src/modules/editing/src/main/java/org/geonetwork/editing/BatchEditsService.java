@@ -126,7 +126,7 @@ public class BatchEditsService {
                         if (applyEdit) {
                             metadataChanged = editLib.addElementOrFragmentFromXpath(
                                             metadata,
-                                            schemaPlugin.getMetadataSchema(),
+                                            schemaPlugin,
                                             batchEditParameter.getXpath(),
                                             propertyValue,
                                             createXpathNodeIfNotExists)

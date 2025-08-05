@@ -12,7 +12,6 @@ import static org.geonetwork.schemas.SchemaManager.XSL_FILE_EXTENSION;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,33 +22,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Geonet;
-import org.geonetwork.schemas.plugin.SavedQuery;
-import org.geonetwork.utility.legacy.exceptions.ResourceNotFoundException;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.Namespace;
 
+/** Class that holds the schema definition for a given schema. */
 @Slf4j
-@JsonPropertyOrder({
-    "name",
-    "titles",
-    "descriptions",
-    "standardUrl",
-    "targetNamespace",
-    "namespaces",
-    "readwriteUUID",
-    "schematronRules"
-})
-public class MetadataSchema {
+public class XSDSchemaDefinition {
     private Map<String, List<String>> hmElements = new HashMap<>();
     private Map<String, List<List<String>>> hmRestric = new HashMap<>();
-    private Map<String, MetadataType> hmTypes = new HashMap<>();
+    private Map<String, XSDTypeDefinition> hmTypes = new HashMap<>();
     private Map<String, List<String>> hmSubs = new HashMap<>();
     private Map<String, String> hmSubsLink = new HashMap<>();
     private Map<String, Namespace> hmNameSpaces = new HashMap<>();
@@ -57,17 +42,10 @@ public class MetadataSchema {
 
     private String[] schematronRules;
 
-    @Setter
-    private SchemaPlugin schemaPlugin;
+    XSDSchemaDefinition() {}
 
-    MetadataSchema() {}
-
-    public List<MetadataSchemaConfiguration.Formatter> getFormatters() {
-        return this.schemaPlugin.getConfiguration().getFormatters();
-    }
-
-    public MetadataType getTypeInfo(String type) {
-        if (hmTypes.get(type) == null) return new MetadataType();
+    public XSDTypeDefinition getTypeInfo(String type) {
+        if (hmTypes.get(type) == null) return new XSDTypeDefinition();
         else return hmTypes.get(type);
     }
 
@@ -102,7 +80,7 @@ public class MetadataSchema {
         if (exType == null) return "xs:string";
         for (String type : exType) {
             // 2. search that mdt for the element names elem
-            MetadataType mdt = getTypeInfo(type);
+            XSDTypeDefinition mdt = getTypeInfo(type);
             for (int k = 0; k < mdt.getElementCount(); k++) {
                 String elemTest = mdt.getElementAt(k);
                 // 3. return the type name of that element
@@ -174,7 +152,7 @@ public class MetadataSchema {
         exValues.add(alValues);
     }
 
-    public void addType(String name, MetadataType mdt) {
+    public void addType(String name, XSDTypeDefinition mdt) {
         mdt.setName(name);
         hmTypes.put(name, mdt);
     }
@@ -243,7 +221,7 @@ public class MetadataSchema {
         Path schematronExpandFile = schematronResourceDir.resolve("iso_abstract_expand.xsl");
 
         if (log.isDebugEnabled()) {
-            log.debug("     Schematron compilation for schema " + schemaPlugin.getIdentifier());
+            // log.debug("     Schematron compilation for schema " + schemaPlugin.getIdentifier());
             log.debug("          - compiling with " + schematronCompilationFile);
             log.debug("          - rules location is " + schemaSchematronDir);
         }
@@ -377,11 +355,6 @@ public class MetadataSchema {
         //    this.schemaRepo.saveAll(updated);
     }
 
-    @JsonIgnore
-    public SchemaPlugin getSchemaPlugin() {
-        return schemaPlugin;
-    }
-
     /** Return the list of schematron rules to applied for this schema */
     public String[] getSchematronRules() {
         if (schematronRules != null) {
@@ -397,50 +370,6 @@ public class MetadataSchema {
         }
     }
 
-    /**
-     * true if schema requires to synch the uuid column schema info with the uuid in the metadata record (updated on
-     * editing or in UFO).
-     */
-    public boolean isReadwriteUUID() {
-        return this.schemaPlugin.getConfiguration().isReadwriteUuid();
-    }
-
-    public List<String> getStandardUrl() {
-        return this.schemaPlugin.getConfiguration().getStandardUrl().values().stream()
-                .toList();
-    }
-
-    // "GN5 migration / To remove?"
-    @Deprecated
-    public String getVersion() {
-        return null;
-    }
-
-    @Deprecated
-    public String getAppMinorVersionSupported() {
-        return null;
-    }
-
-    @Deprecated
-    public String getAppMajorVersionSupported() {
-        return null;
-    }
-
-    public String getDependsOn() {
-        if (!this.schemaPlugin.getConfiguration().getDepends().isEmpty()) {
-            return this.schemaPlugin.getConfiguration().getDepends();
-        }
-        return "";
-    }
-
-    public Map<String, String> getTitles() {
-        return this.schemaPlugin.getConfiguration().getStandardTitle();
-    }
-
-    public Map<String, String> getDescriptions() {
-        return this.schemaPlugin.getConfiguration().getStandardDescription();
-    }
-
     /** Schematron rules filename is like "schematron-rules-iso.xsl */
     @SuppressWarnings("unused")
     private static class SchematronReportRulesFilter implements DirectoryStream.Filter<Path> {
@@ -449,32 +378,5 @@ public class MetadataSchema {
             String filename = entry.getFileName().toString();
             return filename.startsWith(SCHEMATRON_RULE_FILE_PREFIX) && filename.endsWith(XSL_FILE_EXTENSION);
         }
-    }
-
-    /**
-     * Query XML document with one of the saved query to retrieve a simple string value.
-     *
-     * @param savedQuery {@link SavedQuery}
-     * @param xml XML document to query
-     */
-    @SuppressWarnings("unused")
-    public String queryString(String savedQuery, Element xml) throws ResourceNotFoundException, JDOMException {
-        SavedQuery query = schemaPlugin.getSavedQuery(savedQuery);
-        if (query == null) {
-            throw new ResourceNotFoundException(String.format(
-                    "Saved query '%s' for schema '%s' not found. Available queries are '%s'.",
-                    savedQuery,
-                    schemaPlugin.getIdentifier(),
-                    schemaPlugin.getSavedQueries().stream()
-                            .map(SavedQuery::getId)
-                            .collect(Collectors.joining(", "))));
-        }
-
-        String xpath = query.getXpath();
-        if (log.isDebugEnabled()) {
-            log.error(String.format("Saved query XPath: %s", xpath));
-        }
-
-        return Xml.selectString(xml, xpath, getNamespaces());
     }
 }

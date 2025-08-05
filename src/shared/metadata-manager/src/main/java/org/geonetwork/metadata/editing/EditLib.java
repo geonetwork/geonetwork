@@ -57,11 +57,11 @@ import org.geonetwork.constants.Edit;
 import org.geonetwork.constants.Edit.RootChild;
 import org.geonetwork.metadata.editing.model.AddElemValue;
 import org.geonetwork.schemas.MetadataAttribute;
-import org.geonetwork.schemas.MetadataSchema;
-import org.geonetwork.schemas.MetadataType;
 import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.schemas.SchemaPlugin;
 import org.geonetwork.schemas.SchemaSuggestions;
+import org.geonetwork.schemas.XSDSchemaDefinition;
+import org.geonetwork.schemas.XSDTypeDefinition;
 import org.geonetwork.schemas.plugin.ISOPlugin;
 import org.geonetwork.utility.legacy.Pair;
 import org.geonetwork.utility.legacy.xml.Xml;
@@ -86,7 +86,7 @@ public class EditLib {
     public static final String MSG_ELEMENT_NOT_FOUND_AT_REF = "Element not found at ref = ";
 
     private SchemaManager scm;
-    private static final Map<String, Integer> htVersions = new ConcurrentHashMap<String, Integer>();
+    private static final Map<String, Integer> htVersions = new ConcurrentHashMap<>();
 
     /**
      * Adds missing gml namespace to XML inputs, if it is missing.
@@ -137,7 +137,7 @@ public class EditLib {
 
     /** Given an element, creates all mandatory sub-elements. The given element should be empty. */
     public void fillElement(String schema, Element parent, Element md) throws Exception {
-        fillElement(scm.getSchema(schema).getMetadataSchema(), scm.getSchemaSuggestions(schema), parent, md);
+        fillElement(scm.getSchema(schema), scm.getSchemaSuggestions(schema), parent, md);
     }
 
     /** Given an expanded tree, removes all info added for editing and replaces choice_elements with their children. */
@@ -187,29 +187,26 @@ public class EditLib {
         return null;
     }
 
-    public Element addElement(MetadataSchema mdSchema, Element el, String qname) throws Exception {
+    public Element addElement(SchemaPlugin schema, Element el, String qname) throws Exception {
         log.debug("#### in addElement()");
         log.debug("#### - parent = {}", el.getName());
 
         String name = getUnqualifiedName(qname);
-        String ns = getNamespace(qname, el, mdSchema);
+        String ns = getNamespace(qname, el, schema.getXSDSchemaDefinition());
         String prefix = getPrefix(qname);
 
         log.debug("#### - child name = {}", name);
         log.debug("#### - child namespace = {}", ns);
         log.debug("#### - child prefix = {}", prefix);
-        log.debug(
-                "#### - parents first child = {}",
-                el.getChildren().stream().findFirst().toString());
+        log.debug("#### - parents first child = {}", el.getChildren().stream().findFirst());
 
         Element child = new Element(name, prefix, ns);
 
-        addChildToParent(mdSchema, el, child, qname, false);
+        addChildToParent(schema.getXSDSchemaDefinition(), el, child, qname, false);
 
         // --- add mandatory sub-tags
-        SchemaSuggestions mdSugg =
-                scm.getSchemaSuggestions(mdSchema.getSchemaPlugin().getIdentifier());
-        fillElement(mdSchema, mdSugg, el, child);
+        SchemaSuggestions mdSugg = scm.getSchemaSuggestions(schema.getIdentifier());
+        fillElement(schema, mdSugg, el, child);
 
         return child;
     }
@@ -227,7 +224,7 @@ public class EditLib {
     public void addFragment(String schema, Element targetElement, String qname, String fragment, boolean removeExisting)
             throws Exception {
 
-        MetadataSchema mdSchema = scm.getSchema(schema).getMetadataSchema();
+        XSDSchemaDefinition mdSchema = scm.getSchema(schema).getXSDSchemaDefinition();
         Element childToAdd;
 
         try {
@@ -242,7 +239,11 @@ public class EditLib {
 
     @SuppressWarnings("unchecked")
     private void addChildToParent(
-            MetadataSchema mdSchema, Element targetElement, Element childToAdd, String qname, boolean removeExisting)
+            XSDSchemaDefinition mdSchema,
+            Element targetElement,
+            Element childToAdd,
+            String qname,
+            boolean removeExisting)
             throws Exception {
         log.debug("#### - child qname = {}", qname);
 
@@ -252,7 +253,7 @@ public class EditLib {
         String typeName = mdSchema.getElementType(targetElement.getQualifiedName(), parentName);
         log.debug("#### - type name = {}", typeName);
 
-        MetadataType type = mdSchema.getTypeInfo(typeName);
+        XSDTypeDefinition type = mdSchema.getTypeInfo(typeName);
         log.debug("#### - metadata type = {}", type);
 
         // remove everything and then, depending on removeExisting
@@ -326,7 +327,7 @@ public class EditLib {
                 continue;
             }
 
-            if (xmlSnippetAsString == null || xmlSnippetAsString.equals("")) {
+            if (xmlSnippetAsString == null || xmlSnippetAsString.isEmpty()) {
                 continue;
             }
             String[] fragments = StringUtils.split(xmlSnippetAsString, XML_FRAGMENT_SEPARATOR);
@@ -367,12 +368,12 @@ public class EditLib {
     }
 
     /**
-     * This does exactly the same thing as {@link #addElementOrFragmentFromXpath(Element, MetadataSchema, String,
+     * This does exactly the same thing as {@link #addElementOrFragmentFromXpath(Element, SchemaPlugin, String,
      * AddElemValue, boolean)} except that it is done multiple times, once for each element in the map
      *
      * @param metadataRecord the record to update
      * @param xmlAndXpathInputs the xpaths and new values
-     * @param metadataSchema the schema of the metadata record
+     * @param schema the schema of the metadata record
      * @param createXpathNodeIfNotExist if true then xpaths will be created if they don't indentify an existing element
      *     or attribute. Otherwise only existing xpaths will be updated.
      * @return the number of updates.
@@ -380,7 +381,7 @@ public class EditLib {
     public int addElementOrFragmentFromXpaths(
             Element metadataRecord,
             Map<String, AddElemValue> xmlAndXpathInputs,
-            MetadataSchema metadataSchema,
+            SchemaPlugin schema,
             boolean createXpathNodeIfNotExist)
             throws JDOMException, IOException {
 
@@ -398,11 +399,7 @@ public class EditLib {
                 AddElemValue propertyValueToProcess = new AddElemValue(new Element("gn_delete"));
 
                 addElementOrFragmentFromXpath(
-                        metadataRecord,
-                        metadataSchema,
-                        xpathProperty,
-                        propertyValueToProcess,
-                        createXpathNodeIfNotExist);
+                        metadataRecord, schema, xpathProperty, propertyValueToProcess, createXpathNodeIfNotExist);
 
                 Element fragments = propertyValue.getNodeValue();
                 @SuppressWarnings("unchecked")
@@ -411,11 +408,7 @@ public class EditLib {
                     propertyValueToProcess = new AddElemValue("<gn_create>" + Xml.getString(fragment) + "</gn_create>");
 
                     boolean updated = addElementOrFragmentFromXpath(
-                            metadataRecord,
-                            metadataSchema,
-                            xpathProperty,
-                            propertyValueToProcess,
-                            createXpathNodeIfNotExist);
+                            metadataRecord, schema, xpathProperty, propertyValueToProcess, createXpathNodeIfNotExist);
                     if (updated) {
                         numUpdated++;
                     }
@@ -423,7 +416,7 @@ public class EditLib {
 
             } else {
                 boolean updated = addElementOrFragmentFromXpath(
-                        metadataRecord, metadataSchema, xpathProperty, propertyValue, createXpathNodeIfNotExist);
+                        metadataRecord, schema, xpathProperty, propertyValue, createXpathNodeIfNotExist);
                 if (updated) {
                     numUpdated++;
                 }
@@ -492,7 +485,7 @@ public class EditLib {
      * </ul>
      *
      * @param metadataRecord the metadata xml to update
-     * @param metadataSchema the schema of the metadata
+     * @param schema the schema of the metadata
      * @param xpathProperty the xpath to the element to update/replace/add
      * @param value the string or xmlString to add/update/replace
      * @param createXpathNodeIfNotExist if the element identified by the xpath does not exist it will be create when
@@ -501,7 +494,7 @@ public class EditLib {
      */
     public boolean addElementOrFragmentFromXpath(
             Element metadataRecord,
-            MetadataSchema metadataSchema,
+            SchemaPlugin schema,
             String xpathProperty,
             AddElemValue value,
             boolean createXpathNodeIfNotExist) {
@@ -514,7 +507,8 @@ public class EditLib {
             log.debug("Inserting at location {} the snippet or value {}", xpathProperty, value);
 
             xpathProperty = cleanRootFromXPath(xpathProperty, metadataRecord);
-            final List<Object> nodeList = trySelectNode(metadataRecord, metadataSchema, xpathProperty, true).results;
+            final List<Object> nodeList =
+                    trySelectNode(metadataRecord, schema.getXSDSchemaDefinition(), xpathProperty, true).results;
 
             log.debug("{} element matching XPath found.", nodeList.size());
 
@@ -540,20 +534,20 @@ public class EditLib {
                 if (indexOfRequiredPortion > 0) {
                     final String requiredXPath = xpathProperty.substring(0, indexOfRequiredPortion);
                     final SelectResult selectResult =
-                            trySelectNode(metadataRecord, metadataSchema, requiredXPath, false);
+                            trySelectNode(metadataRecord, schema.getXSDSchemaDefinition(), requiredXPath, false);
                     if (selectResult != null) {
                         Object elem = selectResult.result;
                         if (elem == null) {
-                            isUpdated = createAndAddFromXPath(metadataRecord, metadataSchema, requiredXPath, value);
+                            isUpdated = createAndAddFromXPath(metadataRecord, schema, requiredXPath, value);
                         } else if (elem instanceof Element element) {
                             isUpdated = createAndAddFromXPath(
-                                    element, metadataSchema, xpathProperty.substring(indexOfRequiredPortion), value);
+                                    element, schema, xpathProperty.substring(indexOfRequiredPortion), value);
                         } else {
                             isUpdated = false;
                         }
                     }
                 } else {
-                    isUpdated = createAndAddFromXPath(metadataRecord, metadataSchema, xpathProperty, value);
+                    isUpdated = createAndAddFromXPath(metadataRecord, schema, xpathProperty, value);
                 }
             } else {
                 // Update or delete matching node(s) ...
@@ -593,7 +587,7 @@ public class EditLib {
                                 // So do add fragment, will create an empty element of the
                                 // node to insert class and substitute the created one by
                                 // the XML snippet provided
-                                doAddFragmentFromXpath(metadataSchema, value.getNodeValue(), (Element) propNode);
+                                doAddFragmentFromXpath(schema, value.getNodeValue(), (Element) propNode);
                             } else if (propNode instanceof Element && !isValueXml) {
                                 // Update element text with value
                                 ((Element) propNode).setText(value.getStringValue());
@@ -614,8 +608,7 @@ public class EditLib {
     }
 
     /** Performs the updating of the element selected from the metadata by the xpath. */
-    private void doAddFragmentFromXpath(MetadataSchema metadataSchema, Element fragment, Element propEl)
-            throws Exception {
+    private void doAddFragmentFromXpath(SchemaPlugin schema, Element fragment, Element propEl) throws Exception {
 
         Element newValue = (Element) fragment.clone();
         if (newValue.getName().equals(SpecialUpdateTags.REPLACE)
@@ -660,7 +653,7 @@ public class EditLib {
                             // It was created on xpath analysis step above.
                             // In this case, insert the fragment at the target
                             // Check on children size may not be strict enough
-                            if (propEl.getChildren().size() == 0) {
+                            if (propEl.getChildren().isEmpty()) {
                                 parent.setContent(index, child);
                             } else {
                                 parent.addContent(index, child);
@@ -668,7 +661,7 @@ public class EditLib {
                         }
                     } else {
                         // Add an element of same type in the target node
-                        final Element newElement = addElement(metadataSchema, propEl, child.getQualifiedName());
+                        final Element newElement = addElement(schema, propEl, child.getQualifiedName());
                         if (newElement.getParent() != null) {
                             propEl.setContent(propEl.indexOf(newElement), child);
                         } else if (child.getParentElement() == null) {
@@ -676,7 +669,7 @@ public class EditLib {
                         }
                     }
                 } else if (o instanceof Text) {
-                    propEl.addContent((Content) new Text(((Text) o).getText()));
+                    propEl.addContent(new Text(((Text) o).getText()));
                 }
             }
         } else if (newValue.getName().equals(SpecialUpdateTags.DELETE)) {
@@ -698,17 +691,17 @@ public class EditLib {
      * @param value The node or value to add to the XPath matched element.
      */
     private boolean createAndAddFromXPath(
-            Element metadataRecord, MetadataSchema metadataSchema, String xpathProperty, AddElemValue value)
-            throws Exception {
+            Element metadataRecord, SchemaPlugin schema, String xpathProperty, AddElemValue value) throws Exception {
         // Removes root metadata element for xpath filters
         xpathProperty = cleanRootFromXPath(xpathProperty, metadataRecord);
 
         List<String> xpathParts = Arrays.asList(StringUtils.split(xpathProperty, "/"));
-        SelectResult rootElem = trySelectNode(metadataRecord, metadataSchema, xpathParts.get(0), false);
+        SelectResult rootElem =
+                trySelectNode(metadataRecord, schema.getXSDSchemaDefinition(), xpathParts.get(0), false);
 
         Pair<Element, String> result;
         if (rootElem.result instanceof Element) {
-            result = findLongestMatch(metadataRecord, metadataSchema, xpathParts);
+            result = findLongestMatch(metadataRecord, schema.getXSDSchemaDefinition(), xpathParts);
         } else {
             result = Pair.read(metadataRecord, String.join("/", xpathParts));
         }
@@ -782,7 +775,8 @@ public class EditLib {
 
                     Element nodeToCheck = currentNode.getChild(
                             currentElementName,
-                            Namespace.getNamespace(metadataSchema.getNS(currentElementNamespacePrefix)));
+                            Namespace.getNamespace(
+                                    schema.getXSDSchemaDefinition().getNS(currentElementNamespacePrefix)));
 
                     if (nodeToCheck != null) {
                         log.debug(" > {} found", qualifiedName);
@@ -794,9 +788,10 @@ public class EditLib {
 
                         if (isAttribute) {
                             existingElement = false; // Attribute is created and set after.
-                        } else if (metadataSchema.getElementValues(qualifiedName, currentNode.getQualifiedName())
+                        } else if (schema.getXSDSchemaDefinition()
+                                        .getElementValues(qualifiedName, currentNode.getQualifiedName())
                                 != null) {
-                            currentNode = addElement(metadataSchema, currentNode, qualifiedName);
+                            currentNode = addElement(schema, currentNode, qualifiedName);
                             existingElement = false;
                         } else {
                             // element not in schema so stop!
@@ -826,8 +821,7 @@ public class EditLib {
             // If current node match the node name to insert
             // Insert the new node in its parent
             if (existingElement) {
-                currentNode =
-                        addElement(metadataSchema, currentNode.getParentElement(), currentNode.getQualifiedName());
+                currentNode = addElement(schema, currentNode.getParentElement(), currentNode.getQualifiedName());
             }
 
             // clean before update
@@ -835,7 +829,7 @@ public class EditLib {
             // In this case, the snippet only has to be inserted
             currentNode.removeContent();
 
-            doAddFragmentFromXpath(metadataSchema, value.getNodeValue(), currentNode);
+            doAddFragmentFromXpath(schema, value.getNodeValue(), currentNode);
         } else {
             if (isAttribute) {
                 if (StringUtils.isNotEmpty(currentAttributeNamespacePrefix)) {
@@ -844,7 +838,7 @@ public class EditLib {
                             value.getStringValue(),
                             Namespace.getNamespace(
                                     currentAttributeNamespacePrefix,
-                                    metadataSchema.getNS(currentAttributeNamespacePrefix)));
+                                    schema.getXSDSchemaDefinition().getNS(currentAttributeNamespacePrefix)));
                 } else {
                     currentNode.setAttribute(previousToken.image, value.getStringValue());
                 }
@@ -870,13 +864,15 @@ public class EditLib {
     }
 
     protected Pair<Element, String> findLongestMatch(
-            final Element metadataRecord, final MetadataSchema metadataSchema, final List<String> xpathPropertyParts) {
+            final Element metadataRecord,
+            final XSDSchemaDefinition XSDSchemaDefinition,
+            final List<String> xpathPropertyParts) {
         BitSet bitSet = new BitSet(xpathPropertyParts.size());
         return findLongestMatch(
                 metadataRecord,
                 metadataRecord,
                 0,
-                metadataSchema,
+                XSDSchemaDefinition,
                 xpathPropertyParts.size() / 2,
                 xpathPropertyParts,
                 bitSet);
@@ -886,7 +882,7 @@ public class EditLib {
             final Element metadataRecord,
             final Element bestMatch,
             final int indexOfBestMatch,
-            final MetadataSchema metadataSchema,
+            final XSDSchemaDefinition XSDSchemaDefinition,
             final int nextIndex,
             final List<String> xpathPropertyParts,
             BitSet visited) {
@@ -902,7 +898,7 @@ public class EditLib {
         if (xpathPropertyParts.size() - nextIndex < 3) {
             for (int i = xpathPropertyParts.size() - 1; i > -1; i--) {
                 final String xpath = String.join("/", xpathPropertyParts.subList(0, i));
-                SelectResult result = trySelectNode(metadataRecord, metadataSchema, xpath, false);
+                SelectResult result = trySelectNode(metadataRecord, XSDSchemaDefinition, xpath, false);
                 if (result.result instanceof Element) {
                     return Pair.read(
                             (Element) result.result,
@@ -914,18 +910,21 @@ public class EditLib {
                     String.join("/", xpathPropertyParts.subList(indexOfBestMatch, xpathPropertyParts.size())));
         } else {
             final SelectResult found = trySelectNode(
-                    metadataRecord, metadataSchema, String.join("/", xpathPropertyParts.subList(0, nextIndex)), false);
+                    metadataRecord,
+                    XSDSchemaDefinition,
+                    String.join("/", xpathPropertyParts.subList(0, nextIndex)),
+                    false);
             if (found.result instanceof Element newBest) {
                 int newIndex = nextIndex + ((xpathPropertyParts.size() - nextIndex) / 2);
                 return findLongestMatch(
-                        metadataRecord, newBest, nextIndex, metadataSchema, newIndex, xpathPropertyParts, visited);
+                        metadataRecord, newBest, nextIndex, XSDSchemaDefinition, newIndex, xpathPropertyParts, visited);
             } else if (!found.error) {
                 int newNextIndex = indexOfBestMatch + ((nextIndex - indexOfBestMatch) / 2);
                 return findLongestMatch(
                         metadataRecord,
                         bestMatch,
                         indexOfBestMatch,
-                        metadataSchema,
+                        XSDSchemaDefinition,
                         newNextIndex,
                         xpathPropertyParts,
                         visited);
@@ -935,7 +934,7 @@ public class EditLib {
                         metadataRecord,
                         bestMatch,
                         indexOfBestMatch,
-                        metadataSchema,
+                        XSDSchemaDefinition,
                         newNextIndex,
                         xpathPropertyParts,
                         visited);
@@ -944,7 +943,7 @@ public class EditLib {
     }
 
     private SelectResult trySelectNode(
-            Element metadataRecord, MetadataSchema metadataSchema, String xpathProperty, boolean allNodes) {
+            Element metadataRecord, XSDSchemaDefinition XSDSchemaDefinition, String xpathProperty, boolean allNodes) {
         if (xpathProperty.trim().isEmpty()) {
             List<Object> list = new ArrayList<>();
             list.add(metadataRecord);
@@ -952,7 +951,7 @@ public class EditLib {
         }
 
         // Initialize the Xpath with all schema namespaces
-        Map<String, String> mapNs = metadataSchema.getSchemaNSWithPrefix();
+        Map<String, String> mapNs = XSDSchemaDefinition.getSchemaNSWithPrefix();
 
         try {
             JDOMXPath xpath = new JDOMXPath(xpathProperty);
@@ -984,7 +983,7 @@ public class EditLib {
 
     private List<Element> filterOnQname(List<Element> children, String qname) {
         @SuppressWarnings("JdkObsolete")
-        Vector<Element> result = new Vector<Element>();
+        Vector<Element> result = new Vector<>();
         for (Element child : children) {
             if (child.getQualifiedName().equals(qname)) {
                 result.add(child);
@@ -1010,26 +1009,26 @@ public class EditLib {
         return Integer.toString(inVer);
     }
 
-    private void fillElement(MetadataSchema schema, SchemaSuggestions sugg, Element parent, Element element)
+    private void fillElement(SchemaPlugin plugin, SchemaSuggestions sugg, Element parent, Element element)
             throws Exception {
         String parentName = parent.getQualifiedName();
-        fillElement(schema, sugg, parentName, element);
+        fillElement(plugin, sugg, parentName, element);
     }
 
     /**
-     * @param schema The metadata schema
+     * @param plugin The metadata schema
      * @param sugg The suggestion configuration for the schema
      * @param parentName The name of the parent
      * @param element The element to fill
      */
-    private void fillElement(MetadataSchema schema, SchemaSuggestions sugg, String parentName, Element element)
+    private void fillElement(SchemaPlugin plugin, SchemaSuggestions sugg, String parentName, Element element)
             throws Exception {
         String elemName = element.getQualifiedName();
-        SchemaPlugin plugin = schema.getSchemaPlugin();
         boolean isISOPlugin = plugin instanceof ISOPlugin;
         ISOPlugin isoPlugin = isISOPlugin ? (ISOPlugin) plugin : null;
 
-        boolean isSimpleElement = schema.isSimpleElement(elemName, parentName);
+        XSDSchemaDefinition xsdSchemaDefinition = plugin.getXSDSchemaDefinition();
+        boolean isSimpleElement = xsdSchemaDefinition.isSimpleElement(elemName, parentName);
 
         log.debug("#### Entering fillElement()");
         log.debug("#### - elemName = {}", elemName);
@@ -1041,7 +1040,8 @@ public class EditLib {
             return;
         }
 
-        MetadataType type = schema.getTypeInfo(schema.getElementType(elemName, parentName));
+        XSDTypeDefinition type =
+                xsdSchemaDefinition.getTypeInfo(xsdSchemaDefinition.getElementType(elemName, parentName));
         boolean hasSuggestion = sugg.hasSuggestion(elemName, type.getElementList());
         //        List<String> elementSuggestion = sugg.getSuggestedElements(elemName);
         //        boolean hasSuggestion = elementSuggestion.size() != 0;
@@ -1071,9 +1071,9 @@ public class EditLib {
                 }
 
                 String uname = getUnqualifiedName(attr.name);
-                String ns = getNamespace(attr.name, element, schema);
+                String ns = getNamespace(attr.name, element, xsdSchemaDefinition);
                 String prefix = getPrefix(attr.name);
-                if (!prefix.equals(""))
+                if (!prefix.isEmpty())
                     element.setAttribute(new Attribute(uname, value, Namespace.getNamespace(prefix, ns)));
                 else element.setAttribute(new Attribute(uname, value));
             }
@@ -1096,7 +1096,8 @@ public class EditLib {
 
                 if ((childIsMandatory || childIsSuggested) && !childIsFiltered) {
 
-                    MetadataType elemType = schema.getTypeInfo(schema.getElementType(childName, elemName));
+                    XSDTypeDefinition elemType =
+                            xsdSchemaDefinition.getTypeInfo(xsdSchemaDefinition.getElementType(childName, elemName));
                     List<String> childSuggestion = sugg.getSuggestedElements(childName);
                     boolean childHasOneSuggestion = sugg.hasSuggestion(childName, elemType.getElementList())
                             && (CollectionUtils.intersection(elemType.getElementList(), childSuggestion)
@@ -1113,7 +1114,7 @@ public class EditLib {
                     // --- There can be 'or' elements with other 'or' elements inside them.
                     // --- In this case we cannot expand the inner 'or' elements so the
                     // --- only way to solve the problem is to avoid the creation of them
-                    if (schema.isSimpleElement(elemName, childName)
+                    if (xsdSchemaDefinition.isSimpleElement(elemName, childName)
                             || // eg. gco:Decimal
                             !elemType.isOrType()
                             || // eg. gmd:EX_Extent
@@ -1130,7 +1131,7 @@ public class EditLib {
                             )) {
                         // Create the element
                         String name = getUnqualifiedName(childName);
-                        String ns = getNamespace(childName, element, schema);
+                        String ns = getNamespace(childName, element, xsdSchemaDefinition);
                         String prefix = getPrefix(childName);
 
                         Element child = new Element(name, prefix, ns);
@@ -1143,7 +1144,7 @@ public class EditLib {
                         }
 
                         // Continue ....
-                        fillElement(schema, sugg, element, child);
+                        fillElement(plugin, sugg, element, child);
                     } else {
                         // Logging some cases to avoid
                         if (log.isDebugEnabled()) {
@@ -1200,14 +1201,14 @@ public class EditLib {
 
         boolean hasContent = false;
         @SuppressWarnings("JdkObsolete")
-        Vector<Element> holder = new Vector<Element>();
+        Vector<Element> holder = new Vector<>();
 
-        MetadataSchema mdSchema = scm.getSchema(schema).getMetadataSchema();
+        XSDSchemaDefinition mdSchema = scm.getSchema(schema).getXSDSchemaDefinition();
         String chUQname = getUnqualifiedName(chName);
         String chPrefix = getPrefix(chName);
         String chNS = getNamespace(chName, md, mdSchema);
         Element container = new Element(chUQname, chPrefix, chNS);
-        MetadataType containerType = mdSchema.getTypeInfo(chName);
+        XSDTypeDefinition containerType = mdSchema.getTypeInfo(chName);
         for (String elemName : containerType.getAlElements()) {
             log.debug("		-- Searching for child {}", elemName);
             List<Element> elems;
@@ -1251,13 +1252,13 @@ public class EditLib {
 
         String name = md.getQualifiedName();
         String parentName = getParentNameFromChild(md);
-        MetadataSchema mdSchema = scm.getSchema(schema).getMetadataSchema();
+        XSDSchemaDefinition mdSchema = scm.getSchema(schema).getXSDSchemaDefinition();
         String typeName = mdSchema.getElementType(name, parentName);
-        MetadataType thisType = mdSchema.getTypeInfo(typeName);
+        XSDTypeDefinition thisType = mdSchema.getTypeInfo(typeName);
 
         if (thisType.hasContainers) {
             @SuppressWarnings("JdkObsolete")
-            Vector<Content> holder = new Vector<Content>();
+            Vector<Content> holder = new Vector<>();
 
             for (String chName : thisType.getAlElements()) {
                 if (edit_CHOICE_GROUP_SEQUENCE_in(chName)) {
@@ -1282,7 +1283,7 @@ public class EditLib {
     /** For each container element - descend and collect children. */
     private Vector<Object> getContainerChildren(Element md) {
         @SuppressWarnings("JdkObsolete")
-        Vector<Object> result = new Vector<Object>();
+        Vector<Object> result = new Vector<>();
 
         @SuppressWarnings("unchecked")
         List<Element> chChilds = md.getChildren();
@@ -1302,16 +1303,16 @@ public class EditLib {
     public void contractElements(Element md) {
         // --- contract container children at each level in the XML tree
         @SuppressWarnings("JdkObsolete")
-        Vector<Object> children = new Vector<Object>();
+        Vector<Object> children = new Vector<>();
         @SuppressWarnings("unchecked")
         List<Content> childs = md.getContent();
         for (Content obj : childs) {
             if (obj instanceof Element mdCh) {
                 String mdName = mdCh.getName();
                 if (edit_CHOICE_GROUP_SEQUENCE_in(mdName)) {
-                    if (mdCh.getChildren().size() > 0) {
+                    if (!mdCh.getChildren().isEmpty()) {
                         Vector<Object> chChilds = getContainerChildren(mdCh);
-                        if (chChilds.size() > 0) {
+                        if (!chChilds.isEmpty()) {
                             children.addAll(chChilds);
                         }
                     }
@@ -1354,7 +1355,7 @@ public class EditLib {
         elem.setAttribute(new Attribute(Edit.Element.Attr.PARENT, parent + ""));
         elem.setAttribute(new Attribute(
                 Edit.Element.Attr.UUID,
-                md.getQualifiedName() + "_" + UUID.randomUUID().toString()));
+                md.getQualifiedName() + "_" + UUID.randomUUID()));
         md.addContent(elem);
 
         return ref;
@@ -1377,7 +1378,7 @@ public class EditLib {
     }
 
     /** Given a metadata, does a recursive scan adding information for editing. */
-    public void expandTree(MetadataSchema schema, Element md) throws Exception {
+    public void expandTree(SchemaPlugin schema, Element md) throws Exception {
         expandElement(schema, md);
 
         @SuppressWarnings("unchecked")
@@ -1400,7 +1401,7 @@ public class EditLib {
     }
 
     /** Adds editing information to a single element. */
-    public void expandElement(MetadataSchema schema, Element md) throws Exception {
+    public void expandElement(SchemaPlugin schema, Element md) throws Exception {
         log.debug("entering expandElement()");
 
         String elemName = md.getQualifiedName();
@@ -1409,17 +1410,18 @@ public class EditLib {
         log.debug("elemName = {}", elemName);
         log.debug("parentName = {}", parentName);
 
-        String elemType = schema.getElementType(elemName, parentName);
+        XSDSchemaDefinition xsdSchemaDefinition = schema.getXSDSchemaDefinition();
+        String elemType = xsdSchemaDefinition.getElementType(elemName, parentName);
         log.debug("elemType = {}", elemType);
 
         Element elem = md.getChild(RootChild.ELEMENT, Edit.NAMESPACE);
         addValues(schema, elem, elemName, parentName);
 
-        if (schema.isSimpleElement(elemName, parentName)) {
+        if (xsdSchemaDefinition.isSimpleElement(elemName, parentName)) {
             log.debug("is simple element");
             return;
         }
-        MetadataType type = schema.getTypeInfo(elemType);
+        XSDTypeDefinition type = xsdSchemaDefinition.getTypeInfo(elemType);
         log.debug("Type = {}", type);
 
         for (int i = 0; i < type.getElementCount(); i++) {
@@ -1430,7 +1432,7 @@ public class EditLib {
 
             String childName = getUnqualifiedName(childQName);
             String childPrefix = getPrefix(childQName);
-            String childNS = getNamespace(childQName, md, schema);
+            String childNS = getNamespace(childQName, md, xsdSchemaDefinition);
 
             log.debug("- name      = {}", childName);
             log.debug("- prefix    = {}", childPrefix);
@@ -1447,7 +1449,7 @@ public class EditLib {
                 else {
                     String prevQName = type.getElementAt(i - 1);
                     String prevName = getUnqualifiedName(prevQName);
-                    String prevNS = getNamespace(prevQName, md, schema);
+                    String prevNS = getNamespace(prevQName, md, xsdSchemaDefinition);
                     insertLast(md, prevName, prevNS, newElem);
                 }
             } else {
@@ -1461,7 +1463,7 @@ public class EditLib {
                     listElem.setAttribute(new Attribute(
                             Edit.Element.Attr.UUID,
                             listChild.getQualifiedName() + "_"
-                                    + UUID.randomUUID().toString()));
+                                    + UUID.randomUUID()));
                     listElem.setAttribute(new Attribute(Edit.Element.Attr.MIN, "" + type.getMinCardinAt(i)));
                     listElem.setAttribute(new Attribute(Edit.Element.Attr.MAX, "" + type.getMaxCardinAt(i)));
 
@@ -1490,7 +1492,7 @@ public class EditLib {
                                     type.getMaxCardinAt(i)));
             }
         }
-        addAttribs(type, md, schema);
+        addAttribs(type, md, xsdSchemaDefinition);
     }
 
     public String getUnqualifiedName(String qname) {
@@ -1505,7 +1507,7 @@ public class EditLib {
         else return qname.substring(0, pos);
     }
 
-    public String getNamespace(String qname, Element md, MetadataSchema schema) {
+    public String getNamespace(String qname, Element md, XSDSchemaDefinition schema) {
         // check the element first to see whether the namespace is declared locally
         String result = checkNamespaces(qname, md);
         if (!result.equals("UNKNOWN")) {
@@ -1527,10 +1529,10 @@ public class EditLib {
         return getNamespace(qname, schema);
     }
 
-    private String getNamespace(String qname, MetadataSchema schema) {
+    private String getNamespace(String qname, XSDSchemaDefinition schema) {
         // check the list of namespaces we collected as we parsed the schema
         String prefix = getPrefix(qname);
-        if (!prefix.equals("")) {
+        if (!prefix.isEmpty()) {
             String result = schema.getNS(prefix);
             if (result != null) {
                 return result;
@@ -1570,7 +1572,7 @@ public class EditLib {
         @SuppressWarnings("unchecked")
         List<Element> list = md.getChildren();
 
-        List<Element> v = new ArrayList<Element>();
+        List<Element> v = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
             Element el = list.get(i);
@@ -1629,7 +1631,7 @@ public class EditLib {
     }
 
     /** Returns MetadataType associated with an element. */
-    public MetadataType getType(MetadataSchema mds, Element elem) throws Exception {
+    public XSDTypeDefinition getType(XSDSchemaDefinition mds, Element elem) throws Exception {
 
         String elemName = elem.getQualifiedName();
         String parentName = getParentNameFromChild(elem);
@@ -1643,8 +1645,9 @@ public class EditLib {
 
         String childQName = child.getQualifiedName();
 
-        MetadataSchema mds = scm.getSchema(schema).getMetadataSchema();
-        MetadataType mdt = getType(mds, parent);
+        SchemaPlugin schemaPlugin = scm.getSchema(schema);
+        XSDSchemaDefinition mds = schemaPlugin.getXSDSchemaDefinition();
+        XSDTypeDefinition mdt = getType(mds, parent);
 
         int min = -1, max = -1;
 
@@ -1655,31 +1658,32 @@ public class EditLib {
             }
         }
         return createElement(
-                mds, parent.getQualifiedName(), child.getQualifiedName(), child.getNamespaceURI(), min, max);
+                schemaPlugin, parent.getQualifiedName(), child.getQualifiedName(), child.getNamespaceURI(), min, max);
     }
 
     /** Creates a new element for editing, adding all mandatory subtags. */
-    private Element createElement(MetadataSchema schema, String parent, String qname, String childNS, int min, int max)
+    private Element createElement(SchemaPlugin schema, String parent, String qname, String childNS, int min, int max)
             throws Exception {
 
         Element child = new Element(RootChild.CHILD, Edit.NAMESPACE);
-        SchemaSuggestions mdSugg =
-                scm.getSchemaSuggestions(schema.getSchemaPlugin().getIdentifier());
+        SchemaSuggestions mdSugg = scm.getSchemaSuggestions(schema.getIdentifier());
 
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.NAME, getUnqualifiedName(qname)));
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.PREFIX, getPrefix(qname)));
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.NAMESPACE, childNS));
         child.setAttribute(new Attribute(
                 Edit.ChildElem.Attr.UUID,
-                RootChild.CHILD + "_" + qname + "_" + UUID.randomUUID().toString()));
+                RootChild.CHILD + "_" + qname + "_" + UUID.randomUUID()));
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.MIN, "" + min));
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.MAX, "" + max));
 
-        String action = "replace"; // js adds new elements in place of this child
-        if (!schema.isSimpleElement(qname, parent)) {
-            String elemType = schema.getElementType(qname, parent);
+        XSDSchemaDefinition xsdSchemaDefinition = schema.getXSDSchemaDefinition();
 
-            MetadataType type = schema.getTypeInfo(elemType);
+        String action = "replace"; // js adds new elements in place of this child
+        if (!xsdSchemaDefinition.isSimpleElement(qname, parent)) {
+            String elemType = xsdSchemaDefinition.getElementType(qname, parent);
+
+            XSDTypeDefinition type = xsdSchemaDefinition.getTypeInfo(elemType);
             // Choice elements will be added if present in suggestion only.
             boolean useSuggestion = mdSugg.hasSuggestion(qname, type.getElementList());
 
@@ -1691,9 +1695,9 @@ public class EditLib {
                 // elements. It could be a good idea to have that information in configuration file
                 // (eg. like schema-substitute) in order to define the default substitute to use
                 // for a type. TODO
-                SchemaPlugin plugin = schema.getSchemaPlugin();
-                boolean isISOPlugin = plugin instanceof ISOPlugin;
-                ISOPlugin isoPlugin = isISOPlugin ? (ISOPlugin) plugin : null;
+
+                boolean isISOPlugin = schema instanceof ISOPlugin;
+                ISOPlugin isoPlugin = isISOPlugin ? (ISOPlugin) schema : null;
 
                 if (isISOPlugin
                         && type.getElementList().contains(isoPlugin.getBasicTypeCharacterStringName())
@@ -1708,7 +1712,7 @@ public class EditLib {
                     action = "before"; // js adds new elements before this child
                     for (String chElem : type.getAlElements()) {
                         if (chElem.contains(RootChild.CHOICE)) {
-                            List<String> chElems = recurseOnNestedChoices(schema, chElem, parent);
+                            List<String> chElems = recurseOnNestedChoices(xsdSchemaDefinition, chElem, parent);
 
                             for (String chElem1 : chElems) {
                                 chElem = chElem1;
@@ -1737,10 +1741,11 @@ public class EditLib {
         return child;
     }
 
-    private List<String> recurseOnNestedChoices(MetadataSchema schema, String chElem, String parent) throws Exception {
-        List<String> chElems = new ArrayList<String>();
+    private List<String> recurseOnNestedChoices(XSDSchemaDefinition schema, String chElem, String parent)
+            throws Exception {
+        List<String> chElems = new ArrayList<>();
         String elemType = schema.getElementType(chElem, parent);
-        MetadataType type = schema.getTypeInfo(elemType);
+        XSDTypeDefinition type = schema.getTypeInfo(elemType);
         for (String subChElem : type.getAlElements()) {
             if (subChElem.contains(RootChild.CHOICE)) {
                 List<String> subChElems = recurseOnNestedChoices(schema, subChElem, chElem);
@@ -1758,8 +1763,8 @@ public class EditLib {
         child.addContent(choose);
     }
 
-    private void addValues(MetadataSchema schema, Element elem, String name, String parent) throws Exception {
-        List<String> values = schema.getElementValues(name, parent);
+    private void addValues(SchemaPlugin schema, Element elem, String name, String parent) throws Exception {
+        List<String> values = schema.getXSDSchemaDefinition().getElementValues(name, parent);
         if (values != null)
             for (Object value : values) {
                 Element text = new Element(Edit.Element.Child.TEXT, Edit.NAMESPACE);
@@ -1769,7 +1774,7 @@ public class EditLib {
             }
     }
 
-    private void addAttribs(MetadataType type, Element md, MetadataSchema schema) {
+    private void addAttribs(XSDTypeDefinition type, Element md, XSDSchemaDefinition schema) {
         for (MetadataAttribute attr : type.getAlAttribs()) {
 
             Element attribute = new Element(RootChild.ATTRIBUTE, Edit.NAMESPACE);
@@ -1797,7 +1802,7 @@ public class EditLib {
             String uname = getUnqualifiedName(attr.name);
             String ns = getNamespace(attr.name, md, schema);
             String prefix = getPrefix(attr.name);
-            if (!prefix.equals("")) {
+            if (!prefix.isEmpty()) {
                 present = (md.getAttributeValue(uname, Namespace.getNamespace(prefix, ns)) != null);
                 if (!present && attr.required && (attr.defValue != null)) { // Add it
                     md.setAttribute(new Attribute(uname, attr.defValue, Namespace.getNamespace(prefix, ns)));
@@ -1901,7 +1906,7 @@ public class EditLib {
             log.debug("MD before editing infomation:\n{}", Xml.getString(md));
         }
         enumerateTree(md, id, parent);
-        expandTree(scm.getSchema(schema).getMetadataSchema(), md);
+        expandTree(scm.getSchema(schema), md);
         if (log.isDebugEnabled()) {
             log.debug("MD after editing infomation::\n{}", Xml.getString(md));
         }

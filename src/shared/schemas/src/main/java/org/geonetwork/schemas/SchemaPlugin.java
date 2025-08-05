@@ -13,19 +13,25 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.schemas.plugin.CSWPlugin;
 import org.geonetwork.schemas.plugin.HttpLink;
 import org.geonetwork.schemas.plugin.SavedQuery;
+import org.geonetwork.utility.legacy.exceptions.ResourceNotFoundException;
+import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.Namespace;
 
 @Data
+@Slf4j
 public abstract class SchemaPlugin implements CSWPlugin {
 
     protected MetadataSchemaConfiguration configuration;
 
-    MetadataSchema metadataSchema;
+    XSDSchemaDefinition XSDSchemaDefinition;
 
     Path directory;
 
@@ -77,4 +83,29 @@ public abstract class SchemaPlugin implements CSWPlugin {
     }
 
     public abstract String getSchemasResourcePath();
+
+    /**
+     * Query XML document with one of the saved query to retrieve a simple string value.
+     *
+     * @param savedQuery {@link SavedQuery}
+     * @param xml XML document to query
+     */
+    @SuppressWarnings("unused")
+    public String queryString(String savedQuery, Element xml) throws ResourceNotFoundException, JDOMException {
+        SavedQuery query = getSavedQuery(savedQuery);
+        if (query == null) {
+            throw new ResourceNotFoundException(String.format(
+                    "Saved query '%s' for schema '%s' not found. Available queries are '%s'.",
+                    savedQuery,
+                    getIdentifier(),
+                    getSavedQueries().stream().map(SavedQuery::getId).collect(Collectors.joining(", "))));
+        }
+
+        String xpath = query.getXpath();
+        if (log.isDebugEnabled()) {
+            log.error(String.format("Saved query XPath: %s", xpath));
+        }
+
+        return Xml.selectString(xml, xpath, getAllNamespaces().stream().toList());
+    }
 }

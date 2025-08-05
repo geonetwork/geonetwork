@@ -571,7 +571,7 @@ public class SchemaManager {
             String autodetectConfiguration = schema.getConfiguration().getAutodetect();
 
             boolean matchesSchema = Xml.selectBoolean(
-                    md, autodetectConfiguration, schema.getMetadataSchema().getNamespaces());
+                    md, autodetectConfiguration, schema.getXSDSchemaDefinition().getNamespaces());
             if (matchesSchema) {
                 return schemaName;
             }
@@ -684,7 +684,7 @@ public class SchemaManager {
         if (Files.exists(oasisCatFile)) {
             String catalogProp = System.getProperty(Constants.XML_CATALOG_FILES);
             if (catalogProp == null) catalogProp = ""; // shouldn't happen
-            if (catalogProp.equals("")) {
+            if (catalogProp.isEmpty()) {
                 catalogProp = oasisCatFile.toString();
             } else {
                 catalogProp = catalogProp + ";" + oasisCatFile;
@@ -703,15 +703,14 @@ public class SchemaManager {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Schema plugin not found for " + schemaName));
 
-        MetadataSchema mds = new SchemaLoader().load(xmlSchemaFile, schemaPlugin.getConfiguration());
+        XSDSchemaDefinition mds = new SchemaParser().load(xmlSchemaFile, schemaPlugin.getConfiguration());
 
-        schemaPlugin.setMetadataSchema(mds);
+        schemaPlugin.setXSDSchemaDefinition(mds);
         schemaPlugin.setDirectory(schemaDir);
-        mds.setSchemaPlugin(schemaPlugin);
         mds.loadSchematronRules(basePath, schemaDir);
 
-        if (mds.getSchemaPlugin() != null && mds.getSchemaPlugin().getCswTypeNames() != null) {
-            hmSchemasTypenames.putAll(mds.getSchemaPlugin().getCswTypeNames());
+        if (schemaPlugin != null && schemaPlugin.getCswTypeNames() != null) {
+            hmSchemasTypenames.putAll(schemaPlugin.getCswTypeNames());
         }
 
         // -- add cached xml files (schema codelists and label files)
@@ -740,9 +739,10 @@ public class SchemaManager {
         //      }
         //    }
 
-        log.debug("  UUID is read/write mode: " + mds.isReadwriteUUID());
+        log.debug(
+                "  UUID is read/write mode: " + schemaPlugin.getConfiguration().isReadwriteUuid());
 
-        putSchemaInfo(mds.getSchemaPlugin().getIdentifier(), mds);
+        putSchemaInfo(schemaPlugin.getIdentifier(), schemaPlugin);
 
         if (log.isDebugEnabled()) {
             log.debug("Property "
@@ -753,15 +753,15 @@ public class SchemaManager {
 
         // -- Add entry for presentation xslt to schemaPlugins catalog
         // -- if this schema is a plugin schema
-        int baseNrInt = getHighestSchemaPluginCatalogId(mds.getSchemaPlugin().getIdentifier(), schemaPluginCatRoot);
+        int baseNrInt = getHighestSchemaPluginCatalogId(schemaPlugin.getIdentifier(), schemaPluginCatRoot);
         if (baseNrInt == 0) baseNrInt = numberOfCoreSchemasAdded;
         if (baseNrInt != -1) {
-            createUriEntryInSchemaPluginCatalog(mds.getSchemaPlugin().getIdentifier(), baseNrInt, schemaPluginCatRoot);
+            createUriEntryInSchemaPluginCatalog(schemaPlugin.getIdentifier(), baseNrInt, schemaPluginCatRoot);
         }
 
         // -- copy schema.xsd and schema directory from schema to
         // -- <web_app_dir>/xml/schemas/<schema_name>
-        copySchemaXSDsToWebApp(mds.getSchemaPlugin().getIdentifier(), schemaDir);
+        copySchemaXSDsToWebApp(schemaPlugin.getIdentifier(), schemaDir);
     }
 
     /**
@@ -934,10 +934,10 @@ public class SchemaManager {
      * Puts information into the schema information hashtables.
      *
      * @param name schema name
-     * @param mds MetadataSchema object with details of XML schema info
+     * @param schemaPlugin schemaPlugin object with details of XML schema info
      */
-    private void putSchemaInfo(String name, MetadataSchema mds) {
-        hmSchemas.put(name, mds.getSchemaPlugin());
+    private void putSchemaInfo(String name, SchemaPlugin schemaPlugin) {
+        hmSchemas.put(name, schemaPlugin);
     }
 
     /**
@@ -1121,7 +1121,7 @@ public class SchemaManager {
             String autodetectConfiguration = schema.getConfiguration().getAutodetect();
 
             boolean matchesSchema = Xml.selectBoolean(
-                    md, autodetectConfiguration, schema.getMetadataSchema().getNamespaces());
+                    md, autodetectConfiguration, schema.getXSDSchemaDefinition().getNamespaces());
             if (matchesSchema) {
                 matches.add(schemaName);
             }
@@ -1133,7 +1133,7 @@ public class SchemaManager {
                     + " (Namespace "
                     + md.getNamespace()
                     + " matches more than one schema - namely: "
-                    + matches.toString()
+                    + matches
                     + " - during schema autodetection mode ");
         } else if (matches.size() == 1) {
             returnVal = matches.get(0);
