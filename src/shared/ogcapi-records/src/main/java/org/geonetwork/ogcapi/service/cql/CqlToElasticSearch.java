@@ -6,8 +6,6 @@
 package org.geonetwork.ogcapi.service.cql;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
@@ -41,11 +39,22 @@ public class CqlToElasticSearch {
                 .getFilter();
         var validator = new IsSimpleFilterVisitor();
         filter.accept(validator, new HashSet<>());
-        var strResult = CswFilter2Es.translate(filter, ogcElasticFieldMapper);
 
-        try (var inputStream = new ByteArrayInputStream(strResult.getBytes(StandardCharsets.UTF_8))) {
-            var result = new Query.Builder().withJson(inputStream);
-            return result.build();
+        var query = ImprovedCqlFilter2Elastic.translate(filter, ogcElasticFieldMapper);
+        return query;
+    }
+
+    public Query create(String cql) throws Exception {
+        if (cql == null || StringUtils.isAllBlank(cql)) {
+            return null;
         }
+        var filter = CQL.toFilter(cql);
+        filter = DataUtilities.simplifyFilter(new org.geotools.api.data.Query("gn", filter))
+                .getFilter();
+        var validator = new IsSimpleFilterVisitor();
+        filter.accept(validator, new HashSet<>());
+
+        var query = ImprovedCqlFilter2Elastic.translate(filter, ogcElasticFieldMapper);
+        return query;
     }
 }

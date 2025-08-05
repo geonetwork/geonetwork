@@ -9,9 +9,6 @@ properties:
     type: string
   defaultBucketCount:
     type: integer
-  "x-ogc-to-elastic":
-    additionalProperties:
-      type: string
   facets:
     additionalProperties:
       $ref: 'facet.yaml'
