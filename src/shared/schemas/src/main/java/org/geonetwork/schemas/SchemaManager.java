@@ -32,6 +32,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Constants;
 import org.geonetwork.constants.Geonet;
+import org.geonetwork.schemas.validation.SchematronCompiler;
 import org.geonetwork.utility.ApplicationContextProvider;
 import org.geonetwork.utility.legacy.Pair;
 import org.geonetwork.utility.legacy.exceptions.NoSchemaMatchesException;
@@ -65,10 +66,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class SchemaManager {
-    public static final String SCHEMATRON_DIR = "schematron";
-    public static final String SCHEMATRON_RULE_FILE_PREFIX = "schematron-rules";
-    public static final String XSL_FILE_EXTENSION = ".xsl";
-    public static final String SCH_FILE_EXTENSION = ".sch";
     private static final String GEONET_SCHEMA_URI = "http://geonetwork-opensource.org/schemas/schema-ident";
     private static final Namespace GEONET_SCHEMA_PREFIX_NS = Namespace.getNamespace("gns", GEONET_SCHEMA_URI);
     private static final Namespace GEONET_SCHEMA_NS = Namespace.getNamespace(GEONET_SCHEMA_URI);
@@ -96,6 +93,9 @@ public class SchemaManager {
 
     @Autowired
     List<? extends SchemaPlugin> schemaPlugins;
+
+    @Autowired
+    SchematronCompiler schematronCompiler;
 
     public SchemaPlugin getSchemaPluginByIdentifier(String identifier) {
         for (SchemaPlugin plugin : schemaPlugins) {
@@ -664,11 +664,8 @@ public class SchemaManager {
      * Loads the metadata schema from disk and adds it to the pool.
      *
      * @param xmlSchemaFile name of XML schema file (usually schema.xsd)
-     * @param xmlSuggestFile name of schema suggestions file
-     * @param xmlSubstitutionsFile name schema substitutions file
      * @param xmlIdFile name of XML file that identifies the schema
      * @param oasisCatFile name of XML OASIS catalog file
-     * @param conversionsFile name of XML conversions file
      */
     @SuppressWarnings("unused")
     private void addSchema(
@@ -707,7 +704,7 @@ public class SchemaManager {
 
         schemaPlugin.setXSDSchemaDefinition(mds);
         schemaPlugin.setDirectory(schemaDir);
-        mds.loadSchematronRules(basePath, schemaDir);
+        schematronCompiler.loadSchematronRules(schemaPlugin, basePath);
 
         if (schemaPlugin != null && schemaPlugin.getCswTypeNames() != null) {
             hmSchemasTypenames.putAll(schemaPlugin.getCswTypeNames());

@@ -28,6 +28,7 @@ import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.schemas.SchemaPlugin;
 import org.geonetwork.schemas.iso19115_3.ISO19115_3Configuration;
 import org.geonetwork.schemas.iso19115_3.ISO19115_3SchemaPlugin;
+import org.geonetwork.schemas.validation.SchematronCompiler;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,7 @@ import org.springframework.core.io.ClassPathResource;
             EditUtils.class,
             ISO19115_3Configuration.class,
             ISO19115_3SchemaPlugin.class,
+            SchematronCompiler.class,
             SchemaManager.class,
             MetadataManager.class,
             EditLib.class

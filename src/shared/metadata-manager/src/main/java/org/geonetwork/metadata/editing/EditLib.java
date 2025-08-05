@@ -1353,9 +1353,7 @@ public class EditLib {
         Element elem = new Element(RootChild.ELEMENT, Edit.NAMESPACE);
         elem.setAttribute(new Attribute(Edit.Element.Attr.REF, thisRef + ""));
         elem.setAttribute(new Attribute(Edit.Element.Attr.PARENT, parent + ""));
-        elem.setAttribute(new Attribute(
-                Edit.Element.Attr.UUID,
-                md.getQualifiedName() + "_" + UUID.randomUUID()));
+        elem.setAttribute(new Attribute(Edit.Element.Attr.UUID, md.getQualifiedName() + "_" + UUID.randomUUID()));
         md.addContent(elem);
 
         return ref;
@@ -1461,9 +1459,7 @@ public class EditLib {
                     Element listChild = (Element) list.get(j);
                     Element listElem = listChild.getChild(RootChild.ELEMENT, Edit.NAMESPACE);
                     listElem.setAttribute(new Attribute(
-                            Edit.Element.Attr.UUID,
-                            listChild.getQualifiedName() + "_"
-                                    + UUID.randomUUID()));
+                            Edit.Element.Attr.UUID, listChild.getQualifiedName() + "_" + UUID.randomUUID()));
                     listElem.setAttribute(new Attribute(Edit.Element.Attr.MIN, "" + type.getMinCardinAt(i)));
                     listElem.setAttribute(new Attribute(Edit.Element.Attr.MAX, "" + type.getMaxCardinAt(i)));
 
@@ -1671,9 +1667,8 @@ public class EditLib {
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.NAME, getUnqualifiedName(qname)));
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.PREFIX, getPrefix(qname)));
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.NAMESPACE, childNS));
-        child.setAttribute(new Attribute(
-                Edit.ChildElem.Attr.UUID,
-                RootChild.CHILD + "_" + qname + "_" + UUID.randomUUID()));
+        child.setAttribute(
+                new Attribute(Edit.ChildElem.Attr.UUID, RootChild.CHILD + "_" + qname + "_" + UUID.randomUUID()));
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.MIN, "" + min));
         child.setAttribute(new Attribute(Edit.ChildElem.Attr.MAX, "" + max));
 
