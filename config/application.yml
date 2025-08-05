@@ -38,6 +38,10 @@ geonetwork:
           elasticProperty: createDate
         - ogcProperty: resourceTitleObject
           elasticProperty: resourceTitleObject.default
+        - ogcProperty: resolutionScaleDenominator
+          elasticProperty: resolutionScaleDenominator
+
+
 
 
 

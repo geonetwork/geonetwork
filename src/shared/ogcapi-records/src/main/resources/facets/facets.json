@@ -65,6 +65,7 @@
 
     "availableInServices": {
       "type": "filter",
+      "property": "linkProtocol",
       "filters": {
         "availableInDownloadService": "linkProtocol = 'OGC:WFS'",
         "availableInViewService": "linkProtocol = 'OGC:WMS'"
@@ -73,6 +74,7 @@
 
         "resolutionScaleDenominator": {
           "type": "histogram",
+          "property": "resolutionScaleDenominator",
           "bucketType": "fixedInterval",
           "sortedBy": "value",
           "bucketCount": 25,
@@ -84,6 +86,7 @@
 
     "creationYearForResource": {
       "type": "histogram",
+      "property": "creationYearForResource",
       "bucketType": "fixedInterval",
       "sortedBy": "value",
       "bucketCount": 25,
@@ -95,6 +98,7 @@
 
     "creationYearForResource2": {
       "type": "histogram",
+      "property": "creationYearForResource",
       "bucketType": "fixedBucketCount",
       "sortedBy": "value",
       "bucketCount": 5,
@@ -104,6 +108,7 @@
 
     "createDate": {
       "type": "histogram",
+      "property": "createDate",
       "bucketType": "fixedInterval",
       "sortedBy": "value",
       "bucketCount": 25,
@@ -115,6 +120,7 @@
 
     "createDate2": {
       "type": "histogram",
+      "property": "createDate",
       "bucketType": "fixedBucketCount",
       "sortedBy": "value",
       "bucketCount": 5,
