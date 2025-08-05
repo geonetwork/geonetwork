@@ -446,7 +446,7 @@
     "langfre" : "Cette donnée n'est accessible qu'en téléchargement direct ou via le panier de téléchargement du géoportail. Les instructions pour obtenir une copie physique d’une donnée sont détaillées sur https://geoportail.wallonie.be/telecharger. Sources à mentionner : SPW - Aerospacelab SA"
   } ],
   "parentUuid" : [ "e69b5aea-b174-47a7-b92f-3b782230ee9b" ],
-  "uuid" : "samples/iso19115-3.2018_dataset",
+  "uuid" : "samples/iso19115-3_dataset",
   "popularity" : 0,
   "isPublishedToAll" : false,
   "draft" : "n",
@@ -467,7 +467,7 @@
       "langfre" : "WALOUS_2020.png"
     }
   } ],
-  "documentStandard" : "iso19115-3.2018",
+  "documentStandard" : "iso19115-3",
   "indexingErrorMsg" : [ {
     "string" : "indexingErrorMsg-keywordNotFoundInThesaurus",
     "type" : "warning",

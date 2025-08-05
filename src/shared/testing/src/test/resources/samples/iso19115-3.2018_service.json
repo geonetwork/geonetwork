@@ -376,7 +376,7 @@
     "default" : "Ce service de téléchargement est intégré au Géoportail de Wallonie et en partage les spécificités techniques.",
     "langfre" : "Ce service de téléchargement est intégré au Géoportail de Wallonie et en partage les spécificités techniques."
   } ],
-  "uuid" : "samples/iso19115-3.2018_service",
+  "uuid" : "samples/iso19115-3_service",
   "popularity" : 0,
   "isPublishedToAll" : false,
   "draft" : "n",
@@ -393,7 +393,7 @@
   "overview" : [ {
     "url" : "https://metawal.wallonie.be/geonetwork/inspire/api/records/5e2a432b-0a4c-451b-a537-547e78f1fcd9/attachments/download_Inspire_20190430.png"
   } ],
-  "documentStandard" : "iso19115-3.2018",
+  "documentStandard" : "iso19115-3",
   "indexingErrorMsg" : [ {
     "string" : "indexingErrorMsg-keywordNotFoundInThesaurus",
     "type" : "warning",

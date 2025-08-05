@@ -10,7 +10,7 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="xs"
   version="2.0">
-  <xsl:template name="add-iso19115-3.2018-namespaces">
+  <xsl:template name="add-iso19115-3-namespaces">
     <!-- new namespaces -->
     <xsl:namespace name="xsi" select="'http://www.w3.org/2001/XMLSchema-instance'"/>
     <!-- Namespaces that include concepts outside of metadata -->

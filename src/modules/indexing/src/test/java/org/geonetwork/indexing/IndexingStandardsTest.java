@@ -40,9 +40,9 @@ class IndexingStandardsTest {
     @ParameterizedTest
     @ValueSource(
             strings = {
-                "iso19115-3.2018_dataset",
-                "iso19115-3.2018_datamodel",
-                "iso19115-3.2018_service",
+                "iso19115-3_dataset",
+                "iso19115-3_datamodel",
+                "iso19115-3_service",
                 "iso19139_dataset",
                 "dublin-core_dataset",
                 "iso19110_datamodel"

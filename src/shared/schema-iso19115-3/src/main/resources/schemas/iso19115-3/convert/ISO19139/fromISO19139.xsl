@@ -116,7 +116,7 @@
 
             <xsl:element name="mdb:MD_Metadata">
                 <!-- new namespaces -->
-                <xsl:call-template name="add-iso19115-3.2018-namespaces"/>
+                <xsl:call-template name="add-iso19115-3-namespaces"/>
 
                 <xsl:apply-templates select="gmd:fileIdentifier|@uuid" mode="from19139to19115-3.2018"/>
 

@@ -12,8 +12,8 @@
                 version="3.0"
                 exclude-result-prefixes="#all">
 
-  <xsl:import href="../../../iso19115-3.2018/convert/ISO19139/fromISO19139.xsl"/>
-  <xsl:import href="../../../iso19115-3.2018/formatter/eu-geodcat-ap/eu-geodcat-ap-core.xsl"/>
+  <xsl:import href="../../../iso19115-3/convert/ISO19139/fromISO19139.xsl"/>
+  <xsl:import href="../../../iso19115-3/formatter/eu-geodcat-ap/eu-geodcat-ap-core.xsl"/>
   <xsl:import href="../dcat/dcat-utils.xsl"/>
 
   <xsl:template match="/">

@@ -31,7 +31,7 @@ public class CodeListTranslator {
     /** Get the translation of a code. */
     @Cacheable(cacheNames = "schema-codelists")
     public String getTranslation(String codeListNameOrAlias, String code, String language) {
-        loadTranslations("iso19115-3.2018", language);
+        loadTranslations("iso19115-3", language);
 
         return Optional.ofNullable(this.codelists.get(language))
                 .orElse(Codelists.builder().codelist(Collections.emptyList()).build())

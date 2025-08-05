@@ -57,9 +57,9 @@
   <xsl:template match="mdb1:*" priority="200">
     <xsl:element name="{name()}" namespace="http://standards.iso.org/iso/19115/-3/mdb/2.0">
       <xsl:if test="count(ancestor::*) = 0">
-        <xsl:call-template name="add-iso19115-3.2018-namespaces"/>
+        <xsl:call-template name="add-iso19115-3-namespaces"/>
       </xsl:if>
-      
+
       <xsl:apply-templates select="@*|*"/>
     </xsl:element>
   </xsl:template>
@@ -98,7 +98,7 @@
       <xsl:apply-templates select="@*|*"/>
     </xsl:element>
   </xsl:template>
-  
+
 
 
   <!-- Do a copy of every nodes and attributes -->

@@ -69,7 +69,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
 
     @Override
     public String getSchemasResourcePath() {
-        return "/schemas/iso19115-3.2018";
+        return "/schemas/iso19115-3";
     }
 
     @Override

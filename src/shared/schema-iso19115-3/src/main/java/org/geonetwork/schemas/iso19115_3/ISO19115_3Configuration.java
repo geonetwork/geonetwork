@@ -15,7 +15,7 @@ import org.springframework.context.annotation.PropertySources;
 @Configuration
 @PropertySources({
     @PropertySource(
-            value = "classpath:/schemas/iso19115-3.2018/configuration.yml",
+            value = "classpath:/schemas/iso19115-3/configuration.yml",
             factory = YamlPropertySourceFactory.class)
 })
 @ConfigurationProperties("geonetwork.schemas.iso19115-3")

@@ -729,7 +729,7 @@
     "default" : "Cette donnée n'est accessible qu'en téléchargement direct ou via le panier de téléchargement du géoportail. Les instructions pour obtenir une copie physique d’une donnée sont détaillées sur https://geoportail.wallonie.be/telecharger. Sources à mentionner : SPW - Aerospacelab SA",
     "langfre" : "Cette donnée n'est accessible qu'en téléchargement direct ou via le panier de téléchargement du géoportail. Les instructions pour obtenir une copie physique d’une donnée sont détaillées sur https://geoportail.wallonie.be/telecharger. Sources à mentionner : SPW - Aerospacelab SA"
   } ],
-  "uuid" : "samples/iso19115-3.2018_datamodel",
+  "uuid" : "samples/iso19115-3_datamodel",
   "popularity" : 0,
   "isPublishedToAll" : false,
   "draft" : "n",
@@ -743,7 +743,7 @@
   "isHarvested" : false,
   "userSavedCount" : 0,
   "sourceCatalogue" : "null",
-  "documentStandard" : "iso19115-3.2018",
+  "documentStandard" : "iso19115-3",
   "tagNumber" : 0,
   "isPublishedToGuest" : false,
   "hasxlinks" : false,

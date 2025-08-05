@@ -42,7 +42,6 @@ geonetwork:
       schemaLocation: http://www.isotc211.org/2005/gmd http://schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd
       primeNamespace: http://www.isotc211.org/2005/gmd
       autodetect: count(gmd:MD_Metadata|gmd:CI_ResponsibleParty|gmd:DQ_DomainConsistency|gmd:MD_Format|gmd:EX_Extent) > 0
-
       formatters:
         - name: xml
           title:

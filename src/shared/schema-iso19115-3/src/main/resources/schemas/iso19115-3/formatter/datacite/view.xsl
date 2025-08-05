@@ -6,7 +6,7 @@
     available at the root application directory.
 
 -->
-<!-- Conversion from iso19115-3.2018 to Datacite
+<!-- Conversion from iso19115-3 to Datacite
 
 
     See http://schema.datacite.org/meta/kernel-4.1/doc/DataCite-MetadataKernel_v4.1.pdf

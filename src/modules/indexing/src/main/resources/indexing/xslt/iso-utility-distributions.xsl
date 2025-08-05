@@ -125,11 +125,11 @@
             <xsl:value-of select="*:linkage/*:CharacterString"/>
           </id>
           <title>
-            <xsl:apply-templates mode="get-iso19115-3.2018-localized-string"
+            <xsl:apply-templates mode="get-iso19115-3-localized-string"
                                  select="*:name"/>
           </title>
           <url>
-            <xsl:apply-templates mode="get-iso19115-3.2018-localized-string"
+            <xsl:apply-templates mode="get-iso19115-3-localized-string"
                                  select="*:linkage"/>
           </url>
           <function>
@@ -139,7 +139,7 @@
             <xsl:value-of select="*:applicationProfile/*:CharacterString"/>
           </applicationProfile>
           <description>
-            <xsl:apply-templates mode="get-iso19115-3.2018-localized-string"
+            <xsl:apply-templates mode="get-iso19115-3-localized-string"
                                  select="*:description"/>
           </description>
           <protocol>

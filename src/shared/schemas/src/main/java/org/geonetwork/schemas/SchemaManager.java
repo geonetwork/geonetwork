@@ -241,7 +241,7 @@ public class SchemaManager {
         this.schemaPluginsCat = uriCatalogPath;
 
         this.defaultLang = "eng";
-        this.defaultSchema = "iso19115-3.2018";
+        this.defaultSchema = "iso19115-3";
         this.createOrUpdateSchemaCatalog = true;
 
         //    final Path configDir = IO.toPath(handlerConfig.getValue(Geonet.Config.CONFIG_DIR));

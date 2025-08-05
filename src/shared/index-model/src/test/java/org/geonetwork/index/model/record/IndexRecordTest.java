@@ -50,13 +50,13 @@ class IndexRecordTest {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String json =
-                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3.2018_dataset.json").getURI()));
+                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3_dataset.json").getURI()));
 
             IndexRecord indexRecord = objectMapper.readValue(json, IndexRecord.class);
 
             assertEquals("metadata", indexRecord.getDocType().name());
-            assertEquals("samples/iso19115-3.2018_dataset", indexRecord.getUuid());
-            assertEquals("iso19115-3.2018", indexRecord.getDocumentStandard());
+            assertEquals("samples/iso19115-3_dataset", indexRecord.getUuid());
+            assertEquals("iso19115-3", indexRecord.getDocumentStandard());
             assertEquals("ISO 19115-3", indexRecord.getStandardName().get(DEFAULT_TEXT));
             assertEquals("2018", indexRecord.getStandardVersion().get(DEFAULT_TEXT));
             assertEquals("2024-06-03T14:04:06.161Z", indexRecord.getDateStamp());
@@ -631,7 +631,7 @@ class IndexRecordTest {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String json =
-                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3.2018_service.json").getURI()));
+                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3_service.json").getURI()));
 
             IndexRecord indexRecord = objectMapper.readValue(json, IndexRecord.class);
             assertEquals("service", indexRecord.getResourceType().getFirst());
@@ -679,7 +679,7 @@ class IndexRecordTest {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String json =
-                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3.2018_datamodel.json").getURI()));
+                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3_datamodel.json").getURI()));
 
             IndexRecord indexRecord = objectMapper.readValue(json, IndexRecord.class);
             assertEquals("featureCatalog", indexRecord.getResourceType().getFirst());
@@ -694,7 +694,7 @@ class IndexRecordTest {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonFromIndex =
-                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3.2018_dataset.json").getURI()));
+                    Files.readString(Path.of(new ClassPathResource("samples/iso19115-3_dataset.json").getURI()));
 
             IndexRecord indexRecord = objectMapper.readValue(jsonFromIndex, IndexRecord.class);
 

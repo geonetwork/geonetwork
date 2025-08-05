@@ -50,7 +50,7 @@ class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
 
     @Test
     void test_which_requires_elasticsearch() throws Exception {
-        String file = "iso19115-3.2018_dataset";
+        String file = "iso19115-3_dataset";
         String schema = StringUtils.split(file, "_")[0];
         String fileBaseName = String.format("samples/%s", file);
         // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
