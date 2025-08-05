@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("unchecked")
 public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
 
+    ElasticBetweenSimplifier simplifier = new ElasticBetweenSimplifier();
+
     /*from CswFilter2Es (gn4)*/
     //    private static final Pattern SPECIAL_RE = Pattern.compile("([" + Pattern.quote("+-&|!(){}[]^\\\"~*?:/") +
     // "])");
@@ -225,7 +227,8 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
 
         Query query;
         if (operator == BinaryLogicOperatorType.AND) {
-            query = Query.of(q -> q.bool(b -> b.must(qs)));
+            var _qs = simplifier.simplify(qs);
+            query = Query.of(q -> q.bool(b -> b.must(_qs)));
         } else {
             query = Query.of(q -> q.bool(b -> b.should(qs).minimumShouldMatch("1")));
         }
