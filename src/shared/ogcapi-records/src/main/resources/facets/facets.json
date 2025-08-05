@@ -66,8 +66,8 @@
     "availableInServices": {
       "type": "filter",
       "filters": {
-        "availableInDownloadService": "links.type = 'wfs'",
-        "availableInViewService": "links.type = 'wms'"
+        "availableInDownloadService": "linkProtocol = 'OGC:WFS'",
+        "availableInViewService": "linkProtocol = 'OGC:WMS'"
       }
     },
 
@@ -91,14 +91,43 @@
       "x-elastic-datatype": "number",
       "x-interval-number" : 5,
       "x-minimum-doc-count": 1
+    },
+
+    "creationYearForResource2": {
+      "type": "histogram",
+      "bucketType": "fixedBucketCount",
+      "sortedBy": "value",
+      "bucketCount": 5,
+      "x-elastic-property": "creationYearForResource",
+      "x-elastic-datatype": "number"
+    },
+
+    "createDate": {
+      "type": "histogram",
+      "bucketType": "fixedInterval",
+      "sortedBy": "value",
+      "bucketCount": 25,
+      "x-elastic-property": "createDate",
+      "x-elastic-datatype": "date",
+      "x-interval-calendar-interval" : "month",
+      "x-minimum-doc-count": 1
+    },
+
+    "createDate2": {
+      "type": "histogram",
+      "bucketType": "fixedBucketCount",
+      "sortedBy": "value",
+      "bucketCount": 5,
+      "x-elastic-property": "createDate",
+      "x-elastic-datatype": "date",
+
+      "x-minimum-doc-count": 1
     }
 
 
-  },
-  "defaultBucketCount": 10,
 
-  "x-ogc-to-elastic": {
-    "links.type = 'wfs'": "+linkProtocol:/OGC:WFS.*/",
-    "links.type = 'wms'": "+linkProtocol:/OGC:WMS.*/"
-  }
+
+  },
+  "defaultBucketCount": 10
+
 }

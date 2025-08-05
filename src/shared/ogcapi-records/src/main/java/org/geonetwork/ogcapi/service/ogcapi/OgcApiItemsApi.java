@@ -5,7 +5,6 @@
  */
 package org.geonetwork.ogcapi.service.ogcapi;
 
-import co.elastic.clients.elasticsearch._types.aggregations.*;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import java.io.IOException;
@@ -18,14 +17,14 @@ import org.geonetwork.ogcapi.records.generated.model.*;
 import org.geonetwork.ogcapi.service.dataaccess.CatalogApi;
 import org.geonetwork.ogcapi.service.dataaccess.ElasticWithUserPermissions;
 import org.geonetwork.ogcapi.service.dataaccess.SimpleElastic;
+import org.geonetwork.ogcapi.service.facets.FacetsResponseInjector;
+import org.geonetwork.ogcapi.service.facets.RecordsFacetsElasticQueryBuilder;
 import org.geonetwork.ogcapi.service.indexConvert.OgcApiGeoJsonConverter;
 import org.geonetwork.ogcapi.service.links.FormatterApiRecordLinkAttacher;
 import org.geonetwork.ogcapi.service.links.ItemPageLinks;
 import org.geonetwork.ogcapi.service.links.ItemsPageLinks;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.geonetwork.ogcapi.service.search.RecordsEsQueryBuilder;
-import org.geonetwork.ogcapi.service.search.RecordsFacetsBuilder;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -34,42 +33,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 @Component
 public class OgcApiItemsApi {
 
-    //    private @NotNull OgcApiRecordsFacetSummaryDto getOgcApiRecordsFacetSummaryDto(
-    //            Integer defaultBucketCount,
-    //            String name,
-    //            SearchResponse<IndexRecord> searchResponse,
-    //            OgcApiRecordsFacetHistogramDto histogramDto) {
-    //        var result = new OgcApiRecordsFacetSummaryDto();
-    //        result.setType(histogramDto.getType());
-    //        result.setProperty(histogramDto.getProperty());
-    //        var buckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>();
-    //
-    //        var agg = searchResponse.aggregations().get("facet." + name);
-    //        var histoAgg = ((HistogramAggregate) agg._get());
-    //        @SuppressWarnings("unchecked")
-    //        var elasticBuckets = ((Map<String, HistogramBucket>) histoAgg.buckets()._get());
-    //        for (var elasticBucket : elasticBuckets.entrySet()) {
-    //            var b = new OgcApiRecordsFacetResultBucketDto();
-    //            b.setCount((int) elasticBucket.getValue().docCount());
-    //            b.setValue(Double.toString(elasticBucket.getValue().key()));
-    //            buckets.add(b);
-    //        }
-    //        result.setBuckets(buckets);
-    //        handleBuckets(
-    //                result,
-    //                defaultBucketCount,
-    //                0,
-    //                histogramDto.getSortedBy(),
-    //                SortType.NUMBER,
-    //                false,
-    //                histogramDto.getBucketCount());
-    //        return result;
-    //    }
-
-    public enum SortType {
-        STRING,
-        NUMBER
-    }
+    @Autowired
+    FacetsResponseInjector facetsInjector;
 
     @Autowired
     CatalogApi catalogApi;
@@ -99,7 +64,7 @@ public class OgcApiItemsApi {
     FormatterApiRecordLinkAttacher formatterApiRecordLinkAttacher;
 
     @Autowired
-    RecordsFacetsBuilder recordsFacetsBuilder;
+    RecordsFacetsElasticQueryBuilder recordsFacetsBuilder;
 
     /**
      * gets a record in a collection. collections/{collectionid}/items/{itemid} endpoint
@@ -158,211 +123,9 @@ public class OgcApiItemsApi {
             }
         });
 
-        injectFacets(response, records, facets);
+        facetsInjector.injectFacets(response, records, facets);
 
         return response;
-    }
-
-    /**
-     * Setup the facets portion of the response.
-     *
-     * @param webResponse put the facets in here (goes to user)
-     * @param searchResponse from elastic
-     * @param facets facet's configuration
-     */
-    private void injectFacets(
-            OgcApiRecordsGetRecords200ResponseDto webResponse,
-            SearchResponse<IndexRecord> searchResponse,
-            OgcApiRecordsFacetsDto facets) {
-        if (facets.getFacets() == null && !facets.getFacets().isEmpty()) {
-            return; // nothing to doOgcApiItemsApi.java
-        }
-        var result = new HashMap<String, OgcApiRecordsFacetSummaryDto>();
-
-        for (var f : facets.getFacets().entrySet()) {
-            var name = f.getKey();
-            var config = f.getValue();
-            var summary = setupSummary(facets.getDefaultBucketCount(), name, config, searchResponse);
-
-            result.put(name, summary);
-        }
-
-        webResponse.setFacets(result);
-    }
-
-    private OgcApiRecordsFacetSummaryDto setupSummary(
-            Integer defaultBucketCount,
-            String name,
-            OgcApiRecordsFacetDto config,
-            SearchResponse<IndexRecord> searchResponse) {
-        switch (config) {
-            case OgcApiRecordsFacetFilterDto filterDto -> {
-                return setupSummary_filter(name, searchResponse, filterDto, defaultBucketCount);
-            }
-            case OgcApiRecordsFacetHistogramDto histogramDto -> {
-                return setupSummary_histogram(name, searchResponse, histogramDto, defaultBucketCount);
-            }
-            case OgcApiRecordsFacetTermsDto termsDto -> {
-                return setupSummary_terms(name, searchResponse, termsDto, defaultBucketCount);
-            }
-            default -> throw new RuntimeException(
-                    "Unsupported facet type: " + config.getClass().getSimpleName());
-        }
-    }
-
-    private @NotNull OgcApiRecordsFacetSummaryDto setupSummary_terms(
-            String name,
-            SearchResponse<IndexRecord> searchResponse,
-            OgcApiRecordsFacetTermsDto termsDto,
-            Integer defaultBucketCount) {
-        var result = new OgcApiRecordsFacetSummaryDto();
-        result.setType(termsDto.getType());
-        result.setProperty(termsDto.getProperty());
-
-        var buckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>();
-
-        var agg = searchResponse.aggregations().get("facet." + name);
-        var stringTermsAgg = ((StringTermsAggregate) agg._get());
-        var moreDocs = stringTermsAgg.sumOtherDocCount() > 0;
-        @SuppressWarnings("unchecked")
-        var elasticBuckets = ((List<StringTermsBucket>) stringTermsAgg.buckets()._get());
-        for (var elasticBucket : elasticBuckets) {
-            var b = new OgcApiRecordsFacetResultBucketDto();
-            b.setCount((int) elasticBucket.docCount());
-            b.setValue(elasticBucket.key()._get().toString());
-            buckets.add(b);
-        }
-        result.setBuckets(buckets);
-        handleBuckets(
-                result,
-                defaultBucketCount,
-                termsDto.getMinOccurs(),
-                termsDto.getSortedBy(),
-                SortType.STRING,
-                moreDocs,
-                termsDto.getBucketCount());
-        return result;
-    }
-
-    private @NotNull OgcApiRecordsFacetSummaryDto setupSummary_histogram(
-            String name,
-            SearchResponse<IndexRecord> searchResponse,
-            OgcApiRecordsFacetHistogramDto histogramDto,
-            Integer defaultBucketCount) {
-        var result = new OgcApiRecordsFacetSummaryDto();
-        result.setType(histogramDto.getType());
-        result.setProperty(histogramDto.getProperty());
-        var buckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>();
-
-        var agg = searchResponse.aggregations().get("facet." + name);
-        var histoAgg = ((HistogramAggregate) agg._get());
-        @SuppressWarnings("unchecked")
-        var elasticBuckets = ((Map<String, HistogramBucket>) histoAgg.buckets()._get());
-        for (var elasticBucket : elasticBuckets.entrySet()) {
-            var b = new OgcApiRecordsFacetResultBucketDto();
-            b.setCount((int) elasticBucket.getValue().docCount());
-            b.setValue(Double.toString(elasticBucket.getValue().key()));
-            buckets.add(b);
-        }
-        result.setBuckets(buckets);
-        handleBuckets(
-                result,
-                defaultBucketCount,
-                0,
-                histogramDto.getSortedBy(),
-                SortType.NUMBER,
-                false,
-                histogramDto.getBucketCount());
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    private @NotNull OgcApiRecordsFacetSummaryDto setupSummary_filter(
-            String name,
-            SearchResponse<IndexRecord> searchResponse,
-            OgcApiRecordsFacetFilterDto filterDto,
-            Integer defaultBucketCount) {
-        var result = new OgcApiRecordsFacetSummaryDto();
-        result.setType(filterDto.getType());
-        var buckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>();
-
-        var agg = searchResponse.aggregations().get("facet." + name);
-        var filtersAgg = ((FiltersAggregate) agg._get());
-        var bucketsMap = filtersAgg.buckets().keyed();
-        for (var bucket : bucketsMap.entrySet()) {
-            var bucketOgc = new OgcApiRecordsFacetResultBucketDto();
-            bucketOgc.setValue(bucket.getKey());
-            bucketOgc.setCount((int) bucket.getValue().docCount());
-            buckets.add(bucketOgc);
-        }
-        result.setBuckets(buckets);
-        return result;
-    }
-
-    /**
-     * We are give a direct translation of the elastic search results. However, ogcapi-records defines a few things like
-     * defaultBucketCount, ordering, and minimum number of matched documents.
-     *
-     * <p>We: 1. order the buckets correctly 2. remove buckets without enough matched documents 3. remove buckets if
-     * there are too many (>defaultBucketCount)
-     *
-     * @param result all buckets
-     * @param defaultBucketCount default # of buckets
-     * @param minOccurs bucket must contain at lease this number of items
-     * @param sortedBy sorting option (alphabetical for term or count of documents)
-     * @param moreDocs there were more documents that were not returned by elastic
-     * @param bucketCount how many buckets are configured?
-     */
-    private void handleBuckets(
-            OgcApiRecordsFacetSummaryDto result,
-            Integer defaultBucketCount,
-            Integer minOccurs,
-            OgcApiRecordsFacetSortedByDto sortedBy,
-            SortType sortType,
-            boolean moreDocs,
-            Integer bucketCount) {
-        var originalNumberOfBuckets = result.getBuckets().size();
-        if (defaultBucketCount == null || defaultBucketCount <= 0) {
-            defaultBucketCount = Integer.MAX_VALUE;
-        }
-
-        var nBuckets = (bucketCount == null || bucketCount <= 0) ? defaultBucketCount : bucketCount;
-
-        if (minOccurs == null || minOccurs == 0 || minOccurs <= 0) {
-            minOccurs = 1;
-        }
-        if (sortedBy == null) {
-            sortedBy = OgcApiRecordsFacetSortedByDto.COUNT;
-        }
-
-        // sort
-        if (sortedBy == OgcApiRecordsFacetSortedByDto.COUNT) {
-            // elastic does this by default, but we double check here
-            result.getBuckets().sort(Comparator.comparingInt(x -> x.getCount()));
-            Collections.reverse(result.getBuckets()); // descending
-        } else {
-            if (sortType == SortType.NUMBER) {
-                result.getBuckets().sort(Comparator.comparingDouble(x -> Double.parseDouble(x.getValue())));
-            } else { // STRING
-                result.getBuckets().sort(Comparator.comparing(x -> x.getValue()));
-            }
-            Collections.reverse(result.getBuckets()); // descending
-        }
-
-        var _minOccurs = minOccurs; // effectively final
-        // min occurs
-        var newBuckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>(result.getBuckets().stream()
-                .filter(x -> x.getCount() >= _minOccurs)
-                .toList());
-
-        // max # of buckets
-        if (newBuckets.size() > nBuckets) {
-            newBuckets.subList(nBuckets, newBuckets.size()).clear();
-        }
-        result.setBuckets(newBuckets);
-
-        // more documents not represented in these facet
-        result.setMore(moreDocs || newBuckets.size() < originalNumberOfBuckets);
     }
 
     /**
@@ -389,7 +152,7 @@ public class OgcApiItemsApi {
                     query = elasticWithUserPermissions.createPermissionQuery(query);
                     s.query(query);
                     s.index(simpleElastic.getRecordIndexName());
-                    s.aggregations(recordsFacetsBuilder.getAggregations(facets));
+                    s.aggregations(recordsFacetsBuilder.createElasticAggregationsFromFacetsDefinition(facets));
                     return s;
                 },
                 IndexRecord.class);

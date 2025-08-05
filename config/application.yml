@@ -28,6 +28,19 @@ geonetwork:
           elasticProperty: tag.langeng
         - ogcProperty: updateFrequency
           elasticProperty: cl_maintenanceAndUpdateFrequency.key
+        - ogcProperty: updateFrequency
+          elasticProperty: cl_maintenanceAndUpdateFrequency.key
+        - ogcProperty: creationYearForResource
+          elasticProperty: creationYearForResource
+        - ogcProperty: linkProtocol
+          elasticProperty: linkProtocol
+        - ogcProperty: createDate
+          elasticProperty: createDate
+        - ogcProperty: resourceTitleObject
+          elasticProperty: resourceTitleObject.default
+
+
+
     links:
       base-path: /ogcapi-records
       # Where is GN5's ogcapi-records located?
