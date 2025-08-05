@@ -164,7 +164,7 @@ public class GeoNetworkOAuth2UserService {
             var surname = getValue(oAuth2User, userCreationInfo.getSurname());
             var company = getValue(oAuth2User, userCreationInfo.getOrganization());
             User newUser = User.builder()
-                    .isenabled("y")
+                    .isenabled(true)
                     .password("")
                     .username(username)
                     .name(Optional.ofNullable(name).orElse(""))

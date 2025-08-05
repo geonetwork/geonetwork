@@ -50,7 +50,7 @@ class DatabaseUserDetailsServiceTest {
         User mockUser = new User();
         mockUser.setUsername("validUser");
         mockUser.setPassword("password");
-        mockUser.setIsenabled("y");
+        mockUser.setIsenabled(true);
         when(userRepository.findOptionalByUsernameOrEmailAndAuthtypeIsNull("validUser", "validUser"))
                 .thenReturn(Optional.of(mockUser));
 
@@ -77,7 +77,7 @@ class DatabaseUserDetailsServiceTest {
     void testRetrieveUser_DisabledAccount() {
         User mockUser = new User();
         mockUser.setUsername("disabledUser");
-        mockUser.setIsenabled("n");
+        mockUser.setIsenabled(false);
         when(userRepository.findOptionalByUsernameOrEmailAndAuthtypeIsNull("disabledUser", "disabledUser"))
                 .thenReturn(Optional.of(mockUser));
 
@@ -94,7 +94,7 @@ class DatabaseUserDetailsServiceTest {
         User mockUser = new User();
         mockUser.setUsername("validEmailUser");
         mockUser.setPassword("password");
-        mockUser.setIsenabled("y");
+        mockUser.setIsenabled(true);
         when(userRepository.findOptionalByUsernameOrEmailAndAuthtypeIsNull(
                         "validEmail@example.com", "validEmail@example.com"))
                 .thenReturn(Optional.of(mockUser));
@@ -112,7 +112,7 @@ class DatabaseUserDetailsServiceTest {
         User mockUser = new User();
         mockUser.setUsername("validEmailUser");
         mockUser.setPassword("password");
-        mockUser.setIsenabled("y");
+        mockUser.setIsenabled(true);
         when(userRepository.findOptionalByUsernameAndAuthtypeIsNull("validEmailUser"))
                 .thenReturn(Optional.of(mockUser));
         when(userGroupRepository.findAllByUserid_Id(mockUser.getId())).thenReturn(Collections.emptyList());
