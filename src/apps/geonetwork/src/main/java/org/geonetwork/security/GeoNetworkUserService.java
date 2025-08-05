@@ -23,7 +23,7 @@ public class GeoNetworkUserService {
             throw new UsernameNotFoundException(username + " is not a valid username");
         }
 
-        if ("n".equals(user.get().getIsenabled())) {
+        if (!user.get().getIsenabled()) {
             throw new UsernameNotFoundException(username + " account is disabled");
         }
 
