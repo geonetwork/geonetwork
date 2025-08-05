@@ -71,12 +71,22 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
+      <artifactId>gn-indexing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
       <artifactId>gn-constants</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-data-directory</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-legacy-utility</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -95,4 +105,41 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <testResources>
+      <testResource>
+        <directory>${maven.multiModuleProjectDirectory}/config</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <directory>${maven.multiModuleProjectDirectory}/src/shared/testing/src/test/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </testResource>
+    </testResources>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>default-build</id>
+      <activation>
+        <property>
+          <name>!relax</name>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.geonetwork</groupId>
+          <artifactId>gn-testing</artifactId>
+          <version>${project.version}</version>
+          <type>test-jar</type>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>

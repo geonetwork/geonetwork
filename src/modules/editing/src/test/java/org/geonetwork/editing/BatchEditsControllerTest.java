@@ -23,9 +23,13 @@ import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.domain.repository.OperationRepository;
 import org.geonetwork.domain.repository.OperationallowedRepository;
-import org.geonetwork.editing.model.BatchEditParameter;
 import org.geonetwork.metadata.MetadataManager;
+import org.geonetwork.metadata.editing.EditLib;
+import org.geonetwork.metadata.editing.EditUtils;
+import org.geonetwork.metadata.editing.model.BatchEditParameter;
 import org.geonetwork.schemas.SchemaManager;
+import org.geonetwork.schemas.SchemaPlugin;
+import org.geonetwork.schemas.iso19115_3.ISO19115_3Configuration;
 import org.geonetwork.schemas.iso19115_3.ISO19115_3SchemaPlugin;
 import org.geonetwork.schemas.iso19139.ISO19139SchemaPlugin;
 import org.geonetwork.utility.legacy.xml.Xml;
@@ -37,7 +41,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 @SpringBootTest(
-        classes = {TestConfiguration.class, BatchEditsService.class, SchemaManager.class, MetadataManager.class})
+        classes = {
+            TestConfiguration.class,
+            BatchEditsService.class,
+            EditUtils.class,
+            ISO19115_3Configuration.class,
+            ISO19115_3SchemaPlugin.class,
+            SchemaManager.class,
+            MetadataManager.class,
+            EditLib.class
+        })
 class BatchEditsControllerTest {
 
     @MockBean
@@ -48,6 +61,9 @@ class BatchEditsControllerTest {
 
     @MockBean
     private OperationallowedRepository operationallowedRepository;
+
+    @MockBean
+    List<? extends SchemaPlugin> schemaPlugins;
 
     @Autowired
     BatchEditsService batchEditService;
@@ -68,7 +84,7 @@ class BatchEditsControllerTest {
 
         Metadata metadata = new Metadata();
         metadata.setUuid("uuid1");
-        metadata.setSchemaid("iso19115-3.2018");
+        metadata.setSchemaid("iso19115-3");
         metadata.setData("<mdb:MD_Metadata xmlns:mdb=\"http://standards.iso.org/iso/19115/-3/mdb/2.0\"/>");
         when(metadataRepository.findAllByUuidIn(List.of("uuid1"))).thenReturn(List.of(metadata));
         when(metadataRepository.findByUuid(uuids[0])).thenReturn(Optional.of(metadata));

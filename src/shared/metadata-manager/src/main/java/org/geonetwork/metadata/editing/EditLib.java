@@ -30,7 +30,7 @@
 // ===	Rome - Italy. email: geonetwork@osgeo.org
 // ==============================================================================
 
-package org.geonetwork.editing;
+package org.geonetwork.metadata.editing;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -55,7 +55,7 @@ import org.apache.commons.jxpath.ri.parser.XPathParserConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Edit;
 import org.geonetwork.constants.Edit.RootChild;
-import org.geonetwork.editing.model.AddElemValue;
+import org.geonetwork.metadata.editing.model.AddElemValue;
 import org.geonetwork.schemas.MetadataAttribute;
 import org.geonetwork.schemas.MetadataSchema;
 import org.geonetwork.schemas.MetadataType;
@@ -75,7 +75,9 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.Text;
 import org.jdom.filter.ElementFilter;
+import org.springframework.stereotype.Component;
 
+@Component
 @Slf4j
 @AllArgsConstructor
 public class EditLib {

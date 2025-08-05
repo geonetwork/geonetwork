@@ -24,6 +24,9 @@ All operations related to metadata records.
     public static final String API_PARAM_RECORD_UUID = "Record UUID.";
     public static final String API_PARAM_RECORD_UUIDS = "One or more record UUIDs";
     public static final String API_PARAM_RECORD_UUIDS_OR_SELECTION = "Record UUIDs. If null current selection is used.";
+
+    public static final String TEMPLATE = "template";
+
     public static final String API_PARAM_CLEAR_ALL_BEFORE_INSERT = "Clear all before adding new ones";
     public static final String API_PARAM_SCHEMA_IDENTIFIERS = "Schema identifiers";
     public static final String API_PARAM_PROCESS_TEST_ONLY =

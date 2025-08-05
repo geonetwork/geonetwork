@@ -5,6 +5,7 @@
  */
 package org.geonetwork.schemas;
 
+import static org.geonetwork.constants.Geonet.File.SCHEMA_SUGGESTIONS;
 import static org.geonetwork.utility.JarFileCopy.copyFolder;
 
 import jakarta.annotation.PostConstruct;
@@ -210,7 +211,7 @@ public class SchemaManager {
         hmSchemas.clear();
 
         // FIXME: Should be in the data directory?
-        Path schemaPath = Files.createTempDirectory("gn5-");
+        Path schemaPath = Files.createTempDirectory("gn5-schema");
         Files.createDirectories(schemaPath);
         this.basePath = schemaPath; // .resolve("usedforschematronrulecompilation");
         //    this.resourcePath = resourcePath;
@@ -638,8 +639,11 @@ public class SchemaManager {
             if (schema == null) throw new IllegalArgumentException("Schema suggestions not registered : " + name);
 
             // TODO: GN5 move suggestion config to YML file
-            return null;
+            return new SchemaSuggestions(
+                    schema.getMetadataSchema().getSchemaDir().resolve(SCHEMA_SUGGESTIONS));
             //            return schema.getSuggestions();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         } finally {
             afterRead();
         }
@@ -984,11 +988,11 @@ public class SchemaManager {
                 mds,
                 path,
                 new SchemaSuggestions(xmlSuggestFile),
-                extractADElements(xmlIdFile),
+                mds.getSchemaPlugin().getConfiguration().getAutodetect(),
                 //        xfMap,
                 true, // all schemas are plugin schemas now
                 mds.getSchemaPlugin().getConfiguration().getSchemaLocation(),
-                extractConvElements(conversionsFile),
+                List.of(),
                 // TODO: GN5 / Remove if dependency is limited to one
                 mds.getSchemaPlugin().getConfiguration().getDepends() != null
                         ? List.of(mds.getSchemaPlugin().getConfiguration().getDepends())
@@ -1202,7 +1206,7 @@ public class SchemaManager {
             MetadataSchema mds,
             Path schemaDir,
             SchemaSuggestions sugg,
-            List<Element> adElems,
+            MetadataSchemaConfiguration.AutodetectConfiguration adElems,
             //      Map<String, XmlFile> xfMap,
             boolean isPlugin,
             String schemaLocation,
@@ -1221,7 +1225,7 @@ public class SchemaManager {
             throws RuntimeException {
 
         Path schemaFile = schemasDir.resolve(Geonet.File.SCHEMA);
-        Path suggestFile = schemasDir.resolve(Geonet.File.SCHEMA_SUGGESTIONS);
+        Path suggestFile = schemasDir.resolve(SCHEMA_SUGGESTIONS);
         Path substitutesFile = schemasDir.resolve(Geonet.File.SCHEMA_SUBSTITUTES);
         Path idFile = schemasDir.resolve(Geonet.File.SCHEMA_ID);
         Path oasisCatFile = schemasDir.resolve(Geonet.File.SCHEMA_OASIS);
@@ -1236,12 +1240,6 @@ public class SchemaManager {
 
         String stage = "";
         try {
-            // validate the schema-ident file before reading it
-            stage = "reading schema-ident file " + idFile;
-            Element root = Xml.loadFile(idFile);
-            stage = "validating schema-ident file " + idFile;
-            Xml.validate(root);
-
             final String schemaName = schemasDir.getFileName().toString();
             if (hmSchemas.containsKey(schemaName)) { // exists so ignore it
                 log.error("Schema " + schemaName + " already exists - cannot add!");
@@ -1381,41 +1379,6 @@ public class SchemaManager {
                 throw new IllegalArgumentException(
                         "Schema " + thisSchema + " depends on " + dependency + ", but that schema is not loaded");
             }
-        }
-    }
-
-    /**
-     * Extracts schema autodetect info from identification file.
-     *
-     * @param xmlIdFile name of schema XML identification file
-     */
-    private List<Element> extractADElements(Path xmlIdFile) throws Exception {
-        Element root = Xml.loadFile(xmlIdFile);
-        Element autodetect = root.getChild("autodetect", GEONET_SCHEMA_NS);
-        if (autodetect == null) autodetect = root.getChild("autodetect", GEONET_SCHEMA_PREFIX_NS);
-        @SuppressWarnings("unchecked")
-        List<Element> children = autodetect.getChildren();
-        return children;
-    }
-
-    /**
-     * Extract conversion elements from conversions file.
-     *
-     * @param xmlConvFile name of schema XML conversions file
-     */
-    private List<Element> extractConvElements(Path xmlConvFile) throws Exception {
-        if (!Files.exists(xmlConvFile)) {
-            if (log.isDebugEnabled()) log.debug("Schema conversions file not present");
-            return new ArrayList<>();
-        } else {
-            Element root = Xml.loadFile(xmlConvFile);
-            if (!root.getName().equals("conversions")) {
-                throw new IllegalArgumentException(
-                        "Schema conversions file " + xmlConvFile + " is invalid, no <conversions> root element");
-            }
-            @SuppressWarnings("unchecked")
-            List<Element> result = root.getChildren();
-            return result;
         }
     }
 

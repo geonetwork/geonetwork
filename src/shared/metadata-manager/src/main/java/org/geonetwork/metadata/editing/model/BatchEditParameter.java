@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.editing.model;
+package org.geonetwork.metadata.editing.model;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;

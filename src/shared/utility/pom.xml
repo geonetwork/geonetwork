@@ -83,12 +83,14 @@
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>com.neovisionaries</groupId>
       <artifactId>nv-i18n</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

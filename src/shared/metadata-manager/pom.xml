@@ -24,10 +24,13 @@
       <artifactId>gn-domain</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -73,6 +76,21 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
+      <artifactId>gn-schemas</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-schema-iso19139</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-indexing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
       <artifactId>gn-utility</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -85,12 +103,9 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-
   </dependencies>
-
 </project>

@@ -3,11 +3,11 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.editing.model;
+package org.geonetwork.metadata.editing.model;
 
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
-import org.geonetwork.editing.EditLib;
+import org.geonetwork.metadata.editing.EditLib;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
 import org.jdom.JDOMException;
