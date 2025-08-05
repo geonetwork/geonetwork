@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.constants.Geonet;
 import org.geonetwork.domain.ReservedOperation;
-import org.geonetwork.schemas.editorconfig.Editor;
 import org.geonetwork.schemas.plugin.SavedQuery;
 import org.geonetwork.utility.legacy.exceptions.ResourceNotFoundException;
 import org.geonetwork.utility.legacy.xml.Xml;
@@ -117,22 +116,6 @@ public class MetadataSchema {
         return this.schemaPlugin.getConfiguration().getFormatters();
     }
 
-    @JsonIgnore
-    @SuppressWarnings("unused")
-    public Editor getConfigEditor() {
-        Path metadataSchemaConfig = getSchemaDir().resolve("layout").resolve("config-editor.xml");
-        //    if (metadataSchemaConfig.toFile().exists()) {
-        //      try {
-        //        JAXBContext jaxbContext = JAXBContext.newInstance(Editor.class);
-        //        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        //        return (Editor) unmarshaller.unmarshal(metadataSchemaConfig.toFile());
-        //      } catch (JAXBException e) {
-        //        log.error(" Get config editor. Error is " + e.getMessage(), e);
-        //        throw new RuntimeException(e);
-        //      }
-        //    }
-        return null;
-    }
 
     /** Get schema directory */
     @JsonIgnore
