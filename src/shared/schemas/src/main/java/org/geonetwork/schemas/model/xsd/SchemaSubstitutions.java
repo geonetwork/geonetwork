@@ -28,49 +28,24 @@
 
 package org.geonetwork.schemas.model.xsd;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.geonetwork.utility.legacy.xml.Xml;
-import org.jdom.Element;
+import org.geonetwork.schemas.MetadataSchemaConfiguration;
 
 /** Schema substitutions. */
 public class SchemaSubstitutions {
-    private Map<String, Element> htFields = new LinkedHashMap<String, Element>();
+    private Map<String, List<String>> htFields = new LinkedHashMap<>();
 
-    public SchemaSubstitutions(Path xmlSubstitutionFile) throws Exception {
-        if (xmlSubstitutionFile != null) {
-            Element subs = Xml.loadFile(xmlSubstitutionFile);
-
-            @SuppressWarnings("unchecked")
-            List<Element> list = subs.getChildren();
-
-            for (Element el : list) {
-                if (el.getName().equals("field")) {
-                    htFields.put(el.getAttributeValue("name"), el);
-                }
-            }
-        }
+    public SchemaSubstitutions(List<MetadataSchemaConfiguration.Substitute> substitutes) {
+        substitutes.forEach((substitute) -> {
+            htFields.put(substitute.getField(), substitute.getSubstitutes());
+        });
     }
 
     public List<String> getSubstitutes(String child) {
-        Element fieldEl = htFields.get(child);
-        if (fieldEl == null) return null;
+        List<String> fieldSubstitutes = htFields.get(child);
 
-        ArrayList<String> results = new ArrayList<String>();
-
-        @SuppressWarnings("unchecked")
-        List<Element> list = fieldEl.getChildren();
-
-        for (Element elem : list) {
-            if (elem.getName().equals("substitute")) {
-                String name = elem.getAttributeValue("name");
-                results.add(name);
-            }
-        }
-
-        return results;
+        return fieldSubstitutes;
     }
 }

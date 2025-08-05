@@ -41,14 +41,7 @@ geonetwork:
         eng: https://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=53798
       schemaLocation: http://www.isotc211.org/2005/gmd http://schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd
       primeNamespace: http://www.isotc211.org/2005/gmd
-      autodetect:
-        type: root
-        name:
-          - gmd:MD_Metadata
-          - gmd:CI_ResponsibleParty
-          - gmd:DQ_DomainConsistency
-          - gmd:MD_Format
-          - gmd:EX_Extent
+      autodetect: count(gmd:MD_Metadata|gmd:CI_ResponsibleParty|gmd:DQ_DomainConsistency|gmd:MD_Format|gmd:EX_Extent) > 0
 
       formatters:
         - name: xml
@@ -104,12 +97,147 @@ geonetwork:
           jsonpath: $['link'][?(@.protocol =~ /(DOWNLOAD|FILE|DB|COPYFILE).*?/i)]
           ifNotOperation: download
 
+      substitutes:
+        - field: gmd:AbstractMD_Identification
+          substitutes:
+            - srv:SV_ServiceIdentification
+            - gmd:MD_DataIdentification
+        - field: gml:VerticalCS
+        - field: gml:VerticalDatum
+        - field: gml:CoordinateSystemAxis
 
-#TODO: schema-suggestions.xml
-#  <fields>
-#  <field name="gmd:contactInstructions">
-#  <suggest name="gco:CharacterString"/>
-#  <suggest name="gmx:FileName"/>
-#  </field>
-
-#TODO: schema-substitutes.xml
+      suggestions:
+        - field: gmd:contactInstructions
+          suggestions:
+            - gco:CharacterString
+            - gmx:FileName
+        - field: gmd:otherCitationDetails
+          suggestions:
+            - gco:CharacterString
+            - gmx:FileName
+            - gmx:Anchor
+        - field: gmd:hierarchyLevel
+          suggestions:
+            - gmd:MD_ScopeCode
+        - field: gmx:Anchor
+          suggestions:
+            - xlink:href
+        - field: gmd:code
+          suggestions:
+            - gco:CharacterString
+            - gmx:FileName
+            - gmx:Anchor
+        - field: gmd:language
+          suggestions:
+            - gco:CharacterString
+            - gmd:LanguageCode
+        - field: gmx:FileName
+          suggestions:
+            - src
+        - field: srv:coupledResource
+          suggestions:
+            - srv:SV_CoupledResource
+        - field: srv:parameters
+          suggestions:
+            - srv:SV_Parameter
+        - field: srv:direction
+          suggestions:
+            - srv:SV_ParameterDirection
+        - field: gmd:CI_OnlineResource
+          suggestions:
+            - gmd:protocol
+            - gmd:name
+            - gmd:description
+        - field: gmd:transferOptions
+          suggestions:
+            - gmd:MD_DigitalTransferOptions
+        - field: gmd:MD_DigitalTransferOptions
+          suggestions:
+            - gmd:onLine
+        - field: gmd:CI_ResponsibleParty
+          suggestions:
+            - gmd:organisationName
+            - gmd:individualName
+            - gmd:contactInfo
+        - field: gmd:CI_Contact
+          suggestions:
+            - gmd:address
+        - field: gmd:CI_Address
+          suggestions:
+            - gmd:electronicMailAddress
+        - field: gmd:MD_Keywords
+          suggestions:
+            - gmd:type
+        - field: gmd:date
+          suggestions:
+            - gco:Date
+        - field: gmd:EX_Extent
+          suggestions:
+            - gmd:temporalElement
+            - gmd:geographicElement
+            - gmd:verticalElement
+        - field: gmd:EX_TemporalExtent
+          suggestions:
+            - gmd:extent
+        - field: gmd:polygon
+          suggestions:
+            - gml:Polygon
+        - field: gmd:extent
+          suggestions:
+            - gmd:EX_Extent
+        - field: gml:TimePeriod
+          suggestions:
+            - gml:beginPosition
+            - gml:endPosition
+        - field: gmd:EX_GeographicBoundingBox
+          suggestions:
+            - gmd:westBoundLongitude
+            - gmd:eastBoundLongitude
+            - gmd:southBoundLatitude
+            - gmd:northBoundLatitude
+        - field: gmd:attributes
+          suggestions:
+            - uuidref
+        - field: gmd:features
+          suggestions:
+            - uuidref
+        - field: gmd:featureInstances
+          suggestions:
+            - uuidref
+        - field: gmd:attributeInstances
+          suggestions:
+            - uuidref
+        - field: gmd:propertyType
+          suggestions:
+            - uuidref
+        - field: gmd:featureType
+          suggestions:
+            - uuidref
+        - field: gmd:featureAttribute
+          suggestions:
+            - uuidref
+        - field: srv:operatesOn
+          suggestions:
+            - uuidref
+        - field: gmd:source
+          suggestions:
+            - uuidref
+        - field: gml:Polygon
+          suggestions:
+            - srsName
+        - field: gml:descriptionReference
+          suggestions:
+            - xlink:href
+        - field: gmd:MD_Constraints
+          suggestions:
+            - gmd:useLimitation
+        - field: gmd:MD_LegalConstraints
+          suggestions:
+            - gmd:useLimitation
+            - gmd:accessConstraints
+            - gmd:useConstraints
+            - gmd:otherContraints
+        - field: gmd:MD_SecurityContraints
+          suggestions:
+            - gmd:classification
+            - gmd:useLimitation

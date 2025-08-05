@@ -45,21 +45,8 @@ public class MetadataSchemaConfiguration {
     Map<String, String> standardDescription;
     Map<String, String> standardUrl;
 
-    @Data
-    public static class AutodetectConfiguration {
-        enum Type {
-            // TODO: Do we need other type of detection?
-            root
-        }
-
-        @NotNull
-        Type type;
-
-        List<String> name;
-    }
-
     /** Information used to detect whether a metadata record belongs to this schema */
-    AutodetectConfiguration autodetect;
+    String autodetect;
 
     @Builder
     @Data
@@ -97,6 +84,26 @@ public class MetadataSchemaConfiguration {
     }
 
     List<Filter> filters;
+
+    @Data
+    public static class Substitute {
+        @NotBlank
+        String field;
+
+        List<String> substitutes;
+    }
+
+    List<Substitute> substitutes;
+
+    @Data
+    public static class Suggestion {
+        @NotBlank
+        String field;
+
+        List<String> suggestions;
+    }
+
+    List<Suggestion> suggestions;
 
     /** Should we deprecate it? */
     @Deprecated

@@ -18,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,6 +46,7 @@ import org.jdom.Attribute;
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,12 +75,6 @@ public class SchemaManager {
     private static final String GEONET_SCHEMA_URI = "http://geonetwork-opensource.org/schemas/schema-ident";
     private static final Namespace GEONET_SCHEMA_PREFIX_NS = Namespace.getNamespace("gns", GEONET_SCHEMA_URI);
     private static final Namespace GEONET_SCHEMA_NS = Namespace.getNamespace(GEONET_SCHEMA_URI);
-
-    /** Active readers count */
-    private static int activeReaders = 0;
-
-    /** Active writers count */
-    private static int activeWriters = 0;
 
     private Map<String, SchemaPlugin> hmSchemas = new HashMap<>();
     private Map<String, Namespace> hmSchemasTypenames = new HashMap<>();
@@ -293,19 +290,13 @@ public class SchemaManager {
      * @param name the metadata schema we want the MetadataSchema for
      */
     public SchemaPlugin getSchema(String name) {
+        SchemaPlugin schema = hmSchemas.get(name);
 
-        beforeRead();
-        try {
-            SchemaPlugin schema = hmSchemas.get(name);
-
-            if (schema == null) {
-                throw new IllegalArgumentException("Schema not registered : " + name);
-            }
-
-            return schema;
-        } finally {
-            afterRead();
+        if (schema == null) {
+            throw new IllegalArgumentException("Schema not registered : " + name);
         }
+
+        return schema;
     }
 
     /**
@@ -314,19 +305,13 @@ public class SchemaManager {
      * @param name the metadata schema we want the list of dependencies for
      */
     public Set<String> getDependencies(String name) {
-
         Set<String> dependencies = new HashSet<>();
 
-        beforeRead();
-        try {
-            SchemaPlugin schema = hmSchemas.get(name);
-            if (schema != null) { // if it is null then that is a config error
-                dependencies.add(schema.getConfiguration().getDepends());
-            }
-            return dependencies;
-        } finally {
-            afterRead();
+        SchemaPlugin schema = hmSchemas.get(name);
+        if (schema != null) { // if it is null then that is a config error
+            dependencies.add(schema.getConfiguration().getDepends());
         }
+        return dependencies;
     }
 
     /**
@@ -336,18 +321,12 @@ public class SchemaManager {
      * @return Pair with schema Id and Version
      */
     public Pair<String, String> getIdVersion(String name) {
+        SchemaPlugin schema = hmSchemas.get(name);
 
-        beforeRead();
-        try {
-            SchemaPlugin schema = hmSchemas.get(name);
+        if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
 
-            if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
-
-            return Pair.read(
-                    schema.getConfiguration().getId(), schema.getConfiguration().getVersion());
-        } finally {
-            afterRead();
-        }
+        return Pair.read(
+                schema.getConfiguration().getId(), schema.getConfiguration().getVersion());
     }
 
     /**
@@ -405,17 +384,11 @@ public class SchemaManager {
      * @param name the metadata schema we want the directory for
      */
     public Path getSchemaDir(String name) {
+        SchemaPlugin schema = hmSchemas.get(name);
 
-        beforeRead();
-        try {
-            SchemaPlugin schema = hmSchemas.get(name);
+        if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
 
-            if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
-
-            return this.basePath.resolve(schema.getIdentifier());
-        } finally {
-            afterRead();
-        }
+        return this.basePath.resolve(schema.getIdentifier());
     }
 
     /**
@@ -425,40 +398,33 @@ public class SchemaManager {
      * @param name the metadata schema we want the schemaLocation for
      */
     public Attribute getSchemaLocation(String name) {
-
         Attribute out = null;
+        SchemaPlugin schema = hmSchemas.get(name);
 
-        beforeRead();
-        try {
-            SchemaPlugin schema = hmSchemas.get(name);
+        if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
 
-            if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
+        String nsUri = schema.getConfiguration().getPrimeNamespace();
+        String schemaLoc = schema.getConfiguration().getSchemaLocation();
+        Path schemaFile = basePath.resolve(schema.getIdentifier()).resolve("schema.xsd");
 
-            String nsUri = schema.getConfiguration().getPrimeNamespace();
-            String schemaLoc = schema.getConfiguration().getSchemaLocation();
-            Path schemaFile = basePath.resolve(schema.getIdentifier()).resolve("schema.xsd");
-
-            if (schemaLoc.equals("")) {
-                if (Files.exists(schemaFile)) { // build one
-                    String schemaUrl = getSchemaUrl(name);
-                    if (nsUri == null || nsUri.equals("")) {
-                        out = new Attribute("noNamespaceSchemaLocation", schemaUrl, Geonet.Namespaces.XSI);
-                    } else {
-                        schemaLoc = nsUri + " " + schemaUrl;
-                        out = new Attribute("schemaLocation", schemaLoc, Geonet.Namespaces.XSI);
-                    }
-                } // else return null - no schema xsd exists - could be dtd
-            } else {
+        if (schemaLoc.equals("")) {
+            if (Files.exists(schemaFile)) { // build one
+                String schemaUrl = getSchemaUrl(name);
                 if (nsUri == null || nsUri.equals("")) {
-                    out = new Attribute("noNamespaceSchemaLocation", schemaLoc, Geonet.Namespaces.XSI);
+                    out = new Attribute("noNamespaceSchemaLocation", schemaUrl, Geonet.Namespaces.XSI);
                 } else {
+                    schemaLoc = nsUri + " " + schemaUrl;
                     out = new Attribute("schemaLocation", schemaLoc, Geonet.Namespaces.XSI);
                 }
+            } // else return null - no schema xsd exists - could be dtd
+        } else {
+            if (nsUri == null || nsUri.equals("")) {
+                out = new Attribute("noNamespaceSchemaLocation", schemaLoc, Geonet.Namespaces.XSI);
+            } else {
+                out = new Attribute("schemaLocation", schemaLoc, Geonet.Namespaces.XSI);
             }
-            return out;
-        } finally {
-            afterRead();
         }
+        return out;
     }
 
     /**
@@ -467,19 +433,13 @@ public class SchemaManager {
      * @param name the metadata schema we want the templates directory for
      */
     public Path getSchemaTemplatesDir(String name) {
+        Path dir = getSchemaDir(name);
 
-        beforeRead();
-        try {
-            Path dir = getSchemaDir(name);
-
-            dir = dir.resolve("templates");
-            if (!Files.exists(dir)) {
-                return null;
-            }
-            return dir;
-        } finally {
-            afterRead();
+        dir = dir.resolve("templates");
+        if (!Files.exists(dir)) {
+            return null;
         }
+        return dir;
     }
 
     /**
@@ -488,19 +448,13 @@ public class SchemaManager {
      * @param name the metadata schema we want the sample data directory for
      */
     public Path getSchemaSampleDataDir(String name) {
+        Path dir = getSchemaDir(name);
 
-        beforeRead();
-        try {
-            Path dir = getSchemaDir(name);
-
-            dir = dir.resolve("sample-data");
-            if (!Files.exists(dir)) {
-                return null;
-            }
-            return dir;
-        } finally {
-            afterRead();
+        dir = dir.resolve("sample-data");
+        if (!Files.exists(dir)) {
+            return null;
         }
+        return dir;
     }
 
     /**
@@ -509,17 +463,11 @@ public class SchemaManager {
      * @param name the metadata schema we want the csw present info directory
      */
     public Path getSchemaCSWPresentDir(String name) {
+        Path dir = getSchemaDir(name);
 
-        beforeRead();
-        try {
-            Path dir = getSchemaDir(name);
+        dir = dir.resolve("present").resolve("csw");
 
-            dir = dir.resolve("present").resolve("csw");
-
-            return dir;
-        } finally {
-            afterRead();
-        }
+        return dir;
     }
 
     /**
@@ -544,13 +492,7 @@ public class SchemaManager {
 
     /** Returns the list of schema names that have been registered. */
     public Set<String> getSchemas() {
-
-        beforeRead();
-        try {
-            return hmSchemas.keySet();
-        } finally {
-            afterRead();
-        }
+        return hmSchemas.keySet();
     }
 
     /**
@@ -560,21 +502,8 @@ public class SchemaManager {
      * @throws Exception if schema is not registered
      */
     public List<Element> getConversionElements(String name) throws Exception {
-
-        beforeRead();
-        try {
-            SchemaPlugin schema = hmSchemas.get(name);
-            throw new NotImplementedException("TODO: GN5 use file in convert/* for available conversions");
-
-            //            List<Element> childs = schema.getConversionElements();
-            //            List<Element> dChilds = new ArrayList<>();
-            //            for (Element child : childs) {
-            //                if (child != null) dChilds.add((Element) child.clone());
-            //            }
-            //            return dChilds;
-        } finally {
-            afterRead();
-        }
+        SchemaPlugin schema = hmSchemas.get(name);
+        throw new NotImplementedException("TODO: GN5 use file in convert/* for available conversions");
     }
 
     /**
@@ -588,26 +517,7 @@ public class SchemaManager {
     public List<Path> existsConverter(String name, String namespaceUri) throws Exception {
 
         List<Path> result = new ArrayList<>();
-
-        beforeRead();
-        try {
-            throw new NotImplementedException("TODO: GN5 use file in convert/* for available conversions");
-
-            //            Schema schema = hmSchemas.get(name);
-            //            List<Element> converterElems = schema.getConversionElements();
-            //            for (Element elem : converterElems) {
-            //                String nsUri = elem.getAttributeValue("nsUri");
-            //                if (nsUri != null && nsUri.equals(namespaceUri)) {
-            //                    String xslt = elem.getAttributeValue("xslt");
-            //                    if (xslt != null) {
-            //                        result.add(schema.getDir().resolve(xslt));
-            //                    }
-            //                }
-            //            }
-            //            return result;
-        } finally {
-            afterRead();
-        }
+        throw new NotImplementedException("TODO: GN5 use file in convert/* for available conversions");
     }
 
     /**
@@ -616,13 +526,7 @@ public class SchemaManager {
      * @param name the metadata schema we want to check existence of
      */
     public boolean existsSchema(String name) {
-
-        beforeRead();
-        try {
-            return hmSchemas.containsKey(name);
-        } finally {
-            afterRead();
-        }
+        return hmSchemas.containsKey(name);
     }
 
     /**
@@ -631,22 +535,9 @@ public class SchemaManager {
      * @param name the metadata schema whose suggestions class we want
      */
     public SchemaSuggestions getSchemaSuggestions(String name) {
+        SchemaPlugin schema = hmSchemas.get(name);
 
-        beforeRead();
-        try {
-            SchemaPlugin schema = hmSchemas.get(name);
-
-            if (schema == null) throw new IllegalArgumentException("Schema suggestions not registered : " + name);
-
-            // TODO: GN5 move suggestion config to YML file
-            return new SchemaSuggestions(
-                    schema.getMetadataSchema().getSchemaDir().resolve(SCHEMA_SUGGESTIONS));
-            //            return schema.getSuggestions();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            afterRead();
-        }
+        return new SchemaSuggestions(schema.getConfiguration().getSuggestions());
     }
 
     /**
@@ -656,131 +547,48 @@ public class SchemaManager {
      * @param prefix the namespace prefix we want the URI for
      */
     public String getNamespaceURI(String name, String prefix) {
+        SchemaPlugin schema = hmSchemas.get(name);
 
-        beforeRead();
-        try {
-            SchemaPlugin schema = hmSchemas.get(name);
-
-            if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
-
-            // TODO: GN5 move metadataSchema method to SchemaPlugin
-            return null;
-            //            MetadataSchema mds = schema.getMetadataSchema();
-            //            return mds.getNS(prefix);
-        } finally {
-            afterRead();
-        }
-    }
-
-    /**
-     * Gets the namespaces from schema information (XSD) as a string for use as a list of namespaces.
-     *
-     * @param name the metadata schema whose namespaces we want
-     */
-    public String getNamespaceString(String name) {
-
-        beforeRead();
-        try {
-            SchemaPlugin schema = hmSchemas.get(name);
-
-            if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
-
-            return "";
-            // TODO: GN5 MetadataSchema move in SchemaPlugin
-            //            MetadataSchema mds = schema.getMetadataSchema();
-            //            StringBuilder sb = new StringBuilder();
-            //            for (Namespace ns : mds.getSchemaNS()) {
-            //                if (ns.getPrefix().length() != 0 && ns.getURI().length() != 0) {
-            //                    sb.append("xmlns:" + ns.getPrefix() + "=\"" + ns.getURI() + "\" ");
-            //                }
-            //            }
-            //            return sb.toString().trim();
-        } finally {
-            afterRead();
-        }
-    }
-
-    /**
-     * Used to detect the schema of an imported metadata file.
-     *
-     * @param md the imported metadata file
-     */
-    public String autodetectSchema(Element md) throws SchemaMatchConflictException, NoSchemaMatchesException {
-        return autodetectSchema(md, defaultSchema);
+        return schema.getAllNamespaces().stream()
+                .filter(ns -> ns.getPrefix().equals(prefix))
+                .map(Namespace::getURI)
+                .findFirst()
+                .orElse(null);
     }
 
     /** See schema-ident.xml for configuration of schema identification. */
-    public String autodetectSchema(Element md, String defaultSchema)
-            throws SchemaMatchConflictException, NoSchemaMatchesException {
+    public String autodetectSchema(Element md)
+            throws SchemaMatchConflictException, NoSchemaMatchesException, JDOMException {
 
-        beforeRead();
-        try {
-            String schema;
+        Set<String> allSchemas = getSchemas();
 
-            // -- check the autodetect elements for all schemas with the most
-            // -- specific test first, then in order of increasing generality,
-            // -- first match wins
-            schema = compareElementsAndAttributes(md, MODE_ATTRIBUTEWITHVALUE);
-            if (schema != null && log.isDebugEnabled()) {
-                log.debug("  => Found schema " + schema + " using AUTODETECT(attributes) examination");
-            }
-
-            if (schema == null) {
-                schema = compareElementsAndAttributes(md, MODE_NEEDLEWITHVALUE);
-                if (schema != null && log.isDebugEnabled()) {
-                    log.debug("  => Found schema " + schema + " using AUTODETECT(elements with value) examination");
-                }
-            }
-
-            if (schema == null) {
-                schema = compareElementsAndAttributes(md, MODE_NEEDLE);
-                if (schema != null && log.isDebugEnabled()) {
-                    log.debug("  => Found schema " + schema + " using AUTODETECT(elements) examination");
-                }
-            }
-
-            if (schema == null) {
-                schema = compareElementsAndAttributes(md, MODE_ROOT);
-                if (schema != null && log.isDebugEnabled()) {
-                    log.debug("  => Found schema " + schema + " using AUTODETECT(elements with root) examination");
-                }
-            }
-
-            if (schema == null) {
-                schema = compareElementsAndAttributes(md, MODE_NAMESPACE);
-                if (schema != null && log.isDebugEnabled()) {
-                    log.debug("  => Found schema " + schema + " using AUTODETECT(namespaces) examination");
-                }
-            }
-
-            // -- If nothing has matched by this point choose defaultSchema supplied
-            // -- as argument to this method as long as its reasonable
-            if (schema == null && defaultSchema != null) {
-                String defaultSchemaOrDependencySchema = checkNamespace(md, defaultSchema);
-                if (defaultSchemaOrDependencySchema != null) {
-                    log.warn("  Autodetecting schema failed for "
-                            + md.getName()
-                            + " in namespace "
-                            + md.getNamespace()
-                            + ". Using default schema or one of its dependency: "
-                            + defaultSchemaOrDependencySchema);
-                    schema = defaultSchemaOrDependencySchema;
-                }
-            }
-
-            // -- if the default schema failed then throw an exception
-            if (schema == null) {
-                throw new NoSchemaMatchesException("Autodetecting schema failed for metadata record with root element "
-                        + md.getName()
-                        + " in namespace "
-                        + md.getNamespace()
-                        + ".");
-            }
-
-            return schema;
-        } finally {
-            afterRead();
+        if (log.isDebugEnabled()) {
+            log.debug("Schema autodetection starting on " + md.getName() + " (Namespace: " + md.getNamespace() + ")");
         }
+
+        List<String> listOfSchemas = new ArrayList<>(allSchemas);
+        Collections.sort(listOfSchemas, Comparator.reverseOrder());
+
+        // Process custom schemas (names starting with "iso19139." or "iso19115-3." first to match them with higher
+        // priority)
+        // TODO: Sort the schemas based on the depends on property
+        for (String schemaName : listOfSchemas) {
+            if (log.isDebugEnabled()) log.debug("	Doing schema " + schemaName);
+            SchemaPlugin schema = hmSchemas.get(schemaName);
+            String autodetectConfiguration = schema.getConfiguration().getAutodetect();
+
+            boolean matchesSchema = Xml.selectBoolean(
+                    md, autodetectConfiguration, schema.getMetadataSchema().getNamespaces());
+            if (matchesSchema) {
+                return schemaName;
+            }
+        }
+
+        throw new NoSchemaMatchesException("Autodetecting schema failed for metadata record with root element "
+                + md.getName()
+                + " in namespace "
+                + md.getNamespace()
+                + ".");
     }
 
     // --------------------------------------------------------------------------
@@ -821,42 +629,6 @@ public class SchemaManager {
         }
 
         return result;
-    }
-
-    /** Invoked just before reading, waits until reading is allowed. */
-    private synchronized void beforeRead() {
-        while (activeWriters > 0) {
-            try {
-                wait();
-            } catch (InterruptedException iex) {
-                // TODO what to do
-            }
-        }
-        ++activeReaders;
-    }
-
-    /** Invoked just after reading. */
-    private synchronized void afterRead() {
-        --activeReaders;
-        notifyAll();
-    }
-
-    /** Invoked just before writing, waits until writing is allowed. */
-    private synchronized void beforeWrite() {
-        while (activeReaders > 0 || activeWriters > 0) {
-            try {
-                wait();
-            } catch (InterruptedException ignored) {
-                log.debug("Interrupted while waiting for write lock");
-            }
-        }
-        ++activeWriters;
-    }
-
-    /** Invoked just after writing. */
-    private synchronized void afterWrite() {
-        --activeWriters;
-        notifyAll();
     }
 
     /**
@@ -937,12 +709,15 @@ public class SchemaManager {
         // applicationContext.getBean(SchematronRepository.class);
         //    SchematronCriteriaGroupRepository criteriaGroupRepository =
         //        applicationContext.getBean(SchematronCriteriaGroupRepository.class);
-        MetadataSchema mds = new SchemaLoader().load(xmlSchemaFile, xmlSubstitutionsFile);
-        mds.setName(path.getFileName().toString());
+        String schemaName = path.getFileName().toString();
         SchemaPlugin schemaPlugin = this.schemaPlugins.stream()
-                .filter(plugin -> plugin.getIdentifier().equals(mds.getName()))
+                .filter(plugin -> plugin.getIdentifier().equals(schemaName))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Schema plugin not found for " + mds.getName()));
+                .orElseThrow(() -> new IllegalArgumentException("Schema plugin not found for " + schemaName));
+
+        MetadataSchema mds = new SchemaLoader().load(xmlSchemaFile, schemaPlugin.getConfiguration());
+        mds.setName(schemaName);
+
         schemaPlugin.setMetadataSchema(mds);
         mds.setSchemaPlugin(schemaPlugin);
 
@@ -981,22 +756,7 @@ public class SchemaManager {
 
         log.debug("  UUID is read/write mode: " + mds.isReadwriteUUID());
 
-        putSchemaInfo(
-                mds.getName(),
-                mds.getSchemaPlugin().getConfiguration().getId(),
-                mds.getSchemaPlugin().getConfiguration().getVersion(),
-                mds,
-                path,
-                new SchemaSuggestions(xmlSuggestFile),
-                mds.getSchemaPlugin().getConfiguration().getAutodetect(),
-                //        xfMap,
-                true, // all schemas are plugin schemas now
-                mds.getSchemaPlugin().getConfiguration().getSchemaLocation(),
-                List.of(),
-                // TODO: GN5 / Remove if dependency is limited to one
-                mds.getSchemaPlugin().getConfiguration().getDepends() != null
-                        ? List.of(mds.getSchemaPlugin().getConfiguration().getDepends())
-                        : List.of());
+        putSchemaInfo(mds.getName(), mds);
 
         if (log.isDebugEnabled()) {
             log.debug("Property "
@@ -1187,32 +947,10 @@ public class SchemaManager {
     /**
      * Puts information into the schema information hashtables.
      *
-     * @param id schema id (uuid)
-     * @param version schema version
      * @param name schema name
      * @param mds MetadataSchema object with details of XML schema info
-     * @param schemaDir path name of schema directory
-     * @param sugg SchemaSuggestions object
-     * @param adElems List of autodetect XML elements (as JDOM Elements)
-     * @param isPlugin true if schema is a plugin schema
-     * @param schemaLocation namespaces and URLs of their xsds
-     * @param convElems List of elements in conversion file
-     * @param dependElems List of depend XML elements (as JDOM Elements)
      */
-    private void putSchemaInfo(
-            String name,
-            String id,
-            String version,
-            MetadataSchema mds,
-            Path schemaDir,
-            SchemaSuggestions sugg,
-            MetadataSchemaConfiguration.AutodetectConfiguration adElems,
-            //      Map<String, XmlFile> xfMap,
-            boolean isPlugin,
-            String schemaLocation,
-            List<Element> convElems,
-            List<String> dependElems) {
-
+    private void putSchemaInfo(String name, MetadataSchema mds) {
         hmSchemas.put(name, mds.getSchemaPlugin());
     }
 
@@ -1388,146 +1126,31 @@ public class SchemaManager {
      *
      * @param md the XML record whose schema we are trying to find
      */
-    private String compareElementsAndAttributes(Element md, int mode) throws SchemaMatchConflictException {
+    private String compareElementsAndAttributes(Element md) throws SchemaMatchConflictException, JDOMException {
         String returnVal = null;
         Set<String> allSchemas = getSchemas();
         List<String> matches = new ArrayList<>();
 
-        if (mode != MODE_ROOT) {
-            // TODO: GN5 do we need all detection modes?
-            return null;
-        }
         if (log.isDebugEnabled()) {
-            log.debug("Schema autodetection starting on "
-                    + md.getName()
-                    + " (Namespace: "
-                    + md.getNamespace()
-                    + ") using mode: "
-                    + mode
-                    + "...");
+            log.debug("Schema autodetection starting on " + md.getName() + " (Namespace: " + md.getNamespace() + ")");
         }
 
-        for (String schemaName : allSchemas) {
+        List<String> listOfSchemas = new ArrayList<>(allSchemas);
+        Collections.sort(listOfSchemas, Comparator.reverseOrder());
+
+        // Process custom schemas (names starting with "iso19139." or "iso19115-3." first to match them with higher
+        // priority)
+        // TODO: Sort the schemas based on the depends on property
+        for (String schemaName : listOfSchemas) {
             if (log.isDebugEnabled()) log.debug("	Doing schema " + schemaName);
             SchemaPlugin schema = hmSchemas.get(schemaName);
-            MetadataSchemaConfiguration.AutodetectConfiguration autodetectConfiguration =
-                    schema.getConfiguration().getAutodetect();
+            String autodetectConfiguration = schema.getConfiguration().getAutodetect();
 
-            if (autodetectConfiguration.getType() == MetadataSchemaConfiguration.AutodetectConfiguration.Type.root) {
-                String metadataRootElementName = md.getName();
-                if (autodetectConfiguration.getName().contains(metadataRootElementName)) {
-                    matches.add(schemaName);
-                }
-            } else {
-                throw new UnsupportedOperationException(
-                        "Autodetect type " + autodetectConfiguration.getType() + " not supported");
+            boolean matchesSchema = Xml.selectBoolean(
+                    md, autodetectConfiguration, schema.getMetadataSchema().getNamespaces());
+            if (matchesSchema) {
+                matches.add(schemaName);
             }
-
-            //
-            //            for (Element elem : adElems) {
-            //                if (log.isDebugEnabled()) {
-            //                    log.debug("		Checking autodetect element " + Xml.getString(elem) + " with name " +
-            // elem.getName());
-            //                }
-            //
-            //                @SuppressWarnings("unchecked")
-            //                List<Element> elemKids = elem.getChildren();
-            //                boolean match = false;
-            //
-            //                Attribute type = elem.getAttribute("type");
-            //
-            //                // --- try and find the attribute and value in md
-            //                if (mode == MODE_ATTRIBUTEWITHVALUE && elem.getName().equals("attributes")) {
-            //                    @SuppressWarnings("unchecked")
-            //                    List<Attribute> atts = elem.getAttributes();
-            //                    for (Attribute searchAtt : atts) {
-            //                        if (log.isDebugEnabled()) {
-            //                            log.debug("				Finding attribute " + searchAtt.toString());
-            //                        }
-            //
-            //                        if (isMatchingAttributeInMetadata(searchAtt, md)) {
-            //                            match = true;
-            //                        } else {
-            //                            match = false;
-            //                            break;
-            //                        }
-            //                    }
-            //
-            //                    // --- try and find the namespace in md
-            //                } else if (mode == MODE_NAMESPACE && elem.getName().equals("namespaces")) {
-            //                    @SuppressWarnings("unchecked")
-            //                    List<Namespace> nss = elem.getAdditionalNamespaces();
-            //                    for (Namespace ns : nss) {
-            //                        if (log.isDebugEnabled()) {
-            //                            log.debug("				Finding namespace " + ns.toString());
-            //                        }
-            //
-            //                        if (isMatchingNamespaceInMetadata(ns, md)) {
-            //                            match = true;
-            //                        } else {
-            //                            match = false;
-            //                            break;
-            //                        }
-            //                    }
-            //                } else {
-            //                    for (Element kid : elemKids) {
-            //
-            //                        // --- is the kid the same as the root of the md
-            //                        if (mode == MODE_ROOT && type != null && "root".equals(type.getValue())) {
-            //                            if (log.isDebugEnabled()) {
-            //                                log.debug("				Comparing "
-            //                                        + Xml.getString(kid)
-            //                                        + " with "
-            //                                        + md.getName()
-            //                                        + " with namespace "
-            //                                        + md.getNamespace()
-            //                                        + " : "
-            //                                        + (kid.getName().equals(md.getName())
-            //                                                && kid.getNamespace().equals(md.getNamespace())));
-            //                            }
-            //                            if (kid.getName().equals(md.getName())
-            //                                    && kid.getNamespace().equals(md.getNamespace())) {
-            //                                match = true;
-            //                                break;
-            //                            } else {
-            //                                match = false;
-            //                            }
-            //                            // --- try and find the kid in the md (kid only, not value)
-            //                        } else if (mode == MODE_NEEDLE && type != null &&
-            // "search".equals(type.getValue())) {
-            //                            if (log.isDebugEnabled()) {
-            //                                log.debug("				Comparing "
-            //                                        + Xml.getString(kid)
-            //                                        + " with "
-            //                                        + md.getName()
-            //                                        + " with namespace "
-            //                                        + md.getNamespace()
-            //                                        + " : "
-            //                                        + (kid.getName().equals(md.getName())
-            //                                                && kid.getNamespace().equals(md.getNamespace())));
-            //                            }
-            //
-            //                            if (isMatchingElementInMetadata(kid, md, false)) {
-            //                                match = true;
-            //                            } else {
-            //                                match = false;
-            //                                break;
-            //                            }
-            //                            // --- try and find the kid in the md (kid + value)
-            //                        } else if (mode == MODE_NEEDLEWITHVALUE) {
-            //                            if (isMatchingElementInMetadata(kid, md, true)) {
-            //                                match = true;
-            //                            } else {
-            //                                match = false;
-            //                                break;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //                if (match && !matches.contains(schemaName)) {
-            //                    matches.add(schemaName);
-            //                }
-            //            }
         }
 
         if (matches.size() > 1) {
@@ -1537,8 +1160,7 @@ public class SchemaManager {
                     + md.getNamespace()
                     + " matches more than one schema - namely: "
                     + matches.toString()
-                    + " - during schema autodetection mode "
-                    + mode);
+                    + " - during schema autodetection mode ");
         } else if (matches.size() == 1) {
             returnVal = matches.get(0);
         }

@@ -28,60 +28,34 @@
 
 package org.geonetwork.schemas;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.geonetwork.utility.legacy.xml.Xml;
-import org.jdom.Element;
 
-// TODO: GN5 replace by YML config
-@Deprecated
 public class SchemaSuggestions {
-    private Map<String, Element> htFields = new LinkedHashMap<String, Element>();
+    private Map<String, List<String>> htFields = new LinkedHashMap<>();
 
-    public SchemaSuggestions(Path xmlSuggestFile) throws Exception {
-        Element sugg = Xml.loadFile(xmlSuggestFile);
-        // TODO: it could be good to check that suggested elements are
-        // fine for the element type
-        @SuppressWarnings("unchecked")
-        List<Element> list = sugg.getChildren();
-
-        for (Element el : list) {
-            if (el.getName().equals("field")) {
-                htFields.put(el.getAttributeValue("name"), el);
-            }
-        }
+    public SchemaSuggestions(List<MetadataSchemaConfiguration.Suggestion> suggestions) {
+        suggestions.forEach(suggestion -> {
+            htFields.put(suggestion.getField(), suggestion.getSuggestions());
+        });
     }
 
     private boolean isX(String parent, String child, String what) {
-        final Element fieldEl = htFields.get(parent);
+        final List<String> fieldEl = htFields.get(parent);
 
         if (fieldEl == null) return false;
 
-        @SuppressWarnings("unchecked")
-        final List<Element> list = fieldEl.getChildren();
-
-        for (Element elem : list) {
-            if (elem.getName().equals(what)) {
-                String name = elem.getAttributeValue("name");
-
-                if (child.equals(name)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return fieldEl.stream().filter(f -> f.equals(child)).findFirst().isPresent();
     }
 
     public boolean isSuggested(String parent, String child) {
         return isX(parent, child, "suggest");
     }
 
+    // TODO: Review if required, seems not used
     public boolean isFiltered(String parent, String child) {
-        return isX(parent, child, "filter");
+        return false; // isX(parent, child, "filter");
     }
 
     /**
@@ -93,15 +67,15 @@ public class SchemaSuggestions {
      * @return true if having suggestion for at least one of its child elements.
      */
     public boolean hasSuggestion(String parent, List<String> childElements) {
-        Element el = htFields.get(parent);
+        List<String> suggestions = htFields.get(parent);
 
-        if (el == null) return false; // No suggestion available for element
-        else {
-            for (String child : childElements) {
-                if (isSuggested(parent, child))
-                    return true; // At least one child element is suggested for this element type
-            }
-            return false;
+        if (suggestions == null) {
+            return false; // No suggestion available for element
+        } else {
+            return childElements.stream()
+                    .filter(child -> isSuggested(parent, child))
+                    .findFirst()
+                    .isPresent();
         }
     }
 
@@ -112,21 +86,6 @@ public class SchemaSuggestions {
      * @return The list of element names
      */
     public List<String> getSuggestedElements(String elementName) {
-        Element suggestionConfig = htFields.get(elementName);
-        List<String> suggestedElement = new ArrayList<String>();
-
-        if (suggestionConfig == null) {
-            return suggestedElement;
-        }
-
-        for (Object object : suggestionConfig.getChildren()) {
-            Element suggestion = (Element) object;
-
-            if (suggestion.getName().equals("suggest")) {
-                String name = suggestion.getAttributeValue("name");
-                suggestedElement.add(name);
-            }
-        }
-        return suggestedElement;
+        return htFields.get(elementName) == null ? List.of() : htFields.get(elementName);
     }
 }

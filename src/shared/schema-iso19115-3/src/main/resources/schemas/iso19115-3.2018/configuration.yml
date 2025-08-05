@@ -35,42 +35,7 @@ geonetwork:
         eng: http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=32579
       schemaLocation: http://standards.iso.org/iso/19115/-3/mdb/2.0 https://schemas.isotc211.org/19115/-3/mdb/2.0/mdb.xsd
       primeNamespace: http://standards.iso.org/iso/19115/-3/mdb/2.0
-      autodetect:
-      #  ISO19115-3 identification is based on the
-      #  root element of the record. It could be a MD_Metadata
-      #  element (for a metadata record) or some other element
-      #  when used as a subtemplate (cf. directory support).
-        type: root
-        name:
-          - mdb:MD_Metadata
-          - cit:CI_Responsibility
-          - cit:CI_Organisation
-          - mcc:MD_BrowseGraphic
-          - mrs:MD_ReferenceSystem
-          - mrd:MD_Format
-          - mdq:DQ_DomainConsistency
-          - mdq:DQ_CompletenessCommission
-          - mdq:DQ_CompletenessOmission
-          - mdq:DQ_ConceptualConsistency
-          - mdq:DQ_FormatConsistency
-          - mdq:DQ_AbsoluteExternalPositionalAccuracy
-          - mdq:DQ_AccuracyOfATimeMeasurement
-          - mdq:DQ_Confidence
-          - mdq:DQ_GriddedDataPositionalAccuracy
-          - mdq:DQ_Homogeneity
-          - mdq:DQ_NonQuantitativeAttributeCorrectness
-          - mdq:DQ_QuantitativeAttributeAccuracy
-          - mdq:DQ_RelativeInternalPositionalAccuracy
-          - mdq:DQ_Representativity
-          - mdq:DQ_TemporalConsistency
-          - mdq:DQ_TemporalValidity
-          - mdq:DQ_ThematicClassificationCorrectness
-          - mdq:DQ_TopologicalConsistency
-          - mdq:DQ_UsabilityElement
-          - mco:MD_Constraints
-          - mco:MD_LegalConstraints
-          - mco:MD_SecurityConstraints
-
+      autodetect: count(mdb:MD_Metadata|cit:CI_Responsibility|cit:CI_Organisation|mcc:MD_BrowseGraphic|mrs:MD_ReferenceSystem|mrd:MD_Format|mdq:DQ_DomainConsistency|mdq:DQ_CompletenessCommission|mdq:DQ_CompletenessOmission|mdq:DQ_ConceptualConsistency|mdq:DQ_FormatConsistency|mdq:DQ_AbsoluteExternalPositionalAccuracy|mdq:DQ_AccuracyOfATimeMeasurement|mdq:DQ_Confidence|mdq:DQ_GriddedDataPositionalAccuracy|mdq:DQ_Homogeneity|mdq:DQ_NonQuantitativeAttributeCorrectness|mdq:DQ_QuantitativeAttributeAccuracy|mdq:DQ_RelativeInternalPositionalAccuracy|mdq:DQ_Representativity|mdq:DQ_TemporalConsistency|mdq:DQ_TemporalValidity|mdq:DQ_ThematicClassificationCorrectness|mdq:DQ_TopologicalConsistency|mdq:DQ_UsabilityElement|mco:MD_Constraints|mco:MD_LegalConstraints|mco:MD_SecurityConstraints) > 0
 
       formatters:
         - name: xml
@@ -125,3 +90,160 @@ geonetwork:
              */cit:protocol/gco:CharacterString = 'COPYFILE']
           jsonpath: $['link'][?(@.protocol =~ /(DOWNLOAD|FILE|DB|COPYFILE).*?/i)]
           ifNotOperation: download
+
+      substitutes:
+        - field: mri:AbstractMD_Identification
+          substitutes:
+            - srv:SV_ServiceIdentification
+            - mri:MD_DataIdentification
+        - field: gml:VerticalCS
+        - field: gml:VerticalDatum
+        - field: gml:CoordinateSystemAxis
+
+      suggestions:
+        - field: gcx:Anchor
+          suggestions:
+            - xlink:href
+        - field: cit:CI_Date
+          suggestions:
+            - cit:date
+        - field: cit:date
+          suggestions:
+            - gco:Date
+        - field: mcc:code
+          suggestions:
+            - gco:CharacterString
+            - gcx:FileName
+            - gcx:Anchor
+        - field: mri:language
+          suggestions:
+            - gco:CharacterString
+            - mri:LanguageCode
+        - field: srv:coupledResource
+          suggestions:
+            - srv:SV_CoupledResource
+        - field: srv:parameters
+          suggestions:
+            - srv:SV_Parameter
+        - field: srv:direction
+          suggestions:
+            - srv:SV_ParameterDirection
+        - field: cit:CI_OnlineResource
+          suggestions:
+            - cit:protocol
+            - cit:name
+            - cit:description
+            - cit:function
+        - field: mrd:transferOptions
+          suggestions:
+            - mrd:MD_DigitalTransferOptions
+        - field: mrd:MD_DigitalTransferOptions
+          suggestions:
+            - mrd:onLine
+        - field: cit:CI_Individual
+          suggestions:
+            - cit:name
+            - cit:address
+        - field: cit:CI_Organisation
+          suggestions:
+            - cit:name
+            - cit:contactInfo
+        - field: cit:CI_Contact
+          suggestions:
+            - cit:address
+        - field: cit:CI_Telephone
+          suggestions:
+            - cit:number
+            - cit:numberType
+        - field: cit:CI_Address
+          suggestions:
+            - cit:electronicMailAddress
+        - field: mri:MD_Keywords
+          suggestions:
+            - mri:type
+        - field: gex:EX_Extent
+          suggestions:
+            - gex:geographicElement
+        - field: gex:EX_TemporalExtent
+          suggestions:
+            - gex:extent
+        - field: gex:polygon
+          suggestions:
+            - gml:Polygon
+        - field: gex:extent
+          suggestions:
+            - gex:EX_Extent
+        - field: gml:TimePeriod
+          suggestions:
+            - gml:beginPosition
+            - gml:endPosition
+        - field: gex:EX_GeographicBoundingBox
+          suggestions:
+            - gex:westBoundLongitude
+            - gex:eastBoundLongitude
+            - gex:southBoundLatitude
+            - gex:northBoundLatitude
+        - field: mcc:attributes
+          suggestions:
+            - uuidref
+        - field: mcc:features
+          suggestions:
+            - uuidref
+        - field: mcc:featureInstances
+          suggestions:
+            - uuidref
+        - field: mcc:attributeInstances
+          suggestions:
+            - uuidref
+        - field: mrc:featureTypes
+          suggestions:
+            - uuidref
+        - field: srv:operatesOn
+          suggestions:
+            - uuidref
+        - field: gml:Polygon
+          suggestions:
+            - srsName
+        - field: gml:descriptionReference
+          suggestions:
+            - xlink:href
+        - field: mco:MD_Constraints
+          suggestions:
+            - mco:useLimitation
+        - field: mco:MD_LegalConstraints
+          suggestions:
+            - mco:useLimitation
+            - mco:accessConstraints
+            - mco:useConstraints
+            - mco:otherContraints
+        - field: mco:MD_SecurityContraints
+          suggestions:
+            - mco:classification
+            - mco:useLimitation
+        - field: gfc:FC_FeatureType
+          suggestions:
+            - gfc:typeName
+        - field: gfc:listedValue
+          suggestions:
+            - gfc:FC_ListedValue
+        - field: gfc:FC_ListedValue
+          suggestions:
+            - gfc:code
+        - field: gfc:FC_AssociationRole
+          suggestions:
+            - gfc:definition
+        - field: gfc:constrainedBy
+          suggestions:
+            - gfc:FC_Constraint
+        - field: gfc:FC_FeatureAttribute
+          suggestions:
+            - gfc:memberName
+            - gfc:definition
+            - gfc:valueType
+            - gfc:featureType
+        - field: gfc:inheritsTo
+          suggestions:
+            - gfc:FC_InheritanceRelation
+        - field: gfc:inheritsFrom
+          suggestions:
+            - gfc:FC_InheritanceRelation
