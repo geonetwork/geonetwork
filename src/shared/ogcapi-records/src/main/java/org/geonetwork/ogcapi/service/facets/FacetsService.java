@@ -24,7 +24,6 @@ public class FacetsService {
     /** partial data from facets.json (elastic info removed) */
     public OgcApiRecordsFacetsDto getTruncatedFacets() {
         var facets = readFacets();
-        facets.setxOgcToElastic(null);
         if (facets != null && facets.getFacets() != null) {
             for (var f : facets.getFacets().values()) {
                 try {
