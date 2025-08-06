@@ -115,7 +115,6 @@ public class RecordsFacetsElasticQueryBuilder {
         var agg = Aggregation.of(a -> a.autoDateHistogram(h -> {
             h.field(histogramDto.getxElasticProperty());
             h.buckets(nBuckets);
-
             return h;
         }));
         return agg;
