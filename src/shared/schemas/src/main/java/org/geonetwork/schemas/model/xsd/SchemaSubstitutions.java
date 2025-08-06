@@ -31,13 +31,13 @@ package org.geonetwork.schemas.model.xsd;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.geonetwork.schemas.MetadataSchemaConfiguration;
+import org.geonetwork.schemas.SchemaPluginConfiguration;
 
 /** Schema substitutions. */
 public class SchemaSubstitutions {
     private Map<String, List<String>> htFields = new LinkedHashMap<>();
 
-    public SchemaSubstitutions(List<MetadataSchemaConfiguration.Substitute> substitutes) {
+    public SchemaSubstitutions(List<SchemaPluginConfiguration.Substitute> substitutes) {
         substitutes.forEach((substitute) -> {
             htFields.put(substitute.getField(), substitute.getSubstitutes());
         });

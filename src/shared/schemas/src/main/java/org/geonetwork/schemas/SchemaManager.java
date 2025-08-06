@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
@@ -48,7 +47,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
-import org.jdom.filter.ElementFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -67,7 +65,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SchemaManager {
     private static final String GEONET_SCHEMA_URI = "http://geonetwork-opensource.org/schemas/schema-ident";
+
+    @SuppressWarnings("unused")
     private static final Namespace GEONET_SCHEMA_PREFIX_NS = Namespace.getNamespace("gns", GEONET_SCHEMA_URI);
+
+    @SuppressWarnings("unused")
     private static final Namespace GEONET_SCHEMA_NS = Namespace.getNamespace(GEONET_SCHEMA_URI);
 
     private Map<String, SchemaPlugin> hmSchemas = new HashMap<>();
@@ -80,6 +82,7 @@ public class SchemaManager {
     private Path schemaPluginsCat;
     private boolean createOrUpdateSchemaCatalog;
 
+    @SuppressWarnings("unused")
     @Value("${geonetwork.language.default:'eng'}")
     private String defaultLang;
 
@@ -495,7 +498,6 @@ public class SchemaManager {
      * @throws Exception if schema is not registered
      */
     public List<Element> getConversionElements(String name) throws Exception {
-        SchemaPlugin schema = hmSchemas.get(name);
         throw new NotImplementedException("TODO: GN5 use file in convert/* for available conversions");
     }
 
@@ -508,8 +510,6 @@ public class SchemaManager {
      * @throws Exception if schema is not registered
      */
     public List<Path> existsConverter(String name, String namespaceUri) throws Exception {
-
-        List<Path> result = new ArrayList<>();
         throw new NotImplementedException("TODO: GN5 use file in convert/* for available conversions");
     }
 
@@ -571,7 +571,7 @@ public class SchemaManager {
             String autodetectConfiguration = schema.getConfiguration().getAutodetect();
 
             boolean matchesSchema = Xml.selectBoolean(
-                    md, autodetectConfiguration, schema.getXSDSchemaDefinition().getNamespaces());
+                    md, autodetectConfiguration, schema.getXsdSchemaDefinition().getNamespaces());
             if (matchesSchema) {
                 return schemaName;
             }
@@ -702,7 +702,7 @@ public class SchemaManager {
 
         XSDSchemaDefinition mds = new SchemaParser().load(xmlSchemaFile, schemaPlugin.getConfiguration());
 
-        schemaPlugin.setXSDSchemaDefinition(mds);
+        schemaPlugin.setXsdSchemaDefinition(mds);
         schemaPlugin.setDirectory(schemaDir);
         schematronCompiler.loadSchematronRules(schemaPlugin, basePath);
 
@@ -735,9 +735,6 @@ public class SchemaManager {
         //        log.warn("Unable to load loc file: " + filePath);
         //      }
         //    }
-
-        log.debug(
-                "  UUID is read/write mode: " + schemaPlugin.getConfiguration().isReadwriteUuid());
 
         putSchemaInfo(schemaPlugin.getIdentifier(), schemaPlugin);
 
@@ -775,6 +772,7 @@ public class SchemaManager {
     }
 
     /** Read the elements from the schema plugins catalog for use by other methods. */
+    @SuppressWarnings("UnusedMethod")
     private Element getSchemaPluginCatalog() throws Exception {
         // -- open schemaPlugins catalog, get children named uri
         return Xml.loadFile(schemaPluginsCat);
@@ -1003,8 +1001,8 @@ public class SchemaManager {
         // ApplicationContextHolder.get().getBean(SystemInfo.class);
         //
         //    String version = systemInfo.getVersion();
-        String version = "5.0.0";
-        Version appVersion = Version.parseVersionNumber(version);
+        //        String version = "5.0.0";
+        //        Version appVersion = Version.parseVersionNumber(version);
 
         // process each schema to see whether its dependencies are present
         // TODO: GN5 / Do we need minor/major version checks?
@@ -1088,179 +1086,6 @@ public class SchemaManager {
                 throw new IllegalArgumentException(
                         "Schema " + thisSchema + " depends on " + dependency + ", but that schema is not loaded");
             }
-        }
-    }
-
-    /**
-     * Search all available schemas for one which contains the element(s) or attributes specified in the autodetect
-     * info.
-     *
-     * @param md the XML record whose schema we are trying to find
-     */
-    private String compareElementsAndAttributes(Element md) throws SchemaMatchConflictException, JDOMException {
-        String returnVal = null;
-        Set<String> allSchemas = getSchemas();
-        List<String> matches = new ArrayList<>();
-
-        if (log.isDebugEnabled()) {
-            log.debug("Schema autodetection starting on " + md.getName() + " (Namespace: " + md.getNamespace() + ")");
-        }
-
-        List<String> listOfSchemas = new ArrayList<>(allSchemas);
-        Collections.sort(listOfSchemas, Comparator.reverseOrder());
-
-        // Process custom schemas (names starting with "iso19139." or "iso19115-3." first to match them with higher
-        // priority)
-        // TODO: Sort the schemas based on the depends on property
-        for (String schemaName : listOfSchemas) {
-            if (log.isDebugEnabled()) log.debug("	Doing schema " + schemaName);
-            SchemaPlugin schema = hmSchemas.get(schemaName);
-            String autodetectConfiguration = schema.getConfiguration().getAutodetect();
-
-            boolean matchesSchema = Xml.selectBoolean(
-                    md, autodetectConfiguration, schema.getXSDSchemaDefinition().getNamespaces());
-            if (matchesSchema) {
-                matches.add(schemaName);
-            }
-        }
-
-        if (matches.size() > 1) {
-            throw new SchemaMatchConflictException("Metadata record with "
-                    + md.getName()
-                    + " (Namespace "
-                    + md.getNamespace()
-                    + " matches more than one schema - namely: "
-                    + matches
-                    + " - during schema autodetection mode ");
-        } else if (matches.size() == 1) {
-            returnVal = matches.get(0);
-        }
-
-        return returnVal;
-    }
-
-    /**
-     * This method searches an entire metadata file for an attribute that matches the "needle" metadata attribute arg -
-     * A matching attribute has the same name and value.
-     *
-     * @param needle the XML attribute we are trying to find
-     * @param haystack the XML metadata record we are searching
-     */
-    private boolean isMatchingAttributeInMetadata(Attribute needle, Element haystack) {
-        boolean returnVal = false;
-        @SuppressWarnings("unchecked")
-        Iterator<Element> haystackIterator = haystack.getDescendants(new ElementFilter());
-
-        if (log.isDebugEnabled()) {
-            log.debug("Matching " + needle.toString());
-        }
-
-        while (haystackIterator.hasNext()) {
-            Element tempElement = haystackIterator.next();
-            Attribute tempAtt = tempElement.getAttribute(needle.getName());
-            if (tempAtt.equals(needle)) {
-                returnVal = true;
-                break;
-            }
-        }
-        return returnVal;
-    }
-
-    /**
-     * This method searches all elements of a metadata for a namespace that matches the "needle" namespace arg. (Note:
-     * matching namespaces have the same URI, prefix is ignored).
-     *
-     * @param needle the XML namespace we are trying to find
-     * @param haystack the XML metadata record we are searching
-     */
-    private boolean isMatchingNamespaceInMetadata(Namespace needle, Element haystack) {
-        if (log.isDebugEnabled()) {
-            log.debug("Matching " + needle.toString());
-        }
-
-        if (checkNamespacesOnElement(needle, haystack)) return true;
-
-        @SuppressWarnings("unchecked")
-        Iterator<Element> haystackIterator = haystack.getDescendants(new ElementFilter());
-        while (haystackIterator.hasNext()) {
-            Element tempElement = haystackIterator.next();
-            if (checkNamespacesOnElement(needle, tempElement)) return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * This method searches an elements and its namespaces for a match with an input namespace.
-     *
-     * @param ns the XML namespace we are trying to find
-     * @param elem the XML metadata element whose namespaces are to be searched
-     */
-    private boolean checkNamespacesOnElement(Namespace ns, Element elem) {
-        if (elem.getNamespace().equals(ns)) return true;
-        @SuppressWarnings("unchecked")
-        List<Namespace> nss = elem.getAdditionalNamespaces();
-        for (Namespace ans : nss) {
-            if (ans.equals(ns)) return true;
-        }
-        return false;
-    }
-
-    /**
-     * This method searches an entire metadata file for an element that matches the "needle" metadata element arg - A
-     * matching element has the same name, namespace and value.
-     *
-     * @param needle the XML element we are trying to find
-     * @param haystack the XML metadata record we are searching
-     * @param checkValue compare the value of the needle with the value of the element we find in the md
-     */
-    private boolean isMatchingElementInMetadata(Element needle, Element haystack, boolean checkValue) {
-        boolean returnVal = false;
-        @SuppressWarnings("unchecked")
-        Iterator<Element> haystackIterator = haystack.getDescendants(new ElementFilter());
-
-        String needleName = needle.getName();
-        Namespace needleNS = needle.getNamespace();
-        if (log.isDebugEnabled()) log.debug("Matching " + Xml.getString(needle));
-
-        while (haystackIterator.hasNext()) {
-            Element tempElement = haystackIterator.next();
-
-            if (tempElement.getName().equals(needleName)
-                    && tempElement.getNamespace().equals(needleNS)) {
-                if (checkValue) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("  Searching value for element: " + tempElement.getName());
-                    }
-
-                    String needleVal = StringUtils.deleteWhitespace(needle.getValue());
-                    String tempVal = StringUtils.deleteWhitespace(tempElement.getValue());
-                    returnVal = Pattern.matches(needleVal, tempVal);
-                    if (log.isDebugEnabled()) {
-                        log.debug("    Pattern " + needleVal + " applied to value " + tempVal + " match: " + returnVal);
-                    }
-                    if (returnVal) {
-                        break;
-                    }
-                } else {
-                    returnVal = true;
-                    break;
-                }
-            }
-        }
-        return returnVal;
-    }
-
-    /**
-     * This method deletes all the files and directories inside another the schema dir and then the schema dir itself.
-     *
-     * @param dir the dir whose contents are to be deleted
-     */
-    private void deleteDir(Path dir) {
-        try {
-            IO.deleteFileOrDirectory(dir);
-        } catch (IOException e) {
-            log.warn("Unable to delete directory: " + dir);
         }
     }
 

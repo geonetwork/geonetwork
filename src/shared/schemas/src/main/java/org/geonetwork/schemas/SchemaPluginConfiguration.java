@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MetadataSchemaConfiguration {
+public class SchemaPluginConfiguration {
     /**
      * Unique name of the schema used in GeoNetwork (lower case). if a profile then it should be named after the base
      * schema using base-schema-name.profile-name eg. iso19139.mcp.

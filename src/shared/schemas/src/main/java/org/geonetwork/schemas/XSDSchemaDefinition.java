@@ -34,8 +34,6 @@ public class XSDSchemaDefinition {
         else return hmTypes.get(type);
     }
 
-    // ---------------------------------------------------------------------------
-
     public String getElementType(String elem, String parent) throws Exception {
         // two cases here - if we have just one element (or a substitute) with
         // this name then return its type
@@ -149,7 +147,6 @@ public class XSDSchemaDefinition {
         hmPrefixes.put(targetNSUri, ns);
     }
 
-    // ---------------------------------------------------------------------------
     @JsonIgnore
     public String getNS(String targetNSPrefix) {
         Namespace ns = hmNameSpaces.get(targetNSPrefix);
@@ -204,6 +201,7 @@ public class XSDSchemaDefinition {
         }
     }
 
+    @SuppressWarnings("unused")
     private void setSchematronRules(String[] schematronRules) {
         if (schematronRules != null) {
             this.schematronRules = schematronRules.clone();

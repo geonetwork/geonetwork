@@ -13,8 +13,8 @@ import java.util.List;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.metadata.IMetadataAccessManager;
 import org.geonetwork.metadata.IMetadataManager;
-import org.geonetwork.schemas.MetadataSchemaConfiguration;
 import org.geonetwork.schemas.SchemaManager;
+import org.geonetwork.schemas.SchemaPluginConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.access.AccessDeniedException;
@@ -45,16 +45,16 @@ class FormatterApiTest {
         metadata.setId(123);
         metadata.setUuid(uuid);
 
-        MetadataSchemaConfiguration.Formatter formatter = mock(MetadataSchemaConfiguration.Formatter.class);
+        SchemaPluginConfiguration.Formatter formatter = mock(SchemaPluginConfiguration.Formatter.class);
         when(formatter.getName()).thenReturn("test-formatter");
-        List<MetadataSchemaConfiguration.Formatter> formatters = Arrays.asList(formatter);
+        List<SchemaPluginConfiguration.Formatter> formatters = Arrays.asList(formatter);
 
         when(metadataManager.findMetadataByUuid(uuid, true)).thenReturn(metadata);
         when(metadataAccessManager.canView(123)).thenReturn(true);
         when(formatterFactory.getAvailableFormatters(metadata)).thenReturn(formatters);
 
         // When
-        List<MetadataSchemaConfiguration.Formatter> result = formatterApi.getRecordFormattersForMetadata(uuid);
+        List<SchemaPluginConfiguration.Formatter> result = formatterApi.getRecordFormattersForMetadata(uuid);
 
         // Then
         assertNotNull(result);
@@ -80,13 +80,13 @@ class FormatterApiTest {
     void getAvailableFormattersForSchema_shouldReturnFormatters() {
         // Given
         String schemaId = "iso19139";
-        MetadataSchemaConfiguration.Formatter formatter = mock(MetadataSchemaConfiguration.Formatter.class);
-        List<MetadataSchemaConfiguration.Formatter> formatters = Arrays.asList(formatter);
+        SchemaPluginConfiguration.Formatter formatter = mock(SchemaPluginConfiguration.Formatter.class);
+        List<SchemaPluginConfiguration.Formatter> formatters = Arrays.asList(formatter);
 
         when(formatterFactory.getAvailableFormattersForSchema(schemaId)).thenReturn(formatters);
 
         // When
-        List<MetadataSchemaConfiguration.Formatter> result = formatterApi.getAvailableFormattersForSchema(schemaId);
+        List<SchemaPluginConfiguration.Formatter> result = formatterApi.getAvailableFormattersForSchema(schemaId);
 
         // Then
         assertNotNull(result);

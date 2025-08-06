@@ -5,7 +5,7 @@
  */
 package org.geonetwork.schemas.iso19115_3;
 
-import org.geonetwork.schemas.MetadataSchemaConfiguration;
+import org.geonetwork.schemas.SchemaPluginConfiguration;
 import org.geonetwork.utility.YamlPropertySourceFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -19,4 +19,4 @@ import org.springframework.context.annotation.PropertySources;
             factory = YamlPropertySourceFactory.class)
 })
 @ConfigurationProperties("geonetwork.schemas.iso19115-3")
-public class ISO19115_3Configuration extends MetadataSchemaConfiguration {}
+public class ISO19115_3Configuration extends SchemaPluginConfiguration {}

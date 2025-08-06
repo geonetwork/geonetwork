@@ -8,7 +8,7 @@ package org.geonetwork.formatting.processor;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
-import org.geonetwork.schemas.MetadataSchemaConfiguration;
+import org.geonetwork.schemas.SchemaPluginConfiguration;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,9 +23,9 @@ public class IndexFormatterProcessorFactory {
                 .orElse(null);
     }
 
-    public List<MetadataSchemaConfiguration.Formatter> getAvailableFormatterProcessors() {
+    public List<SchemaPluginConfiguration.Formatter> getAvailableFormatterProcessors() {
         return processors.stream()
-                .map(p -> MetadataSchemaConfiguration.Formatter.builder()
+                .map(p -> SchemaPluginConfiguration.Formatter.builder()
                         .name(p.getName())
                         .contentType(p.getContentType())
                         .title(p.getTitle())

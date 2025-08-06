@@ -66,7 +66,7 @@ public class SchemaParser {
 
     public SchemaParser() {}
 
-    public XSDSchemaDefinition load(Path xmlSchemaFile, MetadataSchemaConfiguration config
+    public XSDSchemaDefinition load(Path xmlSchemaFile, SchemaPluginConfiguration config
             //      SchematronRepository schemaRepo,
             //      SchematronCriteriaGroupRepository criteriaGroupRepository
             ) throws Exception {
@@ -331,11 +331,10 @@ public class SchemaParser {
         return mds;
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- Recurse on substitution links until we get a type that we can use
     // ---
-    // ---------------------------------------------------------------------------
+
     private String recurseOnSubstitutionLinks(SchemaEditInformation schemaEditInformation, String elemName) {
         String elemLinkName = schemaEditInformation.hmSubsLink.get(elemName);
         if (elemLinkName != null) {
@@ -346,11 +345,10 @@ public class SchemaParser {
         return null; // Cannot find a type so return null
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- Build a local element into the MetadataType and Schema
     // ---
-    // ---------------------------------------------------------------------------
+
     private ComplexTypeEntry handleLocalElement(
             Integer elementNr, String baseName, ElementEntry ee, XSDTypeDefinition mdt, XSDSchemaDefinition mds) {
 
@@ -378,7 +376,6 @@ public class SchemaParser {
         return cteInt;
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- Return list of substitutes if we want to override those derived
     // --- from the schema XSDs - this is schema dependent and defined in
@@ -389,7 +386,7 @@ public class SchemaParser {
     // ---     OR  an empty list if removal of all schema substitutes is required
     // ---     OR  a list of ElementEntry objects to use as substitutes
     // ---
-    // ---------------------------------------------------------------------------
+
     private List<ElementEntry> getOverRideSubstitutes(SchemaEditInformation schemaEditInformation, String elementName) {
 
         ArrayList<ElementEntry> subs = schemaEditInformation.hmSubsGrp.get(elementName);
@@ -419,11 +416,10 @@ public class SchemaParser {
         return null;
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- Build a reference to a global element into the MetadataType and Schema
     // ---
-    // ---------------------------------------------------------------------------
+
     private void handleRefElement(
             SchemaEditInformation schemaEditInformation,
             Integer elementNr,
@@ -582,11 +578,10 @@ public class SchemaParser {
         return complexTypes;
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- Descend recursively to deal with abstract elements
     // ---
-    // ---------------------------------------------------------------------------
+
     private int assembleChoiceElements(
             SchemaEditInformation schemaEditInformation, XSDTypeDefinition mdt, List<ElementEntry> al, boolean doSubs) {
 
@@ -616,11 +611,9 @@ public class SchemaParser {
         return number;
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- PHASE 1 : Schema loading
     // ---
-    // ---------------------------------------------------------------------------
 
     /** Loads the xml-schema file, removes annotations and resolve imports/includes */
     private List<ElementInfo> loadFile(
@@ -721,11 +714,9 @@ public class SchemaParser {
         return alElementFiles;
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- PHASE 2 : Parse elements building intermediate data structures
     // ---
-    // ---------------------------------------------------------------------------
 
     private void parseElements(SchemaEditInformation schemaEditInformation, List<ElementInfo> alElementFiles)
             throws JDOMException {
@@ -835,8 +826,6 @@ public class SchemaParser {
         //    }
     }
 
-    // ---------------------------------------------------------------------------
-
     private void buildComplexType(SchemaEditInformation schemaEditInformation, ElementInfo ei) {
         ComplexTypeEntry ct = new ComplexTypeEntry(ei);
 
@@ -852,8 +841,6 @@ public class SchemaParser {
         schemaEditInformation.hmTypes.put(ct.name, ct);
     }
 
-    // ---------------------------------------------------------------------------
-
     private void buildSimpleType(SchemaEditInformation schemaEditInformation, ElementInfo ei) {
         SimpleTypeEntry st = new SimpleTypeEntry(ei);
         if (schemaEditInformation.hmTypeRestr.containsKey(st.name))
@@ -865,8 +852,6 @@ public class SchemaParser {
             schemaEditInformation.hmMemberTypeRestr.put(st.name, st.alTypes);
     }
 
-    // ---------------------------------------------------------------------------
-
     private void buildGlobalAttrib(SchemaEditInformation schemaEditInformation, ElementInfo ei) {
         AttributeEntry at = new AttributeEntry(ei);
         if (schemaEditInformation.hmAttribs.containsKey(at.name))
@@ -876,8 +861,6 @@ public class SchemaParser {
         schemaEditInformation.hmAllAttrs.put(at.name, at);
     }
 
-    // ---------------------------------------------------------------------------
-
     private void buildGlobalGroup(SchemaEditInformation schemaEditInformation, ElementInfo ei) {
         GroupEntry ge = new GroupEntry(ei);
         if (schemaEditInformation.hmGroups.containsKey(ge.name))
@@ -885,8 +868,6 @@ public class SchemaParser {
 
         schemaEditInformation.hmGroups.put(ge.name, ge);
     }
-
-    // ---------------------------------------------------------------------------
 
     private void buildGlobalAttributeGroup(SchemaEditInformation schemaEditInformation, ElementInfo ei) {
 
@@ -896,12 +877,10 @@ public class SchemaParser {
         schemaEditInformation.hmAttrGpEn.put(age.name, age);
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- Add in attributes from complexType with SimpleContent that restricts
     // --- or extends a base type (if any)
     // ---
-    // ---------------------------------------------------------------------------
 
     private List<AttributeEntry> resolveAttributeInheritanceFromSimpleContent(
             SchemaEditInformation schemaEditInformation, ComplexTypeEntry cte) {
@@ -981,12 +960,10 @@ public class SchemaParser {
         return false;
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- Add in attributes from complexType with ComplexContent that restricts
     // --- or extends a base type (if any)
     // ---
-    // ---------------------------------------------------------------------------
 
     private List<AttributeEntry> resolveAttributeInheritance(
             SchemaEditInformation schemaEditInformation, ComplexTypeEntry cte) {
@@ -1049,11 +1026,9 @@ public class SchemaParser {
         return result;
     }
 
-    // ---------------------------------------------------------------------------
     // ---
     // --- Add in elements to complexType that come from base type (if any)
     // ---
-    // ---------------------------------------------------------------------------
 
     private List<ElementEntry> resolveInheritance(SchemaEditInformation schemaEditInformation, ComplexTypeEntry cte) {
         if (cte == null || cte.complexContent == null)
@@ -1078,8 +1053,6 @@ public class SchemaParser {
 
         return result;
     }
-
-    // ---------------------------------------------------------------------------
 
     private MetadataAttribute buildMetadataAttrib(SchemaEditInformation schemaEditInformation, AttributeEntry ae) {
         String name = ae.name;
@@ -1133,15 +1106,13 @@ public class SchemaParser {
         return ma;
     }
 
-    // ---------------------------------------------------------------------------
-
     public String getUnqualifiedName(String qname) {
         int pos = qname.indexOf(':');
         if (pos < 0) return qname;
         else return qname.substring(pos + 1);
     }
 
-    class SchemaEditInformation {
+    static class SchemaEditInformation {
         Element elFirst = null;
         Map<String, String> hmElements = new HashMap<>();
         Map<String, ComplexTypeEntry> hmTypes = new HashMap<>();
@@ -1169,7 +1140,3 @@ public class SchemaParser {
         Map<String, List<String>> hmMemberTypeRestr = new HashMap<>();
     }
 }
-
-// ==============================================================================
-
-// ==============================================================================

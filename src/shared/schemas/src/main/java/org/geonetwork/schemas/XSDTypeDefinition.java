@@ -43,7 +43,7 @@ public class XSDTypeDefinition {
     private String name;
     private boolean isOrType;
     private ArrayList<String> alElements = new ArrayList<>();
-    private List<String> alTypes = new ArrayList();
+    private List<String> alTypes = new ArrayList<>();
     private List<Integer> alMinCard = new ArrayList<>();
     private List<Integer> alMaxCard = new ArrayList<>();
     private List<MetadataAttribute> alAttribs = new ArrayList<>();

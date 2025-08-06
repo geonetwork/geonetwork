@@ -43,7 +43,7 @@ public class ISODate implements Cloneable, Comparable<ISODate>, Serializable {
 
     /** Constructs an instance of <code>ISODate</code> with current date, time and system default timezone. */
     public ISODate() {
-        internalDateTime = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC);
+        internalDateTime = ZonedDateTime.now(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC);
     }
 
     /**
@@ -146,7 +146,7 @@ public class ISODate implements Cloneable, Comparable<ISODate>, Serializable {
         return Date.from(internalDateTime.toInstant());
     }
 
-    /** @return Return the number of seconds since epoch of 1970-01-01T00:00:00Z. */
+    /** Return the number of seconds since epoch of 1970-01-01T00:00:00Z. */
     public long getTimeInSeconds() {
         return internalDateTime.toEpochSecond();
     }

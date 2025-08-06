@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
 import org.geonetwork.ogcapi.service.configuration.ProfileDefault;
-import org.geonetwork.schemas.MetadataSchemaConfiguration;
+import org.geonetwork.schemas.SchemaPluginConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -112,8 +112,8 @@ public class ProfileSelectorTest {
         assertEquals("testcase.profile2", selectedFormatter);
     }
 
-    private MetadataSchemaConfiguration.Formatter getFormatter1() {
-        return MetadataSchemaConfiguration.Formatter.builder()
+    private SchemaPluginConfiguration.Formatter getFormatter1() {
+        return SchemaPluginConfiguration.Formatter.builder()
                 .name("testcase.profile informal")
                 .title("testcase.profile title")
                 .officialProfileName("testcase.profile")
@@ -121,8 +121,8 @@ public class ProfileSelectorTest {
                 .build();
     }
 
-    private MetadataSchemaConfiguration.Formatter getFormatter2() {
-        return MetadataSchemaConfiguration.Formatter.builder()
+    private SchemaPluginConfiguration.Formatter getFormatter2() {
+        return SchemaPluginConfiguration.Formatter.builder()
                 .name("testcase.profile2 informal")
                 .title("testcase.profile2 title")
                 .officialProfileName("testcase.profile2")

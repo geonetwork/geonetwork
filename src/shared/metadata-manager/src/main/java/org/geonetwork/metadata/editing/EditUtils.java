@@ -207,7 +207,7 @@ public class EditUtils {
                             md,
                             schemaManager
                                     .getSchema(metadataEntity.getSchemaid())
-                                    .getXSDSchemaDefinition());
+                                    .getXsdSchemaDefinition());
                     Namespace attrNS = Namespace.getNamespace(prefix, namespace);
                     if (el.getAttribute(localname, attrNS) != null) {
                         el.setAttribute(new Attribute(localname, val, attrNS));
@@ -652,10 +652,10 @@ public class EditUtils {
                     // --- or element
                     String uChildName = editLib.getUnqualifiedName(childName);
                     String prefix = editLib.getPrefix(childName);
-                    String ns = editLib.getNamespace(childName, md, schemaPlugin.getXSDSchemaDefinition());
+                    String ns = editLib.getNamespace(childName, md, schemaPlugin.getXsdSchemaDefinition());
                     if (prefix.isEmpty()) {
                         prefix = editLib.getPrefix(el.getName());
-                        ns = editLib.getNamespace(el.getName(), md, schemaPlugin.getXSDSchemaDefinition());
+                        ns = editLib.getNamespace(el.getName(), md, schemaPlugin.getXsdSchemaDefinition());
                     }
                     Element orChild = new Element(uChildName, prefix, ns);
                     child.addContent(orChild);
@@ -834,7 +834,7 @@ public class EditUtils {
             String namespace = editLib.getNamespace(
                     prefix + ":" + localname,
                     md,
-                    schemaManager.getSchema(schema).getXSDSchemaDefinition());
+                    schemaManager.getSchema(schema).getXsdSchemaDefinition());
             attrNS = Namespace.getNamespace(prefix, namespace);
         }
         return Pair.write(attrNS, localname);

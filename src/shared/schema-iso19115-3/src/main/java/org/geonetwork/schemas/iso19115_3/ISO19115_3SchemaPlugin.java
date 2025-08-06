@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.geonetwork.schemas.MetadataSchemaConfiguration;
 import org.geonetwork.schemas.SchemaPlugin;
+import org.geonetwork.schemas.SchemaPluginConfiguration;
 import org.geonetwork.schemas.plugin.AssociatedResource;
 import org.geonetwork.schemas.plugin.AssociatedResourcesSchemaPlugin;
 import org.geonetwork.schemas.plugin.ExportablePlugin;
@@ -60,7 +60,7 @@ public class ISO19115_3SchemaPlugin extends SchemaPlugin
         allExportFormats = Map.of("convert/ISO19139/toISO19139.xsl", "metadata-iso19139.xml");
     }
 
-    private MetadataSchemaConfiguration configuration;
+    private SchemaPluginConfiguration configuration;
 
     public ISO19115_3SchemaPlugin(ISO19115_3Configuration configuration) {
         super(IDENTIFIER, allNamespaces);

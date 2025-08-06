@@ -35,13 +35,13 @@ import java.util.Map;
 public class SchemaSuggestions {
     private Map<String, List<String>> htFields = new LinkedHashMap<>();
 
-    public SchemaSuggestions(List<MetadataSchemaConfiguration.Suggestion> suggestions) {
+    public SchemaSuggestions(List<SchemaPluginConfiguration.Suggestion> suggestions) {
         suggestions.forEach(suggestion -> {
             htFields.put(suggestion.getField(), suggestion.getSuggestions());
         });
     }
 
-    private boolean isX(String parent, String child, String what) {
+    private boolean isX(String parent, String child, @SuppressWarnings("unused") String what) {
         final List<String> fieldEl = htFields.get(parent);
 
         if (fieldEl == null) return false;

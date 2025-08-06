@@ -65,8 +65,8 @@ public class EditingController {
             method = RequestMethod.GET,
             consumes = {MediaType.ALL_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE})
-    //    @PreAuthorize("hasAuthority('Editor')")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('Editor')")
     @ApiResponses(
             value = {
                 @ApiResponse(responseCode = "200", description = "The editor form."),
@@ -106,7 +106,7 @@ public class EditingController {
             value = "/{metadataUuid}/editor",
             consumes = {MediaType.ALL_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE})
-    //  TODO @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses(
             value = {
@@ -378,7 +378,7 @@ public class EditingController {
             value = "/{metadataUuid}/editor",
             consumes = {MediaType.ALL_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE})
-    //  TODO @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponses(
             value = {
@@ -469,7 +469,7 @@ public class EditingController {
             value = "/{metadataUuid}/editor/elements",
             consumes = {MediaType.ALL_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE})
-    //  @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponses(
             value = {
@@ -504,7 +504,7 @@ public class EditingController {
             value = "/{metadataUuid}/editor/attributes",
             consumes = {MediaType.ALL_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE})
-    //  @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponses(
             value = {
@@ -534,7 +534,7 @@ public class EditingController {
             value = "/{metadataUuid}/editor/elements/{direction}",
             consumes = {MediaType.ALL_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE})
-    //  @PreAuthorize("hasAuthority('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponses(
             value = {

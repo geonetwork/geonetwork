@@ -29,9 +29,9 @@ import org.jdom.Namespace;
 @Slf4j
 public abstract class SchemaPlugin implements CSWPlugin {
 
-    protected MetadataSchemaConfiguration configuration;
+    protected SchemaPluginConfiguration configuration;
 
-    XSDSchemaDefinition XSDSchemaDefinition;
+    XSDSchemaDefinition xsdSchemaDefinition;
 
     Path directory;
 
