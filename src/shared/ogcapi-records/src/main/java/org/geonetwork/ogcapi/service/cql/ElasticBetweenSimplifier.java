@@ -68,6 +68,13 @@ public class ElasticBetweenSimplifier {
         return qs;
     }
 
+    /**
+     * given 2 range queries (with the same field), merge them together.
+     *
+     * @param rangeQuery0 first to merge
+     * @param rangeQuery1 2nd to merge
+     * @return merged query
+     */
     public Query combineRange(RangeQuery rangeQuery0, RangeQuery rangeQuery1) {
         var query = Query.of(q -> q.range(x -> {
             x.field(rangeQuery0.field());
@@ -80,6 +87,15 @@ public class ElasticBetweenSimplifier {
         return query;
     }
 
+    /**
+     * given a list of queries, remove one from it.
+     *
+     * <p>NOTE: this uses `==` (reference) equals. NOTE: this looks inside each query (Query#_get()) to determine `==`
+     *
+     * @param qs list of queries
+     * @param removeMe which one to remove
+     * @return qs, but with removeMe removed
+     */
     public List<Query> remove(List<Query> qs, RangeQuery removeMe) {
         return qs.stream().filter(x -> x._get() != removeMe).collect(Collectors.toCollection(ArrayList::new));
     }

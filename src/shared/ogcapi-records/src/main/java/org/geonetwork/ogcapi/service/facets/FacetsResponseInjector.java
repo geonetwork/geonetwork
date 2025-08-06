@@ -21,11 +21,15 @@ import java.util.regex.Pattern;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 // puts facets inside the GeoJSON response
 @Component
 public class FacetsResponseInjector {
+
+    @Autowired
+    HistogramBucketReJiggler histogramBucketReJiggler;
 
     public enum SortType {
         STRING,
@@ -193,6 +197,7 @@ public class FacetsResponseInjector {
 
             buckets.add(b);
         }
+        buckets = histogramBucketReJiggler.reJiggle(buckets, histogramDto);
         return buckets;
     }
 
@@ -287,6 +292,7 @@ public class FacetsResponseInjector {
             }
             buckets.add(b);
         }
+        buckets = histogramBucketReJiggler.reJiggle(buckets, histogramDto);
         return buckets;
     }
 
