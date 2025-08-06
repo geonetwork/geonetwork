@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.apache.commons.io.IOUtils;
 import org.geonetwork.constants.Geonet;
@@ -165,7 +166,7 @@ class EditingControllerTest {
         if (o instanceof Element identification) {
             Element geonetElement = identification.getChild("element", Geonet.Namespaces.GEONET);
             String metadocumentElementRef = geonetElement.getAttributeValue("ref");
-            Element metadocumentAfterAdd = editUtils.addElementEmbedded(
+            editUtils.addElementEmbedded(
                     String.valueOf(metadata.getId()), metadocumentElementRef, "mri:abstract", null);
 
             // Done in session, not in database yet
@@ -210,7 +211,7 @@ class EditingControllerTest {
         return updateMetadata;
     }
 
-    private static HashMap<String, String> buildDefaultRequestParameter(int id, String version) {
+    private static Map<String, String> buildDefaultRequestParameter(int id, String version) {
         var allRequestParams = new HashMap<String, String>();
         allRequestParams.put(ID, String.valueOf(id));
         allRequestParams.put(VERSION, version);
@@ -226,11 +227,6 @@ class EditingControllerTest {
 
     private static void testMetadocumentCardinalityForMandatoryElement(Element geonetElement) {
         assertEquals("1", geonetElement.getAttributeValue("min"));
-        assertEquals("1", geonetElement.getAttributeValue("max"));
-    }
-
-    private static void testMetadocumentCardinalityForOptionalElement(Element geonetElement) {
-        assertEquals("0", geonetElement.getAttributeValue("min"));
         assertEquals("1", geonetElement.getAttributeValue("max"));
     }
 }

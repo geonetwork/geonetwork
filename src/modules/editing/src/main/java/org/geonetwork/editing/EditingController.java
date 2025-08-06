@@ -154,6 +154,7 @@ public class EditingController {
         //    }
 
         // TODO remove? Element params = new Element("request");
+        @SuppressWarnings("unused")
         Map<String, String> forwardedParams = allRequestParams.entrySet().stream()
                 .filter(e -> !e.getKey().startsWith("_"))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -207,7 +208,7 @@ public class EditingController {
         }
 
         // --- if finished then remove the XML from the session
-        if ((commit) && (!terminate)) {
+        if (commit && !terminate) {
             return;
         }
         if (terminate) {
@@ -457,7 +458,7 @@ public class EditingController {
         // -- the entire metadata so performance should not be a big issue
         Element elResp = editUtils.addElementEmbedded(String.valueOf(metadata.getId()), ref, name, child);
         EditLib.tagForDisplay(elResp);
-        Element md = (Element) Xml.findRoot(elResp).clone();
+        // Element md = (Element) Xml.findRoot(elResp).clone();
         EditLib.removeDisplayTag(elResp);
 
         // TODO buildEditorForm(allRequestParams.get("currTab"), httpSession, allRequestParams, request, md,
