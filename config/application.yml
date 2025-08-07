@@ -11,6 +11,7 @@
 
 geonetwork:
   url: http://localhost:7979/geonetwork
+  home: /srv
   index:
     url: ${ELASTIC_URL:http://localhost:9200}
     indexPrefix: gn5-
