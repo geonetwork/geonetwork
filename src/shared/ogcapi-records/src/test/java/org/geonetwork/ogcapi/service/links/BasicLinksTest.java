@@ -35,14 +35,14 @@ public class BasicLinksTest {
                 page,
                 Arrays.asList("text/html", "application/json"),
                 "self",
-                "alternative");
+                "alternate");
 
         var selfLink = page.getLinks().stream()
                 .filter(x -> x.getRel().equals("self"))
                 .findFirst()
                 .get();
         var altLink = page.getLinks().stream()
-                .filter(x -> x.getRel().equals("alternative"))
+                .filter(x -> x.getRel().equals("alternate"))
                 .findFirst()
                 .get();
 
@@ -72,14 +72,14 @@ public class BasicLinksTest {
                 page,
                 Arrays.asList("text/html", "application/json"),
                 "self",
-                "alternative");
+                "alternate");
 
         var selfLink = page.getLinks().stream()
                 .filter(x -> x.getRel().equals("self"))
                 .findFirst()
                 .get();
         var altLink = page.getLinks().stream()
-                .filter(x -> x.getRel().equals("alternative"))
+                .filter(x -> x.getRel().equals("alternate"))
                 .findFirst()
                 .get();
 

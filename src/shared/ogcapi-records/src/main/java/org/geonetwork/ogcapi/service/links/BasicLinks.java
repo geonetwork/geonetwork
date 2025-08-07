@@ -21,7 +21,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 /**
  * basic ops for links.
  *
- * <p>1. This document links Links should point to the various representations of this document ("alternative") and the
+ * <p>1. This document links Links should point to the various representations of this document ("alternate") and the
  * exact link to this document ("self").
  */
 @Component
@@ -49,7 +49,7 @@ public class BasicLinks {
         addStandardLinks(mediaTypeAndName, baseUrl, endpointLoc, page, formats, selfName, altName);
     }
     /**
-     * this adds the "standard" links - which is to "self" and "alternative" versions of the landing page.
+     * this adds the "standard" links - which is to "self" and "alternate" versions of the landing page.
      *
      * @param mediaTypeAndProfile request's media type and profile info
      * @param baseUrl baseURL for the system
@@ -135,7 +135,7 @@ public class BasicLinks {
                         }
                     }
 
-                    var linkRel = isSelf ? "self" : "alternative";
+                    var linkRel = isSelf ? selfName : altName;
 
                     var link = new OgcApiRecordsLinkDto();
                     var href = new URI(finalUrl + "f="
@@ -183,7 +183,7 @@ public class BasicLinks {
         //                        }
         //                        return _links;
         //                    } else {
-        //                        // alternative
+        //                        // alternate
         //                        var link = new OgcApiRecordsLinkDto();
         //                        try {
         //                            link.rel(altName)

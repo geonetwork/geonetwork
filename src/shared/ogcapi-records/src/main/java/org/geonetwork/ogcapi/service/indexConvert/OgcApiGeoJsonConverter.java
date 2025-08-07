@@ -9,6 +9,8 @@
  */
 package org.geonetwork.ogcapi.service.indexConvert;
 
+import static org.geonetwork.ogcapi.service.indexConvert.ElasticIndex2Catalog.getLangString;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -17,10 +19,7 @@ import java.util.Objects;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.index.model.record.IndexRecord;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsPolygonDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONPropertiesDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsTimeDto;
+import org.geonetwork.ogcapi.records.generated.model.*;
 import org.geonetwork.ogcapi.service.configuration.OgcApiRecordsOutputConfig;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,6 +175,16 @@ public class OgcApiGeoJsonConverter {
                 time.setInterval(interval);
                 result.setTime(JsonNullable.of(time));
             }
+        }
+
+        if (elasticIndexJsonRecord.getOverview() != null
+                && !elasticIndexJsonRecord.getOverview().isEmpty()) {
+            var thumbnails = elasticIndexJsonRecord.getOverview().stream()
+                    .map(overview -> new OgcApiRecordsThumbnailsDto()
+                            .name(getLangString(overview.getName(), iso3lang))
+                            .url(overview.getUrl()))
+                    .toList();
+            properties.setThumbnails(thumbnails);
         }
 
         result.setProperties(properties);
