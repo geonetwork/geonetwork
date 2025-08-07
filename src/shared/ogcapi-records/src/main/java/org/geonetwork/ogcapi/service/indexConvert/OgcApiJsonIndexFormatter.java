@@ -10,19 +10,19 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OgcApiGeoJsonIndexFormatter extends AbstractOgcApiIndexFormatter {
+public class OgcApiJsonIndexFormatter extends AbstractOgcApiIndexFormatter {
 
-    public OgcApiGeoJsonIndexFormatter(OgcApiGeoJsonConverter converter, ObjectMapper mapper, BeanFactory factory) {
+    public OgcApiJsonIndexFormatter(OgcApiGeoJsonConverter converter, ObjectMapper mapper, BeanFactory factory) {
         super(converter, mapper, factory);
     }
 
     @Override
     public String getName() {
-        return "OgcApiGeoJson";
+        return "OgcApiJson";
     }
 
     @Override
     public String getContentType() {
-        return "application/geo+json";
+        return "application/json";
     }
 }
