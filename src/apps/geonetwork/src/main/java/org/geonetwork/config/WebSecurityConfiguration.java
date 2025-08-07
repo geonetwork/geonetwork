@@ -6,6 +6,10 @@
 
 package org.geonetwork.config;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.proxy.HttpProxyPolicyAgentAuthorizationManager;
 import org.geonetwork.security.DatabaseUserAuthProperties;
@@ -36,7 +40,8 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             HttpProxyPolicyAgentAuthorizationManager proxyPolicyAgentAuthorizationManager,
-            GeoNetworkOAuth2UserService geoNetworkOAuth2UserService)
+            GeoNetworkOAuth2UserService geoNetworkOAuth2UserService,
+            @Value("${geonetwork.home: '/'}") String homeUrl)
             throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/home", "/signin")
@@ -52,20 +57,30 @@ public class WebSecurityConfiguration {
                         .userService(geoNetworkOAuth2UserService.userService())))
                 .formLogin(form -> form.loginPage("/signin")
                         .loginProcessingUrl("/api/user/signin")
-                        .defaultSuccessUrl("/home", true)
+                        .successHandler((request, response, authentication) -> {
+                            handleRedirectParam(request, response, homeUrl);
+                        })
                         .permitAll())
                 .httpBasic(basic ->
                         // No popup in browsers
                         basic.authenticationEntryPoint((request, response, authException) -> response.sendError(
                                 HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase())))
                 .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
-                        .logoutSuccessUrl("/"))
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            handleRedirectParam(request, response, homeUrl);
+                        }))
                 .csrf(csrf -> csrf.disable());
 
         //    http.sessionManagement(
         //        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
+    }
+
+    private static void handleRedirectParam(HttpServletRequest request, HttpServletResponse response, String homeUrl)
+            throws IOException {
+        String redirectUrl = request.getParameter("redirectUrl");
+        response.sendRedirect(StringUtils.isNotEmpty(redirectUrl) ? redirectUrl : request.getContextPath() + homeUrl);
     }
 
     @Bean
