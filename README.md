@@ -15,12 +15,13 @@ Architecture experiment for GeoNetwork 5 development setting up clean Spring Boo
 - PostgreSQL Database
 - Elasticsearch
 - GeoNetwork 4, which requires Java 11 Enviornment
+- (Recommended) Docker and Docker Compose
 
 To run GeoNetwork 5 in dev mode, you first need to run GeoNetwork 4 with shared data base:
 
 1. **Run GeoNetwork 4.4** in your favorite way ( [see GeoNetwork 4 documentation](https://github.com/geonetwork/core-geonetwork/tree/main/software_development#quickstart)) and remind the options to connect to the database and Elasticsearch.
    
-   Example Development Environment:
+   Example Development Environment (with Docker Compose):
    
    ```bash
    cd docker
