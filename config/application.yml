@@ -54,7 +54,7 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5432/gn5
+    url: jdbc:postgresql://localhost:5432/geonetwork
     driverClassName: org.postgresql.Driver
     username: geonetwork
     password: geonetwork
