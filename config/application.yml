@@ -61,6 +61,10 @@ spring:
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 1GB
+      max-request-size: 1GB
   security:
     oauth2:
       client:
