@@ -7,12 +7,14 @@ package org.geonetwork.security.user;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.geonetwork.domain.Profile;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.Usergroup;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.domain.repository.UsergroupRepository;
+import org.geonetwork.utility.date.ISODate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -49,5 +51,38 @@ public class UserManager implements IUserManager {
         return usergroups.stream()
                 .filter(usergroup -> usergroup.getId().getProfile().equals(profile.getId()))
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public User registerUser(
+            String username,
+            String password,
+            String name,
+            String surname,
+            String email,
+            String authType,
+            String loginDate,
+            String company,
+            Profile profile) {
+        User newUser = User.builder()
+                .isenabled("y")
+                .password("")
+                .username(username)
+                .name(Optional.ofNullable(name).orElse(""))
+                .surname(Optional.ofNullable(surname).orElse(""))
+                // GN4 `GeonetworkAuthenticationProvider` expects this to be null or empty
+                .authtype(authType)
+                .email(email == null ? null : Set.of(email))
+                .organisation(Optional.ofNullable(company).orElse(""))
+                .lastlogindate(loginDate)
+                .profile(Optional.ofNullable(profile).orElse(Profile.RegisteredUser))
+                .build();
+        return userRepository.save(newUser);
+    }
+
+    @Override
+    public void userLoginEvent(User user) {
+        user.setLastlogindate(new ISODate().toString());
+        userRepository.save(user);
     }
 }

@@ -16,4 +16,17 @@ public interface IUserManager {
     List<Usergroup> getUserGroups(int userId);
 
     List<Usergroup> getUserGroups(int userId, Profile profile);
+
+    User registerUser(
+            String username,
+            String password,
+            String name,
+            String surname,
+            String email,
+            String authType,
+            String loginDate,
+            String company,
+            Profile profile);
+
+    void userLoginEvent(User user);
 }

@@ -10,12 +10,12 @@ import static org.geonetwork.security.GeoNetworkUserService.isUserFoundAndEnable
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.Profile;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.UserRepository;
+import org.geonetwork.security.user.UserManager;
+import org.geonetwork.utility.date.ISODate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.ldap.core.DirContextAdapter;
@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 @ConditionalOnProperty(name = "geonetwork.security.provider", havingValue = "ldap")
 public class LdapAuthoritiesMapperService {
     UserRepository userRepository;
+    UserManager userManager;
     GeoNetworkUserService geoNetworkUserService;
     String defaultUserGroup;
     Profile defaultUserProfile;
@@ -47,6 +48,7 @@ public class LdapAuthoritiesMapperService {
             @Value("${geonetwork.security.ldap.attributes.name: 'cn'}") String nameAttribute,
             @Value("${geonetwork.security.ldap.attributes.surname: ''}") String surnameAttribute,
             UserRepository userRepository,
+            UserManager userManager,
             GeoNetworkUserService geoNetworkUserService) {
         this.defaultUserGroup = defaultUserGroup;
         this.defaultUserProfile = Profile.valueOf(defaultUserProfile);
@@ -57,6 +59,7 @@ public class LdapAuthoritiesMapperService {
         this.surnameAttribute = surnameAttribute;
 
         this.userRepository = userRepository;
+        this.userManager = userManager;
         this.geoNetworkUserService = geoNetworkUserService;
     }
 
@@ -79,30 +82,22 @@ public class LdapAuthoritiesMapperService {
                             isUserFoundAndEnabled(username, ldapUser);
 
                             existingUser.setUsername(getLdapAttribute(usernameAttribute, ctx, username));
-                            userRepository.save(existingUser);
+                            userManager.userLoginEvent(existingUser);
 
                             return existingUser;
                         })
-                        .orElseGet(() -> {
-                            User newUser = User.builder()
-                                    .isenabled("y")
-                                    .password("")
-                                    .username(username)
-                                    .name(getLdapAttribute(nameAttribute, ctx, username))
-                                    .surname(getLdapAttribute(surnameAttribute, ctx, ""))
-                                    // FIXME If set GN4 try to create JWT user
-                                    //  .authtype("LDAP")
-                                    .profile(profile)
-                                    .build();
-
-                            String email = getLdapAttribute(emailAttribute, ctx, "");
-                            if (StringUtils.isNotEmpty(email)) {
-                                newUser.setEmail(Set.of(email));
-                            }
-
-                            userRepository.save(newUser);
-                            return newUser;
-                        });
+                        .orElseGet(() -> userManager.registerUser(
+                                username,
+                                "",
+                                getLdapAttribute(nameAttribute, ctx, username),
+                                getLdapAttribute(surnameAttribute, ctx, ""),
+                                getLdapAttribute(emailAttribute, ctx, ""),
+                                // FIXME If set GN4 try to create JWT user
+                                //  "LDAP"
+                                "",
+                                new ISODate().toString(),
+                                null,
+                                profile));
 
                 OAuth2UserAuthority authority = geoNetworkUserService.buildUserAuthority(user);
 

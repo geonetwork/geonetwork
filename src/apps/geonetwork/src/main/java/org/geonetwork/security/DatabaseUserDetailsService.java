@@ -15,6 +15,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.repository.UserRepository;
+import org.geonetwork.security.user.UserManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,16 +44,19 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final GeoNetworkUserService geoNetworkUserService;
+    private final UserManager userManager;
 
     public DatabaseUserDetailsService(
             @Value("${geonetwork.security.databaseUserAuthProperty: 'USERNAME_OR_EMAIL'}")
                     DatabaseUserAuthProperties checkUsernameOrEmail,
             PasswordEncoder passwordEncoder,
             GeoNetworkUserService geoNetworkUserService,
-            UserRepository userRepository) {
+            UserRepository userRepository,
+            UserManager userManager) {
         this.checkUsernameOrEmail = checkUsernameOrEmail;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.userManager = userManager;
         this.geoNetworkUserService = geoNetworkUserService;
     }
 
@@ -89,6 +93,7 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
         isUserFoundAndEnabled(username, user);
 
         org.geonetwork.domain.User currentUser = user.get();
+        userManager.userLoginEvent(currentUser);
 
         OAuth2UserAuthority authority = geoNetworkUserService.buildUserAuthority(user.get());
 

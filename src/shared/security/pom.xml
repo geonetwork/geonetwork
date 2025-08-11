@@ -35,5 +35,10 @@
       <artifactId>gn-domain</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-utility</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

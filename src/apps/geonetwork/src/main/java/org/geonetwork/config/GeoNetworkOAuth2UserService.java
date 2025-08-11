@@ -9,10 +9,11 @@ import io.micrometer.common.util.StringUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.security.GeoNetworkUserService;
+import org.geonetwork.security.user.UserManager;
+import org.geonetwork.utility.date.ISODate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -45,6 +46,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GeoNetworkOAuth2UserService {
+
+    @Autowired
+    UserManager userManager;
 
     @Autowired
     UserRepository userRepository;
@@ -160,27 +164,18 @@ public class GeoNetworkOAuth2UserService {
 
         // attempt to load user
         var dbUser = userRepository.findOptionalByUsername(username);
+        var loginDate = new ISODate().toString();
 
         // ---- user is missing, create them ----------
         if (dbUser.isEmpty()) {
-            // create the user in the DB
             var email = getValue(oAuth2User, userCreationInfo.getEmail());
             var name = getValue(oAuth2User, userCreationInfo.getName());
             var surname = getValue(oAuth2User, userCreationInfo.getSurname());
             var company = getValue(oAuth2User, userCreationInfo.getOrganization());
-            User newUser = User.builder()
-                    .isenabled("y")
-                    .password("")
-                    .username(username)
-                    .name(Optional.ofNullable(name).orElse(""))
-                    .surname(Optional.ofNullable(surname).orElse(""))
-                    // GN4 `GeonetworkAuthenticationProvider` expects this to be null or empty
-                    .authtype(null)
-                    .email(email == null ? null : Set.of(email))
-                    .organisation(Optional.ofNullable(company).orElse(""))
-                    .build();
-            var user = userRepository.save(newUser);
-            dbUser = Optional.of(user);
+            dbUser = Optional.of(
+                    userManager.registerUser(username, null, name, surname, email, null, loginDate, company, null));
+        } else {
+            userManager.userLoginEvent(dbUser.get());
         }
 
         return dbUser.get();

@@ -6,6 +6,8 @@
 
 package org.geonetwork.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import org.geonetwork.proxy.HttpProxyPolicyAgentAuthorizationManager;
 import org.geonetwork.security.DatabaseUserAuthProperties;
 import org.geonetwork.security.DatabaseUserDetailsService;
 import org.geonetwork.security.GeoNetworkUserService;
+import org.geonetwork.security.user.UserManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -80,7 +83,8 @@ public class WebSecurityConfiguration {
                         })
                         //                        .defaultSuccessUrl("/", false)
                         .permitAll())
-                .httpBasic(AbstractHttpConfigurer::disable)
+                .httpBasic(withDefaults())
+                //                .httpBasic(AbstractHttpConfigurer::disable)
                 //                .httpBasic(basic ->
                 //                        // No popup in browsers
                 //                        basic.authenticationEntryPoint((request, response, authException) ->
@@ -137,9 +141,10 @@ public class WebSecurityConfiguration {
                     DatabaseUserAuthProperties checkUsernameOrEmail,
             PasswordEncoder passwordEncoder,
             UserRepository userRepository,
+            UserManager userManager,
             GeoNetworkUserService geoNetworkUserService) {
         return new DatabaseUserDetailsService(
-                checkUsernameOrEmail, passwordEncoder, geoNetworkUserService, userRepository);
+                checkUsernameOrEmail, passwordEncoder, geoNetworkUserService, userRepository, userManager);
     }
 
     @Bean

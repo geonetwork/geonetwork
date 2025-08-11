@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Profile;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.Usergroup;
-import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.domain.repository.UsergroupRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
@@ -31,7 +30,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Slf4j
 public class GeoNetworkUserService {
-    UserRepository userRepository;
     UsergroupRepository userGroupRepository;
 
     public static boolean isUserFoundAndEnabled(String username, Optional<User> user) {

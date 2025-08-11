@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.domain.repository.UsergroupRepository;
+import org.geonetwork.security.user.UserManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,6 +27,10 @@ class DatabaseUserDetailsServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @SuppressWarnings("unused")
+    @Mock
+    private UserManager userManager;
 
     @Mock
     private UsergroupRepository userGroupRepository;
