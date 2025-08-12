@@ -69,7 +69,6 @@ public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<Confi
 
         decompressElasticSnapshotTarball();
         createElasticRepository(client);
-
         importElasticSnapshot(client);
     }
 

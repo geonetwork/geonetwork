@@ -40,6 +40,8 @@ geonetwork:
           elasticProperty: resourceTitleObject.default
         - ogcProperty: resolutionScaleDenominator
           elasticProperty: resolutionScaleDenominator
+        - ogcProperty: organizations
+          elasticProperty: OrgForResourceObject.langeng
 
 
 
