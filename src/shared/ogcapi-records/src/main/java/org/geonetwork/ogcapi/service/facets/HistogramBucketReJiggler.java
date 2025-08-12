@@ -38,6 +38,10 @@ public class HistogramBucketReJiggler {
             bucket.setMax(nextBucket.getMin());
         }
 
+        if (!buckets.isEmpty()) {
+            buckets.getLast().setxHighestBucket(true);
+        }
+
         return buckets;
     }
 
