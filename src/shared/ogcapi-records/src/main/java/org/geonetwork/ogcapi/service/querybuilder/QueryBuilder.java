@@ -6,6 +6,8 @@
 package org.geonetwork.ogcapi.service.querybuilder;
 
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,7 +95,8 @@ public class QueryBuilder {
 
         result.setFilterLang(filterLang);
         result.setFilterCrs(filterCrs);
-        result.setFilter(filter);
+        var _filter = (filter == null) ? null : URLDecoder.decode(filter, StandardCharsets.UTF_8);
+        result.setFilter(_filter);
 
         return result;
     }
