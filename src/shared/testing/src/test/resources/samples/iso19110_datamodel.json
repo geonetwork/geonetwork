@@ -17,7 +17,7 @@
     "definition" : "Een baggerzone is een zone waarbinnen werkzaamheden gebeuren die nodig zijn bij het weghalen van zand, slib en andere lagen van de waterbodem. Deze baggerzones liggen binnen de vaargeul op de Noordzee en de Schelde tot aan Rupelmonde.",
     "code" : "",
     "isAbstract" : "false",
-    "aliases" : "\"\n      ",
+    "aliases" : [ "\"\n      " ],
     "attributeTable" : [ {
       "name" : "\n          ",
       "definition" : "Feature ID van de baggerzone gegenereerd door GIS software.",
