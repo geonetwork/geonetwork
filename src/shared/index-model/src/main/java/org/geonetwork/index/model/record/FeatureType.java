@@ -25,7 +25,11 @@ public class FeatureType {
     String definition;
     String code;
     String isAbstract;
-    String aliases;
+
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @Singular()
+    List<String> aliases;
 
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     @JacksonXmlElementWrapper(useWrapping = false)
