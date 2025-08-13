@@ -147,7 +147,7 @@ public class QueryToElastic {
      * @param lang3iso language
      * @return QueryBuilder with a data-based range query.
      */
-    private Query createVsDate(@Valid OgcApiRecordsGnElasticDto gnElasticInfo, String userSearchTerm, String lang3iso) {
+    public Query createVsDate(@Valid OgcApiRecordsGnElasticDto gnElasticInfo, String userSearchTerm, String lang3iso) {
 
         return RangeQuery.of(rq -> {
                     rq.field(gnElasticInfo.getElasticPath());

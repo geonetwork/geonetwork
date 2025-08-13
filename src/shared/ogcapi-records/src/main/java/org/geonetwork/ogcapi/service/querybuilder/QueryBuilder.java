@@ -81,7 +81,8 @@ public class QueryBuilder {
 
         result.setLimit(limit);
         result.setStartIndex(startindex);
-        result.setDatetime(datetime);
+        var _datetime = (datetime == null) ? null : URLDecoder.decode(datetime, StandardCharsets.UTF_8);
+        result.setDatetime(_datetime);
         result.setType(type);
         result.setQ(q);
         result.setIds(ids);
