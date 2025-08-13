@@ -148,17 +148,6 @@
         }
       ]
     },
-    "type": {
-      "title": "type",
-      "type": "string",
-      "description": "The nature or genre of the resource described by this record.",
-      "x-gn-elastic": [
-        {
-          "elasticPath": "resourceType",
-          "elasticColumnType": "KEYWORD"
-        }
-      ]
-    },
     "title": {
       "title": "title",
       "type": "string",

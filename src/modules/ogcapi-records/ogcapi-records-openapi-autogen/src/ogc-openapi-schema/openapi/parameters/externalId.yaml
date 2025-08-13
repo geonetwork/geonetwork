@@ -1,5 +1,5 @@
 ---
-name: externalId
+name: externalIds
 in: query
 description: |-
   The optional externalId parameter supports searching by an identifier
