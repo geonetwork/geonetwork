@@ -106,10 +106,7 @@ public class ElasticWithUserPermissions {
         }
 
         var userOptional = userRepository.findOptionalByUsername(userName);
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        }
-        return null;
+        return userOptional.orElse(null);
     }
 
     /**

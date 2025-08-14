@@ -356,6 +356,95 @@ public class QueryTest extends ElasticPgMvcBaseTest {
         assertTrue(returnedIds.contains("ed34db28-5dd4-480f-bf29-dc08f0086131"));
     }
 
+    /**
+     * this tests how matches are made. In this test, we search for `"Métropole Européenne de Lille"`. The results
+     * should have ALL these words in it.
+     *
+     * <p>TEST: previously, this would match contacts which had ANY of the search words in it. This would match any
+     * contact with " de " in the text. This was too many results.
+     *
+     * @throws Exception request problem
+     */
+    @Test
+    public void testQueryableNestedMultiplePhrases() throws Exception {
+        var query = "contacts=Métropole Européenne de Lille";
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?" + query,
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(2, items.getNumberMatched());
+        var returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertTrue(returnedIds.contains("accroche_velos"));
+        assertTrue(returnedIds.contains("ed34db28-5dd4-480f-bf29-dc08f0086131"));
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+
+    /**
+     * Record id 50aa3037-ac17-4c0d-ad15-b43a5a0929ae is not accessible by the anonymous user. It shouldn't be returned
+     * in any queries. We query both MAIN_COLLECTION_ID and METAWAL_COLLECTION_ID in three ways - (a) get the record
+     * directly (b) get all records (c) search by a title keyword (TOPO)
+     */
+    @Test
+    public void testSecuritySimple() throws Exception {
+        // single record query
+        var query = "id=50aa3037-ac17-4c0d-ad15-b43a5a0929ae";
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?" + query,
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(0, items.getNumberMatched());
+        assertEquals(0, items.getFeatures().size());
+
+        // single record query
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + METAWAL_COLLECTION_ID + "/items?" + query,
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(0, items.getNumberMatched());
+        assertEquals(0, items.getFeatures().size());
+
+        // all records query
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?limit=100",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        var returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertFalse(returnedIds.contains("50aa3037-ac17-4c0d-ad15-b43a5a0929ae"));
+
+        // all records query
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + METAWAL_COLLECTION_ID + "/items?limit=100",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertFalse(returnedIds.contains("50aa3037-ac17-4c0d-ad15-b43a5a0929ae"));
+
+        // all records query
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?q=TOPO",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertFalse(returnedIds.contains("50aa3037-ac17-4c0d-ad15-b43a5a0929ae"));
+
+        // all records query
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + METAWAL_COLLECTION_ID + "/items?q=TOPO",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertFalse(returnedIds.contains("50aa3037-ac17-4c0d-ad15-b43a5a0929ae"));
+
+        // user johndoe is part of "sample group" which has access to this record
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?" + query,
+                OgcApiRecordsGetRecords200ResponseDto.class,
+                "johndoe");
+
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(1, items.getFeatures().size());
+
+        returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertTrue(returnedIds.contains("50aa3037-ac17-4c0d-ad15-b43a5a0929ae"));
+    }
+
     // ----------------------------------------------------------------------------------------------------------
 
     /**
