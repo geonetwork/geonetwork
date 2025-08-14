@@ -32,7 +32,6 @@ import org.elasticsearch.geometry.Rectangle;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGnElasticDto;
 import org.geonetwork.ogcapi.service.configuration.OgcApiSearchConfiguration;
 import org.geonetwork.ogcapi.service.cql.CqlToElasticSearch;
-import org.geonetwork.ogcapi.service.dataaccess.ElasticWithUserPermissions;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,9 +72,6 @@ public class RecordsEsQueryBuilder {
 
     @Autowired
     private OgcApiSearchConfiguration configuration;
-
-    @Autowired
-    private ElasticWithUserPermissions elasticWithUserPermissions;
 
     @Autowired
     CqlToElasticSearch cqlToElasticSearch;
@@ -242,8 +238,6 @@ public class RecordsEsQueryBuilder {
             queryablesQuery = queryToElastic.getQueryablesQuery(ogcApiQuery);
         }
 
-        var permissionQuery = elasticWithUserPermissions.createPermissionQuery();
-
         var cqlQuery = cqlToElasticSearch.create(ogcApiQuery);
 
         var filters = Stream.of(
@@ -253,7 +247,6 @@ public class RecordsEsQueryBuilder {
                         configQuery,
                         collectionQuery,
                         queryablesQuery,
-                        permissionQuery,
                         dataTimeQuery,
                         cqlQuery,
                         typeQuery,
