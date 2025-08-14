@@ -236,7 +236,7 @@ public class MetadataAccessManager implements IMetadataAccessManager {
                 for (var profileGroup : gnPermissions.getProfileGroups().entrySet()) {
                     var profile = profileGroup.getKey();
                     if (!editingGroupsOnly || profile.compareTo(Profile.Editor) > 0) {
-                        hs.add(profile.getId());
+                        hs.addAll(profileGroup.getValue());
                     }
                 }
             }

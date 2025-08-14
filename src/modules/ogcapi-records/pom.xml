@@ -27,7 +27,7 @@
   <modules>
     <module>ogcapi-records-openapi-autogen</module>
     <module>ogcapi-records-implementation</module>
-
+    <module>ogcapi-records-integration-tests</module>
   </modules>
 
 </project>

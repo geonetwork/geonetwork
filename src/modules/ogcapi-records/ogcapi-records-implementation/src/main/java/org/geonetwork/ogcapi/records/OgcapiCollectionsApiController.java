@@ -5,16 +5,15 @@
  */
 package org.geonetwork.ogcapi.records;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.geonetwork.ogcapi.records.generated.CollectionsApi;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetCollections200ResponseDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
+import org.geonetwork.ogcapi.records.generated.model.*;
+import org.geonetwork.ogcapi.service.facets.FacetsService;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiCollectionsApi;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiItemsApi;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
@@ -23,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +41,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
     private final OgcApiItemsApi itemsApi;
     private final QueryablesService queryablesService;
     private final QueryBuilder queryBuilder;
+    private final FacetsService facetsService;
 
     @Autowired
     public OgcapiCollectionsApiController(
@@ -48,12 +49,14 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             OgcApiCollectionsApi collectionsApi,
             OgcApiItemsApi itemsApi,
             QueryablesService queryablesService,
-            QueryBuilder queryBuilder) {
+            QueryBuilder queryBuilder,
+            FacetsService facetsService) {
         this.request = request;
         this.collectionsApi = collectionsApi;
         this.itemsApi = itemsApi;
         this.queryablesService = queryablesService;
         this.queryBuilder = queryBuilder;
+        this.facetsService = facetsService;
     }
 
     @Override
@@ -104,12 +107,28 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             Integer offset,
             List<String> q,
             List<String> type,
-            List<String> externalId,
+            List<String> externalIds,
             List<String> ids,
-            List<String> sortby) {
+            List<String> sortby,
+            String filter,
+            String filterLang,
+            String filterCrs) {
         var query = queryBuilder.buildFromRequest(
-                catalogId, bbox, datetime, limit, offset, type, q, ids, externalId, sortby, request.getParameterMap());
-        var result = itemsApi.getRecords(query);
+                catalogId,
+                bbox,
+                datetime,
+                limit,
+                offset,
+                type,
+                q,
+                ids,
+                externalIds,
+                sortby,
+                filter,
+                filterLang,
+                filterCrs,
+                request.getParameterMap());
+        var result = itemsApi.getRecords(query, facetsService.getFullFacets(catalogId));
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("GN5.OGCAPI-RECORDS.REQUEST-OFFSET", offset.toString());
@@ -122,5 +141,18 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
     public ResponseEntity<OgcApiRecordsJsonSchemaDto> getQueryables(String catalogId) {
         var result = queryablesService.buildQueryables(catalogId);
         return new ResponseEntity<OgcApiRecordsJsonSchemaDto>(result, HttpStatusCode.valueOf(200));
+    }
+
+    @Override
+    public ResponseEntity<OgcApiRecordsFacetsDto> getFacets(
+            @Parameter(
+                            name = "catalogId",
+                            description = "local identifier of a catalog",
+                            required = true,
+                            in = ParameterIn.PATH)
+                    @PathVariable("catalogId")
+                    String catalogId) {
+        var result = facetsService.buildFacets(catalogId);
+        return new ResponseEntity<OgcApiRecordsFacetsDto>(result, HttpStatusCode.valueOf(200));
     }
 }

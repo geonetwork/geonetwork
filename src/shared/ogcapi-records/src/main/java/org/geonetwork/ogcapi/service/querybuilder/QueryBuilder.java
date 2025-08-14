@@ -6,6 +6,8 @@
 package org.geonetwork.ogcapi.service.querybuilder;
 
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,9 @@ public class QueryBuilder {
      * @param ids see {@link OgcApiQuery#ids}
      * @param externalids see {@link OgcApiQuery#externalIds}
      * @param sortby see {@link OgcApiQuery#sortBy}
+     * @param filter see {@link OgcApiQuery#filter}
+     * @param filterLang see {@link OgcApiQuery#filterLang}
+     * @param filterCrs see {@link OgcApiQuery#filterCrs}
      * @param parameterMap see {@link OgcApiQuery#propValues}
      * @return query object filled in
      */
@@ -61,6 +66,9 @@ public class QueryBuilder {
             List<String> ids,
             List<String> externalids,
             List<String> sortby,
+            String filter,
+            String filterLang,
+            String filterCrs,
             Map<String, String[]> parameterMap) {
 
         var result = new OgcApiQuery();
@@ -73,7 +81,8 @@ public class QueryBuilder {
 
         result.setLimit(limit);
         result.setStartIndex(startindex);
-        result.setDatetime(datetime);
+        var _datetime = (datetime == null) ? null : URLDecoder.decode(datetime, StandardCharsets.UTF_8);
+        result.setDatetime(_datetime);
         result.setType(type);
         result.setQ(q);
         result.setIds(ids);
@@ -84,6 +93,11 @@ public class QueryBuilder {
         injectExtraFromRequest(collectionId, result, parameterMap);
 
         queryablesExtractor.extractQueryables(result);
+
+        result.setFilterLang(filterLang);
+        result.setFilterCrs(filterCrs);
+        var _filter = (filter == null) ? null : URLDecoder.decode(filter, StandardCharsets.UTF_8);
+        result.setFilter(_filter);
 
         return result;
     }
