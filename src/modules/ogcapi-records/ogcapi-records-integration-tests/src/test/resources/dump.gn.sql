@@ -29152,6 +29152,7 @@ INSERT INTO public.usergroups (groupid, profile, userid) VALUES (103, 1, 101);
 INSERT INTO public.usergroups (groupid, profile, userid) VALUES (103, 4, 100);
 INSERT INTO public.usergroups (groupid, profile, userid) VALUES (101, 3, 100);
 INSERT INTO public.usergroups (groupid, profile, userid) VALUES (100, 3, 100);
+INSERT INTO public.usergroups (groupid, profile, userid) VALUES (2, 4, 100);
 
 
 --
