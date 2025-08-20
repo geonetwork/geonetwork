@@ -37,6 +37,7 @@ public class OgcapiConformanceApiController implements ConformanceApi {
         result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/sorting");
         result.addConformsToItem("http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/queryables");
         result.addConformsToItem("http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/queryables-query-parameters");
+        result.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-2/1.0/conf/simple");
 
         return new ResponseEntity<OgcApiRecordsConfClassesDto>(result, HttpStatusCode.valueOf(200));
     }
