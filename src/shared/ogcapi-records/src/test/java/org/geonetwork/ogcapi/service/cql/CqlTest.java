@@ -5,8 +5,8 @@
  */
 package org.geonetwork.ogcapi.service.cql;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import java.util.HashSet;
-import org.geotools.api.data.Query;
 import org.geotools.data.DataUtilities;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
@@ -23,7 +23,7 @@ public class CqlTest {
      */
     @Test
     public void testValid() throws Exception {
-        String elastic;
+        Query elastic;
         elastic = assertValid("str = 'dave'");
         elastic = assertValid("number BETWEEN 1 AND 2");
         elastic = assertValid("number >1");
@@ -60,19 +60,20 @@ public class CqlTest {
         });
     }
 
-    public String assertValid(String cql) throws Exception {
+    public Query assertValid(String cql) throws Exception {
         var es = getEs(cql);
         return es;
     }
 
-    public String getEs(String cql) throws CQLException {
+    public Query getEs(String cql) throws CQLException {
         var fieldMapper = new TrivialFieldMapper();
 
         var filter = CQL.toFilter(cql);
-        filter = DataUtilities.simplifyFilter(new Query("gn", filter)).getFilter();
+        filter = DataUtilities.simplifyFilter(new org.geotools.api.data.Query("gn", filter))
+                .getFilter();
         var validator = new IsSimpleFilterVisitor();
         filter.accept(validator, new HashSet<>());
-        var result = CswFilter2Es.translate(filter, fieldMapper);
+        var result = ImprovedCqlFilter2Elastic.translate(filter, fieldMapper);
         return result;
     }
 
