@@ -948,6 +948,7 @@ public class IndexRecord {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void handleOrgForResourceProperties(
             Map<String, List<Map<String, String>>> orgForResourceByRole, String name, Object value) {
         List<Map<String, String>> resourceByRole = orgForResourceByRole.computeIfAbsent(name, k -> new ArrayList<>());
@@ -956,9 +957,8 @@ public class IndexRecord {
             @SuppressWarnings("unchecked")
             Map<String, String> map = (Map<String, String>) value;
             resourceByRole.add(map);
-        }
-        else if (value instanceof List) {
-          resourceByRole.addAll((List<Map<String, String>>)value);
+        } else if (value instanceof List) {
+            resourceByRole.addAll((List<Map<String, String>>) value);
         }
     }
 

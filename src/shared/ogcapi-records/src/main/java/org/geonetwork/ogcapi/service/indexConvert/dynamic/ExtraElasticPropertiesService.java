@@ -97,7 +97,8 @@ public class ExtraElasticPropertiesService {
                 result.getProperties().putAdditionalProperty(field.getOgcProperty(), elasticValue);
             } catch (Exception e) {
                 log.info("Error parsing field ogc='" + field.getOgcProperty() + "' elastic='"
-                        + field.getElasticProperty() + "' indexrecord='" + field.getIndexRecordProperty() + "': "
+                        + field.getElasticProperty() + "' indexrecord='" + field.getIndexRecordProperty()
+                        + "': "
                         + e.getMessage());
             }
         }
@@ -133,7 +134,7 @@ public class ExtraElasticPropertiesService {
         Object current = object;
         while (!path.isEmpty()) {
             var pathPart = path.removeFirst();
-            if (pathPart.equals("[*]") || pathPart.equals("*") && (object instanceof List)) {
+            if ((pathPart.equals("[*]") || pathPart.equals("*"))) {
                 return getByPathMulti((List) current, path);
             } else if (pathPart.startsWith("[") && pathPart.endsWith("]")) {
                 current = getByIndex(current, pathPart);
@@ -172,6 +173,7 @@ public class ExtraElasticPropertiesService {
             var method = clazz.getMethod("get" + pname);
             return method.invoke(object);
         } catch (Exception e) {
+            // try another way of doing it
         }
 
         // might be a field with the same name
@@ -179,6 +181,7 @@ public class ExtraElasticPropertiesService {
             var field = clazz.getField(propertyName);
             return field.get(object);
         } catch (Exception e) {
+            // try another way of doing it
         }
 
         // we don't capitalize the first letter (unlikely to work)
@@ -186,9 +189,8 @@ public class ExtraElasticPropertiesService {
             var method = clazz.getMethod("get" + propertyName);
             return method.invoke(object);
         } catch (Exception e) {
+            throw new RuntimeException("Could not find property in IndexRecord (or inside property): " + propertyName);
         }
-
-        throw new RuntimeException("Could not find property in IndexRecord (or inside property): " + propertyName);
     }
 
     /**

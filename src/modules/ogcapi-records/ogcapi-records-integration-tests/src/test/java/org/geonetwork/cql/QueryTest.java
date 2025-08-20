@@ -8,7 +8,6 @@ package org.geonetwork.cql;
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -17,12 +16,10 @@ import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.geonetwork.index.client.IndexClient;
 import org.geonetwork.infrastructure.ElasticPgMvcBaseTest;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -122,20 +119,24 @@ public class QueryTest extends ElasticPgMvcBaseTest {
     public String makeCql(BucketInfo bucketInfo, FacetInfo facetInfo, OgcApiRecordsFacetDto facetConfig) {
         if (facetInfo.getType().equals("term")) {
             var termInfo = (OgcApiRecordsFacetTermsDto) facetConfig;
-            return termInfo.getProperty() + " = '" + bucketInfo.getValue() + "'";
+            return termInfo.getProperty() + " = '" + escapeCql(bucketInfo.getValue()) + "'";
         } else if (facetInfo.getType().equals("histogram")) {
             var histogramInfo = (OgcApiRecordsFacetHistogramDto) facetConfig;
             if (bucketInfo.getHighestBucket() != null && bucketInfo.getHighestBucket()) {
-                return histogramInfo.getProperty() + " >= '" + bucketInfo.getMin() + "' AND "
-                        + histogramInfo.getProperty() + " <= '" + bucketInfo.getMax() + "'";
+                return histogramInfo.getProperty() + " >= '" + escapeCql(bucketInfo.getMin()) + "' AND "
+                        + histogramInfo.getProperty() + " <= '" + escapeCql(bucketInfo.getMax()) + "'";
             }
-            return histogramInfo.getProperty() + " >= '" + bucketInfo.getMin() + "' AND " + histogramInfo.getProperty()
-                    + " < '" + bucketInfo.getMax() + "'";
+            return histogramInfo.getProperty() + " >= '" + escapeCql(bucketInfo.getMin()) + "' AND "
+                    + histogramInfo.getProperty() + " < '" + escapeCql(bucketInfo.getMax()) + "'";
         } else if (facetInfo.getType().equals("filter")) {
             var filterInfo = (OgcApiRecordsFacetFilterDto) facetConfig;
             return filterInfo.getFilters().get(bucketInfo.getValue());
         }
         throw new RuntimeException(facetInfo.getType() + " is not supported");
+    }
+
+    public String escapeCql(String cql) {
+        return cql.replace("'", "''");
     }
 
     // ----------------------------------------------------------------------------------------------------------
@@ -547,16 +548,71 @@ public class QueryTest extends ElasticPgMvcBaseTest {
             // ------------------------------
             // this is a simple TERM facet
             entry(
-                    "organizations",
+                    "orgForResource",
                     new FacetInfo(
                             "term",
-                            "organizations",
+                            "orgForResource",
                             List.of(
-                                    new BucketInfo(null, null, "Federal Office for Spatial Development", 1, null),
+                                    new BucketInfo(null, null, "Service public de Wallonie (SPW)", 12, null),
                                     new BucketInfo(
                                             null,
                                             null,
-                                            "Coordination, Geo-Information and Services (COGIS)",
+                                            "Helpdesk carto du SPW (SPW - Secrétariat général - SPW Digital - Département de la Géomatique - Direction de l'Intégration des géodonnées)",
+                                            12,
+                                            null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Direction de l'Intégration des géodonnées (SPW - Secrétariat général - SPW Digital - Département de la Géomatique - Direction de l'Intégration des géodonnées)",
+                                            10,
+                                            null),
+                                    new BucketInfo(null, null, "Métropole Européenne de Lille", 2, null),
+                                    new BucketInfo(null, null, "atmo Hauts-de-France", 1, null),
+                                    new BucketInfo(null, null, "Société Publique de Gestion de l'Eau (SPGE)", 1, null),
+                                    new BucketInfo(null, null, "Réseau Ongulés sauvages OFB-FNC-FDC", 1, null),
+                                    new BucketInfo(null, null, "Région Hauts-de-France", 1, null),
+                                    new BucketInfo(null, null, "Office France de la Biodiversité", 1, null),
+                                    new BucketInfo(null, null, "Moi même", 1, null),
+                                    new BucketInfo(null, null, "Géo2France", 1, null),
+                                    new BucketInfo(null, null, "Fédération Nationale de la Chasse", 1, null),
+                                    new BucketInfo(null, null, "Fédération Départementale de la Chasse", 1, null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Direction de l'Action sociale (SPW - Intérieur et Action sociale - Département de l'Action sociale - Direction de l'Action sociale)",
+                                            1,
+                                            null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "DREAL HdF (Direction Régionale de l'Environnement de l'Aménagement et du Logement des Hauts de France)",
+                                            1,
+                                            null),
+                                    new BucketInfo(null, null, "DREAL", 1, null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Coordination, Services et Informations Géographiques (COSIG), swisstopo",
+                                            1,
+                                            null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Cellule informatique et géomatique (SPW - Intérieur et Action sociale - Direction fonctionnelle et d’appui)",
+                                            1,
+                                            null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Canton du Valais - Service de l'environnement (SEN) - Protection des sols",
+                                            1,
+                                            null),
+                                    new BucketInfo(null, null, "Bundesamt für Raumentwicklung", 1, null),
+                                    new BucketInfo(null, null, "Barbie Inc.", 1, null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Agence wallonne du Patrimoine (SPW - Territoire, Logement, Patrimoine, Énergie - Agence wallonne du Patrimoine)",
                                             1,
                                             null)))),
             // ------------------------------
@@ -672,5 +728,4 @@ public class QueryTest extends ElasticPgMvcBaseTest {
         Integer count;
         Boolean highestBucket;
     }
-
 }

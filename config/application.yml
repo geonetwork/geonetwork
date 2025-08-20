@@ -21,18 +21,15 @@ geonetwork:
         - ogcProperty: spatialRepresentationType
           elasticProperty: cl_spatialRepresentationType.key
           indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
-        - ogcProperty: type
+        - ogcProperty: resourceType
           elasticProperty: resourceType
           indexRecordProperty: resourceType
-        - ogcProperty: format
+        - ogcProperty: format0
           elasticProperty: format
           indexRecordProperty: formats
-        - ogcProperty: keywords
+        - ogcProperty: keywords0
           elasticProperty: tag.langeng
           indexRecordProperty: tag.[*].["default"]
-        - ogcProperty: updateFrequency
-          elasticProperty: cl_maintenanceAndUpdateFrequency.key
-          indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
         - ogcProperty: updateFrequency
           elasticProperty: cl_maintenanceAndUpdateFrequency.key
           indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
@@ -51,7 +48,7 @@ geonetwork:
         - ogcProperty: resolutionScaleDenominator
           elasticProperty: resolutionScaleDenominator
           indexRecordProperty: resolutionScaleDenominator
-        - ogcProperty: organizations
+        - ogcProperty: orgForResource
           elasticProperty: OrgForResourceObject.default
           indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
 
@@ -157,7 +154,7 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5432/gn
+    url: jdbc:postgresql://localhost:5555/geonetwork
     driverClassName: org.postgresql.Driver
     #    url: jdbc:h2:mem:gn5
     #    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE

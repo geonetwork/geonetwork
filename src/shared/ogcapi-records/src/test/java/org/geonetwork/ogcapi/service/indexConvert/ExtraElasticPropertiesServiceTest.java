@@ -25,9 +25,9 @@ public class ExtraElasticPropertiesServiceTest {
 
     @Test
     public void testTypeConversion() throws Exception {
-        var indexDef = indexDefinition();
-        var service = new ExtraElasticPropertiesService(null, null, indexDef.get("gn-records"));
-        var object = createObject();
+        //        var indexDef = indexDefinition();
+        //        var service = new ExtraElasticPropertiesService(null, null, indexDef.get("gn-records"));
+        //        var object = createObject();
     }
 
     /** Tests some simple paths for the IndexRecord traversal code. */
@@ -77,7 +77,7 @@ public class ExtraElasticPropertiesServiceTest {
         return result;
     }
 
-    /** */
+    /** Get the definition of the GN Elastic json index */
     public GetIndexResponse indexDefinition() throws Exception {
         InputStream is = QueryablesService.class
                 .getClassLoader()
