@@ -34,5 +34,6 @@ public class OgcElasticFieldsMapperConfig {
     public static class OgcElasticFieldMapperConfig {
         public String ogcProperty;
         public String elasticProperty;
+        public String indexRecordProperty;
     }
 }
