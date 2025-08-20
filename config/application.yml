@@ -20,28 +20,40 @@ geonetwork:
       fields:
         - ogcProperty: spatialRepresentationType
           elasticProperty: cl_spatialRepresentationType.key
+          indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
         - ogcProperty: type
           elasticProperty: resourceType
+          indexRecordProperty: resourceType
         - ogcProperty: format
           elasticProperty: format
+          indexRecordProperty: formats
         - ogcProperty: keywords
           elasticProperty: tag.langeng
+          indexRecordProperty: tag.[*].["default"]
         - ogcProperty: updateFrequency
           elasticProperty: cl_maintenanceAndUpdateFrequency.key
+          indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
         - ogcProperty: updateFrequency
           elasticProperty: cl_maintenanceAndUpdateFrequency.key
+          indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
         - ogcProperty: creationYearForResource
           elasticProperty: creationYearForResource
+          indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
         - ogcProperty: linkProtocol
           elasticProperty: linkProtocol
+          indexRecordProperty: linkProtocols
         - ogcProperty: createDate
           elasticProperty: createDate
+          indexRecordProperty: createDate
         - ogcProperty: resourceTitleObject
           elasticProperty: resourceTitleObject.default
+          indexRecordProperty: resourceTitle.["default"]
         - ogcProperty: resolutionScaleDenominator
           elasticProperty: resolutionScaleDenominator
+          indexRecordProperty: resolutionScaleDenominator
         - ogcProperty: organizations
-          elasticProperty: OrgForResourceObject.langeng
+          elasticProperty: OrgForResourceObject.default
+          indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
 
 
 
@@ -145,13 +157,13 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5432/geonetwork
+    url: jdbc:postgresql://localhost:5432/gn
     driverClassName: org.postgresql.Driver
     #    url: jdbc:h2:mem:gn5
     #    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE
     #    driverClassName: org.h2.Driver
-    username: geonetwork
-    password: geonetwork
+    username: postgres
+    password: postgres
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
