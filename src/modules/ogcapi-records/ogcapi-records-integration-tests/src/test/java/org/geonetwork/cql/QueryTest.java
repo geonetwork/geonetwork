@@ -8,6 +8,7 @@ package org.geonetwork.cql;
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -16,10 +17,12 @@ import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.geonetwork.index.client.IndexClient;
 import org.geonetwork.infrastructure.ElasticPgMvcBaseTest;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -669,4 +672,5 @@ public class QueryTest extends ElasticPgMvcBaseTest {
         Integer count;
         Boolean highestBucket;
     }
+
 }

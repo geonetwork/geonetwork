@@ -957,6 +957,9 @@ public class IndexRecord {
             Map<String, String> map = (Map<String, String>) value;
             resourceByRole.add(map);
         }
+        else if (value instanceof List) {
+          resourceByRole.addAll((List<Map<String, String>>)value);
+        }
     }
 
     Contact contactFromMap(Map<String, Object> contactInfo) {
