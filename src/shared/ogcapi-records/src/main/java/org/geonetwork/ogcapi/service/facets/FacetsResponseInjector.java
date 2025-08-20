@@ -37,6 +37,8 @@ public class FacetsResponseInjector {
         DATE
     }
 
+    public static final int DEFAULT_MAX_BUCKETS = 20;
+
     /**
      * Setup the facets portion of the response.
      *
@@ -48,7 +50,7 @@ public class FacetsResponseInjector {
             OgcApiRecordsGetRecords200ResponseDto webResponse,
             SearchResponse<IndexRecord> searchResponse,
             OgcApiRecordsFacetsDto facets) {
-        if (facets.getFacets() == null && !facets.getFacets().isEmpty()) {
+        if (facets.getFacets() == null || facets.getFacets().isEmpty()) {
             return; // nothing to doOgcApiItemsApi.java
         }
         var result = new HashMap<String, OgcApiRecordsFacetSummaryDto>();
@@ -187,7 +189,6 @@ public class FacetsResponseInjector {
             var b = new OgcApiRecordsFacetResultBucketDto();
             b.setCount((int) elasticBucket.docCount());
 
-            b.setMin(elasticBucket.keyAsString());
             var lowerDate = Instant.ofEpochMilli(elasticBucket.key());
             var upperDate = addTimeVariable(lowerDate, agg.interval());
 
@@ -240,7 +241,6 @@ public class FacetsResponseInjector {
             var b = new OgcApiRecordsFacetResultBucketDto();
             b.setCount((int) elasticBucket.docCount());
 
-            b.setMin(elasticBucket.keyAsString());
             var lowerDate = Instant.ofEpochMilli(elasticBucket.key());
             var upperDate = addTime(lowerDate, histogramDto.getxIntervalCalendarInterval());
 
@@ -344,7 +344,7 @@ public class FacetsResponseInjector {
 
         var originalNumberOfBuckets = result.getBuckets().size();
         if (defaultBucketCount == null || defaultBucketCount <= 0) {
-            defaultBucketCount = Integer.MAX_VALUE;
+            defaultBucketCount = DEFAULT_MAX_BUCKETS;
         }
 
         var nBuckets = (bucketCount == null || bucketCount <= 0) ? defaultBucketCount : bucketCount;
