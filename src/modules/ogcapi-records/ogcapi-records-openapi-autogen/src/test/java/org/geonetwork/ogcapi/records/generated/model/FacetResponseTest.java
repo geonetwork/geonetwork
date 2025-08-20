@@ -24,7 +24,6 @@ public class FacetResponseTest {
         var obj = mapper.readValue(json, OgcApiRecordsFeatureCollectionGeoJSONDto.class);
 
         var json2 = mapper.writeValueAsString(obj);
-        json2 = json2.replace("\" :", "\":");
         assertEquals(json, json2);
     }
 

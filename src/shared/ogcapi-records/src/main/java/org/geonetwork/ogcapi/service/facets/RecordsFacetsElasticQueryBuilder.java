@@ -5,6 +5,8 @@
  */
 package org.geonetwork.ogcapi.service.facets;
 
+import static org.geonetwork.ogcapi.service.facets.FacetsResponseInjector.DEFAULT_MAX_BUCKETS;
+
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.CalendarInterval;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
@@ -30,7 +32,7 @@ public class RecordsFacetsElasticQueryBuilder {
         var aggregations = new HashMap<String, Aggregation>();
 
         var defaultBucketCount =
-                facets.getDefaultBucketCount() == null ? Integer.MAX_VALUE : facets.getDefaultBucketCount();
+                facets.getDefaultBucketCount() == null ? DEFAULT_MAX_BUCKETS : facets.getDefaultBucketCount();
 
         for (var facetInfo : facets.getFacets().entrySet()) {
             var facetName = facetInfo.getKey();

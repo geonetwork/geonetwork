@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.geotools.api.filter.*;
 import org.geotools.api.filter.expression.Literal;
@@ -167,12 +167,12 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
         var dataPropertyLowerValue = (String) stack.pop();
         var dataPropertyName = (String) stack.pop();
 
-        if (!NumberUtils.isNumber(dataPropertyUpperValue)) {
-            dataPropertyUpperValue = StringEscapeUtils.escapeJson(CswFilter2Es.quoteString(dataPropertyUpperValue));
+        if (!NumberUtils.isCreatable(dataPropertyUpperValue)) {
+            dataPropertyUpperValue = StringEscapeUtils.escapeJson(quoteString(dataPropertyUpperValue));
         }
 
-        if (!NumberUtils.isNumber(dataPropertyLowerValue)) {
-            dataPropertyLowerValue = StringEscapeUtils.escapeJson(CswFilter2Es.quoteString(dataPropertyLowerValue));
+        if (!NumberUtils.isCreatable(dataPropertyLowerValue)) {
+            dataPropertyLowerValue = StringEscapeUtils.escapeJson(quoteString(dataPropertyLowerValue));
         }
 
         var _dataPropertyUpperValue = dataPropertyUpperValue;
@@ -185,6 +185,10 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
         stack.push(query);
 
         return this;
+    }
+
+    protected static String quoteString(String text) {
+        return String.format("\"%s\"", text);
     }
 
     @Override
