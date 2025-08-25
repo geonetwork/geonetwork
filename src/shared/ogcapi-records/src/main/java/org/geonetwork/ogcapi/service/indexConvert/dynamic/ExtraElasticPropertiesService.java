@@ -5,21 +5,16 @@
  */
 package org.geonetwork.ogcapi.service.indexConvert.dynamic;
 
-import co.elastic.clients.elasticsearch.indices.IndexState;
 import com.google.common.base.Splitter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
-import org.geonetwork.index.client.IndexClient;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -47,39 +42,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ExtraElasticPropertiesService {
 
-    OgcElasticFieldsMapperConfig config; // user-configured fields
-    String indexRecordName; // typically "gn-records"
+    ElasticTypingSystem elasticTypingSystem;
 
-    IndexState elasticIndexInfo;
+    OgcElasticFieldsMapperConfig config; // user-configured fields
 
     // for test cases
-    public ExtraElasticPropertiesService(
-            OgcElasticFieldsMapperConfig config,
-            @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
-            IndexState elasticIndexInfo) {
+    public ExtraElasticPropertiesService(OgcElasticFieldsMapperConfig config, ElasticTypingSystem elasticTypingSystem) {
         this.config = config;
-        this.indexRecordName = indexRecordName;
-        this.elasticIndexInfo = elasticIndexInfo;
-    }
-
-    @Autowired
-    public ExtraElasticPropertiesService(
-            OgcElasticFieldsMapperConfig config,
-            @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
-            IndexClient client) {
-        this.config = config;
-        this.indexRecordName = indexRecordName;
-
-        try {
-            if (client != null) {
-                this.elasticIndexInfo = client.getEsClient()
-                        .indices()
-                        .get(x -> x.index(indexRecordName))
-                        .get(indexRecordName);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.elasticTypingSystem = elasticTypingSystem;
     }
 
     /**
@@ -92,11 +62,12 @@ public class ExtraElasticPropertiesService {
     public void inject(IndexRecord indexRecord, String iso3lang, OgcApiRecordsRecordGeoJSONDto result) {
         for (var field : config.getFields()) {
             try {
-                var indexPath = field.getIndexRecordProperty();
-                var elasticValue = getFromElasticIndexRecord(indexPath, indexRecord);
-                result.getProperties().putAdditionalProperty(field.getOgcProperty(), elasticValue);
+                var elasticValue = getFromElasticIndexRecord(field, indexRecord);
+                var convertedValue = elasticTypingSystem.convert(field.getElasticProperty(), elasticValue);
+                result.getProperties().putAdditionalProperty(field.getOgcProperty(), convertedValue);
             } catch (Exception e) {
-                log.info("Error parsing field ogc='" + field.getOgcProperty() + "' elastic='"
+                log.info("For IndexRecord uuid=" + indexRecord.getUuid() + ", error parsing field ogc='"
+                        + field.getOgcProperty() + "' elastic='"
                         + field.getElasticProperty() + "' indexrecord='" + field.getIndexRecordProperty()
                         + "': "
                         + e.getMessage());
@@ -107,17 +78,24 @@ public class ExtraElasticPropertiesService {
     /**
      * Given a path (See definition, above) it will traverse through the indexRecord to ge a value.
      *
-     * @param path traversal instructions (See definition, above)
+     * @param field traversal instructions (See definition, above)
      * @param indexRecord Elastic JSON object parsed to an object
      * @return value at the end of the traversal
      * @throws Exception bad path for the object
      */
-    public Object getFromElasticIndexRecord(String path, IndexRecord indexRecord) throws Exception {
+    public Object getFromElasticIndexRecord(
+            OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig field, IndexRecord indexRecord) throws Exception {
+        var path = field.getIndexRecordProperty();
         if (path.length() - path.replace("*", "").length() > 1) {
             throw new Exception("IndexRecordProperty - contains more than one * - " + path);
         }
         var pathParts = Splitter.on('.').split(path);
-        return getByPath(indexRecord, Lists.newArrayList(pathParts.iterator()));
+        var valStr = getByPath(indexRecord, Lists.newArrayList(pathParts.iterator()));
+        if (valStr == null) {
+            return null; // no conversion necessary!
+        }
+        //        var elasticType = this.propertyMap.get(field.getElasticProperty());
+        return valStr;
     }
 
     /**
@@ -140,6 +118,9 @@ public class ExtraElasticPropertiesService {
                 current = getByIndex(current, pathPart);
             } else {
                 current = getByProperty(current, pathPart);
+            }
+            if (current == null) {
+                return null; // cannot descend
             }
         }
         return current;

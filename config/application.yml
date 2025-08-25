@@ -21,6 +21,7 @@ geonetwork:
         - ogcProperty: spatialRepresentationType
           elasticProperty: cl_spatialRepresentationType.key
           indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
+          typeOverride: LIST_STRING
         - ogcProperty: resourceType
           elasticProperty: resourceType
           indexRecordProperty: resourceType

@@ -962,16 +962,24 @@ public class IndexRecord {
         }
     }
 
+    /** null safe #.toString() */
+    public static String toString(Object o) {
+        if (o == null) {
+            return null;
+        }
+        return o.toString();
+    }
+
     Contact contactFromMap(Map<String, Object> contactInfo) {
         Contact.ContactBuilder c = Contact.builder()
-                .role(contactInfo.get("role").toString())
-                .email(contactInfo.get("email").toString())
-                .website(contactInfo.get("website").toString())
-                .logo(contactInfo.get("logo").toString())
-                .individual(contactInfo.get("individual").toString())
-                .position(contactInfo.get("position").toString())
-                .phone(contactInfo.get("phone").toString())
-                .address(contactInfo.get("address").toString());
+                .role(toString(contactInfo.get("role")))
+                .email(toString(contactInfo.get("email")))
+                .website(toString(contactInfo.get("website")))
+                .logo(toString(contactInfo.get("logo")))
+                .individual(toString(contactInfo.get("individual")))
+                .position(toString(contactInfo.get("position")))
+                .phone(toString(contactInfo.get("phone")))
+                .address(toString(contactInfo.get("address")));
 
         if (contactInfo.get("organisationObject") instanceof Map) {
             @SuppressWarnings("unchecked")

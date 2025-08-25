@@ -8,7 +8,6 @@ package org.geonetwork.ogcapi.service.indexConvert;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
-import co.elastic.clients.elasticsearch.indices.IndexState;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.stream.JsonParser;
@@ -17,6 +16,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geonetwork.index.model.record.IndexRecord;
+import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.junit.jupiter.api.Test;
@@ -33,33 +33,53 @@ public class ExtraElasticPropertiesServiceTest {
     /** Tests some simple paths for the IndexRecord traversal code. */
     @Test
     public void testPaths() throws Exception {
-        var service = new ExtraElasticPropertiesService(null, null, (IndexState) null);
+        var service = new ExtraElasticPropertiesService(null, null);
 
         var object = createObject();
 
         // single value
         var path = "codelists.[\"cl_spatialRepresentationType\"].[0].properties.[\"key\"]";
-        var result = service.getFromElasticIndexRecord(path, object);
+        var result = service.getFromElasticIndexRecord(
+                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
+                        .indexRecordProperty(path)
+                        .build(),
+                object);
         assertEquals("grid", result);
 
         // multi-value
         path = "resourceAltTitle.[0].[\"default\"]";
-        result = service.getFromElasticIndexRecord(path, object);
+        result = service.getFromElasticIndexRecord(
+                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
+                        .indexRecordProperty(path)
+                        .build(),
+                object);
         assertEquals("WAL_OCS__2020", result);
 
         path = "resourceAltTitle.[1].[\"default\"]";
-        result = service.getFromElasticIndexRecord(path, object);
+        result = service.getFromElasticIndexRecord(
+                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
+                        .indexRecordProperty(path)
+                        .build(),
+                object);
         assertEquals("WAL_OCS_IA__2020", result);
 
         path = "resourceAltTitle.[*].[\"default\"]";
-        result = service.getFromElasticIndexRecord(path, object);
+        result = service.getFromElasticIndexRecord(
+                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
+                        .indexRecordProperty(path)
+                        .build(),
+                object);
         assertEquals(2, ((List) result).size());
         assertEquals("WAL_OCS__2020", ((List) result).get(0));
         assertEquals("WAL_OCS_IA__2020", ((List) result).get(1));
 
         // multi-value, but single value
         path = "codelists.[\"cl_spatialRepresentationType\"].[*].properties.[\"key\"]";
-        result = service.getFromElasticIndexRecord(path, object);
+        result = service.getFromElasticIndexRecord(
+                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
+                        .indexRecordProperty(path)
+                        .build(),
+                object);
         assertEquals(1, ((List) result).size());
         assertEquals("grid", ((List) result).get(0));
     }
