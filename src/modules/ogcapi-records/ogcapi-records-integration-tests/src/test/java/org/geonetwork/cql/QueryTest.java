@@ -8,6 +8,8 @@ package org.geonetwork.cql;
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.TextNode;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -507,6 +509,40 @@ public class QueryTest extends ElasticPgMvcBaseTest {
         assertEquals(25000, ((List) additionalProps.get("resolutionScaleDenominator")).get(0));
 
         assertEquals("2023-05-24T14:40:04.056Z", ((List) additionalProps.get("createDate")).get(0));
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+
+    /** tests that the dynamic properties are in the swagger document */
+    @Test
+    public void testSwagger() throws Exception {
+        var json = retrieveUrlJson("v3/api-docs?f=json");
+        // there's compatibility issues when including this and everthing stops working!!!
+        //      OpenAPI openAPI = new OpenAPIV3Parser().readContents(json).getOpenAPI();
+        var tree = new ObjectMapper().readTree(json);
+        var properties = tree.get("components")
+                .get("schemas")
+                .get("OgcApiRecordsRecordGeoJSONPropertiesDto")
+                .get("properties");
+
+        assertEquals(
+                "array",
+                ((TextNode) properties.get("resolutionScaleDenominator").get("type")).asText());
+        assertEquals(
+                "integer",
+                ((TextNode) properties
+                                .get("resolutionScaleDenominator")
+                                .get("items")
+                                .get("type"))
+                        .asText());
+
+        assertEquals("array", ((TextNode) properties.get("createDate").get("type")).asText());
+        assertEquals(
+                "string", ((TextNode) properties.get("createDate").get("items").get("type")).asText());
+        assertEquals(
+                "date", ((TextNode) properties.get("createDate").get("items").get("format")).asText());
+
+        assertEquals("string", ((TextNode) properties.get("updateFrequency").get("type")).asText());
     }
 
     // ----------------------------------------------------------------------------------------------------------

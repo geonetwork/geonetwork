@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Getter
 public class ElasticTypingSystem {
 
     /** user config* */
@@ -58,6 +59,7 @@ public class ElasticTypingSystem {
                 this.finalElasticTypes.put(
                         field.getElasticProperty(),
                         new ElasticTypeInfo(
+                                field,
                                 OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.OverrideType.isList(override),
                                 OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.OverrideType.getSimpleType(
                                         override)));
@@ -68,35 +70,47 @@ public class ElasticTypingSystem {
                     this.finalElasticTypes.put(
                             field.getElasticProperty(),
                             new ElasticTypeInfo(
-                                    true, OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.STRING));
+                                    field,
+                                    true,
+                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.STRING));
                 } else if (rawElasticType instanceof ShortNumberProperty
                         || rawElasticType instanceof IntegerNumberProperty
                         || rawElasticType instanceof LongNumberProperty) {
                     this.finalElasticTypes.put(
                             field.getElasticProperty(),
                             new ElasticTypeInfo(
-                                    true, OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.INTEGER));
+                                    field,
+                                    true,
+                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.INTEGER));
                 } else if (rawElasticType instanceof FloatNumberProperty
                         || rawElasticType instanceof DoubleNumberProperty) {
                     this.finalElasticTypes.put(
                             field.getElasticProperty(),
                             new ElasticTypeInfo(
-                                    true, OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DOUBLE));
+                                    field,
+                                    true,
+                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DOUBLE));
                 } else if (rawElasticType instanceof TextProperty) {
                     this.finalElasticTypes.put(
                             field.getElasticProperty(),
                             new ElasticTypeInfo(
-                                    false, OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.STRING));
+                                    field,
+                                    false,
+                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.STRING));
                 } else if (rawElasticType instanceof BooleanProperty) {
                     this.finalElasticTypes.put(
                             field.getElasticProperty(),
                             new ElasticTypeInfo(
-                                    true, OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.BOOLEAN));
+                                    field,
+                                    true,
+                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.BOOLEAN));
                 } else if (rawElasticType instanceof DateProperty) {
                     this.finalElasticTypes.put(
                             field.getElasticProperty(),
                             new ElasticTypeInfo(
-                                    true, OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DATE));
+                                    field,
+                                    true,
+                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DATE));
                 }
             }
         }
@@ -170,7 +184,7 @@ public class ElasticTypingSystem {
     @AllArgsConstructor
     @ToString
     public static class ElasticTypeInfo {
-
+        private OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig config;
         private boolean isList;
         private OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType type;
     }
