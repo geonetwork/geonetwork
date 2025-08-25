@@ -43,6 +43,7 @@ properties:
       - $ref: 'recordCommonProperties.yaml'
       - type:
           object
+    additionalProperties: true
   links:
     type: array
     items:

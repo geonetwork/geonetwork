@@ -21,6 +21,7 @@ import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.geonetwork.ogcapi.service.configuration.OgcApiRecordsOutputConfig;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,9 @@ public class OgcApiGeoJsonConverter {
 
     @Autowired
     OgcApiRecordsOutputConfig ogcApiRecordsOutputConfig;
+
+    @Autowired
+    ExtraElasticPropertiesService extraElasticPropertiesService;
 
     /**
      * builder to construct a polygon from a bounding box.
@@ -114,6 +118,8 @@ public class OgcApiGeoJsonConverter {
             result.getProperties()
                     .setType(elasticIndexJsonRecord.getResourceType().getFirst());
         }
+
+        extraElasticPropertiesService.inject(elasticIndexJsonRecord, iso3lang, result);
 
         return result;
     }

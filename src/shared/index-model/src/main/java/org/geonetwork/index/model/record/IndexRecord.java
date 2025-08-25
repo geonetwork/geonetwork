@@ -948,6 +948,7 @@ public class IndexRecord {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void handleOrgForResourceProperties(
             Map<String, List<Map<String, String>>> orgForResourceByRole, String name, Object value) {
         List<Map<String, String>> resourceByRole = orgForResourceByRole.computeIfAbsent(name, k -> new ArrayList<>());
@@ -956,19 +957,29 @@ public class IndexRecord {
             @SuppressWarnings("unchecked")
             Map<String, String> map = (Map<String, String>) value;
             resourceByRole.add(map);
+        } else if (value instanceof List) {
+            resourceByRole.addAll((List<Map<String, String>>) value);
         }
+    }
+
+    /** null safe #.toString() */
+    public static String toString(Object o) {
+        if (o == null) {
+            return null;
+        }
+        return o.toString();
     }
 
     Contact contactFromMap(Map<String, Object> contactInfo) {
         Contact.ContactBuilder c = Contact.builder()
-                .role(contactInfo.get("role").toString())
-                .email(contactInfo.get("email").toString())
-                .website(contactInfo.get("website").toString())
-                .logo(contactInfo.get("logo").toString())
-                .individual(contactInfo.get("individual").toString())
-                .position(contactInfo.get("position").toString())
-                .phone(contactInfo.get("phone").toString())
-                .address(contactInfo.get("address").toString());
+                .role(toString(contactInfo.get("role")))
+                .email(toString(contactInfo.get("email")))
+                .website(toString(contactInfo.get("website")))
+                .logo(toString(contactInfo.get("logo")))
+                .individual(toString(contactInfo.get("individual")))
+                .position(toString(contactInfo.get("position")))
+                .phone(toString(contactInfo.get("phone")))
+                .address(toString(contactInfo.get("address")));
 
         if (contactInfo.get("organisationObject") instanceof Map) {
             @SuppressWarnings("unchecked")

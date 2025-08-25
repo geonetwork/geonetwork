@@ -20,28 +20,39 @@ geonetwork:
       fields:
         - ogcProperty: spatialRepresentationType
           elasticProperty: cl_spatialRepresentationType.key
-        - ogcProperty: type
+          indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
+          typeOverride: LIST_STRING
+        - ogcProperty: resourceType
           elasticProperty: resourceType
-        - ogcProperty: format
+          indexRecordProperty: resourceType
+        - ogcProperty: format0
           elasticProperty: format
-        - ogcProperty: keywords
+          indexRecordProperty: formats
+        - ogcProperty: keywords0
           elasticProperty: tag.langeng
+          indexRecordProperty: tag.[*].["default"]
         - ogcProperty: updateFrequency
           elasticProperty: cl_maintenanceAndUpdateFrequency.key
-        - ogcProperty: updateFrequency
-          elasticProperty: cl_maintenanceAndUpdateFrequency.key
+          indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
+          typeOverride: SINGLE_STRING
         - ogcProperty: creationYearForResource
           elasticProperty: creationYearForResource
+          indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
         - ogcProperty: linkProtocol
           elasticProperty: linkProtocol
+          indexRecordProperty: linkProtocols
         - ogcProperty: createDate
           elasticProperty: createDate
+          indexRecordProperty: createDate
         - ogcProperty: resourceTitleObject
           elasticProperty: resourceTitleObject.default
+          indexRecordProperty: resourceTitle.["default"]
         - ogcProperty: resolutionScaleDenominator
           elasticProperty: resolutionScaleDenominator
-        - ogcProperty: organizations
-          elasticProperty: OrgForResourceObject.langeng
+          indexRecordProperty: resolutionScaleDenominator
+        - ogcProperty: orgForResource
+          elasticProperty: OrgForResourceObject.default
+          indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
 
 
 
@@ -145,13 +156,13 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5432/geonetwork
+    url: jdbc:postgresql://localhost:5555/geonetwork
     driverClassName: org.postgresql.Driver
     #    url: jdbc:h2:mem:gn5
     #    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE
     #    driverClassName: org.h2.Driver
-    username: geonetwork
-    password: geonetwork
+    username: postgres
+    password: postgres
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect

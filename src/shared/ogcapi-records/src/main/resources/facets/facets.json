@@ -53,10 +53,10 @@
 
 
 
-    "organizations": {
+    "orgForResource": {
       "type": "term",
-      "property": "organizations",
-      "x-elastic-property": "OrgForResourceObject.langeng",
+      "property": "orgForResource",
+      "x-elastic-property": "OrgForResourceObject.default",
       "sortedBy": "count",
       "minOccurs": 1,
       "bucketCount": 50
