@@ -34,6 +34,7 @@ geonetwork:
         - ogcProperty: updateFrequency
           elasticProperty: cl_maintenanceAndUpdateFrequency.key
           indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
+          typeOverride: SINGLE_STRING
         - ogcProperty: creationYearForResource
           elasticProperty: creationYearForResource
           indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]

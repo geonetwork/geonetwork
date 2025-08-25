@@ -451,6 +451,66 @@ public class QueryTest extends ElasticPgMvcBaseTest {
 
     // ----------------------------------------------------------------------------------------------------------
 
+    @Test
+    public void testTypeConversion() throws Exception {
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID
+                        + "/items?id=urn:isogeo:metadata:uuid:1355be63-7f12-41f7-bcc8-724146679eb3",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(1, items.getNumberMatched());
+
+        var feature = items.getFeatures().get(0);
+        var additionalProps = feature.getProperties().getAdditionalProperties();
+
+        assertTrue(additionalProps.containsKey("resolutionScaleDenominator"));
+        assertTrue(additionalProps.get("resolutionScaleDenominator") instanceof List);
+        assertEquals(1, ((List) additionalProps.get("resolutionScaleDenominator")).size());
+        assertEquals(
+                Integer.class,
+                ((List) additionalProps.get("resolutionScaleDenominator"))
+                        .get(0)
+                        .getClass());
+        assertEquals(100000, ((List) additionalProps.get("resolutionScaleDenominator")).get(0));
+
+        assertTrue(additionalProps.containsKey("resourceTitleObject"));
+        assertTrue(additionalProps.get("resourceTitleObject") instanceof String);
+        assertEquals(
+                "Concentrations annuelles de polluants dans l'air ambiant issues du réseau permanent de mesures en région Hauts-de-France",
+                additionalProps.get("resourceTitleObject"));
+
+        assertTrue(additionalProps.containsKey("updateFrequency"));
+        assertTrue(additionalProps.get("updateFrequency") instanceof String);
+        assertEquals("annually", additionalProps.get("updateFrequency"));
+    }
+
+    @Test
+    public void testTypeConversion2() throws Exception {
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?id=8698bf0b-fceb-4f0f-989b-111e7c4af0a4",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(1, items.getNumberMatched());
+
+        var feature = items.getFeatures().get(0);
+        var additionalProps = feature.getProperties().getAdditionalProperties();
+
+        // tests upgrading to list and string->int
+        assertTrue(additionalProps.containsKey("creationYearForResource"));
+        assertTrue(additionalProps.get("creationYearForResource") instanceof List);
+        assertEquals(1, ((List) additionalProps.get("creationYearForResource")).size());
+        assertEquals(
+                Integer.class,
+                ((List) additionalProps.get("creationYearForResource")).get(0).getClass());
+        assertEquals(1999, ((List) additionalProps.get("creationYearForResource")).get(0));
+
+        assertEquals(25000, ((List) additionalProps.get("resolutionScaleDenominator")).get(0));
+
+        assertEquals("2023-05-24T14:40:04.056Z", ((List) additionalProps.get("createDate")).get(0));
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+
     /**
      * checks that there are 2 named (title) collections. This will fail if Postgresql didn't come up properly!
      *
