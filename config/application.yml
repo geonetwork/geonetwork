@@ -22,38 +22,99 @@ geonetwork:
           elasticProperty: cl_spatialRepresentationType.key
           indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
           typeOverride: LIST_STRING
+          facetsConfig:
+            - facetName: spatialRepresentationType
+              facetType: TERM
         - ogcProperty: resourceType
           elasticProperty: resourceType
           indexRecordProperty: resourceType
-        - ogcProperty: format0
+          facetsConfig:
+            - facetName: resourceType
+              facetType: TERM
+        - ogcProperty: format
           elasticProperty: format
           indexRecordProperty: formats
-        - ogcProperty: keywords0
+          addProperty: false
+          facetsConfig:
+            - facetName: format
+              facetType: TERM
+              bucketCount: 50
+        - ogcProperty: keywords
           elasticProperty: tag.langeng
           indexRecordProperty: tag.[*].["default"]
+          addProperty: false
+          facetsConfig:
+            - facetName: keywords
+              facetType: TERM
+              bucketCount: 50
         - ogcProperty: updateFrequency
           elasticProperty: cl_maintenanceAndUpdateFrequency.key
           indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
           typeOverride: SINGLE_STRING
+          facetsConfig:
+            - facetName: updateFrequency
+              facetType: TERM
+              bucketCount: 50
         - ogcProperty: creationYearForResource
           elasticProperty: creationYearForResource
           indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
+          facetsConfig:
+            - facetName: creationYearForResource
+              facetType: HISTOGRAM_FIXED_INTERVAL
+              numberBucketInterval: 5
+              bucketCount: 25
+              bucketSorting: VALUE
+            - facetName: creationYearForResource2
+              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+              bucketCount: 5
+              bucketSorting: VALUE
         - ogcProperty: linkProtocol
           elasticProperty: linkProtocol
           indexRecordProperty: linkProtocols
+          facetsConfig:
+            - facetName: availableInServices
+              facetType: FILTER
+              filters:
+                - filterName: availableInDownloadService
+                  filterEquation: linkProtocol = 'OGC:WFS'
+                - filterName: availableInViewService
+                  filterEquation: linkProtocol = 'OGC:WMS'
         - ogcProperty: createDate
           elasticProperty: createDate
           indexRecordProperty: createDate
+          facetsConfig:
+            - facetName: createDate
+              facetType: HISTOGRAM_FIXED_INTERVAL
+              calendarIntervalUnit: MONTH
+              bucketCount: 25
+              bucketSorting: VALUE
+            - facetName: createDate2
+              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+              bucketCount: 5
+              bucketSorting: VALUE
         - ogcProperty: resourceTitleObject
           elasticProperty: resourceTitleObject.default
           indexRecordProperty: resourceTitle.["default"]
         - ogcProperty: resolutionScaleDenominator
           elasticProperty: resolutionScaleDenominator
           indexRecordProperty: resolutionScaleDenominator
+          facetsConfig:
+            - facetName: resolutionScaleDenominator
+              facetType: HISTOGRAM_FIXED_INTERVAL
+              numberBucketInterval: 100000
+              bucketCount: 25
+              bucketSorting: VALUE
+            - facetName: resolutionScaleDenominator2
+              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+              bucketCount: 5
+              bucketSorting: VALUE
         - ogcProperty: orgForResource
           elasticProperty: OrgForResourceObject.default
           indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
-
+          facetsConfig:
+            - facetName: orgForResource
+              facetType: TERM
+              bucketCount: 50
 
 
 

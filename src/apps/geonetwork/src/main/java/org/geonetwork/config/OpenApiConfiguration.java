@@ -58,6 +58,9 @@ public class OpenApiConfiguration {
             // Modify Info object
             var properties = openAPI.getComponents().getSchemas().get("OgcApiRecordsRecordGeoJSONPropertiesDto");
             for (var field : this.elasticTypingSystem.getFinalElasticTypes().entrySet()) {
+                if (!field.getValue().getConfig().getAddProperty()) {
+                    continue;
+                }
                 var info = field.getValue();
                 if (info.isList()) {
                     var t = getType(info);

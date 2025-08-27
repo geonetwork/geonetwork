@@ -53,6 +53,7 @@ public class ElasticTypingSystem {
 
     private void computeFinalElasticTypes() {
         for (var field : config.getFields()) {
+
             if (field.getTypeOverride() != null) {
                 // overridden type
                 var override = field.getTypeOverride();

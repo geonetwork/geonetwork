@@ -9,6 +9,7 @@ import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -42,14 +43,35 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ExtraElasticPropertiesService {
 
+    @Getter
     ElasticTypingSystem elasticTypingSystem;
 
+    @Getter
     OgcElasticFieldsMapperConfig config; // user-configured fields
 
     // for test cases
     public ExtraElasticPropertiesService(OgcElasticFieldsMapperConfig config, ElasticTypingSystem elasticTypingSystem) {
         this.config = config;
         this.elasticTypingSystem = elasticTypingSystem;
+    }
+
+    public int getFacetsDefaultBucketCount() {
+        return config.getDefaultBucketCount();
+    }
+
+    public List<OgcElasticFieldsMapperConfig.OgcFacetConfig> getFacetConfigs() {
+        var result = new ArrayList<OgcElasticFieldsMapperConfig.OgcFacetConfig>();
+        for (var field : config.getFields()) {
+            if (field.getFacetsConfig() == null || field.getFacetsConfig().isEmpty()) {
+                continue;
+            }
+            for (var facetConfig : field.getFacetsConfig()) {
+                facetConfig.setField(field); // parent link
+                result.add(facetConfig);
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -61,6 +83,9 @@ public class ExtraElasticPropertiesService {
      */
     public void inject(IndexRecord indexRecord, String iso3lang, OgcApiRecordsRecordGeoJSONDto result) {
         for (var field : config.getFields()) {
+            if (!field.getAddProperty()) {
+                continue;
+            }
             try {
                 var elasticValue = getFromElasticIndexRecord(field, indexRecord);
                 var convertedValue = elasticTypingSystem.convert(field.getElasticProperty(), elasticValue);

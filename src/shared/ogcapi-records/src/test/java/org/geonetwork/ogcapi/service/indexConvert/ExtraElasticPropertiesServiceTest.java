@@ -39,47 +39,38 @@ public class ExtraElasticPropertiesServiceTest {
 
         // single value
         var path = "codelists.[\"cl_spatialRepresentationType\"].[0].properties.[\"key\"]";
-        var result = service.getFromElasticIndexRecord(
-                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
-                        .indexRecordProperty(path)
-                        .build(),
-                object);
+        var config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        config.setIndexRecordProperty(path);
+
+        var result = service.getFromElasticIndexRecord(config, object);
         assertEquals("grid", result);
 
         // multi-value
         path = "resourceAltTitle.[0].[\"default\"]";
-        result = service.getFromElasticIndexRecord(
-                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
-                        .indexRecordProperty(path)
-                        .build(),
-                object);
+        config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        config.setIndexRecordProperty(path);
+        result = service.getFromElasticIndexRecord(config, object);
         assertEquals("WAL_OCS__2020", result);
 
         path = "resourceAltTitle.[1].[\"default\"]";
-        result = service.getFromElasticIndexRecord(
-                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
-                        .indexRecordProperty(path)
-                        .build(),
-                object);
+        config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        config.setIndexRecordProperty(path);
+        result = service.getFromElasticIndexRecord(config, object);
         assertEquals("WAL_OCS_IA__2020", result);
 
         path = "resourceAltTitle.[*].[\"default\"]";
-        result = service.getFromElasticIndexRecord(
-                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
-                        .indexRecordProperty(path)
-                        .build(),
-                object);
+        config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        config.setIndexRecordProperty(path);
+        result = service.getFromElasticIndexRecord(config, object);
         assertEquals(2, ((List) result).size());
         assertEquals("WAL_OCS__2020", ((List) result).get(0));
         assertEquals("WAL_OCS_IA__2020", ((List) result).get(1));
 
         // multi-value, but single value
         path = "codelists.[\"cl_spatialRepresentationType\"].[*].properties.[\"key\"]";
-        result = service.getFromElasticIndexRecord(
-                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.builder()
-                        .indexRecordProperty(path)
-                        .build(),
-                object);
+        config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        config.setIndexRecordProperty(path);
+        result = service.getFromElasticIndexRecord(config, object);
         assertEquals(1, ((List) result).size());
         assertEquals("grid", ((List) result).get(0));
     }

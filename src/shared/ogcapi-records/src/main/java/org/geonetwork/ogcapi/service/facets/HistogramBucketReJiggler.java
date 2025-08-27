@@ -10,6 +10,9 @@ import java.util.Comparator;
 import java.util.List;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetHistogramDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetResultBucketDto;
+import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,10 +30,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class HistogramBucketReJiggler {
 
-    public List<OgcApiRecordsFacetResultBucketDto> reJiggle(
-            List<OgcApiRecordsFacetResultBucketDto> buckets, OgcApiRecordsFacetHistogramDto histogramInfo) {
+    @Autowired
+    ExtraElasticPropertiesService extraElasticPropertiesService;
 
-        buckets = sortByValue(buckets, histogramInfo.getxElasticDatatype());
+    public List<OgcApiRecordsFacetResultBucketDto> reJiggle(
+            List<OgcApiRecordsFacetResultBucketDto> buckets,
+            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramInfo) {
+
+        var dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.NUMBER;
+        var ogcProperty = histogramInfo.getField().getOgcProperty();
+        var type = this.extraElasticPropertiesService
+                .getElasticTypingSystem()
+                .getFinalElasticTypes()
+                .get(ogcProperty)
+                .getType();
+        if (type == OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DATE) {
+            dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.DATE;
+        }
+
+        buckets = sortByValue(buckets, dataType);
 
         for (int i = 0; i < buckets.size() - 1; i++) {
             var bucket = buckets.get(i);

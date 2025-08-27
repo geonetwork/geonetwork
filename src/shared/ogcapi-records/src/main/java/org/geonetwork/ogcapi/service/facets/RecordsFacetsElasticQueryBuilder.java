@@ -5,19 +5,15 @@
  */
 package org.geonetwork.ogcapi.service.facets;
 
-import static org.geonetwork.ogcapi.service.facets.FacetsResponseInjector.DEFAULT_MAX_BUCKETS;
-
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.CalendarInterval;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetFilterDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetHistogramDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetTermsDto;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetsDto;
+import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.geonetwork.ogcapi.service.cql.CqlToElasticSearch;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,25 +24,39 @@ public class RecordsFacetsElasticQueryBuilder {
     @Autowired
     CqlToElasticSearch cqlToElasticSearch;
 
-    public Map<String, Aggregation> createElasticAggregationsFromFacetsDefinition(OgcApiRecordsFacetsDto facets) {
+    @Autowired
+    ExtraElasticPropertiesService extraElasticPropertiesService;
+
+    public Map<String, Aggregation> createElasticAggregationsFromFacetsDefinition() {
+        var facets = extraElasticPropertiesService.getFacetConfigs();
+
         var aggregations = new HashMap<String, Aggregation>();
 
-        var defaultBucketCount =
-                facets.getDefaultBucketCount() == null ? DEFAULT_MAX_BUCKETS : facets.getDefaultBucketCount();
+        var defaultBucketCount = extraElasticPropertiesService.getConfig().getDefaultBucketCount();
 
-        for (var facetInfo : facets.getFacets().entrySet()) {
-            var facetName = facetInfo.getKey();
-            var facetValue = facetInfo.getValue();
+        for (var facetInfo : facets) {
+            var facetName = facetInfo.getFacetName();
+            var elasticProperty = facetInfo.getField().getElasticProperty();
+            var type = this.extraElasticPropertiesService
+                    .getElasticTypingSystem()
+                    .getFinalElasticTypes()
+                    .get(elasticProperty)
+                    .getType();
 
-            if (facetValue instanceof OgcApiRecordsFacetTermsDto termsDto) {
-                var agg = createAggregation_terms(termsDto, defaultBucketCount);
+            if (facetInfo.getFacetType() == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.TERM) {
+                var agg = createAggregation_terms(facetInfo, defaultBucketCount);
                 aggregations.put("facet." + facetName, agg);
-            } else if (facetValue instanceof OgcApiRecordsFacetFilterDto filterDto) {
-                var agg = createAggregation_filter(filterDto, facets);
+            } else if (facetInfo.getFacetType() == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.FILTER) {
+                var agg = createAggregation_filter(facetInfo);
                 aggregations.put("facet." + facetName, agg);
-            } else if (facetValue instanceof OgcApiRecordsFacetHistogramDto histogramDto) {
-                var agg = createAggregation_histogram(histogramDto, facets, defaultBucketCount);
+            } else if (facetInfo.getFacetType()
+                            == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.HISTOGRAM_FIXED_INTERVAL
+                    || facetInfo.getFacetType()
+                            == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.HISTOGRAM_FIXED_BUCKET_COUNT) {
+                var agg = createAggregation_histogram(facetInfo, type, defaultBucketCount);
                 aggregations.put("facet." + facetName, agg);
+            } else {
+                throw new RuntimeException("Unknown facet type: " + facetInfo.getFacetType());
             }
         }
         return aggregations;
@@ -58,34 +68,43 @@ public class RecordsFacetsElasticQueryBuilder {
      * count (number of buckets to return)
      *
      * @param histogramDto definition of the histogram
-     * @param facets facets response from elastic
+     * @param simpleType type of data
      * @param defaultBucketCount defined default # of buckets
      * @return elastic histogram Aggregration
      */
     private Aggregation createAggregation_histogram(
-            OgcApiRecordsFacetHistogramDto histogramDto, OgcApiRecordsFacetsDto facets, Integer defaultBucketCount) {
-        if (histogramDto.getxElasticDatatype() == OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.NUMBER) {
-            if (histogramDto.getBucketType() == OgcApiRecordsFacetHistogramDto.BucketTypeEnum.FIXED_INTERVAL) {
-                return createAggregation_histogram_number_fixedInterval(histogramDto, facets, defaultBucketCount);
+            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto,
+            OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType simpleType,
+            Integer defaultBucketCount) {
+
+        if (simpleType == OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DOUBLE
+                || simpleType == OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.INTEGER) {
+            if (histogramDto.getFacetType()
+                    == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.HISTOGRAM_FIXED_INTERVAL) {
+                return createAggregation_histogram_number_fixedInterval(histogramDto, simpleType, defaultBucketCount);
             } else {
-                return createAggregation_histogram_number_fixedBucketCount(histogramDto, facets, defaultBucketCount);
+                return createAggregation_histogram_number_fixedBucketCount(
+                        histogramDto, simpleType, defaultBucketCount);
             }
         } else {
-            if (histogramDto.getBucketType() == OgcApiRecordsFacetHistogramDto.BucketTypeEnum.FIXED_INTERVAL) {
-                return createAggregation_histogram_date_fixedInterval(histogramDto, facets, defaultBucketCount);
+            if (histogramDto.getFacetType()
+                    == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.HISTOGRAM_FIXED_INTERVAL) {
+                return createAggregation_histogram_date_fixedInterval(histogramDto, simpleType, defaultBucketCount);
             } else {
-                return createAggregation_histogram_date_fixedBucketCount(histogramDto, facets, defaultBucketCount);
+                return createAggregation_histogram_date_fixedBucketCount(histogramDto, simpleType, defaultBucketCount);
             }
         }
     }
 
     @SuppressWarnings("unused")
     private Aggregation createAggregation_histogram_number_fixedBucketCount(
-            OgcApiRecordsFacetHistogramDto histogramDto, OgcApiRecordsFacetsDto facets, Integer defaultBucketCount) {
+            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto,
+            OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType simpleType,
+            Integer defaultBucketCount) {
         var nBuckets = histogramDto.getBucketCount() == null ? defaultBucketCount : histogramDto.getBucketCount();
 
         var agg = Aggregation.of(a -> a.variableWidthHistogram(h -> {
-            h.field(histogramDto.getxElasticProperty());
+            h.field(histogramDto.getField().getElasticProperty());
             h.buckets(nBuckets);
             return h;
         }));
@@ -95,14 +114,14 @@ public class RecordsFacetsElasticQueryBuilder {
 
     @SuppressWarnings("unused")
     private Aggregation createAggregation_histogram_number_fixedInterval(
-            OgcApiRecordsFacetHistogramDto histogramDto, OgcApiRecordsFacetsDto facets, Integer defaultBucketCount) {
+            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto,
+            OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType simpleType,
+            Integer defaultBucketCount) {
         var agg = Aggregation.of(a -> a.histogram(h -> {
-            h.field(histogramDto.getxElasticProperty());
+            h.field(histogramDto.getField().getElasticProperty());
             h.keyed(true);
-            h.interval(histogramDto.getxIntervalNumber().doubleValue());
-            if (histogramDto.getxMinimumDocCount() != null && histogramDto.getxMinimumDocCount() >= 0) {
-                h.minDocCount(histogramDto.getxMinimumDocCount());
-            }
+            h.interval(histogramDto.getNumberBucketInterval());
+            h.minDocCount(histogramDto.getMinimumDocumentCount());
             return h;
         }));
 
@@ -111,11 +130,13 @@ public class RecordsFacetsElasticQueryBuilder {
 
     @SuppressWarnings("unused")
     private Aggregation createAggregation_histogram_date_fixedBucketCount(
-            OgcApiRecordsFacetHistogramDto histogramDto, OgcApiRecordsFacetsDto facets, Integer defaultBucketCount) {
+            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto,
+            OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType simpleType,
+            Integer defaultBucketCount) {
         var nBuckets = histogramDto.getBucketCount() == null ? defaultBucketCount : histogramDto.getBucketCount();
 
         var agg = Aggregation.of(a -> a.autoDateHistogram(h -> {
-            h.field(histogramDto.getxElasticProperty());
+            h.field(histogramDto.getField().getElasticProperty());
             h.buckets(nBuckets);
             return h;
         }));
@@ -124,16 +145,16 @@ public class RecordsFacetsElasticQueryBuilder {
 
     @SuppressWarnings("unused")
     private Aggregation createAggregation_histogram_date_fixedInterval(
-            OgcApiRecordsFacetHistogramDto histogramDto, OgcApiRecordsFacetsDto facets, Integer defaultBucketCount) {
+            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto,
+            OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType simpleType,
+            Integer defaultBucketCount) {
         var agg = Aggregation.of(a -> a.dateHistogram(h -> {
-            h.field(histogramDto.getxElasticProperty());
+            h.field(histogramDto.getField().getElasticProperty());
             h.keyed(false);
-            var interval =
-                    CalendarInterval._DESERIALIZER.deserialize(histogramDto.getxIntervalCalendarInterval(), null);
+            var interval = CalendarInterval._DESERIALIZER.deserialize(
+                    histogramDto.getCalendarIntervalUnit().toString(), null);
             h.calendarInterval(interval);
-            if (histogramDto.getxMinimumDocCount() != null && histogramDto.getxMinimumDocCount() >= 0) {
-                h.minDocCount(histogramDto.getxMinimumDocCount());
-            }
+            h.minDocCount(histogramDto.getMinimumDocumentCount());
             return h;
         }));
 
@@ -141,11 +162,11 @@ public class RecordsFacetsElasticQueryBuilder {
     }
 
     @SuppressWarnings("UnusedVariable")
-    private Aggregation createAggregation_filter(OgcApiRecordsFacetFilterDto filterDto, OgcApiRecordsFacetsDto facets) {
+    private Aggregation createAggregation_filter(OgcElasticFieldsMapperConfig.OgcFacetConfig filterDto) {
         var filters = new HashMap<String, Query>();
-        for (var f : filterDto.getFilters().entrySet()) {
-            var filterName = f.getKey();
-            var filterValueOgc = f.getValue();
+        for (var f : filterDto.getFilters()) {
+            var filterName = f.getFilterName();
+            var filterValueOgc = f.getFilterEquation();
 
             Query query = null;
             try {
@@ -160,15 +181,16 @@ public class RecordsFacetsElasticQueryBuilder {
         return agg;
     }
 
-    public Aggregation createAggregation_terms(OgcApiRecordsFacetTermsDto termsDto, Integer defaultBucketCount) {
-        var minCount = termsDto.getMinOccurs();
+    public Aggregation createAggregation_terms(
+            OgcElasticFieldsMapperConfig.OgcFacetConfig termsDto, Integer defaultBucketCount) {
+        var minCount = termsDto.getMinimumDocumentCount();
         if (minCount <= 0) {
             minCount = 1;
         }
         var _minCount = minCount; // effectively final
         var nBuckets = termsDto.getBucketCount() == null ? defaultBucketCount : termsDto.getBucketCount();
         var agg = Aggregation.of(a -> a.terms(t -> {
-            t.field(termsDto.getxElasticProperty());
+            t.field(termsDto.getField().elasticProperty);
             t.minDocCount(_minCount);
             t.size(nBuckets);
             return t;

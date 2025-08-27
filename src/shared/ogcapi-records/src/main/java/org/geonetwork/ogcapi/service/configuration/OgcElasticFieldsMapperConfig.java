@@ -7,7 +7,6 @@ package org.geonetwork.ogcapi.service.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -21,6 +20,9 @@ public class OgcElasticFieldsMapperConfig {
 
     public List<OgcElasticFieldMapperConfig> fields = new ArrayList<>();
 
+    /** default number of buckets in results */
+    public int defaultBucketCount = 10;
+
     public OgcElasticFieldMapperConfig findByOgc(String ogcFieldName) {
         for (OgcElasticFieldMapperConfig field : fields) {
             if (field.ogcProperty.equals(ogcFieldName)) {
@@ -32,7 +34,77 @@ public class OgcElasticFieldsMapperConfig {
 
     @Getter
     @Setter
-    @Builder
+    public static class OgcFacetConfig {
+
+        public enum FacetType {
+            TERM,
+            HISTOGRAM_FIXED_BUCKET_COUNT,
+            HISTOGRAM_FIXED_INTERVAL,
+            FILTER;
+
+            public static String ogcString(FacetType type) {
+                if (type == FacetType.TERM) {
+                    return "term";
+                } else if (type == FacetType.HISTOGRAM_FIXED_BUCKET_COUNT) {
+                    return "histogram";
+                } else if (type == FacetType.HISTOGRAM_FIXED_INTERVAL) {
+                    return "histogram";
+                } else if (type == FacetType.FILTER) {
+                    return "filter";
+                } else {
+                    throw new RuntimeException("Unknown FacetType: " + type);
+                }
+            }
+        }
+
+        public enum BucketSorting {
+            COUNT,
+            VALUE
+        }
+
+        public enum CalendarIntervalUnit {
+            year,
+            month,
+            week,
+            day,
+            hour,
+            minute,
+            second,
+            quarter
+        }
+
+        public String facetName;
+        public FacetType facetType;
+        public BucketSorting bucketSorting = BucketSorting.COUNT;
+
+        /** needed for FacetType.HISTOGRAM_FIXED_BUCKET_COUNT. For others, this will delete lower-priority buckets */
+        public Integer bucketCount;
+
+        /** buckets with <minimumDocumentCount will be removed. Usually 0 (dont remove) or 1 (remove empty buckets) */
+        public int minimumDocumentCount = 1;
+
+        /** For HISTOGRAM_FIXED_INTERVAL with a Number datatype */
+        public Double numberBucketInterval;
+
+        /** For HISTOGRAM_FIXED_INTERVAL with a Date datatype */
+        public CalendarIntervalUnit calendarIntervalUnit;
+
+        /** only valid for FILTER facets */
+        public List<FilterFacetInfo> filters;
+
+        /** often null - you might have to look at the parent */
+        public OgcElasticFieldMapperConfig field;
+    }
+
+    @Getter
+    @Setter
+    public static class FilterFacetInfo {
+        public String filterName;
+        public String filterEquation;
+    }
+
+    @Getter
+    @Setter
     public static class OgcElasticFieldMapperConfig {
         public enum SimpleType {
             DOUBLE,
@@ -113,5 +185,10 @@ public class OgcElasticFieldsMapperConfig {
         public String indexRecordProperty;
 
         public OverrideType typeOverride;
+
+        /** add to the results (ie. already a pre-defined property that you want to use in facets) */
+        public Boolean addProperty = true;
+
+        public List<OgcFacetConfig> facetsConfig = new ArrayList<>();
     }
 }
