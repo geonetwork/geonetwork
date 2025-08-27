@@ -11,7 +11,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.*;
-import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
+import org.geonetwork.ogcapi.service.configuration.SimpleType;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.ElasticTypingSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -82,23 +82,23 @@ public class OpenApiConfiguration {
      * @return OpenApi schema for the type
      */
     public Schema getType(ElasticTypingSystem.ElasticTypeInfo info) {
-        if (info.getType().equals(OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.STRING)) {
+        if (info.getType().equals(SimpleType.STRING)) {
             var stringSchema = new StringSchema().name(info.getConfig().getOgcProperty());
             return stringSchema;
         }
-        if (info.getType().equals(OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.INTEGER)) {
+        if (info.getType().equals(SimpleType.INTEGER)) {
             var intSchema = new IntegerSchema().name(info.getConfig().getOgcProperty());
             return intSchema;
         }
-        if (info.getType().equals(OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DOUBLE)) {
+        if (info.getType().equals(SimpleType.DOUBLE)) {
             var numberSchema = new NumberSchema().name(info.getConfig().getOgcProperty());
             return numberSchema;
         }
-        if (info.getType().equals(OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DATE)) {
+        if (info.getType().equals(SimpleType.DATE)) {
             var dateSchema = new DateSchema().name(info.getConfig().getOgcProperty());
             return dateSchema;
         }
-        if (info.getType().equals(OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.BOOLEAN)) {
+        if (info.getType().equals(SimpleType.BOOLEAN)) {
             var boolSchema = new BooleanSchema().name(info.getConfig().getOgcProperty());
             return boolSchema;
         }

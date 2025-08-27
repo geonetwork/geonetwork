@@ -5,7 +5,7 @@
  */
 package org.geonetwork.ogcapi.service.indexConvert.dynamic;
 
-import static org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.OverrideType.getJavaType;
+import static org.geonetwork.ogcapi.service.configuration.OverrideType.getJavaType;
 
 import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.indices.IndexState;
@@ -15,7 +15,10 @@ import java.util.*;
 import lombok.*;
 import org.apache.commons.compress.utils.Lists;
 import org.geonetwork.index.client.IndexClient;
+import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
+import org.geonetwork.ogcapi.service.configuration.OverrideType;
+import org.geonetwork.ogcapi.service.configuration.SimpleType;
 import org.geotools.util.Converters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,58 +63,31 @@ public class ElasticTypingSystem {
                 this.finalElasticTypes.put(
                         field.getElasticProperty(),
                         new ElasticTypeInfo(
-                                field,
-                                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.OverrideType.isList(override),
-                                OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.OverrideType.getSimpleType(
-                                        override)));
+                                field, OverrideType.isList(override), OverrideType.getSimpleType(override)));
             } else {
                 // raw elastic type
                 var rawElasticType = this.rawElasticTypes.get(field.getElasticProperty());
                 if (rawElasticType instanceof KeywordProperty) {
                     this.finalElasticTypes.put(
-                            field.getElasticProperty(),
-                            new ElasticTypeInfo(
-                                    field,
-                                    true,
-                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.STRING));
+                            field.getElasticProperty(), new ElasticTypeInfo(field, true, SimpleType.STRING));
                 } else if (rawElasticType instanceof ShortNumberProperty
                         || rawElasticType instanceof IntegerNumberProperty
                         || rawElasticType instanceof LongNumberProperty) {
                     this.finalElasticTypes.put(
-                            field.getElasticProperty(),
-                            new ElasticTypeInfo(
-                                    field,
-                                    true,
-                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.INTEGER));
+                            field.getElasticProperty(), new ElasticTypeInfo(field, true, SimpleType.INTEGER));
                 } else if (rawElasticType instanceof FloatNumberProperty
                         || rawElasticType instanceof DoubleNumberProperty) {
                     this.finalElasticTypes.put(
-                            field.getElasticProperty(),
-                            new ElasticTypeInfo(
-                                    field,
-                                    true,
-                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DOUBLE));
+                            field.getElasticProperty(), new ElasticTypeInfo(field, true, SimpleType.DOUBLE));
                 } else if (rawElasticType instanceof TextProperty) {
                     this.finalElasticTypes.put(
-                            field.getElasticProperty(),
-                            new ElasticTypeInfo(
-                                    field,
-                                    false,
-                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.STRING));
+                            field.getElasticProperty(), new ElasticTypeInfo(field, false, SimpleType.STRING));
                 } else if (rawElasticType instanceof BooleanProperty) {
                     this.finalElasticTypes.put(
-                            field.getElasticProperty(),
-                            new ElasticTypeInfo(
-                                    field,
-                                    true,
-                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.BOOLEAN));
+                            field.getElasticProperty(), new ElasticTypeInfo(field, true, SimpleType.BOOLEAN));
                 } else if (rawElasticType instanceof DateProperty) {
                     this.finalElasticTypes.put(
-                            field.getElasticProperty(),
-                            new ElasticTypeInfo(
-                                    field,
-                                    true,
-                                    OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DATE));
+                            field.getElasticProperty(), new ElasticTypeInfo(field, true, SimpleType.DATE));
                 }
             }
         }
@@ -185,9 +161,9 @@ public class ElasticTypingSystem {
     @AllArgsConstructor
     @ToString
     public static class ElasticTypeInfo {
-        private OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig config;
+        private OgcElasticFieldMapperConfig config;
         private boolean isList;
-        private OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType type;
+        private SimpleType type;
     }
 
     @SuppressWarnings("unchecked")
@@ -233,12 +209,10 @@ public class ElasticTypingSystem {
             return null;
         }
         // trivial conversions
-        if (typeInfo.getType().equals(OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.STRING)
-                && value instanceof String) {
+        if (typeInfo.getType().equals(SimpleType.STRING) && value instanceof String) {
             return value; // no conversion
         }
-        if (typeInfo.getType().equals(OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DATE)
-                && value instanceof String) {
+        if (typeInfo.getType().equals(SimpleType.DATE) && value instanceof String) {
             return value; // no conversion - elastic and json represent date the same (underlying elastic index is json)
         }
 

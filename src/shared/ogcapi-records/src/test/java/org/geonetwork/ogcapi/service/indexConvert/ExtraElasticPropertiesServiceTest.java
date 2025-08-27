@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geonetwork.index.model.record.IndexRecord;
-import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
+import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ public class ExtraElasticPropertiesServiceTest {
 
         // single value
         var path = "codelists.[\"cl_spatialRepresentationType\"].[0].properties.[\"key\"]";
-        var config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        var config = new OgcElasticFieldMapperConfig();
         config.setIndexRecordProperty(path);
 
         var result = service.getFromElasticIndexRecord(config, object);
@@ -47,19 +47,19 @@ public class ExtraElasticPropertiesServiceTest {
 
         // multi-value
         path = "resourceAltTitle.[0].[\"default\"]";
-        config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        config = new OgcElasticFieldMapperConfig();
         config.setIndexRecordProperty(path);
         result = service.getFromElasticIndexRecord(config, object);
         assertEquals("WAL_OCS__2020", result);
 
         path = "resourceAltTitle.[1].[\"default\"]";
-        config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        config = new OgcElasticFieldMapperConfig();
         config.setIndexRecordProperty(path);
         result = service.getFromElasticIndexRecord(config, object);
         assertEquals("WAL_OCS_IA__2020", result);
 
         path = "resourceAltTitle.[*].[\"default\"]";
-        config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        config = new OgcElasticFieldMapperConfig();
         config.setIndexRecordProperty(path);
         result = service.getFromElasticIndexRecord(config, object);
         assertEquals(2, ((List) result).size());
@@ -68,7 +68,7 @@ public class ExtraElasticPropertiesServiceTest {
 
         // multi-value, but single value
         path = "codelists.[\"cl_spatialRepresentationType\"].[*].properties.[\"key\"]";
-        config = new OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig();
+        config = new OgcElasticFieldMapperConfig();
         config.setIndexRecordProperty(path);
         result = service.getFromElasticIndexRecord(config, object);
         assertEquals(1, ((List) result).size());

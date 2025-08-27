@@ -5,13 +5,15 @@
  */
 package org.geonetwork.ogcapi.service.facets;
 
-import static org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DATE;
+import static org.geonetwork.ogcapi.service.configuration.SimpleType.DATE;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.ogcapi.records.generated.model.*;
-import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
+import org.geonetwork.ogcapi.service.configuration.BucketSorting;
+import org.geonetwork.ogcapi.service.configuration.FacetType;
+import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.ElasticTypingSystem;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +36,14 @@ public class FacetsJsonService {
         result.setFacets(new HashMap<>());
 
         for (var facet : extraElasticPropertiesService.getFacetConfigs()) {
-            if (facet.getFacetType() == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.TERM) {
+            if (facet.getFacetType() == FacetType.TERM) {
                 var f = createTerm(facet);
                 result.getFacets().put(facet.getFacetName(), f);
-            } else if (facet.getFacetType() == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.FILTER) {
+            } else if (facet.getFacetType() == FacetType.FILTER) {
                 var f = createFilter(facet);
                 result.getFacets().put(facet.getFacetName(), f);
-            } else if (facet.getFacetType()
-                            == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.HISTOGRAM_FIXED_BUCKET_COUNT
-                    || facet.getFacetType()
-                            == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.HISTOGRAM_FIXED_INTERVAL) {
+            } else if (facet.getFacetType() == FacetType.HISTOGRAM_FIXED_BUCKET_COUNT
+                    || facet.getFacetType() == FacetType.HISTOGRAM_FIXED_INTERVAL) {
                 var f = createHistogram(facet);
                 result.getFacets().put(facet.getFacetName(), f);
             } else {
@@ -54,13 +54,13 @@ public class FacetsJsonService {
         return result;
     }
 
-    private OgcApiRecordsFacetFilterDto createFilter(OgcElasticFieldsMapperConfig.OgcFacetConfig facet) {
+    private OgcApiRecordsFacetFilterDto createFilter(OgcFacetConfig facet) {
         var result = new OgcApiRecordsFacetFilterDto();
         result.setProperty(facet.getField().getOgcProperty());
         result.setType("term");
         result.setBucketCount(facet.getBucketCount());
         var sortedBy = OgcApiRecordsFacetSortedByDto.COUNT;
-        if (facet.getBucketSorting() == OgcElasticFieldsMapperConfig.OgcFacetConfig.BucketSorting.VALUE) {
+        if (facet.getBucketSorting() == BucketSorting.VALUE) {
             sortedBy = OgcApiRecordsFacetSortedByDto.VALUE;
         }
         result.setSortedBy(sortedBy);
@@ -72,7 +72,7 @@ public class FacetsJsonService {
         return result;
     }
 
-    private OgcApiRecordsFacetHistogramDto createHistogram(OgcElasticFieldsMapperConfig.OgcFacetConfig facet) {
+    private OgcApiRecordsFacetHistogramDto createHistogram(OgcFacetConfig facet) {
         var result = new OgcApiRecordsFacetHistogramDto();
         result.setProperty(facet.getField().getOgcProperty());
         result.setType("histogram");
@@ -80,14 +80,14 @@ public class FacetsJsonService {
         result.setxElasticProperty(facet.getField().getElasticProperty());
 
         var sortedBy = OgcApiRecordsFacetSortedByDto.COUNT;
-        if (facet.getBucketSorting() == OgcElasticFieldsMapperConfig.OgcFacetConfig.BucketSorting.VALUE) {
+        if (facet.getBucketSorting() == BucketSorting.VALUE) {
             sortedBy = OgcApiRecordsFacetSortedByDto.VALUE;
         }
         result.setSortedBy(sortedBy);
         result.setxElasticProperty(facet.getField().getElasticProperty());
 
         var bucketType = OgcApiRecordsFacetHistogramDto.BucketTypeEnum.FIXED_BUCKET_COUNT;
-        if (facet.getFacetType() == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.HISTOGRAM_FIXED_INTERVAL) {
+        if (facet.getFacetType() == FacetType.HISTOGRAM_FIXED_INTERVAL) {
             bucketType = OgcApiRecordsFacetHistogramDto.BucketTypeEnum.FIXED_INTERVAL;
         }
         result.setBucketType(bucketType);
@@ -114,13 +114,13 @@ public class FacetsJsonService {
         return result;
     }
 
-    private OgcApiRecordsFacetTermsDto createTerm(OgcElasticFieldsMapperConfig.OgcFacetConfig facet) {
+    private OgcApiRecordsFacetTermsDto createTerm(OgcFacetConfig facet) {
         var result = new OgcApiRecordsFacetTermsDto();
         result.setProperty(facet.getField().getOgcProperty());
         result.setType("term");
         result.setBucketCount(facet.getBucketCount());
         var sortedBy = OgcApiRecordsFacetSortedByDto.COUNT;
-        if (facet.getBucketSorting() == OgcElasticFieldsMapperConfig.OgcFacetConfig.BucketSorting.VALUE) {
+        if (facet.getBucketSorting() == BucketSorting.VALUE) {
             sortedBy = OgcApiRecordsFacetSortedByDto.VALUE;
         }
         result.setSortedBy(sortedBy);

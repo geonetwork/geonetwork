@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.*;
-import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
+import org.geonetwork.ogcapi.service.configuration.*;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,17 +73,15 @@ public class FacetsResponseInjector {
     private OgcApiRecordsFacetSummaryDto setupSummary(
             Integer defaultBucketCount,
             String name,
-            OgcElasticFieldsMapperConfig.OgcFacetConfig config,
+            OgcFacetConfig config,
             SearchResponse<IndexRecord> searchResponse) {
 
-        if (config.getFacetType() == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.FILTER) {
+        if (config.getFacetType() == FacetType.FILTER) {
             return setupSummary_filter(name, searchResponse, config, defaultBucketCount);
-        } else if (config.getFacetType()
-                        == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.HISTOGRAM_FIXED_BUCKET_COUNT
-                || config.getFacetType()
-                        == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.HISTOGRAM_FIXED_INTERVAL) {
+        } else if (config.getFacetType() == FacetType.HISTOGRAM_FIXED_BUCKET_COUNT
+                || config.getFacetType() == FacetType.HISTOGRAM_FIXED_INTERVAL) {
             return setupSummary_histogram(name, searchResponse, config, defaultBucketCount);
-        } else if (config.getFacetType() == OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.TERM) {
+        } else if (config.getFacetType() == FacetType.TERM) {
             return setupSummary_terms(name, searchResponse, config, defaultBucketCount);
         } else {
             throw new RuntimeException(
@@ -94,10 +92,10 @@ public class FacetsResponseInjector {
     private @NotNull OgcApiRecordsFacetSummaryDto setupSummary_terms(
             String name,
             SearchResponse<IndexRecord> searchResponse,
-            OgcElasticFieldsMapperConfig.OgcFacetConfig termsDto,
+            OgcFacetConfig termsDto,
             Integer defaultBucketCount) {
         var result = new OgcApiRecordsFacetSummaryDto();
-        result.setType(OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.ogcString(termsDto.getFacetType()));
+        result.setType(FacetType.ogcString(termsDto.getFacetType()));
 
         result.setProperty(termsDto.getField().getOgcProperty());
 
@@ -129,10 +127,10 @@ public class FacetsResponseInjector {
     private @NotNull OgcApiRecordsFacetSummaryDto setupSummary_histogram(
             String name,
             SearchResponse<IndexRecord> searchResponse,
-            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto,
+            OgcFacetConfig histogramDto,
             Integer defaultBucketCount) {
         var result = new OgcApiRecordsFacetSummaryDto();
-        result.setType(OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.ogcString(histogramDto.getFacetType()));
+        result.setType(FacetType.ogcString(histogramDto.getFacetType()));
 
         result.setProperty(histogramDto.getField().getOgcProperty());
 
@@ -161,7 +159,7 @@ public class FacetsResponseInjector {
                 .getFinalElasticTypes()
                 .get(ogcProperty)
                 .getType();
-        if (type == OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig.SimpleType.DATE) {
+        if (type == SimpleType.DATE) {
             sortType = SortType.DATE;
         }
 
@@ -178,7 +176,7 @@ public class FacetsResponseInjector {
     }
 
     private List<OgcApiRecordsFacetResultBucketDto> handleHistogramBuckets_HistogramAggregate(
-            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto, HistogramAggregate agg) {
+            OgcFacetConfig histogramDto, HistogramAggregate agg) {
         List<OgcApiRecordsFacetResultBucketDto> buckets = new ArrayList<>();
         @SuppressWarnings("unchecked")
         var elasticBuckets = ((Map<String, HistogramBucket>) agg.buckets()._get());
@@ -198,7 +196,7 @@ public class FacetsResponseInjector {
     @SuppressWarnings("UnusedVariable")
     private List<OgcApiRecordsFacetResultBucketDto>
             handleHistogramBuckets_VariableHistogramAggregate_Date_fixedBucketNumber(
-                    OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto, AutoDateHistogramAggregate agg) {
+                    OgcFacetConfig histogramDto, AutoDateHistogramAggregate agg) {
         List<OgcApiRecordsFacetResultBucketDto> buckets = new ArrayList<>();
         @SuppressWarnings("unchecked")
         var elasticBuckets = (List<DateHistogramBucket>) agg.buckets()._get();
@@ -250,7 +248,7 @@ public class FacetsResponseInjector {
     }
 
     private List<OgcApiRecordsFacetResultBucketDto> handleHistogramBuckets_VariableHistogramAggregate_Date(
-            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto, DateHistogramAggregate agg) {
+            OgcFacetConfig histogramDto, DateHistogramAggregate agg) {
         List<OgcApiRecordsFacetResultBucketDto> buckets = new ArrayList<>();
         @SuppressWarnings("unchecked")
         var elasticBuckets = (List<DateHistogramBucket>) agg.buckets()._get();
@@ -270,7 +268,7 @@ public class FacetsResponseInjector {
         return buckets;
     }
 
-    private Instant addTime(Instant i, OgcElasticFieldsMapperConfig.OgcFacetConfig.CalendarIntervalUnit unit) {
+    private Instant addTime(Instant i, CalendarIntervalUnit unit) {
         var zoned = ZonedDateTime.ofInstant(i, ZoneId.of("UTC"));
 
         var s = unit.toString();
@@ -296,7 +294,7 @@ public class FacetsResponseInjector {
     }
 
     private List<OgcApiRecordsFacetResultBucketDto> handleHistogramBuckets_VariableHistogramAggregate(
-            OgcElasticFieldsMapperConfig.OgcFacetConfig histogramDto, VariableWidthHistogramAggregate agg) {
+            OgcFacetConfig histogramDto, VariableWidthHistogramAggregate agg) {
         List<OgcApiRecordsFacetResultBucketDto> buckets = new ArrayList<>();
 
         @SuppressWarnings("unchecked")
@@ -319,10 +317,10 @@ public class FacetsResponseInjector {
     private @NotNull OgcApiRecordsFacetSummaryDto setupSummary_filter(
             String name,
             SearchResponse<IndexRecord> searchResponse,
-            OgcElasticFieldsMapperConfig.OgcFacetConfig filterDto,
+            OgcFacetConfig filterDto,
             Integer defaultBucketCount) {
         var result = new OgcApiRecordsFacetSummaryDto();
-        result.setType(OgcElasticFieldsMapperConfig.OgcFacetConfig.FacetType.ogcString(filterDto.getFacetType()));
+        result.setType(FacetType.ogcString(filterDto.getFacetType()));
         var buckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>();
 
         var agg = searchResponse.aggregations().get("facet." + name);
@@ -356,7 +354,7 @@ public class FacetsResponseInjector {
             OgcApiRecordsFacetSummaryDto result,
             Integer defaultBucketCount,
             Integer minOccurs,
-            OgcElasticFieldsMapperConfig.OgcFacetConfig.BucketSorting sortedBy,
+            BucketSorting sortedBy,
             SortType sortType,
             boolean moreDocs,
             Integer bucketCount) {
@@ -372,11 +370,11 @@ public class FacetsResponseInjector {
             minOccurs = 1;
         }
         if (sortedBy == null) {
-            sortedBy = OgcElasticFieldsMapperConfig.OgcFacetConfig.BucketSorting.COUNT;
+            sortedBy = BucketSorting.COUNT;
         }
 
         // sort
-        if (sortedBy == OgcElasticFieldsMapperConfig.OgcFacetConfig.BucketSorting.COUNT) {
+        if (sortedBy == BucketSorting.COUNT) {
             // elastic does this by default, but we double check here
             result.getBuckets().sort(Comparator.comparingInt(x -> x.getCount()));
             Collections.reverse(result.getBuckets()); // descending

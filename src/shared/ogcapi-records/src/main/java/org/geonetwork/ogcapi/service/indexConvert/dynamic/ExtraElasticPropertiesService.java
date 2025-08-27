@@ -15,7 +15,9 @@ import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
+import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
+import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
 import org.springframework.stereotype.Component;
 
 /**
@@ -59,8 +61,8 @@ public class ExtraElasticPropertiesService {
         return config.getDefaultBucketCount();
     }
 
-    public List<OgcElasticFieldsMapperConfig.OgcFacetConfig> getFacetConfigs() {
-        var result = new ArrayList<OgcElasticFieldsMapperConfig.OgcFacetConfig>();
+    public List<OgcFacetConfig> getFacetConfigs() {
+        var result = new ArrayList<OgcFacetConfig>();
         for (var field : config.getFields()) {
             if (field.getFacetsConfig() == null || field.getFacetsConfig().isEmpty()) {
                 continue;
@@ -108,8 +110,8 @@ public class ExtraElasticPropertiesService {
      * @return value at the end of the traversal
      * @throws Exception bad path for the object
      */
-    public Object getFromElasticIndexRecord(
-            OgcElasticFieldsMapperConfig.OgcElasticFieldMapperConfig field, IndexRecord indexRecord) throws Exception {
+    public Object getFromElasticIndexRecord(OgcElasticFieldMapperConfig field, IndexRecord indexRecord)
+            throws Exception {
         var path = field.getIndexRecordProperty();
         if (path.length() - path.replace("*", "").length() > 1) {
             throw new Exception("IndexRecordProperty - contains more than one * - " + path);
