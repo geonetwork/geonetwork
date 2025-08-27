@@ -198,7 +198,6 @@ spring:
               - RewritePath=/(?<url>.*), /api/$\{url}
           - id: geonetwork_route
             uri: ${geonetwork.url}
-            uri: ${geonetwork.4.url}
             predicates:
               - Path=${GATEWAY_GEONETWORK_PATH:/geonetwork/**}
               - isGeoNetwork4Request=

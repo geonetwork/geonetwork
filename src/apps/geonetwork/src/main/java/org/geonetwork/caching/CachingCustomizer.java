@@ -27,7 +27,7 @@ public class CachingCustomizer implements CacheManagerCustomizer<ConcurrentMapCa
 
     @Override
     public void customize(ConcurrentMapCacheManager cacheManager) {
-        //cacheManager.setCacheNames(List.of("schema-codelists", "source-portal-ids"));
+        // cacheManager.setCacheNames(List.of("schema-codelists", "source-portal-ids"));
         // don't use  cacheManager.setCacheNames(List.of("mycache"));
         // this will put the cache manager in to `static` mode (instead of `dynamic`).
     }
