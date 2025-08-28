@@ -119,13 +119,13 @@ public class RecordsEsQueryBuilder {
 
         elasticSearchRequestBuilder.from(ogcApiQuery.getStartIndex()).size(ogcApiQuery.getLimit());
 
-        if (ogcApiQuery.getSortBy() != null) {
+        if (ogcApiQuery.getSortBy() != null && !ogcApiQuery.getSortBy().isEmpty()) {
             var sorts = new ArrayList<SortOptions>();
             ogcApiQuery.getSortBy().forEach(order -> {
                 var isDescending = order.startsWith("-");
                 var sortOrder = isDescending ? SortOrder.Desc : SortOrder.Asc;
                 var fieldName = order.replaceAll("^[\\+-]", "");
-                //TODO: don't hardcode this - see  OgcApiCollectionsApi
+                // TODO: don't hardcode this - see  OgcApiCollectionsApi
                 String elasticFieldName = fieldName.equals("id")
                         ? "uuid"
                         : this.elasticTypingSystem
@@ -140,6 +140,13 @@ public class RecordsEsQueryBuilder {
                 sorts.add(sort);
             });
             elasticSearchRequestBuilder.sort(sorts);
+        } else {
+            // default sorting
+            // TODO: hardcoded id - should be configurable (see OgcApiCollectionsApi)
+            var sort = new SortOptions.Builder()
+                    .field(f -> f.field("uuid").order(SortOrder.Asc))
+                    .build();
+            elasticSearchRequestBuilder.sort(sort);
         }
 
         List<String> sources = new ArrayList<>(defaultSources);

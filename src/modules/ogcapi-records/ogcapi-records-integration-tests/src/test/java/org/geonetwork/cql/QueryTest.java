@@ -10,11 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.google.common.collect.Ordering;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -543,6 +545,137 @@ public class QueryTest extends ElasticPgMvcBaseTest {
                 "date", ((TextNode) properties.get("createDate").get("items").get("format")).asText());
 
         assertEquals("string", ((TextNode) properties.get("updateFrequency").get("type")).asText());
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void testSortDefault() throws Exception {
+        var result = retrieveUrlJson("ogcapi-records/collections", OgcApiRecordsGetCollections200ResponseDto.class);
+        assertNotNull(result.getCollections().get(0).getDefaultSortOrder());
+        assertFalse(result.getCollections().get(0).getDefaultSortOrder().isEmpty());
+
+        assertNotNull(
+                result.getCollections().get(0).getDefaultSortOrder().get(0).getDirection());
+        assertNotNull(
+                result.getCollections().get(0).getDefaultSortOrder().get(0).getField());
+
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        // should be ordered by id (uuid)
+        var ids = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertTrue(Ordering.<String>natural().isOrdered(ids));
+    }
+
+    @Test
+    public void testSort() throws Exception {
+        // just id
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        var ids = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertTrue(Ordering.<String>natural().isOrdered(ids));
+
+        // +id
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=+id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        ids = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertTrue(Ordering.<String>natural().isOrdered(ids));
+
+        // -id
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=-id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        ids = items.getFeatures().stream().map(x -> x.getId()).toList();
+        ids = ids.reversed();
+        assertTrue(Ordering.<String>natural().isOrdered(ids));
+    }
+
+    @Test
+    public void testSortables() throws Exception {
+        var sortables = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/sortables", OgcApiRecordsJsonSchemaDto.class);
+
+        assertEquals(7, sortables.getProperties().size());
+        assertEquals("string", sortables.getProperties().get("id").getType());
+        assertEquals("string", sortables.getProperties().get("updateFrequency").getType());
+
+        assertEquals("string", sortables.getProperties().get("createDate").getType());
+        assertEquals("date", sortables.getProperties().get("createDate").getFormat());
+
+        assertEquals(
+                "number",
+                sortables.getProperties().get("creationYearForResource").getType());
+        assertEquals(
+                "number",
+                sortables.getProperties().get("resolutionScaleDenominator").getType());
+
+        assertEquals(
+                "string", sortables.getProperties().get("resourceTitleObject").getType());
+        assertEquals("string", sortables.getProperties().get("resourceType").getType());
+    }
+
+    /** Strange means that its sorting on a value that has multiple values in a record (i.e. most of them). */
+    @Test
+    public void testSortNonStandard() throws Exception {
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=updateFrequency",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        var updateFrequencies = items.getFeatures().stream()
+                .map(x -> x.getProperties()
+                        .getAdditionalProperties()
+                        .get("updateFrequency")
+                        .toString())
+                .toList();
+        assertTrue(Ordering.<String>natural().isOrdered(updateFrequencies));
+
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=-updateFrequency",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        updateFrequencies = items.getFeatures().stream()
+                .map(x -> x.getProperties()
+                        .getAdditionalProperties()
+                        .get("updateFrequency")
+                        .toString())
+                .toList();
+        updateFrequencies = updateFrequencies.reversed();
+        assertTrue(Ordering.<String>natural().isOrdered(updateFrequencies));
+
+        // multi-value
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=updateFrequency,id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        var grouped = items.getFeatures().stream().collect(Collectors.groupingBy(o -> o.getProperties()
+                .getAdditionalProperties()
+                .get("updateFrequency")
+                .toString()));
+
+        for (var ids : grouped.values()) {
+            assertTrue(Ordering.<String>natural()
+                    .isOrdered(ids.stream().map(x -> x.getId()).toList()));
+        }
+
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=-updateFrequency,-id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        grouped = items.getFeatures().stream().collect(Collectors.groupingBy(o -> o.getProperties()
+                .getAdditionalProperties()
+                .get("updateFrequency")
+                .toString()));
+
+        for (var ids : grouped.values()) {
+            var vals = ids.stream().map(x -> x.getId()).toList();
+            vals = vals.reversed();
+            assertTrue(Ordering.<String>natural().isOrdered(vals));
+        }
     }
 
     // ----------------------------------------------------------------------------------------------------------
