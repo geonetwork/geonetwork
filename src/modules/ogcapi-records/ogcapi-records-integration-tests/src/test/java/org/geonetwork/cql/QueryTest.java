@@ -8,11 +8,15 @@ package org.geonetwork.cql;
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.google.common.collect.Ordering;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -119,20 +123,24 @@ public class QueryTest extends ElasticPgMvcBaseTest {
     public String makeCql(BucketInfo bucketInfo, FacetInfo facetInfo, OgcApiRecordsFacetDto facetConfig) {
         if (facetInfo.getType().equals("term")) {
             var termInfo = (OgcApiRecordsFacetTermsDto) facetConfig;
-            return termInfo.getProperty() + " = '" + bucketInfo.getValue() + "'";
+            return termInfo.getProperty() + " = '" + escapeCql(bucketInfo.getValue()) + "'";
         } else if (facetInfo.getType().equals("histogram")) {
             var histogramInfo = (OgcApiRecordsFacetHistogramDto) facetConfig;
             if (bucketInfo.getHighestBucket() != null && bucketInfo.getHighestBucket()) {
-                return histogramInfo.getProperty() + " >= '" + bucketInfo.getMin() + "' AND "
-                        + histogramInfo.getProperty() + " <= '" + bucketInfo.getMax() + "'";
+                return histogramInfo.getProperty() + " >= '" + escapeCql(bucketInfo.getMin()) + "' AND "
+                        + histogramInfo.getProperty() + " <= '" + escapeCql(bucketInfo.getMax()) + "'";
             }
-            return histogramInfo.getProperty() + " >= '" + bucketInfo.getMin() + "' AND " + histogramInfo.getProperty()
-                    + " < '" + bucketInfo.getMax() + "'";
+            return histogramInfo.getProperty() + " >= '" + escapeCql(bucketInfo.getMin()) + "' AND "
+                    + histogramInfo.getProperty() + " < '" + escapeCql(bucketInfo.getMax()) + "'";
         } else if (facetInfo.getType().equals("filter")) {
             var filterInfo = (OgcApiRecordsFacetFilterDto) facetConfig;
             return filterInfo.getFilters().get(bucketInfo.getValue());
         }
         throw new RuntimeException(facetInfo.getType() + " is not supported");
+    }
+
+    public String escapeCql(String cql) {
+        return cql.replace("'", "''");
     }
 
     // ----------------------------------------------------------------------------------------------------------
@@ -180,14 +188,14 @@ public class QueryTest extends ElasticPgMvcBaseTest {
     public void testOffsetLimit() throws Exception {
         // retrieve the first 10 items (sorted)
         var allItems = retrieveUrlJson(
-                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=uuid",
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=id",
                 OgcApiRecordsGetRecords200ResponseDto.class);
         assertEquals(10, allItems.getNumberReturned());
         assertEquals(10, allItems.getFeatures().size());
 
         // get the first 2 records
         var first2Items = retrieveUrlJson(
-                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=uuid&offset=0&limit=2",
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=id&offset=0&limit=2",
                 OgcApiRecordsGetRecords200ResponseDto.class);
         assertEquals(2, first2Items.getNumberReturned());
         assertEquals(2, first2Items.getFeatures().size());
@@ -200,7 +208,7 @@ public class QueryTest extends ElasticPgMvcBaseTest {
 
         // get records 3-5
         var items3tot5 = retrieveUrlJson(
-                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=uuid&offset=2&limit=3",
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=id&offset=2&limit=3",
                 OgcApiRecordsGetRecords200ResponseDto.class);
         assertEquals(3, items3tot5.getNumberReturned());
         assertEquals(3, items3tot5.getFeatures().size());
@@ -447,6 +455,231 @@ public class QueryTest extends ElasticPgMvcBaseTest {
 
     // ----------------------------------------------------------------------------------------------------------
 
+    @Test
+    public void testTypeConversion() throws Exception {
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID
+                        + "/items?id=urn:isogeo:metadata:uuid:1355be63-7f12-41f7-bcc8-724146679eb3",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(1, items.getNumberMatched());
+
+        var feature = items.getFeatures().get(0);
+        var additionalProps = feature.getProperties().getAdditionalProperties();
+
+        assertTrue(additionalProps.containsKey("resolutionScaleDenominator"));
+        assertTrue(additionalProps.get("resolutionScaleDenominator") instanceof List);
+        assertEquals(1, ((List) additionalProps.get("resolutionScaleDenominator")).size());
+        assertEquals(
+                Integer.class,
+                ((List) additionalProps.get("resolutionScaleDenominator"))
+                        .get(0)
+                        .getClass());
+        assertEquals(100000, ((List) additionalProps.get("resolutionScaleDenominator")).get(0));
+
+        assertTrue(additionalProps.containsKey("resourceTitleObject"));
+        assertTrue(additionalProps.get("resourceTitleObject") instanceof String);
+        assertEquals(
+                "Concentrations annuelles de polluants dans l'air ambiant issues du réseau permanent de mesures en région Hauts-de-France",
+                additionalProps.get("resourceTitleObject"));
+
+        assertTrue(additionalProps.containsKey("updateFrequency"));
+        assertTrue(additionalProps.get("updateFrequency") instanceof String);
+        assertEquals("annually", additionalProps.get("updateFrequency"));
+    }
+
+    @Test
+    public void testTypeConversion2() throws Exception {
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?id=8698bf0b-fceb-4f0f-989b-111e7c4af0a4",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(1, items.getNumberMatched());
+
+        var feature = items.getFeatures().get(0);
+        var additionalProps = feature.getProperties().getAdditionalProperties();
+
+        // tests upgrading to list and string->int
+        assertTrue(additionalProps.containsKey("creationYearForResource"));
+        assertTrue(additionalProps.get("creationYearForResource") instanceof List);
+        assertEquals(1, ((List) additionalProps.get("creationYearForResource")).size());
+        assertEquals(
+                Integer.class,
+                ((List) additionalProps.get("creationYearForResource")).get(0).getClass());
+        assertEquals(1999, ((List) additionalProps.get("creationYearForResource")).get(0));
+
+        assertEquals(25000, ((List) additionalProps.get("resolutionScaleDenominator")).get(0));
+
+        assertEquals("2023-05-24T14:40:04.056Z", ((List) additionalProps.get("createDate")).get(0));
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+
+    /** tests that the dynamic properties are in the swagger document */
+    @Test
+    public void testSwagger() throws Exception {
+        var json = retrieveUrlJson("v3/api-docs?f=json");
+        // there's compatibility issues when including this and everthing stops working!!!
+        //      OpenAPI openAPI = new OpenAPIV3Parser().readContents(json).getOpenAPI();
+        var tree = new ObjectMapper().readTree(json);
+        var properties = tree.get("components")
+                .get("schemas")
+                .get("OgcApiRecordsRecordGeoJSONPropertiesDto")
+                .get("properties");
+
+        assertEquals(
+                "array",
+                ((TextNode) properties.get("resolutionScaleDenominator").get("type")).asText());
+        assertEquals(
+                "integer",
+                ((TextNode) properties
+                                .get("resolutionScaleDenominator")
+                                .get("items")
+                                .get("type"))
+                        .asText());
+
+        assertEquals("array", ((TextNode) properties.get("createDate").get("type")).asText());
+        assertEquals(
+                "string", ((TextNode) properties.get("createDate").get("items").get("type")).asText());
+        assertEquals(
+                "date", ((TextNode) properties.get("createDate").get("items").get("format")).asText());
+
+        assertEquals("string", ((TextNode) properties.get("updateFrequency").get("type")).asText());
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void testSortDefault() throws Exception {
+        var result = retrieveUrlJson("ogcapi-records/collections", OgcApiRecordsGetCollections200ResponseDto.class);
+        assertNotNull(result.getCollections().get(0).getDefaultSortOrder());
+        assertFalse(result.getCollections().get(0).getDefaultSortOrder().isEmpty());
+
+        assertNotNull(
+                result.getCollections().get(0).getDefaultSortOrder().get(0).getDirection());
+        assertNotNull(
+                result.getCollections().get(0).getDefaultSortOrder().get(0).getField());
+
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        // should be ordered by id (uuid)
+        var ids = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertTrue(Ordering.<String>natural().isOrdered(ids));
+    }
+
+    @Test
+    public void testSort() throws Exception {
+        // just id
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        var ids = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertTrue(Ordering.<String>natural().isOrdered(ids));
+
+        // +id
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=+id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        ids = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertTrue(Ordering.<String>natural().isOrdered(ids));
+
+        // -id
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=-id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        ids = items.getFeatures().stream().map(x -> x.getId()).toList();
+        ids = ids.reversed();
+        assertTrue(Ordering.<String>natural().isOrdered(ids));
+    }
+
+    @Test
+    public void testSortables() throws Exception {
+        var sortables = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/sortables", OgcApiRecordsJsonSchemaDto.class);
+
+        assertEquals(7, sortables.getProperties().size());
+        assertEquals("string", sortables.getProperties().get("id").getType());
+        assertEquals("string", sortables.getProperties().get("updateFrequency").getType());
+
+        assertEquals("string", sortables.getProperties().get("createDate").getType());
+        assertEquals("date", sortables.getProperties().get("createDate").getFormat());
+
+        assertEquals(
+                "number",
+                sortables.getProperties().get("creationYearForResource").getType());
+        assertEquals(
+                "number",
+                sortables.getProperties().get("resolutionScaleDenominator").getType());
+
+        assertEquals(
+                "string", sortables.getProperties().get("resourceTitleObject").getType());
+        assertEquals("string", sortables.getProperties().get("resourceType").getType());
+    }
+
+    /** Strange means that its sorting on a value that has multiple values in a record (i.e. most of them). */
+    @Test
+    public void testSortNonStandard() throws Exception {
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=updateFrequency",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        var updateFrequencies = items.getFeatures().stream()
+                .map(x -> x.getProperties()
+                        .getAdditionalProperties()
+                        .get("updateFrequency")
+                        .toString())
+                .toList();
+        assertTrue(Ordering.<String>natural().isOrdered(updateFrequencies));
+
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=-updateFrequency",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        updateFrequencies = items.getFeatures().stream()
+                .map(x -> x.getProperties()
+                        .getAdditionalProperties()
+                        .get("updateFrequency")
+                        .toString())
+                .toList();
+        updateFrequencies = updateFrequencies.reversed();
+        assertTrue(Ordering.<String>natural().isOrdered(updateFrequencies));
+
+        // multi-value
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=updateFrequency,id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        var grouped = items.getFeatures().stream().collect(Collectors.groupingBy(o -> o.getProperties()
+                .getAdditionalProperties()
+                .get("updateFrequency")
+                .toString()));
+
+        for (var ids : grouped.values()) {
+            assertTrue(Ordering.<String>natural()
+                    .isOrdered(ids.stream().map(x -> x.getId()).toList()));
+        }
+
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=-updateFrequency,-id",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        grouped = items.getFeatures().stream().collect(Collectors.groupingBy(o -> o.getProperties()
+                .getAdditionalProperties()
+                .get("updateFrequency")
+                .toString()));
+
+        for (var ids : grouped.values()) {
+            var vals = ids.stream().map(x -> x.getId()).toList();
+            vals = vals.reversed();
+            assertTrue(Ordering.<String>natural().isOrdered(vals));
+        }
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+
     /**
      * checks that there are 2 named (title) collections. This will fail if Postgresql didn't come up properly!
      *
@@ -544,16 +777,71 @@ public class QueryTest extends ElasticPgMvcBaseTest {
             // ------------------------------
             // this is a simple TERM facet
             entry(
-                    "organizations",
+                    "orgForResource",
                     new FacetInfo(
                             "term",
-                            "organizations",
+                            "orgForResource",
                             List.of(
-                                    new BucketInfo(null, null, "Federal Office for Spatial Development", 1, null),
+                                    new BucketInfo(null, null, "Service public de Wallonie (SPW)", 12, null),
                                     new BucketInfo(
                                             null,
                                             null,
-                                            "Coordination, Geo-Information and Services (COGIS)",
+                                            "Helpdesk carto du SPW (SPW - Secrétariat général - SPW Digital - Département de la Géomatique - Direction de l'Intégration des géodonnées)",
+                                            12,
+                                            null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Direction de l'Intégration des géodonnées (SPW - Secrétariat général - SPW Digital - Département de la Géomatique - Direction de l'Intégration des géodonnées)",
+                                            10,
+                                            null),
+                                    new BucketInfo(null, null, "Métropole Européenne de Lille", 2, null),
+                                    new BucketInfo(null, null, "atmo Hauts-de-France", 1, null),
+                                    new BucketInfo(null, null, "Société Publique de Gestion de l'Eau (SPGE)", 1, null),
+                                    new BucketInfo(null, null, "Réseau Ongulés sauvages OFB-FNC-FDC", 1, null),
+                                    new BucketInfo(null, null, "Région Hauts-de-France", 1, null),
+                                    new BucketInfo(null, null, "Office France de la Biodiversité", 1, null),
+                                    new BucketInfo(null, null, "Moi même", 1, null),
+                                    new BucketInfo(null, null, "Géo2France", 1, null),
+                                    new BucketInfo(null, null, "Fédération Nationale de la Chasse", 1, null),
+                                    new BucketInfo(null, null, "Fédération Départementale de la Chasse", 1, null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Direction de l'Action sociale (SPW - Intérieur et Action sociale - Département de l'Action sociale - Direction de l'Action sociale)",
+                                            1,
+                                            null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "DREAL HdF (Direction Régionale de l'Environnement de l'Aménagement et du Logement des Hauts de France)",
+                                            1,
+                                            null),
+                                    new BucketInfo(null, null, "DREAL", 1, null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Coordination, Services et Informations Géographiques (COSIG), swisstopo",
+                                            1,
+                                            null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Cellule informatique et géomatique (SPW - Intérieur et Action sociale - Direction fonctionnelle et d’appui)",
+                                            1,
+                                            null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Canton du Valais - Service de l'environnement (SEN) - Protection des sols",
+                                            1,
+                                            null),
+                                    new BucketInfo(null, null, "Bundesamt für Raumentwicklung", 1, null),
+                                    new BucketInfo(null, null, "Barbie Inc.", 1, null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Agence wallonne du Patrimoine (SPW - Territoire, Logement, Patrimoine, Énergie - Agence wallonne du Patrimoine)",
                                             1,
                                             null)))),
             // ------------------------------
