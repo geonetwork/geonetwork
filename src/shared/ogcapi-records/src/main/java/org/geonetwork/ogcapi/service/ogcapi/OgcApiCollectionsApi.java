@@ -8,6 +8,7 @@ package org.geonetwork.ogcapi.service.ogcapi;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetCollections200ResponseDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsSortOrderDto;
 import org.geonetwork.ogcapi.service.dataaccess.CatalogApi;
 import org.geonetwork.ogcapi.service.dataaccess.simpleobjects.CatalogInfo;
 import org.geonetwork.ogcapi.service.indexConvert.ElasticIndex2Catalog;
@@ -17,6 +18,8 @@ import org.geonetwork.ogcapi.service.links.LandingPageLinks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
+
+import java.util.List;
 
 /**
  * High level implementation for the OgcApiCollectionsApi endpoints. The controller is responsible for the web-details,
@@ -75,6 +78,9 @@ public class OgcApiCollectionsApi {
         var info = catalogApi.getPortalInfo(catalogId);
 
         var result = catalogInfoToOgcApiRecordsCatalogDto(info);
+
+        //TODO: don't hard code this - perhaps put in application.yaml?
+        result.defaultSortOrder(List.of(new OgcApiRecordsSortOrderDto("id", OgcApiRecordsSortOrderDto.DirectionEnum.ASC)));
 
         collectionPageLinks.addLinks(nativeWebRequest, result);
         return result;

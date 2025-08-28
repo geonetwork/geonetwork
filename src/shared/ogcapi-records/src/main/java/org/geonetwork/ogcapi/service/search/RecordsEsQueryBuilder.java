@@ -125,6 +125,7 @@ public class RecordsEsQueryBuilder {
                 var isDescending = order.startsWith("-");
                 var sortOrder = isDescending ? SortOrder.Desc : SortOrder.Asc;
                 var fieldName = order.replaceAll("^[\\+-]", "");
+                //TODO: don't hardcode this - see  OgcApiCollectionsApi
                 String elasticFieldName = fieldName.equals("id")
                         ? "uuid"
                         : this.elasticTypingSystem
