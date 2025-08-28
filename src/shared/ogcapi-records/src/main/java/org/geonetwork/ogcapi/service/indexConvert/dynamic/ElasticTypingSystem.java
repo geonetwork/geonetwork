@@ -43,6 +43,9 @@ public class ElasticTypingSystem {
     /** final elastic types key is from config.fields.elasticProperty */
     private Map<String, ElasticTypeInfo> finalElasticTypes = new HashMap<>();
 
+    /** final elastic types key is from config.fields.ogcproperty */
+    private Map<String, ElasticTypeInfo> finalElasticTypesByOgc = new HashMap<>();
+
     public ElasticTypingSystem(
             OgcElasticFieldsMapperConfig config,
             @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
@@ -90,6 +93,12 @@ public class ElasticTypingSystem {
                             field.getElasticProperty(), new ElasticTypeInfo(field, true, SimpleType.DATE));
                 }
             }
+        }
+
+        this.finalElasticTypesByOgc = new HashMap<>();
+        for (var field : this.finalElasticTypes.values()) {
+            var name = field.getConfig().getOgcProperty();
+            this.finalElasticTypesByOgc.put(name, field);
         }
     }
 

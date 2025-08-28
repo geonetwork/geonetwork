@@ -18,6 +18,7 @@ import org.geonetwork.ogcapi.service.ogcapi.OgcApiCollectionsApi;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiItemsApi;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.querybuilder.QueryBuilder;
+import org.geonetwork.ogcapi.service.sortables.SortablesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -42,6 +43,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
     private final QueryablesService queryablesService;
     private final QueryBuilder queryBuilder;
     private final FacetsJsonService facetsService;
+    private final SortablesService sortablesService;
 
     @Autowired
     public OgcapiCollectionsApiController(
@@ -50,13 +52,15 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             OgcApiItemsApi itemsApi,
             QueryablesService queryablesService,
             QueryBuilder queryBuilder,
-            FacetsJsonService facetsService) {
+            FacetsJsonService facetsService,
+            SortablesService sortablesService) {
         this.request = request;
         this.collectionsApi = collectionsApi;
         this.itemsApi = itemsApi;
         this.queryablesService = queryablesService;
         this.queryBuilder = queryBuilder;
         this.facetsService = facetsService;
+        this.sortablesService = sortablesService;
     }
 
     @Override
@@ -154,5 +158,11 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
                     String catalogId) {
         var result = facetsService.buildFacets(catalogId);
         return new ResponseEntity<OgcApiRecordsFacetsDto>(result, HttpStatusCode.valueOf(200));
+    }
+
+    @Override
+    public ResponseEntity<OgcApiRecordsJsonSchemaDto> getSortables(String catalogId) {
+        var result = sortablesService.buildSortables(catalogId);
+        return new ResponseEntity<OgcApiRecordsJsonSchemaDto>(result, HttpStatusCode.valueOf(200));
     }
 }

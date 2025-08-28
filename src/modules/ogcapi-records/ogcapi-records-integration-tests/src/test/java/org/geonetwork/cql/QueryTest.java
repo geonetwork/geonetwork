@@ -186,14 +186,14 @@ public class QueryTest extends ElasticPgMvcBaseTest {
     public void testOffsetLimit() throws Exception {
         // retrieve the first 10 items (sorted)
         var allItems = retrieveUrlJson(
-                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=uuid",
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=id",
                 OgcApiRecordsGetRecords200ResponseDto.class);
         assertEquals(10, allItems.getNumberReturned());
         assertEquals(10, allItems.getFeatures().size());
 
         // get the first 2 records
         var first2Items = retrieveUrlJson(
-                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=uuid&offset=0&limit=2",
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=id&offset=0&limit=2",
                 OgcApiRecordsGetRecords200ResponseDto.class);
         assertEquals(2, first2Items.getNumberReturned());
         assertEquals(2, first2Items.getFeatures().size());
@@ -206,7 +206,7 @@ public class QueryTest extends ElasticPgMvcBaseTest {
 
         // get records 3-5
         var items3tot5 = retrieveUrlJson(
-                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=uuid&offset=2&limit=3",
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?sortby=id&offset=2&limit=3",
                 OgcApiRecordsGetRecords200ResponseDto.class);
         assertEquals(3, items3tot5.getNumberReturned());
         assertEquals(3, items3tot5.getFeatures().size());

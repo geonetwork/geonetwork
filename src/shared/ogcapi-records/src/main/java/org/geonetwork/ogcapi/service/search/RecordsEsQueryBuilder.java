@@ -32,6 +32,7 @@ import org.elasticsearch.geometry.Rectangle;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGnElasticDto;
 import org.geonetwork.ogcapi.service.configuration.OgcApiSearchConfiguration;
 import org.geonetwork.ogcapi.service.cql.CqlToElasticSearch;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.ElasticTypingSystem;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,7 +43,6 @@ import org.springframework.stereotype.Component;
 @Slf4j(topic = "org.geonetwork.ogcapi.service.search")
 public class RecordsEsQueryBuilder {
 
-    private static final String SORT_BY_SEPARATOR = ",";
     // TODO: Sources depends on output type
     private static final List<String> defaultSources = Arrays.asList(
             "resourceTitleObject",
@@ -75,6 +75,9 @@ public class RecordsEsQueryBuilder {
 
     @Autowired
     CqlToElasticSearch cqlToElasticSearch;
+
+    @Autowired
+    ElasticTypingSystem elasticTypingSystem;
 
     public RecordsEsQueryBuilder(OgcApiSearchConfiguration configuration) {
         this.configuration = configuration;
@@ -117,16 +120,25 @@ public class RecordsEsQueryBuilder {
         elasticSearchRequestBuilder.from(ogcApiQuery.getStartIndex()).size(ogcApiQuery.getLimit());
 
         if (ogcApiQuery.getSortBy() != null) {
-            ogcApiQuery.getSortBy().forEach(s -> Stream.of(s.split(SORT_BY_SEPARATOR))
-                    .forEach(order -> {
-                        var isDescending = order.startsWith("-");
-                        var sortOrder = isDescending ? SortOrder.Desc : SortOrder.Asc;
-                        var fieldName = order.replaceAll("^[\\+-]", "");
-                        var sort = new SortOptions.Builder()
-                                .field(f -> f.field(fieldName).order(sortOrder))
-                                .build();
-                        elasticSearchRequestBuilder.sort(sort);
-                    }));
+            var sorts = new ArrayList<SortOptions>();
+            ogcApiQuery.getSortBy().forEach(order -> {
+                var isDescending = order.startsWith("-");
+                var sortOrder = isDescending ? SortOrder.Desc : SortOrder.Asc;
+                var fieldName = order.replaceAll("^[\\+-]", "");
+                String elasticFieldName = fieldName.equals("id")
+                        ? "uuid"
+                        : this.elasticTypingSystem
+                                .getFinalElasticTypesByOgc()
+                                .get(fieldName)
+                                .getConfig()
+                                .getElasticProperty();
+
+                var sort = new SortOptions.Builder()
+                        .field(f -> f.field(elasticFieldName).order(sortOrder))
+                        .build();
+                sorts.add(sort);
+            });
+            elasticSearchRequestBuilder.sort(sorts);
         }
 
         List<String> sources = new ArrayList<>(defaultSources);

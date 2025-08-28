@@ -28,6 +28,7 @@ geonetwork:
         - ogcProperty: resourceType
           elasticProperty: resourceType
           indexRecordProperty: resourceType
+          isSortable: true
           facetsConfig:
             - facetName: resourceType
               facetType: TERM
@@ -51,6 +52,7 @@ geonetwork:
           elasticProperty: cl_maintenanceAndUpdateFrequency.key
           indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
           typeOverride: SINGLE_STRING
+          isSortable: true
           facetsConfig:
             - facetName: updateFrequency
               facetType: TERM
@@ -58,6 +60,7 @@ geonetwork:
         - ogcProperty: creationYearForResource
           elasticProperty: creationYearForResource
           indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
+          isSortable: true
           facetsConfig:
             - facetName: creationYearForResource
               facetType: HISTOGRAM_FIXED_INTERVAL
@@ -82,6 +85,7 @@ geonetwork:
         - ogcProperty: createDate
           elasticProperty: createDate
           indexRecordProperty: createDate
+          isSortable: true
           facetsConfig:
             - facetName: createDate
               facetType: HISTOGRAM_FIXED_INTERVAL
@@ -95,9 +99,11 @@ geonetwork:
         - ogcProperty: resourceTitleObject
           elasticProperty: resourceTitleObject.default
           indexRecordProperty: resourceTitle.["default"]
+          isSortable: true
         - ogcProperty: resolutionScaleDenominator
           elasticProperty: resolutionScaleDenominator
           indexRecordProperty: resolutionScaleDenominator
+          isSortable: true
           facetsConfig:
             - facetName: resolutionScaleDenominator
               facetType: HISTOGRAM_FIXED_INTERVAL

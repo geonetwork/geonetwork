@@ -20,6 +20,10 @@ public class OgcElasticFieldMapperConfig {
 
     public OverrideType typeOverride;
 
+    public Boolean isSortable = false;
+    public String description;
+    public String title;
+
     /** add to the results (ie. already a pre-defined property that you want to use in facets) */
     public Boolean addProperty = true;
 
