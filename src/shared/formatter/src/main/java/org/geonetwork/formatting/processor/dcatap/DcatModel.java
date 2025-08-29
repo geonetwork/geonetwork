@@ -16,7 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/** DCAT-AP 3.0 Model classes. All classes are nested to avoid multiple file requirements. */
+/** DCAT-AP 3.0 and OGC API Records Model classes. All classes are nested to avoid multiple file requirements. */
 public class DcatModel {
 
     @Data
@@ -661,7 +661,238 @@ public class DcatModel {
         private Object value;
     }
 
-    /** DCAT-AP 3.0 Dataset model. */
+    // ============ OGC API Records specific classes ============
+
+    /** OGC API Records Link object. Used for links array in OGC API Records. */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class OGCLink {
+        private String href;
+        private String rel;
+        private String type;
+        private String title;
+        private String hreflang;
+        private Long length;
+    }
+
+    /** OGC API Records extent object. Combines spatial and temporal extents. */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class OGCExtent {
+        private OGCSpatialExtent spatial;
+        private OGCTemporalExtent temporal;
+    }
+
+    /** OGC API Records spatial extent. */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class OGCSpatialExtent {
+        private List<List<Double>> bbox; // [[minX, minY, maxX, maxY], ...]
+        private String crs;
+    }
+
+    /** OGC API Records temporal extent. */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class OGCTemporalExtent {
+        private List<List<String>> interval; // [["start", "end"], ...]
+        private String trs;
+    }
+
+    /**
+     * OGC API Records GeoJSON Feature/Record. This is the hybrid model that combines OGC API Records, GeoJSON, and
+     * DCAT-AP 3.0.
+     */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonPropertyOrder({
+        "@context",
+        "@type",
+        "type",
+        "id",
+        "@id",
+        "dct:title",
+        "dct:description",
+        "geometry",
+        "time",
+        "properties"
+    })
+    public static class OGCRecord {
+
+        @JsonProperty("@context")
+        private Map<String, Object> context;
+
+        // For JSON-LD/DCAT-AP compatibility
+        @JsonProperty("@type")
+        private List<String> atType; // ["geo:Feature", "dcat:Dataset"]
+
+        // For GeoJSON/OGC API Records compatibility
+        @JsonProperty("type")
+        @Builder.Default
+        private String type = "Feature";
+
+        // Record identifier (both formats)
+        @JsonProperty("id")
+        private String id;
+
+        @JsonProperty("@id")
+        private String atId; // URI for linked data
+
+        // DCAT-AP 3.0 core properties at root level (for proper DCAT-AP compliance)
+        @JsonProperty("dct:title")
+        private MultilingualValue dctTitle;
+
+        @JsonProperty("dct:description")
+        private MultilingualValue dctDescription;
+
+        // Additional DCAT-AP root-level properties for full compliance
+        @JsonProperty("dct:identifier")
+        private List<Identifier> dctIdentifier;
+
+        @JsonProperty("dcat:keyword")
+        private List<Object> dcatKeyword;
+
+        @JsonProperty("dcat:theme")
+        private List<Concept> dcatTheme;
+
+        @JsonProperty("dct:issued")
+        private String dctIssued;
+
+        @JsonProperty("dct:modified")
+        private String dctModified;
+
+        @JsonProperty("dct:language")
+        private List<LinguisticSystem> dctLanguage;
+
+        @JsonProperty("dct:publisher")
+        private Agent dctPublisher;
+
+        @JsonProperty("dcat:contactPoint")
+        private List<ContactPoint> dcatContactPoint;
+
+        @JsonProperty("dcat:distribution")
+        private List<Distribution> dcatDistribution;
+
+        @JsonProperty("dct:accessRights")
+        private RightsStatement dctAccessRights;
+
+        @JsonProperty("dct:spatial")
+        private List<Location> dctSpatial;
+
+        @JsonProperty("dct:temporal")
+        private List<PeriodOfTime> dctTemporal;
+
+        // GeoJSON geometry
+        @JsonProperty("geometry")
+        private Object geometry; // GeoJSON geometry object
+
+        // OGC API Records temporal extent
+        @JsonProperty("time")
+        private OGCTemporalExtent time;
+
+        // OGC API Records properties (simplified metadata)
+        @JsonProperty("properties")
+        private OGCRecordProperties properties;
+
+        // OGC API Records links
+        @JsonProperty("links")
+        private List<OGCLink> links;
+    }
+
+    /**
+     * OGC API Records properties object. Contains OGC API Records core metadata fields only. DCAT-AP properties are at
+     * the root level for proper compliance.
+     */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonPropertyOrder({"recordCreated", "recordUpdated", "type", "title", "description"})
+    public static class OGCRecordProperties {
+
+        // OGC API Records core properties
+        @JsonProperty("recordCreated")
+        private String recordCreated;
+
+        @JsonProperty("recordUpdated")
+        private String recordUpdated;
+
+        @JsonProperty("type")
+        private String type; // Resource type
+
+        @JsonProperty("title")
+        private String title; // Simple string for OGC
+
+        @JsonProperty("description")
+        private String description; // Simple string for OGC
+
+        @JsonProperty("keywords")
+        private List<String> keywords; // Simple string array for OGC
+
+        @JsonProperty("language")
+        private Object language; // String or array
+
+        @JsonProperty("languages")
+        private List<String> languages;
+
+        @JsonProperty("resourceLanguages")
+        private List<String> resourceLanguages;
+
+        @JsonProperty("externalIds")
+        private List<Object> externalIds;
+
+        @JsonProperty("formats")
+        private List<String> formats;
+
+        @JsonProperty("contacts")
+        private List<Object> contacts;
+
+        @JsonProperty("license")
+        private String license; // Simple string or URI for OGC
+
+        @JsonProperty("rights")
+        private String rights; // Simple string for OGC
+
+        @JsonProperty("extent")
+        private OGCExtent extent;
+
+        @JsonProperty("created")
+        private String created;
+
+        @JsonProperty("updated")
+        private String updated;
+
+        @JsonProperty("conformsTo")
+        private List<String> conformsTo; // Simple URI array for OGC
+
+        // Additional metadata that doesn't fit core OGC properties
+        @JsonProperty("themes")
+        private List<String> themes; // Theme URIs
+
+        @JsonProperty("temporalResolution")
+        private String temporalResolution;
+
+        @JsonProperty("spatialResolution")
+        private Double spatialResolution;
+    }
+
+    /** DCAT-AP 3.0 Dataset model (kept for backward compatibility). */
     @Data
     @Builder
     @NoArgsConstructor
