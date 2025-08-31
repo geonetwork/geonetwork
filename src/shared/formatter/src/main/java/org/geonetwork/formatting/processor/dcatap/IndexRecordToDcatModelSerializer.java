@@ -18,7 +18,7 @@ import org.geonetwork.index.model.record.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-/** Service for converting IndexRecord to DCAT-AP 3.0 and OGC API Records using Java models. */
+/** Service for converting IndexRecord to DCAT-AP 3.0 using Java models. */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -49,11 +49,7 @@ public class IndexRecordToDcatModelSerializer {
     @Value("${dcat.serializer.file-type-authority-uri:http://publications.europa.eu/resource/authority/file-type/}")
     private String fileTypeAuthorityUri;
 
-    @Value("${dcat.serializer.output-format:hybrid}")
-    private String outputFormat; // "dcat", "ogc", or "hybrid"
-
     private Map<String, Object> namespaceContext;
-    private Map<String, Object> ogcNamespaceContext;
 
     @PostConstruct
     public void init() {
@@ -76,483 +72,30 @@ public class IndexRecordToDcatModelSerializer {
         namespaceContext.put("dqv", "http://www.w3.org/ns/dqv#");
         namespaceContext.put("time", "http://www.w3.org/2006/time#");
         namespaceContext.put("odrl", "http://www.w3.org/ns/odrl/2/");
-
-        // Additional namespaces for OGC API Records
-        ogcNamespaceContext = new ConcurrentHashMap<>(namespaceContext);
-        ogcNamespaceContext.put("geo", "http://www.opengis.net/ont/geosparql#");
-        ogcNamespaceContext.put("geojson", "https://purl.org/geojson/vocab#");
-        ogcNamespaceContext.put("oa", "http://www.w3.org/ns/oa#");
-        ogcNamespaceContext.put("time", "http://www.w3.org/2006/time#");
-        ogcNamespaceContext.put("schema", "http://schema.org/");
     }
 
-    /** Serialize an IndexRecord to DCAT-AP 3.0 JSON-LD format (backward compatibility). */
+    /** Serialize an IndexRecord to DCAT-AP 3.0 JSON-LD format. */
     public String serialize(IndexRecord record) throws JsonProcessingException {
         return serialize(record, null, defaultBaseUri);
     }
 
-    /**
-     * Serialize with format specification.
-     *
-     * @param format "dcat" for pure DCAT-AP, "ogc" for OGC API Records, "hybrid" for both
-     */
     public String serialize(IndexRecord record, String catalogUri, String baseUri) throws JsonProcessingException {
-        return serialize(record, catalogUri, baseUri, "hybrid");
-    }
-
-    public String serialize(IndexRecord record, String catalogUri, String baseUri, String format)
-            throws JsonProcessingException {
         String effectiveBaseUri = (baseUri != null && !baseUri.isEmpty()) ? baseUri : defaultBaseUri;
 
-        if ("ogc".equals(format) || "hybrid".equals(format)) {
-            // Create OGC API Records format (which includes DCAT-AP properties in hybrid mode)
-            DcatModel.OGCRecord ogcRecord = mapToOGCRecord(record, effectiveBaseUri, "hybrid".equals(format));
+        DcatModel.Dataset dataset = mapToDataset(record, effectiveBaseUri);
 
-            if (catalogUri != null && !catalogUri.isEmpty()) {
-                // Wrap in a FeatureCollection for OGC API Records
-                Map<String, Object> featureCollection = new LinkedHashMap<>();
-                featureCollection.put("@context", ogcNamespaceContext);
-                featureCollection.put("type", "FeatureCollection");
-                featureCollection.put("features", List.of(ogcRecord));
-                featureCollection.put("numberMatched", 1);
-                featureCollection.put("numberReturned", 1);
-
-                return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(featureCollection);
-            } else {
-                return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(ogcRecord);
-            }
+        if (catalogUri != null && !catalogUri.isEmpty()) {
+            DcatModel.Catalog catalog = DcatModel.Catalog.builder()
+                    .context(namespaceContext)
+                    .id(catalogUri)
+                    .dataset(List.of(dataset))
+                    .build();
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(catalog);
         } else {
-            // Original DCAT-AP only format
-            DcatModel.Dataset dataset = mapToDataset(record, effectiveBaseUri);
-
-            if (catalogUri != null && !catalogUri.isEmpty()) {
-                DcatModel.Catalog catalog = DcatModel.Catalog.builder()
-                        .context(namespaceContext)
-                        .id(catalogUri)
-                        .dataset(List.of(dataset))
-                        .build();
-                return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(catalog);
-            } else {
-                dataset.setContext(namespaceContext);
-                return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(dataset);
-            }
+            dataset.setContext(namespaceContext);
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(dataset);
         }
     }
-
-    /** Map IndexRecord to OGC API Records Feature/Record with optional DCAT-AP properties. */
-    private DcatModel.OGCRecord mapToOGCRecord(IndexRecord record, String baseUri, boolean includeHybrid) {
-        String recordId = record.getUuid();
-
-        DcatModel.OGCRecord.OGCRecordBuilder builder = DcatModel.OGCRecord.builder()
-                .context(ogcNamespaceContext)
-                .type("Feature")
-                .id(recordId)
-                .atId(generateUri(baseUri, "dataset", recordId));
-
-        // Add @type for JSON-LD
-        List<String> types = new ArrayList<>();
-        types.add("geo:Feature");
-        if (includeHybrid) {
-            types.add("dcat:Dataset");
-        }
-        builder.atType(types);
-
-        // Map geometry
-        builder.geometry(mapToGeoJSON(record));
-
-        // Map temporal extent for OGC time property
-        builder.time(mapToOGCTemporalExtent(record));
-
-        // Map OGC API Records properties (simplified metadata)
-        DcatModel.OGCRecordProperties properties = mapToOGCRecordProperties(record, baseUri);
-        builder.properties(properties);
-
-        // Add OGC API Records links
-        builder.links(mapToOGCLinks(record, baseUri));
-
-        // If hybrid mode, add DCAT-AP properties at root level for proper DCAT-AP compliance
-        if (includeHybrid) {
-            // Core DCAT-AP properties at root
-            builder.dctTitle(mapTitle(record));
-            builder.dctDescription(mapDescription(record));
-            builder.dctIdentifier(mapIdentifiers(record));
-            builder.dcatKeyword(mapKeywords(record));
-            builder.dcatTheme(mapThemes(record));
-            builder.dctIssued(mapIssuedDate(record));
-            builder.dctModified(mapModifiedDate(record));
-            builder.dctLanguage(mapLanguages(record));
-            builder.dctPublisher(mapPublisher(record));
-            builder.dcatContactPoint(mapContactPoints(record));
-            builder.dcatDistribution(mapDistributions(record, baseUri));
-            builder.dctAccessRights(mapAccessRights(record));
-            builder.dctSpatial(mapSpatial(record));
-            builder.dctTemporal(mapTemporal(record));
-        }
-
-        return builder.build();
-    }
-
-    /** Map to OGC API Records properties (simplified format for OGC compliance). */
-    private DcatModel.OGCRecordProperties mapToOGCRecordProperties(IndexRecord record, String baseUri) {
-        DcatModel.OGCRecordProperties.OGCRecordPropertiesBuilder props = DcatModel.OGCRecordProperties.builder();
-
-        // OGC API Records core properties
-        props.recordCreated(record.getCreateDate());
-        props.recordUpdated(record.getChangeDate());
-
-        // Resource type
-        if (record.getResourceType() != null && !record.getResourceType().isEmpty()) {
-            props.type(record.getResourceType().get(0));
-        }
-
-        // Title and description - simple strings for OGC
-        props.title(getDefaultString(record.getResourceTitle()));
-        props.description(getDefaultString(record.getResourceAbstract()));
-
-        // Keywords - simple string list for OGC
-        props.keywords(mapKeywordsSimpleStrings(record));
-
-        // Language(s)
-        if (record.getResourceLanguage() != null
-                && !record.getResourceLanguage().isEmpty()) {
-            if (record.getResourceLanguage().size() == 1) {
-                props.language(record.getResourceLanguage().get(0));
-            } else {
-                props.languages(record.getResourceLanguage());
-            }
-            props.resourceLanguages(record.getResourceLanguage());
-        }
-
-        // External identifiers
-        props.externalIds(mapExternalIds(record));
-
-        // Formats
-        props.formats(mapFormats(record));
-
-        // Contacts - simplified for OGC
-        props.contacts(mapContactsSimple(record));
-
-        // License and rights - simple strings for OGC
-        props.license(mapLicenseSimpleString(record));
-        props.rights(mapRightsSimpleString(record));
-
-        // Extent (spatial and temporal combined)
-        props.extent(mapToOGCExtent(record));
-
-        // Dates
-        props.created(mapIssuedDate(record));
-        props.updated(mapModifiedDate(record));
-
-        // Conformance - simple URI list for OGC
-        props.conformsTo(mapConformanceSimpleStrings(record));
-
-        // Additional OGC properties
-        props.themes(mapThemeUris(record));
-        props.spatialResolution(mapSpatialResolution(record));
-        props.temporalResolution(mapTemporalResolution(record));
-
-        return props.build();
-    }
-
-    /** Convert geometry to GeoJSON format for OGC API Records. */
-    private Object mapToGeoJSON(IndexRecord record) {
-        if (record.getGeometries() != null && !record.getGeometries().isEmpty()) {
-            // Return the first geometry as GeoJSON
-            Map geom = record.getGeometries().get(0);
-            if (geom != null) {
-                // If it's already a proper GeoJSON geometry, return it
-                if (geom.containsKey("type") && geom.containsKey("coordinates")) {
-                    return geom;
-                }
-                // Otherwise try to construct one
-                try {
-                    return geom;
-                } catch (Exception e) {
-                    log.warn("Failed to convert geometry to GeoJSON: {}", e.getMessage());
-                }
-            }
-        }
-
-        // If no geometry, try to create from bounding box
-        // Note: This would need implementation based on available bbox data
-        return null;
-    }
-
-    /** Map to OGC API Records temporal extent format. */
-    private DcatModel.OGCTemporalExtent mapToOGCTemporalExtent(IndexRecord record) {
-        if (record.getResourceTemporalExtentDateRange() == null
-                || record.getResourceTemporalExtentDateRange().isEmpty()) {
-            return null;
-        }
-
-        List<List<String>> intervals = new ArrayList<>();
-        for (DateRange range : record.getResourceTemporalExtentDateRange()) {
-            List<String> interval = new ArrayList<>();
-            interval.add(range.getGte() != null ? range.getGte() : "..");
-            interval.add(range.getLte() != null ? range.getLte() : "..");
-            intervals.add(interval);
-        }
-
-        return DcatModel.OGCTemporalExtent.builder()
-                .interval(intervals)
-                .trs("http://www.w3.org/2006/time#Gregorian")
-                .build();
-    }
-
-    /** Map to OGC API Records extent (combined spatial and temporal). */
-    private DcatModel.OGCExtent mapToOGCExtent(IndexRecord record) {
-        DcatModel.OGCExtent.OGCExtentBuilder extent = DcatModel.OGCExtent.builder();
-
-        // Spatial extent
-        DcatModel.OGCSpatialExtent spatial = mapToOGCSpatialExtent(record);
-        if (spatial != null) {
-            extent.spatial(spatial);
-        }
-
-        // Temporal extent
-        DcatModel.OGCTemporalExtent temporal = mapToOGCTemporalExtent(record);
-        if (temporal != null) {
-            extent.temporal(temporal);
-        }
-
-        return (spatial != null || temporal != null) ? extent.build() : null;
-    }
-
-    /** Map to OGC API Records spatial extent format. */
-    private DcatModel.OGCSpatialExtent mapToOGCSpatialExtent(IndexRecord record) {
-        // Extract bounding box from geometries or extent descriptions
-        // This is a simplified implementation - enhance based on your data
-        if (record.getGeometries() != null && !record.getGeometries().isEmpty()) {
-            // Calculate bbox from geometries if needed
-            // For now, return null - implement bbox calculation as needed
-        }
-        return null;
-    }
-
-    /** Map to OGC API Records links format. */
-    private List<DcatModel.OGCLink> mapToOGCLinks(IndexRecord record, String baseUri) {
-        List<DcatModel.OGCLink> links = new ArrayList<>();
-
-        // Self link
-        links.add(DcatModel.OGCLink.builder()
-                .href(generateUri(baseUri, "record", record.getUuid()))
-                .rel("self")
-                .type("application/geo+json")
-                .title("This document")
-                .build());
-
-        // Alternate representations
-        links.add(DcatModel.OGCLink.builder()
-                .href(generateUri(baseUri, "record", record.getUuid()) + "?f=xml")
-                .rel("alternate")
-                .type("application/xml")
-                .title("XML representation")
-                .build());
-
-        links.add(DcatModel.OGCLink.builder()
-                .href(generateUri(baseUri, "record", record.getUuid()) + "?f=html")
-                .rel("alternate")
-                .type("text/html")
-                .title("HTML representation")
-                .build());
-
-        // Collection link
-        links.add(DcatModel.OGCLink.builder()
-                .href(generateUri(baseUri, "collections", "metadata"))
-                .rel("collection")
-                .type("application/json")
-                .title("The collection this record belongs to")
-                .build());
-
-        // Add links from record data
-        if (record.getLinks() != null) {
-            for (Link link : record.getLinks()) {
-                String url = extractUrl(link.getUrl());
-                if (url != null) {
-                    DcatModel.OGCLink.OGCLinkBuilder ogcLink = DcatModel.OGCLink.builder()
-                            .href(url)
-                            .rel(mapProtocolToRel(link.getProtocol()))
-                            .type(link.getMimeType());
-
-                    if (link.getName() != null && !link.getName().isEmpty()) {
-                        ogcLink.title(getDefaultString(link.getName()));
-                    }
-
-                    links.add(ogcLink.build());
-                }
-            }
-        }
-
-        return links;
-    }
-
-    /** Map protocol to OGC link relation type. */
-    private String mapProtocolToRel(String protocol) {
-        if (protocol == null) return "related";
-
-        if (protocol.contains("DOWNLOAD")) return "enclosure";
-        if (protocol.startsWith("OGC:")) return "service";
-        if (protocol.contains("INFO")) return "describedby";
-        if (protocol.contains("LINK")) return "related";
-
-        return "related";
-    }
-
-    // Simplified mapping methods for OGC API Records format
-
-    private String getDefaultString(Map<String, String> multiMap) {
-        if (multiMap == null || multiMap.isEmpty()) return null;
-        String value = multiMap.get("default");
-        if (value == null) value = multiMap.get("lang");
-        if (value == null && !multiMap.isEmpty()) {
-            value = multiMap.values().iterator().next();
-        }
-        return value;
-    }
-
-    private List<String> mapKeywordsSimpleStrings(IndexRecord record) {
-        if (record.getAllKeywords() == null) return null;
-
-        List<String> keywords = new ArrayList<>();
-        for (Thesaurus thesaurus : record.getAllKeywords().values()) {
-            if (thesaurus.getKeywords() == null) continue;
-            for (Keyword keyword : thesaurus.getKeywords()) {
-                String value = getDefaultString(keyword.getProperties());
-                if (value != null && !value.isEmpty()) {
-                    keywords.add(value);
-                }
-            }
-        }
-        return keywords.isEmpty() ? null : keywords;
-    }
-
-    private List<Object> mapKeywordsSimple(IndexRecord record) {
-        List<String> keywords = mapKeywordsSimpleStrings(record);
-        return keywords != null ? new ArrayList<>(keywords) : null;
-    }
-
-    private List<Object> mapExternalIds(IndexRecord record) {
-        if (record.getResourceIdentifier() == null) return null;
-
-        List<Object> ids = new ArrayList<>();
-        for (ResourceIdentifier id : record.getResourceIdentifier()) {
-            Map<String, String> extId = new HashMap<>();
-            extId.put("scheme", id.getCodeSpace());
-            extId.put("value", id.getCode());
-            ids.add(extId);
-        }
-        return ids.isEmpty() ? null : ids;
-    }
-
-    private List<String> mapFormats(IndexRecord record) {
-        if (record.getLinks() == null) return null;
-
-        Set<String> formats = new HashSet<>();
-        for (Link link : record.getLinks()) {
-            if (link.getMimeType() != null) {
-                formats.add(link.getMimeType());
-            }
-        }
-        return formats.isEmpty() ? null : new ArrayList<>(formats);
-    }
-
-    private List<Object> mapContactsSimple(IndexRecord record) {
-        Map<String, List<Contact>> contactByRole = record.getContactByRole();
-        if (contactByRole == null || contactByRole.isEmpty()) return null;
-
-        List<Object> contacts = new ArrayList<>();
-        for (Map.Entry<String, List<Contact>> entry : contactByRole.entrySet()) {
-            for (Contact contact : entry.getValue()) {
-                Map<String, Object> simpleContact = new HashMap<>();
-
-                String name = getDefaultString(contact.getOrganisation());
-                if (name == null) name = contact.getIndividual();
-                if (name != null) simpleContact.put("name", name);
-
-                if (contact.getEmail() != null) {
-                    simpleContact.put("email", contact.getEmail());
-                }
-
-                simpleContact.put("role", entry.getKey());
-
-                contacts.add(simpleContact);
-            }
-        }
-        return contacts.isEmpty() ? null : contacts;
-    }
-
-    private String mapLicenseSimpleString(IndexRecord record) {
-        if (record.getLicenses() == null || record.getLicenses().isEmpty()) return null;
-
-        Map<String, String> license = record.getLicenses().get(0);
-        String link = license.get("link");
-        if (link != null) return link;
-
-        return getDefaultString(license);
-    }
-
-    private Object mapLicenseSimple(IndexRecord record) {
-        return mapLicenseSimpleString(record);
-    }
-
-    private String mapRightsSimpleString(IndexRecord record) {
-        return record.isPublishedToAll() ? "public" : "restricted";
-    }
-
-    private Object mapRightsSimple(IndexRecord record) {
-        return mapRightsSimpleString(record);
-    }
-
-    private List<String> mapConformanceSimpleStrings(IndexRecord record) {
-        if (record.getSpecificationConformance() == null) return null;
-
-        List<String> conformance = new ArrayList<>();
-        for (SpecificationConformance spec : record.getSpecificationConformance()) {
-            if (spec.getLink() != null) {
-                conformance.add(spec.getLink());
-            }
-        }
-        return conformance.isEmpty() ? null : conformance;
-    }
-
-    private List<Object> mapConformanceSimple(IndexRecord record) {
-        List<String> conformance = mapConformanceSimpleStrings(record);
-        return conformance != null ? new ArrayList<>(conformance) : null;
-    }
-
-    private List<String> mapThemeUris(IndexRecord record) {
-        if (record.getAllKeywords() == null) return null;
-
-        Set<String> themeUris = new HashSet<>();
-        for (Thesaurus thesaurus : record.getAllKeywords().values()) {
-            if (thesaurus.getKeywords() == null) continue;
-            for (Keyword keyword : thesaurus.getKeywords()) {
-                if (keyword.getProperties() != null) {
-                    String link = keyword.getProperties().get("link");
-                    if (link != null && link.startsWith("http")) {
-                        themeUris.add(link);
-                    }
-                }
-            }
-        }
-        return themeUris.isEmpty() ? null : new ArrayList<>(themeUris);
-    }
-
-    private String extractUrl(Map<String, String> urlMap) {
-        if (urlMap == null || urlMap.isEmpty()) return null;
-        String url = urlMap.get("default");
-        if (url == null && !urlMap.isEmpty()) {
-            url = urlMap.values().iterator().next();
-        }
-        return url;
-    }
-
-    private DcatModel.Resource mapHasCurrentVersion(IndexRecord record, String baseUri) {
-        // Map to current version if available
-        return null; // Placeholder - implement based on your IndexRecord structure
-    }
-
-    // ======== Original DCAT-AP mapping methods (kept for backward compatibility) ========
 
     /** Map IndexRecord to DcatModel.Dataset (DCAT-AP 3.0 compliant). */
     private DcatModel.Dataset mapToDataset(IndexRecord record, String baseUri) {
@@ -625,9 +168,6 @@ public class IndexRecordToDcatModelSerializer {
                 .build();
     }
 
-    // [Include all the original mapping methods from the previous implementation here]
-    // I'm including just the essential ones for brevity, but all original methods should be kept
-
     private DcatModel.MultilingualValue mapTitle(IndexRecord record) {
         if (record.getResourceTitle() == null || record.getResourceTitle().isEmpty()) {
             return null;
@@ -653,23 +193,16 @@ public class IndexRecordToDcatModelSerializer {
             identifiers.add(DcatModel.Identifier.builder()
                     .notation(id.getCode())
                     .schemeAgency(id.getCodeSpace())
+                    // .issued(id.getCreatedDate()) // Not available in current model
                     .build());
         }
         return identifiers;
     }
 
-    // ... [Include all other original mapping methods here - they remain unchanged]
-    // For brevity, I'm not including all of them, but they should all be kept from the original
-
-    private String generateUri(String baseUri, String type, String id) {
-        if (!baseUri.endsWith("/")) {
-            baseUri += "/";
-        }
-        return baseUri + type + "/" + id;
-    }
-
-    // [All other original helper methods remain the same]
-
+    /**
+     * Map keywords to string literals only. According to DCAT-AP 3.0, dcat:keyword should contain only literal strings.
+     * Concepts with URIs go to dcat:theme (for INSPIRE/EU vocabularies) or dct:subject (for others).
+     */
     private List<Object> mapKeywords(IndexRecord record) {
         if (record.getAllKeywords() == null) {
             return null;
@@ -683,14 +216,18 @@ public class IndexRecordToDcatModelSerializer {
             for (Keyword keyword : thesaurus.getKeywords()) {
                 if (keyword.getProperties() == null) continue;
 
+                // Extract the label value
                 String value = keyword.getProperties().get("default");
                 if (value == null) {
                     value = keyword.getProperties().get("en");
                 }
 
+                // Only add non-empty string values to keywords
+                // Concepts with URIs are handled in mapThemes() and mapSubjects()
                 if (value != null && !value.isEmpty()) {
                     String link = keyword.getProperties().get("link");
                     if (link == null || !link.startsWith("http")) {
+                        // Only add as keyword if it doesn't have a URI
                         keywords.add(value);
                     }
                 }
@@ -710,6 +247,7 @@ public class IndexRecordToDcatModelSerializer {
         for (Thesaurus thesaurus : record.getAllKeywords().values()) {
             if (thesaurus.getKeywords() == null) continue;
 
+            // Check if this is an EU vocabulary (INSPIRE, EUROVOC, etc.)
             boolean isEuVocabulary = thesaurus.getId() != null
                     && (thesaurus.getId().contains("inspire")
                             || thesaurus.getId().contains("eurovoc")
@@ -724,6 +262,7 @@ public class IndexRecordToDcatModelSerializer {
                             .id(link)
                             .prefLabel(DcatModel.MultilingualValue.of(keyword.getProperties()));
 
+                    // Add scheme reference if available
                     if (thesaurus.getLink() != null) {
                         concept.inScheme(DcatModel.Resource.of(thesaurus.getLink()));
                     }
@@ -750,6 +289,7 @@ public class IndexRecordToDcatModelSerializer {
                 if (keyword.getProperties() == null) continue;
 
                 String link = keyword.getProperties().get("link");
+                // Add concepts with URIs that are not EU controlled vocabularies to subjects
                 if (link != null
                         && link.startsWith("http")
                         && !link.contains(inspireThemeUriPattern)
@@ -760,6 +300,7 @@ public class IndexRecordToDcatModelSerializer {
                             .id(link)
                             .prefLabel(DcatModel.MultilingualValue.of(keyword.getProperties()));
 
+                    // Add scheme reference if available
                     if (thesaurus.getLink() != null) {
                         concept.inScheme(DcatModel.Resource.of(thesaurus.getLink()));
                     }
@@ -775,6 +316,7 @@ public class IndexRecordToDcatModelSerializer {
     private List<DcatModel.Location> mapSpatial(IndexRecord record) {
         List<DcatModel.Location> spatial = new ArrayList<>();
 
+        // Add named locations
         if (record.getExtentDescription() != null) {
             for (Map<String, String> extent : record.getExtentDescription()) {
                 spatial.add(DcatModel.Location.builder()
@@ -783,6 +325,7 @@ public class IndexRecordToDcatModelSerializer {
             }
         }
 
+        // Add geometries
         if (record.getGeometries() != null) {
             for (Map geom : record.getGeometries()) {
                 try {
@@ -797,6 +340,20 @@ public class IndexRecordToDcatModelSerializer {
                 }
             }
         }
+
+        // Add bounding box if available
+        // Note: getGeoBoundingBox() is not available in current IndexRecord model
+        // This would need to be implemented when the model is extended
+        /*
+        if (record.getGeoBoundingBox() != null && !record.getGeoBoundingBox().isEmpty()) {
+            // Convert bounding box to WKT or GeoJSON if needed
+            for (String bbox : record.getGeoBoundingBox()) {
+                spatial.add(DcatModel.Location.builder()
+                        .bbox(bbox)
+                        .build());
+            }
+        }
+        */
 
         return spatial.isEmpty() ? null : spatial;
     }
@@ -815,11 +372,15 @@ public class IndexRecordToDcatModelSerializer {
     }
 
     private Double mapSpatialResolution(IndexRecord record) {
-        return null;
+        // Map spatial resolution if available in the record
+        // This would need to be extracted from the metadata
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private String mapTemporalResolution(IndexRecord record) {
-        return null;
+        // Map temporal resolution as xsd:duration if available
+        // Format: P[n]Y[n]M[n]DT[n]H[n]M[n]S
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private String mapIssuedDate(IndexRecord record) {
@@ -842,7 +403,7 @@ public class IndexRecordToDcatModelSerializer {
         return record.getResourceDate().stream()
                 .filter(date -> "revision".equals(date.getType()) || "publication".equals(date.getType()))
                 .map(ResourceDate::getDate)
-                .sorted(Comparator.reverseOrder())
+                .sorted(Comparator.reverseOrder()) // Get the most recent
                 .findFirst()
                 .orElse(null);
     }
@@ -869,6 +430,7 @@ public class IndexRecordToDcatModelSerializer {
     private String mapLanguageCode(String lang) {
         String langCode = lang.toUpperCase();
 
+        // Map common 2-letter codes to 3-letter ISO 639-2 codes
         Map<String, String> iso2ToIso3 = Map.of(
                 "EN", "ENG",
                 "FR", "FRA",
@@ -878,6 +440,7 @@ public class IndexRecordToDcatModelSerializer {
                 "PT", "POR",
                 "NL", "NLD");
 
+        // Map common variations
         Map<String, String> variations = Map.of(
                 "FRE", "FRA",
                 "GER", "DEU",
@@ -915,6 +478,7 @@ public class IndexRecordToDcatModelSerializer {
 
         List<Contact> creators = new ArrayList<>();
 
+        // Collect all creator-like roles
         if (contactByRole.get("originator") != null) {
             creators.addAll(contactByRole.get("originator"));
         }
@@ -935,22 +499,27 @@ public class IndexRecordToDcatModelSerializer {
     private DcatModel.Agent mapToAgent(Contact contact) {
         DcatModel.Agent.AgentBuilder agent = DcatModel.Agent.builder();
 
+        // Set organization name
         if (contact.getOrganisation() != null && !contact.getOrganisation().isEmpty()) {
             agent.name(DcatModel.MultilingualValue.of(contact.getOrganisation()));
         }
 
+        // Set individual name
         if (contact.getIndividual() != null) {
             agent.givenName(contact.getIndividual());
         }
 
+        // Set email
         if (contact.getEmail() != null) {
             agent.mbox("mailto:" + contact.getEmail());
         }
 
+        // Set website
         if (contact.getWebsite() != null) {
             agent.homepage(DcatModel.Resource.of(contact.getWebsite()));
         }
 
+        // Set identifier from contact identifiers
         if (contact.getIdentifier() != null && !contact.getIdentifier().isEmpty()) {
             contact.getIdentifier().stream()
                     .filter(id -> id.getLink() != null)
@@ -958,6 +527,7 @@ public class IndexRecordToDcatModelSerializer {
                     .ifPresent(id -> agent.id(id.getLink()));
         }
 
+        // Set agent type if available (organization vs person)
         if (contact.getOrganisation() != null && !contact.getOrganisation().isEmpty()) {
             agent.agentType(DcatModel.Resource.of("http://purl.org/adms/agenttype/PublicOrganisation"));
         }
@@ -970,10 +540,12 @@ public class IndexRecordToDcatModelSerializer {
 
         List<Contact> contactPoints = new ArrayList<>();
 
+        // Primary contact points
         if (contactByRole.get("pointOfContact") != null) {
             contactPoints.addAll(contactByRole.get("pointOfContact"));
         }
 
+        // Also include distributor as contact point if no point of contact
         if (contactPoints.isEmpty() && contactByRole.get("distributor") != null) {
             contactPoints.addAll(contactByRole.get("distributor"));
         }
@@ -1031,14 +603,18 @@ public class IndexRecordToDcatModelSerializer {
         for (Link link : record.getLinks()) {
             String protocol = link.getProtocol();
 
+            // Check if this is a service endpoint (OGC services, APIs, etc.)
             if (isServiceProtocol(protocol)) {
+                // Create or get the data service
                 DcatModel.DataService service = createOrGetDataService(link, services, baseUri, record.getUuid());
 
+                // Create a distribution that references this service
                 DcatModel.Distribution.DistributionBuilder dist = DcatModel.Distribution.builder()
                         .id(generateUri(baseUri, "distribution", record.getUuid() + "-" + index++))
                         .accessService(service)
                         .accessURL(service.getEndpointURL());
 
+                // Add title and description if available
                 if (link.getName() != null && !link.getName().isEmpty()) {
                     dist.title(DcatModel.MultilingualValue.of(link.getName()));
                 }
@@ -1048,8 +624,9 @@ public class IndexRecordToDcatModelSerializer {
 
                 distributions.add(dist.build());
             } else {
+                // Regular file distribution
                 DcatModel.Distribution dist = createFileDistribution(link, baseUri, record.getUuid(), index++);
-                if (dist != null) {
+                if (dist != null) { // Only add non-null distributions
                     distributions.add(dist);
                 }
             }
@@ -1079,6 +656,7 @@ public class IndexRecordToDcatModelSerializer {
                 .id(generateUri(baseUri, "service", Integer.toHexString(serviceUrl.hashCode())))
                 .endpointURL(DcatModel.Resource.of(serviceUrl));
 
+        // Add title and description
         if (link.getName() != null && !link.getName().isEmpty()) {
             service.title(DcatModel.MultilingualValue.of(link.getName()));
         }
@@ -1086,12 +664,14 @@ public class IndexRecordToDcatModelSerializer {
             service.description(DcatModel.MultilingualValue.of(link.getDescription()));
         }
 
+        // Map protocol to conformsTo
         String conformsToUri = mapProtocolToStandard(link.getProtocol());
         if (conformsToUri != null) {
             service.conformsTo(
                     List.of(DcatModel.Standard.builder().id(conformsToUri).build()));
         }
 
+        // Link back to the dataset
         service.servesDataset(List.of(DcatModel.Resource.of(generateUri(baseUri, "dataset", datasetUuid))));
 
         DcatModel.DataService dataService = service.build();
@@ -1106,6 +686,7 @@ public class IndexRecordToDcatModelSerializer {
                 url = link.getUrl().values().iterator().next();
             }
 
+            // For OGC services, extract base URL without parameters
             if (url != null && url.contains("?")) {
                 return url.substring(0, url.indexOf("?"));
             }
@@ -1118,6 +699,7 @@ public class IndexRecordToDcatModelSerializer {
         DcatModel.Distribution.DistributionBuilder dist =
                 DcatModel.Distribution.builder().id(generateUri(baseUri, "distribution", datasetUuid + "-" + index));
 
+        // Set access URL
         if (link.getUrl() != null && !link.getUrl().isEmpty()) {
             String accessUrl = null;
             if (link.getUrl() != null && !link.getUrl().isEmpty()) {
@@ -1126,18 +708,24 @@ public class IndexRecordToDcatModelSerializer {
                     accessUrl = link.getUrl().values().iterator().next();
                 }
             }
+            // Always set accessURL - use a placeholder if necessary
             if (accessUrl != null) {
                 dist.accessURL(DcatModel.Resource.of(accessUrl));
             } else {
+                // Use a placeholder
                 dist.accessURL(DcatModel.Resource.of(
                         generateUri(baseUri, "distribution", datasetUuid + "-" + index + "/access")));
+                // ... or skip this distribution entirely
+                // return null;
             }
 
+            // If it's a direct download, also set downloadURL
             if (link.getProtocol() != null && link.getProtocol().contains("DOWNLOAD")) {
                 dist.downloadURL(DcatModel.Resource.of(accessUrl));
             }
         }
 
+        // Set title and description
         if (link.getName() != null && !link.getName().isEmpty()) {
             dist.title(DcatModel.MultilingualValue.of(link.getName()));
         }
@@ -1145,22 +733,59 @@ public class IndexRecordToDcatModelSerializer {
             dist.description(DcatModel.MultilingualValue.of(link.getDescription()));
         }
 
+        // Determine and set media type and format
         String mimeType = link.getMimeType();
         if (mimeType == null && link.getProtocol() != null) {
             mimeType = inferMimeType(link.getProtocol(), link.getUrl());
         }
 
         if (mimeType != null && !mimeType.isEmpty()) {
+            // Set media type
             dist.mediaType(DcatModel.MediaType.of(mediaTypeBaseUri + mimeType));
 
+            // Also set format based on mime type
             String formatUri = mapMimeTypeToFormat(mimeType);
             if (formatUri != null) {
                 dist.format(DcatModel.MediaTypeOrExtent.of(formatUri));
             }
         }
 
+        // Set byte size if available
+        // Note: getSize() is not available in current Link model
+        /*
+        if (link.getSize() != null) {
+            try {
+                dist.byteSize(Long.parseLong(link.getSize()));
+            } catch (NumberFormatException e) {
+                // Ignore if not a valid number
+            }
+        }
+        */
+
+        // Set license if available
+        // Note: getLicense() is not available in current Link model
+        /*
+        if (link.getLicense() != null) {
+            dist.license(DcatModel.Resource.of(link.getLicense()));
+        }
+        */
+
+        // Set rights if available
+        // Note: getRights() is not available in current Link model
+        /*
+        if (link.getRights() != null) {
+            dist.rights(DcatModel.RightsStatement.builder()
+                    .label(DcatModel.MultilingualValue.builder()
+                            .value(link.getRights())
+                            .build())
+                    .build());
+        }
+        */
+
+        // Set status (DCAT-AP 3.0)
         dist.status(DcatModel.Resource.of("http://publications.europa.eu/resource/authority/dataset-status/COMPLETED"));
 
+        // Set conformsTo for file standards if applicable
         if (link.getProtocol() != null) {
             String conformsToUri = mapProtocolToStandard(link.getProtocol());
             if (conformsToUri != null) {
@@ -1175,6 +800,7 @@ public class IndexRecordToDcatModelSerializer {
     private String inferMimeType(String protocol, Map<String, String> urls) {
         if (protocol == null) return null;
 
+        // Check protocol
         if (protocol.startsWith("OGC:WMS")) {
             return "application/vnd.ogc.wms_xml";
         } else if (protocol.startsWith("OGC:WFS")) {
@@ -1182,6 +808,7 @@ public class IndexRecordToDcatModelSerializer {
         } else if (protocol.startsWith("OGC:WCS")) {
             return "application/x-ogc-wcs";
         } else if (protocol.contains("DOWNLOAD")) {
+            // Check file extension from URL
             if (urls != null && !urls.isEmpty()) {
                 String url = urls.values().iterator().next();
                 if (url != null) {
@@ -1245,8 +872,10 @@ public class IndexRecordToDcatModelSerializer {
     }
 
     private List<DcatModel.Resource> mapLandingPages(IndexRecord record) {
+        // Map landing pages if available
         List<DcatModel.Resource> pages = new ArrayList<>();
 
+        // Add the catalog page as landing page
         if (record.getUuid() != null) {
             pages.add(DcatModel.Resource.of(defaultBaseUri + "catalog/record/" + record.getUuid()));
         }
@@ -1299,20 +928,24 @@ public class IndexRecordToDcatModelSerializer {
     }
 
     private List<DcatModel.RightsStatement> mapRights(IndexRecord record) {
-        return null;
+        // Map additional rights statements if available
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private List<DcatModel.Resource> mapRelations(IndexRecord record, String baseUri) {
         List<DcatModel.Resource> relations = new ArrayList<>();
 
+        // Add parent datasets
         if (record.getParentUuid() != null) {
             for (String parentUuid : record.getParentUuid()) {
                 relations.add(DcatModel.Resource.of(generateUri(baseUri, "dataset", parentUuid)));
             }
         }
 
+        // Add associated records
         if (record.getAssociatedRecords() != null) {
             for (RecordLink link : record.getAssociatedRecords()) {
+                // Filter out specific relation types that map to other properties
                 if (!isSpecialRelationType(link.getType())) {
                     relations.add(DcatModel.Resource.of(generateUri(baseUri, "dataset", link.getTo())));
                 }
@@ -1376,16 +1009,20 @@ public class IndexRecordToDcatModelSerializer {
         return measurements.isEmpty() ? null : measurements;
     }
 
+    // DCAT-AP 3.0 specific versioning methods
     private String mapVersion(IndexRecord record) {
-        return null;
+        // Extract version from metadata if available
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private String mapVersionInfo(IndexRecord record) {
-        return null;
+        // Map version info if available
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private DcatModel.MultilingualValue mapVersionNotes(IndexRecord record) {
-        return null;
+        // Map version notes if available
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private List<DcatModel.Resource> mapHasVersions(IndexRecord record, String baseUri) {
@@ -1402,25 +1039,32 @@ public class IndexRecordToDcatModelSerializer {
     }
 
     private DcatModel.Resource mapIsVersionOf(IndexRecord record, String baseUri) {
-        return null;
+        // Map to original dataset if this is a version
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private DcatModel.Resource mapPreviousVersion(IndexRecord record, String baseUri) {
-        return null;
+        // Map to previous version if available
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
+    // DCAT-AP 3.0 specific provenance methods
     private List<DcatModel.Resource> mapProvenance(IndexRecord record) {
-        return null;
+        // Map provenance statements if available
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private List<DcatModel.Attribution> mapQualifiedAttributions(IndexRecord record) {
+        // Map qualified attributions for different roles
         Map<String, List<Contact>> contactByRole = record.getContactByRole();
         List<DcatModel.Attribution> attributions = new ArrayList<>();
 
+        // Map specific roles to attributions
         for (Map.Entry<String, List<Contact>> entry : contactByRole.entrySet()) {
             String role = entry.getKey();
             List<Contact> contacts = entry.getValue();
 
+            // Only include roles that should be attributions (not already mapped elsewhere)
             if (shouldMapAsAttribution(role)) {
                 String roleUri = mapRoleToUri(role);
                 for (Contact contact : contacts) {
@@ -1436,6 +1080,7 @@ public class IndexRecordToDcatModelSerializer {
     }
 
     private boolean shouldMapAsAttribution(String role) {
+        // Exclude roles already mapped to specific properties
         return !"publisher".equals(role)
                 && !"pointOfContact".equals(role)
                 && !"originator".equals(role)
@@ -1454,14 +1099,18 @@ public class IndexRecordToDcatModelSerializer {
     }
 
     private DcatModel.Activity mapGenerationActivity(IndexRecord record) {
-        return null;
+        // Map generation activity if provenance information is available
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private List<DcatModel.Relationship> mapQualifiedRelations(IndexRecord record, String baseUri) {
-        return null;
+        // Map qualified relationships with roles
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
+    // Additional DCAT-AP 3.0 properties
     private DcatModel.Resource mapDatasetType(IndexRecord record) {
+        // Map dataset type (e.g., from resource type)
         if (record.getResourceType() != null && !record.getResourceType().isEmpty()) {
             String type = record.getResourceType().get(0);
             return DcatModel.Resource.of("http://inspire.ec.europa.eu/metadata-codelist/ResourceType/" + type);
@@ -1470,14 +1119,24 @@ public class IndexRecordToDcatModelSerializer {
     }
 
     private DcatModel.Resource mapAccrualPeriodicity(IndexRecord record) {
-        return null;
+        // Map update frequency if available
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private List<DcatModel.Resource> mapPages(IndexRecord record) {
-        return null;
+        // Map documentation pages if available
+        return null; // Placeholder - implement based on your IndexRecord structure
     }
 
     private List<DcatModel.Resource> mapSamples(IndexRecord record, String baseUri) {
-        return null;
+        // Map sample distributions if available
+        return null; // Placeholder - implement based on your IndexRecord structure
+    }
+
+    private String generateUri(String baseUri, String type, String id) {
+        if (!baseUri.endsWith("/")) {
+            baseUri += "/";
+        }
+        return baseUri + type + "/" + id;
     }
 }
