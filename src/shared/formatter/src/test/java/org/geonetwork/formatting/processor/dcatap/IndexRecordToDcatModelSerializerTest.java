@@ -327,22 +327,6 @@ class IndexRecordToDcatModelSerializerTest {
     }
 
     @Test
-    void serialize_withCatalogUri_wrapsInCatalog() throws JsonProcessingException {
-        IndexRecord record = IndexRecord.builder()
-                .uuid("test-uuid")
-                .resourceTitle(Map.of("default", "Test Dataset"))
-                .publishedToAll(true)
-                .build();
-
-        String catalogUri = "http://catalog.example.org";
-        String result = serializer.serialize(record, catalogUri, null);
-
-        assertTrue(result.contains("\"@type\" : \"dcat:Catalog\""));
-        assertTrue(result.contains(catalogUri));
-        assertTrue(result.contains("\"dcat:dataset\""));
-    }
-
-    @Test
     void serialize_languages_mapsToAuthorityUris() throws JsonProcessingException {
         IndexRecord record = IndexRecord.builder()
                 .uuid("test-uuid")
@@ -356,6 +340,46 @@ class IndexRecordToDcatModelSerializerTest {
         assertTrue(result.contains("authority/language/ENG"));
         assertTrue(result.contains("authority/language/FRA"));
         assertTrue(result.contains("authority/language/DEU"));
+    }
+
+    @Test
+    void serializeCatalog_wrapsDatasetsInCatalog() throws JsonProcessingException {
+        IndexRecord record1 = IndexRecord.builder()
+                .uuid("uuid-1")
+                .resourceTitle(Map.of("default", "Dataset One"))
+                .publishedToAll(true)
+                .build();
+
+        IndexRecord record2 = IndexRecord.builder()
+                .uuid("uuid-2")
+                .resourceTitle(Map.of("default", "Dataset Two"))
+                .publishedToAll(false)
+                .build();
+
+        String catalogUri = "http://catalog.example.org";
+        String json = serializer.serializeCatalog(Arrays.asList(record1, record2), catalogUri, null);
+
+        assertNotNull(json);
+        assertTrue(json.contains("\"@type\" : \"dcat:Catalog\""));
+        assertTrue(json.contains(catalogUri));
+        assertTrue(json.contains("\"dcat:dataset\""));
+        assertTrue(json.contains("Dataset One"));
+        assertTrue(json.contains("Dataset Two"));
+        // dataset IRIs are generated using base URI + type + uuid
+        assertTrue(json.contains("http://data.europa.eu/dataset/uuid-1"));
+        assertTrue(json.contains("http://data.europa.eu/dataset/uuid-2"));
+    }
+
+    @Test
+    void serializeCatalog_requiresCatalogUri() {
+        IndexRecord record = IndexRecord.builder()
+                .uuid("uuid-3")
+                .resourceTitle(Map.of("default", "Dataset Three"))
+                .publishedToAll(true)
+                .build();
+
+        assertThrows(IllegalArgumentException.class, () -> serializer.serializeCatalog(List.of(record), null, null));
+        assertThrows(IllegalArgumentException.class, () -> serializer.serializeCatalog(List.of(record), "", null));
     }
 
     private IndexRecord createCompleteIndexRecord() {

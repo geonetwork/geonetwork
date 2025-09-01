@@ -48,11 +48,10 @@ public class DcatApJsonldFormatterProcessor implements IndexFormatterProcessor {
 
     @Override
     public void process(IndexRecord indexRecord, OutputStream out, Map<String, Object> config) throws IOException {
-        String catalogUri = (String) config.get("catalogUri");
         String baseUri = (String) config.get("baseUri");
 
         // Serialize to JSON-LD DCAT-AP format
-        String dcatJsonLd = dcatSerializer.serialize(indexRecord, catalogUri, baseUri);
+        String dcatJsonLd = dcatSerializer.serialize(indexRecord, baseUri);
 
         out.write(dcatJsonLd.getBytes(UTF_8));
     }

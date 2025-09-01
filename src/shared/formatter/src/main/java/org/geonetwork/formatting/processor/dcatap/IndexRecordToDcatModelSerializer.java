@@ -76,24 +76,39 @@ public class IndexRecordToDcatModelSerializer {
 
     /** Serialize an IndexRecord to DCAT-AP 3.0 JSON-LD format. */
     public String serialize(IndexRecord record) throws JsonProcessingException {
-        return serialize(record, null, defaultBaseUri);
+        return serialize(record, defaultBaseUri);
     }
 
-    public String serialize(IndexRecord record, String catalogUri, String baseUri) throws JsonProcessingException {
+    public String serialize(IndexRecord record, String baseUri) throws JsonProcessingException {
         String effectiveBaseUri = (baseUri != null && !baseUri.isEmpty()) ? baseUri : defaultBaseUri;
 
         DcatModel.Dataset dataset = mapToDataset(record, effectiveBaseUri);
 
+        dataset.setContext(namespaceContext);
+        return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(dataset);
+    }
+
+    /** Serialize a list of IndexRecords to DCAT-AP 3.0 JSON-LD format. */
+    public String serializeCatalog(List<IndexRecord> records, String catalogUri, String baseUri)
+            throws JsonProcessingException {
+        String effectiveBaseUri = (baseUri != null && !baseUri.isEmpty()) ? baseUri : defaultBaseUri;
+
         if (catalogUri != null && !catalogUri.isEmpty()) {
+
+            List<DcatModel.Dataset> datasets = new ArrayList<>();
+            for (IndexRecord record : records) {
+                datasets.add(mapToDataset(record, effectiveBaseUri));
+            }
+
             DcatModel.Catalog catalog = DcatModel.Catalog.builder()
                     .context(namespaceContext)
                     .id(catalogUri)
-                    .dataset(List.of(dataset))
+                    .dataset(datasets)
                     .build();
             return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(catalog);
+
         } else {
-            dataset.setContext(namespaceContext);
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(dataset);
+            throw new IllegalArgumentException("catalogUri is mandatory when serializing a catalog");
         }
     }
 
