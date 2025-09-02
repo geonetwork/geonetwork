@@ -71,6 +71,14 @@ public class Metadata {
     @Column(name = "root")
     private String root;
 
+    /** TODO: Temporary workaround for the renamed iso19115-3.2018 schema. See also IndexingRecordService */
+    public String getSchemaid() {
+        if (schemaid.equals("iso19115-3.2018")) {
+            return "iso19115-3";
+        }
+        return schemaid;
+    }
+
     @Size(max = 32)
     @NotNull
     @Column(name = "schemaid", nullable = false, length = 32)

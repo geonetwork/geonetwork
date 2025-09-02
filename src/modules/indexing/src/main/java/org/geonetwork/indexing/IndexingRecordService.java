@@ -152,10 +152,16 @@ public class IndexingRecordService {
      * representation as string.
      */
     protected IndexRecord collectDbProperties(Metadata r) {
+        // TODO: Temporary workaround for the renamed iso19115-3.2018 schema.
+        //  See also Metadata domain object.
+        String schemaid = r.getSchemaid();
+        if (schemaid.equals("iso19115-3")) {
+            schemaid = "iso19115-3.2018";
+        }
         IndexRecord.IndexRecordBuilder indexRecord = IndexRecord.builder()
                 .id(r.getId())
                 .uuid(r.getUuid())
-                .documentStandard(r.getSchemaid())
+                .documentStandard(schemaid)
                 .isTemplate(r.getIstemplate().charAt(0))
                 .harvested(r.getIsharvested().equals("y"))
                 .popularity(r.getPopularity())
