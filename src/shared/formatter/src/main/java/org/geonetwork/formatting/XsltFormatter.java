@@ -9,8 +9,8 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import org.geonetwork.domain.Metadata;
+import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.utility.xml.XsltUtil;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,12 +20,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class XsltFormatter implements Formatter {
 
+    private final SchemaManager schemaManager;
+
+    public XsltFormatter(SchemaManager schemaManager) {
+        this.schemaManager = schemaManager;
+    }
+
     @Override
     public void format(Metadata metadata, String formatterId, OutputStream outputStream, Map<String, Object> config) {
         String formatterXslt = getFormatterXslt(metadata, formatterId);
         try {
-            XsltUtil.transformXmlAsOutputStream(
-                    metadata.getData(), new ClassPathResource(formatterXslt), new HashMap<>(), outputStream);
+            XsltUtil.transformXmlAsOutputStream(metadata.getData(), formatterXslt, new HashMap<>(), outputStream);
         } catch (Exception e) {
             throw new FormatterException(
                     String.format(
@@ -37,11 +42,18 @@ public class XsltFormatter implements Formatter {
 
     @Override
     public boolean isFormatterAvailable(Metadata metadata, String formatterId) {
-        String formatterXslt = String.format("schemas/%s/formatter/%s/view.xsl", metadata.getSchemaid(), formatterId);
-        return new ClassPathResource(formatterXslt).exists();
+        return schemaManager
+                .getSchemaDir(metadata.getSchemaid())
+                .resolve(String.format("formatter/%s/view.xsl", formatterId))
+                .toFile()
+                .exists();
     }
 
     private String getFormatterXslt(Metadata metadata, String formatterId) {
-        return String.format("schemas/%s/formatter/%s/view.xsl", metadata.getSchemaid(), formatterId);
+        return schemaManager
+                .getSchemaDir(metadata.getSchemaid())
+                .resolve(String.format("formatter/%s/view.xsl", formatterId))
+                .toFile()
+                .getPath();
     }
 }

@@ -5,7 +5,7 @@
     available at the root application directory.
 
 -->
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -65,8 +65,8 @@
     <xsl:template match="gmd:CI_Citation" mode="from19139to19115-3.2018">
         <xsl:element name="cit:CI_Citation">
             <xsl:apply-templates mode="from19139to19115-3.2018"/>
-            <!-- Special attention is required for CI_ResponsibleParties that are included in the 
-                CI_Citation only for a URL. These are currently identified as those 
+            <!-- Special attention is required for CI_ResponsibleParties that are included in the
+                CI_Citation only for a URL. These are currently identified as those
                 with no name elements (individualName, organisationName, or positionName)
             -->
             <xsl:for-each

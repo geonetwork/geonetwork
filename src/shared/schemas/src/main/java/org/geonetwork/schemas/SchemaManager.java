@@ -17,8 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,7 +33,6 @@ import org.geonetwork.schemas.validation.SchematronCompiler;
 import org.geonetwork.utility.ApplicationContextProvider;
 import org.geonetwork.utility.legacy.Pair;
 import org.geonetwork.utility.legacy.exceptions.NoSchemaMatchesException;
-import org.geonetwork.utility.legacy.exceptions.SchemaMatchConflictException;
 import org.geonetwork.utility.legacy.io.IO;
 import org.geonetwork.utility.legacy.nio.NioPathAwareCatalogResolver;
 import org.geonetwork.utility.legacy.resolver.ResolverWrapper;
@@ -100,6 +97,9 @@ public class SchemaManager {
     @Autowired
     SchematronCompiler schematronCompiler;
 
+    @Autowired
+    MetadataSchemaAutodetector metadataSchemaAutodetector;
+
     public SchemaPlugin getSchemaPluginByIdentifier(String identifier) {
         for (SchemaPlugin plugin : schemaPlugins) {
             if (plugin.getIdentifier().equals(identifier)) {
@@ -118,7 +118,7 @@ public class SchemaManager {
         if (catalogProp == null) {
             catalogProp = "";
         }
-        if (!catalogProp.equals("")) {
+        if (!catalogProp.isEmpty()) {
             log.info("Overriding " + Constants.XML_CATALOG_FILES + " property (was set to " + catalogProp + ")");
         }
 
@@ -384,7 +384,7 @@ public class SchemaManager {
 
         if (schema == null) throw new IllegalArgumentException("Schema not registered : " + name);
 
-        return this.basePath.resolve(schema.getIdentifier());
+        return this.schemaPluginsDir.resolve(schema.getIdentifier());
     }
 
     /**
@@ -403,10 +403,10 @@ public class SchemaManager {
         String schemaLoc = schema.getConfiguration().getSchemaLocation();
         Path schemaFile = basePath.resolve(schema.getIdentifier()).resolve("schema.xsd");
 
-        if (schemaLoc.equals("")) {
+        if (schemaLoc.isEmpty()) {
             if (Files.exists(schemaFile)) { // build one
                 String schemaUrl = getSchemaUrl(name);
-                if (nsUri == null || nsUri.equals("")) {
+                if (nsUri == null || nsUri.isEmpty()) {
                     out = new Attribute("noNamespaceSchemaLocation", schemaUrl, Geonet.Namespaces.XSI);
                 } else {
                     schemaLoc = nsUri + " " + schemaUrl;
@@ -414,7 +414,7 @@ public class SchemaManager {
                 }
             } // else return null - no schema xsd exists - could be dtd
         } else {
-            if (nsUri == null || nsUri.equals("")) {
+            if (nsUri == null || nsUri.isEmpty()) {
                 out = new Attribute("noNamespaceSchemaLocation", schemaLoc, Geonet.Namespaces.XSI);
             } else {
                 out = new Attribute("schemaLocation", schemaLoc, Geonet.Namespaces.XSI);
@@ -549,39 +549,8 @@ public class SchemaManager {
                 .orElse(null);
     }
 
-    /** See schema-ident.xml for configuration of schema identification. */
-    public String autodetectSchema(Element md)
-            throws SchemaMatchConflictException, NoSchemaMatchesException, JDOMException {
-
-        Set<String> allSchemas = getSchemas();
-
-        if (log.isDebugEnabled()) {
-            log.debug("Schema autodetection starting on " + md.getName() + " (Namespace: " + md.getNamespace() + ")");
-        }
-
-        List<String> listOfSchemas = new ArrayList<>(allSchemas);
-        Collections.sort(listOfSchemas, Comparator.reverseOrder());
-
-        // Process custom schemas (names starting with "iso19139." or "iso19115-3." first to match them with higher
-        // priority)
-        // TODO: Sort the schemas based on the depends on property
-        for (String schemaName : listOfSchemas) {
-            if (log.isDebugEnabled()) log.debug("	Doing schema " + schemaName);
-            SchemaPlugin schema = hmSchemas.get(schemaName);
-            String autodetectConfiguration = schema.getConfiguration().getAutodetect();
-
-            boolean matchesSchema = Xml.selectBoolean(
-                    md, autodetectConfiguration, schema.getXsdSchemaDefinition().getNamespaces());
-            if (matchesSchema) {
-                return schemaName;
-            }
-        }
-
-        throw new NoSchemaMatchesException("Autodetecting schema failed for metadata record with root element "
-                + md.getName()
-                + " in namespace "
-                + md.getNamespace()
-                + ".");
+    public String autodetectSchema(Element md) throws NoSchemaMatchesException, JDOMException {
+        return metadataSchemaAutodetector.autodetectSchema(md);
     }
 
     // --------------------------------------------------------------------------

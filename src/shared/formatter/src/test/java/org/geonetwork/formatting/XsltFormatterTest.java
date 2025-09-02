@@ -10,6 +10,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.ByteArrayOutputStream;
 import org.geonetwork.domain.Metadata;
+import org.geonetwork.schemas.SchemaManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,8 @@ class XsltFormatterTest {
 
     @BeforeEach
     void setUp() {
-        xsltFormatter = new XsltFormatter();
+        SchemaManager schemaManager = mock(SchemaManager.class);
+        xsltFormatter = new XsltFormatter(schemaManager);
     }
 
     @Test

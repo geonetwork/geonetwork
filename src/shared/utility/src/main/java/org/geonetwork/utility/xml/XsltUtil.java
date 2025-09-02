@@ -7,7 +7,6 @@
 package org.geonetwork.utility.xml;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
@@ -24,7 +23,6 @@ import net.sf.saxon.s9api.XdmValue;
 import net.sf.saxon.s9api.Xslt30Transformer;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 /** XSLT utility class. */
@@ -95,22 +93,19 @@ public class XsltUtil {
 
     /** Transform XML string in OutputStream. */
     public static void transformXmlAsOutputStream(
-            String inputXmlString,
-            ClassPathResource xsltFile,
-            Map<QName, XdmValue> xslParameters,
-            OutputStream outputStream) {
+            String inputXmlString, String xsltFile, Map<QName, XdmValue> xslParameters, OutputStream outputStream) {
         try {
             Processor proc = XsltTransformerFactory.getProcessor();
             XsltCompiler compiler = proc.newXsltCompiler();
-            StreamSource source = new StreamSource(xsltFile.getInputStream());
-            source.setSystemId(xsltFile.getURL().toString());
+            StreamSource source = new StreamSource(xsltFile);
+            source.setSystemId(xsltFile);
             XsltExecutable xsl = compiler.compile(source);
             Xslt30Transformer transformer = xsl.load30();
             if (xslParameters != null) {
                 transformer.setStylesheetParameters(xslParameters);
             }
             transformer.transform(new StreamSource(new StringReader(inputXmlString)), proc.newSerializer(outputStream));
-        } catch (SaxonApiException | IOException e) {
+        } catch (SaxonApiException e) {
             log.atError().log(e.getMessage());
             throw new RuntimeException(e);
         }
