@@ -41,7 +41,7 @@ geonetwork:
         eng: https://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=53798
       schemaLocation: http://www.isotc211.org/2005/gmd http://schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd
       primeNamespace: http://www.isotc211.org/2005/gmd
-      autodetect: count(gmd:MD_Metadata|gmd:CI_ResponsibleParty|gmd:DQ_DomainConsistency|gmd:MD_Format|gmd:EX_Extent) > 0
+      autodetect: (local-name(.) = 'MD_Metadata' or local-name(.) = 'CI_ResponsibleParty' or local-name(.) = 'DQ_DomainConsistency' or local-name(.) = 'MD_Format' or local-name(.) = 'EX_Extent')
       formatters:
         - name: xml
           title:

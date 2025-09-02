@@ -691,15 +691,24 @@ public final class Xml {
 
     /** Evaluates an XPath expression on an element and returns true/false. */
     public static boolean selectBoolean(Element xml, String xpath) throws JDOMException {
-        String result = selectString(xml, xpath, new ArrayList<Namespace>());
-        return result.length() > 0;
+        return selectBoolean(xml, xpath, new ArrayList<Namespace>());
     }
 
     // ---------------------------------------------------------------------------
 
     /** Evaluates an XPath expression on an element and returns true/false. */
     public static boolean selectBoolean(Element xml, String xpath, List<Namespace> theNSs) throws JDOMException {
-        return selectString(xml, xpath, theNSs).length() > 0;
+        List<?> nodes = selectNodes(xml, xpath, theNSs);
+
+        if (nodes.size() > 0) {
+            if (nodes.get(0) instanceof Boolean) {
+                return (Boolean) nodes.get(0);
+            } else {
+                throw new IllegalArgumentException("XPath expression " + xpath + " did not return a boolean");
+            }
+        }
+
+        return false;
     }
 
     // ---------------------------------------------------------------------------

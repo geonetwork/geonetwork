@@ -5,9 +5,7 @@
  */
 package org.geonetwork.schemas;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class MetadataSchemaAutodetector {
     private final List<? extends SchemaPlugin> schemaPlugins;
-    private final Deque<String> schemaPluginDependencies;
+    private final List<String> schemaPluginDependencies;
 
     public MetadataSchemaAutodetector(List<? extends SchemaPlugin> schemaPlugins) {
         this.schemaPlugins = schemaPlugins;
@@ -89,8 +87,8 @@ public class MetadataSchemaAutodetector {
      *
      * @return Deque
      */
-    private Deque<String> buildSchemaDependencies() {
-        Deque<String> schemaDependencies = new ArrayDeque<>();
+    private List<String> buildSchemaDependencies() {
+        List<String> schemaDependencies = new ArrayList<>();
 
         // Stores for each schema plugin the number of dependencies it has.
         // Positions correspond to the schemas in the schema plugins list.
@@ -131,7 +129,7 @@ public class MetadataSchemaAutodetector {
         list.sort(Map.Entry.comparingByValue());
 
         // Get the schema identifiers in the order to be processed
-        list.stream().map(Map.Entry::getKey).forEach(schemaDependencies::push);
+        list.stream().map(Map.Entry::getKey).forEach(schemaDependencies::add);
 
         return schemaDependencies;
     }
