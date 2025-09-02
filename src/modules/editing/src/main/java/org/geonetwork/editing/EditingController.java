@@ -5,6 +5,8 @@
  */
 package org.geonetwork.editing;
 
+import static org.geonetwork.constants.ApiParams.API_CLASS_RECORD_OPS;
+import static org.geonetwork.constants.ApiParams.API_CLASS_RECORD_TAG;
 import static org.geonetwork.constants.ApiParams.API_PARAM_RECORD_UUID;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -48,7 +50,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping(value = {"/api/records"})
-@Tag(name = "API_CLASS_RECORD_TAG", description = "API_CLASS_RECORD_OPS")
+@Tag(name = API_CLASS_RECORD_TAG, description = API_CLASS_RECORD_OPS)
 @RestController
 @Slf4j
 @RequiredArgsConstructor
