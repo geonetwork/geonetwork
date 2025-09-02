@@ -1,0 +1,217 @@
+geonetwork:
+  schemas:
+    iso19139.nl.geografie.2.0.0:
+      name: iso19139.nl.geografie.2.0.0
+      id: 6b76bf55-da03-4b86-acaa-a81bd982e07a</id>
+      version: 2.1.0
+      dependsOn:
+        - iso19139
+      standardTitle:
+        eng: Dutch metadata profile on ISO 19115 for geography version 2.1.0
+        dut: Nederlands metadata profiel op ISO 19115 voor geografie versie 2.1.0
+      standardDescription:
+        dut: |
+          Geonovum ontwikkelt en beheert het Nederlandse metadata profiel voor het beschrijven van geografische
+          datasets. Dit profiel is een verbijzondering van de internationale metadatastandaarden van ISO en is
+          bedoeld om de interoperabiliteit binnen Nederland te bevorderen.
+      standardUrl:
+        dut: https://docs.geostandaarden.nl/md/mdprofiel-iso19115
+      schemaLocation: http://www.isotc211.org/2005/gmd http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd http://www.isotc211.org/2005/gmx http://schemas.opengis.net/iso/19139/20060504/gmx/gmx.xsd
+      primeNamespace: http://www.isotc211.org/2005/gmd
+      autodetect: |
+        count(//gmd:metadataStandardVersion[gco:CharacterString = 'Nederlands metadata profiel op ISO 19115 voor geografie 2.1.0' or
+        gco:CharacterString = 'Nederlands metadata profiel op ISO 19115 voor geografie 2.0' or
+        gco:CharacterString = 'Nederlandse metadata profiel op ISO 19115 voor geografie 2.0' or
+        gco:CharacterString = 'Nederlands metadata profiel op ISO 19115 voor geografie 2.1' or
+        gco:CharacterString = 'Nederlandse metadata profiel op ISO 19115 voor geografie 2.1' or
+        gco:CharacterString = 'Nederlandse metadata profiel op ISO 19115 voor geografie 2.1.0' or
+        gco:CharacterString = 'Nederlands metadata profiel op ISO 19115 voor geografie 2.0.0']) > 0
+      formatters:
+        - name: xml
+          title:
+          officialProfileName: http://geonetwork.net/def/profile/raw-xml
+          contentType: application/xml
+        - name: datacite
+          title:
+          officialProfileName: http://geonetwork.net/def/profile/datacite
+          contentType: application/xml
+        - name: dcat-ap-nl-3
+          title:
+          officialProfileName: http://geonetwork.net/def/profile/dcat-ap-nl-3
+          contentType: application/rdf+xml
+
+      #      Filters defined which elements should be removed
+      #      depending on user privileges.
+      filters:
+        #          All elements having a nilReason attribute
+        #            set to withheld, then users needs to have
+        #            the edit privilege in order to be able to see
+        #            the information. When filtered the element is
+        #            preserved but with no content in.
+        - xpath: .//*[@gco:nilReason = 'withheld']
+          jsonpath: $.*[?(@.nilReason == 'withheld')]
+          ifNotOperation: editing
+          keepMarkedElement: true
+        #          All online source having WMS protocol are filtered
+        #          to user not having dynamic privilege.
+        - xpath: .//mrd:onLine[starts-with(*/cit:protocol/gco:CharacterString, 'OGC:WMS')]
+          jsonpath: $['link'][?(@.protocol =~ /OGC:WMS.*?/i)]
+          ifNotOperation: dynamic
+        #          All online source having the following protocols
+        #          are filtered when user does not have download
+        #          privilege.
+        - xpath: >
+             .//mrd:onLine[contains(*/cit:protocol/gco:CharacterString, 'DOWNLOAD') or
+             */cit:protocol/gco:CharacterString = 'FILE' or
+             */cit:protocol/gco:CharacterString = 'DB' or
+             */cit:protocol/gco:CharacterString = 'COPYFILE']
+          jsonpath: $['link'][?(@.protocol =~ /(DOWNLOAD|FILE|DB|COPYFILE).*?/i)]
+          ifNotOperation: download
+
+      substitutes:
+        - field: gmd:AbstractMD_Identification
+          substitutes:
+            - srv:SV_ServiceIdentification
+            - gmd:MD_DataIdentification
+        - field: gml:VerticalCS
+        - field: gml:VerticalDatum
+        - field: gml:CoordinateSystemAxis
+
+      suggestions:
+        - field: gmd:contactInstructions
+          suggestions:
+            - gco:CharacterString
+            - gmx:FileName
+        - field: gmd:otherCitationDetails
+          suggestions:
+            - gco:CharacterString
+            - gmx:FileName
+            - gmx:Anchor
+        - field: gmd:hierarchyLevel
+          suggestions:
+            - gmd:MD_ScopeCode
+        - field: gmx:Anchor
+          suggestions:
+            - xlink:href
+        - field: gmd:code
+          suggestions:
+            - gco:CharacterString
+            - gmx:FileName
+            - gmx:Anchor
+        - field: gmd:language
+          suggestions:
+            - gco:CharacterString
+            - gmd:LanguageCode
+        - field: gmx:FileName
+          suggestions:
+            - src
+        - field: srv:coupledResource
+          suggestions:
+            - srv:SV_CoupledResource
+        - field: srv:parameters
+          suggestions:
+            - srv:SV_Parameter
+        - field: srv:direction
+          suggestions:
+            - srv:SV_ParameterDirection
+        - field: gmd:CI_OnlineResource
+          suggestions:
+            - gmd:protocol
+            - gmd:name
+            - gmd:description
+        - field: gmd:transferOptions
+          suggestions:
+            - gmd:MD_DigitalTransferOptions
+        - field: gmd:MD_DigitalTransferOptions
+          suggestions:
+            - gmd:onLine
+        - field: gmd:CI_ResponsibleParty
+          suggestions:
+            - gmd:organisationName
+            - gmd:individualName
+            - gmd:contactInfo
+        - field: gmd:CI_Contact
+          suggestions:
+            - gmd:address
+        - field: gmd:CI_Address
+          suggestions:
+            - gmd:electronicMailAddress
+        - field: gmd:MD_Keywords
+          suggestions:
+            - gmd:type
+        - field: gmd:date
+          suggestions:
+            - gco:Date
+        - field: gmd:EX_Extent
+          suggestions:
+            - gmd:temporalElement
+            - gmd:geographicElement
+            - gmd:verticalElement
+        - field: gmd:EX_TemporalExtent
+          suggestions:
+            - gmd:extent
+        - field: gmd:polygon
+          suggestions:
+            - gml:Polygon
+        - field: gmd:extent
+          suggestions:
+            - gmd:EX_Extent
+        - field: gml:TimePeriod
+          suggestions:
+            - gml:beginPosition
+            - gml:endPosition
+        - field: gmd:EX_GeographicBoundingBox
+          suggestions:
+            - gmd:westBoundLongitude
+            - gmd:eastBoundLongitude
+            - gmd:southBoundLatitude
+            - gmd:northBoundLatitude
+        - field: gmd:attributes
+          suggestions:
+            - uuidref
+        - field: gmd:features
+          suggestions:
+            - uuidref
+        - field: gmd:featureInstances
+          suggestions:
+            - uuidref
+        - field: gmd:attributeInstances
+          suggestions:
+            - uuidref
+        - field: gmd:propertyType
+          suggestions:
+            - uuidref
+        - field: gmd:featureType
+          suggestions:
+            - uuidref
+        - field: gmd:featureAttribute
+          suggestions:
+            - uuidref
+        - field: srv:operatesOn
+          suggestions:
+            - uuidref
+        - field: gmd:source
+          suggestions:
+            - uuidref
+        - field: gml:Polygon
+          suggestions:
+            - srsName
+        - field: gml:descriptionReference
+          suggestions:
+            - xlink:href
+        - field: gmd:MD_Constraints
+          suggestions:
+            - gmd:useLimitation
+        - field: gmd:MD_LegalConstraints
+          suggestions:
+            - gmd:useLimitation
+            - gmd:accessConstraints
+            - gmd:useConstraints
+            - gmd:otherContraints
+        - field: gmd:MD_SecurityContraints
+          suggestions:
+            - gmd:classification
+            - gmd:useLimitation
+        - field: gmd:dateOfNextUpdate
+          suggestions:
+            - gco:Date

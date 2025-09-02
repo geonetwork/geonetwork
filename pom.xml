@@ -319,6 +319,7 @@
                 <exclude>src/*/resources/schemas/iso19139/schema2007/**</exclude>
                 <exclude>src/*/resources/schemas/iso19139/schema/**</exclude>
                 <exclude>src/*/resources/schemas/iso19115-3/schema/**</exclude>
+                <exclude>src/*/resources/schemas/iso19139.nl.geografie.2.1.0/schema/**</exclude>
               </excludes>
             </licenseSet>
           </licenseSets>

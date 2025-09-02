@@ -61,6 +61,11 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
+      <artifactId>gn-schema-iso19139.nl.geografie.2.1.0</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
       <artifactId>gn-legacy-utility</artifactId>
       <version>${project.version}</version>
     </dependency>

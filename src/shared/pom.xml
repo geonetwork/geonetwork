@@ -39,5 +39,6 @@
     <module>formatter</module>
     <module>schema-iso19115-3</module>
     <module>schema-iso19139</module>
+    <module>schema-iso19139.nl.geografie.2.1.0</module>
   </modules>
 </project>
