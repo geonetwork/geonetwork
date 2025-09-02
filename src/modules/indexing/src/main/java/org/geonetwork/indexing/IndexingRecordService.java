@@ -48,7 +48,6 @@ import org.geonetwork.index.model.record.IndexRecordFieldNames;
 import org.geonetwork.index.model.record.IndexRecords;
 import org.geonetwork.schemas.SchemaManager;
 import org.geonetwork.utility.xml.XsltUtil;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -95,21 +94,15 @@ public class IndexingRecordService {
 
     /** Collect properties from the database metadata and apply XSLT to extract fields from XML document.. */
     public IndexRecords collectProperties(String schema, List<Metadata> schemaRecords) {
-        String schemasResourcesPath =
-                schemaManager.getSchemaPluginByIdentifier(schema).getSchemasResourcePath();
-
-        String indexingXsltFileName = String.format("%s/indexing/%s.xsl", schemasResourcesPath, schema);
+        String indexingXsltFileName = String.format("indexing/%s.xsl", schema);
         URL indexingXsltFile = null;
         try {
-            indexingXsltFile = new ClassPathResource(indexingXsltFileName).getURL();
+            indexingXsltFile = schemaManager
+                    .getSchemaDir(schema)
+                    .resolve(indexingXsltFileName)
+                    .toUri()
+                    .toURL();
         } catch (IOException ioSchemaFileException) {
-            if (schema.startsWith("iso19")) {
-                try {
-                    indexingXsltFile = new ClassPathResource("xslt/indexing/iso.xsl").getURL();
-                } catch (IOException isoFileException) {
-                    // Should not happen
-                }
-            }
             //      report.setNumberOfRecordsWithUnsupportedSchema(schemaRecords.size());
             log.atError()
                     .log(

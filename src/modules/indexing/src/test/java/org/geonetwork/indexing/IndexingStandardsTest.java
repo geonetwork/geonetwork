@@ -39,13 +39,10 @@ class IndexingStandardsTest {
 
     @ParameterizedTest
     @ValueSource(
-            strings = {
-                "iso19115-3_dataset",
-                "iso19115-3_datamodel",
-                "iso19115-3_service",
-                "iso19139_dataset",
-                "dublin-core_dataset",
-                "iso19110_datamodel"
+            strings = {"iso19115-3_dataset", "iso19115-3_datamodel", "iso19115-3_service", "iso19139_dataset"
+                // TODO: Schema not available
+                //                "dublin-core_dataset",
+                //                "iso19110_datamodel"
             })
     void test_indexing_dataset(String file) throws Exception {
         String schema = StringUtils.split(file, "_")[0];

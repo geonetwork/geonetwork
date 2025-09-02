@@ -19,6 +19,9 @@ import org.geonetwork.GeonetworkTestingApplication;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.index.client.IndexClient;
+import org.geonetwork.schemas.SchemaManager;
+import org.geonetwork.schemas.iso19115_3.ISO19115_3Configuration;
+import org.geonetwork.schemas.iso19115_3.ISO19115_3SchemaPlugin;
 import org.geonetwork.testing.ElasticsearchBasedIntegrationTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -27,7 +30,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(classes = {GeonetworkTestingApplication.class})
+@SpringBootTest(
+        classes = {
+            GeonetworkTestingApplication.class,
+            ISO19115_3Configuration.class,
+            ISO19115_3SchemaPlugin.class,
+            SchemaManager.class
+        })
 @ActiveProfiles(value = {"test"})
 class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
 

@@ -40,13 +40,13 @@
     <xsl:variable name="format" select="'#0.000000'"></xsl:variable>
 
     <xsl:variable name="w"
-                  select="format-number(./*:westBoundLongitude/*:Decimal/text(), $format)"/>
+                  select="./*:westBoundLongitude/*:Decimal/text()"/>
     <xsl:variable name="e"
-                  select="format-number(./*:eastBoundLongitude/*:Decimal/text(), $format)"/>
+                  select="./*:eastBoundLongitude/*:Decimal/text()"/>
     <xsl:variable name="n"
-                  select="format-number(./*:northBoundLatitude/*:Decimal/text(), $format)"/>
+                  select="./*:northBoundLatitude/*:Decimal/text()"/>
     <xsl:variable name="s"
-                  select="format-number(./*:southBoundLatitude/*:Decimal/text(), $format)"/>
+                  select="./*:southBoundLatitude/*:Decimal/text()"/>
 
     <xsl:choose>
       <xsl:when test="-180 &lt;= number($e) and number($e) &lt;= 180 and

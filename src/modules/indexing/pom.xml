@@ -62,6 +62,16 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-schema-iso19115-3</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-schema-iso19139</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test-autoconfigure</artifactId>
       <scope>test</scope>
@@ -92,6 +102,12 @@
     <testResources>
       <testResource>
         <directory>${maven.multiModuleProjectDirectory}/config</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <directory>${maven.multiModuleProjectDirectory}/src/shared/index-model/src/test/resources</directory>
         <includes>
           <include>**/*</include>
         </includes>

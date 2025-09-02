@@ -209,7 +209,7 @@
     "default" : "Région wallonne",
     "langfre" : "Région wallonne"
   } ],
-  "geom" : [ {"type": "Polygon","coordinates": [[[2.750000,49.450000],[6.500000,49.450000],[6.500000,50.850000],[2.750000,50.850000],[2.750000,49.450000]]]} ],
+  "geom" : [ "{\"type\":\"Polygon\",\"coordinates\":[[[2.75,49.45],[6.5,49.45],[6.5,50.85],[2.75,50.85],[2.75,49.45]]]}" ],
   "location" : [ "50.150000000000006,4.625" ],
   "resourceTemporalExtentDateRange" : [ {
     "gte" : "2020-03-31T22:00:00.000Z",

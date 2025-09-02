@@ -76,7 +76,7 @@ public class MetadataManager implements IMetadataManager {
         // In this case, UFO is mandatory. Should we always use UFO?
 
         if (updateDateStamp) {
-            if (StringUtils.isEmpty(changeDate)) {
+            if (StringUtils.hasLength(changeDate)) {
                 metadataEntity.setChangedate(new ISODate().getDateAndTimeUtc());
             } else {
                 metadataEntity.setChangedate(new ISODate(changeDate).getDateAndTimeUtc());
@@ -134,6 +134,7 @@ public class MetadataManager implements IMetadataManager {
         return metadataEntity;
     }
 
+    @SuppressWarnings("unused")
     public Element getMetadataDocumentForEditing(String id, boolean withValidationErrors, boolean keepXlinkAttributes)
             throws Exception {
         //    Element metadataXml = getXmlSerializer().selectNoXLinkResolver(id, false, applyOperationsFilters);
@@ -207,8 +208,8 @@ public class MetadataManager implements IMetadataManager {
         // TODO String harvestUuid = metadata.getHarvestInfo().getUuid();
         String popularity = "" + metadata.getPopularity();
         String rating = "" + metadata.getRating();
-        String owner = "" + metadata.getOwner();
-        Integer groupOwner = metadata.getGroupowner();
+        //        String owner = "" + metadata.getOwner();
+        //        Integer groupOwner = metadata.getGroupowner();
         String displayOrder = "" + metadata.getDisplayorder();
 
         Element info = new Element(Edit.RootChild.INFO, Edit.NAMESPACE);

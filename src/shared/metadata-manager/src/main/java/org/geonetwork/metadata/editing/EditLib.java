@@ -865,14 +865,14 @@ public class EditLib {
 
     protected Pair<Element, String> findLongestMatch(
             final Element metadataRecord,
-            final XSDSchemaDefinition XSDSchemaDefinition,
+            final XSDSchemaDefinition xsdSchemaDefinition,
             final List<String> xpathPropertyParts) {
         BitSet bitSet = new BitSet(xpathPropertyParts.size());
         return findLongestMatch(
                 metadataRecord,
                 metadataRecord,
                 0,
-                XSDSchemaDefinition,
+                xsdSchemaDefinition,
                 xpathPropertyParts.size() / 2,
                 xpathPropertyParts,
                 bitSet);
@@ -882,7 +882,7 @@ public class EditLib {
             final Element metadataRecord,
             final Element bestMatch,
             final int indexOfBestMatch,
-            final XSDSchemaDefinition XSDSchemaDefinition,
+            final XSDSchemaDefinition xsdSchemaDefinition,
             final int nextIndex,
             final List<String> xpathPropertyParts,
             BitSet visited) {
@@ -898,7 +898,7 @@ public class EditLib {
         if (xpathPropertyParts.size() - nextIndex < 3) {
             for (int i = xpathPropertyParts.size() - 1; i > -1; i--) {
                 final String xpath = String.join("/", xpathPropertyParts.subList(0, i));
-                SelectResult result = trySelectNode(metadataRecord, XSDSchemaDefinition, xpath, false);
+                SelectResult result = trySelectNode(metadataRecord, xsdSchemaDefinition, xpath, false);
                 if (result.result instanceof Element) {
                     return Pair.read(
                             (Element) result.result,
@@ -911,20 +911,20 @@ public class EditLib {
         } else {
             final SelectResult found = trySelectNode(
                     metadataRecord,
-                    XSDSchemaDefinition,
+                    xsdSchemaDefinition,
                     String.join("/", xpathPropertyParts.subList(0, nextIndex)),
                     false);
             if (found.result instanceof Element newBest) {
                 int newIndex = nextIndex + ((xpathPropertyParts.size() - nextIndex) / 2);
                 return findLongestMatch(
-                        metadataRecord, newBest, nextIndex, XSDSchemaDefinition, newIndex, xpathPropertyParts, visited);
+                        metadataRecord, newBest, nextIndex, xsdSchemaDefinition, newIndex, xpathPropertyParts, visited);
             } else if (!found.error) {
                 int newNextIndex = indexOfBestMatch + ((nextIndex - indexOfBestMatch) / 2);
                 return findLongestMatch(
                         metadataRecord,
                         bestMatch,
                         indexOfBestMatch,
-                        XSDSchemaDefinition,
+                        xsdSchemaDefinition,
                         newNextIndex,
                         xpathPropertyParts,
                         visited);
@@ -934,7 +934,7 @@ public class EditLib {
                         metadataRecord,
                         bestMatch,
                         indexOfBestMatch,
-                        XSDSchemaDefinition,
+                        xsdSchemaDefinition,
                         newNextIndex,
                         xpathPropertyParts,
                         visited);
@@ -943,7 +943,7 @@ public class EditLib {
     }
 
     private SelectResult trySelectNode(
-            Element metadataRecord, XSDSchemaDefinition XSDSchemaDefinition, String xpathProperty, boolean allNodes) {
+            Element metadataRecord, XSDSchemaDefinition xsdSchemaDefinition, String xpathProperty, boolean allNodes) {
         if (xpathProperty.trim().isEmpty()) {
             List<Object> list = new ArrayList<>();
             list.add(metadataRecord);
@@ -951,7 +951,7 @@ public class EditLib {
         }
 
         // Initialize the Xpath with all schema namespaces
-        Map<String, String> mapNs = XSDSchemaDefinition.getSchemaNSWithPrefix();
+        Map<String, String> mapNs = xsdSchemaDefinition.getSchemaNSWithPrefix();
 
         try {
             JDOMXPath xpath = new JDOMXPath(xpathProperty);
@@ -974,12 +974,6 @@ public class EditLib {
     public void clearVersion(String id) {
         htVersions.remove(id);
     }
-
-    // --------------------------------------------------------------------------
-    // ---
-    // --- Private methods
-    // ---
-    // --------------------------------------------------------------------------
 
     private List<Element> filterOnQname(List<Element> children, String qname) {
         @SuppressWarnings("JdkObsolete")

@@ -37,9 +37,7 @@ public class MetadataSchemaAutodetector {
      * dependencies.
      *
      * @param md Metadata to identify the schema that belongs to.
-     * @return Schema idenfier for the metadata provided.
-     * @throws JDOMException
-     * @throws NoSchemaMatchesException
+     * @return Schema identifier for the metadata provided.
      */
     public String autodetectSchema(Element md) throws JDOMException, NoSchemaMatchesException {
         Iterator<String> pluginDependenciesIterator = schemaPluginDependencies.iterator();

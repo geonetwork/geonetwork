@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,7 @@ import org.jdom.filter.Filter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.testcontainers.shaded.com.google.common.base.Splitter;
 
 /** Utilities. */
 @Component
@@ -85,12 +87,13 @@ public class EditUtils {
 
     /** Visit all descendants of an element and add an empty geonet:ref element for later use by the editor. */
     protected static void addMissingGeoNetRef(Element element) {
-        Iterator<Object> descendants = element.getDescendants();
+        Iterator descendants = element.getDescendants();
         List<Object> list = List.of(descendants);
 
         for (Object descendant : list) {
             if (descendant instanceof Element e) {
-                if (e.getName() != Edit.RootChild.ELEMENT && e.getNamespace() != Edit.NAMESPACE) {
+                if (!e.getName().equals(Edit.RootChild.ELEMENT)
+                        && !e.getNamespace().equals(Edit.NAMESPACE)) {
                     Element geonetRef = e.getChild(Edit.RootChild.ELEMENT, Edit.NAMESPACE);
                     if (geonetRef == null) {
                         geonetRef = new Element(Edit.RootChild.ELEMENT, Edit.NAMESPACE);
@@ -258,10 +261,10 @@ public class EditUtils {
 
                 SchemaPlugin schemaPlugin = SchemaManager.getSchemaPlugin(schema);
                 if (schemaPlugin instanceof MultilingualSchemaPlugin msp) {
-                    String[] ids = ref.split("_");
+                    List<String> ids = Splitter.on('_').splitToList(ref);
                     // --- search element in current parent
-                    Element parent = editLib.findElement(md, ids[2]);
-                    String language = ids[1];
+                    Element parent = editLib.findElement(md, ids.get(2));
+                    String language = ids.get(1);
                     List<Element> elems = msp.getTranslationForElement(parent, language);
 
                     // Element exists, set the value
@@ -615,7 +618,7 @@ public class EditUtils {
         Element info = null;
 
         if (md.getChild(Edit.RootChild.INFO, Edit.NAMESPACE) != null) {
-            info = (Element) (md.getChild(Edit.RootChild.INFO, Edit.NAMESPACE)).clone();
+            info = (Element) md.getChild(Edit.RootChild.INFO, Edit.NAMESPACE).clone();
             md.removeChild(Edit.RootChild.INFO, Edit.NAMESPACE);
         }
 
@@ -721,7 +724,8 @@ public class EditUtils {
         Element md = getMetadataFromSession(id);
 
         // --- locate the geonet:info element and clone for later re-use
-        Element info = (Element) (md.getChild(Edit.RootChild.INFO, Edit.NAMESPACE)).clone();
+        Element info =
+                (Element) md.getChild(Edit.RootChild.INFO, Edit.NAMESPACE).clone();
         md.removeChild(Edit.RootChild.INFO, Edit.NAMESPACE);
 
         // --- get element to remove
@@ -797,10 +801,9 @@ public class EditUtils {
      * @param ref Attribute identifier (eg. _169_uom).
      */
     public synchronized Element deleteAttributeEmbedded(String id, String ref) throws Exception {
-
-        String[] token = ref.split("_");
-        String elementId = token[1];
-        String attributeName = token[2];
+        List<String> token = Splitter.on('_').splitToList(ref);
+        String elementId = token.get(1);
+        String attributeName = token.get(2);
         Element result = new Element(Edit.RootChild.NULL, Edit.NAMESPACE);
 
         // --- get metadata from session
@@ -861,7 +864,7 @@ public class EditUtils {
         int i = -1;
         for (Element element : list) {
             i++;
-            if (element == elSwap) {
+            if (Objects.equals(element, elSwap)) {
                 iSwapIndex = i;
                 break;
             }
@@ -877,6 +880,7 @@ public class EditUtils {
     }
 
     /** For Ajax Editing : retrieves metadata from session and validates it. */
+    @SuppressWarnings("unused")
     public Element validateMetadataEmbedded(String id, String lang) throws Exception {
         Metadata metadataEntity = getMetadataEntity(id);
         String schema = metadataEntity.getSchemaid();

@@ -20,6 +20,7 @@ import org.springframework.core.io.Resource;
 
 public class MetadataSchemaAutodetectorTest {
     @Test
+    @SuppressWarnings("unchecked")
     public void compileAutodetectMetadata() throws Exception {
         // ISO19139 metadata
         Resource iso19139resource = new ClassPathResource("xml/iso19139.xml");
@@ -35,7 +36,7 @@ public class MetadataSchemaAutodetectorTest {
 
         List<Namespace> namespacesIso19139 = new ArrayList<>();
         namespacesIso19139.add(metadata.getNamespace());
-        namespacesIso19139.addAll(metadata.getAdditionalNamespaces());
+        namespacesIso19139.addAll((List<Namespace>) metadata.getAdditionalNamespaces());
 
         XSDSchemaDefinition xsdSchemaDefinitionIso19139 = mock(XSDSchemaDefinition.class);
         when(xsdSchemaDefinitionIso19139.getNamespaces()).thenReturn(namespacesIso19139);
@@ -51,7 +52,7 @@ public class MetadataSchemaAutodetectorTest {
 
         List<Namespace> namespacesIso19139NL = new ArrayList<>();
         namespacesIso19139NL.add(metadataNL.getNamespace());
-        namespacesIso19139NL.addAll(metadataNL.getAdditionalNamespaces());
+        namespacesIso19139NL.addAll((List<Namespace>) metadataNL.getAdditionalNamespaces());
 
         XSDSchemaDefinition xsdSchemaDefinitionIso19139NL = mock(XSDSchemaDefinition.class);
         when(xsdSchemaDefinitionIso19139NL.getNamespaces()).thenReturn(namespacesIso19139NL);
