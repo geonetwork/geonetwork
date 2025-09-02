@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
-
--->
 <schema targetNamespace="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.2.0">
 	<annotation>
 		<appinfo source="urn:ogc:specification:gml:schema-xsd:direction:3.2.0">direction.xsd</appinfo>
@@ -49,9 +43,9 @@ The direction schema components provide the GML Application Schema developer wit
 	<complexType name="DirectionDescriptionType">
 		<annotation>
 			<documentation>direction descriptions are specified by a compass point code, a keyword, a textual description or a reference to a description.
-A gml:compassPoint is specified by a simple enumeration.  	
-In addition, thre elements to contain text-based descriptions of direction are provided.  
-If the direction is specified using a term from a list, gml:keyword should be used, and the list indicated using the value of the codeSpace attribute. 
+A gml:compassPoint is specified by a simple enumeration.
+In addition, thre elements to contain text-based descriptions of direction are provided.
+If the direction is specified using a term from a list, gml:keyword should be used, and the list indicated using the value of the codeSpace attribute.
 if the direction is decribed in prose, gml:direction or gml:reference should be used, allowing the value to be included inline or by reference.</documentation>
 		</annotation>
 		<choice>

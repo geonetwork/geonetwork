@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
-
--->
 <schema targetNamespace="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:sch="http://www.ascc.net/xml/schematron" xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="3.2.0">
 	<annotation>
 		<appinfo source="urn:ogc:specification:gml:schema-xsd:geometryAggregates:3.2.0">geometryAggregates.xsd</appinfo>
@@ -37,7 +31,7 @@ Geometric aggregates (i.e. instances of a subtype of gml:AbstractGeometricAggreg
 	</complexType>
 	<element name="MultiGeometry" type="gml:MultiGeometryType" substitutionGroup="gml:AbstractGeometricAggregate">
 		<annotation>
-			<documentation>gml:MultiGeometry is a collection of one or more GML geometry objects of arbitrary type. 
+			<documentation>gml:MultiGeometry is a collection of one or more GML geometry objects of arbitrary type.
 The members of the geometric aggregate may be specified either using the "standard" property (gml:geometryMember) or the array property (gml:geometryMembers). It is also valid to use both the "standard" and the array properties in the same collection.</documentation>
 		</annotation>
 	</element>

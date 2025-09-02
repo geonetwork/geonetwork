@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
-
--->
 <schema targetNamespace="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="3.2.0">
 	<annotation>
 		<appinfo source="urn:ogc:specification:gml:schema-xsd:geometryBasic2d:3.2.0">geometryBasic2d.xsd</appinfo>
@@ -66,7 +60,7 @@
 	</complexType>
 	<element name="Polygon" type="gml:PolygonType" substitutionGroup="gml:AbstractSurface">
 		<annotation>
-			<documentation>A Polygon is a special surface that is defined by a single surface patch (see D.3.6). The boundary of this patch is coplanar and the polygon uses planar interpolation in its interior. 
+			<documentation>A Polygon is a special surface that is defined by a single surface patch (see D.3.6). The boundary of this patch is coplanar and the polygon uses planar interpolation in its interior.
 The elements exterior and interior describe the surface boundary of the polygon.</documentation>
 		</annotation>
 	</element>

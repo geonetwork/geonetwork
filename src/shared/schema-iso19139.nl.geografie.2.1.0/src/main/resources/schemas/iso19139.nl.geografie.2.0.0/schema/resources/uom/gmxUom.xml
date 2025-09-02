@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
-
--->
 <CT_UomCatalogue xmlns="http://www.isotc211.org/2005/gmx" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.isotc211.org/2005/gmx ../../gmx/gmx.xsd http://www.isotc211.org/2005/gco ../../gco/gco.xsd http://www.opengis.net/gml ../../gml/gml.xsd http://www.w3.org/1999/xlink ../../xlink/xlink.xsd">
 	<!--=====Catalogue description=====-->
 	<name><gco:CharacterString>gmxUom</gco:CharacterString></name>
