@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.geonetwork.ogcapi.service.configuration.*;
-import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,7 @@ public class FacetsResponseInjector {
     HistogramBucketReJiggler histogramBucketReJiggler;
 
     @Autowired
-    ExtraElasticPropertiesService extraElasticPropertiesService;
+    DynamicPropertiesFacade dynamicPropertiesFacade;
 
     public enum SortType {
         STRING,
@@ -51,7 +51,7 @@ public class FacetsResponseInjector {
     public void injectFacets(
             OgcApiRecordsGetRecords200ResponseDto webResponse, SearchResponse<IndexRecord> searchResponse) {
 
-        var facets = extraElasticPropertiesService.getFacetConfigs();
+        var facets = this.dynamicPropertiesFacade.getFacetConfigs();
 
         if (facets == null || facets.isEmpty()) {
             return; // nothing to doOgcApiItemsApi.java
@@ -61,8 +61,7 @@ public class FacetsResponseInjector {
         for (var f : facets) {
             var name = f.getFacetName();
 
-            var summary =
-                    setupSummary(extraElasticPropertiesService.getFacetsDefaultBucketCount(), name, f, searchResponse);
+            var summary = setupSummary(dynamicPropertiesFacade.getDefaultFacetsBucketCount(), name, f, searchResponse);
 
             result.put(name, summary);
         }
@@ -154,11 +153,7 @@ public class FacetsResponseInjector {
 
         SortType sortType = SortType.NUMBER;
         var ogcProperty = histogramDto.getField().getOgcProperty();
-        var type = this.extraElasticPropertiesService
-                .getElasticTypingSystem()
-                .getFinalElasticTypes()
-                .get(ogcProperty)
-                .getType();
+        var type = this.dynamicPropertiesFacade.getByOgcProperty(ogcProperty).getType();
         if (type == SimpleType.DATE) {
             sortType = SortType.DATE;
         }

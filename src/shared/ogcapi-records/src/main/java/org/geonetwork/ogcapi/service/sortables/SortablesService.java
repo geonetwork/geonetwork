@@ -12,15 +12,12 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonPropertyDt
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
-import org.geonetwork.ogcapi.service.indexConvert.dynamic.ElasticTypingSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.w3.xlink.Simple;
 
 @Component
 @Slf4j(topic = "org.fao.geonet.ogcapi")
 public class SortablesService {
-
 
     @Autowired
     DynamicPropertiesFacade dynamicPropertiesFacade;
@@ -40,7 +37,7 @@ public class SortablesService {
     public Map<String, OgcApiRecordsJsonPropertyDto> createProperties() {
         var props = new HashMap<String, OgcApiRecordsJsonPropertyDto>();
 
-        //todo this is the hard-coded ID sortable
+        // todo this is the hard-coded ID sortable
         var p = new OgcApiRecordsJsonPropertyDto();
         p.setType("string");
         p.setTitle("The unique identifier for this record.");

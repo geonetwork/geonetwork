@@ -32,7 +32,7 @@ import org.elasticsearch.geometry.Rectangle;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGnElasticDto;
 import org.geonetwork.ogcapi.service.configuration.OgcApiSearchConfiguration;
 import org.geonetwork.ogcapi.service.cql.CqlToElasticSearch;
-import org.geonetwork.ogcapi.service.indexConvert.dynamic.ElasticTypingSystem;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -77,7 +77,7 @@ public class RecordsEsQueryBuilder {
     CqlToElasticSearch cqlToElasticSearch;
 
     @Autowired
-    ElasticTypingSystem elasticTypingSystem;
+    DynamicPropertiesFacade dynamicPropertiesFacade;
 
     public RecordsEsQueryBuilder(OgcApiSearchConfiguration configuration) {
         this.configuration = configuration;
@@ -128,10 +128,8 @@ public class RecordsEsQueryBuilder {
                 // TODO: don't hardcode this - see  OgcApiCollectionsApi
                 String elasticFieldName = fieldName.equals("id")
                         ? "uuid"
-                        : this.elasticTypingSystem
-                                .getFinalElasticTypesByOgc()
-                                .get(fieldName)
-                                .getConfig()
+                        : this.dynamicPropertiesFacade
+                                .getUserConfigByOgcProperty(fieldName)
                                 .getElasticProperty();
 
                 var sort = new SortOptions.Builder()

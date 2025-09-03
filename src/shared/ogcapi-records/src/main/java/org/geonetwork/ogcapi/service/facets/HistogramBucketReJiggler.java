@@ -12,7 +12,7 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetHistogram
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetResultBucketDto;
 import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
-import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,18 +32,15 @@ import org.springframework.stereotype.Component;
 public class HistogramBucketReJiggler {
 
     @Autowired
-    ExtraElasticPropertiesService extraElasticPropertiesService;
+    DynamicPropertiesFacade dynamicPropertiesFacade;
 
     public List<OgcApiRecordsFacetResultBucketDto> reJiggle(
             List<OgcApiRecordsFacetResultBucketDto> buckets, OgcFacetConfig histogramInfo) {
 
         var dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.NUMBER;
         var ogcProperty = histogramInfo.getField().getOgcProperty();
-        var type = this.extraElasticPropertiesService
-                .getElasticTypingSystem()
-                .getFinalElasticTypes()
-                .get(ogcProperty)
-                .getType();
+        var type = dynamicPropertiesFacade.getByOgcProperty(ogcProperty).getType();
+
         if (type == SimpleType.DATE) {
             dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.DATE;
         }

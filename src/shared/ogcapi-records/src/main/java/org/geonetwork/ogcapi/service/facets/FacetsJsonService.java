@@ -14,8 +14,7 @@ import org.geonetwork.ogcapi.records.generated.model.*;
 import org.geonetwork.ogcapi.service.configuration.BucketSorting;
 import org.geonetwork.ogcapi.service.configuration.FacetType;
 import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
-import org.geonetwork.ogcapi.service.indexConvert.dynamic.ElasticTypingSystem;
-import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +23,7 @@ import org.springframework.stereotype.Service;
 public class FacetsJsonService {
 
     @Autowired
-    public ExtraElasticPropertiesService extraElasticPropertiesService;
-
-    @Autowired
-    public ElasticTypingSystem elasticTypingSystem;
+    DynamicPropertiesFacade dynamicPropertiesFacade;
 
     public OgcApiRecordsFacetsDto buildFacets(String catalogId) {
         var result = new OgcApiRecordsFacetsDto();
@@ -35,7 +31,7 @@ public class FacetsJsonService {
         result.setTitle("Facets for catalog " + catalogId);
         result.setFacets(new HashMap<>());
 
-        for (var facet : extraElasticPropertiesService.getFacetConfigs()) {
+        for (var facet : this.dynamicPropertiesFacade.getFacetConfigs()) {
             if (facet.getFacetType() == FacetType.TERM) {
                 var f = createTerm(facet);
                 result.getFacets().put(facet.getFacetName(), f);
@@ -100,9 +96,8 @@ public class FacetsJsonService {
         }
 
         var dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.NUMBER;
-        if (elasticTypingSystem
-                        .getFinalElasticTypes()
-                        .get(facet.getField().getElasticProperty())
+        if (dynamicPropertiesFacade
+                        .getByElasticProperty(facet.getField().getElasticProperty())
                         .getType()
                 == DATE) {
             dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.DATE;

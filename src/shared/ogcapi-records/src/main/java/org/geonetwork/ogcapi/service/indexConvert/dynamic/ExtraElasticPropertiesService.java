@@ -9,7 +9,6 @@ import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +16,6 @@ import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
-import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,35 +43,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ExtraElasticPropertiesService {
 
-    @Getter
     ElasticTypingSystem elasticTypingSystem;
 
-    @Getter
     OgcElasticFieldsMapperConfig config; // user-configured fields
 
     // for test cases
     public ExtraElasticPropertiesService(OgcElasticFieldsMapperConfig config, ElasticTypingSystem elasticTypingSystem) {
         this.config = config;
         this.elasticTypingSystem = elasticTypingSystem;
-    }
-
-    public int getFacetsDefaultBucketCount() {
-        return config.getDefaultBucketCount();
-    }
-
-    public List<OgcFacetConfig> getFacetConfigs() {
-        var result = new ArrayList<OgcFacetConfig>();
-        for (var field : config.getFields()) {
-            if (field.getFacetsConfig() == null || field.getFacetsConfig().isEmpty()) {
-                continue;
-            }
-            for (var facetConfig : field.getFacetsConfig()) {
-                facetConfig.setField(field); // parent link
-                result.add(facetConfig);
-            }
-        }
-
-        return result;
     }
 
     /**

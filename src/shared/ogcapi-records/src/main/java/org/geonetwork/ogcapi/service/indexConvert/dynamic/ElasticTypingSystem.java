@@ -163,7 +163,7 @@ public class ElasticTypingSystem {
         return elasticProperty;
     }
 
-  @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     public Object convert(String elasticPath, Object value) {
         if (value == null) {
             return null; // cannot convert

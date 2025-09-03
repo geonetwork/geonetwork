@@ -15,7 +15,7 @@ import org.geonetwork.ogcapi.service.configuration.FacetType;
 import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
 import org.geonetwork.ogcapi.service.cql.CqlToElasticSearch;
-import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,22 +27,20 @@ public class RecordsFacetsElasticQueryBuilder {
     CqlToElasticSearch cqlToElasticSearch;
 
     @Autowired
-    ExtraElasticPropertiesService extraElasticPropertiesService;
+    DynamicPropertiesFacade dynamicPropertiesFacade;
 
     public Map<String, Aggregation> createElasticAggregationsFromFacetsDefinition() {
-        var facets = extraElasticPropertiesService.getFacetConfigs();
+        var facets = dynamicPropertiesFacade.getFacetConfigs();
 
         var aggregations = new HashMap<String, Aggregation>();
 
-        var defaultBucketCount = extraElasticPropertiesService.getConfig().getDefaultBucketCount();
+        var defaultBucketCount = dynamicPropertiesFacade.getDefaultFacetsBucketCount();
 
         for (var facetInfo : facets) {
             var facetName = facetInfo.getFacetName();
             var elasticProperty = facetInfo.getField().getElasticProperty();
-            var type = this.extraElasticPropertiesService
-                    .getElasticTypingSystem()
-                    .getFinalElasticTypes()
-                    .get(elasticProperty)
+            var type = this.dynamicPropertiesFacade
+                    .getByElasticProperty(elasticProperty)
                     .getType();
 
             if (facetInfo.getFacetType() == FacetType.TERM) {

@@ -23,7 +23,6 @@ public class OpenApiConfiguration {
     @Autowired
     DynamicPropertiesFacade dynamicPropertiesFacade;
 
-
     //    @Value("${geonetwork.openapi.url:'http://localhost:7979'}")
     //    private String serverUrl;
 
@@ -73,6 +72,4 @@ public class OpenApiConfiguration {
             }
         };
     }
-
-
 }

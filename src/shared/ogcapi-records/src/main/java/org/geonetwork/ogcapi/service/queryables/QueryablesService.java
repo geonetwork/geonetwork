@@ -16,14 +16,14 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
 import org.springframework.stereotype.Service;
 
 /**
- *  Basic Service to handle Queryables according to the OGCAPI spec.
+ * Basic Service to handle Queryables according to the OGCAPI spec.
  *
  * <p>Queryables are broken into two main types: <br>
- *     1. "difficult" and "built-in" ones that are defined in the queryables.json file <br>
- *         a. "built-in" ones are the already-existing properties (defined by ogc) <br>
- *         b. "difficult" ones require querying multiple elastic json index properties
- *     2. "easy" ones that are from the dynamic properties config <br>
- * */
+ * 1. "difficult" and "built-in" ones that are defined in the queryables.json file <br>
+ * a. "built-in" ones are the already-existing properties (defined by ogc) <br>
+ * b. "difficult" ones require querying multiple elastic json index properties 2. "easy" ones that are from the dynamic
+ * properties config <br>
+ */
 @Service
 @Slf4j(topic = "org.fao.geonet.ogcapi.records")
 public class QueryablesService {
@@ -34,34 +34,33 @@ public class QueryablesService {
     /** full schema from queryables.json with elastic removed */
     public final OgcApiRecordsJsonSchemaDto truncatedJsonSchema = truncatedJsonSchema();
 
-
-
     public OgcApiRecordsJsonSchemaDto truncatedJsonSchema() {
-      var result = createQueryablesJsonSchema();
-      if (result != null && result.getProperties() != null) {
-        for (var prop : result.getProperties().values()) {
-          prop.setxGnElastic(null);
+        var result = createQueryablesJsonSchema();
+        if (result != null && result.getProperties() != null) {
+            for (var prop : result.getProperties().values()) {
+                prop.setxGnElastic(null);
+            }
         }
-      }
-      return result;
+        return result;
     }
 
-  /**
-   * This includes the defined in the queryables.json file as well as the dynamic ones.
-   * @return
-   */
-  public  OgcApiRecordsJsonSchemaDto createQueryablesJsonSchema() {
-      var result = readQueryablesJsonSchema();
+    /**
+     * This includes the defined in the queryables.json file as well as the dynamic ones.
+     *
+     * @return json schema object for the queryables.
+     */
+    public OgcApiRecordsJsonSchemaDto createQueryablesJsonSchema() {
+        var result = readQueryablesJsonSchema();
 
-      return result;
-  }
+        return result;
+    }
 
     /**
      * helper method to read the "queryables/queryables.json" resource into a JavaSchema.
      *
      * @return contents of "queryables/queryables.json"
      */
-    public  OgcApiRecordsJsonSchemaDto readQueryablesJsonSchema() {
+    public OgcApiRecordsJsonSchemaDto readQueryablesJsonSchema() {
         InputStream is = QueryablesService.class.getClassLoader().getResourceAsStream("queryables/queryables.json");
 
         try {

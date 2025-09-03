@@ -7,7 +7,6 @@ package org.geonetwork.ogcapi.service.configuration;
 
 import io.swagger.v3.oas.models.media.*;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonPropertyDto;
-import org.geonetwork.ogcapi.service.indexConvert.dynamic.ElasticTypeInfo;
 
 public enum SimpleType {
     DOUBLE,
@@ -16,21 +15,18 @@ public enum SimpleType {
     DATE,
     BOOLEAN;
 
-  public static void fillInOgc(SimpleType type, OgcApiRecordsJsonPropertyDto p) {
-      if (type == SimpleType.INTEGER || type == SimpleType.DOUBLE) {
-        p.setType("number");
-      } else if (type == SimpleType.STRING) {
-        p.setType("string");
-      } else if (type == SimpleType.DATE) {
-        p.setType("string");
-        p.setFormat("date");
-      } else if (type == SimpleType.BOOLEAN) {
-        p.setType("boolean");
-      } else {
-        throw new RuntimeException(
-          "don't know type - " + type);
-      }
+    public static void fillInOgc(SimpleType type, OgcApiRecordsJsonPropertyDto p) {
+        if (type == SimpleType.INTEGER || type == SimpleType.DOUBLE) {
+            p.setType("number");
+        } else if (type == SimpleType.STRING) {
+            p.setType("string");
+        } else if (type == SimpleType.DATE) {
+            p.setType("string");
+            p.setFormat("date");
+        } else if (type == SimpleType.BOOLEAN) {
+            p.setType("boolean");
+        } else {
+            throw new RuntimeException("don't know type - " + type);
+        }
     }
-
-
 }
