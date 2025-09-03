@@ -85,7 +85,7 @@ public class ExtraElasticPropertiesService {
      */
     public void inject(IndexRecord indexRecord, String iso3lang, OgcApiRecordsRecordGeoJSONDto result) {
         for (var field : config.getFields()) {
-            if (!field.getAddProperty()) {
+            if (!field.getAddPropertyToOutput()) {
                 continue;
             }
             try {

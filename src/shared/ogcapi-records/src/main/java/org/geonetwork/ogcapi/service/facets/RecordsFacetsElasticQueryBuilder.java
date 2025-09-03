@@ -153,7 +153,7 @@ public class RecordsFacetsElasticQueryBuilder {
         var filters = new HashMap<String, Query>();
         for (var f : filterDto.getFilters()) {
             var filterName = f.getFilterName();
-            var filterValueOgc = f.getFilterEquation();
+            var filterValueOgc = f.getFilterEquationCql();
 
             Query query = null;
             try {

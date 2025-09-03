@@ -67,7 +67,7 @@ public class FacetsJsonService {
         result.setxElasticProperty(facet.getField().getElasticProperty());
         result.setFilters(new HashMap<>());
         for (var filter : facet.getFilters()) {
-            result.getFilters().put(filter.getFilterName(), filter.getFilterEquation());
+            result.getFilters().put(filter.getFilterName(), filter.getFilterEquationCql());
         }
         return result;
     }

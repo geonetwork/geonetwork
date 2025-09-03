@@ -15,7 +15,6 @@ import java.util.*;
 import lombok.*;
 import org.apache.commons.compress.utils.Lists;
 import org.geonetwork.index.client.IndexClient;
-import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OverrideType;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
@@ -164,18 +163,7 @@ public class ElasticTypingSystem {
         return elasticProperty;
     }
 
-    @Getter
-    @Setter
-    @Builder
-    @AllArgsConstructor
-    @ToString
-    public static class ElasticTypeInfo {
-        private OgcElasticFieldMapperConfig config;
-        private boolean isList;
-        private SimpleType type;
-    }
-
-    @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
     public Object convert(String elasticPath, Object value) {
         if (value == null) {
             return null; // cannot convert

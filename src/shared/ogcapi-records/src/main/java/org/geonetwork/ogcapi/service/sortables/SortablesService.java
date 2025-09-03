@@ -11,16 +11,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonPropertyDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.ElasticTypingSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.w3.xlink.Simple;
 
 @Component
 @Slf4j(topic = "org.fao.geonet.ogcapi")
 public class SortablesService {
 
+
     @Autowired
-    private ElasticTypingSystem elasticTypingSystem;
+    DynamicPropertiesFacade dynamicPropertiesFacade;
 
     public OgcApiRecordsJsonSchemaDto buildSortables(String collectionId) {
         var result = new OgcApiRecordsJsonSchemaDto();
@@ -37,41 +40,21 @@ public class SortablesService {
     public Map<String, OgcApiRecordsJsonPropertyDto> createProperties() {
         var props = new HashMap<String, OgcApiRecordsJsonPropertyDto>();
 
+        //todo this is the hard-coded ID sortable
         var p = new OgcApiRecordsJsonPropertyDto();
         p.setType("string");
         p.setTitle("The unique identifier for this record.");
         p.setDescription("The unique identifier for this record.");
         props.put("id", p);
 
-        for (var field : this.elasticTypingSystem.getFinalElasticTypes().entrySet()) {
-            if (field.getValue().getConfig().getIsSortable() == null
-                    || !field.getValue().getConfig().getIsSortable()) {
-                continue;
-            }
+        for (var field : this.dynamicPropertiesFacade.getSortables()) {
             p = new OgcApiRecordsJsonPropertyDto();
-            p.setTitle(field.getValue().getConfig().getTitle());
-            p.setDescription(field.getValue().getConfig().getDescription());
+            p.setTitle(field.getConfig().getTitle());
+            p.setDescription(field.getConfig().getDescription());
 
-            var type = this.elasticTypingSystem
-                    .getFinalElasticTypes()
-                    .get(field.getValue().getConfig().getElasticProperty())
-                    .getType();
-            if (type == SimpleType.INTEGER || type == SimpleType.DOUBLE) {
-                p.setType("number");
-            } else if (type == SimpleType.STRING) {
-                p.setType("string");
-            } else if (type == SimpleType.DATE) {
-                p.setType("string");
-                p.setFormat("date");
-            } else if (type == SimpleType.BOOLEAN) {
-                p.setType("boolean");
-            } else {
-                throw new RuntimeException(
-                        "don't know type - " + field.getValue().getType());
-            }
-            props.put(field.getValue().getConfig().getOgcProperty(), p);
+            SimpleType.fillInOgc(field.getType(), p);
+            props.put(field.getConfig().getOgcProperty(), p);
         }
-
         return props;
     }
 }

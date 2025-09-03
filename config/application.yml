@@ -35,7 +35,7 @@ geonetwork:
         - ogcProperty: format
           elasticProperty: format
           indexRecordProperty: formats
-          addProperty: false
+          addPropertyToOutput: false
           facetsConfig:
             - facetName: format
               facetType: TERM
@@ -43,7 +43,7 @@ geonetwork:
         - ogcProperty: keywords
           elasticProperty: tag.langeng
           indexRecordProperty: tag.[*].["default"]
-          addProperty: false
+          addPropertyToOutput: false
           facetsConfig:
             - facetName: keywords
               facetType: TERM
@@ -79,9 +79,9 @@ geonetwork:
               facetType: FILTER
               filters:
                 - filterName: availableInDownloadService
-                  filterEquation: linkProtocol = 'OGC:WFS'
+                  filterEquationCql: linkProtocol = 'OGC:WFS'
                 - filterName: availableInViewService
-                  filterEquation: linkProtocol = 'OGC:WMS'
+                  filterEquationCql: linkProtocol = 'OGC:WMS'
         - ogcProperty: createDate
           elasticProperty: createDate
           indexRecordProperty: createDate
