@@ -45,7 +45,7 @@
     crossorigin="anonymous"></script>
 
   <script type="text/javascript">
-    fetch('/api/me')
+    fetch('api/me')
       .then((response) => response.json())
       .then((data) => {
         $('#user').html(data.username);
@@ -60,12 +60,28 @@
   <h1>Welcome to GeoNetwork</h1>
   <p>Your gateway to all your data, maps, services and more!</p>
 
+  <div class="container unauthenticated">
+    <a th:href="@{/srv}">GeoNetwork 4</a>
+    <br/>
+    <br/>
+    <a th:href="@{/ogcapi-records}">OGC API Records</a>
+    <br/>
+    <a th:href="@{/doc/api/index.html}">GeoNetwork 4 OpenAPI documentation</a>
+    <br/>
+    <a th:href="@{/doc/api/}">GeoNetwork 5 OpenAPI documentation</a>
+  </div>
+
+  <br/>
+
   <div>
     <div class="container unauthenticated">
       Sign in with
-      <a href="/signin">Geonetwork</a>,
-      <a href="/oauth2/authorization/github">GitHub</a>,
-      <a href="/oauth2/authorization/custom">Custom provider</a>
+      <br/>
+      <a th:href="@{/signin}">Geonetwork</a>
+      <br/>
+      <a th:href="@{/oauth2/authorization/github}">GitHub</a>
+      <br/>
+      <a th:href="@{/oauth2/authorization/custom}">Custom provider</a>
 
     </div>
     <div class="container authenticated" style="display:none">

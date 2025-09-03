@@ -42,7 +42,7 @@ public class HttpProxyConfiguration {
     @Bean
     RouterFunction<ServerResponse> universalProxy() {
         return route("geonetwork_proxy")
-                .route(path("/api/proxy"), http())
+                .route(path("/proxy"), http())
                 .before((ServerRequest serverRequest) -> {
                     String method = serverRequest.headers().firstHeader(X_METHOD);
                     if (method == null) {
