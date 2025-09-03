@@ -59,7 +59,8 @@
     <pmd.version>6.42.0</pmd.version>
     <errorProne.version>2.29.0</errorProne.version>
     <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
-
+    <geotools.version>32.2</geotools.version>
+    <jts.version>1.20.0</jts.version>
     <!-- build -->
     <fork.javac>false</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
@@ -151,6 +152,13 @@
         <version>${lombok.version}</version>
         <optional>true</optional>
       </dependency>
+
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-common</artifactId>
+        <version>2.6.0</version>
+      </dependency>
+
       <dependency>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -220,6 +228,31 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <repositories>
+
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>osgeo</id>
+      <name>OSGeo Release repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+    </repository>
+
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Snapshot repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+    </repository>
+
+  </repositories>
 
   <build>
     <pluginManagement>

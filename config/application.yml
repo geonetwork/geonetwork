@@ -3,7 +3,7 @@
 #
 #    Var                default                           meaning
 # --------------------------------------------------------------------------------------------------
-#  GN5_BASE_URL       http://localhost:7979/            Where is GN5 deployed.
+#  GN5_BASE_URL       http://localhost:7979/geonetwork   Where is GN5 deployed.
 #  GN4_BASE_URL       http://localhost:8080/geonetwork  Where is GN4?
 #  GN4_PROXY_BASE_URL http://localhost:7979/geonetwork  Where is proxied GN4?
 #  ELASTIC_URL        http://localhost:9200             Where is elastic?

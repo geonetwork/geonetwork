@@ -9,17 +9,10 @@
  */
 package org.geonetwork.ogcapi.service.search;
 
+import static co.elastic.clients.elasticsearch._types.query_dsl.Operator.And;
+
 import co.elastic.clients.elasticsearch._types.FieldValue;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.ChildScoreMode;
-import co.elastic.clients.elasticsearch._types.query_dsl.GeoBoundingBoxQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.RangeRelation;
-import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.json.JsonData;
 import com.google.common.base.Splitter;
 import jakarta.validation.Valid;
@@ -147,7 +140,7 @@ public class QueryToElastic {
      * @param lang3iso language
      * @return QueryBuilder with a data-based range query.
      */
-    private Query createVsDate(@Valid OgcApiRecordsGnElasticDto gnElasticInfo, String userSearchTerm, String lang3iso) {
+    public Query createVsDate(@Valid OgcApiRecordsGnElasticDto gnElasticInfo, String userSearchTerm, String lang3iso) {
 
         return RangeQuery.of(rq -> {
                     rq.field(gnElasticInfo.getElasticPath());
@@ -279,8 +272,9 @@ public class QueryToElastic {
         var path = gnElasticPath.getElasticPath().replace("${lang3iso}", lang3iso);
         var firstPartPath = path.substring(0, path.indexOf("."));
 
-        var matchQuery =
-                MatchQuery.of(mq -> mq.field(path).query(userSearchTerm2))._toQuery();
+        var matchQuery = MatchQuery.of(
+                        mq -> mq.field(path).query(userSearchTerm2).operator(And))
+                ._toQuery();
 
         var nestedQuery = NestedQuery.of(nq -> nq.path(firstPartPath)
                         .query(matchQuery)
@@ -312,7 +306,7 @@ public class QueryToElastic {
                         .fuzzyTranspositions(true)
                         .lenient(true)
                         .minimumShouldMatch("1")
-                        .operator(co.elastic.clients.elasticsearch._types.query_dsl.Operator.And)
+                        .operator(And)
                         .fuzziness("AUTO"))
                 ._toQuery();
         return multiMatchQuery;
@@ -331,11 +325,13 @@ public class QueryToElastic {
         var path = gnElasticPath.getElasticPath().replace("${lang3iso}", lang3iso);
 
         if (path.contains("*")) {
-            return MultiMatchQuery.of(mmq -> mmq.query(userSearchTerm2).fields(path))
+            return MultiMatchQuery.of(
+                            mmq -> mmq.query(userSearchTerm2).fields(path).operator(And))
                     ._toQuery();
         }
 
-        return MatchQuery.of(mq -> mq.field(path).query(userSearchTerm2))._toQuery();
+        return MatchQuery.of(mq -> mq.field(path).query(userSearchTerm2).operator(And))
+                ._toQuery();
     }
 
     /**

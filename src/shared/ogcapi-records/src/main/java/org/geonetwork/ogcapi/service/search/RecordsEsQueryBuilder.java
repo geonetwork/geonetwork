@@ -29,8 +29,9 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.geometry.Rectangle;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGnElasticDto;
 import org.geonetwork.ogcapi.service.configuration.OgcApiSearchConfiguration;
-import org.geonetwork.ogcapi.service.dataaccess.ElasticWithUserPermissions;
+import org.geonetwork.ogcapi.service.cql.CqlToElasticSearch;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,7 +74,7 @@ public class RecordsEsQueryBuilder {
     private OgcApiSearchConfiguration configuration;
 
     @Autowired
-    private ElasticWithUserPermissions elasticWithUserPermissions;
+    CqlToElasticSearch cqlToElasticSearch;
 
     public RecordsEsQueryBuilder(OgcApiSearchConfiguration configuration) {
         this.configuration = configuration;
@@ -161,21 +162,33 @@ public class RecordsEsQueryBuilder {
      * @param collectionFilter from DB source field
      * @return Query for the user's request.
      */
-    public Query buildUnderlyingQuery(OgcApiQuery ogcApiQuery, String collectionFilter) {
+    public Query buildUnderlyingQuery(OgcApiQuery ogcApiQuery, String collectionFilter) throws Exception {
 
         Query externalIdsQuery = null;
         Query geoQuery = null;
         Query configQuery = null;
         Query collectionQuery = null;
         Query queryablesQuery = null;
+        Query dataTimeQuery = null;
+        Query typeQuery = null;
+        Query idsQuery = null;
 
         Query textSearchQuery = QueryStringQuery.of(q -> q.query(buildFullTextSearchQuery(ogcApiQuery.getQ())))
                 ._toQuery();
 
+        // todo - verify that this is the right place to query...
         if (ogcApiQuery.getExternalIds() != null
                 && !ogcApiQuery.getExternalIds().isEmpty()) {
             externalIdsQuery = TermsQuery.of(q -> q.field("metadataIdentifier")
                             .terms(t -> t.value(ogcApiQuery.getExternalIds().stream()
+                                    .map(x -> FieldValue.of(x))
+                                    .toList())))
+                    ._toQuery();
+        }
+
+        if (ogcApiQuery.getIds() != null && !ogcApiQuery.getIds().isEmpty()) {
+            idsQuery = TermsQuery.of(q -> q.field("uuid")
+                            .terms(t -> t.value(ogcApiQuery.getIds().stream()
                                     .map(x -> FieldValue.of(x))
                                     .toList())))
                     ._toQuery();
@@ -206,11 +219,26 @@ public class RecordsEsQueryBuilder {
                     ._toQuery();
         }
 
+        if (ogcApiQuery.getDatetime() != null) {
+            var meta = new OgcApiRecordsGnElasticDto();
+            meta.elasticPath("resourceTemporalDateRange");
+            dataTimeQuery = queryToElastic.createVsDate(meta, ogcApiQuery.getDatetime(), null);
+        }
+
+        if (ogcApiQuery.getType() != null && !ogcApiQuery.getType().isEmpty()) {
+            var elasticPropertyName = "resourceType";
+            typeQuery = TermsQuery.of(t -> t.field(elasticPropertyName)
+                            .terms(x -> x.value(ogcApiQuery.getType().stream()
+                                    .map(y -> FieldValue.of(y))
+                                    .toList())))
+                    ._toQuery();
+        }
+
         if (ogcApiQuery.getPropValues() != null && !ogcApiQuery.getPropValues().isEmpty()) {
             queryablesQuery = queryToElastic.getQueryablesQuery(ogcApiQuery);
         }
 
-        var permissionQuery = elasticWithUserPermissions.createPermissionQuery();
+        var cqlQuery = cqlToElasticSearch.create(ogcApiQuery);
 
         var filters = Stream.of(
                         textSearchQuery,
@@ -219,7 +247,10 @@ public class RecordsEsQueryBuilder {
                         configQuery,
                         collectionQuery,
                         queryablesQuery,
-                        permissionQuery)
+                        dataTimeQuery,
+                        cqlQuery,
+                        typeQuery,
+                        idsQuery)
                 .filter(Objects::nonNull)
                 .toList();
 

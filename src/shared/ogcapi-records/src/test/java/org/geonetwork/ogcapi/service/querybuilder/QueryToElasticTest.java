@@ -462,8 +462,8 @@ public class QueryToElasticTest {
         paramMap.put(pname, new String[] {pvalue});
 
         // setup Query
-        var query =
-                queryBuilder.buildFromRequest("abc", null, null, null, null, null, null, null, null, null, paramMap);
+        var query = queryBuilder.buildFromRequest(
+                "abc", null, null, null, null, null, null, null, null, null, null, "cql2-text", null, paramMap);
 
         return query;
     }

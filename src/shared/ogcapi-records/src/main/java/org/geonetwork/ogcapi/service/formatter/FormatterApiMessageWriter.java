@@ -146,7 +146,7 @@ public class FormatterApiMessageWriter implements HttpMessageConverter<OgcApiRec
      * profile) <br>
      * 2. call the formatter, and set these in the config: <br>
      * + CollectionID (this is to setup links) <br>
-     * + which mimetype/profile we are creating (this is so links can differentiate between `self` and `alternative`
+     * + which mimetype/profile we are creating (this is so links can differentiate between `self` and `alternate`
      *
      * @param ogcApiRecordsJsonItemDto object to write
      * @param contentType what mimetype are we writing
