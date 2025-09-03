@@ -18,9 +18,9 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.geonetwork.schemas.model.schemaident.Formatter;
+import org.geonetwork.utility.MediaTypeAndProfile;
 import org.geonetwork.utility.MediaTypeAndProfileBuilder;
 import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,29 +84,18 @@ public class FormattingController {
             @Parameter(description = "Formatter type to use.") @PathVariable(value = "formatterId")
                     final String formatterId,
             @Parameter(description = API_PARAM_RECORD_UUID, required = true) @PathVariable String metadataUuid,
-            //        @RequestParam(
-            //            value = "width",
-            //            defaultValue = "_100") final FormatterWidth width,
-            @RequestParam(value = "mdpath", required = false) final String mdPath,
-            @Parameter(
-                            description =
-                                    "Optional language ISO 3 letters code to override HTTP Accept-language header.",
-                            required = false)
+            @Parameter(description = "Optional language ISO 3 letters code to override HTTP Accept-language header.")
                     @RequestParam(value = "language", required = false)
                     final String iso3lang,
-            @Parameter(description = "Download the approved version", required = false)
+            @Parameter(description = "Download the approved version")
                     @RequestParam(required = false, defaultValue = "true")
                     boolean approved,
-            @Parameter(description = "format to use", required = false) @RequestParam(required = false) String profile,
             HttpServletResponse servletResponse)
             throws Exception {
 
         List<Formatter> formatters = formatterApi.getRecordFormattersForMetadata(metadataUuid);
 
         var query = formatters.stream().filter(formatter -> formatter.getName().equals(formatterId));
-        if (StringUtils.hasText(profile)) {
-            query = query.filter(f -> profile.equals(f.getName()) || profile.equals(f.getOfficialProfileName()));
-        }
 
         Optional<Formatter> formatterOptional = query.findFirst();
 
@@ -116,13 +105,14 @@ public class FormattingController {
         }
 
         String contentType = formatterOptional.get().getContentType();
-        var mediaTypeAndProfile = mediaTypeAndProfileBuilder.build(MediaType.valueOf(contentType), profile);
+        MediaTypeAndProfile mediaTypeAndProfile =
+                mediaTypeAndProfileBuilder.build(MediaType.valueOf(contentType), null);
 
-        var formatterConfig = new HashMap<String, Object>();
+        Map<String, Object> formatterConfig = new HashMap<>();
         formatterConfig.put("mediaTypeAndProfile", mediaTypeAndProfile);
 
         servletResponse.setContentType(contentType);
         formatterApi.getRecordFormattedBy(
-                metadataUuid, formatterId, profile, approved, servletResponse.getOutputStream(), formatterConfig);
+                metadataUuid, formatterId, null, approved, servletResponse.getOutputStream(), formatterConfig);
     }
 }

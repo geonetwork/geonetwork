@@ -6,6 +6,8 @@
 package org.geonetwork.utility;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import lombok.SneakyThrows;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -50,21 +52,21 @@ public class MediaTypeAndProfileBuilder {
             return null;
         }
 
-        var _profile = nativeWebRequest.getParameterMap().get("profile");
-        if (_profile == null || _profile.length == 0) {
+        var profile = nativeWebRequest.getParameterMap().get("profile");
+        if (profile == null || profile.length == 0) {
             return new MediaTypeAndProfile(mediaType, null);
         }
-        if (_profile.length == 1) {
-            var _profileName = _profile[0].trim();
-            if (_profileName.contains(",")) {
-                var profiles = Arrays.asList(StringUtils.split(_profileName, ","));
-                profiles = profiles.stream().map(x -> x.trim()).toList();
+        if (profile.length == 1) {
+            var profileName = profile[0].trim();
+            if (profileName.contains(",")) {
+                var profiles = Arrays.asList(StringUtils.split(profileName, ","));
+                profiles = profiles.stream().map(String::trim).toList();
                 return new MediaTypeAndProfile(mediaType, profiles);
             }
 
-            return new MediaTypeAndProfile(mediaType, Arrays.asList(_profileName));
+            return new MediaTypeAndProfile(mediaType, List.of(profileName));
         }
-        return new MediaTypeAndProfile(mediaType, Arrays.asList(_profile));
+        return new MediaTypeAndProfile(mediaType, Arrays.asList(profile));
     }
 
     public MediaTypeAndProfile build(MediaType mediaType, String simpleProfile) {
@@ -77,9 +79,13 @@ public class MediaTypeAndProfileBuilder {
             return new MediaTypeAndProfile(mediaType, null);
         }
 
-        var profiles = Arrays.asList(StringUtils.split(simpleProfile, ","));
-        profiles = profiles.stream().map(x -> x.trim()).toList();
-        return new MediaTypeAndProfile(mediaType, profiles);
+        if (simpleProfile.contains(",")) {
+            var profiles = Arrays.asList(StringUtils.split(simpleProfile, ","));
+            profiles = profiles.stream().map(String::trim).toList();
+            return new MediaTypeAndProfile(mediaType, profiles);
+        }
+
+        return new MediaTypeAndProfile(mediaType, List.of(simpleProfile));
     }
 
     /**
@@ -93,9 +99,6 @@ public class MediaTypeAndProfileBuilder {
                 .filter(e -> e.getValue().equals(mediaType))
                 .findFirst();
 
-        if (matching.isEmpty()) {
-            return null;
-        }
-        return matching.get().getKey();
+        return matching.map(Map.Entry::getKey).orElse(null);
     }
 }
