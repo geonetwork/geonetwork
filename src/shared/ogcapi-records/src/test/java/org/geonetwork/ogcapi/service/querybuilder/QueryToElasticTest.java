@@ -58,7 +58,7 @@ public class QueryToElasticTest {
         queryables.setProperties(new LinkedHashMap<>());
         queryables.getProperties().put(pname, property);
 
-        QueryablesService queryablesService = new QueryablesService() {
+        QueryablesService queryablesService = new QueryablesService(null) {
             @Override
             public OgcApiRecordsJsonSchemaDto buildQueryables(String collectionId) {
                 return queryables;

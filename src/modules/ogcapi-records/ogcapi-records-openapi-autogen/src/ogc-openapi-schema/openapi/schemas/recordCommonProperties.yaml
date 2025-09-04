@@ -108,3 +108,6 @@ properties:
     type: array
     items:
       $ref: thumbnails.yaml
+#  xxxxxyyyy:
+#    type: string
+#  additionalProperties: true

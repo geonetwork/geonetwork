@@ -159,7 +159,7 @@ paths:
         - $ref: 'parameters/catalogId.yaml'
       responses:
         '200':
-          $ref: 'responses/Sortables.yaml'
+          $ref: 'responses/jsonSchemaResponse.yaml'
         '4XX':
           $ref: 'responses/BadRequest.yaml'
         '404':

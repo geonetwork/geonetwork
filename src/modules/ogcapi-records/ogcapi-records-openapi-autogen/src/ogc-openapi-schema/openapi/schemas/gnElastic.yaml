@@ -12,6 +12,8 @@ properties:
       - DATE
       - GEO
       - DATERANGE
+      - NUMBER
+      - BOOLEAN
   elasticColumnFormat:
     type: string
     enum:

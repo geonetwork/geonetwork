@@ -5,9 +5,11 @@
  */
 package org.geonetwork.ogcapi.service.ogcapi;
 
+import java.util.List;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetCollections200ResponseDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsSortOrderDto;
 import org.geonetwork.ogcapi.service.dataaccess.CatalogApi;
 import org.geonetwork.ogcapi.service.dataaccess.simpleobjects.CatalogInfo;
 import org.geonetwork.ogcapi.service.indexConvert.ElasticIndex2Catalog;
@@ -98,6 +100,10 @@ public class OgcApiCollectionsApi {
             ElasticIndex2Catalog.injectLinkedServiceRecordInfo(result, info.getLinkedIndexRecord(), "eng");
             result.setGeoNetworkElasticIndexRecord(info.getLinkedIndexRecord());
         }
+
+        // TODO: don't hard code this - perhaps put in application.yaml?
+        result.defaultSortOrder(
+                List.of(new OgcApiRecordsSortOrderDto("id", OgcApiRecordsSortOrderDto.DirectionEnum.ASC)));
 
         return result;
     }

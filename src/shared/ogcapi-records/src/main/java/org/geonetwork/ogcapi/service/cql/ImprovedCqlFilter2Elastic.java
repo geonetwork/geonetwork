@@ -5,6 +5,7 @@
  */
 package org.geonetwork.ogcapi.service.cql;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.Operator;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
 import java.util.ArrayDeque;
@@ -108,8 +109,10 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
 
         final String _searchString = searchString;
 
-        var query =
-                Query.of(q -> q.wildcard(tq -> tq.field((String) stack.pop()).value(_searchString)));
+        //        var query =
+        //                Query.of(q -> q.wildcard(tq -> tq.field((String) stack.pop()).value(_searchString)));
+        var query = Query.of(q -> q.queryString(
+                qs -> qs.query(_searchString).fields((String) stack.pop()).defaultOperator(Operator.And)));
         stack.push(query);
 
         return this;
