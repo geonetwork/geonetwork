@@ -550,6 +550,99 @@ public class QueryTest extends ElasticPgMvcBaseTest {
     // ----------------------------------------------------------------------------------------------------------
 
     @Test
+    public void testQueryables() throws Exception {
+        var queryables = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/queryables", OgcApiRecordsJsonSchemaDto.class);
+
+        assertEquals(17, queryables.getProperties().size());
+        assertEquals("string", queryables.getProperties().get("createDate").getType());
+        assertEquals("date", queryables.getProperties().get("createDate").getFormat());
+
+        assertEquals("string", queryables.getProperties().get("updateFrequency").getType());
+        assertEquals(
+                "number",
+                queryables.getProperties().get("resolutionScaleDenominator").getType());
+    }
+
+    @Test
+    public void testDynamicQueryablesNumber() throws Exception {
+        //
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?resolutionScaleDenominator=10000",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "a8b5e6c0-c21d-4c32-b8f9-10830215890a",
+                items.getFeatures().get(0).getId());
+    }
+
+    @Test
+    public void testDynamicQueryablesString() throws Exception {
+        //
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?resourceTitleObject=Orthophotos",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "004571b9-4649-42b3-9c28-a8cdc2bf53c7",
+                items.getFeatures().get(0).getId());
+
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID
+                        + "/items?resourceTitleObject=Orthophotos 2021 - Service de visualisation REST",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "004571b9-4649-42b3-9c28-a8cdc2bf53c7",
+                items.getFeatures().get(0).getId());
+
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?resourceTitleObject=2021",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(3, items.getNumberMatched());
+        var returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertTrue(returnedIds.contains("004571b9-4649-42b3-9c28-a8cdc2bf53c7"));
+        assertTrue(returnedIds.contains("00916a35-786b-4569-9da6-71ca64ca54b1"));
+        assertTrue(returnedIds.contains("6d0bfdf4-4e94-48c6-9740-3f9facfd453c"));
+    }
+
+    @Test
+    public void testDynamicQueryablesDate() throws Exception {
+        // date =
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?createDate=2021-06-08T14:08:00.968Z",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "02b1ef9c-d53c-400f-81bf-38dec751ce76",
+                items.getFeatures().get(0).getId());
+
+        // date >=
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?createDate=2021-06-07T14:00:00Z/..",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        assertEquals(23, items.getNumberMatched());
+
+        // date >  AND date <
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID
+                        + "/items?createDate=2021-06-07T14:00:00Z/2021-06-09T15:00:00Z",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "02b1ef9c-d53c-400f-81bf-38dec751ce76",
+                items.getFeatures().get(0).getId());
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+
+    @Test
     public void testSortDefault() throws Exception {
         var result = retrieveUrlJson("ogcapi-records/collections", OgcApiRecordsGetCollections200ResponseDto.class);
         assertNotNull(result.getCollections().get(0).getDefaultSortOrder());

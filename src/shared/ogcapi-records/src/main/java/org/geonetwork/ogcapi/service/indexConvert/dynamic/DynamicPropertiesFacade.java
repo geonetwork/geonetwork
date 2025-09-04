@@ -5,13 +5,18 @@
  */
 package org.geonetwork.ogcapi.service.indexConvert.dynamic;
 
+import co.elastic.clients.elasticsearch._types.mapping.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.geonetwork.index.model.record.IndexRecord;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGnElasticDto;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonPropertyDto;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
+import org.geonetwork.ogcapi.service.configuration.SimpleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -76,5 +81,57 @@ public class DynamicPropertiesFacade {
                 .filter(e ->
                         e.getConfig().getIsSortable() != null && e.getConfig().getIsSortable())
                 .toList();
+    }
+
+    public List<ElasticTypeInfo> getQueryables() {
+        return this.elasticTypingSystem.getFinalElasticTypes().values().stream()
+                .filter(e ->
+                        e.getConfig().getIsQueryable() != null && e.getConfig().getIsQueryable())
+                .toList();
+    }
+
+    public void addDynamicQueryables(OgcApiRecordsJsonSchemaDto result) {
+        var queryableFields = this.getQueryables();
+        for (var field : queryableFields) {
+            addDynamicField(field, result);
+        }
+    }
+
+    private void addDynamicField(ElasticTypeInfo field, OgcApiRecordsJsonSchemaDto result) {
+        var newQueryable = new OgcApiRecordsJsonPropertyDto();
+
+        newQueryable.setTitle(field.getConfig().getTitle());
+        newQueryable.setDescription(field.getConfig().getDescription());
+
+        newQueryable.setType(SimpleType.getOgcTypeName(field.getType()));
+        newQueryable.setFormat(SimpleType.getOgcTypeFormat(field.getType()));
+        //
+        //        var elasticInfo = new OgcApiRecordsGnElasticDto();
+        //        elasticInfo.setElasticPath(field.getConfig().elasticProperty);
+        //        var elasticType = elasticTypingSystem.getRawElasticTypes().get(field.getConfig().elasticProperty);
+        //        elasticInfo.setElasticColumnType(simplifyElasticRawType(elasticType));
+        //
+        //        newQueryable.addXGnElasticItem(elasticInfo);
+
+        result.getProperties().put(field.getConfig().getOgcProperty(), newQueryable);
+    }
+
+    public OgcApiRecordsGnElasticDto.ElasticColumnTypeEnum simplifyElasticRawType(PropertyVariant rawElasticType) {
+        if (rawElasticType instanceof KeywordProperty) {
+            return OgcApiRecordsGnElasticDto.ElasticColumnTypeEnum.KEYWORD;
+        } else if (rawElasticType instanceof ShortNumberProperty
+                || rawElasticType instanceof IntegerNumberProperty
+                || rawElasticType instanceof LongNumberProperty) {
+            return OgcApiRecordsGnElasticDto.ElasticColumnTypeEnum.NUMBER;
+        } else if (rawElasticType instanceof FloatNumberProperty || rawElasticType instanceof DoubleNumberProperty) {
+            return OgcApiRecordsGnElasticDto.ElasticColumnTypeEnum.NUMBER;
+        } else if (rawElasticType instanceof TextProperty) {
+            return OgcApiRecordsGnElasticDto.ElasticColumnTypeEnum.TEXT;
+        } else if (rawElasticType instanceof BooleanProperty) {
+            return OgcApiRecordsGnElasticDto.ElasticColumnTypeEnum.BOOLEAN;
+        } else if (rawElasticType instanceof DateProperty) {
+            return OgcApiRecordsGnElasticDto.ElasticColumnTypeEnum.DATE;
+        }
+        throw new RuntimeException("Unsupported Elastic type " + rawElasticType);
     }
 }

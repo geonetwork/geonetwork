@@ -15,6 +15,27 @@ public enum SimpleType {
     DATE,
     BOOLEAN;
 
+    public static String getOgcTypeFormat(SimpleType type) {
+        if (type == DATE) {
+            return "date";
+        }
+        return null;
+    }
+
+    public static String getOgcTypeName(SimpleType type) {
+        if (type == SimpleType.INTEGER || type == SimpleType.DOUBLE) {
+            return "number";
+        } else if (type == SimpleType.STRING) {
+            return "string";
+        } else if (type == SimpleType.DATE) {
+            return "string";
+        } else if (type == SimpleType.BOOLEAN) {
+            return "boolean";
+        } else {
+            throw new RuntimeException("don't know type - " + type);
+        }
+    }
+
     public static void fillInOgc(SimpleType type, OgcApiRecordsJsonPropertyDto p) {
         if (type == SimpleType.INTEGER || type == SimpleType.DOUBLE) {
             p.setType("number");

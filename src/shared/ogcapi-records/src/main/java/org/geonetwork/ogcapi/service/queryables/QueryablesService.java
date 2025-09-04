@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
-import org.springframework.stereotype.Service;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Basic Service to handle Queryables according to the OGCAPI spec.
@@ -24,16 +26,31 @@ import org.springframework.stereotype.Service;
  * b. "difficult" ones require querying multiple elastic json index properties 2. "easy" ones that are from the dynamic
  * properties config <br>
  */
-@Service
+@Component
 @Slf4j(topic = "org.fao.geonet.ogcapi.records")
 public class QueryablesService {
 
+    DynamicPropertiesFacade dynamicPropertiesFacade;
+
+    @Autowired
+    public QueryablesService(DynamicPropertiesFacade dynamicPropertiesFacade) {
+        this.dynamicPropertiesFacade = dynamicPropertiesFacade;
+        this.fullJsonSchema = createQueryablesJsonSchema();
+        this.truncatedJsonSchema = truncatedJsonSchema();
+    }
+
     /** full schema from queryables.json */
-    public final OgcApiRecordsJsonSchemaDto fullJsonSchema = createQueryablesJsonSchema();
+    public final OgcApiRecordsJsonSchemaDto fullJsonSchema;
 
-    /** full schema from queryables.json with elastic removed */
-    public final OgcApiRecordsJsonSchemaDto truncatedJsonSchema = truncatedJsonSchema();
+    /** full schema from queryables.json with elastic info removed */
+    public final OgcApiRecordsJsonSchemaDto truncatedJsonSchema;
 
+    /**
+     * gets the queryables with the "extra" elastic info removed (for the /collection/<collectionid>/queryables
+     * endpoint).
+     *
+     * @return json schema for the queryables
+     */
     public OgcApiRecordsJsonSchemaDto truncatedJsonSchema() {
         var result = createQueryablesJsonSchema();
         if (result != null && result.getProperties() != null) {
@@ -45,12 +62,18 @@ public class QueryablesService {
     }
 
     /**
-     * This includes the defined in the queryables.json file as well as the dynamic ones.
+     * This includes the defined in the queryables.json file as well as the dynamic ones. This includes everything as
+     * well as the elastic info.
      *
      * @return json schema object for the queryables.
      */
     public OgcApiRecordsJsonSchemaDto createQueryablesJsonSchema() {
         var result = readQueryablesJsonSchema();
+
+        // for simple test cases
+        if (dynamicPropertiesFacade != null) {
+            dynamicPropertiesFacade.addDynamicQueryables(result);
+        }
 
         return result;
     }
