@@ -29,6 +29,7 @@ geonetwork:
           elasticProperty: resourceType
           indexRecordProperty: resourceType
           isSortable: true
+          isQueryable: true
           facetsConfig:
             - facetName: resourceType
               facetType: TERM

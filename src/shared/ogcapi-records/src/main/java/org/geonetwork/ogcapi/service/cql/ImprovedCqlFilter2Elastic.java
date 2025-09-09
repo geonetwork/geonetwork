@@ -111,11 +111,29 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
 
         //        var query =
         //                Query.of(q -> q.wildcard(tq -> tq.field((String) stack.pop()).value(_searchString)));
-        var query = Query.of(q -> q.queryString(
-                qs -> qs.query(_searchString).fields((String) stack.pop()).defaultOperator(Operator.And)));
+        var query = Query.of(q -> q.simpleQueryString(
+                qs ->
+                  qs.query(saferQueryString(_searchString))
+                    .fields((String) stack.pop())
+                    .defaultOperator(Operator.And)));
         stack.push(query);
 
         return this;
+    }
+
+    public static String saferQueryString(String q) {
+      if (q == null || q.isEmpty()) {
+        return q;
+      }
+      q = q.replace("(","");
+      q = q.replace(")","");
+      q = q.replace("+","");
+      q = q.replace("|","");
+      q = q.replace("-","");
+      q = q.replace("~","");
+      q = q.replace("(","");
+
+      return q;
     }
 
     public Object visitRange(BinaryComparisonOperator filter, RangeOperatorType operator, Object extraData) {

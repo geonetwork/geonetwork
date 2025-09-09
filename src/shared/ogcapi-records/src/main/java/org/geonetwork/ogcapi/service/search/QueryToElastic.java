@@ -10,6 +10,7 @@
 package org.geonetwork.ogcapi.service.search;
 
 import static co.elastic.clients.elasticsearch._types.query_dsl.Operator.And;
+import static org.geonetwork.ogcapi.service.cql.ImprovedCqlFilter2Elastic.saferQueryString;
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
@@ -94,7 +95,7 @@ public class QueryToElastic {
                         ._toQuery();
             } else if (jsonProperty.getType().equals("string")) {
                 // convert to "like" CQL
-                var cql = propertyName + " LIKE '%" + userSearchTerm + "%'";
+                var cql = propertyName + " LIKE '" + userSearchTerm + "%'";
                 return this.cqlToElasticSearch.create(cql);
             } else if (jsonProperty.getType().equals("boolean")) {
                 // convert to "=" CQL
@@ -339,22 +340,30 @@ public class QueryToElastic {
      * @return QueryBuilder with a match_multi
      */
     public Query createMulti(List<OgcApiRecordsGnElasticDto> columns, String userSearchTerm, String lang3iso) {
-        var userSearchTerm2 = userSearchTerm.replaceAll("\"", "");
+//        var userSearchTerm2 = userSearchTerm.replaceAll("\"", "");
+        var userSearchTerm2 = saferQueryString(userSearchTerm)+"*";
 
         var paths = columns.stream()
                 .map(x -> x.getElasticPath())
                 .map(x -> x.replace("${lang3iso}", lang3iso))
                 .toList();
 
-        var multiMatchQuery = MultiMatchQuery.of(mmq -> mmq.fields(paths)
-                        .query(userSearchTerm2)
-                        .fuzzyTranspositions(true)
-                        .lenient(true)
-                        .minimumShouldMatch("1")
-                        .operator(And)
-                        .fuzziness("AUTO"))
-                ._toQuery();
-        return multiMatchQuery;
+        var simplequery = SimpleQueryStringQuery.of(sq->
+          sq.query(userSearchTerm2)
+            .fields(paths)
+            .defaultOperator(Operator.And)
+          )._toQuery() ;
+        return simplequery;
+
+//        var multiMatchQuery = MultiMatchQuery.of(mmq -> mmq.fields(paths)
+//                        .query(userSearchTerm2)
+//                        .fuzzyTranspositions(true)
+//                        .lenient(true)
+//                        .minimumShouldMatch("1")
+//                        .operator(And)
+//                        .fuzziness("AUTO"))
+//                ._toQuery();
+//        return multiMatchQuery;
     }
 
     /**
