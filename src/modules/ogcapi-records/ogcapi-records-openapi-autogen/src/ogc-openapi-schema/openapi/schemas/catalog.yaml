@@ -63,6 +63,10 @@ allOf:
         type: array
         items:
           $ref: 'linkTemplate.yaml'
+      defaultSortOrder:
+        type: array
+        items:
+          $ref: 'sortOrder.yaml'
       schemes:
         type: array
         description:

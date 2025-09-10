@@ -10,6 +10,7 @@
 package org.geonetwork.ogcapi.service.search;
 
 import static co.elastic.clients.elasticsearch._types.query_dsl.Operator.And;
+import static org.geonetwork.ogcapi.service.cql.ImprovedCqlFilter2Elastic.saferQueryString;
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
@@ -24,6 +25,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.geometry.Rectangle;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGnElasticDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonPropertyDto;
+import org.geonetwork.ogcapi.service.cql.CqlToElasticSearch;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +47,12 @@ public class QueryToElastic {
     @Autowired
     public QueryablesService queryablesService;
 
+    @Autowired
+    CqlToElasticSearch cqlToElasticSearch;
+
+    @Autowired
+    DynamicPropertiesFacade dynamicPropertiesFacade;
+
     /**
      * Given an already setup SearchSourceBuilder, add more queries to it for any of the request &amp;param=search-Text.
      * <br>
@@ -63,13 +72,43 @@ public class QueryToElastic {
         for (var prop : ogcApiQuery.getPropValues().entrySet()) {
             var jsonProp = jsonSchema.getProperties().get(prop.getKey());
             var searchVal = prop.getValue();
-            var q = create(jsonProp, searchVal, "*");
+            var q = create(jsonProp, searchVal, "*", prop.getKey());
             if (q != null) {
                 queries.add(q);
             }
         }
 
         return BoolQuery.of(bq -> bq.must(queries))._toQuery();
+    }
+
+    public Query createDynamicQueryable(
+            OgcApiRecordsJsonPropertyDto jsonProperty, String userSearchTerm, String lang3iso, String propertyName) {
+        try {
+            if (jsonProperty.getType().equals("string") && "date".equals(jsonProperty.getFormat())) {
+                // handle differently because the DATA is handled differently by OGC (i.e. = or range)
+                var elasticPath = this.dynamicPropertiesFacade.getByOgcProperty(propertyName);
+                return RangeQuery.of(rq -> {
+                            rq.field(elasticPath.getConfig().getElasticProperty());
+                            processDateRequest(rq, userSearchTerm);
+                            return rq;
+                        })
+                        ._toQuery();
+            } else if (jsonProperty.getType().equals("string")) {
+                // convert to "like" CQL
+                var cql = propertyName + " LIKE '" + userSearchTerm + "%'";
+                return this.cqlToElasticSearch.create(cql);
+            } else if (jsonProperty.getType().equals("boolean")) {
+                // convert to "=" CQL
+                var cql = propertyName + " = '" + userSearchTerm + "'";
+                return this.cqlToElasticSearch.create(cql);
+            } else if (jsonProperty.getType().equals("number")) {
+                // convert to "=" CQL
+                var cql = propertyName + " = '" + userSearchTerm + "'";
+                return this.cqlToElasticSearch.create(cql);
+            } else throw new RuntimeException("don't know how to handle json property: " + jsonProperty.getType());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -80,7 +119,14 @@ public class QueryToElastic {
      * @param lang3iso what language?
      * @return QueryBuilder for this particular queryable.
      */
-    public Query create(OgcApiRecordsJsonPropertyDto jsonProperty, String userSearchTerm, String lang3iso) {
+    public Query create(
+            OgcApiRecordsJsonPropertyDto jsonProperty, String userSearchTerm, String lang3iso, String propertyName) {
+
+        var isDynamic = jsonProperty.getxGnElastic() == null
+                || jsonProperty.getxGnElastic().isEmpty();
+        if (isDynamic) {
+            return createDynamicQueryable(jsonProperty, userSearchTerm, lang3iso, propertyName);
+        }
 
         var isGeo = jsonProperty.getxGnElastic().stream()
                 .anyMatch(x -> x.getElasticColumnType() == OgcApiRecordsGnElasticDto.ElasticColumnTypeEnum.GEO);
@@ -294,22 +340,30 @@ public class QueryToElastic {
      * @return QueryBuilder with a match_multi
      */
     public Query createMulti(List<OgcApiRecordsGnElasticDto> columns, String userSearchTerm, String lang3iso) {
-        var userSearchTerm2 = userSearchTerm.replaceAll("\"", "");
+        //        var userSearchTerm2 = userSearchTerm.replaceAll("\"", "");
+        var userSearchTerm2 = saferQueryString(userSearchTerm) + "*";
 
         var paths = columns.stream()
                 .map(x -> x.getElasticPath())
                 .map(x -> x.replace("${lang3iso}", lang3iso))
                 .toList();
 
-        var multiMatchQuery = MultiMatchQuery.of(mmq -> mmq.fields(paths)
-                        .query(userSearchTerm2)
-                        .fuzzyTranspositions(true)
-                        .lenient(true)
-                        .minimumShouldMatch("1")
-                        .operator(And)
-                        .fuzziness("AUTO"))
+        var simplequery = SimpleQueryStringQuery.of(sq -> sq.query(userSearchTerm2)
+                        .fields(paths)
+                        .defaultOperator(Operator.And)
+                        .minimumShouldMatch("1"))
                 ._toQuery();
-        return multiMatchQuery;
+        return simplequery;
+
+        //        var multiMatchQuery = MultiMatchQuery.of(mmq -> mmq.fields(paths)
+        //                        .query(userSearchTerm2)
+        //                        .fuzzyTranspositions(true)
+        //                        .lenient(true)
+        //                        .minimumShouldMatch("1")
+        //                        .operator(And)
+        //                        .fuzziness("AUTO"))
+        //                ._toQuery();
+        //        return multiMatchQuery;
     }
 
     /**

@@ -138,12 +138,12 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>elasticsearch</artifactId>
-      <version>1.21.3</version>
-      <scope>test</scope>
-    </dependency>
+    <!--    <dependency>-->
+    <!--      <groupId>org.testcontainers</groupId>-->
+    <!--      <artifactId>elasticsearch</artifactId>-->
+    <!--      <version>1.21.3</version>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>

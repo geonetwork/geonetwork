@@ -94,6 +94,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
@@ -169,6 +170,7 @@
         <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         <version>3.1.2.RELEASE</version>
       </dependency>
+
       <dependency>
         <groupId>net.sf.saxon</groupId>
         <artifactId>Saxon-HE</artifactId>

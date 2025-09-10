@@ -98,9 +98,8 @@ public class OgcApiItemsApi {
      * @return set of GeoJson features
      * @throws Exception problem with the query.
      */
-    public OgcApiRecordsGetRecords200ResponseDto getRecords(OgcApiQuery ogcApiQuery, OgcApiRecordsFacetsDto facets)
-            throws Exception {
-        var records = getRecordsFromElastic(ogcApiQuery, facets);
+    public OgcApiRecordsGetRecords200ResponseDto getRecords(OgcApiQuery ogcApiQuery) throws Exception {
+        var records = getRecordsFromElastic(ogcApiQuery);
         var totalNumHits = records.hits().total().value();
         var indexRecords = records.hits().hits().stream().map(x -> x.source()).toList();
         var features = indexRecords.stream()
@@ -123,7 +122,7 @@ public class OgcApiItemsApi {
             }
         });
 
-        facetsInjector.injectFacets(response, records, facets);
+        facetsInjector.injectFacets(response, records);
 
         return response;
     }
@@ -135,8 +134,7 @@ public class OgcApiItemsApi {
      * @return elastic search response to the query
      * @throws Exception issue with elastic query
      */
-    protected SearchResponse<IndexRecord> getRecordsFromElastic(OgcApiQuery ogcApiQuery, OgcApiRecordsFacetsDto facets)
-            throws Exception {
+    protected SearchResponse<IndexRecord> getRecordsFromElastic(OgcApiQuery ogcApiQuery) throws Exception {
         var source = catalogApi.getSource(ogcApiQuery.getCollectionId());
         String collectionFilter = catalogApi.retrieveCollectionFilter(source);
 
@@ -152,7 +150,7 @@ public class OgcApiItemsApi {
                     query = elasticWithUserPermissions.createPermissionQuery(query);
                     s.query(query);
                     s.index(simpleElastic.getRecordIndexName());
-                    s.aggregations(recordsFacetsBuilder.createElasticAggregationsFromFacetsDefinition(facets));
+                    s.aggregations(recordsFacetsBuilder.createElasticAggregationsFromFacetsDefinition());
                     return s;
                 },
                 IndexRecord.class);

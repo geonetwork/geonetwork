@@ -19,7 +19,7 @@ public class QueryablesExtractorTest {
     @Test
     public void testExtractFromQ_simple() {
         QueryablesExtractor extractor = new QueryablesExtractor();
-        extractor.queryablesService = new QueryablesService();
+        extractor.queryablesService = new QueryablesService(null);
 
         var result = extractor.queryableInString("aa id:abc def", "id");
 
@@ -32,7 +32,7 @@ public class QueryablesExtractorTest {
     @Test
     public void testExtractFromQ_quoted() {
         QueryablesExtractor extractor = new QueryablesExtractor();
-        extractor.queryablesService = new QueryablesService();
+        extractor.queryablesService = new QueryablesService(null);
 
         var result = extractor.queryableInString("aaa id:\"abc def\" xyz", "id");
 
@@ -45,7 +45,7 @@ public class QueryablesExtractorTest {
     @Test
     public void testfull1() {
         QueryablesExtractor extractor = new QueryablesExtractor();
-        extractor.queryablesService = new QueryablesService();
+        extractor.queryablesService = new QueryablesService(null);
         var result = extractor.parseWithQueryables(Arrays.asList("id", "contacts"), Arrays.asList("id:abc"));
         assertNotNull(result);
         assertEquals(1, result.qs.size());
@@ -57,7 +57,7 @@ public class QueryablesExtractorTest {
     @Test
     public void testfull2() {
         QueryablesExtractor extractor = new QueryablesExtractor();
-        extractor.queryablesService = new QueryablesService();
+        extractor.queryablesService = new QueryablesService(null);
         var result =
                 extractor.parseWithQueryables(Arrays.asList("id", "contacts"), Arrays.asList("id:abc contacts:dave"));
         assertNotNull(result);

@@ -5,6 +5,7 @@
  */
 package org.geonetwork.ogcapi.service.cql;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.Operator;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
 import java.util.ArrayDeque;
@@ -102,17 +103,34 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
 
         searchString = searchString.replace("\\%", "%");
         searchString = searchString.replace("\\_", "_");
-        searchString = searchString.replace("-", "\\-");
 
         filter.getExpression().accept(expressionVisitor, extraData);
 
         final String _searchString = searchString;
 
-        var query =
-                Query.of(q -> q.wildcard(tq -> tq.field((String) stack.pop()).value(_searchString)));
+        //        var query =
+        //                Query.of(q -> q.wildcard(tq -> tq.field((String) stack.pop()).value(_searchString)));
+        var query = Query.of(q -> q.simpleQueryString(qs -> qs.query(saferQueryString(_searchString))
+                .fields((String) stack.pop())
+                .defaultOperator(Operator.And)));
         stack.push(query);
 
         return this;
+    }
+
+    public static String saferQueryString(String q) {
+        if (q == null || q.isEmpty()) {
+            return q;
+        }
+        q = q.replace("(", "\\(");
+        q = q.replace(")", "\\)");
+        q = q.replace("+", "\\+");
+        q = q.replace("|", "\\|");
+        q = q.replace("-", "\\-");
+        q = q.replace("~", "\\~");
+        q = q.replace("(", "\\(");
+
+        return q;
     }
 
     public Object visitRange(BinaryComparisonOperator filter, RangeOperatorType operator, Object extraData) {

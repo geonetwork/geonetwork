@@ -13,6 +13,13 @@
 //       You might want to use the "lowercase_normalizer" for keyword elatic properties so
 //       searchs can be case-insensitive.
 //
+//
+//  BEFORE YOU MODIFY THIS FILE, PLEASE LOOK AT THE DYNAMIC PROPERTIES TO ADD NEW
+//  (SIMPLE) PROPERTIES.
+//  MODIFY THIS TO MODIFY THE DEFINED-BY-OGC PROPERTIES OR ADD SUPPORT FOR COMPLEX QUERIES.S
+//
+// -------------------------------------------------------------------------------
+//
 //  This is the queryables configuration (and OGCAPI endpoint response).
 //
 // Use this file to configure how elastic-based queries can be configured in an OGCAPI context.
