@@ -15,12 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import co.elastic.clients.elasticsearch._types.GeoBounds;
 import co.elastic.clients.elasticsearch._types.TopRightBottomLeftGeoBounds;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.GeoBoundingBoxQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -58,7 +53,7 @@ public class QueryToElasticTest {
         queryables.setProperties(new LinkedHashMap<>());
         queryables.getProperties().put(pname, property);
 
-        QueryablesService queryablesService = new QueryablesService() {
+        QueryablesService queryablesService = new QueryablesService(null) {
             @Override
             public OgcApiRecordsJsonSchemaDto buildQueryables(String collectionId) {
                 return queryables;
@@ -112,18 +107,16 @@ public class QueryToElasticTest {
         var createdQuery = bq.must().get(0)._get();
 
         // test the created elastic query
-        // should be a multimatch (default match type)
+        // should be a SimpleQueryStringQuery (default str match type)
         // for field "uuid",
-        // query text is "abc"
-        // and minimumShouldMatch should be 1.
-        assertEquals(MultiMatchQuery.class, createdQuery.getClass());
-        var multiMatch = (MultiMatchQuery) createdQuery;
+        // query text is "abc*"
 
-        assertEquals("abc", multiMatch.query());
-        assertTrue(multiMatch.fields().contains("uuid"));
-        assertEquals(1, multiMatch.fields().size());
+        assertEquals(SimpleQueryStringQuery.class, createdQuery.getClass());
+        var simpleQueryStringQuery = (SimpleQueryStringQuery) createdQuery;
 
-        assertEquals("1", multiMatch.minimumShouldMatch());
+        assertEquals("abc*", simpleQueryStringQuery.query());
+        assertTrue(simpleQueryStringQuery.fields().contains("uuid"));
+        assertEquals(1, simpleQueryStringQuery.fields().size());
     }
 
     /** tests the "title" - should result in a multi-match with two columns. also, check for multi-lingual expansion. */
@@ -156,28 +149,28 @@ public class QueryToElasticTest {
         // add the queryables search to the boolQuery
         var q = queryToElastic.getQueryablesQuery(query);
 
-        var mmq = (MultiMatchQuery) ((BoolQuery) q._get()).must().get(0)._get();
+        var mmq = (SimpleQueryStringQuery) ((BoolQuery) q._get()).must().get(0)._get();
         assertEquals(2, mmq.fields().size());
 
         // extract just the created query
         var createdQuery = mmq;
 
         // test the created elastic query
-        // should be a multimatch (default match type)
+        // should be a SimpleQueryStringQuery (default str match type)
         // for field "uuid",
         // query text is "abc"
         // and minimumShouldMatch should be 1.
-        assertEquals(MultiMatchQuery.class, createdQuery.getClass());
-        var multiMatch = (MultiMatchQuery) createdQuery;
+        assertEquals(SimpleQueryStringQuery.class, createdQuery.getClass());
+        var simpleQueryStringQuery = (SimpleQueryStringQuery) createdQuery;
 
-        assertEquals("abc", multiMatch.query());
-        assertTrue(multiMatch.fields().contains("resourceTitleObject.default"));
+        assertEquals("abc*", simpleQueryStringQuery.query());
+        assertTrue(simpleQueryStringQuery.fields().contains("resourceTitleObject.default"));
 
         // if this fails, it could be doing "better" multilingual language type injection
-        assertTrue(multiMatch.fields().contains("resourceTitleObject.lang*"));
-        assertEquals(2, multiMatch.fields().size());
+        assertTrue(simpleQueryStringQuery.fields().contains("resourceTitleObject.lang*"));
+        assertEquals(2, simpleQueryStringQuery.fields().size());
 
-        assertEquals("1", multiMatch.minimumShouldMatch());
+        assertEquals("1", simpleQueryStringQuery.minimumShouldMatch());
     }
 
     /** tests date types - should result in a range query */

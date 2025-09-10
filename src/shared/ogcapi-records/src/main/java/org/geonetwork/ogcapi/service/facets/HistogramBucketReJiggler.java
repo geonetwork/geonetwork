@@ -10,6 +10,10 @@ import java.util.Comparator;
 import java.util.List;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetHistogramDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetResultBucketDto;
+import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
+import org.geonetwork.ogcapi.service.configuration.SimpleType;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,10 +31,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class HistogramBucketReJiggler {
 
-    public List<OgcApiRecordsFacetResultBucketDto> reJiggle(
-            List<OgcApiRecordsFacetResultBucketDto> buckets, OgcApiRecordsFacetHistogramDto histogramInfo) {
+    @Autowired
+    DynamicPropertiesFacade dynamicPropertiesFacade;
 
-        buckets = sortByValue(buckets, histogramInfo.getxElasticDatatype());
+    public List<OgcApiRecordsFacetResultBucketDto> reJiggle(
+            List<OgcApiRecordsFacetResultBucketDto> buckets, OgcFacetConfig histogramInfo) {
+
+        var dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.NUMBER;
+        var ogcProperty = histogramInfo.getField().getOgcProperty();
+        var type = dynamicPropertiesFacade.getByOgcProperty(ogcProperty).getType();
+
+        if (type == SimpleType.DATE) {
+            dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.DATE;
+        }
+
+        buckets = sortByValue(buckets, dataType);
 
         for (int i = 0; i < buckets.size() - 1; i++) {
             var bucket = buckets.get(i);
