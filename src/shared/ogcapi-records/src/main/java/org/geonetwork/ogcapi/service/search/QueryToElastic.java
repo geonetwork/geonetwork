@@ -340,30 +340,30 @@ public class QueryToElastic {
      * @return QueryBuilder with a match_multi
      */
     public Query createMulti(List<OgcApiRecordsGnElasticDto> columns, String userSearchTerm, String lang3iso) {
-//        var userSearchTerm2 = userSearchTerm.replaceAll("\"", "");
-        var userSearchTerm2 = saferQueryString(userSearchTerm)+"*";
+        //        var userSearchTerm2 = userSearchTerm.replaceAll("\"", "");
+        var userSearchTerm2 = saferQueryString(userSearchTerm) + "*";
 
         var paths = columns.stream()
                 .map(x -> x.getElasticPath())
                 .map(x -> x.replace("${lang3iso}", lang3iso))
                 .toList();
 
-        var simplequery = SimpleQueryStringQuery.of(sq->
-          sq.query(userSearchTerm2)
-            .fields(paths)
-            .defaultOperator(Operator.And)
-          )._toQuery() ;
+        var simplequery = SimpleQueryStringQuery.of(sq -> sq.query(userSearchTerm2)
+                        .fields(paths)
+                        .defaultOperator(Operator.And)
+                        .minimumShouldMatch("1"))
+                ._toQuery();
         return simplequery;
 
-//        var multiMatchQuery = MultiMatchQuery.of(mmq -> mmq.fields(paths)
-//                        .query(userSearchTerm2)
-//                        .fuzzyTranspositions(true)
-//                        .lenient(true)
-//                        .minimumShouldMatch("1")
-//                        .operator(And)
-//                        .fuzziness("AUTO"))
-//                ._toQuery();
-//        return multiMatchQuery;
+        //        var multiMatchQuery = MultiMatchQuery.of(mmq -> mmq.fields(paths)
+        //                        .query(userSearchTerm2)
+        //                        .fuzzyTranspositions(true)
+        //                        .lenient(true)
+        //                        .minimumShouldMatch("1")
+        //                        .operator(And)
+        //                        .fuzziness("AUTO"))
+        //                ._toQuery();
+        //        return multiMatchQuery;
     }
 
     /**

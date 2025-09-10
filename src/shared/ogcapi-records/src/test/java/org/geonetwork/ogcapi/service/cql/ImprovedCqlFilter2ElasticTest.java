@@ -66,21 +66,21 @@ public class ImprovedCqlFilter2ElasticTest {
 
         // normal wildcards
         result = doIt("dave like '%h__%'", new TrivialFieldMapper());
-        assertEquals(Query.Kind.QueryString, result._kind());
-        assertEquals("__dave", ((QueryStringQuery) result._get()).fields().get(0));
-        assertEquals("*h??*", ((QueryStringQuery) result._get()).query());
+        assertEquals(Query.Kind.SimpleQueryString, result._kind());
+        assertEquals("__dave", ((SimpleQueryStringQuery) result._get()).fields().get(0));
+        assertEquals("*h??*", ((SimpleQueryStringQuery) result._get()).query());
 
         // escaped wildcards
         result = doIt("dave like '\\%h\\_\\_\\%'", new TrivialFieldMapper());
-        assertEquals(Query.Kind.QueryString, result._kind());
-        assertEquals("__dave", ((QueryStringQuery) result._get()).fields().get(0));
-        assertEquals("%h__%", ((QueryStringQuery) result._get()).query());
+        assertEquals(Query.Kind.SimpleQueryString, result._kind());
+        assertEquals("__dave", ((SimpleQueryStringQuery) result._get()).fields().get(0));
+        assertEquals("%h__%", ((SimpleQueryStringQuery) result._get()).query());
 
         // escaped elastic chars
         result = doIt("dave like 'h*h'", new TrivialFieldMapper());
-        assertEquals(Query.Kind.QueryString, result._kind());
-        assertEquals("__dave", ((QueryStringQuery) result._get()).fields().get(0));
-        assertEquals("h*h", ((QueryStringQuery) result._get()).query());
+        assertEquals(Query.Kind.SimpleQueryString, result._kind());
+        assertEquals("__dave", ((SimpleQueryStringQuery) result._get()).fields().get(0));
+        assertEquals("h*h", ((SimpleQueryStringQuery) result._get()).query());
 
         result = doIt("dave < 3", new TrivialFieldMapper());
         assertEquals(Query.Kind.Range, result._kind());
