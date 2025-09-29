@@ -3,12 +3,12 @@ name: Documentation
 on:
   push:
     branches:
-      - pages
+      - main
     paths:
       - "docs/manual/**"
   pull_request:
     branches:
-      - pages
+      - main
     paths:
       - "docs/manual/**"
   workflow_dispatch:
