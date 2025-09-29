@@ -1,7 +1,0 @@
-allOf:
-  - $ref: 'facet_common.yaml'
-  - type: object
-    properties:
-      minOccurs:
-        type: integer
-

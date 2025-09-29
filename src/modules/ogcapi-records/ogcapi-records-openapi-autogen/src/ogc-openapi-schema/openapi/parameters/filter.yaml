@@ -1,7 +1,0 @@
-name: filter
-in: query
-required: false
-schema:
-  type: string
-style: form
-explode: false

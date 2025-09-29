@@ -1,8 +1,0 @@
-name: filter-crs
-in: query
-required: false
-schema:
-  type: string
-  format: uri-reference
-style: form
-explode: false

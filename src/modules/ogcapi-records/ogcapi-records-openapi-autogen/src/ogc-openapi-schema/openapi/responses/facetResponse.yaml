@@ -1,9 +1,0 @@
----
-description: JSON Facet response
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/facets.yaml'
-  text/html:
-    schema:
-      type: string

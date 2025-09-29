@@ -1,3 +1,0 @@
-org.springframework.cloud.gateway.server.mvc.filter.FilterSupplier=org.geonetwork.gn4forwarding.SimpleGn4SecurityHeaderAppenderSupplier,org.geonetwork.gn4forwarding.SimpleJwtGn4SecurityHeaderAppenderSupplier
-
-

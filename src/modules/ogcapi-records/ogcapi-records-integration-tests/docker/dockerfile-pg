@@ -1,7 +1,0 @@
-#  docker buildx build --platform linux/amd64,linux/arm64 -t dblasby2/postgresql-gn5 -f dockerfile-pg .
-# docker run -e POSTGRES_PASS=postgres -e POSTGRES_USER=postgres -p 5555:5432 -d --name postgresql-gn5 --rm dblasby2/postgresql-gn5 dblasby2/postgresql-gn5
-
-FROM postgres:16-alpine
-COPY dump.gn.sql /docker-entrypoint-initdb.d/
-
-
