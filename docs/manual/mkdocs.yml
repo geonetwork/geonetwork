@@ -1,16 +1,16 @@
 # Project information
-site_name: GeoNetwork Opensource Microservices
-site_description: GeoNetwork Opensource Microservices.
+site_name: GeoNetwork 5
+site_description: GeoNetwork catalogue for listing, searching and reviewing records.
+site_dir: target/html
 site_url: https://geonetwork.github.io/geonetwork/
-docs_dir: .
 
 # Repository
 repo_name: geonetwork
 repo_url: https://github.com/geonetwork/geonetwork
-edit_uri: edit/main/docs/manual
+edit_uri: edit/main/docs/manual/docs
 
 # Copyright
-copyright: Copyright &copy; 2025 FAO-UN and others
+copyright: Copyright &copy; 2001 - 2025 FAO-UN and others
 
 extra_css:
   - assets/stylesheets/extra.css
@@ -136,28 +136,26 @@ markdown_extensions:
       alternate_style: true
   - tables
   - md_in_html
-
 # Page tree
 nav:
-  - 'GeoNetwork 5':
-    - index.md
-    - 'GN5 to GN4 Proxy Gateway':
-      - GN4-Integration/index.md
-      - GN4-Integration/auth-json.md
-      - GN4-Integration/auth-jwt.md
-    - 'OGC API Records':
-      - OGCAPI-Records/index.md
-      - OGCAPI-Records/config.md
-      - OGCAPI-Records/content-negotiation.md
-      - OGCAPI-Records/demo-server.md
-      - OGCAPI-Records/deploy.md
-      - OGCAPI-Records/spec-diff.md
-      - OGCAPI-Records/develop.md
-      - OGCAPI-Records/features.md
-    - 'Developer documentation':
-      - Developer/index.md
-      - Developer/formatters.md
-      - Developer/tech-security.md
+  - 'GeoNetwork 5': index.md
+  - 'GN5 to GN4 Proxy Gateway':
+    - GN4-Integration/index.md
+    - GN4-Integration/auth-json.md
+    - GN4-Integration/auth-jwt.md
+  - 'OGC API Records':
+    - OGCAPI-Records/index.md
+    - OGCAPI-Records/config.md
+    - OGCAPI-Records/content-negotiation.md
+    - OGCAPI-Records/demo-server.md
+    - OGCAPI-Records/deploy.md
+    - OGCAPI-Records/spec-diff.md
+    - OGCAPI-Records/develop.md
+    - OGCAPI-Records/features.md
+  - 'Developer documentation':
+    - Developer/index.md
+    - Developer/formatters.md
+    - Developer/tech-security.md
     
 
 
