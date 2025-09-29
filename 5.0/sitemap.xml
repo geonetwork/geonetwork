@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/Developer/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/Developer/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/Developer/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/Developer/formatters/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/Developer/formatters/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/Developer/formatters/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/Developer/tech-security/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/Developer/tech-security/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/Developer/tech-security/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/GN4-Integration/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/GN4-Integration/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/GN4-Integration/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/GN4-Integration/auth-json/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/GN4-Integration/auth-json/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/GN4-Integration/auth-json/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/GN4-Integration/auth-jwt/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/GN4-Integration/auth-jwt/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/GN4-Integration/auth-jwt/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/OGCAPI-Records/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/config/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/config/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/OGCAPI-Records/config/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/content-negotiation/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/content-negotiation/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/OGCAPI-Records/content-negotiation/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/demo-server/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/demo-server/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/OGCAPI-Records/demo-server/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/deploy/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/deploy/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/OGCAPI-Records/deploy/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/develop/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/develop/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/OGCAPI-Records/develop/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/features/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/features/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/OGCAPI-Records/features/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/spec-diff/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/spec-diff/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0fr/OGCAPI-Records/spec-diff/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/Developer/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/Developer/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0Developer/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/Developer/formatters/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/Developer/formatters/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0Developer/formatters/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/Developer/tech-security/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/Developer/tech-security/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0Developer/tech-security/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/GN4-Integration/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/GN4-Integration/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0GN4-Integration/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/GN4-Integration/auth-json/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/GN4-Integration/auth-json/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0GN4-Integration/auth-json/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/GN4-Integration/auth-jwt/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/GN4-Integration/auth-jwt/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0GN4-Integration/auth-jwt/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0OGCAPI-Records/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/config/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/config/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0OGCAPI-Records/config/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/content-negotiation/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/content-negotiation/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0OGCAPI-Records/content-negotiation/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/demo-server/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/demo-server/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0OGCAPI-Records/demo-server/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/deploy/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/deploy/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0OGCAPI-Records/deploy/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/develop/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/develop/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0OGCAPI-Records/develop/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/features/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/features/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0OGCAPI-Records/features/"/>
+    </url>
+    <url>
+        <loc>https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/spec-diff/</loc>
+        <lastmod>2025-09-29</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://geonetwork.github.io/geonetwork/5.0/fr/OGCAPI-Records/spec-diff/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://geonetwork.github.io/geonetwork/5.0OGCAPI-Records/spec-diff/"/>
+    </url>
+</urlset>
