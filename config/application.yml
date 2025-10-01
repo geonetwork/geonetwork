@@ -10,7 +10,7 @@
 #  GATEWAY_GEONETWORK_PATH /geonetwork/**               Where is the proxy to GN4?
 
 geonetwork:
-  url: http://localhost:7979/geonetwork
+  url: ${GN5_BASE_URL:http://localhost:7979/geonetwork}
   home: /srv
   index:
     url: ${ELASTIC_URL:http://localhost:9200}
@@ -54,7 +54,7 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5432/geonetwork
+    url: jdbc:postgresql://localhost:5555/geonetwork
     driverClassName: org.postgresql.Driver
     username: geonetwork
     password: geonetwork

@@ -13,11 +13,12 @@ import java.util.List;
 import lombok.SneakyThrows;
 import org.geonetwork.ogcapi.records.generated.CollectionsApi;
 import org.geonetwork.ogcapi.records.generated.model.*;
-import org.geonetwork.ogcapi.service.facets.FacetsService;
+import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiCollectionsApi;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiItemsApi;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.querybuilder.QueryBuilder;
+import org.geonetwork.ogcapi.service.sortables.SortablesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -41,7 +42,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
     private final OgcApiItemsApi itemsApi;
     private final QueryablesService queryablesService;
     private final QueryBuilder queryBuilder;
-    private final FacetsService facetsService;
+    private final FacetsJsonService facetsService;
+    private final SortablesService sortablesService;
 
     @Autowired
     public OgcapiCollectionsApiController(
@@ -50,13 +52,15 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             OgcApiItemsApi itemsApi,
             QueryablesService queryablesService,
             QueryBuilder queryBuilder,
-            FacetsService facetsService) {
+            FacetsJsonService facetsService,
+            SortablesService sortablesService) {
         this.request = request;
         this.collectionsApi = collectionsApi;
         this.itemsApi = itemsApi;
         this.queryablesService = queryablesService;
         this.queryBuilder = queryBuilder;
         this.facetsService = facetsService;
+        this.sortablesService = sortablesService;
     }
 
     @Override
@@ -128,7 +132,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
                 filterLang,
                 filterCrs,
                 request.getParameterMap());
-        var result = itemsApi.getRecords(query, facetsService.getFullFacets(catalogId));
+        var result = itemsApi.getRecords(query);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("GN5.OGCAPI-RECORDS.REQUEST-OFFSET", offset.toString());
@@ -154,5 +158,11 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
                     String catalogId) {
         var result = facetsService.buildFacets(catalogId);
         return new ResponseEntity<OgcApiRecordsFacetsDto>(result, HttpStatusCode.valueOf(200));
+    }
+
+    @Override
+    public ResponseEntity<OgcApiRecordsJsonSchemaDto> getSortables(String catalogId) {
+        var result = sortablesService.buildSortables(catalogId);
+        return new ResponseEntity<OgcApiRecordsJsonSchemaDto>(result, HttpStatusCode.valueOf(200));
     }
 }
