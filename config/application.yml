@@ -18,13 +18,6 @@ geonetwork:
       includeElasticJson: false
     ogcapi-property-mapping:
       fields:
-        - ogcProperty: spatialRepresentationType
-          elasticProperty: cl_spatialRepresentationType.key
-          indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
-          typeOverride: LIST_STRING
-          facetsConfig:
-            - facetName: spatialRepresentationType
-              facetType: TERM
         - ogcProperty: resourceType
           elasticProperty: resourceType
           indexRecordProperty: resourceType
@@ -49,30 +42,6 @@ geonetwork:
             - facetName: keywords
               facetType: TERM
               bucketCount: 50
-        - ogcProperty: updateFrequency
-          elasticProperty: cl_maintenanceAndUpdateFrequency.key
-          indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
-          typeOverride: SINGLE_STRING
-          isSortable: true
-          isQueryable: true
-          facetsConfig:
-            - facetName: updateFrequency
-              facetType: TERM
-              bucketCount: 50
-        - ogcProperty: creationYearForResource
-          elasticProperty: creationYearForResource
-          indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
-          isSortable: true
-          facetsConfig:
-            - facetName: creationYearForResource
-              facetType: HISTOGRAM_FIXED_INTERVAL
-              numberBucketInterval: 5
-              bucketCount: 25
-              bucketSorting: VALUE
-            - facetName: creationYearForResource2
-              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
-              bucketCount: 5
-              bucketSorting: VALUE
         - ogcProperty: linkProtocol
           elasticProperty: linkProtocol
           indexRecordProperty: linkProtocols
@@ -84,26 +53,6 @@ geonetwork:
                   filterEquationCql: linkProtocol = 'OGC:WFS'
                 - filterName: availableInViewService
                   filterEquationCql: linkProtocol = 'OGC:WMS'
-        - ogcProperty: createDate
-          elasticProperty: createDate
-          indexRecordProperty: createDate
-          isSortable: true
-          isQueryable: true
-          facetsConfig:
-            - facetName: createDate
-              facetType: HISTOGRAM_FIXED_INTERVAL
-              calendarIntervalUnit: MONTH
-              bucketCount: 25
-              bucketSorting: VALUE
-            - facetName: createDate2
-              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
-              bucketCount: 5
-              bucketSorting: VALUE
-        - ogcProperty: resourceTitleObject
-          elasticProperty: resourceTitleObject.default
-          indexRecordProperty: resourceTitle.["default"]
-          isSortable: true
-          isQueryable: true
         - ogcProperty: resolutionScaleDenominator
           elasticProperty: resolutionScaleDenominator
           indexRecordProperty: resolutionScaleDenominator
@@ -119,16 +68,66 @@ geonetwork:
               facetType: HISTOGRAM_FIXED_BUCKET_COUNT
               bucketCount: 5
               bucketSorting: VALUE
-        - ogcProperty: orgForResource
-          elasticProperty: OrgForResourceObject.default
-          indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
-          facetsConfig:
-            - facetName: orgForResource
-              facetType: TERM
-              bucketCount: 50
-
-
-
+        ## Commented to avoid issue #116
+        ## You can uncomment following lines after metadata schema initialization and some example record creation
+        # - ogcProperty: spatialRepresentationType
+        #   elasticProperty: cl_spatialRepresentationType.key
+        #   indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
+        #   typeOverride: LIST_STRING
+        #   facetsConfig:
+        #     - facetName: spatialRepresentationType
+        #       facetType: TERM
+        # - ogcProperty: updateFrequency
+        #   elasticProperty: cl_maintenanceAndUpdateFrequency.key
+        #   indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
+        #   typeOverride: SINGLE_STRING
+        #   isSortable: true
+        #   isQueryable: true
+        #   facetsConfig:
+        #     - facetName: updateFrequency
+        #       facetType: TERM
+        #       bucketCount: 50
+        # - ogcProperty: creationYearForResource
+        #   elasticProperty: creationYearForResource
+        #   indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
+        #   isSortable: true
+        #   facetsConfig:
+        #     - facetName: creationYearForResource
+        #       facetType: HISTOGRAM_FIXED_INTERVAL
+        #       numberBucketInterval: 5
+        #       bucketCount: 25
+        #       bucketSorting: VALUE
+        #     - facetName: creationYearForResource2
+        #       facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+        #       bucketCount: 5
+        #       bucketSorting: VALUE
+        # - ogcProperty: createDate
+        #   elasticProperty: createDate
+        #   indexRecordProperty: createDate
+        #   isSortable: true
+        #   isQueryable: true
+        #   facetsConfig:
+        #     - facetName: createDate
+        #       facetType: HISTOGRAM_FIXED_INTERVAL
+        #       calendarIntervalUnit: MONTH
+        #       bucketCount: 25
+        #       bucketSorting: VALUE
+        #     - facetName: createDate2
+        #       facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+        #       bucketCount: 5
+        #       bucketSorting: VALUE
+        # - ogcProperty: resourceTitleObject
+        #   elasticProperty: resourceTitleObject.default
+        #   indexRecordProperty: resourceTitle.["default"]
+        #   isSortable: true
+        #   isQueryable: true
+        # - ogcProperty: orgForResource
+        #   elasticProperty: OrgForResourceObject.default
+        #   indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
+        #   facetsConfig:
+        #     - facetName: orgForResource
+        #       facetType: TERM
+        #       bucketCount: 50
 
     links:
       base-path: /ogcapi-records

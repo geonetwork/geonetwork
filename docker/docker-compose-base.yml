@@ -41,7 +41,7 @@ x-geonetwork-environment:
 
 x-service-geonetwork:
   &default-service-geonetwork
-  image: geonetwork:4.4.7
+  image: geonetwork:4.4.8
   healthcheck:
     test: "curl http://localhost:8080/"
     interval: 5s
