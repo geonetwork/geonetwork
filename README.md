@@ -57,5 +57,5 @@ To run GeoNetwork 5 in dev mode, you first need to run GeoNetwork 4 with shared 
    mvn spring-boot:run
    ```
    
-   Access GN5: http://localhost:7979 (login `admin`/`admin`)
+   Access GN5: http://localhost:7979/geonetwork (login `admin`/`admin`)
 

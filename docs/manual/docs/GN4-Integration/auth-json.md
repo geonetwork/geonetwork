@@ -12,14 +12,8 @@ In `application.yml` (cloud: gateway: mvc), add the "filters" (at the bottom):
     gateway:
       mvc:
         routes:
-          - id: geonetwork_proxy_redirect
-            uri: ${geonetwork.openapi.url}
-            predicates:
-              - Path=/geonetwork/proxy
-            filters:
-              - RewritePath=/geonetwork/(?<url>.*), /api/$\{url}
           - id: geonetwork_route
-            uri: ${geonetwork.url}
+            uri: ${geonetwork.4.url}
             predicates:
               - Path=/geonetwork/**
             filters:
@@ -40,7 +34,7 @@ This header will, typically, look like this:
 
 1. You will need the JWT Headers security model (available in the latest GN4)
 2. Set it up with the environment variables, see below.
-3. Run with JWT Headers enabled `-Dgeonetwork.security.type=jwt-headers`
+3. Run with JWT Headers enabled `-Dgeonetwork.security.type=gn5`
 4. GN4 must **NOT** be accessible other than via the GN4 Gateway proxy.  GN4 is trusting headers so they must be removed.
 
 - If GN4 is available, you **MUST** remove the `gn5.to.gn4.trusted.json.auth` header from incoming requests (typically done with your webserver)
@@ -65,3 +59,24 @@ Environment variables meaning:
 
 
 See the GN JWT Headers documentation for more info.
+
+
+In `config-security.properties`, configure the URLs for login and logout to point to GN5:
+
+```properties
+logout.success.url=http://localhost:7979/geonetwork/srv/eng/catalog.search
+loginForm=http://localhost:7979/geonetwork/srv/eng/catalog.signin
+loginErrorForm=http://localhost:7979/geonetwork/srv/eng/catalog.signin?failure=true
+```
+
+
+
+In UI configuration, you need to enable the authentication and set the signin/signout URLs to use the GN5 URLs:
+
+```json
+     "authentication": {
+          "enabled": true,
+          "signinUrl": "../../{{node}}/{{lang}}/catalog.signin",
+          "signinAPI": "../../api/user/signin",
+          "signoutUrl": "../../api/user/signout"
+```
