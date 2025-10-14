@@ -1,0 +1,124 @@
+geonetwork:
+  openapi-records:
+    ogcapi-records-json:
+      includeRawXML: false
+      includeElasticJson: false
+    ogcapi-property-mapping:
+      fields:
+        - ogcProperty: resourceType
+          elasticProperty: resourceType
+          indexRecordProperty: resourceType
+          isSortable: true
+          isQueryable: true
+          facetsConfig:
+            - facetName: resourceType
+              facetType: TERM
+        - ogcProperty: format
+          elasticProperty: format
+          indexRecordProperty: formats
+          addPropertyToOutput: false
+          facetsConfig:
+            - facetName: format
+              facetType: TERM
+              bucketCount: 50
+        - ogcProperty: keywords
+          elasticProperty: tag.langeng
+          indexRecordProperty: tag.[*].["default"]
+          addPropertyToOutput: false
+          facetsConfig:
+            - facetName: keywords
+              facetType: TERM
+              bucketCount: 50
+        - ogcProperty: linkProtocol
+          elasticProperty: linkProtocol
+          indexRecordProperty: linkProtocols
+          facetsConfig:
+            - facetName: availableInServices
+              facetType: FILTER
+              filters:
+                - filterName: availableInDownloadService
+                  filterEquationCql: linkProtocol = 'OGC:WFS'
+                - filterName: availableInViewService
+                  filterEquationCql: linkProtocol = 'OGC:WMS'
+        - ogcProperty: resolutionScaleDenominator
+          elasticProperty: resolutionScaleDenominator
+          indexRecordProperty: resolutionScaleDenominator
+          isSortable: true
+          isQueryable: true
+          facetsConfig:
+            - facetName: resolutionScaleDenominator
+              facetType: HISTOGRAM_FIXED_INTERVAL
+              numberBucketInterval: 100000
+              bucketCount: 25
+              bucketSorting: VALUE
+            - facetName: resolutionScaleDenominator2
+              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+              bucketCount: 5
+              bucketSorting: VALUE
+        - ogcProperty: spatialRepresentationType
+          elasticProperty: cl_spatialRepresentationType.key
+          indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
+          typeOverride: LIST_STRING
+          facetsConfig:
+            - facetName: spatialRepresentationType
+              facetType: TERM
+        - ogcProperty: updateFrequency
+          elasticProperty: cl_maintenanceAndUpdateFrequency.key
+          indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
+          typeOverride: SINGLE_STRING
+          isSortable: true
+          isQueryable: true
+          facetsConfig:
+            - facetName: updateFrequency
+              facetType: TERM
+              bucketCount: 50
+        - ogcProperty: creationYearForResource
+          elasticProperty: creationYearForResource
+          indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
+          isSortable: true
+          facetsConfig:
+            - facetName: creationYearForResource
+              facetType: HISTOGRAM_FIXED_INTERVAL
+              numberBucketInterval: 5
+              bucketCount: 25
+              bucketSorting: VALUE
+            - facetName: creationYearForResource2
+              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+              bucketCount: 5
+              bucketSorting: VALUE
+        - ogcProperty: createDate
+          elasticProperty: createDate
+          indexRecordProperty: createDate
+          isSortable: true
+          isQueryable: true
+          facetsConfig:
+            - facetName: createDate
+              facetType: HISTOGRAM_FIXED_INTERVAL
+              calendarIntervalUnit: MONTH
+              bucketCount: 25
+              bucketSorting: VALUE
+            - facetName: createDate2
+              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+              bucketCount: 5
+              bucketSorting: VALUE
+        - ogcProperty: resourceTitleObject
+          elasticProperty: resourceTitleObject.default
+          indexRecordProperty: resourceTitle.["default"]
+          isSortable: true
+          isQueryable: true
+        - ogcProperty: orgForResource
+          elasticProperty: OrgForResourceObject.default
+          indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
+          facetsConfig:
+            - facetName: orgForResource
+              facetType: TERM
+              bucketCount: 50
+spring:
+  datasource:
+    url: jdbc:h2:mem:gn5
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+debug: false
