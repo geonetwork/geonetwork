@@ -1,6 +1,6 @@
 services:
   geonetwork5:
-    image: docker.io/library/gn-main-app:5.0.0-SNAPSHOT
+    image: ghcr.io/geonetwork/gn5-main:latest
     environment:
       - SPRING_CONFIG_LOCATION=file:/config/application.yml
       - GN5_BASE_URL=http://localhost:7979/
