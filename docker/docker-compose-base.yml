@@ -30,15 +30,6 @@ x-geonetwork-environment:
     -Des.password=
     -Dgeonetwork.ESFeaturesProxy.targetUri=http://elasticsearch:9200/gn-features/{_}
 
-
-  GEONETWORK_DB_TYPE: postgres
-  GEONETWORK_DB_HOST: database
-  GEONETWORK_DB_PORT: 5432
-  GEONETWORK_DB_NAME: geonetwork
-  GEONETWORK_DB_USERNAME: geonetwork
-  GEONETWORK_DB_PASSWORD: geonetwork
-  VIRTUAL_HOST: localhost
-
 x-service-geonetwork:
   &default-service-geonetwork
   image: geonetwork:4.4.8
@@ -58,8 +49,11 @@ x-service-geonetwork:
 
 volumes:
   geonetwork:
+    name: ${COMPOSE_PROJECT_NAME}_geonetwork
   esdata:
+    name: ${COMPOSE_PROJECT_NAME}_esdata
   pgdata:
+    name: ${COMPOSE_PROJECT_NAME}_pgdata
 
 networks:
   gn-network:
@@ -68,9 +62,9 @@ services:
   database:
     image: postgres:17
     environment:
-      POSTGRES_USER: geonetwork
-      POSTGRES_PASSWORD: geonetwork
-      POSTGRES_DB: geonetwork
+      POSTGRES_USER: ${GEONETWORK_DB_USERNAME}
+      POSTGRES_PASSWORD: ${GEONETWORK_DB_PASSWORD}
+      POSTGRES_DB: ${GEONETWORK_DB_NAME}
     command: [ "postgres",
                "-c", "log_statement=all",
                "-c", "logging_collector=true",
@@ -86,7 +80,7 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - 5432:5432
+      - ${GEONETWORK_DB_PORT:-5432}:5432
     networks:
       - gn-network
 
@@ -132,7 +126,7 @@ services:
     volumes:
       - esdata:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200
+      - ${ELASTICSEARCH_PORT:-9200}:9200
     networks:
       - gn-network
 
