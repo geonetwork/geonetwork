@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '17'
@@ -35,10 +35,20 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          IMAGE_NAME="ghcr.io/${{ github.repository_owner,, }}/gn5-main"
+          IMAGE_NAME="ghcr.io/${{ github.repository_owner }}/gn5-main:latest"
+          
+          # First build the project
+          mvn clean install -DskipTests
+          
+          # Then build the Docker image for the main app only
           if [[ "${{ github.event_name }}" == "push" ]]; then
-            mvn -B spring-boot:build-image -Dspring-boot.build-image.imageName=${IMAGE_NAME} -Dspring-boot.build-image.publish=true
+            mvn spring-boot:build-image \
+              -pl src/apps/geonetwork \
+              -Dspring-boot.build-image.imageName=${IMAGE_NAME} \
+              -Dspring-boot.build-image.publish=true
           else
-            mvn -B spring-boot:build-image -Dspring-boot.build-image.imageName=${IMAGE_NAME}
+            mvn spring-boot:build-image \
+              -pl src/apps/geonetwork \
+              -Dspring-boot.build-image.imageName=${IMAGE_NAME}
           fi
 
