@@ -32,8 +32,6 @@ docker compose -f docker-compose-base.yml -f docker-compose-dev.yml down
 ```
 
 ## 🚀 Full Stack Setup
-Before running this setup, make sure to build the GeoNetwork 5 Docker image (instructions below).
-
 This composition includes also GeoNetwork 5:
 
 
@@ -58,16 +56,3 @@ docker compose -f docker-compose-base.yml -f docker-compose-full.yml up -d
 docker compose -f docker-compose-base.yml -f docker-compose-full.yml down
 ```
 
-## 🛠️ Build the GeoNetwork 5 Docker Image
-To build the GN5 image using Spring Boot:
-
-Navigate to the project root:
-/src/apps/geonetwork
-
-Run the following command:
-
-```bash
-mvn spring-boot:build-image
-```
-
-This creates a Docker image that will be used by the geonetwork5 service in the full stack.
