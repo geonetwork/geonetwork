@@ -11,6 +11,6 @@ services:
     volumes:
       - ./docker-application.yml:/config/application.yml
     ports:
-      - 7979:7979
+      - ${GEONETWORK5_PORT:-7979}:7979
     networks:
       - gn-network
