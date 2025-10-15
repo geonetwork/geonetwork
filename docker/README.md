@@ -31,6 +31,56 @@ docker compose -f docker-compose-base.yml -f docker-compose-dev.yml up -d
 docker compose -f docker-compose-base.yml -f docker-compose-dev.yml down
 ```
 
+Access Elastic at http://localhost:9200/
+
+Access GN4 at http://localhost:8080/geonetwork
+
+Other Configurations
+--------------------
+
+
+### GN4 Proxied by GN5
+
+This will run GN4 configured to accept GN5 logins.  When you login to GN5 and then access GN4 (via GN5's proxy) you will be logged in.
+
+If you run this configuration, you can **only** login to GN4 via GN5 and GN4 will **not** have any login buttons.
+Ensure that your GN5 configuration is setup to proxy to GN4 (including authentication).
+
+```bash
+docker compose -f docker-compose-base.yml -f docker-compose-dev.yml -f  docker-compose-proxy.yml up -d
+```
+
+### Just GN4
+
+*(advanced only)*
+
+If you just want to quickly create a GN4 that will connect to an already running PostgreSQL and Elastic:
+
+```bash
+docker compose   -f  docker-compose-gn4-only.yml up -d
+```
+
+PostgreSQL should be running on the local (docker host) machine on port 5432, database `geonetwork`, username `geonetwork`, and password `geonetwork`.
+
+Elastic should be running on the local (docker host) machine on port 9200. 
+
+
+## Helpful Commands
+
+### Remove volumes
+ 
+This will remove the volumes associated with the containers.  This is useful to reset your postgresql and elastic databases.
+
+```bash
+docker compose -f docker-compose-base.yml -f docker-compose-dev.yml down --volumes 
+```
+
+### Connect to Postgresql via `psql`:
+
+```bash
+docker exec -it development-database-1  psql -h localhost -U geonetwork
+```
+
 ## 🚀 Full Stack Setup
 This composition includes also GeoNetwork 5:
 

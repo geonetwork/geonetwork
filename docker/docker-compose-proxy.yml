@@ -1,0 +1,21 @@
+services:
+  geonetwork4:
+    environment:
+      GN_CONFIG_PROPERTIES: >-
+        -Dgeonetwork.dir=/catalogue-data
+        -Dgeonetwork.formatter.dir=/catalogue-data/data/formatter
+        -Dgeonetwork.schema.dir=/opt/geonetwork/WEB-INF/data/config/schema_plugins
+        -Dgeonetwork.indexConfig.dir=/opt/geonetwork/WEB-INF/data/config/index
+        -Dgeonetwork.schemapublication.dir=/opt/geonetwork/WEB-INF/data/resources/schemapublication
+        -Dgeonetwork.htmlcache.dir=/opt/geonetwork/WEB-INF/data/resources/htmlcache
+        -Dgeonetwork.security.type=gn5
+        -Dlogout.success.url=http://localhost:7979/geonetwork/srv/eng/catalog.search
+        -DloginForm=http://localhost:7979/geonetwork/srv/eng/catalog.signin
+        -DloginErrorForm=http://localhost:7979/geonetwork/srv/eng/catalog.signin?failure=true
+        -Des.host=elasticsearch
+        -Des.protocol=http
+        -Des.port=9200
+        -Des.url=http://elasticsearch:9200
+        -Des.username=
+        -Des.password=
+        -Dgeonetwork.ESFeaturesProxy.targetUri=http://elasticsearch:9200/gn-features/{_}
