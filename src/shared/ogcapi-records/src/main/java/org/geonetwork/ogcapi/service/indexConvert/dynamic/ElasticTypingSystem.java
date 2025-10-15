@@ -148,8 +148,13 @@ public class ElasticTypingSystem {
 
         // start off getting the first level property
         var pathPart = path.removeFirst();
-        PropertyVariant elasticProperty = (PropertyVariant)
-                this.elasticIndexInfo.mappings().properties().get(pathPart)._get();
+        var first = this.elasticIndexInfo.mappings().properties().get(pathPart);
+        if (first == null) {
+            throw new IllegalStateException("Mapping for top-level field '" + pathPart + "' not found in index '"
+                    + indexRecordName + "'. Available top-level fields: "
+                    + this.elasticIndexInfo.mappings().properties().keySet());
+        }
+        PropertyVariant elasticProperty = (PropertyVariant) first._get();
 
         while (!path.isEmpty()) {
             pathPart = path.removeFirst();
