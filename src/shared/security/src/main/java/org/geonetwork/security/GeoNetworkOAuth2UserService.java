@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.config;
+package org.geonetwork.security;
 
 import io.micrometer.common.util.StringUtils;
 import java.util.Collections;
@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.UserRepository;
-import org.geonetwork.security.GeoNetworkUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
