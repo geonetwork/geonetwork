@@ -72,7 +72,7 @@ public class WebConfig implements WebMvcConfigurer {
                 // .favorPathExtension(false)
                 .favorParameter(true)
                 .parameterName("f")
-                .ignoreAcceptHeader(true)
+                .ignoreAcceptHeader(false)
 
                 //      defaultContentType(MediaType.APPLICATION_JSON).
                 .mediaType("xml", MediaType.APPLICATION_XML)
