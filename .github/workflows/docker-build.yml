@@ -25,6 +25,15 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Build project
+        run: mvn clean install -DskipTests
+
+      - name: Build Docker image with Spring Boot
+        run: |
+          mvn spring-boot:build-image \
+            -pl src/apps/geonetwork \
+            -Dspring-boot.build-image.imageName=gn5-main:${{ github.sha }}
+
       - name: Log in to GitHub Container Registry
         if: github.event_name == 'push'
         uses: docker/login-action@v3
@@ -33,22 +42,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push Docker image
+      - name: Tag and Push Docker image
+        if: github.event_name == 'push'
         run: |
-          IMAGE_NAME="ghcr.io/${{ github.repository_owner }}/gn5-main:latest"
+          IMAGE_NAME="ghcr.io/${{ github.repository_owner }}/gn5-main"
           
-          # First build the project
-          mvn clean install -DskipTests
+          # Tag with commit SHA
+          docker tag gn5-main:${{ github.sha }} ${IMAGE_NAME}:${{ github.sha }}
           
-          # Then build the Docker image for the main app only
-          if [[ "${{ github.event_name }}" == "push" ]]; then
-            mvn spring-boot:build-image \
-              -pl src/apps/geonetwork \
-              -Dspring-boot.build-image.imageName=${IMAGE_NAME} \
-              -Dspring-boot.build-image.publish=true
-          else
-            mvn spring-boot:build-image \
-              -pl src/apps/geonetwork \
-              -Dspring-boot.build-image.imageName=${IMAGE_NAME}
-          fi
-
+          # Tag with 'latest'
+          docker tag gn5-main:${{ github.sha }} ${IMAGE_NAME}:latest
+          
+          # Push both tags
+          docker push ${IMAGE_NAME}:${{ github.sha }}
+          docker push ${IMAGE_NAME}:latest
