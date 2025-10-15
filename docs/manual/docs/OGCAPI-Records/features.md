@@ -10,6 +10,6 @@ The GeoNetwork 5 OGCAPI-Records module has several features that aren't standard
     * There will be a `metadataRecordText` property with the text of the metadata record
     * There will be a `geoNetworkElasticIndexRecord` property with the underlying Elastic Index Record for that metadata record.
 4. When doing a text search ("`q`"), you can add `<queryable Property Name>:<search value>` and it will convert that into a queryables search
-    * For example, `http://localhost:7979/ogcapi-records/collections/subportal/items?q=portal%20contacts:geocat` is equivalent to  `http://localhost:7979/ogcapi-records/collections/subportal/items?q=portal&contacts=geocat`
+    * For example, `http://localhost:7979/geonetwork/ogcapi-records/collections/subportal/items?q=portal%20contacts:geocat` is equivalent to  `http://localhost:7979/geonetwork/ogcapi-records/collections/subportal/items?q=portal&contacts=geocat`
     * This was done because most OGCAPI-Records clients do **not** support queryables. 
 5. Security.  The logged in user can only see certain records (see `ElasticWithUserPermissions.java`).
