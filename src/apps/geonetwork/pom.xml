@@ -35,11 +35,6 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
-      <artifactId>gn-configuration</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geonetwork</groupId>
       <artifactId>gn-proxy</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -128,6 +123,10 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-common</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
