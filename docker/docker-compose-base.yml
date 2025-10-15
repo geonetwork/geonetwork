@@ -33,9 +33,17 @@ x-geonetwork-environment:
     -Des.password=
     -Dgeonetwork.ESFeaturesProxy.targetUri=http://elasticsearch:9200/gn-features/{_}
 
+  GEONETWORK_DB_TYPE: postgres
+  GEONETWORK_DB_HOST: database
+  GEONETWORK_DB_PORT: ${GEONETWORK_DB_PORT}
+  GEONETWORK_DB_NAME: ${GEONETWORK_DB_NAME}
+  GEONETWORK_DB_USERNAME: ${GEONETWORK_DB_USERNAME}
+  GEONETWORK_DB_PASSWORD: ${GEONETWORK_DB_PASSWORD}
+  VIRTUAL_HOST: localhost
+
 x-service-geonetwork:
   &default-service-geonetwork
-  image: geonetwork:4.4.8
+  image: geonetwork:4.4.7
   healthcheck:
     test: "curl http://localhost:8080/"
     interval: 5s
