@@ -11,6 +11,9 @@
 #
 
 geonetwork:
+  4:
+    url: ${GN4_BASE_URL:http://localhost:8080/geonetwork}
+    path: /srv
   openapi-records:
     links:
       # Where is GN5's ogcapi-records located?
@@ -62,6 +65,7 @@ geonetwork:
   core:
     url: ${GN4_BASE_URL:http://localhost:8080/geonetwork}
   url: ${GN4_DOCKER_URL:http://localhost:8080/geonetwork}
+  home: /home
   index:
     url: ${ELASTIC_URL:http://localhost:9200}
     indexPrefix: gn5-
@@ -94,14 +98,14 @@ geonetwork:
 server:
   port: 7979
   servlet:
-    context-path: /
+    context-path: /geonetwork
   forward-headers-strategy: framework
 
 spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://database:5432/geonetwork
+    url: jdbc:postgresql://host.docker.internal:5432/geonetwork
     driverClassName: org.postgresql.Driver
     #    url: jdbc:h2:mem:gn5
     #    url: jdbc:h2:~/gn;AUTO_SERVER=TRUE
@@ -133,12 +137,12 @@ spring:
     gateway:
       mvc:
         routes:
-          - id: geonetwork_route
-            uri: ${geonetwork.url}
-            predicates:
-              - Path=/geonetwork/**
-            filters:
-              - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
+        # - id: geonetwork_route
+        #   uri: ${geonetwork.url}
+        #   predicates:
+        #     - Path=/geonetwork/**
+        #   filters:
+        #     - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
     jdbc:
       initialize-schema: always

@@ -23,7 +23,6 @@ public class MvcConfiguration implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         String viewName = homeUrl.equals("/") ? "home" : "redirect:" + homeUrl;
         registry.addViewController("/").setViewName(viewName);
-        registry.addViewController("/home").setViewName("home");
         registry.addViewController("/signin").setViewName("signin");
     }
 }

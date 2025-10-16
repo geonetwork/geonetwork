@@ -11,7 +11,7 @@
 
 geonetwork:
   url: ${GN5_BASE_URL:http://localhost:7979/geonetwork}
-  home: /srv
+  home: /home
   index:
     url: ${ELASTIC_URL:http://localhost:9200}
     indexPrefix: gn5-
@@ -94,12 +94,12 @@ spring:
 #              - Path=/srv/api/records/{uuid}/attachments/**
 #            filters:
 #              - RewritePath=/srv/api/records/(?<uuid>.+)/attachments(?<segment>.*), /api/records/$\{uuid}/attachments$\{segment}
-          - id: geonetwork_route
-            uri: ${geonetwork.4.url}
-            predicates:
-              - isGeoNetwork4Request=
-            filters:
-              - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
+#          - id: geonetwork_route
+#            uri: ${geonetwork.4.url}
+#            predicates:
+#              - isGeoNetwork4Request=
+#            filters:
+#              - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
     jdbc:
       initialize-schema: always
