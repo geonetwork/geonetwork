@@ -131,8 +131,12 @@ services:
         - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
         - xpack.security.enabled=false
         - xpack.security.enrollment.enabled=false
+        - cluster.routing.allocation.disk.threshold_enabled=false
+
     volumes:
       - esdata:/usr/share/elasticsearch/data
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
+
     ports:
       - ${ELASTICSEARCH_PORT:-9200}:9200
     networks:
