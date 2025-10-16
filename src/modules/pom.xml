@@ -20,6 +20,8 @@
   <name>GeoNetwork modules</name>
 
   <modules>
+    <module>geonetwork4</module>
+    <module>proxy</module>
     <module>indexing</module>
     <module>searching</module>
     <module>editing</module>

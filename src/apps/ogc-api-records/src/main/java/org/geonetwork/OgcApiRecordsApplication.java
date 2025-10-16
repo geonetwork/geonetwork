@@ -9,15 +9,11 @@ package org.geonetwork;
 import org.geonetwork.configuration.BaseApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 /** The main class of the application. */
-@EnableCaching
-@EnableScheduling
 @SpringBootApplication(scanBasePackages = {"org.geonetwork"})
-public class GeonetworkApplication extends BaseApplication {
+public class OgcApiRecordsApplication extends BaseApplication {
     public static void main(String[] args) {
-        SpringApplication.run(GeonetworkApplication.class, args);
+        SpringApplication.run(OgcApiRecordsApplication.class, args);
     }
 }

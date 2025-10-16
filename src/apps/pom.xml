@@ -21,5 +21,6 @@
 
   <modules>
     <module>geonetwork</module>
+    <module>ogc-api-records</module>
   </modules>
 </project>
