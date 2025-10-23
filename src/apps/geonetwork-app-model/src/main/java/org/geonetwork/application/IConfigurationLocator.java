@@ -22,8 +22,8 @@ import java.util.List;
  * the scanner more efficient for finding implementations. <br>
  * 2. Set the priority for each of them to order how they are includes. 0=first priority <br>
  * 3. These classes need to have a zero-argument constructor<br>
- * 4. These classes will be created, and used, before spring is initialized. Thing like @Autowire and
- *    constructor injection will not be available!<br>
+ * 4. These classes will be created, and used, before spring is initialized. Thing like @Autowire and constructor
+ * injection will not be available!<br>
  * 5. the location can point to any `.yml` file.
  */
 public interface IConfigurationLocator {
