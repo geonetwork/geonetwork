@@ -20,7 +20,10 @@
   <name>GeoNetwork applications</name>
 
   <modules>
+    <module>geonetwork-app-model</module>
     <module>geonetwork</module>
+    <module>generic-geonetwork5</module>
+    <module>trivial-app</module>
     <module>ogc-api-records</module>
   </modules>
 </project>
