@@ -9,6 +9,7 @@
 #  ELASTIC_URL        http://localhost:9200             Where is elastic?
 #  GATEWAY_GEONETWORK_PATH /geonetwork/**               Where is the proxy to GN4?
 
+
 geonetwork:
   url: ${GN5_BASE_URL:http://localhost:7979/geonetwork}
   home: /srv
@@ -54,7 +55,7 @@ spring:
   application:
     name: GeoNetwork
   datasource:
-    url: jdbc:postgresql://localhost:5432/geonetwork
+    url: jdbc:postgresql://host.docker.internal:5432/geonetwork
     driverClassName: org.postgresql.Driver
     username: geonetwork
     password: geonetwork
@@ -94,12 +95,12 @@ spring:
 #              - Path=/srv/api/records/{uuid}/attachments/**
 #            filters:
 #              - RewritePath=/srv/api/records/(?<uuid>.+)/attachments(?<segment>.*), /api/records/$\{uuid}/attachments$\{segment}
-          - id: geonetwork_route
-            uri: ${geonetwork.4.url}
-            predicates:
-              - isGeoNetwork4Request=
-            filters:
-              - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
+#          - id: geonetwork_route
+#            uri: ${geonetwork.4.url}
+#            predicates:
+#              - isGeoNetwork4Request=
+#            filters:
+#              - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
     jdbc:
       initialize-schema: always
@@ -134,6 +135,9 @@ logging:
 #    org.apache.http.impl.client and org.apache.http.wire: TRACE
 #    org.apache.http.headers: TRACE
 #    org.springframework.cache: TRACE
+dave:
+  firstName: first name from application.yml
+  lastName:  last name from application.yml
 
 ---
 
@@ -145,3 +149,4 @@ spring:
       - optional:classpath:application-ogcapi-records.yml
     activate:
       on-profile: test
+
