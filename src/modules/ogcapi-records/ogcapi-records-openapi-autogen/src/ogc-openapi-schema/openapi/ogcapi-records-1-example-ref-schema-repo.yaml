@@ -61,7 +61,19 @@ paths:
       operationId: getLandingPage
       responses:
         '200':
-          $ref: 'responses/LandingPage.yaml'
+          description: good response
+          content:
+            text/html:
+              schema:
+                type: string
+              example: foo bar
+            application/json:
+              schema:
+                $ref: 'schemas/landingPage.yaml'
+
+            dave/b:
+              schema:
+                type: string
         '4XX':
           $ref: 'responses/BadRequest.yaml'
         '406':

@@ -121,7 +121,7 @@ management:
 
 springdoc:
   swagger-ui:
-    path: /doc/api/
+    path: /swagger-ui
 
 
 debug: false

@@ -122,6 +122,17 @@
 
     <dependency>
       <groupId>org.geonetwork</groupId>
+      <artifactId>gn-ogcapi-records-implementation</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>ogcapi-records-shared</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geonetwork</groupId>
       <artifactId>gn-trivial-app</artifactId>
       <version>${project.version}</version>
     </dependency>
