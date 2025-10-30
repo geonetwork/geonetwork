@@ -8,11 +8,12 @@ package org.geonetwork.ogcapi.records;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
-import lombok.SneakyThrows;
+import lombok.*;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
 import org.geonetwork.ogcapi.records.generated.CollectionsApi;
 import org.geonetwork.ogcapi.records.generated.model.*;
+import org.geonetwork.ogcapi.service.dataaccess.SimpleElastic;
 import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiCollectionsApi;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiItemsApi;
@@ -45,6 +46,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
     private final FacetsJsonService facetsService;
     private final SortablesService sortablesService;
 
+    private final SimpleElastic simpleElastic;
+
     @Autowired
     public OgcapiCollectionsApiController(
             NativeWebRequest request,
@@ -53,7 +56,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             QueryablesService queryablesService,
             QueryBuilder queryBuilder,
             FacetsJsonService facetsService,
-            SortablesService sortablesService) {
+            SortablesService sortablesService,
+            SimpleElastic simpleElastic) {
         this.request = request;
         this.collectionsApi = collectionsApi;
         this.itemsApi = itemsApi;
@@ -61,6 +65,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         this.queryBuilder = queryBuilder;
         this.facetsService = facetsService;
         this.sortablesService = sortablesService;
+        this.simpleElastic = simpleElastic;
     }
 
     @Override
@@ -83,18 +88,25 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             method = RequestMethod.GET,
             value = "/collections/{catalogId}/items/{recordId}",
             produces = {"application/geo+json", "text/html", "application/json", "*/*"})
-    public ResponseEntity<OgcApiRecordsRecordGeoJSONDto> getRecord(
-            String catalogId, String recordId, List<String> profile) {
-        var result = itemsApi.getRecord(catalogId, recordId);
+    public ResponseEntity<?> getRecord(String catalogId, String recordId, List<String> profile) {
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        if (profile != null && !profile.isEmpty()) {
-            responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-PROFILES", profile);
-        }
-        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-COLLECTIONID", Collections.singletonList(catalogId));
-        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-RECORDID", Collections.singletonList(recordId));
+        var indexRecord = simpleElastic.getOne(recordId);
 
-        return new ResponseEntity<OgcApiRecordsRecordGeoJSONDto>(result, responseHeaders, HttpStatusCode.valueOf(200));
+        var response = new OgcApiRecordsSingleRecordResponse(catalogId, recordId, profile, indexRecord);
+        return new ResponseEntity<OgcApiRecordsSingleRecordResponse>(response, HttpStatusCode.valueOf(200));
+
+        //        var result = itemsApi.getRecord(catalogId, recordId);
+        //
+        //        HttpHeaders responseHeaders = new HttpHeaders();
+        //        if (profile != null && !profile.isEmpty()) {
+        //            responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-PROFILES", profile);
+        //        }
+        //        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-COLLECTIONID",
+        // Collections.singletonList(catalogId));
+        //        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-RECORDID", Collections.singletonList(recordId));
+        //
+        //        return new ResponseEntity<>(result, responseHeaders, HttpStatusCode.valueOf(200));
+
     }
 
     @Override

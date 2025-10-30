@@ -23,7 +23,6 @@ import org.geonetwork.ogcapi.service.formatter.FormatterApiMessageWriter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -41,7 +40,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * IndexClient -> WebConfig. I've just explicitly gotten the FormatterApi at runtime instead of at instantiation. This
  * is a bit ugly, but ...
  */
-@Configuration
+// @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
     private FormatterApiMessageWriter formatterApiMessageWriter;
@@ -83,6 +82,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .mediaType(MediaType.TEXT_HTML.toString(), MediaType.TEXT_HTML)
                 .mediaType(MediaType.APPLICATION_JSON.toString(), MediaType.APPLICATION_JSON)
                 .mediaType("application/geo+json", MediaType.valueOf("application/geo+json"))
+                .mediaType("image/png", MediaType.valueOf("image/png"))
                 .defaultContentType(MediaType.APPLICATION_JSON);
 
         // add the FormatterApi media types.  We allows   f=<formatterId> or f=<formatter mime type>
