@@ -6,15 +6,23 @@
 
 package org.geonetwork.index.client;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS;
+
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -59,8 +67,10 @@ public class IndexClient {
             @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
             @Value("${geonetwork.index.elasticsearch.settings.maxResultWindow:50000}") Integer maxResultWindow,
             @Value("${geonetwork.index.elasticsearch.settings.mapping.totalFields:10000}") Long totalFieldsLimit,
-            @Value("${geonetwork.indexing.requestimeout:45000}") int requestTimeout,
-            ObjectMapper objectMapper) {
+            @Value("${geonetwork.indexing.requestimeout:45000}") int requestTimeout
+            //      ,
+            //            ObjectMapper objectMapper) {
+            ) {
         this.serverUrl = serverUrl;
         this.defaultIndexPrefix = defaultIndexPrefix;
         this.indexRecordName = indexRecordName;
@@ -84,12 +94,29 @@ public class IndexClient {
 
         RestClient restClient = builder.build();
 
-        JacksonJsonpMapper jacksonJsonpMapper = new JacksonJsonpMapper(objectMapper);
+        JacksonJsonpMapper jacksonJsonpMapper = new JacksonJsonpMapper(objectMapper());
 
         ElasticsearchTransport transport = new RestClientTransport(restClient, jacksonJsonpMapper);
 
         esClient = new ElasticsearchClient(transport);
         esAsynchClient = new ElasticsearchAsyncClient(transport);
+    }
+
+    public ObjectMapper objectMapper() {
+
+        var result = JsonMapper.builder()
+                .enable(MapperFeature.ALLOW_COERCION_OF_SCALARS)
+                .enable(UNWRAP_SINGLE_VALUE_ARRAYS)
+                .build();
+
+        result.configure(UNWRAP_SINGLE_VALUE_ARRAYS, true);
+
+        result.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        result.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
+        result.findAndRegisterModules();
+        result.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+        result.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        return result;
     }
 
     /** Create index. */

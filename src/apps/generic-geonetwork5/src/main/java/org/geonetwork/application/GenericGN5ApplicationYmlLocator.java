@@ -6,7 +6,7 @@
 package org.geonetwork.application;
 
 import java.io.File;
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -28,19 +28,19 @@ public class GenericGN5ApplicationYmlLocator implements IConfigurationLocator {
      *
      * <p>See spring doc on where spring looks for the application.yml file.
      *
-     * @return
-     * @throws Exception
+     * @return list of locations of the .yaml files provided by modules
+     * @throws Exception config error?
      */
     @Override
     public List<ApplicationYmlLocation> getApplicationYmls() throws Exception {
 
         if (new File("./application.yml").exists()) {
-            var url = new URL("file:./application.yml");
+            var url = new URI("file:./application.yml").toURL();
             return List.of(new ApplicationYmlLocation(url, 0.0)); // 0.0 = FIRST
         }
 
         if (new File("./config/application.yml").exists()) {
-            var url = new URL("file:./config/application.yml");
+            var url = new URI("file:./config/application.yml").toURL();
             return List.of(new ApplicationYmlLocation(url, 0.0)); // 0.0 = FIRST
         }
 

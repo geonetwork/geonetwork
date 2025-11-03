@@ -15,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
+/**
+ * creates a OgcApiRecordsSingleRecordResponseFormatter (a formatterApi profile-aware formatter) for each of the mime
+ * type that the formatterApi supports.
+ */
 @Component
 public class SingleRecordFormatterApiContentNegotiationInitializable implements IContentNegotiationInitializable {
 
@@ -22,7 +26,7 @@ public class SingleRecordFormatterApiContentNegotiationInitializable implements 
     private FormatterApi formatterApi;
 
     @Autowired
-    ItemPageLinksConfiguration itemPageLinksConfiguration;
+    ItemPageLinksConfiguration itemPageLinksConfiguration; // for default profile
 
     @Override
     public List<IControllerResultFormatter> initialize() throws Exception {
@@ -32,8 +36,6 @@ public class SingleRecordFormatterApiContentNegotiationInitializable implements 
             var mimeType = MediaType.valueOf(mimeTypeFormatters.getKey());
 
             var formatter = new OgcApiRecordsSingleRecordResponseFormatter(
-                    null,
-                    null,
                     mimeType,
                     null,
                     this.itemPageLinksConfiguration.getDefaultProfile(mimeType),

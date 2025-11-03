@@ -23,15 +23,23 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
+/**
+ * Provides the GN formatterApi formats to a single metadata record.
+ *
+ * <p>This is a profile aware formatter for a single mimetype. For example, application/xml+rdf will contain all the
+ * DCAT formatters...
+ *
+ * <p>Typically, there will be several of these - one for each mime type that is supported in the formatterApi
+ *
+ * <p>OgcApiRecordsSingleRecordResponse - simple object with the catalogId and recordId
+ */
 @Getter
 @Setter
 public class OgcApiRecordsSingleRecordResponseFormatter
         implements IControllerResultFormatter<OgcApiRecordsSingleRecordResponse> {
 
-    private String name;
-    private String description;
-
     private MediaType mimeType;
+    // shortcut name for the mimeType i.e. json->application/json  typically its the same as the mime type
     private String mimeTypeQuickName;
     private Class<OgcApiRecordsSingleRecordResponse> inputType = OgcApiRecordsSingleRecordResponse.class;
     private String defaultProfile;
@@ -41,8 +49,6 @@ public class OgcApiRecordsSingleRecordResponseFormatter
     private FormatterApi formatterApi;
 
     public OgcApiRecordsSingleRecordResponseFormatter(
-            String name,
-            String description,
             MediaType mimeType,
             String mimeTypeQuickName,
             String defaultProfile,
@@ -51,17 +57,6 @@ public class OgcApiRecordsSingleRecordResponseFormatter
             throws Exception {
 
         this.mimeTypeQuickName = mimeTypeQuickName;
-        if (name == null) {
-            name = "formatter API for mime type " + mimeType.toString() + " and class " + inputType.getSimpleName();
-        }
-        this.name = name;
-
-        if (description == null) {
-            description = "formatter API for mime type " + mimeType.toString() + " and class "
-                    + inputType.getSimpleName() + " with default profile " + defaultProfile;
-        }
-
-        this.description = description;
         this.mimeType = mimeType;
         this.defaultProfile = defaultProfile;
         this.formatterProfileInfo = formatterProfileInfo;
@@ -69,7 +64,9 @@ public class OgcApiRecordsSingleRecordResponseFormatter
         this.formatterApi = formatterApi;
     }
 
-    // ------------
+    // ------------------------------------------------------------------------------------
+
+    // this is write only
     @Override
     public boolean canRead(Class<?> clazz, MediaType mediaType) {
         return false;
@@ -90,6 +87,11 @@ public class OgcApiRecordsSingleRecordResponseFormatter
         return mediaType.equals(mimeType);
     }
 
+    /**
+     * we only support the one mime type.
+     *
+     * @return list containing our mimetype
+     */
     @Override
     public List<MediaType> getSupportedMediaTypes() {
         return List.of(mimeType);
@@ -109,6 +111,7 @@ public class OgcApiRecordsSingleRecordResponseFormatter
         return List.of(); // we don't support
     }
 
+    // read is not supported
     @Override
     public OgcApiRecordsSingleRecordResponse read(
             Class<? extends OgcApiRecordsSingleRecordResponse> clazz, HttpInputMessage inputMessage)
@@ -116,13 +119,24 @@ public class OgcApiRecordsSingleRecordResponseFormatter
         return null;
     }
 
+    /**
+     * Write the OgcApiRecordsSingleRecordResponse using the formatterApi. We do some simple profile negotiation and
+     * choose the best formatter given what the user has given us.
+     *
+     * <p>note- OgcApiRecordsSingleRecordResponse contains a list of profile official names that the user has requested.
+     *
+     * @param object the object to write to the output message. The type of this object must have previously been passed
+     *     to the {@link #canWrite canWrite} method of this interface, which must have returned {@code true}.
+     * @param contentType the content type to use when writing. May be {@code null} to indicate that the default content
+     *     type of the converter must be used. If not {@code null}, this media type must have previously been passed to
+     *     the {@link #canWrite canWrite} method of this interface, which must have returned {@code true}.
+     * @param outputMessage the message to write to
+     * @throws IOException config problem?
+     * @throws HttpMessageNotWritableException config problem?
+     */
     @Override
-    public void write(OgcApiRecordsSingleRecordResponse obj, MediaType contentType, HttpOutputMessage outputMessage)
+    public void write(OgcApiRecordsSingleRecordResponse object, MediaType contentType, HttpOutputMessage outputMessage)
             throws IOException, HttpMessageNotWritableException {
-        var tt = 0;
-
-        var object = (OgcApiRecordsSingleRecordResponse) obj;
-
         var approved = false;
 
         try {
@@ -137,6 +151,7 @@ public class OgcApiRecordsSingleRecordResponseFormatter
             var formattersForOurMimeType = allFormatters.stream()
                     .filter(entry -> entry.getContentType().equals(contentType.toString()))
                     .toList();
+            // official profile names
             var supportedProfileNames = formattersForOurMimeType.stream()
                     .map(x -> x.getOfficialProfileName())
                     .toList();
@@ -177,7 +192,20 @@ public class OgcApiRecordsSingleRecordResponseFormatter
         }
     }
 
-    // --------------------------
+    // ----------------------------------------------------
+
+    /**
+     * very simple profile negotiation. <br>
+     * 1. user requested no profile -> use default profile<br>
+     * 2. go through (in order) the profiles the user requested versus the ones supported<br>
+     * -> First one we find, return it!<br>
+     *
+     * @param defaultProfile default profile for this mime type
+     * @param requestedProfiles what the user wanted
+     * @param possibleProfiles supported profile
+     * @return best matching profile
+     * @throws Exception config problem?
+     */
     public String chooseProfile(String defaultProfile, List<String> requestedProfiles, List<String> possibleProfiles)
             throws Exception {
         // didn't request any profile - use default
@@ -201,6 +229,7 @@ public class OgcApiRecordsSingleRecordResponseFormatter
         return this.mimeTypeQuickName == null ? this.mimeType.toString() : this.mimeTypeQuickName;
     }
 
+    @Override
     public List<String> getProvidedProfileNames() {
         return formatterProfileInfo.values().stream()
                 .map(x -> x.getProfile().getOfficialProfileName())

@@ -35,6 +35,6 @@ public class OgcApiRecordsSingleRecordResponse implements IProfileResponse, ICon
     /** from the request, set of profile names that the user wants */
     List<String> userRequestedProfiles;
 
-    /** Filled in by GN - actual elastic record for the record. */
+    /** Filled in by GN - actual elastic record for the record. Maybe null in some cases. */
     IndexRecord indexRecord;
 }

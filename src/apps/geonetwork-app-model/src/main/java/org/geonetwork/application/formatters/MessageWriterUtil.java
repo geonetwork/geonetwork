@@ -33,11 +33,13 @@ public class MessageWriterUtil {
      * return a set of beans to be added to the context.
      */
     public void initialize() throws Exception {
-        for (var initializable : contentNegotiationInitializables) {
-            var items = initializable.initialize();
-            formatters.addAll(items);
+        if (!initialized) {
+            for (var initializable : contentNegotiationInitializables) {
+                var items = initializable.initialize();
+                formatters.addAll(items);
+            }
+            initialized = true;
         }
-        initialized = true;
     }
 
     public Map<String, MediaType> getMediaTypes() throws Exception {
@@ -55,7 +57,6 @@ public class MessageWriterUtil {
         if (!initialized) {
             initialize();
         }
-        var result = formatters.stream().map(x -> (HttpMessageConverter<?>) x).toList();
-        return result;
+        return formatters.stream().map(x -> (HttpMessageConverter<?>) x).toList();
     }
 }
