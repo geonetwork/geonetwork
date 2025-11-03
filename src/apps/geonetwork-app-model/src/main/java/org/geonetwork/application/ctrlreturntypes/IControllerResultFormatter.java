@@ -17,44 +17,30 @@ import org.springframework.http.converter.HttpMessageConverter;
 public interface IControllerResultFormatter<T extends IControllerResponseObject> extends HttpMessageConverter<T> {
 
     /**
-     * this is just for human-debugging friendly info.
-     *
-     * @return
-     */
-    String getName();
-
-    /**
-     * this is just for human-debugging friendly info.
-     *
-     * @return
-     */
-    String getDescription();
-
-    /**
      * MIME Type that this Formatter handles.
      *
-     * @return
+     * @return mime type that this formats to
      */
     MediaType getMimeType();
 
     /**
      * Quick name for the Mime type. i.e. for `?f=json` for `application/json`
      *
-     * @return
+     * @return quick name of the mime type
      */
     String getMimeTypeQuickName();
 
     /**
      * What type of controller result does this handle?
      *
-     * @return
+     * @return class that this formats
      */
     Class<T> getInputType();
 
     /**
      * What profiles does this support.
      *
-     * @return
+     * @return profiles that this formatter supports
      */
     List<String> getProvidedProfileNames();
 }

@@ -16,7 +16,7 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.geonetwork.GeonetworkApplication;
+import org.geonetwork.GeonetworkGenericApplication;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.utility.MountableFile;
 
-@SpringBootTest(classes = GeonetworkApplication.class)
+@SpringBootTest(classes = GeonetworkGenericApplication.class)
 @AutoConfigureMockMvc
 @ActiveProfiles(value = {"test"})
 @ContextConfiguration(initializers = ElasticPgMvcBaseTest.class)

@@ -8,7 +8,18 @@ package org.geonetwork.application.formatters;
 import java.util.List;
 import org.geonetwork.application.ctrlreturntypes.IControllerResultFormatter;
 
+/**
+ * Allows modules to create MessageConverters (output formatting) to be registered with spring.
+ *
+ * <p>see its use in MessageWriterUtil as well as WebConfig.java
+ */
 public interface IContentNegotiationInitializable {
 
-    public List<IControllerResultFormatter> initialize() throws Exception;
+    /**
+     * Should return a list of formatters to be used by springs content negotiation system.
+     *
+     * @return list of formatters to be used by springs content negotiation system.
+     * @throws Exception config issue?
+     */
+    List<IControllerResultFormatter> initialize() throws Exception;
 }
