@@ -1,11 +1,10 @@
 package org.geonetwork.ogcapi.ctrlreturntypes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.geonetwork.application.ctrlreturntypes.IControllerResultFormatter;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
 import org.geonetwork.ogcapi.service.facets.FacetsResponseInjector;
@@ -14,7 +13,6 @@ import org.geonetwork.ogcapi.service.links.FormatterApiRecordLinkAttacher;
 import org.geonetwork.ogcapi.service.links.ItemPageLinks;
 import org.geonetwork.ogcapi.service.links.ItemsPageLinks;
 import org.geonetwork.utility.MediaTypeAndProfile;
-import org.geonetwork.utility.MediaTypeAndProfileBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -45,7 +43,6 @@ public class OgcApiRecordsMultiRecordResponseJsonFormatter
     @Autowired
     ObjectMapper objectMapper;
 
-
     @Override
     public MediaType getMimeType() {
         return MediaType.parseMediaType("application/json");
@@ -63,9 +60,8 @@ public class OgcApiRecordsMultiRecordResponseJsonFormatter
 
     @Override
     public List<String> getProvidedProfileNames() {
-//        return List.of("http://geonetwork.net/def/profile/ogc-items-json");
-      return List.of(); // no profile
-
+        //        return List.of("http://geonetwork.net/def/profile/ogc-items-json");
+        return List.of(); // no profile
     }
 
     @Override
@@ -114,21 +110,19 @@ public class OgcApiRecordsMultiRecordResponseJsonFormatter
         response.setTimeStamp(OffsetDateTime.now(ZoneId.of("UTC")));
         response.setFacets(ogcApiRecordsMultiRecordResponse.getFacetInfo());
 
-        var mediaAndProfile = new MediaTypeAndProfile(getMimeType(),getProvidedProfileNames() );
+        var mediaAndProfile = new MediaTypeAndProfile(getMimeType(), getProvidedProfileNames());
         itemsPageLinks.addLinks(mediaAndProfile, ogcApiQuery.getCollectionId(), response, ogcApiQuery);
-                features.stream().forEach(x -> itemPageLinks.addLinks(mediaAndProfile, ogcApiQuery.getCollectionId(),
-         x));
+        features.stream().forEach(x -> itemPageLinks.addLinks(mediaAndProfile, ogcApiQuery.getCollectionId(), x));
 
-                features.stream().forEach(x -> {
-                    try {
-                        formatterApiRecordLinkAttacher.attachLinks(x, ogcApiQuery.getCollectionId());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-      outputMessage.getHeaders().setContentType(getMimeType()); // this must be done first
+        features.stream().forEach(x -> {
+            try {
+                formatterApiRecordLinkAttacher.attachLinks(x, ogcApiQuery.getCollectionId());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        outputMessage.getHeaders().setContentType(getMimeType()); // this must be done first
 
-      objectMapper.writeValue(outputMessage.getBody(), response);
-
+        objectMapper.writeValue(outputMessage.getBody(), response);
     }
 }

@@ -13,7 +13,6 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -93,8 +92,8 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
      *
      * <p>NOTE: nextRecord is a 1-based index (not a 0-based index).
      *
-     * @param ogcApiRecordsGetRecords200ResponseDto the object to write to the output message. The type of this object
-     *     must have previously been passed to the {@link #canWrite canWrite} method of this interface, which must have
+     * @param ogcApiRecordsMultiRecordResponse the object to write to the output message. The type of this object must
+     *     have previously been passed to the {@link #canWrite canWrite} method of this interface, which must have
      *     returned {@code true}.
      * @param contentType the content type to use when writing. May be {@code null} to indicate that the default content
      *     type of the converter must be used. If not {@code null}, this media type must have previously been passed to
@@ -136,7 +135,7 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
         if (header_offset != null && !header_offset.isEmpty()) {
             try {
                 nextRecord = (int) (Integer.parseInt(header_offset.getFirst())
-                                        + ogcApiRecordsMultiRecordResponse.getRecordsCount());
+                        + ogcApiRecordsMultiRecordResponse.getRecordsCount());
                 if (nextRecord < ogcApiRecordsMultiRecordResponse.getTotalHits()) {
                     nextRecord = nextRecord + 1;
                 } else {

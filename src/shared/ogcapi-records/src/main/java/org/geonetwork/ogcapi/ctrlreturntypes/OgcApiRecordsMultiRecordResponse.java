@@ -2,7 +2,6 @@ package org.geonetwork.ogcapi.ctrlreturntypes;
 
 import java.util.List;
 import java.util.Map;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,5 +32,5 @@ public class OgcApiRecordsMultiRecordResponse implements IControllerResponseObje
     /** records.size() */
     long recordsCount;
 
-     Map<String, OgcApiRecordsFacetSummaryDto> facetInfo;
+    Map<String, OgcApiRecordsFacetSummaryDto> facetInfo;
 }
