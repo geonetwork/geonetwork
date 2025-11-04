@@ -51,8 +51,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
 
     private final FacetsResponseInjector facetsInjector;
 
-
-  @Autowired
+    @Autowired
     public OgcapiCollectionsApiController(
             NativeWebRequest request,
             OgcApiCollectionsApi collectionsApi,
@@ -161,7 +160,6 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         var facetInfo = facetsInjector.getFacets(records);
         var totalNumHits = records.hits().total().value();
         var indexRecords = records.hits().hits().stream().map(x -> x.source()).toList();
-
 
         var result = new OgcApiRecordsMultiRecordResponse();
         result.setFacetInfo(facetInfo);
