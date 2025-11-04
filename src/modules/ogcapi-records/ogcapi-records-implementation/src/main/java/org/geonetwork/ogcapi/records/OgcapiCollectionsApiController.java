@@ -10,18 +10,19 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.*;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
 import org.geonetwork.ogcapi.records.generated.CollectionsApi;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.geonetwork.ogcapi.service.dataaccess.SimpleElastic;
 import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
+import org.geonetwork.ogcapi.service.facets.FacetsResponseInjector;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiCollectionsApi;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiItemsApi;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.querybuilder.QueryBuilder;
 import org.geonetwork.ogcapi.service.sortables.SortablesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +49,10 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
 
     private final SimpleElastic simpleElastic;
 
-    @Autowired
+    private final FacetsResponseInjector facetsInjector;
+
+
+  @Autowired
     public OgcapiCollectionsApiController(
             NativeWebRequest request,
             OgcApiCollectionsApi collectionsApi,
@@ -57,7 +61,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             QueryBuilder queryBuilder,
             FacetsJsonService facetsService,
             SortablesService sortablesService,
-            SimpleElastic simpleElastic) {
+            SimpleElastic simpleElastic,
+            FacetsResponseInjector facetsInjector) {
         this.request = request;
         this.collectionsApi = collectionsApi;
         this.itemsApi = itemsApi;
@@ -66,6 +71,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         this.facetsService = facetsService;
         this.sortablesService = sortablesService;
         this.simpleElastic = simpleElastic;
+        this.facetsInjector = facetsInjector;
     }
 
     @Override
@@ -77,6 +83,10 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
 
     @Override
     @SneakyThrows
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = CollectionsApi.PATH_GET_COLLECTIONS,
+            produces = {"application/json", "text/html", "*/*"})
     public ResponseEntity<OgcApiRecordsGetCollections200ResponseDto> getCollections() {
         var result = collectionsApi.getCollections();
         return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
@@ -115,7 +125,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             method = RequestMethod.GET,
             value = "/collections/{catalogId}/items",
             produces = {"application/geo+json", "text/html", "application/json", "*/*"})
-    public ResponseEntity<OgcApiRecordsGetRecords200ResponseDto> getRecords(
+    public ResponseEntity<?> getRecords(
             String catalogId,
             List<BigDecimal> bbox,
             String datetime,
@@ -128,7 +138,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             List<String> sortby,
             String filter,
             String filterLang,
-            String filterCrs) {
+            String filterCrs,
+            List<String> profile) {
         var query = queryBuilder.buildFromRequest(
                 catalogId,
                 bbox,
@@ -144,13 +155,33 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
                 filterLang,
                 filterCrs,
                 request.getParameterMap());
-        var result = itemsApi.getRecords(query);
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add("GN5.OGCAPI-RECORDS.REQUEST-OFFSET", offset.toString());
+        var records = itemsApi.getRecordsFromElastic(query);
 
-        return new ResponseEntity<OgcApiRecordsGetRecords200ResponseDto>(
-                result, responseHeaders, HttpStatusCode.valueOf(200));
+        var facetInfo = facetsInjector.getFacets(records);
+        var totalNumHits = records.hits().total().value();
+        var indexRecords = records.hits().hits().stream().map(x -> x.source()).toList();
+
+
+        var result = new OgcApiRecordsMultiRecordResponse();
+        result.setFacetInfo(facetInfo);
+        result.setCatalogId(catalogId);
+        result.setTotalHits(totalNumHits);
+        result.setRecordsCount(indexRecords.size());
+        result.setUserQuery(query);
+        result.setUserRequestedProfiles(profile);
+
+        var items = indexRecords.stream()
+                .map(ir -> new OgcApiRecordsSingleRecordResponse(catalogId, ir.getUuid(), profile, ir))
+                .toList();
+        result.setRecords(items);
+
+        //        var result = itemsApi.getRecords(query);
+        //
+        //        HttpHeaders responseHeaders = new HttpHeaders();
+        //        responseHeaders.add("GN5.OGCAPI-RECORDS.REQUEST-OFFSET", offset.toString());
+
+        return new ResponseEntity<OgcApiRecordsMultiRecordResponse>(result, HttpStatusCode.valueOf(200));
     }
 
     @Override

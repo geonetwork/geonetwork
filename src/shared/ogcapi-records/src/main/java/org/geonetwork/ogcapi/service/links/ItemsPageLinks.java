@@ -9,6 +9,8 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
+import org.geonetwork.formatting.FormatterApi;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
@@ -16,7 +18,9 @@ import org.geonetwork.ogcapi.service.configuration.CollectionPageLinksConfigurat
 import org.geonetwork.ogcapi.service.configuration.ItemsPageLinksConfiguration;
 import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
+import org.geonetwork.utility.MediaTypeAndProfile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -32,6 +36,9 @@ public class ItemsPageLinks extends BasicLinks {
 
     @Autowired
     CollectionPageLinksConfiguration collectionPageLinksConfiguration;
+
+    @Autowired
+    FormatterApi formatterApi;
 
     /**
      * add links to OgcApiRecordsGetRecords200ResponseDto
@@ -59,6 +66,63 @@ public class ItemsPageLinks extends BasicLinks {
         addCollectionsLinks(nativeWebRequest, collectionId, page);
 
         addNextPrevious(collectionId, page, query);
+    }
+
+    public void addLinks(
+            MediaTypeAndProfile mediaTypeAndProfile,
+            String collectionId,
+            OgcApiRecordsGetRecords200ResponseDto page,
+            OgcApiQuery query) {
+
+        var formats = new ArrayList<String>(
+                        itemsPageLinksConfiguration.getMimeFormats().keySet())
+                .stream()
+                        .map(x -> new MediaTypeAndProfile(
+                                contentNegotiationManager.getMediaTypeMappings().get(x), null))
+                        .toList();
+        ;
+
+        addStandardLinks(
+                mediaTypeAndProfile,
+                linkConfiguration.getOgcApiRecordsBaseUrl(),
+                "collections/" + URLEncoder.encode(collectionId, StandardCharsets.UTF_8) + "/items",
+                page,
+                formats,
+                "self",
+                "alternate");
+
+        addCollectionsLinks(mediaTypeAndProfile, collectionId, page);
+
+        addNextPrevious(collectionId, page, query);
+    }
+
+    static List<MediaTypeAndProfile> formats = null;
+    /**
+     * Gets available record formatters.
+     *
+     * @return {mimetype -> { profileName -> FormatterInfo} }
+     */
+    public List<MediaTypeAndProfile> getFormats() {
+        if (formats != null) {
+            return formats;
+        }
+        var result = new ArrayList<MediaTypeAndProfile>();
+        try {
+            var formatters = formatterApi.getAllFormatters();
+            for (var formatter : formatters.entrySet()) {
+                var mediaType = MediaType.valueOf(formatter.getKey());
+                var profiles = formatter.getValue().values().stream()
+                        .map(x -> x.getProfile().getOfficialProfileName())
+                        .toList();
+                var item = new MediaTypeAndProfile(mediaType, profiles);
+                result.add(item);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        formats = result;
+        return formats;
     }
 
     /**
@@ -112,6 +176,26 @@ public class ItemsPageLinks extends BasicLinks {
                 page,
                 new ArrayList<String>(
                         collectionPageLinksConfiguration.getMimeFormats().keySet()),
+                "collection",
+                "collection");
+    }
+
+    public void addCollectionsLinks(
+            MediaTypeAndProfile mediaTypeAndProfile, String catalogId, OgcApiRecordsGetRecords200ResponseDto page) {
+        var formats = new ArrayList<String>(
+                        itemsPageLinksConfiguration.getMimeFormats().keySet())
+                .stream()
+                        .map(x -> new MediaTypeAndProfile(
+                                contentNegotiationManager.getMediaTypeMappings().get(x), null))
+                        .toList();
+        ;
+
+        addStandardLinks(
+                mediaTypeAndProfile,
+                linkConfiguration.getOgcApiRecordsBaseUrl(),
+                "collections/" + URLEncoder.encode(catalogId, StandardCharsets.UTF_8),
+                page,
+                formats,
                 "collection",
                 "collection");
     }

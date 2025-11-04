@@ -208,6 +208,7 @@ paths:
         - $ref: 'parameters/filter.yaml'
         - $ref: 'parameters/filter-lang.yaml'
         - $ref: 'parameters/filter-crs.yaml'
+        - $ref: 'parameters/profile.yaml'
       responses:
         '200':
           $ref: 'responses/Records.yaml'

@@ -134,7 +134,7 @@ public class OgcApiItemsApi {
      * @return elastic search response to the query
      * @throws Exception issue with elastic query
      */
-    protected SearchResponse<IndexRecord> getRecordsFromElastic(OgcApiQuery ogcApiQuery) throws Exception {
+    public SearchResponse<IndexRecord> getRecordsFromElastic(OgcApiQuery ogcApiQuery) throws Exception {
         var source = catalogApi.getSource(ogcApiQuery.getCollectionId());
         String collectionFilter = catalogApi.retrieveCollectionFilter(source);
 

@@ -12,6 +12,8 @@ import org.geonetwork.application.ctrlreturntypes.IControllerResultFormatter;
  * Allows modules to create MessageConverters (output formatting) to be registered with spring.
  *
  * <p>see its use in MessageWriterUtil as well as WebConfig.java
+ *
+ * <p>TODO: likely change this to a "factory"
  */
 public interface IContentNegotiationInitializable {
 

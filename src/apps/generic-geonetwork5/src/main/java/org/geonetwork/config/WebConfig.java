@@ -19,6 +19,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.application.formatters.MessageWriterUtil;
 import org.geonetwork.formatting.FormatterApi;
+import org.geonetwork.ogcapi.configuration.TrivialHtmlMessageWriter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -68,16 +69,22 @@ public class WebConfig implements WebMvcConfigurer {
                 // .favorPathExtension(false)
                 .favorParameter(true)
                 .parameterName("f")
-                .ignoreAcceptHeader(false);
-
-        configurer
+                // TODO: allow this to be set in environment var or .yml  Its useful for non-browser work.  Browsers
+                // should ALWAYS use `?f=...`
+                .ignoreAcceptHeader(
+                        false) // NOTE: browser accepts header is a bit messy unless its explicitly set (i.e. ajax).
+                // Use `?f=...`
                 .mediaType("xml", MediaType.APPLICATION_XML)
                 .mediaType("html", MediaType.TEXT_HTML)
-                .mediaType("json", MediaType.APPLICATION_JSON);
+                .mediaType("json", MediaType.APPLICATION_JSON)
+                .mediaType("geojson", MediaType.valueOf("application/geo+json"))
+                .mediaType(MediaType.APPLICATION_XML.toString(), MediaType.APPLICATION_XML)
+                .mediaType(MediaType.TEXT_HTML.toString(), MediaType.TEXT_HTML)
+                .mediaType(MediaType.APPLICATION_JSON.toString(), MediaType.APPLICATION_JSON)
+                .mediaType("application/geo+json", MediaType.valueOf("application/geo+json"))
+                .defaultContentType(MediaType.APPLICATION_JSON);
 
         configurer.mediaTypes(messageWriterUtil.getMediaTypes());
-
-        configurer.defaultContentType(MediaType.APPLICATION_JSON);
     }
 
     @SneakyThrows
@@ -87,6 +94,7 @@ public class WebConfig implements WebMvcConfigurer {
         // spring will automatically put other general converters (like jackson json/xml) in this list.
         initDependencies();
         messageConverters.addAll(0, messageWriterUtil.getFormatters());
+        messageConverters.add(new TrivialHtmlMessageWriter(MediaType.TEXT_HTML));
     }
 
     /** Generic object mapper to use in the system */

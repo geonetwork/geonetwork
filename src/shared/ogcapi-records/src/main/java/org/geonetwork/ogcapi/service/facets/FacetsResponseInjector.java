@@ -42,6 +42,28 @@ public class FacetsResponseInjector {
 
     public static final int DEFAULT_MAX_BUCKETS = 20;
 
+
+
+  public HashMap<String, OgcApiRecordsFacetSummaryDto> getFacets(SearchResponse<IndexRecord> searchResponse) {
+
+    var facets = this.dynamicPropertiesFacade.getFacetConfigs();
+
+    if (facets == null || facets.isEmpty()) {
+      return null;
+    }
+    var result = new HashMap<String, OgcApiRecordsFacetSummaryDto>();
+
+    for (var f : facets) {
+      var name = f.getFacetName();
+
+      var summary = setupSummary(dynamicPropertiesFacade.getDefaultFacetsBucketCount(), name, f, searchResponse);
+
+      result.put(name, summary);
+    }
+
+     return result;
+  }
+
     /**
      * Setup the facets portion of the response.
      *
@@ -51,20 +73,8 @@ public class FacetsResponseInjector {
     public void injectFacets(
             OgcApiRecordsGetRecords200ResponseDto webResponse, SearchResponse<IndexRecord> searchResponse) {
 
-        var facets = this.dynamicPropertiesFacade.getFacetConfigs();
 
-        if (facets == null || facets.isEmpty()) {
-            return; // nothing to doOgcApiItemsApi.java
-        }
-        var result = new HashMap<String, OgcApiRecordsFacetSummaryDto>();
-
-        for (var f : facets) {
-            var name = f.getFacetName();
-
-            var summary = setupSummary(dynamicPropertiesFacade.getDefaultFacetsBucketCount(), name, f, searchResponse);
-
-            result.put(name, summary);
-        }
+        var result = getFacets(searchResponse);
 
         webResponse.setFacets(result);
     }

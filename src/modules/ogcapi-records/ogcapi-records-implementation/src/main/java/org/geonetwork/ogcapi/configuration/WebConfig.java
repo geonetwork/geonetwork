@@ -15,11 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 import lombok.SneakyThrows;
-import org.geonetwork.formatting.FormatterInfo;
 import org.geonetwork.ogcapi.service.formatter.CswCollectionMessageWriter;
-import org.geonetwork.ogcapi.service.formatter.FormatterApiMessageWriter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -43,17 +40,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 // @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private FormatterApiMessageWriter formatterApiMessageWriter;
     private CswCollectionMessageWriter cswCollectionMessageWriter;
 
     @Autowired
     private BeanFactory beanFactory;
+
     // todo - remove this.
     // There is a circular dependency because Formatter depends on WebConfig
     void setupFormatterApiMessageWriter() {
-        if (formatterApiMessageWriter == null) {
-            formatterApiMessageWriter = beanFactory.getBean(FormatterApiMessageWriter.class);
-        }
+
         if (cswCollectionMessageWriter == null) {
             cswCollectionMessageWriter = beanFactory.getBean(CswCollectionMessageWriter.class);
         }
@@ -87,20 +82,21 @@ public class WebConfig implements WebMvcConfigurer {
 
         // add the FormatterApi media types.  We allows   f=<formatterId> or f=<formatter mime type>
         setupFormatterApiMessageWriter();
-        Map<String, Map<String, FormatterInfo>> formats = this.formatterApiMessageWriter.getFormatNamesAndMimeTypes();
-        for (var format : formats.keySet()) {
-            configurer.mediaType(format, MediaType.valueOf(format));
-            if (format.contains("+")) {
-                var f = format.replace("+", " ");
-                configurer.mediaType(f, MediaType.valueOf(format));
-            }
-        }
+        //        Map<String, Map<String, FormatterInfo>> formats =
+        // this.formatterApiMessageWriter.getFormatNamesAndMimeTypes();
+        //        for (var format : formats.keySet()) {
+        //            configurer.mediaType(format, MediaType.valueOf(format));
+        //            if (format.contains("+")) {
+        //                var f = format.replace("+", " ");
+        //                configurer.mediaType(f, MediaType.valueOf(format));
+        //            }
+        //        }
     }
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
         messageConverters.add(new TrivialHtmlMessageWriter(MediaType.TEXT_HTML));
-        messageConverters.add(formatterApiMessageWriter);
+        //        messageConverters.add(formatterApiMessageWriter);
         messageConverters.add(cswCollectionMessageWriter);
     }
 

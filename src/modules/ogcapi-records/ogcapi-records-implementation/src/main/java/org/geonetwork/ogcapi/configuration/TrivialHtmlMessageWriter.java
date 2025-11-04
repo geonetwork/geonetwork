@@ -23,7 +23,7 @@ import org.springframework.lang.Nullable;
 
 public class TrivialHtmlMessageWriter extends AbstractGenericHttpMessageConverter {
 
-    TrivialHtmlMessageWriter(MediaType supportedMediaType) {
+    public TrivialHtmlMessageWriter(MediaType supportedMediaType) {
         super(supportedMediaType);
     }
 
