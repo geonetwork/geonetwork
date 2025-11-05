@@ -24,6 +24,6 @@
     <module>geonetwork</module>
     <module>generic-geonetwork5</module>
     <module>trivial-app</module>
-    <module>ogc-api-records</module>
+    <module>ogcapi-records</module>
   </modules>
 </project>
