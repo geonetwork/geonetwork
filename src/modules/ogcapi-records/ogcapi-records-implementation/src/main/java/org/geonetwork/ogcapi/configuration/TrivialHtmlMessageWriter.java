@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -21,9 +22,14 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
 
+@Configuration
 public class TrivialHtmlMessageWriter extends AbstractGenericHttpMessageConverter {
 
-    public TrivialHtmlMessageWriter(MediaType supportedMediaType) {
+    TrivialHtmlMessageWriter() {
+        this(MediaType.TEXT_HTML);
+    }
+
+    TrivialHtmlMessageWriter(MediaType supportedMediaType) {
         super(supportedMediaType);
     }
 
