@@ -23,7 +23,6 @@
     <module>geonetwork-app-model</module>
     <module>geonetwork</module>
     <module>generic-geonetwork5</module>
-    <module>trivial-app</module>
     <module>ogcapi-records</module>
   </modules>
 </project>

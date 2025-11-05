@@ -18,8 +18,6 @@ import java.util.List;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.application.formatters.MessageWriterUtil;
-import org.geonetwork.formatting.FormatterApi;
-import org.geonetwork.ogcapi.configuration.TrivialHtmlMessageWriter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +36,6 @@ public class WebConfig implements WebMvcConfigurer {
     private BeanFactory beanFactory;
 
     private MessageWriterUtil messageWriterUtil;
-    private FormatterApi formatterApi;
 
     /**
      * TODO: There is a circular dependency because WebConfig -> FormatterApiMessageWriter -> FormatterApi -> ... ->
@@ -54,9 +51,6 @@ public class WebConfig implements WebMvcConfigurer {
             messageWriterUtil = beanFactory.getBean(MessageWriterUtil.class);
             messageWriterUtil.initialize();
         }
-        if (formatterApi == null) {
-            formatterApi = beanFactory.getBean(FormatterApi.class);
-        }
     }
 
     @SneakyThrows
@@ -71,9 +65,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .parameterName("f")
                 // TODO: allow this to be set in environment var or .yml  Its useful for non-browser work.  Browsers
                 // should ALWAYS use `?f=...`
-                .ignoreAcceptHeader(
-                        false) // NOTE: browser accepts header is a bit messy unless its explicitly set (i.e. ajax).
-                // Use `?f=...`
+                // NOTE: browser accepts header is a bit messy unless its explicitly set (i.e. ajax).
+                .ignoreAcceptHeader(false) // no `f=...` will typically default to html in a brower
                 .mediaType("xml", MediaType.APPLICATION_XML)
                 .mediaType("html", MediaType.TEXT_HTML)
                 .mediaType("json", MediaType.APPLICATION_JSON)
@@ -92,12 +85,15 @@ public class WebConfig implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
         // put at start since the first matching converter is used.
         // spring will automatically put other general converters (like jackson json/xml) in this list.
+        // Spring will also put in all the @Configuration message writers (will scan for them)
         initDependencies();
         messageConverters.addAll(0, messageWriterUtil.getFormatters());
-        messageConverters.add(new TrivialHtmlMessageWriter(MediaType.TEXT_HTML));
     }
 
-    /** Generic object mapper to use in the system */
+    /**
+     * Generic object mapper to use in the system. NOTE: modifying this could have big impacts on other parts of the
+     * system - esp ogcapi-records
+     */
     @Bean
     @Primary
     public ObjectMapper objectMapper() {

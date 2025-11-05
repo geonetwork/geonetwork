@@ -23,23 +23,23 @@
 
   <dependencies>
 
-      <!--
+    <!--
           keep this dependency - this is where the spring boot app (and GN plugin system) is.
       -->
-     <dependency>
-       <groupId>org.geonetwork</groupId>
-       <artifactId>gn-generic-app</artifactId>
-       <version>${project.version}</version>
-     </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-generic-app</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
-      <!--
+    <!--
         Bring in any dependency that you need
      -->
-     <dependency>
-       <groupId>org.geonetwork</groupId>
-       <artifactId>gn-ogcapi-records-implementation</artifactId>
-       <version>${project.version}</version>
-     </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-ogcapi-records-implementation</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
   </dependencies>
 
@@ -49,15 +49,15 @@
       however, this isn't recommended unless you have advanced needs.
   -->
   <build>
-   <plugins>
-     <plugin>
-       <groupId>org.springframework.boot</groupId>
-       <artifactId>spring-boot-maven-plugin</artifactId>
-       <configuration>
-         <mainClass>org.geonetwork.GeonetworkGenericApplication</mainClass>
-       </configuration>
-     </plugin>
-   </plugins>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>org.geonetwork.GeonetworkGenericApplication</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
 </project>
