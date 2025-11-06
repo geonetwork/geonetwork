@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageWriterUtil {
 
-    @Autowired
+    @Autowired(required = false)
     private List<IContentNegotiationInitializable> contentNegotiationInitializables;
 
     boolean initialized = false;
@@ -34,9 +34,11 @@ public class MessageWriterUtil {
      */
     public void initialize() throws Exception {
         if (!initialized) {
-            for (var initializable : contentNegotiationInitializables) {
-                var items = initializable.initialize();
-                formatters.addAll(items);
+            if (contentNegotiationInitializables != null) {
+                for (var initializable : contentNegotiationInitializables) {
+                    var items = initializable.initialize();
+                    formatters.addAll(items);
+                }
             }
             initialized = true;
         }

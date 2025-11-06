@@ -37,13 +37,13 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/home", "/signin", "/test")
                         .permitAll())
                 .authorizeHttpRequests(authz -> authz.requestMatchers(
-                                "/ogcapi-records/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                                "**", "/ogcapi-records/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
 
-                //                        .requestMatchers("/geonetwork/**")
-                //                        .permitAll()
+                //                .requestMatchers("/geonetwork/**")
+                //                .permitAll()
                 //                        .requestMatchers("/api/proxy")
                 //                        .access(proxyPolicyAgentAuthorizationManager)
                 //                        .anyRequest()
