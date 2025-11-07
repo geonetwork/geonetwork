@@ -1,0 +1,22 @@
+openapi: 3.0.3
+info:
+  title: "GN5 Workshop2"
+  version: '1.0.0'
+  description: |-
+    This is a sample OpenAPI definition for our workshop endpoints
+  contact:
+    name: GeoCat
+    email: david.blasby@geocat.net
+    url: 'https://www.geocat.net'
+paths:
+  '/workshop2':
+    get:
+      summary: Gets summary information about the available Records
+      description: |-
+        Lists the schemas this GeoNetwork is configured with, the total number of metadata records,
+        and how records of each schema there are.
+      operationId: getMetadataSummary
+      responses:
+        '200':
+          $ref: 'responses/MetadataSummary.yaml'
+

@@ -1,0 +1,14 @@
+type: object
+properties:
+  totalNumberOfRecords:
+    type: integer
+    description: total number of records in this GeoNetwork system
+  allSchemaIds:
+    type: array
+    items:
+      type: string
+    description: list of all the supported schemas in this GeoNetwork system
+  recordsPerSchema:
+    additionalProperties:
+      type: integer
+    description: map from the schemaId (schema name) to the number of records of that schema type in this GeoNetwork system

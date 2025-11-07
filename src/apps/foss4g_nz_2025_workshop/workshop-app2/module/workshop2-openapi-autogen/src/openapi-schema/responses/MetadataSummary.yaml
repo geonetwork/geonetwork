@@ -1,0 +1,9 @@
+---
+description:
+  Lists the schemas this GeoNetwork is configured with, the total number of metadata records,
+  and how records of each schema there are.
+content:
+  application/json:
+    schema:
+      $ref:  "../schemas/MetadataSummarySchema.yaml"
+
