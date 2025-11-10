@@ -15,9 +15,9 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>gn-apps-foss4g_nz_2025_workshop</artifactId>
+  <artifactId>gn-apps-workshop</artifactId>
   <packaging>pom</packaging>
-  <name>fgn-apps-oss4g_nz_2025_workshop</name>
+  <name>gn-apps-workshop</name>
 
   <modules>
 

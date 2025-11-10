@@ -24,7 +24,7 @@
     <module>geonetwork</module>
     <module>generic-geonetwork5</module>
     <module>ogcapi-records</module>
-    <module>foss4g_nz_2025_workshop</module>
+    <module>workshop</module>
   </modules>
 
 </project>
