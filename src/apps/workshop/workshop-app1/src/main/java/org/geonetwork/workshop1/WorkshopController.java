@@ -42,11 +42,13 @@ import org.springframework.web.bind.annotation.GetMapping;
  *
  * <p>endpoints:
  *
- * <p>http:localhost:7979/geonetwork/workshop1 <br>
- * http:localhost:7979/geonetwork/workshop1b <br>
- * http:localhost:7979/geonetwork/workshop1c <br>
- * http:localhost:7979/geonetwork/workshop1d <br>
- * http:localhost:7979/geonetwork/workshop1e <br>
+ * <p>http://localhost:7979/geonetwork/workshop1 <br>
+ * http://localhost:7979/geonetwork/workshop1b <br>
+ * http://localhost:7979/geonetwork/workshop1c <br>
+ * http://localhost:7979/geonetwork/workshop1d <br>
+ * http://localhost:7979/geonetwork/workshop1e <br>
+ *
+ * <p>openAPI (swagger) endpoints:
  *
  * <p>http://localhost:7979/geonetwork/v3/api-docs?f=json <br>
  * http://localhost:7979/geonetwork/swagger-ui/index.html
