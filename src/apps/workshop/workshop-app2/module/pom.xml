@@ -19,7 +19,7 @@
   <name>gn-app-workshop2-module</name>
 
   <modules>
-    <module>workshop2-openapi-autogen</module>
+    <module>workshop2-autogen-openapi</module>
     <module>workshop2-implementation</module>
   </modules>
 </project>
