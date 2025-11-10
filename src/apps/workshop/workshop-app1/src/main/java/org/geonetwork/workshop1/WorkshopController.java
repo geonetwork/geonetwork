@@ -5,6 +5,10 @@
  */
 package org.geonetwork.workshop1;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -25,7 +29,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-/** Part 1 of the workshop. This is a bit messy - we will clean it up in Part 2! */
+/**
+ * Part 1 of the workshop. This is a bit messy - we will clean it up in Part 2!
+ *
+ * <p>Endpoints:
+ *
+ * <p>workshop1 - returns hardcoded trivial string <br>
+ * workshop1b - returns hardcoded Map<String,Long> <br>
+ * workshop1c - returns hardcoded GeoNetworkMetadataSummary <br>
+ * workshop1d - returns with actual DB results <br>
+ * workshop1e - same as workshop1d, but with openapi information <br>
+ *
+ * <p>endpoints:
+ *
+ * <p>http:localhost:7979/geonetwork/workshop1 <br>
+ * http:localhost:7979/geonetwork/workshop1b <br>
+ * http:localhost:7979/geonetwork/workshop1c <br>
+ * http:localhost:7979/geonetwork/workshop1d <br>
+ * http:localhost:7979/geonetwork/workshop1e <br>
+ *
+ * <p>http://localhost:7979/geonetwork/v3/api-docs?f=json <br>
+ * http://localhost:7979/geonetwork/swagger-ui/index.html
+ */
 @Controller
 public class WorkshopController {
 
@@ -104,6 +129,26 @@ public class WorkshopController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "getMetadataSummary",
+            summary = "Gets summary information about the available Records",
+            description =
+                    "Lists the schemas this GeoNetwork is configured with, the total number of metadata records, and how records of each schema there are.",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description =
+                                "Lists the schemas this GeoNetwork is configured with, the total number of metadata records, and how records of each schema there are.",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = GeoNetworkMetadataSummary.class))
+                        })
+            })
+    @GetMapping(value = "/workshop1e", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GeoNetworkMetadataSummary> workshop1e() {
+        return workshop1d();
+    }
     /**
      * This is the complicated way to do this. Ideally, we would just add this to the metadata repository
      * ({@link MetadataRepository}) as a custom query. We do it here just for the workshop.
@@ -130,19 +175,27 @@ public class WorkshopController {
     @Getter
     @Setter
     @NoArgsConstructor
+    @Schema(
+            description =
+                    "Summary information about this GeoNetwork's Metadata schemas and number of records in each schema.")
     public static class GeoNetworkMetadataSummary {
 
-        /** total number of records in the DB. SELECT count(*) FROM metatdata; */
+        @Schema(description = "total number of metadata records in this GeoNetwork system", example = "123")
+        /* total number of records in the DB. SELECT count(*) FROM metatdata; */
         private Long totalNumberOfRecords;
 
-        /** Names of all the supported schemas in GN (via the SchemaManager). */
+        @Schema(
+                description = " list of all the supported schemas in this GeoNetwork system",
+                example = "[\"iso19115-3.2018\", \"iso19139\"]")
+        /* Names of all the supported schemas in GN (via the SchemaManager). */
         private List<String> allSchemaIds;
 
-        /**
-         * Maps scheamId -> number of records in that schema.
-         *
-         * <p>SELECT schemaId, count(*) FROM metadata GROUP BY schemaId;
-         */
+        @Schema(
+                description =
+                        "map from the schemaId (schema name) to the number of records of that schema type in this GeoNetwork system",
+                example = "{\"iso19115-3.2018\": 4, \"iso19139\": 39 }")
+        /* Maps scheamId -> number of records in that schema.
+         * SELECT schemaId, count(*) FROM metadata GROUP BY schemaId; */
         private Map<String, Long> recordsPerSchema;
     }
 }

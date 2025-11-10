@@ -1,14 +1,18 @@
 type: object
+description: Summary information about this GeoNetwork's Metadata schemas and number of records in each schema.
 properties:
   totalNumberOfRecords:
     type: integer
-    description: total number of records in this GeoNetwork system
+    description: total number of metadata records in this GeoNetwork system
+    example: 123
   allSchemaIds:
     type: array
     items:
       type: string
     description: list of all the supported schemas in this GeoNetwork system
+    example: ['iso19115-3.2018', 'iso19139']
   recordsPerSchema:
     additionalProperties:
       type: integer
     description: map from the schemaId (schema name) to the number of records of that schema type in this GeoNetwork system
+    example: "{'iso19115-3.2018': 4, 'iso19139': 39 }"
