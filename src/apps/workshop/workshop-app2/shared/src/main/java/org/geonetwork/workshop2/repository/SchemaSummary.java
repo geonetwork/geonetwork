@@ -5,15 +5,18 @@
  */
 package org.geonetwork.workshop2.repository;
 
-import lombok.AllArgsConstructor;
-
 /**
  * POJO to return the schemaId/count aggregate.
  *
  * <p>SELECT schemaId, count(*) FROM metadata GROUP BY schemaId;
  */
-@AllArgsConstructor
 public class SchemaSummary {
+
     public String schemaId;
     public Long count;
+
+    public SchemaSummary(String schemaId, Long count) {
+        this.schemaId = schemaId;
+        this.count = count;
+    }
 }

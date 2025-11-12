@@ -10,9 +10,15 @@ properties:
     items:
       type: string
     description: list of all the supported schemas in this GeoNetwork system
-    example: ['iso19115-3.2018', 'iso19139']
+    example: [
+    "iso19115-3.2018",
+    "iso19139"
+    ]
   recordsPerSchema:
+    type: object
     additionalProperties:
       type: integer
     description: map from the schemaId (schema name) to the number of records of that schema type in this GeoNetwork system
-    example: "{'iso19115-3.2018': 4, 'iso19139': 39 }"
+    example:
+      iso19115-3.2018: 4
+      iso19139: 39
