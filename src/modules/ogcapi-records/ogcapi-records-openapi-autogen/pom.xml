@@ -78,6 +78,13 @@
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-app-model</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>

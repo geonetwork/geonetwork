@@ -1,5 +1,6 @@
 ---
 type: object
+x-class-extra-annotation: "@org.geonetwork.application.ctrlreturntypes.GN5ControllerResponseFormatterType(fullTypeName=\"OgcApiRecordsSingleRecordResponse\")"
 required:
   - id
   - type
