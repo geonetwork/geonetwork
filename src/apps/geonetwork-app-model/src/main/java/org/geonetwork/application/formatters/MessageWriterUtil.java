@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 import org.geonetwork.application.ctrlreturntypes.IControllerResultFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,6 +27,10 @@ public class MessageWriterUtil {
     boolean initialized = false;
 
     private List<IControllerResultFormatter> formatters = new ArrayList<>();
+
+    @Setter
+    @Getter
+    private List<HttpMessageConverter<?>> allMessageConverters;
 
     /**
      * Call this early.

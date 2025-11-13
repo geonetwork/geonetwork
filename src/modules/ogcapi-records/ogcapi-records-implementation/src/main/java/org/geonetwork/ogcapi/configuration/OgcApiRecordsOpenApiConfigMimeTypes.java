@@ -1,3 +1,8 @@
+/*
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
 package org.geonetwork.ogcapi.configuration;
 
 import io.swagger.v3.oas.models.OpenAPI;
@@ -68,6 +73,7 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
         addToContent(writers, content);
     }
 
+    @SuppressWarnings("unchecked")
     private void addToContent(List<IControllerResultFormatter> writers, Content content) {
         // foreach of our IControllerResultFormatter<OgcApiRecordsSingleRecordResponse>
         // we create the `content` if it doesn't exist.
@@ -87,10 +93,13 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
             if (!extensions.containsKey("x-format-providers")) {
                 extensions.put("x-format-providers", new ArrayList<String>());
             }
+
             var formatProviders = (List<String>) extensions.get("x-format-providers");
             formatProviders.add(writer.getClass().getCanonicalName());
-            var profiles = writer.getProvidedProfileNames();
+
+            var profiles = (List<String>) writer.getProvidedProfileNames();
             if (profiles != null && !profiles.isEmpty()) {
+
                 var xProfiles = (List<String>) extensions.get("x-profiles");
                 if (xProfiles == null) {
                     xProfiles = new ArrayList<String>();
@@ -124,9 +133,9 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
                 .toList();
 
         addToContentHttpMessageConverter(writersNormal, content);
-        int t = 9;
     }
 
+    @SuppressWarnings("unchecked")
     private void addToContentHttpMessageConverter(List<HttpMessageConverter<?>> writers, Content content) {
         // foreach of our IControllerResultFormatter<OgcApiRecordsSingleRecordResponse>
         // we create the `content` if it doesn't exist.

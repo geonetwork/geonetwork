@@ -90,6 +90,11 @@ public class WebConfig implements WebMvcConfigurer {
         messageConverters.addAll(0, messageWriterUtil.getFormatters());
     }
 
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        messageWriterUtil.setAllMessageConverters(converters);
+    }
+
     /**
      * Generic object mapper to use in the system. NOTE: modifying this could have big impacts on other parts of the
      * system - esp ogcapi-records
