@@ -10,21 +10,20 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geonetwork</groupId>
-    <artifactId>geonetwork</artifactId>
+    <artifactId>gn-apps</artifactId>
     <version>5.0.0-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>gn-apps</artifactId>
+  <artifactId>gn-apps-workshop</artifactId>
   <packaging>pom</packaging>
-  <name>GeoNetwork applications</name>
+  <name>gn-apps-workshop</name>
 
   <modules>
-    <module>geonetwork-app-model</module>
-    <module>geonetwork</module>
-    <module>generic-geonetwork5</module>
-    <module>ogcapi-records</module>
-    <module>workshop</module>
+
+    <module>workshop-app1</module>
+    <module>workshop-app2</module>
+
   </modules>
 
 </project>

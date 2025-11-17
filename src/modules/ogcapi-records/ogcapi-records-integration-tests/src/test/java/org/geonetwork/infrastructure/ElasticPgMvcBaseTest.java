@@ -39,7 +39,7 @@ import org.testcontainers.utility.MountableFile;
 
 @SpringBootTest(classes = GeonetworkGenericApplication.class)
 @AutoConfigureMockMvc
-@ActiveProfiles(value = {"test"})
+@ActiveProfiles(value = {"test", "integration-test"})
 @ContextConfiguration(initializers = ElasticPgMvcBaseTest.class)
 public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
