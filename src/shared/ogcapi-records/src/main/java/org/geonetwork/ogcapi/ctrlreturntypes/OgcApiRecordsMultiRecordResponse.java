@@ -11,22 +11,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.geonetwork.application.ctrlreturntypes.IControllerResponseObject;
+import org.geonetwork.application.ctrlreturntypes.IMediaTypeAndProfile;
+import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetSummaryDto;
 import org.geonetwork.ogcapi.service.querybuilder.OgcApiQuery;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class OgcApiRecordsMultiRecordResponse implements IControllerResponseObject {
+public class OgcApiRecordsMultiRecordResponse implements IControllerResponseObject, IMediaTypeAndProfile {
 
     /** query for the records sent by the user* */
     OgcApiQuery userQuery;
 
     /** Id of the catalog/collection (ogcapi records) */
     String catalogId;
-
-    /** from the request, set of profile names that the user wants */
-    List<String> userRequestedProfiles;
 
     /** single record - one for each record in the response */
     List<OgcApiRecordsSingleRecordResponse> records;
@@ -37,5 +36,8 @@ public class OgcApiRecordsMultiRecordResponse implements IControllerResponseObje
     /** records.size() */
     long recordsCount;
 
+    /** computed from elastic* */
     Map<String, OgcApiRecordsFacetSummaryDto> facetInfo;
+
+    RequestMediaTypeAndProfile requestMediaTypeAndProfile;
 }

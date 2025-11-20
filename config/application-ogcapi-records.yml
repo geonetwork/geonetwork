@@ -115,6 +115,24 @@ geonetwork:
               bucketCount: 50
 
 
+    defaultprofiles:
+        profileDefaults:
+          - responseType: OgcApiRecordsSingleRecordResponse
+            mimetype: application/geo+json
+            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
+          - responseType: OgcApiRecordsSingleRecordResponse
+            mimetype: application/json
+            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
+          - responseType: OgcApiRecordsSingleRecordResponse
+            mimetype: application/rdf+xml
+            defaultProfile: http://geonetwork.net/def/profile/dcat
+          - responseType: OgcApiRecordsSingleRecordResponse
+            mimetype: application/xml
+            defaultProfile: http://geonetwork.net/def/profile/raw-xml
+
+#      - responseType: OgcApiRecordsMultiRecordResponse
+#        mimetype: application/xml
+#        defaultProfile: http://geonetwork.net/def/profile/raw-xml
 
 
     links:

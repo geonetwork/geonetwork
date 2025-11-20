@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -115,6 +116,25 @@ public class WebConfig implements WebMvcConfigurer {
         result.findAndRegisterModules();
         result.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
         result.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        return result;
+    }
+
+    @Bean
+    public XmlMapper xmlMapper() {
+        var result = XmlMapper.builder()
+                //                .enable(MapperFeature.ALLOW_COERCION_OF_SCALARS)
+                //                .enable(UNWRAP_SINGLE_VALUE_ARRAYS)
+                .defaultUseWrapper(false)
+                .build();
+
+        //        result.configure(UNWRAP_SINGLE_VALUE_ARRAYS, false);
+
+        result.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        result.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
+        result.findAndRegisterModules();
+        result.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+        result.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
         return result;
     }
 }

@@ -10,5 +10,9 @@ import java.util.List;
 public interface IProfileResponse {
     List<String> getUserRequestedProfiles();
 
+    String getResolvedProfile();
+
     void setUserRequestedProfiles(List<String> userRequestedProfiles);
+
+    void setResolvedProfile(String resolvedProfile);
 }

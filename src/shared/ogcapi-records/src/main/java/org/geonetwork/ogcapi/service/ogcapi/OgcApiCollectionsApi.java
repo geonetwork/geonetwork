@@ -6,6 +6,8 @@
 package org.geonetwork.ogcapi.service.ogcapi;
 
 import java.util.List;
+import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsCollectionsResponse;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetCollections200ResponseDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto;
@@ -18,7 +20,6 @@ import org.geonetwork.ogcapi.service.links.CollectionsPageLinks;
 import org.geonetwork.ogcapi.service.links.LandingPageLinks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.NativeWebRequest;
 
 /**
  * High level implementation for the OgcApiCollectionsApi endpoints. The controller is responsible for the web-details,
@@ -39,9 +40,6 @@ public class OgcApiCollectionsApi {
     @Autowired
     CollectionPageLinks collectionPageLinks;
 
-    @Autowired
-    private NativeWebRequest nativeWebRequest;
-
     public OgcApiCollectionsApi() {}
 
     /**
@@ -50,18 +48,19 @@ public class OgcApiCollectionsApi {
      * @return OgcApiRecordsLandingPageDto
      * @throws Exception bad config
      */
-    public OgcApiRecordsLandingPageDto getLandingPage(NativeWebRequest nativeWebRequest) throws Exception {
+    public OgcApiRecordsLandingPageDto getLandingPage(RequestMediaTypeAndProfile requestMediaTypeAndProfile)
+            throws Exception {
         var uuid = catalogApi.getMainPortalUUID();
         if (uuid == null) {
             throw new Exception("no main portal found in DB table source");
         }
-        var collectionInfo = describeCollection(uuid);
+        var collectionInfo = describeCollection(uuid, requestMediaTypeAndProfile);
         var result = new OgcApiRecordsLandingPageDto();
         result.description(collectionInfo.getDescription()).title(collectionInfo.getTitle());
 
         result.setCatalogInfo(collectionInfo);
 
-        landingPageLinks.addLinks(nativeWebRequest, uuid, result);
+        landingPageLinks.addLinks(requestMediaTypeAndProfile, uuid, result);
 
         return result;
     }
@@ -70,15 +69,16 @@ public class OgcApiCollectionsApi {
      * given a collectionId, get the DB/elastic catalogInfo and convert it to the final ogcapi-records output.
      *
      * @param catalogId collectionId (From user)
-     * @return OgcApiRecordsCatalogDto
+     * @param requestMediaTypeAndProfile info about the request
      * @throws Exception catalogId invalid, cannot find catalog.
      */
-    public OgcApiRecordsCatalogDto describeCollection(String catalogId) throws Exception {
+    public OgcApiRecordsCatalogDto describeCollection(
+            String catalogId, RequestMediaTypeAndProfile requestMediaTypeAndProfile) throws Exception {
         var info = catalogApi.getPortalInfo(catalogId);
 
         var result = catalogInfoToOgcApiRecordsCatalogDto(info);
 
-        collectionPageLinks.addLinks(nativeWebRequest, result);
+        collectionPageLinks.addAllLinks(requestMediaTypeAndProfile, result);
         return result;
     }
 
@@ -113,7 +113,8 @@ public class OgcApiCollectionsApi {
      *
      * @return OgcApiRecordsGetCollections200ResponseDto
      */
-    public OgcApiRecordsGetCollections200ResponseDto getCollections() {
+    public OgcApiRecordsGetCollections200ResponseDto getCollections(
+            OgcApiRecordsCollectionsResponse ogcApiRecordsCollectionsResponse) throws Exception {
         var collectionInfos = catalogApi.getAllPortalInfos();
         var collections = collectionInfos.stream()
                 .map(x -> catalogInfoToOgcApiRecordsCatalogDto(x))
@@ -122,7 +123,17 @@ public class OgcApiCollectionsApi {
         var result = new OgcApiRecordsGetCollections200ResponseDto();
         result.setCollections(collections);
 
-        collectionsPageLinks.addLinks(nativeWebRequest, result);
+        RequestMediaTypeAndProfile requestMediaTypeAndProfile =
+                ogcApiRecordsCollectionsResponse.getRequestMediaTypeAndProfile();
+        collectionsPageLinks.addAllLinks(requestMediaTypeAndProfile, result);
+
+        collections.stream().forEach(collection -> {
+            try {
+                collectionPageLinks.addAllLinks(requestMediaTypeAndProfile, collection);
+            } catch (Exception e) {
+                // do nothing
+            }
+        });
         return result;
     }
 }

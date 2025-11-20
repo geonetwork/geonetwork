@@ -7,9 +7,9 @@ package org.geonetwork.ogcapi.records;
 
 import java.util.Optional;
 import lombok.SneakyThrows;
+import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfileBuilder;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiLandingPageResponse;
 import org.geonetwork.ogcapi.records.generated.DefaultApi;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto;
-import org.geonetwork.ogcapi.service.ogcapi.OgcApiCollectionsApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +21,16 @@ import org.springframework.web.context.request.NativeWebRequest;
 /** implements the landing page (/) endpoint */
 @RestController
 @RequestMapping("${geonetwork.openapi-records.links.base-path:/ogcapi-records}")
-public class OgcapiRecordsDefaultApiController implements DefaultApi {
+public class OgcApiRecordsDefaultApiController implements DefaultApi {
 
     private final NativeWebRequest request;
-    private final OgcApiCollectionsApi collectionsApi;
+    private final RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder;
 
     @Autowired
-    public OgcapiRecordsDefaultApiController(NativeWebRequest request, OgcApiCollectionsApi collectionsApi) {
+    public OgcApiRecordsDefaultApiController(
+            NativeWebRequest request, RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder) {
         this.request = request;
-        this.collectionsApi = collectionsApi;
+        this.requestMediaTypeAndProfileBuilder = requestMediaTypeAndProfileBuilder;
     }
 
     @Override
@@ -46,14 +47,20 @@ public class OgcapiRecordsDefaultApiController implements DefaultApi {
      */
     @RequestMapping(method = RequestMethod.GET, value = "")
     @SneakyThrows
-    public ResponseEntity<OgcApiRecordsLandingPageDto> getLandingPageNoSlash() {
+    public ResponseEntity<?> getLandingPageNoSlash() {
         return getLandingPage();
     }
 
     @Override
     @SneakyThrows
-    public ResponseEntity<OgcApiRecordsLandingPageDto> getLandingPage() {
-        var result = collectionsApi.getLandingPage(getRequest().get());
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = DefaultApi.PATH_GET_LANDING_PAGE,
+            produces = {"text/html", "application/json", "*/*"})
+    public ResponseEntity<?> getLandingPage() {
+        var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiLandingPageResponse.class);
+
+        var result = new OgcApiLandingPageResponse(requestInfo);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

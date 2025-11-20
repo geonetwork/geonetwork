@@ -5,13 +5,13 @@
  */
 package org.geonetwork.ogcapi.ctrlreturntypes;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.geonetwork.application.ctrlreturntypes.IControllerResponseObject;
-import org.geonetwork.application.ctrlreturntypes.IProfileResponse;
+import org.geonetwork.application.ctrlreturntypes.IMediaTypeAndProfile;
+import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
 import org.geonetwork.index.model.record.IndexRecord;
 
 /**
@@ -24,7 +24,7 @@ import org.geonetwork.index.model.record.IndexRecord;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OgcApiRecordsSingleRecordResponse implements IProfileResponse, IControllerResponseObject {
+public class OgcApiRecordsSingleRecordResponse implements IMediaTypeAndProfile, IControllerResponseObject {
 
     /** Id of the catalog/collection (ogcapi records) */
     String catalogId;
@@ -32,9 +32,8 @@ public class OgcApiRecordsSingleRecordResponse implements IProfileResponse, ICon
     /** Id of the record (ogcapi records) (uuid in GN) */
     String recordId;
 
-    /** from the request, set of profile names that the user wants */
-    List<String> userRequestedProfiles;
-
     /** Filled in by GN - actual elastic record for the record. Maybe null in some cases. */
     IndexRecord indexRecord;
+
+    RequestMediaTypeAndProfile requestMediaTypeAndProfile;
 }
