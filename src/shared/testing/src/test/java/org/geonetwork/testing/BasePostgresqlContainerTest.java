@@ -1,5 +1,6 @@
 package org.geonetwork.testing;
 
+import java.time.Duration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,35 +8,33 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.Duration;
 @Testcontainers
 public class BasePostgresqlContainerTest {
 
-  protected DBConnectionProvider connectionProvider;
-  @Container
-  static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>(
-    "database-1"
-    //need to check
-    ).withExposedPorts(5432)
-    .withStartupTimeout(Duration.ofSeconds(90));
+    protected DBConnectionProvider connectionProvider;
 
-  @BeforeAll
-  static void beforeAll() {
-    postgresContainer.start();
-  }
+    @Container
+    static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>(
+                    "database-1"
+                    // need to check
+                    )
+            .withExposedPorts(5432)
+            .withStartupTimeout(Duration.ofSeconds(90));
 
-  @AfterAll
-  static void afterAll() {
-    postgresContainer.stop();
-  }
+    @BeforeAll
+    static void beforeAll() {
+        postgresContainer.start();
+    }
 
-  @BeforeEach
-  void setUp() {
+    @AfterAll
+    static void afterAll() {
+        postgresContainer.stop();
+    }
 
-    connectionProvider = new DBConnectionProvider(
-      postgresContainer.getJdbcUrl(),
-      postgresContainer.getUsername(),
-      postgresContainer.getPassword()
-    );
-  }
+    @BeforeEach
+    void setUp() {
+
+        connectionProvider = new DBConnectionProvider(
+                postgresContainer.getJdbcUrl(), postgresContainer.getUsername(), postgresContainer.getPassword());
+    }
 }
