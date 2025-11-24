@@ -10,13 +10,23 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.media.*;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /** OpenAPI configuration. */
+@Slf4j
 @Configuration
 public class OpenApiConfiguration {
+
+    protected List<OpenApiCustomizer> openApiCustomizers;
+
+    public OpenApiConfiguration(List<OpenApiCustomizer> openApiCustomizers) {
+        this.openApiCustomizers = openApiCustomizers;
+    }
+
     /** OpenAPI configuration. */
     @Bean
     public OpenAPI myOpenApi() {
@@ -34,6 +44,7 @@ public class OpenApiConfiguration {
                 .description("This API exposes endpoints to GeoNetwork API.")
                 .license(license);
 
-        return new OpenAPI().info(info);
+        var openApi = new OpenAPI().info(info);
+        return openApi;
     }
 }

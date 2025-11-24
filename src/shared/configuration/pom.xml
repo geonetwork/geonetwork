@@ -35,5 +35,10 @@
       <artifactId>gn-security</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-app-model</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>
