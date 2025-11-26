@@ -39,31 +39,13 @@ import org.testcontainers.utility.MountableFile;
 
 @SpringBootTest(classes = GeonetworkGenericApplication.class)
 @AutoConfigureMockMvc
-@ActiveProfiles(value = {"test"})
+@ActiveProfiles(value = {"test", "integration-test"})
 @ContextConfiguration(initializers = ElasticPgMvcBaseTest.class)
 public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    public final String MAIN_COLLECTION_ID = "3bef299d-cf82-4033-871b-875f6936b2e2";
-    public final String METAWAL_COLLECTION_ID = "cec997ba-1fa4-48d9-8be0-890da8cc65cf";
 
-    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>("postgres:16-alpine")
-            .withDatabaseName("geonetwork")
-            .withUsername("postgres")
-            .withPassword("postgres")
-            .withCopyToContainer(
-                    MountableFile.forClasspathResource("dump.gn.sql"), "/docker-entrypoint-initdb.d/dump.gn.sql");
 
-    static ElasticsearchContainer elasticsearchContainer = new ElasticsearchContainer(
-                    "docker.elastic.co/elasticsearch/elasticsearch:8.14.0")
-            .withEnv("path.repo", "/tmp")
-            .withEnv("ES_JAVA_OPTS", "-Xms750m -Xmx2g")
-            .withEnv("discovery.type", "single-node")
-            .withEnv("xpack.security.enabled", "false")
-            .withEnv("xpack.security.enrollment.enabled", "false")
-            .withCopyToContainer(MountableFile.forClasspathResource("es_backups.tar.gz"), "/tmp/es_backups.tar.gz");
-
-    @BeforeAll
-    static void beforeAll() throws IOException, InterruptedException {
+    static void beforeAll(PostgreSQLContainer postgreSQLContainer, ElasticsearchContainer elasticsearchContainer) throws IOException, InterruptedException {
         postgreSQLContainer.start();
         elasticsearchContainer.start();
 

@@ -11,11 +11,8 @@ import io.swagger.v3.oas.models.media.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.geonetwork.application.ctrlreturntypes.MimeAndProfilesForResponseType;
 import org.geonetwork.application.formatters.MessageWriterUtil;
-import org.geonetwork.application.profile.ProfileDefaultsConfiguration;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
 import org.springframework.context.annotation.Configuration;
@@ -133,38 +130,11 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
         addToContent(providers, content, OgcApiRecordsSingleRecordResponse.class);
     }
 
-    //    @SuppressWarnings("unchecked")
-    //    private void addToContentHttpMessageConverter(List<HttpMessageConverter<?>> writers, Content content) {
-    //        // foreach of our IControllerResultFormatter<OgcApiRecordsSingleRecordResponse>
-    //        // we create the `content` if it doesn't exist.
-    //        // these type of writers don't have profiles
-    //        for (var writer : writers) {
-    //            var mimeType = writer.getSupportedMediaTypes().get(0);
-    //            var existingContent = content.get(mimeType.toString());
-    //            if (existingContent == null) {
-    //                content.put(mimeType.toString(), new MediaType());
-    //                existingContent = content.get(mimeType.toString());
-    //            }
-    //            var extensions = existingContent.getExtensions();
-    //            if (extensions == null) {
-    //                existingContent.setExtensions(new HashMap<>());
-    //                extensions = existingContent.getExtensions();
-    //            }
-    //            if (!extensions.containsKey("x-format-providers")) {
-    //                extensions.put("x-format-providers", new ArrayList<String>());
-    //            }
-    //            var formatProviders = (List<String>) extensions.get("x-format-providers");
-    //            formatProviders.add(writer.getClass().getCanonicalName());
-    //        }
-    //    }
 
-    @SneakyThrows
     @Override
     public void customise(OpenAPI openApi) {
         log.info("OgcApiRecordsOpenApiConfigMimeTypes: start customizer");
         customizeSingleRecord(openApi);
         customizeMultiRecord(openApi);
-        // collections and collections/<id> can be updated here (but not needed right now)
-        log.info("OgcApiRecordsOpenApiConfigMimeTypes: end customizer");
     }
 }
