@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.geonetwork.application.ctrlreturntypes.MimeAndProfilesForResponseType;
 import org.geonetwork.application.formatters.MessageWriterUtil;
+import org.geonetwork.application.profile.ProfileDefaultsConfiguration;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
 import org.springframework.context.annotation.Configuration;
@@ -130,11 +132,15 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
         addToContent(providers, content, OgcApiRecordsSingleRecordResponse.class);
     }
 
-
     @Override
     public void customise(OpenAPI openApi) {
         log.info("OgcApiRecordsOpenApiConfigMimeTypes: start customizer");
-        customizeSingleRecord(openApi);
-        customizeMultiRecord(openApi);
+
+        try {
+            customizeSingleRecord(openApi);
+            customizeMultiRecord(openApi);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

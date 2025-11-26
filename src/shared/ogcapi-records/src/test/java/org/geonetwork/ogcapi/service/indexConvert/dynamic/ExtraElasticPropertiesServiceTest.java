@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.ogcapi.service.indexConvert;
+package org.geonetwork.ogcapi.service.indexConvert.dynamic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
-import org.geonetwork.ogcapi.service.indexConvert.dynamic.ExtraElasticPropertiesService;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.junit.jupiter.api.Test;
 

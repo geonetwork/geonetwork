@@ -72,7 +72,7 @@ public class QueryablesService {
 
         // for simple test cases
         if (dynamicPropertiesFacade != null) {
-            dynamicPropertiesFacade.addDynamicQueryables(result);
+            dynamicPropertiesFacade.addDynamicQueryablesSchema(result);
         }
 
         return result;

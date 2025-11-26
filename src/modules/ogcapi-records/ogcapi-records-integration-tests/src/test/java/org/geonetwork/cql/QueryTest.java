@@ -20,11 +20,25 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.geonetwork.infrastructure.ElasticPgMvcBaseTest;
+import lombok.SneakyThrows;
+import org.geonetwork.GeonetworkGenericApplication;
+import org.geonetwork.infrastructure.ElasticPgMvcTestHelper;
 import org.geonetwork.ogcapi.records.generated.model.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.elasticsearch.ElasticsearchContainer;
+import org.testcontainers.utility.MountableFile;
 
 /**
  * In order to efficiently do the integration tests, I've combined several together. This save about 1 minute/class in
@@ -46,10 +60,57 @@ import org.springframework.test.context.ContextConfiguration;
  *
  * <p>PROPERTY >= MIN AND PROPERTY <= MAX
  */
+@SpringBootTest(classes = GeonetworkGenericApplication.class)
+@AutoConfigureMockMvc
+@ActiveProfiles(value = {"test", "integration-test"})
 @ContextConfiguration(initializers = QueryTest.class)
-public class QueryTest extends ElasticPgMvcBaseTest {
+public class QueryTest implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+    public final String MAIN_COLLECTION_ID = "3bef299d-cf82-4033-871b-875f6936b2e2";
+    public final String METAWAL_COLLECTION_ID = "cec997ba-1fa4-48d9-8be0-890da8cc65cf";
 
     OgcApiRecordsFacetsDto facetsConfig;
+
+    public final int MVC_PORT = 8888;
+    public final String BASE_URL = "http://localhost:" + MVC_PORT + "/";
+
+    @Autowired
+    protected MockMvc mockMvc;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
+
+    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>("postgres:16-alpine")
+            .withDatabaseName("geonetwork")
+            .withUsername("postgres")
+            .withPassword("postgres")
+            .withCopyToContainer(
+                    MountableFile.forClasspathResource("dump.gn.sql"), "/docker-entrypoint-initdb.d/dump.gn.sql");
+
+    static ElasticsearchContainer elasticsearchContainer = new ElasticsearchContainer(
+                    "docker.elastic.co/elasticsearch/elasticsearch:8.14.0")
+            .withEnv("path.repo", "/tmp")
+            .withEnv("ES_JAVA_OPTS", "-Xms750m -Xmx2g")
+            .withEnv("discovery.type", "single-node")
+            .withEnv("xpack.security.enabled", "false")
+            .withEnv("xpack.security.enrollment.enabled", "false")
+            .withCopyToContainer(MountableFile.forClasspathResource("es_backups.tar.gz"), "/tmp/es_backups.tar.gz");
+
+    @SneakyThrows
+    @Override
+    public void initialize(ConfigurableApplicationContext ctx) {
+        ElasticPgMvcTestHelper.initialize(ctx, postgreSQLContainer, elasticsearchContainer, MVC_PORT);
+    }
+
+    @BeforeAll
+    static void beforeAll() throws Exception {
+        ElasticPgMvcTestHelper.beforeAll(postgreSQLContainer, elasticsearchContainer);
+    }
+
+    @AfterAll
+    static void afterAll() throws Exception {
+        ElasticPgMvcTestHelper.afterAll(postgreSQLContainer, elasticsearchContainer);
+    }
 
     /**
      * Gets the facet configuration.
@@ -60,6 +121,18 @@ public class QueryTest extends ElasticPgMvcBaseTest {
     public void beforeEach() throws Exception {
         facetsConfig = retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/facets", OgcApiRecordsFacetsDto.class);
+    }
+
+    private <T> T retrieveUrlJson(String s, Class<T> clazz) throws Exception {
+        return ElasticPgMvcTestHelper.retrieveUrlJson(s, clazz, BASE_URL, mockMvc, objectMapper);
+    }
+
+    private String retrieveUrlJson(String s) throws Exception {
+        return ElasticPgMvcTestHelper.retrieveUrlJson(s, BASE_URL, mockMvc);
+    }
+
+    private <T> T retrieveUrlJson(String s, Class<T> clazz, String user) throws Exception {
+        return ElasticPgMvcTestHelper.retrieveUrlJson(s, clazz, user, BASE_URL, mockMvc, objectMapper);
     }
 
     /**

@@ -39,9 +39,11 @@ public class RecordsFacetsElasticQueryBuilder {
         for (var facetInfo : facets) {
             var facetName = facetInfo.getFacetName();
             var elasticProperty = facetInfo.getField().getElasticProperty();
-            var type = this.dynamicPropertiesFacade
-                    .getByElasticProperty(elasticProperty)
-                    .getType();
+            var elasticPropertyInfo = this.dynamicPropertiesFacade.getByElasticProperty(elasticProperty);
+            if (elasticPropertyInfo == null) {
+                continue;
+            }
+            var type = elasticPropertyInfo.getType();
 
             if (facetInfo.getFacetType() == FacetType.TERM) {
                 var agg = createAggregation_terms(facetInfo, defaultBucketCount);

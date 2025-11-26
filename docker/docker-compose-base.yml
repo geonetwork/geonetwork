@@ -21,7 +21,6 @@ x-geonetwork-environment:
     -Dgeonetwork.indexConfig.dir=/opt/geonetwork/WEB-INF/data/config/index
     -Dgeonetwork.schemapublication.dir=/opt/geonetwork/WEB-INF/data/resources/schemapublication
     -Dgeonetwork.htmlcache.dir=/opt/geonetwork/WEB-INF/data/resources/htmlcache
-    -Dgeonetwork.security.type=gn5
     -Dlogout.success.url=http://localhost:7979/geonetwork/srv/eng/catalog.search
     -DloginForm=http://localhost:7979/geonetwork/srv/eng/catalog.signin
     -DloginErrorForm=http://localhost:7979/geonetwork/srv/eng/catalog.signin?failure=true
@@ -135,6 +134,7 @@ services:
         - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
         - xpack.security.enabled=false
         - xpack.security.enrollment.enabled=false
+        - path.repo=/tmp
     volumes:
       - esdata:/usr/share/elasticsearch/data
     ports:

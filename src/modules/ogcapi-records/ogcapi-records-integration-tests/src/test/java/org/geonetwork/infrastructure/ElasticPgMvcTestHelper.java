@@ -16,49 +16,26 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.geonetwork.GeonetworkGenericApplication;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.ExecConfig;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
-import org.testcontainers.utility.MountableFile;
+//
+// @SpringBootTest(classes = GeonetworkGenericApplication.class)
+// @AutoConfigureMockMvc
+// @ActiveProfiles(value = {"test", "integration-test"})
+// @ContextConfiguration(initializers = ElasticPgMvcTestHelper.class)
 
-@SpringBootTest(classes = GeonetworkGenericApplication.class)
-@AutoConfigureMockMvc
-@ActiveProfiles(value = {"test", "integration-test"})
-@ContextConfiguration(initializers = ElasticPgMvcBaseTest.class)
-public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class ElasticPgMvcTestHelper {
 
-
-
-    static void beforeAll(PostgreSQLContainer postgreSQLContainer, ElasticsearchContainer elasticsearchContainer) throws IOException, InterruptedException {
-        postgreSQLContainer.start();
-        elasticsearchContainer.start();
-
-        var client = RestClient.builder(HttpHost.create("http://" + elasticsearchContainer.getHttpHostAddress()))
-                .setHttpClientConfigCallback(httpClientBuilder -> {
-                    return httpClientBuilder;
-                })
-                .build();
-
-        decompressElasticSnapshotTarball();
-        createElasticRepository(client);
-        importElasticSnapshot(client);
-    }
+    public static void beforeAll(PostgreSQLContainer postgreSQLContainer, ElasticsearchContainer elasticsearchContainer)
+            throws IOException, InterruptedException {}
 
     protected static void importElasticSnapshot(RestClient restClient) throws IOException {
         var request = new Request("POST", "/_snapshot/my_backup/snapshot_1/_restore");
@@ -72,7 +49,8 @@ public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<Confi
         }
     }
 
-    protected static void decompressElasticSnapshotTarball() throws IOException, InterruptedException {
+    protected static void decompressElasticSnapshotTarball(ElasticsearchContainer elasticsearchContainer)
+            throws IOException, InterruptedException {
         var exec = ExecConfig.builder()
                 //        .user("root")
                 .workDir("/tmp")
@@ -95,19 +73,34 @@ public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<Confi
         }
     }
 
-    @AfterAll
-    static void afterAll() throws IOException {
+    public static void afterAll(PostgreSQLContainer postgreSQLContainer, ElasticsearchContainer elasticsearchContainer)
+            throws IOException {
         postgreSQLContainer.stop();
         elasticsearchContainer.stop();
     }
 
     // ===========================================================================
 
-    public final int MVC_PORT = 8888;
-    public final String BASE_URL = "http://localhost:" + MVC_PORT + "/";
+    public static void initialize(
+            ConfigurableApplicationContext ctx,
+            PostgreSQLContainer postgreSQLContainer,
+            ElasticsearchContainer elasticsearchContainer,
+            int mvcPort)
+            throws Exception {
 
-    @Override
-    public void initialize(ConfigurableApplicationContext ctx) {
+        postgreSQLContainer.start();
+        elasticsearchContainer.start();
+
+        var client = RestClient.builder(HttpHost.create("http://" + elasticsearchContainer.getHttpHostAddress()))
+                .setHttpClientConfigCallback(httpClientBuilder -> {
+                    return httpClientBuilder;
+                })
+                .build();
+
+        decompressElasticSnapshotTarball(elasticsearchContainer);
+        createElasticRepository(client);
+        importElasticSnapshot(client);
+
         TestPropertyValues.of(
                         //        "geonetwork.url=" + getGeoNetworkCoreUrl(),
                         "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
@@ -115,18 +108,12 @@ public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<Confi
                         "spring.datasource.password=postgres",
                         "spring.datasource.driverClassName=org.postgresql.Driver",
                         "spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect",
-                        "server.port=" + MVC_PORT,
+                        "server.port=" + mvcPort,
                         "geonetwork.index.url=http://" + elasticsearchContainer.getHttpHostAddress())
                 .applyTo(ctx.getEnvironment());
     }
 
-    @Autowired
-    protected MockMvc mockMvc;
-
-    @Autowired
-    protected ObjectMapper objectMapper;
-
-    public String retrieveUrlJson(String endpoint) throws Exception {
+    public static String retrieveUrlJson(String endpoint, String BASE_URL, MockMvc mockMvc) throws Exception {
         var jsonResult = mockMvc.perform(get(BASE_URL + endpoint).accept(MediaType.APPLICATION_JSON))
                 .andReturn()
                 .getResponse()
@@ -134,12 +121,14 @@ public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<Confi
         return jsonResult;
     }
 
-    public <T> T retrieveUrlJson(String endpoint, Class<T> clazz) throws Exception {
-        var json = retrieveUrlJson(endpoint);
+    public static <T> T retrieveUrlJson(
+            String endpoint, Class<T> clazz, String BASE_URL, MockMvc mockMvc, ObjectMapper objectMapper)
+            throws Exception {
+        var json = retrieveUrlJson(endpoint, BASE_URL, mockMvc);
         return objectMapper.readValue(json, clazz);
     }
 
-    public Authentication createAuthentication(String userName) {
+    public static Authentication createAuthentication(String userName) {
         var user = new org.springframework.security.core.userdetails.User(
                 userName, userName, new ArrayList<GrantedAuthority>());
 
@@ -148,7 +137,8 @@ public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<Confi
         return result;
     }
 
-    public String retrieveUrlJson(String endpoint, String username) throws Exception {
+    public static String retrieveUrlJson(String endpoint, String username, String BASE_URL, MockMvc mockMvc)
+            throws Exception {
         var jsonResult = mockMvc.perform(get(BASE_URL + endpoint)
                         .with(authentication(createAuthentication(username)))
                         //        .apply(springSecurity())
@@ -159,8 +149,15 @@ public class ElasticPgMvcBaseTest implements ApplicationContextInitializer<Confi
         return jsonResult;
     }
 
-    public <T> T retrieveUrlJson(String endpoint, Class<T> clazz, String username) throws Exception {
-        var json = retrieveUrlJson(endpoint, username);
+    public static <T> T retrieveUrlJson(
+            String endpoint,
+            Class<T> clazz,
+            String username,
+            String BASE_URL,
+            MockMvc mockMvc,
+            ObjectMapper objectMapper)
+            throws Exception {
+        var json = retrieveUrlJson(endpoint, username, BASE_URL, mockMvc);
         return objectMapper.readValue(json, clazz);
     }
 }
