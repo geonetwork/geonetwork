@@ -22,18 +22,18 @@ geonetwork:
               facetType: TERM
         - ogcProperty: format
           elasticProperty: format
-          indexRecordProperty: formats
+          indexRecordProperty: format
           addPropertyToOutput: false
           facetsConfig:
             - facetName: format
               facetType: TERM
               bucketCount: 50
-        - ogcProperty: keywords
+        - ogcProperty: tags
           elasticProperty: tag.langeng
           indexRecordProperty: tag.[*].["default"]
           addPropertyToOutput: false
           facetsConfig:
-            - facetName: keywords
+            - facetName: tags
               facetType: TERM
               bucketCount: 50
         - ogcProperty: updateFrequency

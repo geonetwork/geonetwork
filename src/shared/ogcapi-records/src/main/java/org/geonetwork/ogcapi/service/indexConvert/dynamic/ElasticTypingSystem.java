@@ -221,12 +221,16 @@ public class ElasticTypingSystem {
 
         while (!path.isEmpty()) {
             pathPart = path.removeFirst();
-            if (!(elasticProperty instanceof ObjectProperty objectProperty)) {
+            if (elasticProperty instanceof ObjectProperty objectProperty) {
+                elasticProperty = (PropertyVariant)
+                        objectProperty.properties().get(pathPart)._get();
+            } else if (elasticProperty instanceof TextProperty textProperty) {
+                elasticProperty = TextProperty.of(tp -> tp);
+                //              elasticProperty = (PropertyVariant)  textProperty.fields().get(pathPart);
+            } else {
                 throw new RuntimeException(
                         "Elastic Index Definition - couldn't find " + pathPart + " in " + elasticProperty);
             }
-            elasticProperty =
-                    (PropertyVariant) objectProperty.properties().get(pathPart)._get();
         }
         return elasticProperty;
     }
