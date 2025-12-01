@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mri="http://standards.iso.org/iso/19115/-3/mri/1.0"
                 xmlns:adms="http://www.w3.org/ns/adms#"
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:skos="http://www.w3.org/2004/02/skos/core#"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:tr="java:org.fao.geonet.api.records.formatters.SchemaLocalizations"
+                xmlns:util="https://geonetwork-opensource.org/xsl-extension"
                 exclude-result-prefixes="#all">
 
   <xsl:variable name="europaPublicationStatus" select="concat($europaPublicationBaseUri,'dataset-status/')"/>
@@ -52,7 +51,7 @@
 
           <xsl:for-each select="$languages">
             <xsl:variable name="codelistTranslation"
-                          select="tr:codelist-value-label(tr:create('iso19115-3.2018', current()/@iso3code), $parentName, $codelistKey)"/>
+                          select="util:getCodelistTranslation($parentName, string($codelistKey), string(current()/@iso3code))"/>
 
             <skos:prefLabel xml:lang="{current()/@iso2code}"><xsl:value-of select="$codelistTranslation"/></skos:prefLabel>
           </xsl:for-each>

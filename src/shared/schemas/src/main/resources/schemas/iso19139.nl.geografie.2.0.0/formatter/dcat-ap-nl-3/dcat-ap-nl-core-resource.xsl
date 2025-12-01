@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
                 xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
@@ -11,16 +10,15 @@
                 xmlns:mrd="http://standards.iso.org/iso/19115/-3/mrd/1.0"
                 xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0"
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-                xmlns:mdUtil="java:org.fao.geonet.api.records.MetadataUtils"
-                xmlns:util="java:org.fao.geonet.util.XslUtil"
+                xmlns:util="https://geonetwork-opensource.org/xsl-extension"
                 xmlns:dcat="http://www.w3.org/ns/dcat#"
                 xmlns:dct="http://purl.org/dc/terms/"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:foaf="http://xmlns.com/foaf/0.1/"
                 exclude-result-prefixes="#all">
 
-  <xsl:variable name="nodeUrl"
-                select="util:getSettingValue('nodeUrl')"/>
+  <!-- <xsl:variable name="nodeUrl"
+                select="util:getSettingValue('nodeUrl')"/> -->
 
   <!-- Resource
    Unsupported:
@@ -76,7 +74,7 @@
     </xsl:choose>
 
 
-    <xsl:call-template name="related-record"/>
+    <!-- <xsl:call-template name="related-record"/> -->
 
   </xsl:template>
 
@@ -93,7 +91,7 @@
   </xsl:template>-->
 
 
-  <xsl:template name="related-record">
+  <!-- <xsl:template name="related-record">
     <xsl:variable name="associations"
                         select="mdUtil:getAssociatedAsXml(mdb:metadataIdentifier/*/mcc:code/*/text())"
                         as="node()?"/>
@@ -110,7 +108,7 @@
       <xsl:variable name="recordUri"
                           select="if ($resourceIdentifierWithHttpCodeSpace)
                                        then concat($resourceIdentifierWithHttpCodeSpace/codeSpace, $resourceIdentifierWithHttpCodeSpace/code)
-                                       else if (@uuid) then concat($nodeUrl, 'api/records/', @uuid, '#resource')
+                                       else if (@uuid) then concat(util:getServerURL(), 'api/records/', @uuid, '#resource')
                                        else @url" />
 
       <xsl:choose>
@@ -143,10 +141,10 @@
                         select="if (root/resourceIdentifier) then concat(root/resourceIdentifier[1]/codeSpace, root/resourceIdentifier[1]/code) else ." />
 
           <xsl:choose>
-            <!-- Only record with resourceType is service are mapped to a distribution.
-            Other related services which can be software, applications are mapped to foaf:page -->
+            &lt;!&ndash; Only record with resourceType is service are mapped to a distribution.
+            Other related services which can be software, applications are mapped to foaf:page &ndash;&gt;
             <xsl:when test="root/resourceType = 'service'">
-              <!--<dcat:distribution>
+              &lt;!&ndash;<dcat:distribution>
                 <dcat:Distribution>
                   <xsl:for-each select="$mainLink/urlObject/default">
                     <dcat:accessURL rdf:resource="{.}"/>
@@ -202,7 +200,7 @@
                     <xsl:with-param name="format" select="$mainLink/protocol"/>
                   </xsl:call-template>
                 </dcat:Distribution>
-              </dcat:distribution>-->
+              </dcat:distribution>&ndash;&gt;
             </xsl:when>
             <xsl:otherwise>
               <foaf:page>
@@ -215,10 +213,10 @@
           </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
-          <!-- TODO: other type of relations -->
+          &lt;!&ndash; TODO: other type of relations &ndash;&gt;
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
-  </xsl:template>
+  </xsl:template> -->
 
 </xsl:stylesheet>

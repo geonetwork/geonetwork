@@ -249,50 +249,33 @@
              Usage note:	dcat:accessService SHOULD be used to link to a description of a dcat:DataService that can provide access to this distribution.
             -->
             <xsl:if test="matches($protocol, 'OGC:WMS|OGC:WFS|OGC:WCS|OGC:WPS|OGC API Features|OGC API Coverages|ESRI:REST')">
-              <xsl:variable name="associations"
-                            select="mdUtil:getAssociatedAsXml(//mdb:metadataIdentifier/*/mcc:code/*/text())"
-                            as="node()?"/>
+              <dcat:accessService>
+                <rdf:Description>
+                  <rdf:type rdf:resource="http://www.w3.org/ns/dcat#DataService"/>
+                  <xsl:apply-templates mode="iso19115-3-to-dcat"
+                                       select="*/cit:name[normalize-space(.) != '']"/>
+                  <dcat:endpointURL rdf:resource="{substring-before(normalize-space($url), '?')}"/>
+                  <dcat:endpointDescription rdf:resource="{$url}"/>
 
-              <xsl:variable name="serviceMetadataUuid"
-                            select="$associations//services[root/link/protocol = $protocol]/@uuid" />
+                  <xsl:variable name="standardPage"
+                                as="node()?"
+                                select="$protocolToStandardPage[value = lower-case($protocol)]"/>
+                  <xsl:if test="$standardPage">
+                    <dct:conformsTo>
+                      <dct:Standard rdf:about="{$standardPage/@key}"/>
+                    </dct:conformsTo>
 
-              <xsl:choose>
-                <xsl:when test="count($serviceMetadataUuid) > 0">
-                  <dcat:accessService rdf:resource="{concat('http://localhost:8080/geonetwork/srv/api/records/', $serviceMetadataUuid[1], '#resource')}"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <dcat:accessService>
-                    <rdf:Description>
-                      <rdf:type rdf:resource="http://www.w3.org/ns/dcat#DataService"/>
-                      <xsl:apply-templates mode="iso19115-3-to-dcat"
-                                           select="*/cit:name[normalize-space(.) != '']"/>
-                      <dcat:endpointURL rdf:resource="{substring-before(normalize-space($url), '?')}"/>
-                      <dcat:endpointDescription rdf:resource="{$url}"/>
+                    <!-- dct:accessRights -->
+                    <xsl:apply-templates mode="iso19115-3-to-dcat"
+                                         select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*"/>
 
-                      <xsl:variable name="standardPage"
-                                    as="node()?"
-                                    select="$protocolToStandardPage[value = lower-case($protocol)]"/>
-                      <xsl:if test="$standardPage">
-                        <dct:conformsTo>
-                          <dct:Standard rdf:about="{$standardPage/@key}"/>
-                        </dct:conformsTo>
+                    <!-- dct:rights, dct:license -->
+                    <xsl:apply-templates mode="iso19115-3-to-dcat-distribution"
+                                         select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*"/>
 
-                        <!-- dct:accessRights -->
-                        <xsl:apply-templates mode="iso19115-3-to-dcat"
-                                             select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*"/>
-
-                        <!-- dct:rights, dct:license -->
-                        <xsl:apply-templates mode="iso19115-3-to-dcat-distribution"
-                                             select="ancestor::mdb:MD_Metadata/mdb:identificationInfo/*/mri:resourceConstraints/*"/>
-
-                      </xsl:if>
-                    </rdf:Description>
-                  </dcat:accessService>
-                </xsl:otherwise>
-              </xsl:choose>
-
-
-
+                  </xsl:if>
+                </rdf:Description>
+              </dcat:accessService>
             </xsl:if>
 
             <!--
