@@ -62,5 +62,6 @@
   <formatters>
     <formatter name="xml" title="" officialProfileName="http://geonetwork.net/def/profile/raw-xml" contentType="application/xml"/>
     <formatter name="dcat-ap-nl-3" title="" officialProfileName="http://geonetwork.net/def/profile/dcat-ap-nl-3" contentType="application/rdf+xml"/>
+    <formatter name="jsonld" title="" officialProfileName="http://geonetwork.net/def/profile/jsonld" contentType="application/json"/>
   </formatters>
 </schema>

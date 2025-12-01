@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
@@ -16,7 +16,7 @@
                 xmlns:skos="http://www.w3.org/2004/02/skos/core#"
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:dct="http://purl.org/dc/terms/"
-                xmlns:util="java:org.fao.geonet.util.XslUtil"
+                xmlns:util="https://geonetwork-opensource.org/xsl-extension"
                 exclude-result-prefixes="#all">
 
   <xsl:import href="./dcat-ap-nl-utils.xsl" />
@@ -169,7 +169,7 @@
                as="node()*"/>
     <xsl:variable name="properties" as="node()*">
       <xsl:variable name="resourcePrefix"
-                    select="concat(util:getSettingValue('nodeUrl'), 'dut/catalog.search#/metadata/')" />
+                    select="concat(util:getServerURL(), 'dut/catalog.search#/metadata/')" />
 
       <xsl:variable name="metadataIdentifier"
                     as="node()?">
