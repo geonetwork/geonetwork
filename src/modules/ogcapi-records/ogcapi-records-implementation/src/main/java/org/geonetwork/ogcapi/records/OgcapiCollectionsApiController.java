@@ -8,15 +8,20 @@ package org.geonetwork.ogcapi.records;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import lombok.*;
 import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfileBuilder;
+import org.geonetwork.application.ctrlreturntypes.UriHelper;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsCollectionsResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
 import org.geonetwork.ogcapi.records.generated.CollectionsApi;
 import org.geonetwork.ogcapi.records.generated.model.*;
+import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
 import org.geonetwork.ogcapi.service.dataaccess.SimpleElastic;
 import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
 import org.geonetwork.ogcapi.service.facets.FacetsResponseInjector;
@@ -32,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.util.UriUtils;
 
 /**
  * implements the /collections and /collections/{collectionID} endpoints implements the
@@ -54,6 +60,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
 
     private final RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder;
 
+    private final OgcApiLinkConfiguration linkConfiguration;
+
     @Autowired
     public OgcapiCollectionsApiController(
             NativeWebRequest request,
@@ -64,7 +72,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             SortablesService sortablesService,
             SimpleElastic simpleElastic,
             FacetsResponseInjector facetsInjector,
-            RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder) {
+            RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder,
+            OgcApiLinkConfiguration linkConfiguration) {
         this.request = request;
         this.itemsApi = itemsApi;
         this.queryablesService = queryablesService;
@@ -74,6 +83,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         this.simpleElastic = simpleElastic;
         this.facetsInjector = facetsInjector;
         this.requestMediaTypeAndProfileBuilder = requestMediaTypeAndProfileBuilder;
+        this.linkConfiguration = linkConfiguration;
     }
 
     @Override
@@ -81,7 +91,10 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
     public ResponseEntity<?> describeCollection(String catalogId) {
         //        var result = collectionsApi.describeCollection(catalogId);
         var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiCollectionResponse.class);
-        var result = new OgcApiCollectionResponse(catalogId, requestInfo);
+        var jsonUri = UriHelper.createUri(
+                linkConfiguration.getOgcApiRecordsBaseUrl(), "collections/" + catalogId, Map.of("f", "json"));
+
+        var result = new OgcApiCollectionResponse(catalogId, requestInfo, jsonUri);
         return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
     }
 
@@ -93,7 +106,10 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             produces = {"application/json", "text/html", "*/*"})
     public ResponseEntity<?> getCollections() {
         var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiRecordsCollectionsResponse.class);
-        var result = new OgcApiRecordsCollectionsResponse(requestInfo);
+        var jsonUri =
+                UriHelper.createUri(linkConfiguration.getOgcApiRecordsBaseUrl(), "collections", Map.of("f", "json"));
+
+        var result = new OgcApiRecordsCollectionsResponse(requestInfo, jsonUri);
         return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
     }
 
@@ -107,8 +123,12 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
 
         var indexRecord = simpleElastic.getOne(recordId);
         var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiRecordsSingleRecordResponse.class);
+        var jsonUri = UriHelper.createUri(
+                linkConfiguration.getOgcApiRecordsBaseUrl(),
+                "collections/" + catalogId + "/items/" + recordId,
+                Map.of("f", "geojson"));
 
-        var response = new OgcApiRecordsSingleRecordResponse(catalogId, recordId, indexRecord, requestInfo);
+        var response = new OgcApiRecordsSingleRecordResponse(catalogId, recordId, indexRecord, requestInfo, jsonUri);
         return new ResponseEntity<OgcApiRecordsSingleRecordResponse>(response, HttpStatusCode.valueOf(200));
     }
 
@@ -165,8 +185,22 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         result.setUserQuery(query);
         result.setRequestMediaTypeAndProfile(requestInfo);
 
+        var jsonUri = UriHelper.createUri(
+                linkConfiguration.getOgcApiRecordsBaseUrl(),
+                "collections/" + catalogId + "/items",
+                Map.of("f", "json"));
+        result.setJsonLink(jsonUri);
+
         var items = indexRecords.stream()
-                .map(ir -> new OgcApiRecordsSingleRecordResponse(catalogId, ir.getUuid(), ir, requestInfo))
+                .map(ir -> new OgcApiRecordsSingleRecordResponse(
+                        catalogId,
+                        ir.getUuid(),
+                        ir,
+                        requestInfo,
+                        URI.create(linkConfiguration.getOgcApiRecordsBaseUrl())
+                                .resolve(UriUtils.encodePath(
+                                        "/collections/" + catalogId + "/items/" + ir.getUuid() + "?f=geojson",
+                                        StandardCharsets.UTF_8))))
                 .toList();
         result.setRecords(items);
 

@@ -5,6 +5,7 @@
  */
 package org.geonetwork.ogcapi.ctrlreturntypes;
 
+import java.net.URI;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,4 +37,6 @@ public class OgcApiRecordsSingleRecordResponse implements IMediaTypeAndProfile, 
     IndexRecord indexRecord;
 
     RequestMediaTypeAndProfile requestMediaTypeAndProfile;
+
+    URI jsonLink;
 }

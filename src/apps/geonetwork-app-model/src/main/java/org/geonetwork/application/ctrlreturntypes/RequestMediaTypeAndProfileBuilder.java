@@ -8,7 +8,6 @@ package org.geonetwork.application.ctrlreturntypes;
 import java.util.Arrays;
 import java.util.List;
 import lombok.SneakyThrows;
-import org.geonetwork.application.formatters.MessageWriterUtil;
 import org.geonetwork.application.profile.ProfileDefaultsConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,9 +18,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 @Component
 public class RequestMediaTypeAndProfileBuilder {
-
-    @Autowired
-    MessageWriterUtil messageWriterUtil;
 
     @Autowired
     ContentNegotiationManager contentNegotiationManager;

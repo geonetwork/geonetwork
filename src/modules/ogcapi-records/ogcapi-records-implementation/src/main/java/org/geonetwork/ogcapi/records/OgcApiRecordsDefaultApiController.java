@@ -5,11 +5,14 @@
  */
 package org.geonetwork.ogcapi.records;
 
+import java.util.Map;
 import java.util.Optional;
 import lombok.SneakyThrows;
 import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfileBuilder;
+import org.geonetwork.application.ctrlreturntypes.UriHelper;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiLandingPageResponse;
 import org.geonetwork.ogcapi.records.generated.DefaultApi;
+import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +28,16 @@ public class OgcApiRecordsDefaultApiController implements DefaultApi {
 
     private final NativeWebRequest request;
     private final RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder;
+    private final OgcApiLinkConfiguration linkConfiguration;
 
     @Autowired
     public OgcApiRecordsDefaultApiController(
-            NativeWebRequest request, RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder) {
+            NativeWebRequest request,
+            RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder,
+            OgcApiLinkConfiguration linkConfiguration) {
         this.request = request;
         this.requestMediaTypeAndProfileBuilder = requestMediaTypeAndProfileBuilder;
+        this.linkConfiguration = linkConfiguration;
     }
 
     @Override
@@ -59,8 +66,9 @@ public class OgcApiRecordsDefaultApiController implements DefaultApi {
             produces = {"text/html", "application/json", "*/*"})
     public ResponseEntity<?> getLandingPage() {
         var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiLandingPageResponse.class);
+        var jsonUri = UriHelper.createUri(linkConfiguration.getOgcApiRecordsBaseUrl(), "", Map.of("f", "json"));
 
-        var result = new OgcApiLandingPageResponse(requestInfo);
+        var result = new OgcApiLandingPageResponse(requestInfo, jsonUri);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

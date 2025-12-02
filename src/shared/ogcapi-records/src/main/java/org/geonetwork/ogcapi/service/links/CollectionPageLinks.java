@@ -9,7 +9,6 @@ import io.micrometer.common.util.StringUtils;
 import java.net.URI;
 import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
-import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsCollectionsResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
@@ -24,14 +23,17 @@ public class CollectionPageLinks extends BasicLinks {
         addRootLinks(requestMediaTypeAndProfile, page);
         addIconLink(page);
         addQueryables(page);
-        addCollections(requestMediaTypeAndProfile, page);
+        // collections adds too much complexity in the (single) collection sub-page.
+        // its not required and pygeoapi doesn't include it either...
+        //        addCollections(requestMediaTypeAndProfile, page);
         addLinks(requestMediaTypeAndProfile, page, page.getId());
     }
 
-    private void addCollections(RequestMediaTypeAndProfile requestMediaTypeAndProfile, OgcApiRecordsCatalogDto page)
-            throws Exception {
-        super.addLinks(requestMediaTypeAndProfile, page, "collections", OgcApiRecordsCollectionsResponse.class);
-    }
+    //    private void addCollections(RequestMediaTypeAndProfile requestMediaTypeAndProfile, OgcApiRecordsCatalogDto
+    // page)
+    //            throws Exception {
+    //        super.addLinks(requestMediaTypeAndProfile, page, "collections", OgcApiRecordsCollectionsResponse.class);
+    //    }
 
     public void addLinks(RequestMediaTypeAndProfile requestMediaTypeAndProfile, Object page, String collectionId)
             throws Exception {

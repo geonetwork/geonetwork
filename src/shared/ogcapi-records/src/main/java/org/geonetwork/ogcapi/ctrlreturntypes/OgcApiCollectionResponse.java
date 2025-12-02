@@ -5,6 +5,7 @@
  */
 package org.geonetwork.ogcapi.ctrlreturntypes;
 
+import java.net.URI;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,5 @@ import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
 public class OgcApiCollectionResponse implements IMediaTypeAndProfile, IControllerResponseObject {
     public String collectionId;
     RequestMediaTypeAndProfile requestMediaTypeAndProfile;
+    URI jsonLink;
 }

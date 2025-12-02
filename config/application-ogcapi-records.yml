@@ -3,6 +3,33 @@ geonetwork:
     ogcapi-records-json:
       includeRawXML: false
       includeElasticJson: false
+
+    defaultprofiles:
+        profileDefaults:
+
+          - mimetype: application/xml
+            defaultProfile: http://geonetwork.net/def/profile/csw
+            responseType: OgcApiRecordsMultiRecordResponse
+
+          - mimetype: application/json
+            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
+            responseType: OgcApiRecordsSingleRecordResponse
+          - mimetype: application/geo+json
+            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
+            responseType: OgcApiRecordsSingleRecordResponse
+          - mimetype: application/rdf+xml
+            defaultProfile: http://geonetwork.net/def/profile/eu-geodcat-ap
+            responseType: OgcApiRecordsSingleRecordResponse
+          - mimetype: application/xml
+            defaultProfile: http://geonetwork.net/def/profile/raw-xml
+            responseType: OgcApiRecordsSingleRecordResponse
+
+#          - mimetype: application/json
+#            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
+#          - mimetype: application/rdf+xml
+#            defaultProfile: http://geonetwork.net/def/profile/dcat
+#          - mimetype: application/xml
+#            defaultProfile: http://geonetwork.net/def/profile/raw-xml
     ogcapi-property-mapping:
       fields:
         - ogcProperty: spatialRepresentationType
@@ -154,15 +181,7 @@ geonetwork:
       item:
         #formats taken from the formatter api
         # this defines the default profile for a mime type
-        profileDefaults:
-          - mimetype: application/geo+json
-            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
-          - mimetype: application/json
-            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
-          - mimetype: application/rdf+xml
-            defaultProfile: http://geonetwork.net/def/profile/dcat
-          - mimetype: application/xml
-            defaultProfile: http://geonetwork.net/def/profile/raw-xml
+
     search:
       # This query filter is always added to all queries
       queryFilter: '+isTemplate:n'

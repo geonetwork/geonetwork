@@ -152,14 +152,7 @@ public class OgcApiRecordsSingleRecordResponseFormatter
                     .filter(entry -> entry.getContentType().equals(contentType.toString()))
                     .filter(x -> x.getOfficialProfileName().equals(resolvedProfileName))
                     .toList();
-            // official profile names
-            //            var supportedProfileNames = formattersForOurMimeType.stream()
-            //                    .map(x -> x.getOfficialProfileName())
-            //                    .toList();
-            //            var profileName = chooseProfile(defaultProfile, profileList, supportedProfileNames);
-            //            if (profileName == null) {
-            //                throw new Exception("couldnt negotiate profile name");
-            //            }
+
             var mediaTypeAndProfile = new MediaTypeAndProfile(contentType, List.of(resolvedProfileName));
 
             var formatEntry = formattersForOurMimeType.stream()

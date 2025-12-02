@@ -5,6 +5,7 @@
  */
 package org.geonetwork.ogcapi.ctrlreturntypes;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
@@ -40,4 +41,6 @@ public class OgcApiRecordsMultiRecordResponse implements IControllerResponseObje
     Map<String, OgcApiRecordsFacetSummaryDto> facetInfo;
 
     RequestMediaTypeAndProfile requestMediaTypeAndProfile;
+
+    URI jsonLink;
 }

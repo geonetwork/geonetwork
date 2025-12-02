@@ -72,10 +72,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .mediaType("html", MediaType.TEXT_HTML)
                 .mediaType("json", MediaType.APPLICATION_JSON)
                 .mediaType("geojson", MediaType.valueOf("application/geo+json"))
+                .mediaType("rdfxml", MediaType.valueOf("application/rdf+xml"))
+                .mediaType("application/rdf+xml", MediaType.valueOf("application/rdf+xml"))
+                .mediaType("application/rdf xml", MediaType.valueOf("application/rdf+xml"))
                 .mediaType(MediaType.APPLICATION_XML.toString(), MediaType.APPLICATION_XML)
                 .mediaType(MediaType.TEXT_HTML.toString(), MediaType.TEXT_HTML)
                 .mediaType(MediaType.APPLICATION_JSON.toString(), MediaType.APPLICATION_JSON)
                 .mediaType("application/geo+json", MediaType.valueOf("application/geo+json"))
+                .mediaType("application/geo json", MediaType.valueOf("application/geo+json"))
                 .defaultContentType(MediaType.APPLICATION_JSON);
 
         configurer.mediaTypes(messageWriterUtil.getMediaTypes());
