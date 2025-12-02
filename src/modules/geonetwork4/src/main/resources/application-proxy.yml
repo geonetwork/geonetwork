@@ -1,0 +1,39 @@
+geonetwork:
+  4:
+    url: ${GN4_BASE_URL:http://localhost:8080/geonetwork}
+    path: >
+      /srv,
+      /static/,
+      /images/,
+      /catalog/,
+      /map/,
+      /criticalhealthcheck,
+      /warninghealthcheck,
+      /jolokia,
+      /xml/,
+      /index/,
+      /doc/api/index.html,
+      /doc/api/swagger-ui.css,
+      /doc/api/swagger-ui-bundle.js,
+      /doc/api/swagger-ui-standalone-preset.js
+
+
+spring:
+  cloud:
+    gateway:
+      mvc:
+        routes:
+  #          Example of route when an API is moved from GN4 to GN5
+#            - id: geonetwork4_api_migrated_redirect_to_gn5
+#              uri: ${geonetwork.url_with_context}
+#              #  FIXME: This does not work uri: ${geonetwork.url}${server.servlet.context-path}
+#              predicates:
+#                - Path=/srv/api/records/{uuid}/attachments/**
+#              filters:
+#                - RewritePath=/srv/api/records/(?<uuid>.+)/attachments(?<segment>.*), /api/records/$\{uuid}/attachments$\{segment}
+            - id: geonetwork_route
+              uri: ${geonetwork.4.url}
+              predicates:
+                - isGeoNetwork4Request=
+              filters:
+                - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
