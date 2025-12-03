@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.ogcapi.service.configuration;
+package org.geonetwork.application.profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +15,22 @@ import org.springframework.http.MediaType;
 
 /** simple configuration for links in ogcapi-records = /collections/{collectionId}/items/{itemid} */
 @Configuration
-@ConfigurationProperties(prefix = "geonetwork.openapi-records.links.item")
+@ConfigurationProperties(prefix = "geonetwork.openapi-records.defaultprofiles")
 @Getter
 @Setter
-public class ItemPageLinksConfiguration {
+public class ProfileDefaultsConfiguration {
     List<ProfileDefault> profileDefaults = new ArrayList<>();
 
-    public String getDefaultProfile(String mimeType) {
+    public String getDefaultProfile(String mimeType, Class<?> clazz) {
         var result = profileDefaults.stream()
-                .filter(x -> x.getMimetype().equals(mimeType))
+                .filter(x ->
+                        x.getMimetype().equals(mimeType) && x.getResponseType().equals(clazz.getSimpleName()))
                 .map(ProfileDefault::getDefaultProfile)
                 .findFirst();
         return result.orElse(null);
     }
 
-    public String getDefaultProfile(MediaType mimeType) {
-        return getDefaultProfile(mimeType.toString());
+    public String getDefaultProfile(MediaType mimeType, Class<?> clazz) {
+        return getDefaultProfile(mimeType.toString(), clazz);
     }
 }

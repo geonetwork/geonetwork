@@ -125,15 +125,21 @@ public class RecordsEsQueryBuilder {
                 var isDescending = order.startsWith("-");
                 var sortOrder = isDescending ? SortOrder.Desc : SortOrder.Asc;
                 var fieldName = order.replaceAll("^[\\+-]", "");
-                // TODO: don't hardcode this - see  OgcApiCollectionsApi
-                String elasticFieldName = fieldName.equals("id")
-                        ? "uuid"
-                        : this.dynamicPropertiesFacade
-                                .getUserConfigByOgcProperty(fieldName)
-                                .getElasticProperty();
+                var userconfig = this.dynamicPropertiesFacade.getUserConfigByOgcProperty(fieldName);
 
+                String elasticFieldName = "uuid";
+                if (!fieldName.equals("id")) {
+                    // TODO: don't hardcode this - see  OgcApiCollectionsApi
+                    var elasticPropertyName = userconfig.getElasticProperty();
+                    if (StringUtils.isNotEmpty(userconfig.getSortFieldSuffix())) {
+                        elasticPropertyName += "." + userconfig.getSortFieldSuffix();
+                    }
+                    elasticFieldName = elasticPropertyName;
+                }
+
+                var _elasticFieldName = elasticFieldName;
                 var sort = new SortOptions.Builder()
-                        .field(f -> f.field(elasticFieldName).order(sortOrder))
+                        .field(f -> f.field(_elasticFieldName).order(sortOrder))
                         .build();
                 sorts.add(sort);
             });

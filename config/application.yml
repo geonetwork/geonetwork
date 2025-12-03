@@ -83,10 +83,10 @@ spring:
   #            user-info-uri: https://custom/auth/realms/test/protocol/openid-connect/userinfo
   #            jwk-set-uri: https://custom/auth/realms/test/protocol/openid-connect/certs
   #            issuer-uri: https://custom/auth/realms/test
-  cloud:
-    gateway:
-      mvc:
-        routes:
+#  cloud:
+#    gateway:
+#      mvc:
+#        routes:
 #          Example of route when an API is moved from GN4 to GN5
 #          - id: geonetwork4_api_migrated_redirect_to_gn5
 #            uri: ${geonetwork.url_with_context}

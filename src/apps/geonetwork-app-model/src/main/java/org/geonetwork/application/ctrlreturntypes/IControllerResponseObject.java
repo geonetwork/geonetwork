@@ -5,5 +5,10 @@
  */
 package org.geonetwork.application.ctrlreturntypes;
 
+import java.net.URI;
+
 /** Tag for the "little" objects that are returned from a controller */
-public interface IControllerResponseObject {}
+public interface IControllerResponseObject {
+
+    URI getJsonLink();
+}

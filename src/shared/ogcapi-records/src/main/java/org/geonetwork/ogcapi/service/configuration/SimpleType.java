@@ -36,6 +36,20 @@ public enum SimpleType {
         }
     }
 
+    public static String getOpenApiType(SimpleType type) {
+        if (type == SimpleType.INTEGER || type == SimpleType.DOUBLE) {
+            return "integer";
+        } else if (type == SimpleType.STRING) {
+            return "string";
+        } else if (type == SimpleType.DATE) {
+            return "string";
+        } else if (type == SimpleType.BOOLEAN) {
+            return "boolean";
+        } else {
+            throw new RuntimeException("don't know type - " + type);
+        }
+    }
+
     public static void fillInOgc(SimpleType type, OgcApiRecordsJsonPropertyDto p) {
         if (type == SimpleType.INTEGER || type == SimpleType.DOUBLE) {
             p.setType("number");

@@ -86,61 +86,9 @@
     </dependency>
 
   </dependencies>
-
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <plugins>
-      <plugin>
-        <groupId>org.openapitools</groupId>
-        <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>7.16.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputSpec>${project.basedir}/src/ogc-openapi-schema/openapi/ogcapi-records-1-example-ref-schema-repo.yaml</inputSpec>
-              <generatorName>spring</generatorName>
-              <generateAliasAsModel>true</generateAliasAsModel>
-              <modelNamePrefix>OgcApiRecords</modelNamePrefix>
-              <modelNameSuffix>Dto</modelNameSuffix>
-              <generateApiTests>false</generateApiTests>
-              <generateModelTests>false</generateModelTests>
-              <!-- We have a faux definition of IndexRecord in the .yaml - this will replace it with the actual Java implementation! -->
-              <typeMappings>OgcApiRecordsIndexRecordDto=org.geonetwork.index.model.record.IndexRecord</typeMappings>
-              <configOptions>
-                <sourceFolder>src/gen/java/main</sourceFolder>
-
-                <interfaceOnly>true</interfaceOnly>
-
-                <useJakartaEe>true</useJakartaEe>
-                <useSpringBoot3>true</useSpringBoot3>
-                <library>spring-boot</library>
-                <useSpringfox>false</useSpringfox>
-
-                <annotationLibrary>swagger2</annotationLibrary>
-                <generateBuilders>true</generateBuilders>
-                <withXml>true</withXml>
-                <useOptional>false</useOptional>
-                <!--                <openApiNullable>true</openApiNullable>-->
-
-                <apiPackage>org.geonetwork.ogcapi.records.generated</apiPackage>
-                <modelPackage>org.geonetwork.ogcapi.records.generated.model</modelPackage>
-                <generateGenericResponseEntity>true</generateGenericResponseEntity>
-                <!--                <useResponseEntity>false</useResponseEntity>-->
-
-              </configOptions>
-              <additionalProperties>
-                <generateGenericResponseEntity>true</generateGenericResponseEntity>
-                <!--                <useResponseEntity>false</useResponseEntity>-->
-
-              </additionalProperties>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -167,5 +115,69 @@
       <!--      </plugin>-->
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>nogen</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+
+        <plugins>
+          <plugin>
+            <groupId>org.openapitools</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
+            <version>7.17.0</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <inputSpec>${project.basedir}/src/ogc-openapi-schema/openapi/ogcapi-records-1-example-ref-schema-repo.yaml</inputSpec>
+                  <generatorName>spring</generatorName>
+                  <generateAliasAsModel>true</generateAliasAsModel>
+                  <modelNamePrefix>OgcApiRecords</modelNamePrefix>
+                  <modelNameSuffix>Dto</modelNameSuffix>
+                  <generateApiTests>false</generateApiTests>
+                  <generateModelTests>false</generateModelTests>
+                  <!-- We have a faux definition of IndexRecord in the .yaml - this will replace it with the actual Java implementation! -->
+                  <typeMappings>OgcApiRecordsIndexRecordDto=org.geonetwork.index.model.record.IndexRecord</typeMappings>
+                  <configOptions>
+                    <sourceFolder>src/gen/java/main</sourceFolder>
+
+                    <interfaceOnly>true</interfaceOnly>
+
+                    <useJakartaEe>true</useJakartaEe>
+                    <useSpringBoot3>true</useSpringBoot3>
+                    <library>spring-boot</library>
+                    <useSpringfox>false</useSpringfox>
+
+                    <annotationLibrary>swagger2</annotationLibrary>
+                    <generateBuilders>true</generateBuilders>
+                    <withXml>true</withXml>
+                    <useOptional>false</useOptional>
+                    <!--                <openApiNullable>true</openApiNullable>-->
+
+                    <apiPackage>org.geonetwork.ogcapi.records.generated</apiPackage>
+                    <modelPackage>org.geonetwork.ogcapi.records.generated.model</modelPackage>
+                    <generateGenericResponseEntity>true</generateGenericResponseEntity>
+                    <!--                <useResponseEntity>false</useResponseEntity>-->
+
+                  </configOptions>
+                  <additionalProperties>
+                    <generateGenericResponseEntity>true</generateGenericResponseEntity>
+                    <!--                <useResponseEntity>false</useResponseEntity>-->
+
+                  </additionalProperties>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

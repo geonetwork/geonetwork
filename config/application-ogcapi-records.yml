@@ -3,8 +3,42 @@ geonetwork:
     ogcapi-records-json:
       includeRawXML: false
       includeElasticJson: false
+
+    defaultprofiles:
+        profileDefaults:
+
+          - mimetype: application/xml
+            defaultProfile: http://geonetwork.net/def/profile/csw
+            responseType: OgcApiRecordsMultiRecordResponse
+
+          - mimetype: application/json
+            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
+            responseType: OgcApiRecordsSingleRecordResponse
+          - mimetype: application/geo+json
+            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
+            responseType: OgcApiRecordsSingleRecordResponse
+          - mimetype: application/rdf+xml
+            defaultProfile: http://geonetwork.net/def/profile/eu-geodcat-ap
+            responseType: OgcApiRecordsSingleRecordResponse
+          - mimetype: application/xml
+            defaultProfile: http://geonetwork.net/def/profile/raw-xml
+            responseType: OgcApiRecordsSingleRecordResponse
+
+#          - mimetype: application/json
+#            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
+#          - mimetype: application/rdf+xml
+#            defaultProfile: http://geonetwork.net/def/profile/dcat
+#          - mimetype: application/xml
+#            defaultProfile: http://geonetwork.net/def/profile/raw-xml
     ogcapi-property-mapping:
       fields:
+        - ogcProperty: spatialRepresentationType
+          elasticProperty: cl_spatialRepresentationType.key
+          indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
+          typeOverride: LIST_STRING
+          facetsConfig:
+            - facetName: spatialRepresentationType
+              facetType: TERM
         - ogcProperty: resourceType
           elasticProperty: resourceType
           indexRecordProperty: resourceType
@@ -15,20 +49,44 @@ geonetwork:
               facetType: TERM
         - ogcProperty: format
           elasticProperty: format
-          indexRecordProperty: formats
+          indexRecordProperty: format
           addPropertyToOutput: false
           facetsConfig:
             - facetName: format
               facetType: TERM
               bucketCount: 50
-        - ogcProperty: keywords
+        - ogcProperty: tags
           elasticProperty: tag.langeng
           indexRecordProperty: tag.[*].["default"]
           addPropertyToOutput: false
           facetsConfig:
-            - facetName: keywords
+            - facetName: tags
               facetType: TERM
               bucketCount: 50
+        - ogcProperty: updateFrequency
+          elasticProperty: cl_maintenanceAndUpdateFrequency.key
+          indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
+          typeOverride: SINGLE_STRING
+          isSortable: true
+          isQueryable: true
+          facetsConfig:
+            - facetName: updateFrequency
+              facetType: TERM
+              bucketCount: 50
+        - ogcProperty: creationYearForResource
+          elasticProperty: creationYearForResource
+          indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
+          isSortable: true
+          facetsConfig:
+            - facetName: creationYearForResource
+              facetType: HISTOGRAM_FIXED_INTERVAL
+              numberBucketInterval: 5
+              bucketCount: 25
+              bucketSorting: VALUE
+            - facetName: creationYearForResource2
+              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+              bucketCount: 5
+              bucketSorting: VALUE
         - ogcProperty: linkProtocol
           elasticProperty: linkProtocol
           indexRecordProperty: linkProtocols
@@ -40,6 +98,26 @@ geonetwork:
                   filterEquationCql: linkProtocol = 'OGC:WFS'
                 - filterName: availableInViewService
                   filterEquationCql: linkProtocol = 'OGC:WMS'
+        - ogcProperty: createDate
+          elasticProperty: createDate
+          indexRecordProperty: createDate
+          isSortable: true
+          isQueryable: true
+          facetsConfig:
+            - facetName: createDate
+              facetType: HISTOGRAM_FIXED_INTERVAL
+              calendarIntervalUnit: MONTH
+              bucketCount: 25
+              bucketSorting: VALUE
+            - facetName: createDate2
+              facetType: HISTOGRAM_FIXED_BUCKET_COUNT
+              bucketCount: 5
+              bucketSorting: VALUE
+        - ogcProperty: resourceTitleObject
+          elasticProperty: resourceTitleObject.default
+          indexRecordProperty: resourceTitle.["default"]
+          isSortable: true
+          isQueryable: true
         - ogcProperty: resolutionScaleDenominator
           elasticProperty: resolutionScaleDenominator
           indexRecordProperty: resolutionScaleDenominator
@@ -55,73 +133,22 @@ geonetwork:
               facetType: HISTOGRAM_FIXED_BUCKET_COUNT
               bucketCount: 5
               bucketSorting: VALUE
-        ## Commented to avoid issue #116
-        ## You can uncomment following lines after metadata schema initialization and some example record creation
-        # - ogcProperty: spatialRepresentationType
-        #   elasticProperty: cl_spatialRepresentationType.key
-        #   indexRecordProperty: codelists.["cl_spatialRepresentationType"].[*].properties.["key"]
-        #   typeOverride: LIST_STRING
-        #   facetsConfig:
-        #     - facetName: spatialRepresentationType
-        #       facetType: TERM
-        # - ogcProperty: updateFrequency
-        #   elasticProperty: cl_maintenanceAndUpdateFrequency.key
-        #   indexRecordProperty: codelists.["cl_maintenanceAndUpdateFrequency"].[*].properties.["key"]
-        #   typeOverride: SINGLE_STRING
-        #   isSortable: true
-        #   isQueryable: true
-        #   facetsConfig:
-        #     - facetName: updateFrequency
-        #       facetType: TERM
-        #       bucketCount: 50
-        # - ogcProperty: creationYearForResource
-        #   elasticProperty: creationYearForResource
-        #   indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
-        #   isSortable: true
-        #   facetsConfig:
-        #     - facetName: creationYearForResource
-        #       facetType: HISTOGRAM_FIXED_INTERVAL
-        #       numberBucketInterval: 5
-        #       bucketCount: 25
-        #       bucketSorting: VALUE
-        #     - facetName: creationYearForResource2
-        #       facetType: HISTOGRAM_FIXED_BUCKET_COUNT
-        #       bucketCount: 5
-        #       bucketSorting: VALUE
-        # - ogcProperty: createDate
-        #   elasticProperty: createDate
-        #   indexRecordProperty: createDate
-        #   isSortable: true
-        #   isQueryable: true
-        #   facetsConfig:
-        #     - facetName: createDate
-        #       facetType: HISTOGRAM_FIXED_INTERVAL
-        #       calendarIntervalUnit: MONTH
-        #       bucketCount: 25
-        #       bucketSorting: VALUE
-        #     - facetName: createDate2
-        #       facetType: HISTOGRAM_FIXED_BUCKET_COUNT
-        #       bucketCount: 5
-        #       bucketSorting: VALUE
-        # - ogcProperty: resourceTitleObject
-        #   elasticProperty: resourceTitleObject.default
-        #   indexRecordProperty: resourceTitle.["default"]
-        #   isSortable: true
-        #   isQueryable: true
-        # - ogcProperty: orgForResource
-        #   elasticProperty: OrgForResourceObject.default
-        #   indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
-        #   facetsConfig:
-        #     - facetName: orgForResource
-        #       facetType: TERM
-        #       bucketCount: 50
+        - ogcProperty: orgForResource
+          elasticProperty: OrgForResourceObject.default
+          indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
+          facetsConfig:
+            - facetName: orgForResource
+              facetType: TERM
+              bucketCount: 50
+
+
 
 
     links:
       base-path: /ogcapi-records
       # Where is GN5's ogcapi-records located?
       # should end in "/" and shouldn't have "//" in the path
-      ogcApiRecordsBaseUrl: ${GN5_BASE_URL:http:////localhost:7979/geonetwork}/${geonetwork.openapi-records.links.base-path}/
+      ogcApiRecordsBaseUrl: ${GN5_BASE_URL:http:////localhost:7979/geonetwork}${geonetwork.openapi-records.links.base-path}/
       # How to link to GN (can be either GN4 or GN5's GN4 proxy)
       # should end in "/" and shouldn't have "//" in the path
       gnBaseUrl: ${GN4_PROXY_BASE_URL:http:////localhost:7979/geonetwork}/
@@ -154,15 +181,7 @@ geonetwork:
       item:
         #formats taken from the formatter api
         # this defines the default profile for a mime type
-        profileDefaults:
-          - mimetype: application/geo+json
-            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
-          - mimetype: application/json
-            defaultProfile: http://www.opengis.net/def/profile/OGC/0/ogc-record
-          - mimetype: application/rdf+xml
-            defaultProfile: http://geonetwork.net/def/profile/dcat
-          - mimetype: application/xml
-            defaultProfile: http://geonetwork.net/def/profile/raw-xml
+
     search:
       # This query filter is always added to all queries
       queryFilter: '+isTemplate:n'

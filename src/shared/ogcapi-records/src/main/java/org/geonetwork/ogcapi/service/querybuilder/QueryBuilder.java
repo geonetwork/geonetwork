@@ -122,7 +122,7 @@ public class QueryBuilder {
                 if (values == null || values.length == 0) {
                     continue;
                 }
-                result.addProp(param.getKey(), values[0]);
+                result.addProp(param.getKey(), URLDecoder.decode(values[0], StandardCharsets.UTF_8));
             }
         }
     }

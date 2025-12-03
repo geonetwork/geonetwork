@@ -6,6 +6,7 @@
 package org.geonetwork.ogcapi.ctrlreturntypes;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,7 @@ public class OgcApiRecordsSingleRecordResponseFormatter
      */
     @Override
     public List<MediaType> getSupportedMediaTypes() {
-        return List.of(mimeType);
+        return Arrays.asList(mimeType);
     }
 
     /**
@@ -108,7 +109,7 @@ public class OgcApiRecordsSingleRecordResponseFormatter
         if (clazz.equals(OgcApiRecordsRecordGeoJSONDto.class)) {
             return List.of(mimeType);
         }
-        return List.of(); // we don't support
+        return Arrays.asList(); // we don't support
     }
 
     // read is not supported
@@ -143,25 +144,19 @@ public class OgcApiRecordsSingleRecordResponseFormatter
             // from the mimetype, find out how to call the formatter api
             var collectionId = object.getCatalogId();
 
-            var profileList = object.getUserRequestedProfiles();
-            var mediaTypeAndProfile = new MediaTypeAndProfile(contentType, profileList);
+            var resolvedProfileName = object.getRequestMediaTypeAndProfile().getRequestResolvedProfile();
 
             var allFormatters = formatterApi.getRecordFormattersForMetadata(object.getRecordId(), approved);
 
             var formattersForOurMimeType = allFormatters.stream()
                     .filter(entry -> entry.getContentType().equals(contentType.toString()))
+                    .filter(x -> x.getOfficialProfileName().equals(resolvedProfileName))
                     .toList();
-            // official profile names
-            var supportedProfileNames = formattersForOurMimeType.stream()
-                    .map(x -> x.getOfficialProfileName())
-                    .toList();
-            var profileName = chooseProfile(defaultProfile, profileList, supportedProfileNames);
-            if (profileName == null) {
-                throw new Exception("couldnt negotiate profile name");
-            }
+
+            var mediaTypeAndProfile = new MediaTypeAndProfile(contentType, List.of(resolvedProfileName));
 
             var formatEntry = formattersForOurMimeType.stream()
-                    .filter(entry -> entry.getOfficialProfileName().equals(profileName))
+                    .filter(entry -> entry.getOfficialProfileName().equals(resolvedProfileName))
                     .findFirst();
 
             if (formatEntry.isEmpty()) {

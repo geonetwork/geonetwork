@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geonetwork.application.ctrlreturntypes.IControllerResultFormatter;
 import org.geonetwork.application.formatters.IContentNegotiationInitializable;
+import org.geonetwork.application.profile.ProfileDefaultsConfiguration;
 import org.geonetwork.formatting.FormatterApi;
-import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class SingleRecordFormatterApiContentNegotiationInitializable implements 
     private FormatterApi formatterApi;
 
     @Autowired
-    ItemPageLinksConfiguration itemPageLinksConfiguration; // for default profile
+    ProfileDefaultsConfiguration profileDefaultsConfiguration; // for default profile
 
     @Override
     public List<IControllerResultFormatter> initialize() throws Exception {
@@ -38,7 +38,8 @@ public class SingleRecordFormatterApiContentNegotiationInitializable implements 
             var formatter = new OgcApiRecordsSingleRecordResponseFormatter(
                     mimeType,
                     null,
-                    this.itemPageLinksConfiguration.getDefaultProfile(mimeType),
+                    this.profileDefaultsConfiguration.getDefaultProfile(
+                            mimeType, OgcApiRecordsSingleRecordResponse.class),
                     mimeTypeFormatters.getValue(),
                     formatterApi);
 

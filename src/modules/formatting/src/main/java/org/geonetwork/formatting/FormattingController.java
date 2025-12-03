@@ -105,8 +105,9 @@ public class FormattingController {
         }
 
         String contentType = formatterOptional.get().getContentType();
+        String profile = formatterOptional.get().getOfficialProfileName();
         MediaTypeAndProfile mediaTypeAndProfile =
-                mediaTypeAndProfileBuilder.build(MediaType.valueOf(contentType), null);
+                mediaTypeAndProfileBuilder.build(MediaType.valueOf(contentType), profile);
 
         Map<String, Object> formatterConfig = new HashMap<>();
         formatterConfig.put("mediaTypeAndProfile", mediaTypeAndProfile);

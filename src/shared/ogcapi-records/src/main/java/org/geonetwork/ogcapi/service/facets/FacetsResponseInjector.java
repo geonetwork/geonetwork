@@ -55,8 +55,9 @@ public class FacetsResponseInjector {
             var name = f.getFacetName();
 
             var summary = setupSummary(dynamicPropertiesFacade.getDefaultFacetsBucketCount(), name, f, searchResponse);
-
-            result.put(name, summary);
+            if (summary != null) {
+                result.put(name, summary);
+            }
         }
 
         return result;
@@ -108,6 +109,9 @@ public class FacetsResponseInjector {
         var buckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>();
 
         var agg = searchResponse.aggregations().get("facet." + name);
+        if (agg == null) {
+            return null;
+        }
         var stringTermsAgg = ((StringTermsAggregate) agg._get());
         var moreDocs = stringTermsAgg.sumOtherDocCount() > 0;
         @SuppressWarnings("unchecked")
@@ -142,7 +146,11 @@ public class FacetsResponseInjector {
 
         List<OgcApiRecordsFacetResultBucketDto> buckets;
 
-        var agg = searchResponse.aggregations().get("facet." + name)._get();
+        var _agg = searchResponse.aggregations().get("facet." + name);
+        if (_agg == null) {
+            return null;
+        }
+        var agg = _agg._get();
 
         if (agg instanceof HistogramAggregate _histogramAgg) {
             buckets = handleHistogramBuckets_HistogramAggregate(histogramDto, _histogramAgg);

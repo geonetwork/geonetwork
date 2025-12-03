@@ -7,18 +7,13 @@ package org.geonetwork.ogcapi.service.links;
 
 import io.micrometer.common.util.StringUtils;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiLandingPageResponse;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
-import org.geonetwork.ogcapi.service.configuration.ConformancePageLinksConfiguration;
-import org.geonetwork.ogcapi.service.configuration.LandingPageLinksConfiguration;
-import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.NativeWebRequest;
 
 /** Injects links into the Landing Page response */
 @Component
@@ -26,91 +21,21 @@ import org.springframework.web.context.request.NativeWebRequest;
 public class LandingPageLinks extends BasicLinks {
 
     @Autowired
-    OgcApiLinkConfiguration linkConfiguration;
+    CollectionsPageLinks collectionsPageLinks;
 
-    @Autowired
-    LandingPageLinksConfiguration landingPageLinksConfiguration;
-
-    @Autowired
-    ConformancePageLinksConfiguration conformancePageLinksConfiguration;
-
-    /**
-     * Adds the links to the landing page document.
-     *
-     * @param nativeWebRequest request from user
-     * @param catalogUuid uuid of the linked catalog
-     * @param landingPage where to add the link
-     */
     public void addLinks(
-            NativeWebRequest nativeWebRequest, String catalogUuid, OgcApiRecordsLandingPageDto landingPage) {
-        addStandardLinks(
-                nativeWebRequest,
-                linkConfiguration.getOgcApiRecordsBaseUrl(),
-                "",
-                landingPage,
-                new ArrayList<String>(
-                        landingPageLinksConfiguration.getMimeFormats().keySet()),
-                "self",
-                "alternate");
+            RequestMediaTypeAndProfile requestMediaTypeAndProfile,
+            String catalogUuid,
+            OgcApiRecordsLandingPageDto landingPage)
+            throws Exception {
+
+        super.addLinks(requestMediaTypeAndProfile, landingPage, "", OgcApiLandingPageResponse.class);
 
         addOpenApiLink(landingPage);
         addIconLink(landingPage, catalogUuid);
-        addConformanceLinks(nativeWebRequest, landingPage);
-        addCollectionLinks(nativeWebRequest, landingPage);
-    }
-
-    /**
-     * Added for https://camptocamp.github.io/ogc-client/#/demo -- also looks like in the pygeoapi demo.
-     *
-     * @param nativeWebRequest from user
-     * @param landingPage where to put the link
-     */
-    @SuppressWarnings("UnusedVariable")
-    private void addCollectionLinks(NativeWebRequest nativeWebRequest, OgcApiRecordsLandingPageDto landingPage) {
-        var uri = URI.create(linkConfiguration.getOgcApiRecordsBaseUrl()).resolve("collections");
-        var link = new OgcApiRecordsLinkDto()
-                .href(uri)
-                .rel("data")
-                .title("Collections")
-                .type("application/json");
-
-        landingPage.addLinksItem(link);
-    }
-
-    /**
-     * add the conformance link to the landing page
-     *
-     * @param nativeWebRequest from user
-     * @param landingPage which page to attach link to
-     */
-    @SuppressWarnings("UnusedVariable")
-    private void addConformanceLinks(NativeWebRequest nativeWebRequest, OgcApiRecordsLandingPageDto landingPage) {
-        try {
-            var link = new OgcApiRecordsLinkDto()
-                    .href(new URI(linkConfiguration.getOgcApiRecordsBaseUrl() + "conformance"))
-                    .rel("conformance")
-                    .type("application/json")
-                    .title("ogcapi-records conformance documnet");
-            addLinksReflect(List.of(link), landingPage);
-        } catch (URISyntaxException e) {
-            log.error("Invalid conformance link URI", e);
-        }
-    }
-
-    /**
-     * add the openapi (swagger) link to the landing page.
-     *
-     * @param landingPage where to add lnk
-     */
-    private void addOpenApiLink(OgcApiRecordsLandingPageDto landingPage) {
-        var uri = URI.create(linkConfiguration.getOgcApiRecordsBaseUrl()).resolve("../v3/api-docs?f=json");
-        var link = new OgcApiRecordsLinkDto()
-                .href(uri)
-                .rel("service-doc")
-                .type("application/json")
-                .title("The OpenAPI Documentation as JSON");
-
-        landingPage.addLinksItem(link);
+        addConformanceLinks(landingPage);
+        addRootLinks(requestMediaTypeAndProfile, landingPage);
+        collectionsPageLinks.addLinks(requestMediaTypeAndProfile, landingPage);
     }
 
     /**

@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /** This is user-contributed configuration for "extra" properties. */
 @Getter
 @Setter
+@ToString
 public class OgcElasticFieldMapperConfig {
 
     /** what ogc property (in the record's Properties/Additional-Properties) is this */
@@ -29,6 +31,8 @@ public class OgcElasticFieldMapperConfig {
      * (`String`). Differentiating between them from the elastic index definition isn't really possible.
      */
     public OverrideType typeOverride;
+
+    public String sortFieldSuffix;
 
     /** Should this field be in the sortables? */
     public Boolean isSortable = false;

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.geonetwork</groupId>
+    <artifactId>gn-apps</artifactId>
+    <version>5.0.0-SNAPSHOT</version>
+  </parent>
+
+  <!--
+  GIVE YOUR APP AN artifactId AND name/description
+  -->
+  <artifactId>gn-apps-generic-gn5-with-gn4proxy</artifactId>
+  <name>gn-apps-generic-gn5-with-gn4proxy</name>
+  <description>generic-gn5-with-gn4proxy</description>
+
+  <dependencies>
+
+    <!--
+          keep this dependency - this is where the spring boot app (and GN plugin system) is.
+      -->
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-generic-app</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-schemas</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-4</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <!--
+      This is for `mvn spring-boot:run`.  The main app is in the `gn-generic-app` so we have
+      to point to it here.  Alternatively, you can include your own springboot Application class -
+      however, this isn't recommended unless you have advanced needs.
+  -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>org.geonetwork.GeonetworkGenericApplication</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

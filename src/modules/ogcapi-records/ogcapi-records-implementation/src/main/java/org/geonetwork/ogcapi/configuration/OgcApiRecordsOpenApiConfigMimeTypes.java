@@ -9,17 +9,15 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.geonetwork.application.ctrlreturntypes.IControllerResultFormatter;
+import org.geonetwork.application.ctrlreturntypes.MimeAndProfilesForResponseType;
 import org.geonetwork.application.formatters.MessageWriterUtil;
+import org.geonetwork.application.profile.ProfileDefaultsConfiguration;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
-import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
 
 /**
  * Sets up OGCAPI-Records mime type responses based on the `FormatterApi`.
@@ -39,12 +37,16 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
     static final String MULTI_RECORD_ENDPOINT = "/ogcapi-records/collections/{catalogId}/items";
 
     MessageWriterUtil messageWriterUtil;
-    ItemPageLinksConfiguration itemPageLinksConfiguration;
+    ProfileDefaultsConfiguration profileDefaultsConfiguration;
+    MimeAndProfilesForResponseType mimeAndProfilesForResponseType;
 
     public OgcApiRecordsOpenApiConfigMimeTypes(
-            MessageWriterUtil messageWriterUtil, ItemPageLinksConfiguration itemPageLinksConfiguration) {
+            MessageWriterUtil messageWriterUtil,
+            ProfileDefaultsConfiguration profileDefaultsConfiguration,
+            MimeAndProfilesForResponseType mimeAndProfilesForResponseType) {
         this.messageWriterUtil = messageWriterUtil;
-        this.itemPageLinksConfiguration = itemPageLinksConfiguration;
+        this.profileDefaultsConfiguration = profileDefaultsConfiguration;
+        this.mimeAndProfilesForResponseType = mimeAndProfilesForResponseType;
     }
 
     /**
@@ -56,7 +58,8 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
      *
      * @param openApi from spring
      */
-    public void customizeSingleRecord(OpenAPI openApi) {
+    public void customizeSingleRecord(OpenAPI openApi) throws Exception {
+
         var content = openApi.getPaths()
                 .get(SINGLE_RECORD_ENDPOINT)
                 .getGet()
@@ -64,17 +67,14 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
                 .get("200")
                 .getContent();
 
-        var writers = messageWriterUtil.getAllMessageConverters().stream()
-                .filter(x -> x instanceof IControllerResultFormatter)
-                .map(x -> ((IControllerResultFormatter) x))
-                .filter(x -> x.getInputType().equals(OgcApiRecordsSingleRecordResponse.class))
-                .toList();
+        var writers = mimeAndProfilesForResponseType.getResponseTypeInfos(OgcApiRecordsSingleRecordResponse.class);
 
-        addToContent(writers, content);
+        addToContent(writers, content, OgcApiRecordsSingleRecordResponse.class);
     }
 
     @SuppressWarnings("unchecked")
-    private void addToContent(List<IControllerResultFormatter> writers, Content content) {
+    private void addToContent(
+            List<MimeAndProfilesForResponseType.ResponseTypeInfo> writers, Content content, Class<?> clazz) {
         // foreach of our IControllerResultFormatter<OgcApiRecordsSingleRecordResponse>
         // we create the `content` if it doesn't exist.
         // we also add the profiles (from the writer) to the output
@@ -95,9 +95,11 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
             }
 
             var formatProviders = (List<String>) extensions.get("x-format-providers");
-            formatProviders.add(writer.getClass().getCanonicalName());
+            if (writer.getFormatProviders() != null) {
+                formatProviders.addAll(writer.getFormatProviders());
+            }
 
-            var profiles = (List<String>) writer.getProvidedProfileNames();
+            var profiles = writer.getProfiles();
             if (profiles != null && !profiles.isEmpty()) {
 
                 var xProfiles = (List<String>) extensions.get("x-profiles");
@@ -105,13 +107,18 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
                     xProfiles = new ArrayList<String>();
                     extensions.put("x-profiles", xProfiles);
                 }
-                xProfiles.addAll(profiles);
-                extensions.put("x-profile-default", itemPageLinksConfiguration.getDefaultProfile(writer.getMimeType()));
+                if (profiles != null) {
+                    xProfiles.addAll(profiles);
+                }
+                extensions.put(
+                        "x-profile-default",
+                        profileDefaultsConfiguration.getDefaultProfile(
+                                writer.getMimeType().toString(), clazz));
             }
         }
     }
 
-    public void customizeMultiRecord(OpenAPI openApi) {
+    public void customizeMultiRecord(OpenAPI openApi) throws Exception {
         var content = openApi.getPaths()
                 .get(MULTI_RECORD_ENDPOINT)
                 .getGet()
@@ -119,61 +126,21 @@ public class OgcApiRecordsOpenApiConfigMimeTypes implements org.springdoc.core.c
                 .get("200")
                 .getContent();
 
-        var writers = messageWriterUtil.getAllMessageConverters().stream()
-                .filter(x -> x instanceof IControllerResultFormatter)
-                .map(x -> ((IControllerResultFormatter) x))
-                .filter(x -> x.getInputType().equals(OgcApiRecordsMultiRecordResponse.class))
-                .toList();
+        List<MimeAndProfilesForResponseType.ResponseTypeInfo> providers =
+                mimeAndProfilesForResponseType.getResponseTypeInfos(OgcApiRecordsMultiRecordResponse.class);
 
-        addToContent(writers, content);
-
-        var writersNormal = messageWriterUtil.getAllMessageConverters().stream()
-                .filter(x -> getInputObject(x) == OgcApiRecordsMultiRecordResponse.class)
-                .filter(x -> !(x instanceof IControllerResultFormatter))
-                .toList();
-
-        addToContentHttpMessageConverter(writersNormal, content);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void addToContentHttpMessageConverter(List<HttpMessageConverter<?>> writers, Content content) {
-        // foreach of our IControllerResultFormatter<OgcApiRecordsSingleRecordResponse>
-        // we create the `content` if it doesn't exist.
-        // these type of writers don't have profiles
-        for (var writer : writers) {
-            var mimeType = writer.getSupportedMediaTypes().get(0);
-            var existingContent = content.get(mimeType.toString());
-            if (existingContent == null) {
-                content.put(mimeType.toString(), new MediaType());
-                existingContent = content.get(mimeType.toString());
-            }
-            var extensions = existingContent.getExtensions();
-            if (extensions == null) {
-                existingContent.setExtensions(new HashMap<>());
-                extensions = existingContent.getExtensions();
-            }
-            if (!extensions.containsKey("x-format-providers")) {
-                extensions.put("x-format-providers", new ArrayList<String>());
-            }
-            var formatProviders = (List<String>) extensions.get("x-format-providers");
-            formatProviders.add(writer.getClass().getCanonicalName());
-        }
-    }
-
-    private Class<?> getInputObject(HttpMessageConverter<?> writer) {
-        var methods = Arrays.stream(writer.getClass().getMethods());
-        var writeMethod = methods.filter(x -> x.getName().equals("write")
-                        && x.getParameterTypes().length > 0
-                        && !x.getParameterTypes()[0].equals(Object.class))
-                .findFirst();
-
-        return writeMethod.<Class>map(method -> method.getParameterTypes()[0]).orElse(null);
+        addToContent(providers, content, OgcApiRecordsSingleRecordResponse.class);
     }
 
     @Override
     public void customise(OpenAPI openApi) {
         log.info("OgcApiRecordsOpenApiConfigMimeTypes: start customizer");
-        customizeSingleRecord(openApi);
-        customizeMultiRecord(openApi);
+
+        try {
+            customizeSingleRecord(openApi);
+            customizeMultiRecord(openApi);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

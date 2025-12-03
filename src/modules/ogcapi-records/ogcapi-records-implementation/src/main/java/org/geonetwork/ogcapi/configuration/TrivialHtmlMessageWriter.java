@@ -50,15 +50,56 @@ public class TrivialHtmlMessageWriter extends AbstractGenericHttpMessageConverte
 
         var json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(o);
 
-        var result = "<h1>" + o.getClass().getSimpleName() + "</h1>\n<br>\n";
+        var result = "<html><head>";
+        result += "<style>";
+        result += ".button {\n" + "  background-color: #0070ff;\n"
+                + "  border: none;\n"
+                + "  color: white;\n"
+                + "  padding: 15px 30px;\n"
+                + "  text-align: center;\n"
+                + "  display: inline-block;\n"
+                + "  font-size: 25px;\n"
+                + "  text-decoration: none;\n"
+                + "  cursor: pointer;\n"
+                + "}";
+
+        result += "</style>";
+
+        result += "</head><body>";
+        result += "<h1>" + o.getClass().getSimpleName() + "</h1>\n<br>\n";
+
+        result += insertJsonButton(o);
+
         result += "<pre style='    background-color: eee;border: 1px solid black;padding: 10px'> \n";
         result += json;
         result += "</pre>\n";
+
+        result += "</body></html>";
 
         var bytes = result.getBytes(StandardCharsets.UTF_8);
         outputMessage.getHeaders().setContentType(MediaType.TEXT_HTML);
         outputMessage.getHeaders().setContentLength(bytes.length);
         outputMessage.getBody().write(result.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private String insertJsonButton(Object o) {
+        if (o == null) {
+            return "";
+        }
+        try {
+            var method = o.getClass().getMethod("getJsonLink");
+            var uriLink = method.invoke(o);
+            if (uriLink != null) {
+                return makeButton(uriLink.toString());
+            }
+        } catch (Exception e) {
+            return "";
+        }
+        return "";
+    }
+
+    public String makeButton(String url) {
+        return "<a href='" + url + "' class=button>Show JSON</a>";
     }
 
     @Override

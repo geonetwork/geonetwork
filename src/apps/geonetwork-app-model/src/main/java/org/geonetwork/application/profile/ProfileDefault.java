@@ -3,7 +3,7 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
-package org.geonetwork.ogcapi.service.configuration;
+package org.geonetwork.application.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,4 +18,5 @@ import lombok.Setter;
 public class ProfileDefault {
     public String mimetype;
     public String defaultProfile;
+    public String responseType;
 }

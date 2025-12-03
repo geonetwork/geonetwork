@@ -3,6 +3,8 @@ type: object
 allOf:
   - $ref: 'linkBase.yaml'
   - type: object
+    xml:
+      name: link
     required:
       - href
     properties:

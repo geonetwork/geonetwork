@@ -6,17 +6,20 @@
 package org.geonetwork.ogcapi.service.links;
 
 import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.net.URISyntaxException;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.geonetwork.application.ctrlreturntypes.MimeAndProfilesForResponseType;
+import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiLandingPageResponse;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsCollectionsResponse;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
-import org.geonetwork.utility.MediaTypeAndProfile;
-import org.geonetwork.utility.MediaTypeAndProfileBuilder;
+import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.accept.ContentNegotiationManager;
-import org.springframework.web.context.request.NativeWebRequest;
 
 /**
  * basic ops for links.
@@ -25,51 +28,130 @@ import org.springframework.web.context.request.NativeWebRequest;
  * exact link to this document ("self").
  */
 @Component
+@Slf4j
 public class BasicLinks {
 
     @Autowired
-    ContentNegotiationManager contentNegotiationManager;
+    MimeAndProfilesForResponseType mimeAndProfilesForResponseType;
 
     @Autowired
-    MediaTypeAndProfileBuilder mediaTypeAndProfileBuilder;
+    OgcApiLinkConfiguration linkConfiguration;
 
-    public void addStandardLinks(
-            NativeWebRequest nativeWebRequest,
-            String baseUrl,
-            String endpointLoc,
+    public void addLinks(
+            RequestMediaTypeAndProfile requestMediaTypeAndProfile,
             Object page,
-            List<String> formatNames,
-            String selfName,
-            String altName) {
-        var mediaTypeAndName = mediaTypeAndProfileBuilder.build(nativeWebRequest);
-        var formats = formatNames.stream()
-                .map(x -> new MediaTypeAndProfile(
-                        contentNegotiationManager.getMediaTypeMappings().get(x), null))
+            String endpointFragment,
+            Class<?> linkType)
+            throws Exception {
+
+        var allResponseInfo = mimeAndProfilesForResponseType.getResponseTypeInfos(linkType);
+        var links = allResponseInfo.stream()
+                .map(x -> {
+                    var link = new OgcApiRecordsLinkDto();
+                    var href = linkConfiguration.getOgcApiRecordsBaseUrl() + endpointFragment + "?f=" + x.getMimeType();
+                    try {
+                        link.setHref(new URI(href));
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
+                    setupLinkName(requestMediaTypeAndProfile, x, linkType, link);
+                    link.setType(x.getMimeType().toString());
+                    link.hreflang("eng");
+                    link.setProfile(x.getProfiles());
+                    return link;
+                })
                 .toList();
-        addStandardLinks(mediaTypeAndName, baseUrl, endpointLoc, page, formats, selfName, altName);
-    }
-    /**
-     * this adds the "standard" links - which is to "self" and "alternate" versions of the landing page.
-     *
-     * @param mediaTypeAndProfile request's media type and profile info
-     * @param baseUrl baseURL for the system
-     * @param endpointLoc which endpoint is this for
-     * @param page where to attach the links?
-     * @param formatNames what formats should we use
-     */
-    public void addStandardLinks(
-            MediaTypeAndProfile mediaTypeAndProfile,
-            String baseUrl,
-            String endpointLoc,
-            Object page,
-            List<MediaTypeAndProfile> formatNames,
-            String selfName,
-            String altName) {
-        var links =
-                this.createSelfRelativeLinks(mediaTypeAndProfile, baseUrl, endpointLoc, formatNames, selfName, altName);
 
-        // the objects are auto-generated from yaml, so we have to use reflection
         addLinksReflect(links, page);
+    }
+
+    /**
+     * Annotate the link's name (and maybe title)
+     *
+     * @param requestMediaTypeAndProfile information about the request (esp what type of document it is requesting)
+     * @param responseInfo information about the formatter
+     * @param linkType what type of document is this link for
+     * @param link actual link to annotate
+     */
+    public void setupLinkName(
+            RequestMediaTypeAndProfile requestMediaTypeAndProfile,
+            MimeAndProfilesForResponseType.ResponseTypeInfo responseInfo,
+            Class<?> linkType,
+            OgcApiRecordsLinkDto link) {
+        if (!requestMediaTypeAndProfile.getResponseClass().equals(linkType)) {
+            // request is for another type - this should be a LABELLED name, not "alternative"/"self"
+            if (linkType.equals(OgcApiRecordsCollectionsResponse.class)) {
+                link.setRel("collections");
+                link.setTitle("Information about the collections");
+                return;
+            }
+            if (linkType.equals(OgcApiCollectionResponse.class)) {
+                link.setRel("http://www.opengis.net/def/rel/ogc/1.0/ogc-catalog");
+                link.setTitle("Information about the collection");
+                return;
+            }
+            if (linkType.equals(OgcApiRecordsMultiRecordResponse.class)) {
+                link.setRel("items");
+                link.setTitle("Records in the collection");
+                return;
+            }
+            if (linkType.equals(OgcApiLandingPageResponse.class)) {
+                link.setRel("root");
+                link.setTitle("Landing Page");
+                return;
+            }
+        }
+        // should be "alternative"/"self"
+        link.setRel("alternative");
+
+        // see if it should be "self"
+        // if:
+        //    requested mime type is the same as what the link will produce
+        if (requestMediaTypeAndProfile.getRequestMediaType().equals(responseInfo.getMimeType())) {
+
+            var requestResolvedProfile = requestMediaTypeAndProfile.getRequestResolvedProfile();
+            var supportedProfiles = responseInfo.getProfiles();
+            var noSupportedProfiles = supportedProfiles == null || supportedProfiles.isEmpty();
+            if (requestResolvedProfile == null && noSupportedProfiles) {
+                link.setRel("self");
+            } else if (requestResolvedProfile != null
+                    && !noSupportedProfiles
+                    && supportedProfiles.contains(requestResolvedProfile)) {
+                link.setRel("self");
+            }
+        }
+    }
+
+    /**
+     * add the openapi (swagger) link to the landing page.
+     *
+     * @param page where to add lnk
+     */
+    protected void addOpenApiLink(Object page) {
+        var uri = URI.create(linkConfiguration.getOgcApiRecordsBaseUrl()).resolve("../v3/api-docs?f=json");
+        var link = new OgcApiRecordsLinkDto()
+                .href(uri)
+                .rel("service-doc")
+                .type("application/json")
+                .title("The OpenAPI Documentation as JSON");
+
+        addLinksReflect(List.of(link), page);
+    }
+
+    /**
+     * add queryables links
+     *
+     * @param page page to add to
+     */
+    protected void addQueryables(OgcApiRecordsCatalogDto page) {
+        var uri = URI.create(linkConfiguration.getOgcApiRecordsBaseUrl())
+                .resolve("collections/" + page.getId() + "/queryables?f=json");
+        var link = new OgcApiRecordsLinkDto()
+                .href(uri)
+                .rel("http://www.opengis.net/def/rel/ogc/1.0/queryables")
+                .type("application/schema+json")
+                .title("Queryables for this collection");
+        page.addLinksItem(link);
     }
 
     public void addLinksReflect(List<OgcApiRecordsLinkDto> links, Object page) {
@@ -88,118 +170,26 @@ public class BasicLinks {
         }
     }
 
-    public List<OgcApiRecordsLinkDto> createSelfRelativeLinks(
-            MediaTypeAndProfile mediaTypeAndProfile,
-            String baseUrl,
-            String endpointLocation,
-            List<MediaTypeAndProfile> mediaNames,
-            String selfName,
-            String altName) {
-        var url = baseUrl + endpointLocation;
-        if (!url.contains("?")) {
-            url += "?";
-        } else {
-            url += "&";
+    /**
+     * add the conformance link to the landing page
+     *
+     * @param page which page to attach link to
+     */
+    @SuppressWarnings("UnusedVariable")
+    protected void addConformanceLinks(Object page) {
+        try {
+            var link = new OgcApiRecordsLinkDto()
+                    .href(new URI(linkConfiguration.getOgcApiRecordsBaseUrl() + "conformance"))
+                    .rel("conformance")
+                    .type("application/json")
+                    .title("ogcapi-records conformance document");
+            addLinksReflect(List.of(link), page);
+        } catch (URISyntaxException e) {
+            log.error("Invalid conformance link URI", e);
         }
+    }
 
-        var result = new ArrayList<OgcApiRecordsLinkDto>();
-
-        var requestProfile = (mediaTypeAndProfile.getProfile() == null
-                        || mediaTypeAndProfile.getProfile().isEmpty())
-                ? null
-                : mediaTypeAndProfile.getProfile().getFirst();
-        var requestMediaType = mediaTypeAndProfile.getMediaType();
-        String finalUrl = url;
-
-        for (var _mediaTypeAndProfile : mediaNames) {
-            var profiles = _mediaTypeAndProfile.getProfile();
-            if (profiles == null || profiles.isEmpty()) {
-                // null profiles -> keep going
-                profiles = new ArrayList<>();
-                profiles.add(null);
-            }
-            for (var _profile : profiles) {
-                try {
-                    var isSelf = _mediaTypeAndProfile.getMediaType().equals(requestMediaType);
-                    if (isSelf) {
-                        if (_profile == null && requestProfile == null) {
-                            isSelf = true;
-                        } else if (_profile != null && requestProfile == null) {
-                            isSelf = false;
-                        } else if (_profile == null && requestProfile != null) {
-                            isSelf = false;
-                        } else if (_profile.equals(requestProfile)) {
-                            isSelf = true;
-                        } else {
-                            isSelf = false;
-                        }
-                    }
-
-                    var linkRel = isSelf ? selfName : altName;
-
-                    var link = new OgcApiRecordsLinkDto();
-                    var href = new URI(finalUrl + "f="
-                            + URLEncoder.encode(
-                                    _mediaTypeAndProfile.getMediaType().toString(), StandardCharsets.UTF_8));
-                    if (_profile != null) {
-                        href = new URI(
-                                href.toString() + "&profile=" + URLEncoder.encode(_profile, StandardCharsets.UTF_8));
-                    }
-                    link.rel(linkRel)
-                            .type(_mediaTypeAndProfile.getMediaType().toString())
-                            .hreflang("eng")
-                            .href(href);
-                    if (_profile != null) {
-                        link.profile(List.of(_profile));
-                    }
-                    result.add(link);
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-
-        return result;
-
-        //        var links = mediaNames.stream()
-        //                .map(x -> {
-        //
-        //                    if (x.getMediaType().equals(mediaTypeAndProfile.getMediaType())) {
-        //                        // self
-        //                        var _links = new ArrayList<OgcApiRecordsLinkDto>();
-        //                        var link = new OgcApiRecordsLinkDto();
-        //                        try {
-        //                            link.rel(selfName)
-        //                                    .type(mediaTypeAndProfile.getMediaType().toString())
-        //                                    .hreflang("eng")
-        //                                    .profile(x.getProfile())
-        //                                    .href(new URI(
-        //                                            finalUrl + "f=" + x.getMediaType().toString()));
-        //                            _links.add(link);
-        //
-        //                        } catch (URISyntaxException e) {
-        //                            throw new RuntimeException(e);
-        //                        }
-        //                        return _links;
-        //                    } else {
-        //                        // alternate
-        //                        var link = new OgcApiRecordsLinkDto();
-        //                        try {
-        //                            link.rel(altName)
-        //                                    .type(x.getMediaType().toString())
-        //                                    .hreflang("eng")
-        //                                    .profile(x.getProfile())
-        //                                    .href(new URI(
-        //                                            finalUrl + "f=" + x.getMediaType().toString()));
-        //                            return link;
-        //                        } catch (URISyntaxException e) {
-        //                            throw new RuntimeException(e);
-        //                        }
-        //                    }
-        //                })
-        //                .toList();
-        //
-        //        return links;
+    protected void addRootLinks(RequestMediaTypeAndProfile requestMediaTypeAndProfile, Object page) throws Exception {
+        addLinks(requestMediaTypeAndProfile, page, "", OgcApiLandingPageResponse.class);
     }
 }
