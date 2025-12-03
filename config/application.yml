@@ -12,7 +12,7 @@
 
 geonetwork:
   url: ${GN5_BASE_URL:http://localhost:7979/geonetwork}
-  home: /srv
+  home: /home
   index:
     url: ${ELASTIC_URL:http://localhost:9200}
     indexPrefix: gn5-

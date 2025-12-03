@@ -1,0 +1,9 @@
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+
+# disable the high watermark error
+cluster.routing.allocation.disk.threshold_enabled: false
+# don't have to do this, but this is helpful for elastic startup with existing data volumes
+cluster.routing.allocation.disk.watermark.high: 99.9%
+cluster.routing.allocation.disk.watermark.low: 99.9%
+cluster.routing.allocation.disk.watermark.flood_stage: 99.9%
