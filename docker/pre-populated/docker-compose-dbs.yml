@@ -1,0 +1,53 @@
+services:
+  elasticsearch:
+    image: elasticsearch:8.14.1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: "curl -s http://localhost:9200 >/dev/null || exit 1"
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    environment:
+      - cluster.name=gn5-cluster
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - path.repo=/tmp
+    volumes:
+      - ./es_backups.tar.gz:/tmp/es_backups.tar.gz
+      - ./create-elastic-repo.json:/tmp/create-elastic-repo.json
+      - ./import-elastic-repo.json:/tmp/import-elastic-repo.json
+      - ./wait-for-it.sh:/tmp/wait-for-it.sh
+      - ./create-import-repo.sh:/tmp/create-import-repo.sh
+    command: bash -c "
+        chmod +x /tmp/wait-for-it.sh &&
+        cd /tmp &&
+        tar -xvzf es_backups.tar.gz &&
+        /usr/local/bin/docker-entrypoint.sh
+      "
+    post_start:
+        -  command: ["/tmp/wait-for-it.sh", "localhost:9200", "-t","40", "--", "sh", "/tmp/create-import-repo.sh"]
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+        POSTGRES_PASSWORD: geonetwork
+        POSTGRES_USER: geonetwork
+        POSTGRES_DB: geonetwork
+    volumes:
+      - ./dump.gn.sql:/docker-entrypoint-initdb.d/dump.gn.sql
+
+

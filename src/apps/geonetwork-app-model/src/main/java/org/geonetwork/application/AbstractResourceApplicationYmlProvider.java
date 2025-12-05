@@ -15,11 +15,15 @@ public abstract class AbstractResourceApplicationYmlProvider {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources(getResourcePath());
         if (resources.length == 1) {
-            var result = new ApplicationYmlLocation(resources[0].getURL(), 0.0); // 0.0 = FIRST
+            var result = new ApplicationYmlLocation(resources[0].getURL(), getPriority());
             return List.of(result);
         }
         throw new Exception("Resource not found - " + getResourcePath());
     }
 
     public abstract String getResourcePath();
+
+    public Double getPriority() {
+      return 10.0; // 0.0 = FIRST
+    }
 }

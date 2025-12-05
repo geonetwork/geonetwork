@@ -156,6 +156,11 @@ nav:
     - Developer/index.md
     - Developer/formatters.md
     - Developer/tech-security.md
-    
+    - Developer/new-app.md
+    - Developer/ogcapi-record-link-management.md
+    - Developer/ogcapi-records-dynamic-properties.md
+    - Developer/workshop.md
+
+
 
 

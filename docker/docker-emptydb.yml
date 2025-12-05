@@ -1,0 +1,62 @@
+volumes:
+  geonetwork:
+    name: ${COMPOSE_PROJECT_NAME}_geonetwork
+  esdata:
+    name: ${COMPOSE_PROJECT_NAME}_esdata
+  pgdata:
+    name: ${COMPOSE_PROJECT_NAME}_pgdata
+
+services:
+  database:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${GEONETWORK_DB_USERNAME}
+      POSTGRES_PASSWORD: ${GEONETWORK_DB_PASSWORD}
+      POSTGRES_DB: ${GEONETWORK_DB_NAME}
+    command: [ "postgres",
+               "-c", "log_statement=all",
+               "-c", "logging_collector=true",
+               "-c", "log_file_mode=0644",
+               "-c", "log_directory=/var/log/postgresql",
+               "-c", "log_filename=postgresql.log" ]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+#      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - ${GEONETWORK_DB_PORT:-5432}:5432
+#    networks:
+#      - gn-network
+
+  elasticsearch:
+    image: elasticsearch:8.14.3
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: "curl -s http://localhost:9200 >/dev/null || exit 1"
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - path.repo=/tmp
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - ${ELASTICSEARCH_PORT:-9200}:9200
+#    networks:
+#      - gn-network
