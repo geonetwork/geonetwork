@@ -17,6 +17,6 @@ public class ProxyApplicationYmlProvider extends AbstractResourceApplicationYmlP
 
     @Override
     public Double getPriority() {
-        return 10.0;
+        return PRECONFIGURED_PRIORITY;
     }
 }
