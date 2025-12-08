@@ -15,8 +15,8 @@ public class ProxyApplicationYmlProvider extends AbstractResourceApplicationYmlP
         return "application-proxy.yml";
     }
 
-  @Override
-  public Double getPriority() {
-    return 10.0;
-  }
+    @Override
+    public Double getPriority() {
+        return 10.0;
+    }
 }

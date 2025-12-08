@@ -24,6 +24,6 @@ public abstract class AbstractResourceApplicationYmlProvider {
     public abstract String getResourcePath();
 
     public Double getPriority() {
-      return 10.0; // 0.0 = FIRST
+        return 10.0; // 0.0 = FIRST
     }
 }
