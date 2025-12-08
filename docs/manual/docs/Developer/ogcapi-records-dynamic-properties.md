@@ -1,7 +1,5 @@
 # OGCAPI-Records Dynamic Properties
 
-This is a placeholder to be filled in later.
-
 Dynamic Properties are user-defined (cf. `application-ogcapi-records.yml`) set of "extra" properties (from the Elastic `IndexRecord`) that are added to the metadata records JSON `properties`.  This is a very powerful system for customizations.  
 
 See `OgcElasticFieldMapperConfig` (cf. `application-ogcapi-records.yml`) for how the user can configure the Dynamic Properties:

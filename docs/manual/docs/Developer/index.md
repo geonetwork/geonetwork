@@ -9,4 +9,5 @@ Content of this documentation
 - [Creating a New App](new-app.md): Creating a new app (introduction to the App Architecture)
 - [Dynamic Properties in OGCAPI-Records](ogcapi-records-dynamic-properties.md): Creating a new app (introduction to the App Architecture)
 - [Link Management in OGCAPI-Records](ogcapi-record-link-management.md): Creating a new app (introduction to the App Architecture)
+- [Facets](facets.md)
 - [GN5 Workshop](workshop.md): Creating a new app (introduction to the App Architecture)
