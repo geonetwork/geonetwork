@@ -21,7 +21,7 @@ Get Running
    RUN FROM `docker/` (where `dump.gn.sql` is)
 ```
 docker rm postgresql-gn5
-docker run -d -e POSTGRES_DB=geonetwork -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -p 5555:5432  --name postgresql-gn5 -v `pwd`/dump.gn.sql:/docker-entrypoint-initdb.d/dump.gn.sql   postgres:16-alpine
+docker run -d -e POSTGRES_DB=geonetwork -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -p 5432:5432  --name postgresql-gn5 -v `pwd`/dump.gn.sql:/docker-entrypoint-initdb.d/dump.gn.sql   postgres:16-alpine
 ```
 
 2. run elastic
@@ -36,7 +36,7 @@ Likely need to sign on as admin, then admin tools -> delete and reindex.
 
 ```
 cd src/web
-mvn jetty:run jetty:run -Dgeonetwork.db.type=postgres-postgis -Djdbc.database=geonetwork -Djdbc.username=postgres -Djdbc.password=postgres -Djdbc.host=localhost -Ddb.port=5555 -Djdbc.port=5555 -Djetty.port=8080
+mvn jetty:run jetty:run -Dgeonetwork.db.type=postgres-postgis -Djdbc.database=geonetwork -Djdbc.username=postgres -Djdbc.password=postgres -Djdbc.host=localhost -Ddb.port=5432 -Djdbc.port=5432 -Djetty.port=8080
 ```  
 
 4. validate working in gui
@@ -47,7 +47,7 @@ Dump Data
 Postgresql:
 
 ```
-pg_dump -h localhost -p 5555 -U postgres --column-inserts geonetwork > dump.gn.sql
+pg_dump -h localhost -p 5432 -U postgres --column-inserts geonetwork > dump.gn.sql
 ```
 
 `pg_dump` version miss-match?  Use:

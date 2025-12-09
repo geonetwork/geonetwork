@@ -1,0 +1,16 @@
+services:
+  geonetwork5:
+    image: ghcr.io/geonetwork/gn5-main:latest
+    environment:
+      - SPRING_CONFIG_LOCATION=file:/config/application.yml
+      - GN5_BASE_URL=http://localhost:7979/geonetwork
+      - GN4_BASE_URL=http://localhost:8080/geonetwork
+      - GN4_DOCKER_URL=http://host.docker.internal:8080/geonetwork
+      - GN4_PROXY_BASE_URL=http://localhost:7979/geonetwork
+      - ELASTIC_URL=http://host.docker.internal:9200
+    volumes:
+      - ./docker-application.yml:/config/application.yml
+    ports:
+      - ${GEONETWORK5_PORT:-7979}:7979
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

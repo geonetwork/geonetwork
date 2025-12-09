@@ -1,0 +1,4 @@
+services:
+  geonetwork4:
+    ports:
+      - ${GEONETWORK4_PORT:-8080}:8080

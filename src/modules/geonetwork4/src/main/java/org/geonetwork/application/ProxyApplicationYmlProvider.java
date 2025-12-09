@@ -14,4 +14,9 @@ public class ProxyApplicationYmlProvider extends AbstractResourceApplicationYmlP
     public String getResourcePath() {
         return "application-proxy.yml";
     }
+
+    @Override
+    public Double getPriority() {
+        return PRECONFIGURED_PRIORITY;
+    }
 }
