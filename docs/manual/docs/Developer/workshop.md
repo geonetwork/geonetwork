@@ -46,7 +46,7 @@ docker-compose -f docker-compose-gn4.yml up -d
 After the GN4 container has started, go to http://localhost:8080/geonetwork.  From there, you can do one of these:
 
 * Login to GN4 as admin, import the `sample-gn-data-for-import.zip` data (30 records from the `GN-UI` project)
-* Login to GN4 as admin, import the ISO19193 sample data
+* Login to GN4 as admin, import the ISO19139 sample data
 * Login to GN4 as admin, harvest from another server
 * Login as a user, create your own sample data
 

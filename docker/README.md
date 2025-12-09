@@ -63,7 +63,7 @@ For use in Intellij:
 
 `docker-compose-dbs.yml` will run:
 1. postgresql (with sample data)<br>
-    PORT: 5555<br>
+    PORT: 5432<br>
     USER: postgres<br>
     PASS: postgres<br>
     DB: geonetwork
