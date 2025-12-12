@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <fields>
@@ -32,27 +31,27 @@
     <suggest name="gco:CharacterString"/>
     <suggest name="mri:LanguageCode"/>
   </field>
-  
+
   <!-- Service -->
   <field name="srv:coupledResource">
     <suggest name="srv:SV_CoupledResource"/>
   </field>
-  
+
   <field name="srv:parameters">
     <suggest name="srv:SV_Parameter"/>
   </field>
-  
+
   <field name="srv:direction">
     <suggest name="srv:SV_ParameterDirection"/>
   </field>
-  
+
   <field name="cit:CI_OnlineResource">
     <suggest name="cit:protocol"/>
     <suggest name="cit:name"/>
     <suggest name="cit:description"/>
     <suggest name="cit:function"/>
   </field>
-  
+
   <!-- Add a distribution format / INSPIRE requirement
   <field name="mds:distributionInfo">
     <suggest name="mrd:MD_Distribution"/>
@@ -72,14 +71,14 @@
     <field name="mrd:MD_DigitalTransferOptions">
         <suggest name="mrd:onLine"/>
     </field>
-  
-  
+
+
   <!-- Contact info: suggest all by default. -->
   <field name="cit:CI_Individual">
     <suggest name="cit:name"/>
     <suggest name="cit:address"/>
   </field>
-  
+
   <field name="cit:CI_Organisation">
     <suggest name="cit:name"/>
     <suggest name="cit:contactInfo"/>
@@ -88,23 +87,23 @@
   <field name="cit:CI_Contact">
     <suggest name="cit:address"/>
   </field>
-  
+
   <field name="cit:CI_Telephone">
     <suggest name="cit:number"/>
     <suggest name="cit:numberType"/>
   </field>
-  
+
   <field name="cit:CI_Address">
     <suggest name="cit:electronicMailAddress"/>
     </field>
-  
 
-  
+
+
   <!-- Expand optional element mri:type (mri:keyword is mandatory and will be expanded) -->
   <field name="mri:MD_Keywords">
     <suggest name="mri:type"/>
   </field>
-  
+
   <!-- Expand optional element mri:type and mri:thesaurusName. mri:thesaurusName will
   be expanded including all its mandatory children and optional suggestion. In that
   case, thesaurus title and date type will be expanded. Unfortunately, the date is a choice
@@ -122,15 +121,15 @@
   </field>
   will not change anything because gco:CharacterString is the default element.
   -->
-  
+
   <!-- Propose 2 substitutes. A selection list will be displayed to choose between the 2 elements -->
   <!--<field name="mri:keyword">
     <suggest name="gco:CharacterString"/>
     <suggest name="gcx:Anchor"/>
   </field>-->
-  
-  
-  
+
+
+
   <field name="gex:EX_Extent">
     <suggest name="gex:geographicElement"/>
   </field>
@@ -138,23 +137,23 @@
   <field name="gex:EX_TemporalExtent">
     <suggest name="gex:extent"/>
   </field>
-  
+
   <field name="gex:polygon">
     <suggest name="gml:Polygon"/>
   </field>
-  
+
   <field name="gex:extent">
     <suggest name="gex:EX_Extent"/>
   </field>
-  
+
   <field name="gml:TimePeriod">
     <suggest name="gml:beginPosition"/>
-    <suggest name="gml:endPosition"/>  
+    <suggest name="gml:endPosition"/>
   </field>
-  
+
   <field name="gex:EX_GeographicBoundingBox">
     <suggest name="gex:westBoundLongitude"/>
-    <suggest name="gex:eastBoundLongitude"/>  
+    <suggest name="gex:eastBoundLongitude"/>
     <suggest name="gex:southBoundLatitude"/>
     <suggest name="gex:northBoundLatitude"/>
   </field>
@@ -201,14 +200,14 @@
   <field name="mco:MD_Constraints">
     <suggest name="mco:useLimitation"/>
   </field>
-  
+
   <field name="mco:MD_LegalConstraints">
     <suggest name="mco:useLimitation"/>
     <suggest name="mco:accessConstraints"/>
     <suggest name="mco:useConstraints"/>
     <suggest name="mco:otherContraints"/>
   </field>
-  
+
   <field name="mco:MD_SecurityContraints">
     <suggest name="mco:classification"/>
     <suggest name="mco:useLimitation"/>
