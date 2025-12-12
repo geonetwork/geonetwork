@@ -63,5 +63,7 @@
     <formatter name="xml" title="" officialProfileName="http://geonetwork.net/def/profile/raw-xml" contentType="application/xml"/>
     <formatter name="dcat-ap-nl-3" title="" officialProfileName="http://geonetwork.net/def/profile/dcat-ap-nl-3" contentType="application/rdf+xml"/>
     <formatter name="jsonld" title="" officialProfileName="http://geonetwork.net/def/profile/jsonld" contentType="application/json"/>
+    <formatter name="iso19139" title="" officialProfileName="http://geonetwork.net/def/profile/iso19139" contentType="application/xml"/>
+    <formatter name="iso19115-3.2018" title="" officialProfileName="http://geonetwork.net/def/profile/iso19115-3.2018" contentType="application/xml"/>
   </formatters>
 </schema>
