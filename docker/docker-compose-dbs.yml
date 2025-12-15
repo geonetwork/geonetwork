@@ -24,6 +24,7 @@ services:
       - xpack.security.enabled=false
       - xpack.security.enrollment.enabled=false
       - path.repo=/tmp
+      - cluster.routing.allocation.disk.threshold_enabled=false
     volumes:
       - ./es_backups.tar.gz:/tmp/es_backups.tar.gz
       - ./create-elastic-repo.json:/tmp/create-elastic-repo.json
