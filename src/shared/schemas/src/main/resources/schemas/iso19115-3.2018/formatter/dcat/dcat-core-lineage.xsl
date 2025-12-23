@@ -35,7 +35,7 @@
 
           <xsl:for-each select="$languages">
             <xsl:variable name="codelistTranslation"
-                                select="util:getCodelistTranslation($parentName, string($codelistKey), string(current()/@iso3code))"/>
+                                select="util:getCodelistTranslation('iso19115-3.2018', $parentName, string($codelistKey), string(current()/@iso3code))"/>
 
             <skos:prefLabel xml:lang="{current()/@iso2code}"><xsl:value-of select="$codelistTranslation"/></skos:prefLabel>
           </xsl:for-each>

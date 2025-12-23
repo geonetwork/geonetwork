@@ -29,6 +29,7 @@
 
 
   <xsl:function name="gn-fn-index:build-codelist" as="node()*">
+    <xsl:param name="schema" as="xs:string"/>
     <xsl:param name="fieldName" as="xs:string"/>
     <xsl:param name="codelistName" as="xs:string"/>
     <xsl:param name="value" as="xs:string"/>
@@ -42,7 +43,7 @@
       </key>
       <xsl:for-each select="$languages">
         <xsl:variable name="translation"
-                      select="util:getCodelistTranslation($codelistName, $value, @code)"/>
+                      select="util:getCodelistTranslation($schema, $codelistName, $value, @code)"/>
 
         <xsl:if test="@default">
           <default>

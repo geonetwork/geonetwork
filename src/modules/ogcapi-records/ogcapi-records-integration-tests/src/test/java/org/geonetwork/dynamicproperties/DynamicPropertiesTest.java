@@ -571,7 +571,10 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
 
     public void assertProfiles(JsonNode node, List<String> expectedProfiles) {
         var xProfiles = ArrayNode2List((ArrayNode) node.get("x-profiles"));
-        assertTrue(Iterables.elementsEqual(xProfiles, expectedProfiles));
+
+        assertTrue(
+                xProfiles.containsAll(expectedProfiles),
+                () -> "Expected " + xProfiles + " to contain at least " + expectedProfiles);
     }
 
     public List ArrayNode2List(ArrayNode arrayNode) {

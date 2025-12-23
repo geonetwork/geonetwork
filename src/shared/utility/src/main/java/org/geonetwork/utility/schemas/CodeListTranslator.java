@@ -10,9 +10,9 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import org.geonetwork.schemas.model.Codelists;
 import org.geonetwork.schemas.model.Entry;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,17 +26,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CodeListTranslator {
-    private final Map<String, Codelists> codelists = new HashMap<>();
+
+    private final Map<CodelistKey, Codelists> codelists = new ConcurrentHashMap<>();
+    private final XmlMapper xmlMapper = new XmlMapper();
+
+    protected record CodelistKey(String schema, String language) {}
 
     /** Get the translation of a code. */
     @Cacheable(cacheNames = "schema-codelists")
-    public String getTranslation(String codeListNameOrAlias, String code, String language) {
-        loadTranslations("iso19115-3.2018", language);
+    public String getTranslation(String schema, String codeListNameOrAlias, String code, String language) {
+        Codelists cachedList =
+                this.codelists.computeIfAbsent(new CodelistKey(schema, language), this::loadTranslations);
 
-        return Optional.ofNullable(this.codelists.get(language))
-                .orElse(Codelists.builder().codelist(Collections.emptyList()).build())
-                .getCodelist()
-                .stream()
+        return Optional.ofNullable(cachedList).map(Codelists::getCodelist).orElse(Collections.emptyList()).stream()
                 .filter(codelist -> codeListNameOrAlias.equals(codelist.getName())
                         || codeListNameOrAlias.equals(codelist.getAlias()))
                 .flatMap(codelist -> codelist.getEntry().stream())
@@ -46,19 +48,14 @@ public class CodeListTranslator {
                 .orElse("");
     }
 
-    private void loadTranslations(String schema, String language) {
-        if (this.codelists.containsKey(language)) {
-            return;
-        }
-        XmlMapper xmlMapper = new XmlMapper();
-        try (InputStream translationFile = new ClassPathResource(
-                        String.format("schemas/%s/loc/%s/codelists.xml", schema, language))
-                .getInputStream()) {
-            if (translationFile != null) {
-                this.codelists.put(language, xmlMapper.readValue(translationFile, Codelists.class));
-            }
+    private Codelists loadTranslations(CodelistKey key) {
+        String path = String.format("schemas/%s/loc/%s/codelists.xml", key.schema(), key.language());
+
+        try (InputStream is = new ClassPathResource(path).getInputStream()) {
+            return xmlMapper.readValue(is, Codelists.class);
         } catch (IOException e) {
-            //      System.out.println(e.getMessage());
+            // There is no translation and this will not change at runtime...
+            return Codelists.builder().codelist(Collections.emptyList()).build();
         }
     }
 }

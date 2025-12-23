@@ -1,0 +1,13 @@
+<!--
+
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
+
+-->
+<strings>
+  <schematron.title>URL Validation</schematron.title>
+  <invalidURLCheck>Online Resource Link Check</invalidURLCheck>
+  <alert.invalidURL><div>Url is invalid, a 404 or some other error: </div></alert.invalidURL>
+  <alert.validURL><div>Url is valid</div></alert.validURL>
+</strings>

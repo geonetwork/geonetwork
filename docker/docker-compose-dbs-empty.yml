@@ -24,6 +24,7 @@ services:
       - xpack.security.enabled=false
       - xpack.security.enrollment.enabled=false
       - path.repo=/tmp
+      - cluster.routing.allocation.disk.threshold_enabled=false
     command: bash -c "
         /usr/local/bin/docker-entrypoint.sh
       "
