@@ -25,6 +25,7 @@
     <module>editing</module>
     <module>ogcapi-records</module>
     <module>formatting</module>
+    <module>thesaurus</module>
   </modules>
 
   <properties>
