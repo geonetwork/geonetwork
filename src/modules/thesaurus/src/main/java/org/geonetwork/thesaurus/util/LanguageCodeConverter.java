@@ -9,6 +9,12 @@ import java.util.Locale;
 
 public class LanguageCodeConverter {
 
+    /**
+     * Convert ISO three letter language code to Java two letter Locale name.
+     *
+     * @param threeLetterCode ISO three letter language code
+     * @return {@link Locale#getLanguage} two letter code, defaults to {@code en} if not matched.
+     */
     public static String toTwoLetterCode(String threeLetterCode) {
 
         return java.util.Arrays.stream(Locale.getAvailableLocales())

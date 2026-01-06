@@ -3,6 +3,11 @@
  * This code is licensed under the GPL 2.0 license,
  * available at the root application directory.
  */
+/*
+ * (c) 2026 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
 package org.geonetwork.thesaurus.controller;
 
 import java.util.Map;
@@ -20,25 +25,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 @RequestMapping("/api/thesaurus")
 @RequiredArgsConstructor
 public class ThesaurusController {
-
-    /* Endppoints
-    0- add --deprecated
-    1- addElement
-    2- addRegister
-    3- clear
-    4- deleteElement
-    5- editElement
-    6- getKeywordById --deprecated
-    7- getKeywordbyIdAsConcept
-    8- getKeywords
-    9- getList
-    10- getNarrowerBroader
-    11- getSelectedKeyords
-    12- getTopConcept
-    13- list
-    14- selectKeywords
-    15- updateElement
-     */
 
     private final AddElementService addElementService;
     private final AddRegisterService addRegisterService;
