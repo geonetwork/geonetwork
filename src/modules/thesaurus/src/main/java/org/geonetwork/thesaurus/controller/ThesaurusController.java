@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ThesaurusController {
 
-
     private final GetThesauriListService getThesauriListService;
 
     @GetMapping(path = "/{uiLang}/thesaurus", produces = MediaType.APPLICATION_JSON_VALUE)
     public GetThesauriListResponse getThesauriList(@PathVariable String uiLang) throws Exception {
         return getThesauriListService.getList(uiLang);
     }
-
 }
