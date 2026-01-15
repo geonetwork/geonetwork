@@ -105,7 +105,7 @@
       <xsl:variable name="fieldName"
                     select="concat('cl_', $parentName)"/>
 
-      <xsl:copy-of select="gn-fn-index:build-codelist($fieldName, $codelistName, current-grouping-key(), $languages, @codeList, text())"/>
+      <xsl:copy-of select="gn-fn-index:build-codelist('iso19115-3.2018', $fieldName, $codelistName, current-grouping-key(), $languages, @codeList, text())"/>
     </xsl:for-each-group>
   </xsl:template>
 

@@ -29,8 +29,8 @@ public class XsltFormatter implements Formatter {
         } catch (Exception e) {
             throw new FormatterException(
                     String.format(
-                            "Formatter %s not found. Hint: Available formatters for %s standard are: %s",
-                            formatterId, metadata.getSchemaid(), "..."),
+                            "Formatter %s returned an error.%s standard %s Xslt",
+                            formatterId, metadata.getSchemaid(), formatterXslt),
                     e);
         }
     }

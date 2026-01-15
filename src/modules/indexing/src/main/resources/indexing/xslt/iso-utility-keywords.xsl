@@ -18,7 +18,7 @@
                 match="*:topicCategory/*:MD_TopicCategoryCode[string(.)]">
     <xsl:param name="languages" as="node()*"/>
 
-    <xsl:copy-of select="gn-fn-index:build-codelist('cl_topic', 'topicCategory', ., $languages, '', '')"/>
+    <xsl:copy-of select="gn-fn-index:build-codelist('iso19115-3.2018', 'cl_topic', 'topicCategory', ., $languages, '', '')"/>
   </xsl:template>
 
 
