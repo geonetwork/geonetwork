@@ -6,35 +6,32 @@
 package org.geonetwork.domain.thesaurus.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "concept")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Concept {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "concept_scheme_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "concept_scheme_id")
     private ConceptScheme conceptScheme;
 
-    @Column(unique = true)
+    @Column(columnDefinition = "TEXT", unique = true)
     private String uri;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "status_id")
     private ConceptStatus status;
 
-    @Column(name = "icon_url")
-    private String iconUrl;
-
-    @Column(name = "position")
     private Integer position;
+
+    @Column(name = "icon_url", columnDefinition = "TEXT")
+    private String iconUrl;
 }

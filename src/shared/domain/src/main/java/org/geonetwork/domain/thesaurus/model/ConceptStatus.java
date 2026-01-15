@@ -6,12 +6,19 @@
 package org.geonetwork.domain.thesaurus.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "concept_status")
-public record ConceptStatus(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id,
-        @Column(unique = true, nullable = false) String name) {
-    // Note: Records as JPA entities may not be portable across all JPA providers.
-    // Prefer mutable entity classes in production, or use records only for read-only DTOs.
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ConceptStatus {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 50, nullable = false, unique = true)
+    private String name;
 }

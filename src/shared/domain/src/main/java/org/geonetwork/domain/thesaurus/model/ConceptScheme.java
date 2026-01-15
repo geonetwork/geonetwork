@@ -6,30 +6,37 @@
 package org.geonetwork.domain.thesaurus.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "concept_scheme")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ConceptScheme {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "TEXT")
     private String title;
 
-    @Column(name = "namespace_uri", unique = true)
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(columnDefinition = "TEXT", unique = true)
+    private String uri;
+
+    @Column(name = "namespace_uri", columnDefinition = "TEXT", unique = true)
     private String namespaceUri;
 
-    @Column(name = "internal_identifier")
+    @Column(name = "internal_identifier", columnDefinition = "TEXT")
     private String internalIdentifier;
 
-    private String type;
+    @Column(name = "thesaurus_type", columnDefinition = "TEXT")
+    private String thesaurusType;
 
-    private String origin;
+    @Column(name = "origin_type", columnDefinition = "TEXT")
+    private String originType;
 }

@@ -6,32 +6,30 @@
 package org.geonetwork.domain.thesaurus.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(
         name = "relation",
         uniqueConstraints = @UniqueConstraint(columnNames = {"from_concept_id", "to_concept_id", "type_id"}))
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Relation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_concept_id", nullable = false)
-    private Concept from;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "from_concept_id")
+    private Concept fromConcept;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_concept_id", nullable = false)
-    private Concept to;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "to_concept_id")
+    private Concept toConcept;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "type_id")
     private RelationType type;
 }

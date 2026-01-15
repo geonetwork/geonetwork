@@ -6,33 +6,32 @@
 package org.geonetwork.domain.thesaurus.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(
         name = "concept_label",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"concept_id", "type_id", "language"})})
-@Getter
-@Setter
+        uniqueConstraints = @UniqueConstraint(columnNames = {"concept_id", "type_id", "language"}))
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ConceptLabel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "concept_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "concept_id")
     private Concept concept;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "type_id")
     private LabelType type;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String text;
 
+    @Column(length = 10)
     private String language = "en";
 }
