@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <xsl:stylesheet version="3.0"
@@ -220,7 +219,7 @@
     <xsl:if test="not($isSeriesMetadata)">
       <xsl:apply-templates mode="iso19115-3-to-dcat"
                            select="mdb:identificationInfo/mri:MD_DataIdentification/mri:spatialRepresentationType/*/@codeListValue"/>
-      
+
       <xsl:call-template name="rdf-eu-dcat-ap-nl-theme"/>
     </xsl:if>
   </xsl:template>
