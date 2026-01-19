@@ -15,6 +15,36 @@ import lombok.*;
 @AllArgsConstructor
 public class ConceptStatus {
 
+  // Database initialization SQL:
+  /*INSERT INTO concept_status (name) VALUES
+      ('active'),
+      ('deprecated'),
+      ('retired'),
+      ('obsolete'); */
+
+  @Getter
+  public enum ConceptStatusName {
+    ACTIVE(1L, "active"),
+    DEPRECATED(2L, "deprecated"),
+    RETIRED(3L, "retired"),
+    OBSOLETE(4L, "obsolete");
+
+
+    private final Long id;
+    private final String name;
+
+    ConceptStatusName(Long id, String name) {
+      this.id = id;
+      this.name = name;
+    }
+
+  }
+
+  public static final ConceptStatus STATUS_ACTIVE = new ConceptStatus(ConceptStatusName.ACTIVE.getId(), ConceptStatusName.ACTIVE.getName());
+  public static final ConceptStatus STATUS_DEPRECATED = new ConceptStatus(ConceptStatusName.DEPRECATED.getId(), ConceptStatusName.DEPRECATED.getName());
+  public static final ConceptStatus STATUS_RETIRED = new ConceptStatus(ConceptStatusName.RETIRED.getId(), ConceptStatusName.RETIRED.getName());
+  public static final ConceptStatus STATUS_OBSOLETE = new ConceptStatus(ConceptStatusName.OBSOLETE.getId(), ConceptStatusName.OBSOLETE.getName());
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
