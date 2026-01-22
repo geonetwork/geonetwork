@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-
 package org.geonetwork.thesaurus.service;
 
 import static org.junit.jupiter.api.Assertions.*;

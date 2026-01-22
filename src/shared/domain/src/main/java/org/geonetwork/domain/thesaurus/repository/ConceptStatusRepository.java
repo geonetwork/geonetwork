@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-
 package org.geonetwork.domain.thesaurus.repository;
 
 import org.geonetwork.domain.thesaurus.model.ConceptStatus;
