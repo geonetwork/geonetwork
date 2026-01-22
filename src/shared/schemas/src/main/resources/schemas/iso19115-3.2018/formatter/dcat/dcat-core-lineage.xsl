@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <xsl:stylesheet version="3.0"
@@ -35,7 +34,7 @@
 
           <xsl:for-each select="$languages">
             <xsl:variable name="codelistTranslation"
-                                select="util:getCodelistTranslation($parentName, string($codelistKey), string(current()/@iso3code))"/>
+                                select="util:getCodelistTranslation('iso19115-3.2018', $parentName, string($codelistKey), string(current()/@iso3code))"/>
 
             <skos:prefLabel xml:lang="{current()/@iso2code}"><xsl:value-of select="$codelistTranslation"/></skos:prefLabel>
           </xsl:for-each>

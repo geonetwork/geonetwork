@@ -1,8 +1,7 @@
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -18,7 +17,7 @@
                 match="*:topicCategory/*:MD_TopicCategoryCode[string(.)]">
     <xsl:param name="languages" as="node()*"/>
 
-    <xsl:copy-of select="gn-fn-index:build-codelist('cl_topic', 'topicCategory', ., $languages, '', '')"/>
+    <xsl:copy-of select="gn-fn-index:build-codelist('iso19115-3.2018', 'cl_topic', 'topicCategory', ., $languages, '', '')"/>
   </xsl:template>
 
 

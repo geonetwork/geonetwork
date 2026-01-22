@@ -1,7 +1,6 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 package org.geonetwork.formatting;
 
@@ -29,8 +28,8 @@ public class XsltFormatter implements Formatter {
         } catch (Exception e) {
             throw new FormatterException(
                     String.format(
-                            "Formatter %s not found. Hint: Available formatters for %s standard are: %s",
-                            formatterId, metadata.getSchemaid(), "..."),
+                            "Formatter %s returned an error.%s standard %s Xslt",
+                            formatterId, metadata.getSchemaid(), formatterXslt),
                     e);
         }
     }

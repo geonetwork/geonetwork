@@ -1,7 +1,6 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 package org.geonetwork.application;
 
@@ -57,7 +56,7 @@ public class GenericGN5ApplicationYmlLocator implements IConfigurationLocator {
             return List.of(result);
         }
 
-        throw new Exception("cannnot find the main application.yml - looked in:\n" + " file system: ./application.yml\n"
+        throw new Exception("Cannot find the main application.yml - looked in:\n" + " file system: ./application.yml\n"
                 + " file system: ./config/application.yml\n"
                 + " resource: application.yml\n"
                 + " resource: config/application.yml");

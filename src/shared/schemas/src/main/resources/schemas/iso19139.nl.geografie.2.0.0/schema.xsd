@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.isotc211.org/2005/gmd"
+           elementFormDefault="qualified"
+>
+  <xs:include schemaLocation="schema/gmd/metadataApplication.xsd"/>
+  <xs:import namespace="http://www.isotc211.org/2005/srv" schemaLocation="schema/srv/srv.xsd"/>
+  <xs:import namespace="http://www.isotc211.org/2005/gmx" schemaLocation="schema/gmx/gmx.xsd"/>
+</xs:schema>

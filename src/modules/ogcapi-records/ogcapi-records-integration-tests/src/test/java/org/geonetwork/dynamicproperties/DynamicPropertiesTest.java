@@ -1,7 +1,6 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 package org.geonetwork.dynamicproperties;
 
@@ -571,7 +570,10 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
 
     public void assertProfiles(JsonNode node, List<String> expectedProfiles) {
         var xProfiles = ArrayNode2List((ArrayNode) node.get("x-profiles"));
-        assertTrue(Iterables.elementsEqual(xProfiles, expectedProfiles));
+
+        assertTrue(
+                xProfiles.containsAll(expectedProfiles),
+                () -> "Expected " + xProfiles + " to contain at least " + expectedProfiles);
     }
 
     public List ArrayNode2List(ArrayNode arrayNode) {

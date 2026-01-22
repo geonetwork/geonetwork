@@ -1,13 +1,12 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 package org.geonetwork.security;
 
 import java.util.HashMap;
 import java.util.Map;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -21,7 +20,7 @@ public class GeoNetworkSsoConfiguration {
     private final Map<String, Registration> userCreationRegistration = new HashMap<>();
 
     public GeoNetworkSsoConfiguration() {
-        var defaultInfo = new Registration("email", "name", "organization", "surname");
+        var defaultInfo = Registration.builder().build();
         userCreationRegistration.put("default", defaultInfo);
     }
 
@@ -34,11 +33,18 @@ public class GeoNetworkSsoConfiguration {
 
     @Getter
     @Setter
-    @AllArgsConstructor
+    @Builder
     public static class Registration {
+        @Builder.Default
         private String name = "name";
+
+        @Builder.Default
         private String email = "email";
+
+        @Builder.Default
         private String organization = "organization";
+
+        @Builder.Default
         private String surname = "surname";
     }
 }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -354,6 +353,8 @@
                 <exclude>src/*/resources/schemas/iso19139/schema2007/**</exclude>
                 <exclude>src/*/resources/schemas/iso19139/schema/**</exclude>
                 <exclude>src/*/resources/schemas/iso19115-3.2018/schema/**</exclude>
+                <exclude>src/*/resources/schemas/iso19139.nl.geografie.2.0.0/schema/**</exclude>
+                <exclude>src/*/resources/schemas/iso19139.nl.services.2.0.0/schema/**</exclude>
               </excludes>
             </licenseSet>
           </licenseSets>
