@@ -15,6 +15,9 @@ import org.geonetwork.domain.thesaurus.repository.ConceptRepository;
 import org.geonetwork.thesaurus.model.*;
 import org.geonetwork.thesaurus.util.LanguageCodeConverter;
 import org.springframework.stereotype.Service;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+
 
 @Service
 @AllArgsConstructor
@@ -28,8 +31,8 @@ public class GetKeywordsService {
 
         // extract scheme
         // Sample input : "external.place.regions" expected : place
-        String internalIdentifier = thesaurusName.split("\\.")[1];
 
+        String internalIdentifier = Iterables.get(Splitter.on('.').split(thesaurusName), 1);
         String keywordsString = repository.getKeywords(internalIdentifier, langCode, rows);
 
         var jsonResponse = keywordsString != null ? objectMapper.readTree(keywordsString) : null;
