@@ -24,11 +24,11 @@ class DownloadThesaurusServiceTest {
     @Mock
     private ConceptSchemeRepository repository;
 
-  private DownloadThesaurusService service;
+    private DownloadThesaurusService service;
 
     @BeforeEach
     void setup() {
-      ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         service = new DownloadThesaurusService(objectMapper, repository);
     }
 
