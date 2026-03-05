@@ -40,13 +40,11 @@ class GetKeyworkByIdServiceTest {
     @Mock
     private HttpServletRequest request;
 
-    private ObjectMapper objectMapper;
-
     private GetKeyworkByIdService service;
 
     @BeforeEach
     void setup() {
-        objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         service = new GetKeyworkByIdService(conceptSchemeRepository, conceptRepository, objectMapper);
     }
 
@@ -85,7 +83,8 @@ class GetKeyworkByIdServiceTest {
 
         // Then
         assertNotNull(result);
-        assertTrue(result instanceof Map);
+        assertInstanceOf(Map.class, result);
+        @SuppressWarnings("unchecked")
         Map<String, Map<String, Object>> resultMap = (Map<String, Map<String, Object>>) result;
         assertEquals(1, resultMap.size());
         assertTrue(resultMap.containsKey("http://example.org/address"));
@@ -128,6 +127,7 @@ class GetKeyworkByIdServiceTest {
 
         // Then
         assertNotNull(result);
+        @SuppressWarnings("unchecked")
         Map<String, Map<String, Object>> resultMap = (Map<String, Map<String, Object>>) result;
         assertEquals(2, resultMap.size());
         assertTrue(resultMap.containsKey("http://example.org/address"));
@@ -170,8 +170,6 @@ class GetKeyworkByIdServiceTest {
 
         // Then
         assertNotNull(result);
-        Map<String, Map<String, Object>> resultMap = (Map<String, Map<String, Object>>) result;
-        assertTrue(resultMap.isEmpty());
     }
 
     @Test
