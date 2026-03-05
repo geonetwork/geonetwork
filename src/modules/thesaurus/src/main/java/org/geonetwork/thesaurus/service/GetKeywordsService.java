@@ -8,6 +8,8 @@ package org.geonetwork.thesaurus.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -15,9 +17,6 @@ import org.geonetwork.domain.thesaurus.repository.ConceptRepository;
 import org.geonetwork.thesaurus.model.*;
 import org.geonetwork.thesaurus.util.LanguageCodeConverter;
 import org.springframework.stereotype.Service;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
-
 
 @Service
 @AllArgsConstructor
