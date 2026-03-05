@@ -24,13 +24,11 @@ class DownloadThesaurusServiceTest {
     @Mock
     private ConceptSchemeRepository repository;
 
-    private ObjectMapper objectMapper;
-
-    private DownloadThesaurusService service;
+  private DownloadThesaurusService service;
 
     @BeforeEach
     void setup() {
-        objectMapper = new ObjectMapper();
+      ObjectMapper objectMapper = new ObjectMapper();
         service = new DownloadThesaurusService(objectMapper, repository);
     }
 
@@ -61,7 +59,7 @@ class DownloadThesaurusServiceTest {
 
         // Then
         assertNotNull(result);
-        assertEquals(200, result.getStatusCodeValue());
+        assertEquals(200, result.getStatusCode().value());
         assertEquals(
                 "attachment; filename=\"data.json\"",
                 result.getHeaders().getContentDisposition().toString());
