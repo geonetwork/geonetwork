@@ -5,6 +5,9 @@
 
 package org.geonetwork.domain.thesaurus.repository;
 
+import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 import org.geonetwork.domain.thesaurus.model.ConceptScheme;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +16,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConceptSchemeRepository extends JpaRepository<ConceptScheme, Long> {
+
+    Optional<ConceptScheme> findByUri(String uri);
+
+    List<ConceptScheme> findByInternalIdentifier(String internalIdentifier);
+
+    @Transactional
+    void deleteByUri(String uri);
+
     @Query(
             value =
                     """
@@ -106,4 +117,67 @@ public interface ConceptSchemeRepository extends JpaRepository<ConceptScheme, Lo
     """,
             nativeQuery = true)
     String findSchemeResponse(@Param("uiLang") String uiLang);
+
+    @Query(
+            value =
+                    """
+    SELECT json_build_object(
+        'key',
+            cs.origin_type || '.' || cs.thesaurus_type || '.' || cs.internal_identifier,
+
+        'dname',
+            cs.thesaurus_type,
+
+        'filename',
+            cs.internal_identifier || '.rdf',
+
+        'multilingualTitles',
+            COALESCE(
+                (
+                    SELECT json_agg(
+                        json_build_object(
+                            'lang', csl.language,
+                            'title', csl.text
+                        )
+                        ORDER BY csl.language
+                    )
+                    FROM concept_scheme_label csl
+                    JOIN label_type lt ON lt.id = csl.type_id
+                    WHERE csl.concept_scheme_id = cs.id
+                      AND lt.name = 'prefLabel'
+                ),
+                '[]'::json
+            ),
+
+        'multilingualDescriptions',
+            COALESCE(
+                (
+                    SELECT json_agg(
+                        json_build_object(
+                            'lang', csn.language,
+                            'description', csn.text
+                        )
+                        ORDER BY csn.language
+                    )
+                    FROM concept_scheme_note csn
+                    WHERE csn.concept_scheme_id = cs.id
+                      AND csn.type = 'definition'
+                ),
+                '[]'::json
+            ),
+
+        'url',
+            cs.uri,
+
+        'defaultNamespace',
+            cs.namespace_uri,
+
+        'type',
+            cs.origin_type
+    )
+    FROM concept_scheme cs
+    WHERE cs.origin_type || '.' || cs.thesaurus_type || '.' || cs.internal_identifier = :key
+    """,
+            nativeQuery = true)
+    String findSchemeResponseByKey(@Param("key") String key);
 }

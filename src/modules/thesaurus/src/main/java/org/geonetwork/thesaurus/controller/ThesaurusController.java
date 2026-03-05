@@ -31,8 +31,7 @@ public class ThesaurusController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    // @PostMapping("api/registries/vocabularies/search")
-    public GetKeywordsResponse searchKeywords(
+    public GetKeywordsResponse searchKeywordsApi(
             @PathVariable String uiLang,
             @RequestParam(name = "thesaurus") String thesaurus,
             @RequestParam(name = "rows", defaultValue = "50") int rows)
