@@ -126,7 +126,7 @@ public class VocabularyController {
     @io.swagger.v3.oas.annotations.Operation(
             summary = "Delete a thesaurus by name",
             description = "Delete a thesaurus.")
-    @RequestMapping(value = "/{thesaurus:.+}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{thesaurus:.+}")
     @ApiResponses(
             value = {
                 @ApiResponse(responseCode = "200", description = "Thesaurus deleted."),
