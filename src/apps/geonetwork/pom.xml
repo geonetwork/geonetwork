@@ -86,7 +86,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-gateway-mvc</artifactId>
+      <artifactId>spring-cloud-starter-gateway-server-webmvc</artifactId>
     </dependency>
     <!-- Commented to avoid error:
     java.lang.ClassCastException: class org.geonetwork.springbatchharvester.HarvesterResult cannot be
@@ -248,14 +248,9 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>repackage</id>
-            <configuration>
-              <classifier>exec</classifier>
-            </configuration>
-          </execution>
-        </executions>
+        <configuration>
+          <mainClass>org.geonetwork.GeonetworkApplication</mainClass>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
