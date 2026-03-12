@@ -64,100 +64,91 @@ class SkosRdfImportServiceTest {
         verify(jdbc, atLeastOnce()).queryForObject(contains("relation_type"), eq(Long.class), eq("topConceptOf"));
     }
 
-  @Test
-  void importRdf_withNullInputStream_throwsException() {
-    Exception exception = org.junit.jupiter.api.Assertions.assertThrows(
-      NullPointerException.class, () -> service.importRdf(null));
-  }
+    @Test
+    void importRdf_withNullInputStream_throwsException() {
+        Exception exception = org.junit.jupiter.api.Assertions.assertThrows(
+                NullPointerException.class, () -> service.importRdf(null));
+    }
 
-  @Test
-  void importRdf_withInvalidRdfFormat_throwsException() {
-    Exception exception = org.junit.jupiter.api.Assertions.assertThrows(
-      Exception.class,
-      () -> {
-        String invalidRdf = "This is not valid RDF";
-        try (InputStream in = new java.io.ByteArrayInputStream(invalidRdf.getBytes())) {
-          service.importRdf(in);
+    @Test
+    void importRdf_withInvalidRdfFormat_throwsException() {
+        Exception exception = org.junit.jupiter.api.Assertions.assertThrows(Exception.class, () -> {
+            String invalidRdf = "This is not valid RDF";
+            try (InputStream in = new java.io.ByteArrayInputStream(invalidRdf.getBytes())) {
+                service.importRdf(in);
+            }
+        });
+    }
+
+    @Test
+    void importRdf_verifiesConceptSchemeInsertion() throws Exception {
+        when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
+
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
+            assertNotNull(in);
+            service.importRdf(in);
         }
-      });
-  }
 
-  @Test
-  void importRdf_verifiesConceptSchemeInsertion() throws Exception {
-    when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
-
-    try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
-      assertNotNull(in);
-      service.importRdf(in);
+        verify(jdbc).update(contains("INSERT INTO concept_scheme"), anyString(), anyString(), anyString(), anyString());
     }
 
-    verify(jdbc)
-      .update(
-        contains("INSERT INTO concept_scheme"),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyString());
-  }
+    @Test
+    void importRdf_verifiesConceptInsertion() throws Exception {
+        when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
 
-  @Test
-  void importRdf_verifiesConceptInsertion() throws Exception {
-    when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
+            assertNotNull(in);
+            service.importRdf(in);
+        }
 
-    try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
-      assertNotNull(in);
-      service.importRdf(in);
+        verify(jdbc, atLeastOnce()).update(contains("INSERT INTO concept"), eq(1L), anyString());
     }
 
-    verify(jdbc, atLeastOnce()).update(contains("INSERT INTO concept"), eq(1L), anyString());
-  }
+    @Test
+    void importRdf_verifiesLabelTypeQueries() throws Exception {
+        when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
 
-  @Test
-  void importRdf_verifiesLabelTypeQueries() throws Exception {
-    when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
+            assertNotNull(in);
+            service.importRdf(in);
+        }
 
-    try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
-      assertNotNull(in);
-      service.importRdf(in);
+        verify(jdbc, atLeastOnce()).queryForObject(contains("label_type"), eq(Long.class), eq("prefLabel"));
     }
 
-    verify(jdbc, atLeastOnce()).queryForObject(contains("label_type"), eq(Long.class), eq("prefLabel"));
-  }
+    @Test
+    void importRdf_verifiesRelationTypeQueries() throws Exception {
+        when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
 
-  @Test
-  void importRdf_verifiesRelationTypeQueries() throws Exception {
-    when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
+            assertNotNull(in);
+            service.importRdf(in);
+        }
 
-    try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
-      assertNotNull(in);
-      service.importRdf(in);
+        verify(jdbc, atLeastOnce()).queryForObject(contains("relation_type"), eq(Long.class), anyString());
     }
 
-    verify(jdbc, atLeastOnce()).queryForObject(contains("relation_type"), eq(Long.class), anyString());
-  }
+    @Test
+    void importRdf_verifiesConceptSchemeLabelInsertion() throws Exception {
+        when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
 
-  @Test
-  void importRdf_verifiesConceptSchemeLabelInsertion() throws Exception {
-    when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
+            assertNotNull(in);
+            service.importRdf(in);
+        }
 
-    try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
-      assertNotNull(in);
-      service.importRdf(in);
+        verify(jdbc, atLeastOnce()).update(contains("concept_scheme_label"), eq(1L), eq(1L), anyString(), anyString());
     }
 
-    verify(jdbc, atLeastOnce())
-      .update(contains("concept_scheme_label"), eq(1L), eq(1L), anyString(), anyString());
-  }
+    @Test
+    void importRdf_verifiesMultipleConceptsProcessed() throws Exception {
+        when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
 
-  @Test
-  void importRdf_verifiesMultipleConceptsProcessed() throws Exception {
-    when(jdbc.queryForObject(anyString(), eq(Long.class), any())).thenReturn(1L);
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
+            assertNotNull(in);
+            service.importRdf(in);
+        }
 
-    try (InputStream in = getClass().getClassLoader().getResourceAsStream("codelist_unit_time.rdf")) {
-      assertNotNull(in);
-      service.importRdf(in);
+        verify(jdbc, atLeastOnce()).update(contains("INSERT INTO concept"), anyLong(), anyString());
     }
-
-    verify(jdbc, atLeastOnce()).update(contains("INSERT INTO concept"), anyLong(), anyString());
-  }
 }
