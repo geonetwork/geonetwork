@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,7 +74,7 @@ class SkosRdfImportServiceTest {
     void importRdf_withInvalidRdfFormat_throwsException() {
         org.junit.jupiter.api.Assertions.assertThrows(Exception.class, () -> {
             String invalidRdf = "This is not valid RDF";
-            try (InputStream in = new java.io.ByteArrayInputStream(invalidRdf.getBytes())) {
+            try (InputStream in = new java.io.ByteArrayInputStream(invalidRdf.getBytes(StandardCharsets.UTF_8))) {
                 service.importRdf(in);
             }
         });
