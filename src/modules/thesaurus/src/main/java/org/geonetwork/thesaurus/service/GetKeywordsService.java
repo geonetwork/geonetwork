@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.thesaurus.repository.ConceptRepository;
 import org.geonetwork.thesaurus.model.*;
 import org.geonetwork.thesaurus.util.LanguageCodeConverter;
@@ -28,7 +29,7 @@ public class GetKeywordsService {
 
         // extract scheme
         // Sample input : "external.place.regions" expected : place
-        String internalIdentifier = thesaurusName.split("\\.")[1];
+        String internalIdentifier = StringUtils.split(thesaurusName, ".")[1];
 
         String keywordsString = repository.getKeywords(internalIdentifier, langCode, rows);
 
