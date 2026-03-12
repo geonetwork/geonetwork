@@ -66,18 +66,18 @@ class SkosRdfImportServiceTest {
 
     @Test
     void importRdf_withNullInputStream_throwsException() {
-        Exception exception = org.junit.jupiter.api.Assertions.assertThrows(
-                NullPointerException.class, () -> service.importRdf(null));
+      org.junit.jupiter.api.Assertions.assertThrows(
+        NullPointerException.class, () -> service.importRdf(null));
     }
 
     @Test
     void importRdf_withInvalidRdfFormat_throwsException() {
-        Exception exception = org.junit.jupiter.api.Assertions.assertThrows(Exception.class, () -> {
-            String invalidRdf = "This is not valid RDF";
-            try (InputStream in = new java.io.ByteArrayInputStream(invalidRdf.getBytes())) {
-                service.importRdf(in);
-            }
-        });
+      org.junit.jupiter.api.Assertions.assertThrows(Exception.class, () -> {
+        String invalidRdf = "This is not valid RDF";
+        try (InputStream in = new java.io.ByteArrayInputStream(invalidRdf.getBytes())) {
+          service.importRdf(in);
+        }
+      });
     }
 
     @Test
