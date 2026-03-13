@@ -21,6 +21,7 @@
 
   <modules>
     <module>testing</module>
+    <module>database</module>
     <module>configuration</module>
     <module>constants</module>
     <module>domain</module>
