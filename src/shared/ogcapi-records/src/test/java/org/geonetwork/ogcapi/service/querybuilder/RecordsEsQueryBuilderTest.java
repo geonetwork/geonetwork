@@ -13,11 +13,11 @@ import org.geonetwork.ogcapi.service.search.RecordsEsQueryBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 // from gn-mircoservices
 class RecordsEsQueryBuilderTest {
-    @MockBean
+    @MockitoBean
     OgcApiSearchConfiguration configuration;
 
     @BeforeEach

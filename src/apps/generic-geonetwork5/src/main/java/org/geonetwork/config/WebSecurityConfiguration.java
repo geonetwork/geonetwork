@@ -19,7 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -61,7 +61,8 @@ public class WebSecurityConfiguration {
                         // No popup in browsers
                         basic.authenticationEntryPoint((request, response, authException) -> response.sendError(
                                 HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase())))
-                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/api/user/signout"))
+                .logout(logout -> logout.logoutRequestMatcher(
+                                PathPatternRequestMatcher.withDefaults().matcher("/api/user/signout"))
                         .logoutSuccessHandler((request, response, authentication) -> {
                             handleRedirectParam(request, response, homeUrl);
                         }));

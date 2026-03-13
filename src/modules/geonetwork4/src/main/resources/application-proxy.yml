@@ -21,8 +21,9 @@ geonetwork:
 spring:
   cloud:
     gateway:
-      mvc:
-        routes:
+      server:
+        webmvc:
+          routes:
   #          Example of route when an API is moved from GN4 to GN5
 #            - id: geonetwork4_api_migrated_redirect_to_gn5
 #              uri: ${geonetwork.url_with_context}

@@ -32,20 +32,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(
         classes = {TestConfiguration.class, BatchEditsService.class, SchemaManager.class, MetadataManager.class})
 class BatchEditsControllerTest {
 
-    @MockBean
+    @MockitoBean
     private MetadataRepository metadataRepository;
 
-    @MockBean
+    @SuppressWarnings("UnusedVariable")
+    @MockitoBean
     private OperationRepository operationRepository;
 
-    @MockBean
+    @SuppressWarnings("UnusedVariable")
+    @MockitoBean
     private OperationallowedRepository operationallowedRepository;
 
     @Autowired
