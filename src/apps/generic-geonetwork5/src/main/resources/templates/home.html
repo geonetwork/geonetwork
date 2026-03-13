@@ -10,40 +10,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home Page</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f0f0f0;
-    }
-
-    .container {
-      text-align: center;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      color: #333;
-    }
-
-    p {
-      color: #666;
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script
     src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
     integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
     crossorigin="anonymous"></script>
 
   <script type="text/javascript">
+    const btnClass = "block w-full box-border my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200";
+
     fetch('api/me')
       .then((response) => response.json())
       .then((data) => {
@@ -51,43 +26,86 @@
         $('.unauthenticated').hide();
         $('.authenticated').show();
       });
+
+    var authProviders = [];
+    fetch('api/user/auth-providers')
+      .then((response) => response.json())
+      .then((data) => {
+        authProviders = data;
+        // Populate auth-providers div with links
+        var authProvidersDiv = $('#auth-providers');
+        authProviders.forEach(function(provider) {
+          if (provider.clientId === 'database') {
+            $('#local-auth-providers').show();
+
+          } else {
+            var link = $('<a></a>')
+              .attr('href', provider.endpoint ? provider.endpoint : 'signin')
+              .addClass(btnClass)
+              .text(provider.clientId);
+            authProvidersDiv.append(link);
+          }
+        });
+      });
   </script>
 
 </head>
-<body>
-<div class="container">
-  <h1>Welcome to GeoNetwork</h1>
-  <p>Your gateway to all your data, maps, services and more!</p>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
+<div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+  <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome to GeoNetwork</h1>
+  <p class="text-gray-600 mb-8">Your gateway to all your data, maps, services and more!</p>
 
-  <div class="container unauthenticated">
-    <a th:href="@{/srv}">GeoNetwork 4</a>
-    <br/>
-    <br/>
-    <a th:href="@{/ogcapi-records}">OGC API Records</a>
-    <br/>
-    <a th:href="@{/doc/api/index.html}">GeoNetwork 4 OpenAPI documentation</a>
-    <br/>
-    <a th:href="@{/doc/api/}">GeoNetwork 5 OpenAPI documentation</a>
+  <div class="mb-8">
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">Apps</h2>
+    <a class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200" th:href="@{/ogcapi-records}">OGC API Records</a>
+    <a class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200" th:href="@{/swagger-ui/index.html}">GeoNetwork 5 OpenAPI documentation</a>
+    <a class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200" th:href="@{/srv}">GeoNetwork 4</a>
+    <a class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200" th:href="@{/doc/api/index.html}">GeoNetwork 4 OpenAPI documentation</a>
   </div>
 
-  <br/>
+  <div class="border-t border-gray-200 pt-6">
+    <div class="unauthenticated">
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">Sign in</h2>
 
-  <div>
-    <div class="container unauthenticated">
-      Sign in with
-      <br/>
-      <a th:href="@{/signin}">Geonetwork</a>
-      <br/>
-      <a th:href="@{/oauth2/authorization/github}">GitHub</a>
-      <br/>
-      <a th:href="@{/oauth2/authorization/custom}">Custom provider</a>
+      <div id="local-auth-providers">
+        <div th:if="${param.error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <span class="block sm:inline">Invalid username and password.</span>
+        </div>
+        <div th:if="${param.logout}" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <span class="block sm:inline">You have been logged out.</span>
+        </div>
 
+        <form th:action="@{/api/user/signin}" method="post">
+          <div class="mb-4 text-left">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+              User Name
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" id="username" type="text" name="username" placeholder="Username" />
+          </div>
+          <div class="mb-6 text-left">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+              Password
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" id="password" type="password" name="password" placeholder="******************" />
+          </div>
+          <div>
+            <input type="submit" value="Sign In" class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200 cursor-pointer" />
+          </div>
+        </form>
+        <div class="flex items-center my-4">
+          <div class="flex-grow border-t border-gray-300"></div>
+          <span class="flex-shrink-0 mx-4 text-gray-600">or</span>
+          <div class="flex-grow border-t border-gray-300"></div>
+        </div>
+      </div>
+      <div id="auth-providers">
+      </div>
     </div>
-    <div class="container authenticated" style="display:none">
-      Logged in as: <span id="user"></span>
+    <div class="authenticated w-full" style="display:none">
+      <p class="text-gray-700 mb-4">Logged in as: <span id="user" class="font-semibold text-gray-900"></span></p>
 
       <form th:action="@{/api/user/signout}">
-        <input type="submit" value="Sign Out" />
+        <input class="block w-full my-2 py-2.5 px-3 border border-red-600 rounded-md bg-red-600 text-white font-semibold text-center no-underline hover:bg-red-700 hover:border-red-700 transition duration-200 cursor-pointer" type="submit" value="Sign Out" />
       </form>
     </div>
   </div>
