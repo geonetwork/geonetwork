@@ -28,8 +28,4 @@
     <module>formatting</module>
     <module>thesaurus</module>
   </modules>
-
-  <properties>
-    <swagger.version>2.1.2</swagger.version>
-  </properties>
 </project>

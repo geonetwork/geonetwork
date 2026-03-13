@@ -8,10 +8,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -20,9 +22,14 @@ import org.springframework.http.converter.AbstractGenericHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Configuration
-public class TrivialHtmlMessageWriter extends AbstractGenericHttpMessageConverter {
+public class TrivialHtmlMessageWriter extends AbstractGenericHttpMessageConverter<Object> {
+
+    @Value("${geonetwork.openapi-records.links.base-path:/ogcapi-records}")
+    private String ogcApiRecordsBasePath;
 
     TrivialHtmlMessageWriter() {
         this(MediaType.TEXT_HTML);
@@ -30,6 +37,20 @@ public class TrivialHtmlMessageWriter extends AbstractGenericHttpMessageConverte
 
     TrivialHtmlMessageWriter(MediaType supportedMediaType) {
         super(supportedMediaType);
+    }
+
+    @Override
+    public boolean canWrite(@Nullable Type type, Class<?> clazz, @Nullable MediaType mediaType) {
+        if (!super.canWrite(type, clazz, mediaType)) {
+            return false;
+        }
+        var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpServletRequest request = attributes.getRequest();
+            String path = request.getRequestURI();
+            return path.contains(ogcApiRecordsBasePath);
+        }
+        return false;
     }
 
     @Override

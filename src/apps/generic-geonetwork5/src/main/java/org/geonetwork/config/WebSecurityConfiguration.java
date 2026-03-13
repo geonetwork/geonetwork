@@ -33,10 +33,16 @@ public class WebSecurityConfiguration {
             @Value("${geonetwork.home: '/'}") String homeUrl)
             throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(requests -> requests.requestMatchers("/", "/home", "/signin", "/test")
-                        .permitAll())
-                .authorizeHttpRequests(authz -> authz.requestMatchers(
-                                "**", "/ogcapi-records/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                .authorizeHttpRequests(requests -> requests.requestMatchers(
+                                "/",
+                                "/home",
+                                "/signin",
+                                "/test",
+                                "**",
+                                "/ogcapi-records/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
