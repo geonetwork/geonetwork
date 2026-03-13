@@ -73,6 +73,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>thesaurus</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
