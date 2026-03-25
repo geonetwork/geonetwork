@@ -11,7 +11,7 @@ This document will NOT include the description of any client or UI.
 Content of this documentation
 
 - [GeoNetwork](intro.md): What is GeoNetwork (and what do we keep in mind developing it!)
-- [General architecture](system.md): What are the components in a GeoNetwork deployment and how the codebase is organized.
+- [Architecture overview](system.md): What are the components in a GeoNetwork deployment and how the codebase is organized.
 - [Terms](terms.md): Basic GeoNetwork terminology (and what's changed compared to previous versions).
 - [API Design Guidelines](api-guidelines.md): REST API Design Guidelines. 
 - [Formatters](formatters.md): Guide to understand formatters and how to implement them.

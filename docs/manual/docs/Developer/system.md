@@ -1,4 +1,4 @@
-# General architecture
+# Architecture overview
 
 The technology infrastructure requirements of GeoNetwork 5 are similar to that of GeoNetwork 4:
 
@@ -32,4 +32,4 @@ The **app** folder contains several Spring Boot apps, each of which contains the
 
 The **modules** folder contains software modules that can be used by one or more *apps*. Each module should ideally be a fully-fledged set of features, with a clear purpose, API or interface, developer documentation, self-consistent tests, and minimal dependencies on other modules (e.g., “*ogcapi-records*” and “*formatter*” modules are a good example, both are independent modules, but *ogcapi-records* includes *formatter* module to implement different outputs for metadata)
 
-The **shared** folder contains software modules such as data models, utilities, and interfaces that serve different parts of the application but are not fully functional in themselves. What is in the *shared *folder can be used by one or more modules in the *modules* folder.
+The **shared** folder contains software modules such as data models, utilities, and interfaces that serve different parts of the application but are not fully functional in themselves. What is in the *shared* folder can be used by one or more modules in the *modules* folder.

@@ -15,7 +15,7 @@ This definition coincides with what we've been calling *Metadata* up to now. All
 We refer to a *Record Collection* as a set of one or more records, linked by the collection's metadata. [In GeoNetwork 4](https://docs.geonetwork-opensource.org/4.4/administrator-guide/configuring-the-catalog/portal-configuration/), the concept of a *Portal* (or *Source*) allowed for the creation of multiple subportals within the same GeoNetwork or for grouping metadata imported via a harvester from the same source. These concepts and use cases can be completely replaced by the concept of a *Record Collection* (or, in less technical contexts, a *Catalog*). A collection can, in turn, have associated metadata that identifies its nature.
 
 
-![OGC API Data model](images/terms_1.png)
+![OGC API Data model](img/terms_1.png)
 
 
 ## **Formatter**
