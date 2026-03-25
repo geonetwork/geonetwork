@@ -4,9 +4,9 @@ GeoNetwork's primary goal is to provide a platform for discovering and managing 
 
 Main quality goals:
 
-**Interoperability: **The system must act as a node of a larger network, strictly adhering to the OGC CSW, OGC API Records, OAI-PMH, Z39.50 protocols.
+**Interoperability:** The system must act as a node of a larger network, strictly adhering to the OGC CSW, OGC API Records, OAI-PMH, Z39.50 protocols.
 
-**Extensibility: **The ability for developers to introduce new metadata profiles (e.g., ISO 19115 national extensions) or new harvesting tasks without having to modify core aspects of the software, and if possible, at runtime.
+**Extensibility:** The ability for developers to introduce new metadata profiles (e.g., ISO 19115 national extensions) or new harvesting tasks without having to modify core aspects of the software, and if possible, at runtime.
 
 **Search Scalability:** The ability to process and query indexes containing millions of geospatial records with sub-second response times, offloading the load to optimized engines like Elasticsearch.
 
