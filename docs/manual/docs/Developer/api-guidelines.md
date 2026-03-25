@@ -14,9 +14,9 @@ This section defines the routing design principles for the GeoNetwork 5 REST API
 
     For example:
 
-* **List collections**:* /api/collections*
-* **Specific collection**:* /api/collections/{collectionId}*
-* **Items in collection**:* /api/collections/{collectionId}/items*
+* **List collections**: */api/collections*
+* **Specific collection**: */api/collections/{collectionId}*
+* **Items in collection**: */api/collections/{collectionId}/items*
 * **Specific item**: */api/collections/{collectionId}/items/{itemId}*
 7. When a resource exists within a user's specific context or multiple relationships, express this cleanly in the path as an extension of the base OGC model. It may be useful, just for example, when a workflow is active and user copies of documents exist.
 * **User Spaces**: */api/users/{username}/collections/{collectionId}/items*
