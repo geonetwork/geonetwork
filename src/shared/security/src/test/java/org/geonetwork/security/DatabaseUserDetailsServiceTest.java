@@ -13,9 +13,9 @@ import java.util.Optional;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.domain.repository.UsergroupRepository;
+import org.geonetwork.security.user.UserManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,11 +23,13 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-@Disabled
 class DatabaseUserDetailsServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private UserManager userManager;
 
     @Mock
     private UsergroupRepository userGroupRepository;
@@ -58,6 +60,7 @@ class DatabaseUserDetailsServiceTest {
 
         Assertions.assertNotNull(userDetails);
         Assertions.assertEquals("validUser", userDetails.getUsername());
+        verify(userManager, times(1)).userLoginEvent(mockUser);
     }
 
     @Test

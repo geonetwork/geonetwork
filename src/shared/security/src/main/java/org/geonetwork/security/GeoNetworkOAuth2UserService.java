@@ -5,12 +5,15 @@
 package org.geonetwork.security;
 
 import io.micrometer.common.util.StringUtils;
+import java.time.Instant;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.UserRepository;
+import org.geonetwork.security.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -41,6 +44,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GeoNetworkOAuth2UserService {
+
+    @Autowired
+    UserManager userManager;
 
     @Autowired
     UserRepository userRepository;
@@ -83,14 +89,14 @@ public class GeoNetworkOAuth2UserService {
                     .getUserInfoEndpoint()
                     .getUserNameAttributeName();
 
-            // rebuild the user with the new authorities
-            var modifiedOidcUser = new DefaultOidcUser(
-                    Collections.singletonList(userAuthority),
+            return new DefaultOidcUser(
+                    List.of(
+                            userAuthority,
+                            new SimpleGrantedAuthority(
+                                    "ROLE_" + dbUser.getProfile().name())),
                     oidcUser.getIdToken(),
                     oidcUser.getUserInfo(),
                     userNameAttributeName);
-
-            return modifiedOidcUser;
         };
     }
 
@@ -127,10 +133,8 @@ public class GeoNetworkOAuth2UserService {
                     .getUserNameAttributeName();
 
             // rebuild the user with the new authorities
-            var modifiedOAuth2User = new DefaultOAuth2User(
+            return new DefaultOAuth2User(
                     Collections.singletonList(userAuthority), oAuth2User.getAttributes(), userNameAttributeName);
-
-            return modifiedOAuth2User;
         };
     }
 
@@ -153,27 +157,18 @@ public class GeoNetworkOAuth2UserService {
 
         // attempt to load user
         var dbUser = userRepository.findOptionalByUsername(username);
+        var loginDate = Instant.now().toString();
 
         // ---- user is missing, create them ----------
         if (dbUser.isEmpty()) {
-            // create the user in the DB
             var email = getValue(oAuth2User, userCreationInfo.getEmail());
             var name = getValue(oAuth2User, userCreationInfo.getName());
             var surname = getValue(oAuth2User, userCreationInfo.getSurname());
             var company = getValue(oAuth2User, userCreationInfo.getOrganization());
-            User newUser = User.builder()
-                    .isenabled(true)
-                    .password("")
-                    .username(username)
-                    .name(Optional.ofNullable(name).orElse(""))
-                    .surname(Optional.ofNullable(surname).orElse(""))
-                    // GN4 `GeonetworkAuthenticationProvider` expects this to be null or empty
-                    .authtype(null)
-                    .email(email == null ? null : Set.of(email))
-                    .organisation(Optional.ofNullable(company).orElse(""))
-                    .build();
-            var user = userRepository.save(newUser);
-            dbUser = Optional.of(user);
+            dbUser = Optional.of(
+                    userManager.registerUser(username, null, name, surname, email, null, loginDate, company, null));
+        } else {
+            userManager.userLoginEvent(dbUser.get());
         }
 
         return dbUser.get();
