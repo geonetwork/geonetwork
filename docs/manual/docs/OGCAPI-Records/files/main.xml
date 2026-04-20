@@ -98,7 +98,7 @@
       <gmd:citation>
         <gmd:CI_Citation>
           <gmd:title>
-            <gco:CharacterString>GeoCat Demo OGCIAPI Server</gco:CharacterString>
+            <gco:CharacterString>GeoCat Demo OGC API Server</gco:CharacterString>
           </gmd:title>
           <gmd:alternateTitle gco:nilReason="missing" />
           <gmd:date>
@@ -145,29 +145,29 @@
               <gmd:address>
                 <gmd:CI_Address>
                   <gmd:deliveryPoint>
-                    <gco:CharacterString>Veenderweg 13</gco:CharacterString>
+                    <gco:CharacterString>Generaal Foulkesweg 72</gco:CharacterString>
                   </gmd:deliveryPoint>
                   <gmd:city>
-                    <gco:CharacterString>Bennekom</gco:CharacterString>
+                    <gco:CharacterString>Wageningen</gco:CharacterString>
                   </gmd:city>
                   <gmd:administrativeArea>
                     <gco:CharacterString>Gelderland</gco:CharacterString>
                   </gmd:administrativeArea>
                   <gmd:postalCode>
-                    <gco:CharacterString>6721 WD</gco:CharacterString>
+                    <gco:CharacterString>6703 BW</gco:CharacterString>
                   </gmd:postalCode>
                   <gmd:country>
                     <gco:CharacterString>The Nederlands</gco:CharacterString>
                   </gmd:country>
                   <gmd:electronicMailAddress>
-                    <gco:CharacterString>jeroen.ticheler@geocat.net</gco:CharacterString>
+                    <gco:CharacterString>jeroen.ticheler@geocat.com</gco:CharacterString>
                   </gmd:electronicMailAddress>
                 </gmd:CI_Address>
               </gmd:address>
               <gmd:onlineResource>
                 <gmd:CI_OnlineResource>
                   <gmd:linkage>
-                    <gmd:URL>http://geocat.net</gmd:URL>
+                    <gmd:URL>https://geocat.com</gmd:URL>
                   </gmd:linkage>
                 </gmd:CI_OnlineResource>
               </gmd:onlineResource>
