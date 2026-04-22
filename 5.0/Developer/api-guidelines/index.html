@@ -16,19 +16,15 @@
       
       
       
-        <link rel="canonical" href="https://geonetwork.github.io/geonetwork/5.0/OGCAPI-Records/demo-server/">
+        <link rel="canonical" href="https://geonetwork.github.io/geonetwork/5.0/Developer/api-guidelines/">
       
       
-        <link rel="prev" href="../content-negotiation/">
-      
-      
-        <link rel="next" href="../deploy/">
       
       
         
           <link rel="alternate" href="./" hreflang="en">
         
-          <link rel="alternate" href="../../fr/OGCAPI-Records/demo-server/" hreflang="fr">
+          <link rel="alternate" href="../../fr/Developer/api-guidelines/" hreflang="fr">
         
       
       
@@ -37,7 +33,7 @@
     
     
       
-        <title>Demo server - GeoNetwork 5</title>
+        <title>REST API Design Guidelines - GeoNetwork 5</title>
       
     
     
@@ -90,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#setting-up-a-demo-ogcapi-records" class="md-skip">
+        <a href="#rest-api-design-guidelines" class="md-skip">
           Skip to content
         </a>
       
@@ -127,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Demo server
+              REST API Design Guidelines
             
           </span>
         </div>
@@ -180,7 +176,7 @@
           </li>
         
           <li class="md-select__item">
-            <a href="../../fr/OGCAPI-Records/demo-server/" hreflang="fr" class="md-select__link">
+            <a href="../../fr/Developer/api-guidelines/" hreflang="fr" class="md-select__link">
               Français
             </a>
           </li>
@@ -303,13 +299,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../OGCAPI-Records/" class="md-tabs__link">
           
   
   
@@ -331,7 +325,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../Developer/" class="md-tabs__link">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -481,8 +475,6 @@
       
   
   
-    
-  
   
   
     
@@ -510,24 +502,22 @@
     
     
       
-        
-        
-      
       
     
     
       
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
-              
+  
+  
+  
+    <a href="../../OGCAPI-Records/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -541,392 +531,12 @@
   
   
 
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    OGC API Records
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
   
 
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../config/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Config
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../content-negotiation/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Content Negotiation and Profiles
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Demo server
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Demo server
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#setting-up-a-demo-ogcapi-records" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting up a demo OGCAPI-Records
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setting up a demo OGCAPI-Records">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#setting-up-postgresql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting up PostgreSQL
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup-elastic-search-recommend-v814" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup Elastic Search (recommend v8.14)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup-gn4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup GN4
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup GN4">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#demo-gn4-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DEMO GN4 setup
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="DEMO GN4 setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#setup-records" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup Records
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup-portals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup Portals
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup-gn5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup GN5
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup GN5">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#running-the-demo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Running the DEMO
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../deploy/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Deploy
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../spec-diff/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Spec diff
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../develop/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Technical Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../features/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Features
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -977,7 +587,7 @@
   
   
   
-    <a href="../../Developer/" class="md-nav__link">
+    <a href="../" class="md-nav__link">
       
   
   
@@ -1020,6 +630,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1028,125 +640,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setting-up-a-demo-ogcapi-records" class="md-nav__link">
+  <a href="#conformance-classes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Setting up a demo OGCAPI-Records
+        Conformance classes
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Setting up a demo OGCAPI-Records">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#setting-up-postgresql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting up PostgreSQL
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup-elastic-search-recommend-v814" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup Elastic Search (recommend v8.14)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup-gn4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup GN4
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup GN4">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#demo-gn4-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DEMO GN4 setup
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="DEMO GN4 setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#setup-records" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup Records
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup-portals" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup Portals
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setup-gn5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup GN5
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup GN5">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#running-the-demo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Running the DEMO
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1167,7 +667,7 @@
 
 
   
-    <a href="https://github.com/geonetwork/geonetwork/edit/main/docs/manual/docs/OGCAPI-Records/demo-server.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/geonetwork/geonetwork/edit/main/docs/manual/docs/Developer/api-guidelines.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1176,172 +676,40 @@
     
       
     
-    <a href="https://github.com/geonetwork/geonetwork/raw/main/docs/manual/docs/OGCAPI-Records/demo-server.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/geonetwork/geonetwork/raw/main/docs/manual/docs/Developer/api-guidelines.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-  <h1>Demo server</h1>
-
-<h2 id="setting-up-a-demo-ogcapi-records">Setting up a demo OGCAPI-Records</h2>
-<p>In order to run OGCAPI-Records, you will need:</p>
+<h1 id="rest-api-design-guidelines">REST API Design Guidelines</h1>
+<p>This section defines the routing design principles for the GeoNetwork 5 REST API. Our primary goal is to build on the <a href="https://github.com/opengeospatial/OGC-Web-API-Guidelines?tab=readme-ov-file#design-principles">OGC API record specification</a>, extending it with intuitive, predictable, and highly readable interfaces, without compromising standard compatibility.</p>
 <ol>
-<li>PostgreSQL/PostGIS database</li>
-<li>Elastic Search (recommend v8.14)</li>
-<li>GN4</li>
-<li>GN5</li>
+<li>A well-designed URL should allow a developer to locate related endpoints, easily edit paths manually, and share readily understandable links.</li>
+<li>No redundant prefixes, technology-exposing file extensions, or unnecessary verbosity.</li>
+<li>All new endpoints must either adhere directly to the OGC API structure (<em>/collections/{collectionId}/items</em>) or mirror its structural rhythm for custom extensions.</li>
+<li>Paths should use simple, clear nouns. Avoid heavy symbol usage or unnecessary hex encoding where possible.</li>
+<li>Identity via Path, Not Query Parameters</li>
+<li><strong>Anti-pattern</strong>: <em>/api/records/search?collection=maps&amp;id=54896</em></li>
+<li><strong>GN5 Standard</strong>: <em>/api/collections/maps/items/54896</em></li>
+<li>
+<p>Navigate down the resource tree logically. The resource nesting should match the OGC API resource tree, extending it cleanly for custom GeoNetwork features.</p>
+<p>For example:</p>
+</li>
+<li>
+<p><strong>List collections</strong>: <em>/api/collections</em></p>
+</li>
+<li><strong>Specific collection</strong>: <em>/api/collections/{collectionId}</em></li>
+<li><strong>Items in collection</strong>: <em>/api/collections/{collectionId}/items</em></li>
+<li><strong>Specific item</strong>: <em>/api/collections/{collectionId}/items/{itemId}</em></li>
+<li>When a resource exists within a user's specific context or multiple relationships, express this cleanly in the path as an extension of the base OGC model. It may be useful, just for example, when a workflow is active and user copies of documents exist.</li>
+<li><strong>User Spaces</strong>: <em>/api/users/{username}/collections/{collectionId}/items</em></li>
 </ol>
-<h3 id="setting-up-postgresql">Setting up PostgreSQL</h3>
-<p>This container (<code>kartoza/postgis:16-3.4</code>) is for an M1 mac - use a different docker container for an X64 machine.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker run -p 5432:5432 -e POSTGRES_PASS=postgres -e POSTGRES_USER=postgres   kartoza/postgis:16-3.4
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c &quot;create database gn;&quot;
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d gn -c &quot;create extension postgis;&quot;
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d gn -c &quot;CREATE USER \&quot;www-data\&quot; WITH SUPERUSER PASSWORD &#39;www-data&#39;;&quot;
-</span></code></pre></div>
-<p>This will:</p>
-<ol>
-<li>run the <code>docker</code> PostgreSQL/PostGIS container (available on PORT 5432).  The admin user will be postgres/postgres.</li>
-<li>create a database called <code>gn</code></li>
-<li>add the PostGIS extension to the database</li>
-<li>add a super user with name <code>www-data</code> and password <code>www-data</code>.</li>
-</ol>
-<p>These settings should match what is in your GN5 <code>application.yml</code> file.</p>
-<p>To run a <code>psql</code> session:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d gn 
-</span></code></pre></div>
-<h3 id="setup-elastic-search-recommend-v814">Setup Elastic Search (recommend v8.14)</h3>
-<p>This will run an elastic search docker container (v8.14.0) on port 9200.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker run -p 9200:9200 -p 9300:9300 -e &quot;discovery.type=single-node&quot; -e &quot;xpack.security.enabled=false&quot; -e &quot;xpack.security.enrollment.enabled=false&quot; docker.elastic.co/elasticsearch/elasticsearch:8.14.0
-</span></code></pre></div>
-<p>This does not have any indexes in it - when you run GN4 (see below) it will add the indexes.</p>
-<p>Here are some interesting URLs:</p>
-<ol>
-<li><a href="http://localhost:9200/">http://localhost:9200/</a> Cluster URL</li>
-<li><a href="http://localhost:9200/gn-records/_search?pretty=true&amp;q=*:*">http://localhost:9200/gn-records/_search?pretty=true&amp;q=<em>:</em></a> All records in the index</li>
-<li><a href="http://localhost:9200/gn-records/_search?pretty=true&amp;q=_id:ce6dc729-7ec0-4ba9-baf8-4bc1525120c8">http://localhost:9200/gn-records/_search?pretty=true&amp;q=_id:ce6dc729-7ec0-4ba9-baf8-4bc1525120c8</a> Show a particular record (by metadata ID)</li>
-<li><a href="http://localhost:9200/gn-records">http://localhost:9200/gn-records</a> The index definition (advanced users only!)</li>
-</ol>
-<h3 id="setup-gn4">Setup GN4</h3>
-<p>Run GeoNetwork 5 connected to the PostgreSQL/PostGIS database.  The easiest way to do this is to checkout and build GN4 from source.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cd web
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>mvn jetty:run -Dgeonetwork.db.type=postgres-postgis -Djdbc.database=gn -Djdbc.username=www-data -Djdbc.password=www-data -Djdbc.host=localhost -Ddb.port=5432 -Djdbc.port=5432
-</span></code></pre></div>
-<h4 id="demo-gn4-setup">DEMO GN4 setup</h4>
-<p>Here are some steps to take to setup some data in GN4.  This demo will include the 5 iso19139 sample records supplied with GN4 and two extra ones we will use to annotate geonetwork portals (Also called <code>sources</code> in GeoNetwork and <code>collections</code> or <code>catalogs</code> in OGCAPI-Records).</p>
-<p>We then create a sub-portal (called "subportal") and attach the <code>subportal.xml</code> record to it.</p>
-<p>We then attach the <code>main.xml</code> record to the main portal.</p>
-<h5 id="setup-records">Setup Records</h5>
-<ol>
-<li>Login as admin <a href="http://localhost:8080/geonetwork">http://localhost:8080/geonetwork</a></li>
-<li>Go to <code>Admin console</code> -&gt; <code>Metadata and Templates</code><ul>
-<li>Tick <code>Geographic information -- Metadata (iso19139:2007) (iso19139)</code> and press <code>Load samples for selected standards</code></li>
-</ul>
-</li>
-<li>Download <a href="../files/main.xml">main.xml</a> and <a href="../files/subportal.xml">subportal.xml</a> which are two extra sample metadata records.</li>
-<li>Go to <code>Contribute</code> -&gt; <code>Import New Records</code><ul>
-<li>Tick <code>Publish</code></li>
-<li>Choose the <code>main.xml</code> you downloaded (above) (use <code>Choose or drop resource here</code>)</li>
-<li>Press <code>Import</code></li>
-</ul>
-</li>
-<li>Go to <code>Contribute</code> -&gt; <code>Import New Records</code><ul>
-<li>Tick <code>Publish</code></li>
-<li>Choose the <code>subportal.xml</code> you downloaded (above) (use <code>Choose or drop resource here</code>)</li>
-<li>Press <code>Import</code></li>
-</ul>
-</li>
-</ol>
-<p>At this point you should have 7 records in your <a href="http://localhost:8080/geonetwork/srv/eng/catalog.search#/search">GN4 installation</a>.</p>
-<h5 id="setup-portals">Setup Portals</h5>
-<ol>
-<li>Login as admin <a href="http://localhost:8080/geonetwork">http://localhost:8080/geonetwork</a></li>
-<li>Go to <code>Admin console</code> -&gt; <code>Settings</code> and choose <code>Sources</code> on the left column.</li>
-<li>Press "Add portal"<ul>
-<li><code>Identifier</code> - subportal</li>
-<li><code>Name</code> - SubPortal</li>
-<li><code>Search Filter</code> - leave this blank, you can modify this later if you want</li>
-<li><code>Records to use for GetCapabilities</code> - type "sub" and then choose the "GeoCat Demo OGCIAPI sub-portal" record</li>
-<li>Choose a logo from the <code>Logo Selection</code></li>
-<li>Press "Save"</li>
-</ul>
-</li>
-<li>On the Left hand column, choose <code>Settings</code><ul>
-<li>Go down to the "Catalog Services for the Web"</li>
-<li>In the <code>Record to use for GetCapabilities</code>, type "4e2e361b-02cf-499f-b16e-7eff87925e40"</li>
-<li>Press <code>Save Settings</code> (very top)</li>
-</ul>
-</li>
-</ol>
-<p>NOTE: There's no way to edit the GeoNetwork Source for the main-portal, so we use the CSW GetCapabilities link instead!</p>
-<h3 id="setup-gn5">Setup GN5</h3>
-<p>You should be able to just run GeoNetwork 5 (from source).  </p>
-<ol>
-<li>Checkout GN5 from <a href="https://github.com/geonetwork/geonetwork">GitHub</a></li>
-<li>Verify that the <code>application.xml</code> (in <code>config/</code>)</li>
-<li>Build (with java21): <code>mvn clean install -DskipTests</code></li>
-<li>Run with:</li>
-</ol>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cd src/app/geonetwork
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>mvn spring-boot:run
-</span></code></pre></div>
-<h5 id="running-the-demo">Running the DEMO</h5>
-<ol>
-<li>Go to <a href="http://localhost:7979/v3/api-docs?f=json">http://localhost:7979/v3/api-docs?f=json</a> to see the <a href="https://www.openapis.org/">OpenAPI</a> (swagger) documentation.</li>
-<li>Go to <a href="http://localhost:7979/ogcapi-records/?f=json">http://localhost:7979/ogcapi-records/?f=json</a><ul>
-<li>This is the OGCAPI-Records Landing Page</li>
-<li>The title should be "GeoCat Demo OGCIAPI Server"</li>
-<li>Notice that it has an extra <code>catalogInfo</code> which contains information taken from <code>main.xml</code></li>
-</ul>
-</li>
-<li>Go to <a href="http://localhost:7979/ogcapi-records/collections?f=json">http://localhost:7979/ogcapi-records/collections?f=json</a><ul>
-<li>This is the OGCAPI-Records Collections ("Catalogs") page</li>
-<li>There should be two collections - "GeoCat Demo OGCIAPI Server" and "GeoCat Demo OGCIAPI sub-portal"</li>
-<li>Notice that the title (and contact) information is coming from the linked metadata records (<code>main.xml</code> and <code>subportal.xml</code>)</li>
-</ul>
-</li>
-<li>Go to <a href="http://localhost:7979/ogcapi-records/collections/subportal?f=json">http://localhost:7979/ogcapi-records/collections/subportal?f=json</a><ul>
-<li>This is the OGCAPI-Records Collection ("Catalog") page for the sub-portal collection</li>
-<li>The metadata about this is coming from the attached <code>subportal.xml</code> record</li>
-</ul>
-</li>
-<li>Go to <a href="http://localhost:7979/ogcapi-records/collections/subportal/queryables?f=json">http://localhost:7979/ogcapi-records/collections/subportal/queryables?f=json</a><ul>
-<li>This is the OGCAPI-Records Queryables page for the sub-portal collection</li>
-<li>This are all the "extra" ways you can query the collection</li>
-<li>Advanced users can see how this is configured <a href="https://github.com/geonetwork/geonetwork/pull/74/files#diff-9185e89c379fe0a8287daf7c7b09389dcf35bb8667e885fc607326eb48dd660a">in queryables.json</a>.</li>
-</ul>
-</li>
-<li>Go to <a href="http://localhost:7979/ogcapi-records/collections/subportal/items?f=json">http://localhost:7979/ogcapi-records/collections/subportal/items?f=json</a><ul>
-<li>This is the OGCAPI-Records Items page for the sub-portal collection</li>
-<li>This returns a <a href="https://geojson.org/">GeoJSON</a> feature collection JSON document</li>
-<li>Since we haven't put a filter on the sub-portal, all 7 metadata records in the GN4 catalog will be shown</li>
-</ul>
-</li>
-<li>Go to <a href="http://localhost:7979/ogcapi-records/collections/subportal/items/da165110-88fd-11da-a88f-000d939bc5d8?f=json">http://localhost:7979/ogcapi-records/collections/subportal/items/da165110-88fd-11da-a88f-000d939bc5d8?f=json</a><ul>
-<li>This is the OGCAPI-Records Items page for single record in the sub-portal collection</li>
-<li>This is the JSON representation of the ISO19193 record (in the format specified by the OGCAPI-Records specification and in GeoJSON format)</li>
-<li>It also contains the underlying record, in XML, in the the <code>metadataRecordText</code> property</li>
-</ul>
-</li>
-</ol>
-<p>Here are some queries you can run (see the <a href="https://github.com/geonetwork/geonetwork/pull/74/files#diff-9185e89c379fe0a8287daf7c7b09389dcf35bb8667e885fc607326eb48dd660a">queryables</a>):</p>
-<ul>
-<li>Find <code>contacts</code> that contain "jody" <a href="http://localhost:7979/ogcapi-records/collections/subportal/items?contacts=jody&amp;f=json">http://localhost:7979/ogcapi-records/collections/subportal/items?contacts=jody&amp;f=json</a><ul>
-<li>or <a href="http://localhost:7979/ogcapi-records/collections/subportal/items?contacts=jeroen&amp;f=json">jeroen</a></li>
-<li>or by area code <a href="http://localhost:7979/ogcapi-records/collections/subportal/items?contacts=250&amp;f=json">250</a></li>
-<li>or by city <a href="http://localhost:7979/ogcapi-records/collections/subportal/items?contacts=victoria&amp;f=json">victoria</a></li>
-</ul>
-</li>
-<li>Find by <code>id</code> <a href="http://localhost:7979/ogcapi-records/collections/subportal/items?id=9bac358b-11ec-4293-aeef-5a077b778412&amp;f=json">http://localhost:7979/ogcapi-records/collections/subportal/items?id=9bac358b-11ec-4293-aeef-5a077b778412&amp;f=json</a></li>
-<li>Find by <code>organization</code> <a href="http://localhost:7979/ogcapi-records/collections/subportal/items?organization=geocat&amp;f=json">http://localhost:7979/ogcapi-records/collections/subportal/items?organization=geocat&amp;f=json</a></li>
-<li>Find by <code>keyword</code> <a href="http://localhost:7979/ogcapi-records/collections/subportal/items?keywords=africa&amp;f=json">http://localhost:7979/ogcapi-records/collections/subportal/items?keywords=africa&amp;f=json</a></li>
-<li>Find records created in 2008 <a href="http://localhost:7979/ogcapi-records/collections/subportal/items?created=2007-01-01/2007-12-31&amp;f=json">http://localhost:7979/ogcapi-records/collections/subportal/items?created=2007-01-01/2007-12-31&amp;f=json</a></li>
-</ul>
-<p>NOTE: See the <a href="https://ogcapi.ogc.org/records/#:~:text=OGC%20API%20%2D%20Records%20is%20a,resources%20(metadata)%20are%20exposed.">OGCAPI-Records Specification</a> for more info on querying.</p>
-<p>NOTE:  You can change the above URLs to have 'f=html`.  However, the current HTML page is trivial - just showing the JSON result.</p>
+<h2 id="conformance-classes">Conformance classes</h2>
+<p>To maintain strict consistency with the OGC API architecture, the advertisement of implemented API features, custom extensions, and supported data schemas must be handled at the <a href="https://docs.ogc.org/is/17-069r3/17-069r3.html#_declaration_of_conformance_classes">conformance classes</a> level.</p>
+<p>Rather than relying on custom endpoints or ad-hoc queries to expose what the API can do, all capabilities should be declared as URIs within the global <em>/conformance</em> endpoint. This ensures that any client interacting with the GeoNetwork 5 API can systematically discover both standard OGC functionalities and GN5-specific features (such as supported metadata schemas, specific output formats, or custom operations) in a predictable, standard-compliant manner.</p>
+<p>For conformance classes that are specific to GeoNetwork (which do not exist in any official standard) it is possible to manage custom ones in an internal namespace.</p>
 
 
 
@@ -1374,44 +742,6 @@
       
         <footer class="md-footer">
   
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href="../content-negotiation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Content Negotiation and Profiles">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Content Negotiation and Profiles
-              </div>
-            </div>
-          </a>
-        
-        
-          
-          <a href="../deploy/" class="md-footer__link md-footer__link--next" aria-label="Next: Deploy">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Deploy
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
     
   
   <div class="md-footer-meta md-typeset">
