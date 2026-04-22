@@ -85,6 +85,11 @@
       <scope>compile</scope>
     </dependency>
 
+      <groupId>org.apache.jena</groupId>
+      <artifactId>apache-jena-libs</artifactId>
+      <version>4.10.0</version>
+      <type>pom</type>
+    </dependency>
   </dependencies>
 
 </project>
