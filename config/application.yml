@@ -83,24 +83,6 @@ spring:
   #            user-info-uri: https://custom/auth/realms/test/protocol/openid-connect/userinfo
   #            jwk-set-uri: https://custom/auth/realms/test/protocol/openid-connect/certs
   #            issuer-uri: https://custom/auth/realms/test
-#  cloud:
-#    gateway:
-#      mvc:
-#        routes:
-#          Example of route when an API is moved from GN4 to GN5
-#          - id: geonetwork4_api_migrated_redirect_to_gn5
-#            uri: ${geonetwork.url_with_context}
-#            #  FIXME: This does not work uri: ${geonetwork.url}${server.servlet.context-path}
-#            predicates:
-#              - Path=/srv/api/records/{uuid}/attachments/**
-#            filters:
-#              - RewritePath=/srv/api/records/(?<uuid>.+)/attachments(?<segment>.*), /api/records/$\{uuid}/attachments$\{segment}
-#          - id: geonetwork_route
-#            uri: ${geonetwork.4.url}
-#            predicates:
-#              - isGeoNetwork4Request=
-#            filters:
-#              - addSimpleGn4SecurityHeader=gn5.to.gn4.trusted.json.auth
   batch:
     jdbc:
       initialize-schema: always
@@ -113,7 +95,7 @@ spring:
 management:
   endpoint:
     info:
-      enabled: true
+      access: read_only
   endpoints:
     web:
       exposure:
