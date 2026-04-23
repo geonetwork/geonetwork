@@ -84,7 +84,7 @@
       <version>33.4.8-jre</version>
       <scope>compile</scope>
     </dependency>
-
+    <dependency>
       <groupId>org.apache.jena</groupId>
       <artifactId>apache-jena-libs</artifactId>
       <version>4.10.0</version>
