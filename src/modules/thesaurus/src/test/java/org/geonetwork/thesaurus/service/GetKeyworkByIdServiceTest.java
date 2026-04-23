@@ -40,11 +40,11 @@ class GetKeyworkByIdServiceTest {
     @Mock
     private HttpServletRequest request;
 
-  private GetKeyworkByIdService service;
+    private GetKeyworkByIdService service;
 
     @BeforeEach
     void setup() {
-      ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         service = new GetKeyworkByIdService(conceptSchemeRepository, conceptRepository, objectMapper);
     }
 
