@@ -40,11 +40,13 @@ class GetKeyworkByIdServiceTest {
     @Mock
     private HttpServletRequest request;
 
+    private ObjectMapper objectMapper;
+
     private GetKeyworkByIdService service;
 
     @BeforeEach
     void setup() {
-        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
         service = new GetKeyworkByIdService(conceptSchemeRepository, conceptRepository, objectMapper);
     }
 
@@ -170,6 +172,8 @@ class GetKeyworkByIdServiceTest {
 
         // Then
         assertNotNull(result);
+        Map<String, Map<String, Object>> resultMap = (Map<String, Map<String, Object>>) result;
+        assertTrue(resultMap.isEmpty());
     }
 
     @Test
