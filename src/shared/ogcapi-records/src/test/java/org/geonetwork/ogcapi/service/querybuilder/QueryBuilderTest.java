@@ -13,6 +13,10 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsAdvancedFacetDto;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetFilterDto;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetsDto;
+import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,12 +36,28 @@ public class QueryBuilderTest {
     List<String> externalids;
     List<String> sortby;
     Map<String, String[]> parameterMap;
+    List<String> advancedFacets;
 
     @BeforeEach
     public void setup() {
-        queryBuilder = new QueryBuilder();
-        queryBuilder.queryablesService = new QueryablesService(null);
-        queryBuilder.queryablesExtractor = new QueryablesExtractor();
+        AdvancedFacetsBuilder advancedFacetsBuilder = new AdvancedFacetsBuilder(new FacetsJsonService() {
+            @Override
+            public OgcApiRecordsFacetsDto buildFacets(String catalogId) {
+                var result = new OgcApiRecordsFacetsDto();
+                result.setId(catalogId);
+                result.setTitle("Facets for catalog " + catalogId);
+                result.setFacets(Map.of(
+                        "keywords", new OgcApiRecordsFacetFilterDto(),
+                        "organization", new OgcApiRecordsFacetFilterDto(),
+                        "theme", new OgcApiRecordsFacetFilterDto(),
+                        "facetname1", new OgcApiRecordsFacetFilterDto(),
+                        "facetname2", new OgcApiRecordsFacetFilterDto()));
+                return result;
+            }
+        });
+
+        queryBuilder = new QueryBuilder(new QueryablesService(null), new QueryablesExtractor(), advancedFacetsBuilder);
+
         queryBuilder.queryablesExtractor.queryablesService = queryBuilder.queryablesService;
 
         collectionId = "collectionId";
@@ -55,7 +75,7 @@ public class QueryBuilderTest {
 
     /** just make sure that all the data is being copied to the Query. */
     @Test
-    public void testSimple() {
+    public void testSimple() throws Exception {
         OgcApiQuery query = buildSampleQuery();
 
         assertEquals("collectionId", query.getCollectionId());
@@ -76,7 +96,7 @@ public class QueryBuilderTest {
 
     /** test with a good queryable (one in the queryables list) */
     @Test
-    public void testGoodQueryable() {
+    public void testGoodQueryable() throws Exception {
         parameterMap.put("id", new String[] {"ID"});
         var query = buildSampleQuery();
 
@@ -87,14 +107,32 @@ public class QueryBuilderTest {
 
     /** test with a good queryable (one in the queryables list) */
     @Test
-    public void testBadQueryable() {
+    public void testBadQueryable() throws Exception {
         parameterMap.put("BAD-QUERYABLE", new String[] {"ID"});
         var query = buildSampleQuery();
 
         assertEquals(0, query.getPropValues().size());
     }
 
-    public OgcApiQuery buildSampleQuery() {
+  /**
+   * verify that the advanced facets are being processed
+   *
+   * @throws Exception shouldnt happen
+   */
+  @Test
+    public void testWithAdvancedFacets() throws Exception {
+        advancedFacets = List.of("keywords:20:value_asc");
+        var query = buildSampleQuery();
+
+        assertEquals(1, query.getAdvancedFacets().size());
+        assertEquals("keywords", query.getAdvancedFacets().get(0).getFacetName());
+        assertEquals(Integer.valueOf(20), query.getAdvancedFacets().get(0).getBucketSize());
+        assertEquals(
+                OgcApiRecordsAdvancedFacetDto.SortingEnum.VALUE_ASC,
+                query.getAdvancedFacets().get(0).getSorting());
+    }
+
+    public OgcApiQuery buildSampleQuery() throws Exception {
         return queryBuilder.buildFromRequest(
                 collectionId,
                 bbox,
@@ -109,6 +147,7 @@ public class QueryBuilderTest {
                 null,
                 "cql2-text",
                 null,
-                parameterMap);
+                parameterMap,
+                advancedFacets);
     }
 }

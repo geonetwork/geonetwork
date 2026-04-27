@@ -11,9 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,13 +27,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j(topic = "org.fao.geonet.ogcapi.records")
+@AllArgsConstructor
 public class QueryBuilder {
 
-    @Autowired
-    QueryablesService queryablesService;
+    final QueryablesService queryablesService;
 
-    @Autowired
-    QueryablesExtractor queryablesExtractor;
+    final QueryablesExtractor queryablesExtractor;
+
+    final AdvancedFacetsBuilder advancedFacetsBuilder;
 
     /**
      * builds a query from the request - cf. ItemApiController#collectionsCollectionIdItemsGet.
@@ -68,7 +69,9 @@ public class QueryBuilder {
             String filter,
             String filterLang,
             String filterCrs,
-            Map<String, String[]> parameterMap) {
+            Map<String, String[]> parameterMap,
+            List<String> advancedFacets)
+            throws Exception {
 
         var result = new OgcApiQuery();
 
@@ -98,6 +101,8 @@ public class QueryBuilder {
         var _filter = (filter == null) ? null : URLDecoder.decode(filter, StandardCharsets.UTF_8);
         result.setFilter(_filter);
 
+        result.setAdvancedFacets(advancedFacetsBuilder.buildAdvancedFacets(collectionId, advancedFacets));
+
         return result;
     }
 
@@ -114,6 +119,9 @@ public class QueryBuilder {
 
         // foreach key-value pair in the parameter map
         for (var param : parameterMap.entrySet()) {
+            if (param.getKey().equalsIgnoreCase("facets")) {
+                continue; // don't "mistake" facets as a queryable (cf advanced facets in spec)
+            }
             var queryable = queryables.get(param.getKey());
             if (queryable != null) {
                 // we found a param (key-value) in the request that matches one of our queryables

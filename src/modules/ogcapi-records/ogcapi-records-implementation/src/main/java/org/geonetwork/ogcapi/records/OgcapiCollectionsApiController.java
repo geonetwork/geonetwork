@@ -151,7 +151,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             String filter,
             String filterLang,
             String filterCrs,
-            List<String> profile) {
+            List<String> profile,
+            List<String> advancedFacets) {
         var query = queryBuilder.buildFromRequest(
                 catalogId,
                 bbox,
@@ -166,7 +167,8 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
                 filter,
                 filterLang,
                 filterCrs,
-                request.getParameterMap());
+                request.getParameterMap(),
+                advancedFacets);
 
         var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiRecordsMultiRecordResponse.class);
 

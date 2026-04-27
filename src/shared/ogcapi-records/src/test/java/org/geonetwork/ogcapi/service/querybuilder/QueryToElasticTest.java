@@ -17,9 +17,11 @@ import java.util.List;
 import java.util.Map;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetsDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGnElasticDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonPropertyDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
+import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.search.QueryToElastic;
 import org.junit.jupiter.api.Test;
@@ -65,7 +67,7 @@ public class QueryToElasticTest {
 
     /** tests the "id" - should result in a simple multi-match */
     @Test
-    public void test_id() {
+    public void test_id() throws Exception {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -116,7 +118,7 @@ public class QueryToElasticTest {
 
     /** tests the "title" - should result in a multi-match with two columns. also, check for multi-lingual expansion. */
     @Test
-    public void test_multi() {
+    public void test_multi() throws Exception {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -170,7 +172,7 @@ public class QueryToElasticTest {
 
     /** tests date types - should result in a range query */
     @Test
-    public void test_date() {
+    public void test_date() throws Exception {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -218,7 +220,7 @@ public class QueryToElasticTest {
 
     /** tests date types - should result in a range query, with from=null */
     @Test
-    public void test_date_nolower() {
+    public void test_date_nolower() throws Exception {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -263,7 +265,7 @@ public class QueryToElasticTest {
 
     /** tests date types - should result in a range query, with to=null */
     @Test
-    public void test_date_noupper() {
+    public void test_date_noupper() throws Exception {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -308,7 +310,7 @@ public class QueryToElasticTest {
 
     /** tests date types - should result in a range query */
     @Test
-    public void test_geo() {
+    public void test_geo() throws Exception {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -361,7 +363,7 @@ public class QueryToElasticTest {
 
     /** tests nested query types - should result in a nested query, inside and OR boolean */
     @Test
-    public void test_nested() {
+    public void test_nested() throws Exception {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -439,11 +441,18 @@ public class QueryToElasticTest {
      * @param pvalue param value
      * @return OgcApiQuery
      */
-    public OgcApiQuery buildQuery(QueryablesService queryablesService, String pname, String pvalue) {
+    public OgcApiQuery buildQuery(QueryablesService queryablesService, String pname, String pvalue) throws Exception {
         // setup QueryBuilder
-        var queryBuilder = new QueryBuilder();
-        queryBuilder.queryablesService = queryablesService;
-        queryBuilder.queryablesExtractor = new QueryablesExtractor();
+        var queryBuilder = new QueryBuilder(
+                queryablesService, new QueryablesExtractor(), new AdvancedFacetsBuilder(new FacetsJsonService() {
+                    @Override
+                    public OgcApiRecordsFacetsDto buildFacets(String catalogId) {
+                        var result = new OgcApiRecordsFacetsDto();
+                        result.setFacets(Map.of("keywords", null, "organizations", null));
+                        return null;
+                    }
+                }));
+
         queryBuilder.queryablesExtractor.queryablesService = queryablesService;
 
         Map<String, String[]> paramMap = new LinkedHashMap<>();
@@ -451,7 +460,7 @@ public class QueryToElasticTest {
 
         // setup Query
         var query = queryBuilder.buildFromRequest(
-                "abc", null, null, null, null, null, null, null, null, null, null, "cql2-text", null, paramMap);
+                "abc", null, null, null, null, null, null, null, null, null, null, "cql2-text", null, paramMap, null);
 
         return query;
     }

@@ -209,6 +209,7 @@ paths:
         - $ref: 'parameters/filter-lang.yaml'
         - $ref: 'parameters/filter-crs.yaml'
         - $ref: 'parameters/profile.yaml'
+        - $ref: 'parameters/advanced-facets.yaml'
       responses:
         '200':
           $ref: 'responses/Records.yaml'
@@ -251,5 +252,19 @@ components:
     openIdConnect:
       type: "openIdConnect"
       openIdConnectUrl: "https://accounts.google.com/.well-known/openid-configuration"
+  schemas:
+    advancedFacet:
+      type: object
+      properties:
+        facetName:
+          description: mandatory; the name of the facet to be included in the search response, matching one of the facets advertised in the /req/simple/query_response requirement
+          type: string
+        bucketSize:
+          description: optional; the maximum number of buckets to return for that facet (defaults to the number advertised in the facets definition); note that the actual number of buckets might be lower than the requested number
+          type: integer
+        sorting:
+          description: optional; one of the following values - value_asc, value_desc, count_asc, or count_desc (defaults to the value advertised in the facets definition)
+          type: string
+          enum: [ value_asc,value_desc,count_asc,count_desc ]
 security:
   - openIdConnect: [ ]

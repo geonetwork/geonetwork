@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsAdvancedFacetDto;
 
 /**
  * Represents an ogcapi records query.
@@ -140,6 +141,8 @@ public class OgcApiQuery {
 
     private String filterCrs;
     private String filter;
+
+    private List<OgcApiRecordsAdvancedFacetDto> advancedFacets;
 
     // ---------------------------------------------------------
 
