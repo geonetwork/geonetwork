@@ -114,12 +114,12 @@ public class QueryBuilderTest {
         assertEquals(0, query.getPropValues().size());
     }
 
-  /**
-   * verify that the advanced facets are being processed
-   *
-   * @throws Exception shouldnt happen
-   */
-  @Test
+    /**
+     * verify that the advanced facets are being processed
+     *
+     * @throws Exception shouldnt happen
+     */
+    @Test
     public void testWithAdvancedFacets() throws Exception {
         advancedFacets = List.of("keywords:20:value_asc");
         var query = buildSampleQuery();

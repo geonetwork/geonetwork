@@ -4,6 +4,7 @@
  */
 package org.geonetwork.ogcapi.service.querybuilder;
 
+import com.google.common.base.Ascii;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -135,7 +136,7 @@ public class AdvancedFacetsBuilder {
             }
         }
         if (subStrs.length > 2) {
-            var sortBy = subStrs[2].toLowerCase();
+            var sortBy = Ascii.toLowerCase(subStrs[2]);
             if (!Strings.isEmpty(sortBy)) {
                 result.sorting(OgcApiRecordsAdvancedFacetDto.SortingEnum.fromValue(sortBy));
             }
