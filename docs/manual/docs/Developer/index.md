@@ -16,6 +16,7 @@ Content of this documentation
 - [API Design Guidelines](api-guidelines.md): REST API Design Guidelines. 
 - [Formatters](formatters.md): Guide to understand formatters and how to implement them.
 - [Security inside GN5](tech-security.md): Internal GN5 security
+- [Spring Cloud Config Server](spring-cloud-config-server.md): Centralized and dynamic configuration management.
 - [Creating a New App](new-app.md): Creating a new app (introduction to the App Architecture)
 - [Dynamic Properties in OGCAPI-Records](ogcapi-records-dynamic-properties.md): Creating a new app (introduction to the App Architecture)
 - [Link Management in OGCAPI-Records](ogcapi-record-link-management.md): Creating a new app (introduction to the App Architecture)

@@ -27,5 +27,6 @@
     <module>ogcapi-records</module>
     <module>formatting</module>
     <module>thesaurus</module>
+    <module>configuration-management-api</module>
   </modules>
 </project>

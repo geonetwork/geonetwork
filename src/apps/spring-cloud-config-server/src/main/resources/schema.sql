@@ -1,0 +1,13 @@
+--
+-- SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+--
+-- SPDX-License-Identifier: GPL-2.0-or-later
+--
+CREATE TABLE IF NOT EXISTS APP_CONFIGS (
+  APP VARCHAR(255),
+  PROFILE VARCHAR(255),
+  LABEL VARCHAR(255),
+  CONFIG_PARAM VARCHAR(255),
+  CONFIG_VALUE VARCHAR(255),
+  PRIMARY KEY (APP, PROFILE, LABEL, CONFIG_PARAM)
+);

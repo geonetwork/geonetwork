@@ -25,6 +25,7 @@
     <module>ogcapi-records</module>
     <module>workshop</module>
     <module>generic-gn5-with-gn4proxy</module>
+    <module>spring-cloud-config-server</module>
 
   </modules>
 
