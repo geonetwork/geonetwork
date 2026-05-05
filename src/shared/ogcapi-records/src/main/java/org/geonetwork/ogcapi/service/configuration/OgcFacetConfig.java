@@ -4,13 +4,19 @@
  */
 package org.geonetwork.ogcapi.service.configuration;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /** user config for a facet */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OgcFacetConfig {
 
     /** name of the facet (shown in the record result) */
@@ -21,6 +27,8 @@ public class OgcFacetConfig {
 
     /** how should buckets be sorted in the ogc api results? */
     public BucketSorting bucketSorting = BucketSorting.COUNT;
+
+    public BucketSortingDirection bucketSortingDirection = BucketSortingDirection.DESCENDING;
 
     /** needed for FacetType.HISTOGRAM_FIXED_BUCKET_COUNT. For others, this will delete lower-priority buckets */
     public Integer bucketCount;
@@ -41,5 +49,26 @@ public class OgcFacetConfig {
     public List<FilterFacetInfo> filters;
 
     /** To look at the parent object (might be null) */
-    public OgcElasticFieldMapperConfig field;
+    //    public OgcElasticFieldMapperConfig field;
+
+    public OgcFacetConfig(OgcFacetConfig other) {
+        if (other == null) {
+            return;
+        }
+
+        this.facetName = other.facetName;
+        this.facetType = other.facetType;
+        this.bucketSorting = other.bucketSorting;
+        this.bucketCount = other.bucketCount;
+        this.minimumDocumentCount = other.minimumDocumentCount;
+        this.numberBucketInterval = other.numberBucketInterval;
+        this.calendarIntervalUnit = other.calendarIntervalUnit;
+
+        // Deep copy the List (assuming FilterFacetInfo also has a copy constructor)
+        if (other.filters != null) {
+            this.filters = other.filters.stream()
+                    .map(f -> f == null ? null : new FilterFacetInfo(f))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        }
+    }
 }

@@ -87,6 +87,7 @@ geonetwork:
               facetType: HISTOGRAM_FIXED_BUCKET_COUNT
               bucketCount: 5
               bucketSorting: VALUE
+              bucketSortingDirection: ASCENDING
         - ogcProperty: linkProtocol
           elasticProperty: linkProtocol
           indexRecordProperty: linkProtocols

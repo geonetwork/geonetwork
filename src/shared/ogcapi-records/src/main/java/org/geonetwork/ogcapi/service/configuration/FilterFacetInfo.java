@@ -4,12 +4,16 @@
  */
 package org.geonetwork.ogcapi.service.configuration;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /** user configuration class for the Filter facet type - defines the name of the filter and its CQL expression. */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class FilterFacetInfo {
 
     /** name of the filter */
@@ -17,4 +21,13 @@ public class FilterFacetInfo {
 
     /** CQL expression for the filter. */
     public String filterEquationCql;
+
+    public FilterFacetInfo(FilterFacetInfo other) {
+        if (other == null) {
+            return;
+        }
+
+        this.filterName = other.filterName;
+        this.filterEquationCql = other.filterEquationCql;
+    }
 }

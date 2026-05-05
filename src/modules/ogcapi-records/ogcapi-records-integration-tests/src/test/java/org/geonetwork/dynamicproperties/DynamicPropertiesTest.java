@@ -537,6 +537,8 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
         assertTrue(Ordering.natural().isOrdered(resourceTypes2));
     }
 
+    // ----------------------------
+
     private void assertValue(OgcApiRecordsRecordGeoJSONDto feature, String ogcpname, Object expectedvalue) {
         var actualValue = feature.getProperties().getAdditionalProperties().get(ogcpname);
         if (expectedvalue instanceof List expectedList) {

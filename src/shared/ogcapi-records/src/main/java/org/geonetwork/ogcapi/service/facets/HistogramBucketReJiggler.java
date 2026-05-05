@@ -37,7 +37,9 @@ public class HistogramBucketReJiggler {
             List<OgcApiRecordsFacetResultBucketDto> buckets, OgcFacetConfig histogramInfo) {
 
         var dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.NUMBER;
-        var ogcProperty = histogramInfo.getField().getOgcProperty();
+        var correspondingField = dynamicPropertiesFacade.findFieldForFacet(histogramInfo);
+
+        var ogcProperty = correspondingField.getOgcProperty();
         var type = dynamicPropertiesFacade.getByOgcProperty(ogcProperty).getType();
 
         if (type == SimpleType.DATE) {

@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.geonetwork.GeonetworkGenericApplication;
+import org.geonetwork.facets.AdvancedFacetTests;
 import org.geonetwork.infrastructure.ElasticPgMvcTestHelper;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.junit.jupiter.api.AfterAll;
@@ -67,6 +68,8 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
 
     public final String MAIN_COLLECTION_ID = "3bef299d-cf82-4033-871b-875f6936b2e2";
     public final String METAWAL_COLLECTION_ID = "cec997ba-1fa4-48d9-8be0-890da8cc65cf";
+
+    AdvancedFacetTests advancedFacetTests = new AdvancedFacetTests(this);
 
     OgcApiRecordsFacetsDto facetsConfig;
 
@@ -122,15 +125,15 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/facets", OgcApiRecordsFacetsDto.class);
     }
 
-    private <T> T retrieveUrlJson(String s, Class<T> clazz) throws Exception {
+    public <T> T retrieveUrlJson(String s, Class<T> clazz) throws Exception {
         return ElasticPgMvcTestHelper.retrieveUrlJson(s, clazz, BASE_URL, mockMvc, objectMapper);
     }
 
-    private String retrieveUrlJson(String s) throws Exception {
+    public String retrieveUrlJson(String s) throws Exception {
         return ElasticPgMvcTestHelper.retrieveUrlJson(s, BASE_URL, mockMvc);
     }
 
-    private <T> T retrieveUrlJson(String s, Class<T> clazz, String user) throws Exception {
+    public <T> T retrieveUrlJson(String s, Class<T> clazz, String user) throws Exception {
         return ElasticPgMvcTestHelper.retrieveUrlJson(s, clazz, user, BASE_URL, mockMvc, objectMapper);
     }
 
@@ -935,6 +938,13 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         }
     }
 
+    @Test
+    public void test_advancedFacets() throws Exception {
+        this.advancedFacetTests.runTests();
+    }
+
+    // ----------------------
+
     public static Map<String, FacetInfo> expectedFacets = Map.ofEntries(
             //      entry("creationYearForResource2",
             //        new FacetInfo("histogram","creationYearForResource",
@@ -961,7 +971,6 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                                             10,
                                             null),
                                     new BucketInfo(null, null, "Métropole Européenne de Lille", 2, null),
-                                    new BucketInfo(null, null, "atmo Hauts-de-France", 1, null),
                                     new BucketInfo(null, null, "Société Publique de Gestion de l'Eau (SPGE)", 1, null),
                                     new BucketInfo(null, null, "Réseau Ongulés sauvages OFB-FNC-FDC", 1, null),
                                     new BucketInfo(null, null, "Région Hauts-de-France", 1, null),
@@ -973,16 +982,16 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                                     new BucketInfo(
                                             null,
                                             null,
-                                            "Direction de l'Action sociale (SPW - Intérieur et Action sociale - Département de l'Action sociale - Direction de l'Action sociale)",
-                                            1,
-                                            null),
-                                    new BucketInfo(
-                                            null,
-                                            null,
                                             "DREAL HdF (Direction Régionale de l'Environnement de l'Aménagement et du Logement des Hauts de France)",
                                             1,
                                             null),
                                     new BucketInfo(null, null, "DREAL", 1, null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
+                                            "Direction de l'Action sociale (SPW - Intérieur et Action sociale - Département de l'Action sociale - Direction de l'Action sociale)",
+                                            1,
+                                            null),
                                     new BucketInfo(
                                             null,
                                             null,
@@ -1003,6 +1012,7 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                                             null),
                                     new BucketInfo(null, null, "Bundesamt für Raumentwicklung", 1, null),
                                     new BucketInfo(null, null, "Barbie Inc.", 1, null),
+                                    new BucketInfo(null, null, "atmo Hauts-de-France", 1, null),
                                     new BucketInfo(
                                             null,
                                             null,
@@ -1031,8 +1041,8 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                             "filter",
                             null,
                             List.of(
-                                    new BucketInfo(null, null, "availableInDownloadService", 5, null),
-                                    new BucketInfo(null, null, "availableInViewService", 13, null)))),
+                                    new BucketInfo(null, null, "availableInViewService", 13, null),
+                                    new BucketInfo(null, null, "availableInDownloadService", 5, null)))),
             // --------------------------------
             // this is a fixed-number-of-buckets facet (numbers)
             entry(

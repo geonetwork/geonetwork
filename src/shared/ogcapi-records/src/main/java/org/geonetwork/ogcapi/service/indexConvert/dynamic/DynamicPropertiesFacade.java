@@ -40,6 +40,20 @@ public class DynamicPropertiesFacade {
         extraElasticPropertiesService.inject(indexRecord, iso3lang, result);
     }
 
+    public OgcElasticFieldMapperConfig findFieldForFacet(OgcFacetConfig facetConfig) {
+        for (var field : config.getFields()) {
+            if (field.getFacetsConfig() == null || field.getFacetsConfig().isEmpty()) {
+                continue;
+            }
+            var facetNameForField =
+                    field.getFacetsConfig().stream().map(f -> f.getFacetName()).toList();
+            if (facetNameForField.contains(facetConfig.getFacetName())) {
+                return field;
+            }
+        }
+        return null;
+    }
+
     /**
      * for aggregates/facets, what is the default number of buckets?
      *
@@ -62,10 +76,7 @@ public class DynamicPropertiesFacade {
             if (field.getFacetsConfig() == null || field.getFacetsConfig().isEmpty()) {
                 continue;
             }
-            for (var facetConfig : field.getFacetsConfig()) {
-                facetConfig.setField(field); // parent link
-                result.add(facetConfig);
-            }
+            result.addAll(field.getFacetsConfig());
         }
         return result;
     }

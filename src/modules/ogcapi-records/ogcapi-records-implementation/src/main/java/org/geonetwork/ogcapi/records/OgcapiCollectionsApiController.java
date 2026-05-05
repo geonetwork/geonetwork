@@ -174,7 +174,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
 
         var records = itemsApi.getRecordsFromElastic(query);
 
-        var facetInfo = facetsInjector.getFacets(records);
+        var facetInfo = facetsInjector.getFacets(records, query.getAdvancedFacets());
         var totalNumHits = records.hits().total().value();
         var indexRecords = records.hits().hits().stream().map(x -> x.source()).toList();
 

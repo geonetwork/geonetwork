@@ -4,12 +4,20 @@
  */
 package org.geonetwork.ogcapi.service.facets;
 
+import static org.geonetwork.ogcapi.service.configuration.BucketSorting.COUNT;
+
+import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.CalendarInterval;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.util.NamedValue;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsAdvancedFacetDto;
+import org.geonetwork.ogcapi.service.configuration.BucketSorting;
+import org.geonetwork.ogcapi.service.configuration.BucketSortingDirection;
 import org.geonetwork.ogcapi.service.configuration.FacetType;
 import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
@@ -28,8 +36,25 @@ public class RecordsFacetsElasticQueryBuilder {
     @Autowired
     DynamicPropertiesFacade dynamicPropertiesFacade;
 
-    public Map<String, Aggregation> createElasticAggregationsFromFacetsDefinition() {
-        var facets = dynamicPropertiesFacade.getFacetConfigs();
+    @Autowired
+    AdvancedFacetsService advancedFacetsService;
+
+    /**
+     * @param advancedFacets null = use all pre-configured, empty = don't do any facets, otherwise only return these
+     *     facets
+     * @return
+     */
+    public Map<String, Aggregation> createElasticAggregationsFromFacetsDefinition(
+            List<OgcApiRecordsAdvancedFacetDto> advancedFacets) {
+
+        // empty advanced facets means "use the default ones defined in the configuration"
+        if (advancedFacets != null && advancedFacets.isEmpty()) {
+            return new HashMap<>(); // no facets
+        }
+
+        var facetsOriginal = dynamicPropertiesFacade.getFacetConfigs();
+
+        List<OgcFacetConfig> facets = advancedFacetsService.determineFacets(facetsOriginal, advancedFacets);
 
         var aggregations = new HashMap<String, Aggregation>();
 
@@ -37,7 +62,8 @@ public class RecordsFacetsElasticQueryBuilder {
 
         for (var facetInfo : facets) {
             var facetName = facetInfo.getFacetName();
-            var elasticProperty = facetInfo.getField().getElasticProperty();
+            var correspondingField = dynamicPropertiesFacade.findFieldForFacet(facetInfo);
+            var elasticProperty = correspondingField.getElasticProperty();
             var elasticPropertyInfo = this.dynamicPropertiesFacade.getByElasticProperty(elasticProperty);
             if (elasticPropertyInfo == null) {
                 continue;
@@ -96,8 +122,12 @@ public class RecordsFacetsElasticQueryBuilder {
         var nBuckets = histogramDto.getBucketCount() == null ? defaultBucketCount : histogramDto.getBucketCount();
 
         var agg = Aggregation.of(a -> a.variableWidthHistogram(h -> {
-            h.field(histogramDto.getField().getElasticProperty());
+            var correspondingField = dynamicPropertiesFacade.findFieldForFacet(histogramDto);
+            h.field(correspondingField.getElasticProperty());
             h.buckets(nBuckets);
+
+            // complex; need pipeline to support or sort later
+
             return h;
         }));
 
@@ -108,10 +138,28 @@ public class RecordsFacetsElasticQueryBuilder {
     private Aggregation createAggregation_histogram_number_fixedInterval(
             OgcFacetConfig histogramDto, SimpleType simpleType, Integer defaultBucketCount) {
         var agg = Aggregation.of(a -> a.histogram(h -> {
-            h.field(histogramDto.getField().getElasticProperty());
-            h.keyed(true);
+            var correspondingField = dynamicPropertiesFacade.findFieldForFacet(histogramDto);
+
+            h.field(correspondingField.getElasticProperty());
+            h.keyed(false);
             h.interval(histogramDto.getNumberBucketInterval());
             h.minDocCount(histogramDto.getMinimumDocumentCount());
+
+            var bucketSorting = getBucketSorting(histogramDto.getBucketSorting());
+            var elasticSecondaryDirection = getElasticSortingDirection(histogramDto.getBucketSortingDirection());
+
+            if (bucketSorting == COUNT) {
+                var dirElastic = getElasticSortingDirection(histogramDto.getBucketSortingDirection());
+                h.order(List.of(
+                        NamedValue.of("_count", dirElastic), NamedValue.of("_key", elasticSecondaryDirection) // tie
+                        ));
+            } else {
+                var dirElastic = getElasticSortingDirection(histogramDto.getBucketSortingDirection());
+                h.order(List.of(
+                        NamedValue.of("_key", dirElastic), NamedValue.of("_count", elasticSecondaryDirection) // tie
+                        ));
+            }
+
             return h;
         }));
 
@@ -124,8 +172,13 @@ public class RecordsFacetsElasticQueryBuilder {
         var nBuckets = histogramDto.getBucketCount() == null ? defaultBucketCount : histogramDto.getBucketCount();
 
         var agg = Aggregation.of(a -> a.autoDateHistogram(h -> {
-            h.field(histogramDto.getField().getElasticProperty());
+            var correspondingField = dynamicPropertiesFacade.findFieldForFacet(histogramDto);
+
+            h.field(correspondingField.getElasticProperty());
             h.buckets(nBuckets);
+
+            // sort later - need pipeline
+
             return h;
         }));
         return agg;
@@ -135,12 +188,30 @@ public class RecordsFacetsElasticQueryBuilder {
     private Aggregation createAggregation_histogram_date_fixedInterval(
             OgcFacetConfig histogramDto, SimpleType simpleType, Integer defaultBucketCount) {
         var agg = Aggregation.of(a -> a.dateHistogram(h -> {
-            h.field(histogramDto.getField().getElasticProperty());
+            var correspondingField = dynamicPropertiesFacade.findFieldForFacet(histogramDto);
+
+            h.field(correspondingField.getElasticProperty());
             h.keyed(false);
             var interval = CalendarInterval._DESERIALIZER.deserialize(
                     histogramDto.getCalendarIntervalUnit().toString(), null);
             h.calendarInterval(interval);
             h.minDocCount(histogramDto.getMinimumDocumentCount());
+
+            var bucketSorting = getBucketSorting(histogramDto.getBucketSorting());
+            var elasticSecondaryDirection = getElasticSortingDirection(histogramDto.getBucketSortingDirection());
+
+            if (bucketSorting == COUNT) {
+                var dirElastic = getElasticSortingDirection(histogramDto.getBucketSortingDirection());
+                h.order(List.of(
+                        NamedValue.of("_count", dirElastic), NamedValue.of("_key", elasticSecondaryDirection) // tie
+                        ));
+            } else {
+                var dirElastic = getElasticSortingDirection(histogramDto.getBucketSortingDirection());
+                h.order(List.of(
+                        NamedValue.of("_key", dirElastic), NamedValue.of("_count", elasticSecondaryDirection) // tie
+                        ));
+            }
+
             return h;
         }));
 
@@ -162,7 +233,13 @@ public class RecordsFacetsElasticQueryBuilder {
             }
             filters.put(filterName, query);
         }
-        var agg = Aggregation.of(a -> a.filters(f -> f.filters(ff -> ff.keyed(filters))));
+        var agg = Aggregation.of(a -> {
+            a.filters(f -> f.filters(ff -> ff.keyed(filters)));
+
+            // can pipeline to sort.... but its complicated and doesn't make much sense here
+
+            return a;
+        });
 
         return agg;
     }
@@ -175,11 +252,40 @@ public class RecordsFacetsElasticQueryBuilder {
         var _minCount = minCount; // effectively final
         var nBuckets = termsDto.getBucketCount() == null ? defaultBucketCount : termsDto.getBucketCount();
         var agg = Aggregation.of(a -> a.terms(t -> {
-            t.field(termsDto.getField().elasticProperty);
+            var correspondingField = dynamicPropertiesFacade.findFieldForFacet(termsDto);
+
+            t.field(correspondingField.elasticProperty);
             t.minDocCount(_minCount);
             t.size(nBuckets);
+
+            var bucketSorting = getBucketSorting(termsDto.getBucketSorting());
+
+            var elasticSecondaryDirection = getElasticSortingDirection(termsDto.getBucketSortingDirection());
+
+            if (bucketSorting == COUNT) {
+                var dirElastic = getElasticSortingDirection(termsDto.getBucketSortingDirection());
+                t.order(List.of(
+                        NamedValue.of("_count", dirElastic), NamedValue.of("_key", elasticSecondaryDirection) // tie
+                        ));
+            } else {
+                var dirElastic = getElasticSortingDirection(termsDto.getBucketSortingDirection());
+                t.order(List.of(
+                        NamedValue.of("_key", dirElastic), NamedValue.of("_count", elasticSecondaryDirection) // tie
+                        ));
+            }
+
             return t;
         }));
         return agg;
+    }
+
+    public BucketSorting getBucketSorting(BucketSorting sorting) {
+        return sorting == null ? BucketSorting.COUNT : sorting;
+    }
+
+    public SortOrder getElasticSortingDirection(BucketSortingDirection direction) {
+        var dir = direction == null ? BucketSortingDirection.DESCENDING : direction;
+        var dirElastic = dir == BucketSortingDirection.DESCENDING ? SortOrder.Desc : SortOrder.Asc;
+        return dirElastic;
     }
 }

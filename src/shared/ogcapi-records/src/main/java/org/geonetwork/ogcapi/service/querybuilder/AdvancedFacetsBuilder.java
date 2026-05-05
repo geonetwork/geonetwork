@@ -29,9 +29,16 @@ public class AdvancedFacetsBuilder {
 
     private final FacetsJsonService facetsService;
 
+    public static final int MAX_BUCKETS = 50;
+
     /**
      * Given a set of facets from the request, parse and validate them, and return a list of
      * OgcApiRecordsAdvancedFacetDto.
+     *
+     * <p>facetsFromRequest == null (i.e. when there's no "&facets=..." in request) --> do all facets (this returns
+     * null) <br>
+     * facetsFromRequest == empty list (i.e. when there's "&facets=" in request, but no value) --> no facets in response
+     * (this returns empty list)
      *
      * @param catalogId what catalog is this for (we ensure that the facet names are legal, and the are, technically,
      *     catalog-scoped).
@@ -41,7 +48,10 @@ public class AdvancedFacetsBuilder {
      */
     public List<OgcApiRecordsAdvancedFacetDto> buildAdvancedFacets(String catalogId, List<String> facetsFromRequest)
             throws Exception {
-        if (facetsFromRequest == null || facetsFromRequest.isEmpty()) {
+        if (facetsFromRequest == null) {
+            return null;
+        }
+        if (facetsFromRequest.isEmpty()) {
             return new ArrayList<>(); // empty
         }
 
@@ -132,6 +142,10 @@ public class AdvancedFacetsBuilder {
                 result.bucketSize(Integer.parseInt(subStrs[1]));
                 if (result.getBucketSize() < 0) {
                     throw new Exception("Bucket size must be zero or positive: " + userFacetDefinition);
+                }
+                if (result.getBucketSize() > MAX_BUCKETS) {
+                    throw new Exception(
+                            "Bucket size exceeds maximum: " + userFacetDefinition + ", max is " + MAX_BUCKETS);
                 }
             }
         }

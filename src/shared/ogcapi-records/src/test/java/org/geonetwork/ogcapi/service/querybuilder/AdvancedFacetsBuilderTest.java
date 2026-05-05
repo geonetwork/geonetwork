@@ -98,7 +98,10 @@ public class AdvancedFacetsBuilderTest {
     }
 
     /**
-     * tests returns no parsed facets if none in request
+     * tests returns no parsed facets if none in request.
+     *
+     * <p>&facets= -> no facets in result <br>
+     * no mention of &facets in request ---> all facets in result.
      *
      * @throws Exception shouldnt happen
      */
@@ -110,7 +113,7 @@ public class AdvancedFacetsBuilderTest {
 
         facets = null;
         result = parse(facets);
-        assertEquals(0, result.size());
+        assertNull(result);
     }
 
     /** not it spec, but implied. Just the name of the facet. "theme", "theme:" "theme::" */

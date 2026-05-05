@@ -140,7 +140,8 @@ public class OgcApiItemsApi {
                     query = elasticWithUserPermissions.createPermissionQuery(query);
                     s.query(query);
                     s.index(simpleElastic.getRecordIndexName());
-                    s.aggregations(recordsFacetsBuilder.createElasticAggregationsFromFacetsDefinition());
+                    s.aggregations(recordsFacetsBuilder.createElasticAggregationsFromFacetsDefinition(
+                            ogcApiQuery.getAdvancedFacets()));
                     return s;
                 },
                 IndexRecord.class);
