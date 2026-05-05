@@ -59,11 +59,7 @@ public class AdvancedFacetTests {
         return parent.retrieveUrlJson(s, clazz);
     }
 
-    /**
-     * run all the @AdvancedFacetTest methods in this class
-     *
-     * @throws Exception
-     */
+    /** run all the @AdvancedFacetTest methods in this class */
     public void runTests() throws Exception {
         for (Method method : this.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(AdvancedFacetTest.class)) {

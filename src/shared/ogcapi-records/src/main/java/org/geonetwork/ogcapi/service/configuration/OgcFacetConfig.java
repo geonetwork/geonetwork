@@ -48,9 +48,11 @@ public class OgcFacetConfig {
     /** only valid for FILTER facets - these are the individual filters. */
     public List<FilterFacetInfo> filters;
 
-    /** To look at the parent object (might be null) */
-    //    public OgcElasticFieldMapperConfig field;
-
+    /**
+     * copy constructor
+     *
+     * @param other copy from here
+     */
     public OgcFacetConfig(OgcFacetConfig other) {
         if (other == null) {
             return;

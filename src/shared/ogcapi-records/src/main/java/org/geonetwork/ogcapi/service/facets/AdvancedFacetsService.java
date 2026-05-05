@@ -12,6 +12,7 @@ import org.geonetwork.ogcapi.service.configuration.BucketSortingDirection;
 import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
 import org.springframework.stereotype.Component;
 
+/** provides service around the advanced facets. */
 @Component
 public class AdvancedFacetsService {
 
@@ -39,6 +40,13 @@ public class AdvancedFacetsService {
         return facets;
     }
 
+    /**
+     * given an originalFacet config (i.e. pre-configured) and "overrides" from the user, create a new config that
+     * merges the changes.
+     *
+     * @param originalFacet pre-configured (default)
+     * @param userRequestedFacetConfig from user's request `&facets=name:buckets:sort`
+     */
     public void copyInUserConfig(OgcFacetConfig originalFacet, OgcApiRecordsAdvancedFacetDto userRequestedFacetConfig) {
         if (userRequestedFacetConfig == null) {
             return;
@@ -64,6 +72,12 @@ public class AdvancedFacetsService {
         }
     }
 
+    /**
+     * Find the configuration for named facet.
+     *
+     * @param advancedFacets from user
+     * @param facet potential facet config (pre-defined)
+     */
     public OgcApiRecordsAdvancedFacetDto findAdvancedFacet(
             List<OgcApiRecordsAdvancedFacetDto> advancedFacets, OgcFacetConfig facet) {
         if (advancedFacets == null) {
@@ -77,6 +91,12 @@ public class AdvancedFacetsService {
         return null;
     }
 
+    /**
+     * Full work for determining what facets to retrieive (and the merged configuration)
+     *
+     * @param facetsOriginal original config
+     * @param advancedFacets from user
+     */
     public List<OgcFacetConfig> determineFacets(
             List<OgcFacetConfig> facetsOriginal, List<OgcApiRecordsAdvancedFacetDto> advancedFacets) {
         // filter unwanted facets

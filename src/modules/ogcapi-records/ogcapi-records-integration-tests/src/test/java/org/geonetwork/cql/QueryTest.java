@@ -938,6 +938,7 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         }
     }
 
+    /** cheater method so we don't have to spin-up the containers again (30-60 seconds). */
     @Test
     public void test_advancedFacets() throws Exception {
         this.advancedFacetTests.runTests();

@@ -22,6 +22,11 @@ public class FilterFacetInfo {
     /** CQL expression for the filter. */
     public String filterEquationCql;
 
+    /**
+     * copy constructor.
+     *
+     * @param other copy from here
+     */
     public FilterFacetInfo(FilterFacetInfo other) {
         if (other == null) {
             return;

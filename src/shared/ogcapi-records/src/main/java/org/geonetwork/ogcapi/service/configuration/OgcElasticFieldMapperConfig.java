@@ -6,7 +6,6 @@ package org.geonetwork.ogcapi.service.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -56,28 +55,4 @@ public class OgcElasticFieldMapperConfig {
 
     /** config for facets */
     public List<OgcFacetConfig> facetsConfig = new ArrayList<>();
-
-    public OgcElasticFieldMapperConfig(OgcElasticFieldMapperConfig other) {
-        if (other == null) {
-            return;
-        }
-
-        this.ogcProperty = other.ogcProperty;
-        this.elasticProperty = other.elasticProperty;
-        this.indexRecordProperty = other.indexRecordProperty;
-        this.typeOverride = other.typeOverride;
-        this.sortFieldSuffix = other.sortFieldSuffix;
-        this.isSortable = other.isSortable;
-        this.isQueryable = other.isQueryable;
-        this.description = other.description;
-        this.title = other.title;
-        this.addPropertyToOutput = other.addPropertyToOutput;
-
-        // Deep copy the list of facets
-        if (other.facetsConfig != null) {
-            this.facetsConfig = other.facetsConfig.stream()
-                    .map(facet -> facet == null ? null : new OgcFacetConfig(facet))
-                    .collect(Collectors.toCollection(ArrayList::new));
-        }
-    }
 }

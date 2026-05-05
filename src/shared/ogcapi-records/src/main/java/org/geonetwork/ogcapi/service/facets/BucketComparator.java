@@ -5,21 +5,27 @@
 package org.geonetwork.ogcapi.service.facets;
 
 import java.text.Collator;
-import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.Locale;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetResultBucketDto;
 import org.geonetwork.ogcapi.service.configuration.BucketSortingDirection;
 
+/** for sorting buckets (advanced facets) */
 public class BucketComparator {
 
-    // machine's locale
+    // how to compare two strings!
     public static Collator stringCollator = Collator.getInstance(Locale.ENGLISH);
 
     static {
         stringCollator.setStrength(Collator.SECONDARY);
     }
 
+    /**
+     * values comparator that's aware of STRING, NUMBER, and DATE types. Null/parsable safe
+     *
+     * @param sortType data type
+     * @param direction sort direction (asc/desc)
+     */
     public static Comparator<OgcApiRecordsFacetResultBucketDto> createValueComparator(
             FacetsResponseInjector.SortType sortType, BucketSortingDirection direction) {
 
@@ -56,7 +62,7 @@ public class BucketComparator {
                         if (l2 == null) {
                             return -1;
                         }
-                        result = Double.compare(l1, l2);
+                        result = Long.compare(l1, l2);
                         return direction == BucketSortingDirection.ASCENDING ? result : -result;
                     case STRING:
                         if (valA == null && valB == null) {
@@ -83,6 +89,11 @@ public class BucketComparator {
         return Comparator.nullsLast(baseComparator);
     }
 
+    /**
+     * parse a double - return null on error
+     *
+     * @param d string to be parsed
+     */
     public static Double safeDoubleParser(String d) {
         try {
             return Double.parseDouble(d);
@@ -91,17 +102,14 @@ public class BucketComparator {
         }
     }
 
+    /**
+     * parse a long - null if error
+     *
+     * @param l string value
+     */
     public static Long safeLongParser(String l) {
         try {
             return Long.parseLong(l);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static OffsetDateTime safeDateParser(String d) {
-        try {
-            return OffsetDateTime.parse(d);
         } catch (Exception e) {
             return null;
         }

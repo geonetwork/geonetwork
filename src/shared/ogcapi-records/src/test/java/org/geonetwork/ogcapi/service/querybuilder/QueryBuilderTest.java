@@ -40,6 +40,8 @@ public class QueryBuilderTest {
 
     @BeforeEach
     public void setup() {
+        // sets up the AdvancedFacetsBuilder for testing
+
         AdvancedFacetsBuilder advancedFacetsBuilder = new AdvancedFacetsBuilder(new FacetsJsonService() {
             @Override
             public OgcApiRecordsFacetsDto buildFacets(String catalogId) {

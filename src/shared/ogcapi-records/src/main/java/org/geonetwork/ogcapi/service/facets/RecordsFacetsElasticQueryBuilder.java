@@ -40,9 +40,10 @@ public class RecordsFacetsElasticQueryBuilder {
     AdvancedFacetsService advancedFacetsService;
 
     /**
+     * merge configurations for a set of facets.
+     *
      * @param advancedFacets null = use all pre-configured, empty = don't do any facets, otherwise only return these
      *     facets
-     * @return
      */
     public Map<String, Aggregation> createElasticAggregationsFromFacetsDefinition(
             List<OgcApiRecordsAdvancedFacetDto> advancedFacets) {

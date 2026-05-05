@@ -14,6 +14,7 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetResultBuc
 import org.geonetwork.ogcapi.service.configuration.BucketSortingDirection;
 import org.junit.jupiter.api.Test;
 
+/** very simple tests for the bucket sortings - the integration tests are more detailed. */
 public class BucketComparatorTest {
 
     // simple longs (date)  Date bucket will have value as long (epoc time).
@@ -85,18 +86,18 @@ public class BucketComparatorTest {
 
         buckets.sort(comparator);
 
-        assertEquals("aa", (buckets.get(0).getValue()));
-        assertEquals("ab", (buckets.get(1).getValue()));
-        assertEquals("abb", (buckets.get(2).getValue()));
+        assertEquals("aa", buckets.get(0).getValue());
+        assertEquals("ab", buckets.get(1).getValue());
+        assertEquals("abb", buckets.get(2).getValue());
 
         comparator = BucketComparator.createValueComparator(
                 FacetsResponseInjector.SortType.STRING, BucketSortingDirection.DESCENDING);
 
         buckets.sort(comparator);
 
-        assertEquals("abb", (buckets.get(0).getValue()));
-        assertEquals("ab", (buckets.get(1).getValue()));
-        assertEquals("aa", (buckets.get(2).getValue()));
+        assertEquals("abb", buckets.get(0).getValue());
+        assertEquals("ab", buckets.get(1).getValue());
+        assertEquals("aa", buckets.get(2).getValue());
     }
 
     // simple doubles with nulls. Nulls should be sorted last regardless of direction.
@@ -140,7 +141,7 @@ public class BucketComparatorTest {
 
         assertEquals(3, Double.parseDouble(buckets.get(0).getValue()));
         assertEquals(11, Double.parseDouble(buckets.get(1).getValue()));
-        assertEquals("abc", (buckets.get(2).getValue()));
+        assertEquals("abc", buckets.get(2).getValue());
 
         comparator = BucketComparator.createValueComparator(
                 FacetsResponseInjector.SortType.NUMBER, BucketSortingDirection.DESCENDING);
@@ -148,10 +149,10 @@ public class BucketComparatorTest {
         buckets.sort(comparator);
         assertEquals(11, Double.parseDouble(buckets.get(0).getValue()));
         assertEquals(3, Double.parseDouble(buckets.get(1).getValue()));
-        assertEquals("abc", (buckets.get(2).getValue()));
+        assertEquals("abc", buckets.get(2).getValue());
     }
 
-    public List<OgcApiRecordsFacetResultBucketDto> createBuckets(ArrayList<Integer> counts, ArrayList<String> values) {
+    public List<OgcApiRecordsFacetResultBucketDto> createBuckets(List<Integer> counts, List<String> values) {
         var result = new ArrayList<OgcApiRecordsFacetResultBucketDto>();
         for (int i = 0; i < counts.size(); i++) {
             var item = new OgcApiRecordsFacetResultBucketDto();

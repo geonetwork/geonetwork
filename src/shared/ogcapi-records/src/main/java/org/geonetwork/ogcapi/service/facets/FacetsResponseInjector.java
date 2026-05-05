@@ -74,20 +74,6 @@ public class FacetsResponseInjector {
         return result;
     }
 
-    //    /**
-    //     * Setup the facets portion of the response.
-    //     *
-    //     * @param webResponse put the facets in here (goes to user)
-    //     * @param searchResponse from elastic
-    //     */
-    //    public void injectFacets(
-    //            OgcApiRecordsGetRecords200ResponseDto webResponse, SearchResponse<IndexRecord> searchResponse) {
-    //
-    //        var result = getFacets(searchResponse, query.getAdvancedFacets());
-    //
-    //        webResponse.setFacets(result);
-    //    }
-
     private OgcApiRecordsFacetSummaryDto setupSummary(
             Integer defaultBucketCount,
             String name,
@@ -386,7 +372,7 @@ public class FacetsResponseInjector {
      * @param sortedBy sorting option (alphabetical for term or count of documents)
      * @param moreDocs there were more documents that were not returned by elastic
      * @param bucketCount how many buckets are configured?
-     * @param bucketSortingDirection
+     * @param bucketSortingDirection desc/asc
      */
     private void handleBuckets(
             OgcApiRecordsFacetSummaryDto result,

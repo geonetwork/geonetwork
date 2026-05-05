@@ -40,6 +40,12 @@ public class DynamicPropertiesFacade {
         extraElasticPropertiesService.inject(indexRecord, iso3lang, result);
     }
 
+    /**
+     * given a facet seach for the field its apart of (facet configs are part of field defintion - see the
+     * property/facet configuration)
+     *
+     * @param facetConfig facet to look for
+     */
     public OgcElasticFieldMapperConfig findFieldForFacet(OgcFacetConfig facetConfig) {
         for (var field : config.getFields()) {
             if (field.getFacetsConfig() == null || field.getFacetsConfig().isEmpty()) {

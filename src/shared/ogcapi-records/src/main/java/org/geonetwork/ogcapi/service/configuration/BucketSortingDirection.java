@@ -5,6 +5,7 @@
 
 package org.geonetwork.ogcapi.service.configuration;
 
+/** Which direction to sort buckets. */
 public enum BucketSortingDirection {
     ASCENDING,
     DESCENDING
