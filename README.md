@@ -39,13 +39,19 @@ To run GeoNetwork 5 in dev mode, you first need to run GeoNetwork 4 with shared 
    ```bash
    mvn clean install
    ```
-   
-   
-3. **Run GeoNetwork 5** with the following command:
+
+4. **Run Spring Cloud Config Server** (optional) with the following command:
 
    ```bash
-   cd src/apps/geonetwork
-   mvn spring-boot:run
+   cd src/apps
+   mvn spring-boot:run -pl spring-cloud-config-server
+   ```
+
+   
+5. **Run GeoNetwork 5** with the following command:
+
+   ```bash
+   mvn spring-boot:run -pl geonetwork
    ```
    
    Access GN5: http://localhost:7979/geonetwork (login `admin`/`admin`)

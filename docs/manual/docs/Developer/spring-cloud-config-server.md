@@ -33,6 +33,34 @@ CREATE TABLE APP_CONFIGS (
 
 ## Developer Guide
 
+### To run Spring Cloud Config
+
+To start Spring Cloud Config Server:
+
+Configure DB connection in `config/application-config-server.yml` in the following section:
+   
+   ```yaml
+    datasource:
+        url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/geonetwork}
+        username: ${JDBC_DATABASE_USERNAME:geonetwork}
+        password: ${JDBC_DATABASE_PASSWORD:geonetwork}
+        driver-class-name: ${JDBC_DATABASE_DRIVER:org.postgresql.Driver}
+    ```
+
+Or with env variables:
+
+- JDBC_DATABASE_URL
+- JDBC_DATABASE_USERNAME
+- JDBC_DATABASE_PASSWORD
+- JDBC_DATABASE_DRIVER
+
+Then run the server with:
+
+   ```bash
+   cd src/apps
+   mvn spring-boot:run -pl spring-cloud-config-server
+   ```
+
 ### Using Variables in Code
 From a developer's perspective, accessing configurations remains transparent and standard Spring style. You use standard Spring annotations regardless of whether the value comes from a YAML file or the Config Server:
 
@@ -69,8 +97,8 @@ Since the Config Server is read-only by design, GeoNetwork 5 provides a dedicate
 
 * **Endpoint:** `/api/configuration`
 * **GET `?key=...`**: Retrieve a value from the current environment.
-* **GET `/set?key=...&value=...`**: Persist a value to the database and trigger a refresh.
-* **POST `/`**: Persist a value via JSON body.
+* **GET `/list`**: Lists all configurations from the DB.
+* **PUT `/`**: Persist a value via JSON body.
 
 ## Possible usages
 The Spring Cloud Config Server architecture is also being evaluated as a potential solution for managing:
