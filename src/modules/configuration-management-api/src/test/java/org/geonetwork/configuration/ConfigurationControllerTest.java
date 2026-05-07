@@ -4,6 +4,7 @@
  */
 package org.geonetwork.configuration;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,21 +27,21 @@ class ConfigurationControllerTest {
     private ConfigurationService configurationService;
 
     @Test
-    void list_withoutApp_shouldCallGetAllConfigurations() throws Exception {
-        when(configurationService.getAllConfigurations()).thenReturn(Collections.emptyList());
+    void list_withoutApp_shouldCallGetConfigurationMapWithDefaults() throws Exception {
+        when(configurationService.getConfigurationMap(any(), any(), any())).thenReturn(Collections.emptyMap());
 
         mockMvc.perform(get("/api/configuration/list")).andExpect(status().isOk());
 
-        verify(configurationService).getAllConfigurations();
+        verify(configurationService).getConfigurationMap(null, null, null);
     }
 
     @Test
-    void list_withApp_shouldCallGetConfigurationsByApp() throws Exception {
+    void list_withApp_shouldCallGetConfigurationMapWithApp() throws Exception {
         String app = "testApp";
-        when(configurationService.getConfigurationsByApp(app)).thenReturn(Collections.emptyList());
+        when(configurationService.getConfigurationMap(any(), any(), any())).thenReturn(Collections.emptyMap());
 
         mockMvc.perform(get("/api/configuration/list").param("app", app)).andExpect(status().isOk());
 
-        verify(configurationService).getConfigurationsByApp(app);
+        verify(configurationService).getConfigurationMap(app, null, null);
     }
 }

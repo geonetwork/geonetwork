@@ -27,6 +27,10 @@ public class ConfigurationInitializer implements CommandLineRunner {
             // Example default configuration
             saveDefault("GeoNetwork", "default", "master", "geonetwork.api.configuration.enabled", "true");
             saveDefault("GeoNetwork", "default", "master", "geonetwork.api.configuration.refresh-on-write", "true");
+            saveDefault("Frontend", "default", "master", "geonetwork.homepage.title", "GeoNetwork");
+            saveDefault("Frontend", "default", "master", "geonetwork.homepage.search.show", "false");
+
+            log.info("Configuration initialization complete.");
 
             log.info("Configuration initialization complete.");
         }

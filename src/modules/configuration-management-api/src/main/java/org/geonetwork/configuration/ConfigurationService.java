@@ -5,6 +5,8 @@
 package org.geonetwork.configuration;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +30,9 @@ public class ConfigurationService {
     @Value("${spring.profiles.active:default}")
     private String defaultProfile;
 
+    @Value("${spring.cloud.config.label:master}")
+    private String defaultLabel;
+
     /** Retrieve configuration parameter from Environment */
     public String getConfiguration(String key) {
         return env.getProperty(key);
@@ -43,13 +48,34 @@ public class ConfigurationService {
         return repository.findByApp(app);
     }
 
+    /** Retrieve configuration as a Map for a given app, profile and label. */
+    public Map<String, String> getConfigurationMap(String app, String profile, String label) {
+        List<AppConfig> configs = repository.findByAppAndProfileAndLabel(
+                app != null ? app : defaultApp,
+                profile != null ? profile : defaultProfile,
+                label != null ? label : defaultLabel);
+
+        return configs.stream().collect(Collectors.toMap(AppConfig::getConfigParam, AppConfig::getConfigValue));
+    }
+
+    /** Update an existing configuration parameter in the database and refresh context. */
+    @Transactional
+    public void updateConfiguration(AppConfig config) {
+        updateConfiguration(
+                config.getApp(),
+                config.getProfile(),
+                config.getLabel(),
+                config.getConfigParam(),
+                config.getConfigValue());
+    }
+
     /** Update an existing configuration parameter in the database and refresh context. */
     @Transactional
     public void updateConfiguration(String app, String profile, String label, String key, String value) {
         AppConfigId id = new AppConfigId(
                 app != null ? app : defaultApp,
                 profile != null ? profile : defaultProfile,
-                label != null ? label : "master",
+                label != null ? label : defaultLabel,
                 key);
 
         if (!repository.existsById(id)) {

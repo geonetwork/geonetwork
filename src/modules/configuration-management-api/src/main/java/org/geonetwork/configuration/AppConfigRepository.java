@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppConfigRepository extends JpaRepository<AppConfig, AppConfigId> {
     List<AppConfig> findByApp(String app);
+
+    List<AppConfig> findByAppAndProfileAndLabel(String app, String profile, String label);
 }
