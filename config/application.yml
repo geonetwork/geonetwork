@@ -53,7 +53,12 @@ server:
 
 spring:
   application:
-    name: GeoNetwork
+    name: ${SPRING_APPLICATION_NAME:GeoNetwork}
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  cloud:
+    config:
+      label: ${SPRING_CLOUD_CONFIG_LABEL:master}
   datasource:
     url: jdbc:postgresql://localhost:5432/geonetwork
     driverClassName: org.postgresql.Driver

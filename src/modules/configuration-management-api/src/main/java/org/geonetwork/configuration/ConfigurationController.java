@@ -23,10 +23,14 @@ public class ConfigurationController {
     /**
      * Retrieve all configuration parameters stored in the database.
      *
-     * @return list of all configurations
+     * @param app optional application name to filter by
+     * @return list of configurations
      */
     @GetMapping("/list")
-    public List<AppConfig> list() {
+    public List<AppConfig> list(@RequestParam(required = false) String app) {
+        if (app != null) {
+            return configurationService.getConfigurationsByApp(app);
+        }
         return configurationService.getAllConfigurations();
     }
 

@@ -92,6 +92,36 @@ public class MyDynamicService {
 
 When a configuration is updated via the API, a `ContextRefresher.refresh()` call is triggered, and all beans in `@RefreshScope` are re-instantiated with the new values.
 
+### Configuring Other Applications
+Any Spring Boot application can be configured to read from the GeoNetwork Config Server by following these steps:
+
+1. **Add the Config Client dependency**:
+   ```xml
+   <dependency>
+     <groupId>org.springframework.cloud</groupId>
+     <artifactId>spring-cloud-starter-config</artifactId>
+   </dependency>
+   ```
+
+2. **Configure the application identity**:
+   In your `application.yml`, define how the app identifies itself and where the server is located:
+   ```yaml
+   spring:
+     application:
+       name: MyNewApp  # Matches 'APP' column in database
+     config:
+       import: "optional:configserver:http://localhost:8888"
+   ```
+
+3. **Database Setup**:
+   The Config Server uses the application's identity to filter the `APP_CONFIGS` table. You must add corresponding rows for your new app:
+   ```sql
+   INSERT INTO APP_CONFIGS (APP, PROFILE, LABEL, CONFIG_PARAM, CONFIG_VALUE)
+   VALUES ('MyNewApp', 'default', 'master', 'my.custom.setting', 'some-value');
+   ```
+
+Applications can share the same settings by using the same `spring.application.name` (e.g., `GeoNetwork`), or have isolated configurations by using unique names.
+
 ### Runtime Configuration API
 Since the Config Server is read-only by design, GeoNetwork 5 provides a dedicated module (`gn-configuration-management-api`) that exposes a REST API to manage these settings:
 

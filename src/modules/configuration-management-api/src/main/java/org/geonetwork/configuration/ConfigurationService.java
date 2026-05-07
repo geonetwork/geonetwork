@@ -38,6 +38,11 @@ public class ConfigurationService {
         return repository.findAll();
     }
 
+    /** Retrieve all configuration parameters for a specific application stored in the database. */
+    public List<AppConfig> getConfigurationsByApp(String app) {
+        return repository.findByApp(app);
+    }
+
     /** Update an existing configuration parameter in the database and refresh context. */
     @Transactional
     public void updateConfiguration(String app, String profile, String label, String key, String value) {
