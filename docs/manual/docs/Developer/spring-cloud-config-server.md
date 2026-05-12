@@ -23,12 +23,20 @@ The configuration is stored in the `APP_CONFIGS` table with the following struct
 
 ```sql
 CREATE TABLE APP_CONFIGS (
-  APP VARCHAR(255),           -- Application name (e.g., 'GeoNetwork')
-  PROFILE VARCHAR(255),       -- Spring profile (e.g., 'default', 'prod')
-  LABEL VARCHAR(255),         -- Optional label (e.g., 'master')
-  CONFIG_PARAM VARCHAR(255),  -- Configuration key (e.g., 'geonetwork.index.indexPrefix')
-  CONFIG_VALUE VARCHAR(255)   -- Configuration value
+  APP VARCHAR(255) NOT NULL,           -- Application name (e.g., 'GeoNetwork')
+  PROFILE VARCHAR(255) NOT NULL,       -- Spring profile (e.g., 'default', 'prod')
+  LABEL VARCHAR(255) NOT NULL,         -- Optional label (e.g., 'master')
+  CONFIG_PARAM VARCHAR(255) NOT NULL,  -- Configuration key (e.g., 'geonetwork.index.indexPrefix')
+  CONFIG_VALUE TEXT NOT NULL,          -- Configuration value
+  INTERNAL BOOLEAN DEFAULT TRUE NOT NULL, -- Whether the config is internal
+  PRIMARY KEY (APP, PROFILE, LABEL, CONFIG_PARAM)
 );
+
+-- Optimization for Config Server lookups
+CREATE INDEX IDX_APP_CONFIGS_LOWER_APP ON APP_CONFIGS (LOWER(APP), PROFILE, LABEL);
+
+-- Optimization for parameter-based lookups
+CREATE INDEX IDX_APP_CONFIGS_PARAM ON APP_CONFIGS (CONFIG_PARAM);
 ```
 
 ## Developer Guide

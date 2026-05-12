@@ -9,9 +9,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.geonetwork.security.SecurityService;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,63 +25,55 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConfigurationController {
 
     private final ConfigurationService configurationService;
+    private final SecurityService securityService;
 
-    /**
-     * Retrieve all configuration parameters stored in the database for a given app, profile and label.
-     *
-     * @param app optional application name to filter by
-     * @param profile optional profile to filter by
-     * @param label optional label to filter by
-     * @return map of configurations (key, value)
-     */
+    /** List configuration parameters. Non-admins will have internal parameters filtered out. */
     @GetMapping("/list")
     @Operation(
             summary = "List configuration parameters",
             description =
-                    "Retrieve a key-value map of configuration parameters for a specific context (app, profile, label). Defaults to current application context if parameters are omitted.")
+                    "Retrieve a map of configuration parameters. Non-admins will have internal parameters filtered out.")
     public Map<String, String> list(
-            @Parameter(description = "Application name to filter by (e.g., 'GeoNetwork')")
-                    @RequestParam(required = false)
-                    String app,
-            @Parameter(description = "Spring profile to filter by (e.g., 'default', 'prod')")
-                    @RequestParam(required = false)
-                    String profile,
-            @Parameter(description = "Configuration label to filter by (e.g., 'master')")
-                    @RequestParam(required = false)
-                    String label) {
-        return configurationService.getConfigurationMap(app, profile, label);
+            @Parameter(description = "Application name") @RequestParam(required = false) String app,
+            @Parameter(description = "Spring profile") @RequestParam(required = false) String profile,
+            @Parameter(description = "Configuration label") @RequestParam(required = false) String label) {
+        boolean isAdmin = securityService.isAdmin();
+        return configurationService.getConfigurationMap(app, profile, label, isAdmin);
     }
 
     /**
-     * Retrieve a configuration parameter value from the Spring Environment.
-     *
-     * @param key the configuration parameter key
-     * @return the parameter value
+     * Get a configuration value from the Environment. Non-admins can only retrieve non-internal parameters that exist
+     * in the database.
      */
     @GetMapping
     @Operation(
             summary = "Get a configuration value",
-            description = "Retrieve a configuration parameter value from the Spring Environment using its key.")
+            description = "Retrieve a value from the Environment. Some parameters are visible to admin only.")
     public String get(
-            @Parameter(description = "The configuration parameter key (e.g., 'geonetwork.url')", required = true)
-                    @RequestParam
-                    String key) {
-        return configurationService.getConfiguration(key);
+            @Parameter(description = "The configuration parameter key", required = true) @RequestParam String key) {
+        if (securityService.isAdmin()) {
+            return configurationService.getConfiguration(key);
+        } else {
+            if (!configurationService.canAccess(key)) {
+                throw new AccessDeniedException("Access to configuration parameter '" + key + "' is denied.");
+            }
+            return configurationService.getConfiguration(key);
+        }
     }
 
-    /**
-     * Update a configuration parameter in the database using PUT body.
-     *
-     * @param config the configuration object
-     * @return success message
-     */
+    /** Update or insert a configuration parameter. Only available to admins. */
     @PutMapping
     @Operation(
-            summary = "Update a configuration parameter",
-            description =
-                    "Update an existing configuration parameter in the database. The context (app, profile, label) is automatically determined if not explicitly provided in the request body.")
-    public String update(@RequestBody AppConfig config) {
-        configurationService.updateConfiguration(config);
+            summary = "Update or insert a configuration parameter",
+            description = "Update an existing configuration in the DB or insert it from the Environment.")
+    @PreAuthorize("@securityService.isAdmin()")
+    public String update(
+            @Parameter(description = "Application name") @RequestParam(required = false) String app,
+            @Parameter(description = "Spring profile") @RequestParam(required = false) String profile,
+            @Parameter(description = "Configuration label") @RequestParam(required = false) String label,
+            @Parameter(description = "The configuration parameter key", required = true) @RequestParam String key,
+            @Parameter(description = "The configuration parameter value", required = true) @RequestParam String value) {
+        configurationService.updateConfiguration(app, profile, label, key, value);
         return "Parameter updated";
     }
 }

@@ -27,6 +27,15 @@ public class SecurityService {
     private final IAuthenticationFacade authenticationFacade;
     private final RoleHierarchy roleHierarchy;
 
+    public boolean isAdmin() {
+        if (!authenticationFacade.isAuthenticated()) {
+            return false;
+        }
+        var authentication = this.authenticationFacade.geonetworkPermissions();
+        Profile profile = authentication.getHighestProfile();
+        return profile == Profile.Administrator;
+    }
+
     public boolean hasMetadataBatchEditingAccessLevel() {
         if (!authenticationFacade.getAuthentication().isAuthenticated()) {
             return false;

@@ -25,21 +25,25 @@ import lombok.Setter;
 @IdClass(AppConfigId.class)
 public class AppConfig {
     @Id
-    @Column(name = "APP")
+    @Column(name = "APP", nullable = false)
     private String app;
 
     @Id
-    @Column(name = "PROFILE")
+    @Column(name = "PROFILE", nullable = false)
     private String profile;
 
     @Id
-    @Column(name = "LABEL")
+    @Column(name = "LABEL", nullable = false)
     private String label;
 
     @Id
-    @Column(name = "CONFIG_PARAM")
+    @Column(name = "CONFIG_PARAM", nullable = false)
     private String configParam;
 
-    @Column(name = "CONFIG_VALUE")
+    @Column(name = "CONFIG_VALUE", columnDefinition = "TEXT", nullable = false)
     private String configValue;
+
+    @Column(name = "INTERNAL", nullable = false)
+    @Builder.Default
+    private boolean internal = true;
 }
