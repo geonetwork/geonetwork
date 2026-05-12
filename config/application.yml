@@ -102,8 +102,22 @@ management:
         include: "*"
 
 springdoc:
+  api-docs:
+    default-produces-media-type: application/json
   swagger-ui:
     path: /swagger-ui
+
+scalar:
+  enabled: true
+  path: /doc/api/discover
+  sources:
+    - url: ../../v3/api-docs
+      title: GeoNetwork 5 API
+      slug: gn5
+      isDefault: true
+    - url: ../../srv/api/doc
+      title: GeoNetwork 4 API
+      slug: gn4
 
 
 debug: false

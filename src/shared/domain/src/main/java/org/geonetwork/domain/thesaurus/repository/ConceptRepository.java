@@ -5,6 +5,7 @@
 
 package org.geonetwork.domain.thesaurus.repository;
 
+import java.util.List;
 import org.geonetwork.domain.thesaurus.model.Concept;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -94,4 +95,43 @@ public interface ConceptRepository extends JpaRepository<Concept, Long> {
             @Param("internalIdentifier") String internalIdentifier,
             @Param("uiLang") String uiLang,
             @Param("rows") int rows);
+
+    @Query(
+            value =
+                    """
+      SELECT json_agg(
+          json_build_object(
+              'values', values_map,
+              'definitions', definitions_map,
+              'uri', uri
+          )
+      )::text
+      FROM (
+          SELECT
+              c.id AS concept_id,
+              c.uri,
+              -- multilingual values map
+              (
+                  SELECT jsonb_object_agg(cl.language, cl.text)
+                  FROM concept_label cl
+                  JOIN label_type lt ON lt.id = cl.type_id
+                  WHERE cl.concept_id = c.id
+                    AND lt.name = 'prefLabel'
+              ) AS values_map,
+
+              -- multilingual definitions map
+              (
+                  SELECT jsonb_object_agg(cn.language, cn.text)
+                  FROM concept_note cn
+                  WHERE cn.concept_id = c.id
+                    AND cn.type = 'definition'
+              ) AS definitions_map
+
+          FROM concept c
+          WHERE c.uri IN (:uris)
+            AND c.concept_scheme_id = :conceptSchemeId
+      ) sub
+      """,
+            nativeQuery = true)
+    String getKeywordsByUris(@Param("uris") List<String> uris, @Param("conceptSchemeId") Long conceptSchemeId);
 }
