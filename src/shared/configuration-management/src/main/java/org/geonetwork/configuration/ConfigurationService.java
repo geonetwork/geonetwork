@@ -4,6 +4,9 @@
  */
 package org.geonetwork.configuration;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,10 +18,12 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class ConfigurationService {
 
     private final Environment env;
@@ -86,7 +91,7 @@ public class ConfigurationService {
 
     /** Update or insert a configuration parameter. */
     @Transactional
-    public void updateConfiguration(AppConfig config) {
+    public void updateConfiguration(@Valid AppConfig config) {
         updateConfiguration(
                 config.getApp(),
                 config.getProfile(),
@@ -100,7 +105,12 @@ public class ConfigurationService {
      * 'internal' flag if present.
      */
     @Transactional
-    public void updateConfiguration(String app, String profile, String label, String key, String value) {
+    public void updateConfiguration(
+            @Size(max = 255) String app,
+            @Size(max = 255) String profile,
+            @Size(max = 255) String label,
+            @NotBlank @Size(max = 255) String key,
+            @NotBlank String value) {
         AppConfigId id = new AppConfigId(
                 app != null ? app : defaultApp,
                 profile != null ? profile : defaultProfile,

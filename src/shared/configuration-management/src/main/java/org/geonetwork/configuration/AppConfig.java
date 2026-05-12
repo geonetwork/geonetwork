@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,21 +28,27 @@ import lombok.Setter;
 public class AppConfig {
     @Id
     @Column(name = "APP", nullable = false)
+    @Size(max = 255)
     private String app;
 
     @Id
     @Column(name = "PROFILE", nullable = false)
+    @Size(max = 255)
     private String profile;
 
     @Id
     @Column(name = "LABEL", nullable = false)
+    @Size(max = 255)
     private String label;
 
     @Id
     @Column(name = "CONFIG_PARAM", nullable = false)
+    @NotBlank
+    @Size(max = 255)
     private String configParam;
 
     @Column(name = "CONFIG_VALUE", columnDefinition = "TEXT", nullable = false)
+    @NotBlank
     private String configValue;
 
     @Column(name = "INTERNAL", nullable = false)
