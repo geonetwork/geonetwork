@@ -24,26 +24,8 @@ public class ConfigurationInitializer implements CommandLineRunner {
         if (repository.count() == 0) {
             log.info("Initializing APP_CONFIGS table with default values...");
 
-            // Example default configuration
-            // saveDefault("GeoNetwork", "default", "master", "geonetwork.api.configuration.enabled", "true" , true);
-            // saveDefault("GeoNetwork", "default", "master", "geonetwork.api.configuration.refresh-on-write", "true",
-            // true);
-            // saveDefault("Frontend", "default", "master", "geonetwork.homepage.title", "GeoNetwork", false);
-            // saveDefault("Frontend", "default", "master", "geonetwork.homepage.search.show", "false", false);
-            // The configuration value can be hardcoded here, or imported from some external file
-
             log.info("Configuration initialization complete.");
         }
     }
 
-    private void saveDefault(String app, String profile, String label, String key, String value, boolean internal) {
-        repository.save(AppConfig.builder()
-                .app(app)
-                .profile(profile)
-                .label(label)
-                .configParam(key)
-                .configValue(value)
-                .internal(internal)
-                .build());
-    }
 }

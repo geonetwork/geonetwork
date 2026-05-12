@@ -50,8 +50,11 @@ public class ConfigurationService {
     }
 
     private String firstValue(String value) {
-        if (value != null && value.contains(",")) {
-            return value.split(",")[0].trim();
+        if (value != null) {
+            int commaIndex = value.indexOf(',');
+            if (commaIndex != -1) {
+                return value.substring(0, commaIndex).trim();
+            }
         }
         return value;
     }
