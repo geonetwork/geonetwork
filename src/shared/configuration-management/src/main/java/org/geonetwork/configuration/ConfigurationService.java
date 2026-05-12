@@ -30,14 +30,31 @@ public class ConfigurationService {
     private final AppConfigRepository repository;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Value("${spring.application.name:GeoNetwork}")
     private String defaultApp;
+    private String defaultProfile;
+    private String defaultLabel;
+
+    @Value("${spring.application.name:GeoNetwork}")
+    public void setDefaultApp(String app) {
+        this.defaultApp = firstValue(app);
+    }
 
     @Value("${spring.profiles.active:default}")
-    private String defaultProfile;
+    public void setDefaultProfile(String profiles) {
+        this.defaultProfile = firstValue(profiles);
+    }
 
     @Value("${spring.cloud.config.label:master}")
-    private String defaultLabel;
+    public void setDefaultLabel(String label) {
+        this.defaultLabel = firstValue(label);
+    }
+
+    private String firstValue(String value) {
+        if (value != null && value.contains(",")) {
+            return value.split(",")[0].trim();
+        }
+        return value;
+    }
 
     /** Retrieve configuration value from the Spring Environment. */
     public String getConfiguration(String key) {
