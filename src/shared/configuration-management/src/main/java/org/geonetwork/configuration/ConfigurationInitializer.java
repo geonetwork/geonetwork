@@ -27,5 +27,4 @@ public class ConfigurationInitializer implements CommandLineRunner {
             log.info("Configuration initialization complete.");
         }
     }
-
 }
