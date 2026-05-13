@@ -27,7 +27,7 @@ public class ContactConvertTest {
 
         assertEquals(1, contacts.get(0).getLinks().size());
         assertEquals(
-                new URI("http://geocat.net"), contacts.get(0).getLinks().get(0).getHref());
+                new URI("http://geocat.com"), contacts.get(0).getLinks().get(0).getHref());
 
         assertEquals(1, contacts.get(0).getAddresses().size());
         assertEquals(1, contacts.get(0).getAddresses().get(0).getDeliveryPoint().size());
@@ -74,7 +74,7 @@ public class ContactConvertTest {
         contact.setIndividual("Ms. Testcase");
         contact.setAddress("123 testcase lane");
         contact.setPosition("test case position");
-        contact.setWebsite("http://geocat.net");
+        contact.setWebsite("http://geocat.com");
 
         var org = new HashMap<String, String>();
         org.put("default", "default org");

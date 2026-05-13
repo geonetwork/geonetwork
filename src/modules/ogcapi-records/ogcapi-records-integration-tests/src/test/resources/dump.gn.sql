@@ -22181,7 +22181,7 @@ INSERT INTO public.metadata (id, data, changedate, createdate, displayorder, doc
       <gmd:descriptiveKeywords>
         <gmd:MD_Keywords>
           <gmd:keyword>
-            <gco:CharacterString>GEONETWORK</gco:CharacterString>
+            <gco:CharacterString>GeoNetwork</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
             <gco:CharacterString>OSGeo</gco:CharacterString>

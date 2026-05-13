@@ -22550,10 +22550,10 @@ INSERT INTO public.metadata (id, data, changedate, createdate, displayorder, doc
       <gmd:descriptiveKeywords>
         <gmd:MD_Keywords>
           <gmd:keyword>
-            <gco:CharacterString>GEONETWORK</gco:CharacterString>
+            <gco:CharacterString>GeoNetwork</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
-            <gco:CharacterString>OSGeo</gco:CharacterString>
+            <gco:CharacterString>Catalog</gco:CharacterString>
           </gmd:keyword>
           <gmd:type>
             <gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode" />
@@ -28836,7 +28836,7 @@ INSERT INTO public.metadata (id, data, changedate, createdate, displayorder, doc
       <gmd:citation>
         <gmd:CI_Citation>
           <gmd:title>
-            <gco:CharacterString>GeoCat OGCIAPI-Records Server</gco:CharacterString>
+            <gco:CharacterString>GeoCat OGC API-Records Server</gco:CharacterString>
           </gmd:title>
           <gmd:alternateTitle gco:nilReason="missing" />
           <gmd:date>
@@ -28883,29 +28883,29 @@ INSERT INTO public.metadata (id, data, changedate, createdate, displayorder, doc
               <gmd:address>
                 <gmd:CI_Address>
                   <gmd:deliveryPoint>
-                    <gco:CharacterString>Veenderweg 13</gco:CharacterString>
+                    <gco:CharacterString>Generaal Foulkesweg 72</gco:CharacterString>
                   </gmd:deliveryPoint>
                   <gmd:city>
-                    <gco:CharacterString>Bennekom</gco:CharacterString>
+                    <gco:CharacterString>Wageningen</gco:CharacterString>
                   </gmd:city>
                   <gmd:administrativeArea>
                     <gco:CharacterString>Gelderland</gco:CharacterString>
                   </gmd:administrativeArea>
                   <gmd:postalCode>
-                    <gco:CharacterString>6721 WD</gco:CharacterString>
+                    <gco:CharacterString>6703 BW</gco:CharacterString>
                   </gmd:postalCode>
                   <gmd:country>
-                    <gco:CharacterString>The Nederlands</gco:CharacterString>
+                    <gco:CharacterString>The Netherlands</gco:CharacterString>
                   </gmd:country>
                   <gmd:electronicMailAddress>
-                    <gco:CharacterString>jeroen.ticheler@geocat.net</gco:CharacterString>
+                    <gco:CharacterString>jeroen.ticheler@geocat.com</gco:CharacterString>
                   </gmd:electronicMailAddress>
                 </gmd:CI_Address>
               </gmd:address>
               <gmd:onlineResource>
                 <gmd:CI_OnlineResource>
                   <gmd:linkage>
-                    <gmd:URL>http://geocat.net</gmd:URL>
+                    <gmd:URL>http://geocat.com</gmd:URL>
                   </gmd:linkage>
                 </gmd:CI_OnlineResource>
               </gmd:onlineResource>
@@ -28943,16 +28943,22 @@ INSERT INTO public.metadata (id, data, changedate, createdate, displayorder, doc
       <gmd:descriptiveKeywords>
         <gmd:MD_Keywords>
           <gmd:keyword>
-            <gco:CharacterString>GEONETWORK</gco:CharacterString>
+            <gco:CharacterString>GeoNetwork</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
-            <gco:CharacterString>OSGeo</gco:CharacterString>
+            <gco:CharacterString>Catalog</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
-            <gco:CharacterString>GeoCat</gco:CharacterString>
+            <gco:CharacterString>Catalog</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
             <gco:CharacterString>OGCAPI</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gco:CharacterString>OGC</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gco:CharacterString>OGCAPI Records</gco:CharacterString>
           </gmd:keyword>
           <gmd:type>
             <gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_KeywordTypeCode" />
@@ -29378,14 +29384,14 @@ INSERT INTO public.metadata (id, data, changedate, createdate, displayorder, doc
                     <gco:CharacterString>Canada</gco:CharacterString>
                   </gmd:country>
                   <gmd:electronicMailAddress>
-                    <gco:CharacterString>jody.garnett@geocat.net</gco:CharacterString>
+                    <gco:CharacterString>jody.garnett@geocat.com</gco:CharacterString>
                   </gmd:electronicMailAddress>
                 </gmd:CI_Address>
               </gmd:address>
               <gmd:onlineResource>
                 <gmd:CI_OnlineResource>
                   <gmd:linkage>
-                    <gmd:URL>http://geocat.net</gmd:URL>
+                    <gmd:URL>http://geocat.com</gmd:URL>
                   </gmd:linkage>
                 </gmd:CI_OnlineResource>
               </gmd:onlineResource>
@@ -29423,16 +29429,22 @@ INSERT INTO public.metadata (id, data, changedate, createdate, displayorder, doc
       <gmd:descriptiveKeywords>
         <gmd:MD_Keywords>
           <gmd:keyword>
-            <gco:CharacterString>GEONETWORK</gco:CharacterString>
+            <gco:CharacterString>GeoNetwork</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
-            <gco:CharacterString>OSGeo</gco:CharacterString>
+            <gco:CharacterString>Catalog</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
             <gco:CharacterString>GeoCat</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
             <gco:CharacterString>OGCAPI</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gco:CharacterString>OGC</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gco:CharacterString>OGCAPI Records</gco:CharacterString>
           </gmd:keyword>
           <gmd:type>
             <gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_KeywordTypeCode" />

@@ -6,8 +6,8 @@ info:
     This is a sample OpenAPI definition for our workshop endpoints
   contact:
     name: GeoCat
-    email: david.blasby@geocat.net
-    url: 'https://www.geocat.net'
+    email: david.blasby@geocat.com
+    url: 'https://www.geocat.com'
 paths:
   '/workshop2':
     get:
