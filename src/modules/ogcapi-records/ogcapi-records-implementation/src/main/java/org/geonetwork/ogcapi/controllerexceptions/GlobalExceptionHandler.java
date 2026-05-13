@@ -6,6 +6,7 @@ package org.geonetwork.ogcapi.controllerexceptions;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import lombok.extern.slf4j.Slf4j;
+import org.geonetwork.application.LowLoggingRuntimeException;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsExceptionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -53,6 +54,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<OgcApiRecordsExceptionDto> handleException(Exception e) {
         log.error(e.getMessage(), e);
+        OgcApiRecordsExceptionDto exception =
+                new OgcApiRecordsExceptionDto().code("500").description(e.getMessage());
+        return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(500));
+    }
+
+    @ExceptionHandler(value = LowLoggingRuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<OgcApiRecordsExceptionDto> handleException(LowLoggingRuntimeException e) {
+        log.debug(e.getClass().getSimpleName() + ":" + e.getMessage()); // just log message
         OgcApiRecordsExceptionDto exception =
                 new OgcApiRecordsExceptionDto().code("500").description(e.getMessage());
         return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(500));

@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.common.Strings;
+import org.geonetwork.application.LowLoggingRuntimeException;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsAdvancedFacetDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetsDto;
 import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
@@ -86,7 +87,7 @@ public class AdvancedFacetsBuilder {
      */
     private void validateFacetNameExists(String facetName, OgcApiRecordsFacetsDto currentFacets) {
         if (!currentFacets.getFacets().containsKey(facetName)) {
-            throw new RuntimeException("facet does not exist: " + facetName + ", all facet names: "
+            throw new LowLoggingRuntimeException("facet does not exist: " + facetName + ", all facet names: "
                     + String.join(",", currentFacets.getFacets().keySet()));
         }
     }

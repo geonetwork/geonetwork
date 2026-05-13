@@ -74,7 +74,7 @@ public class BucketComparator {
                         if (valB == null) {
                             return -1;
                         }
-                        result = Collator.getInstance().compare(valA, valB);
+                        result = stringCollator.compare(valA, valB);
                         return direction == BucketSortingDirection.ASCENDING ? result : -result;
                     default:
                         throw new Exception("Unsupported sort type for value comparison: " + sortType);
