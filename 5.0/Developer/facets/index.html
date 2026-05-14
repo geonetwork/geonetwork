@@ -862,6 +862,106 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#advanced-facets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Facets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Facets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-facets-in-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which Facets In Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controlling-facet-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controlling Facet Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#term-facets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Term Facets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter-facets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter Facets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#histogram-fixed-interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram: Fixed Interval
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#histogram-fixed-bucket-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram: Fixed Bucket Count
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -954,6 +1054,106 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#advanced-facets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Facets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Facets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-facets-in-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which Facets In Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controlling-facet-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controlling Facet Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#term-facets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Term Facets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter-facets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter Facets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#histogram-fixed-interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram: Fixed Interval
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#histogram-fixed-bucket-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histogram: Fixed Bucket Count
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1034,6 +1234,130 @@
 <p><em>property</em> &gt;= min_value AND <em>property</em> &lt;= max_value</p>
 <p>This is marked in the facet responses to easily see which bucket is the last one (<code>x-highest-bucket: true</code>).</p>
 </div>
+<h2 id="advanced-facets">Advanced Facets</h2>
+<p>GeoNetwork also supports "Advanced Facets" from the <a href="https://docs.ogc.org/DRAFTS/25-013.html">OGCAPI-Records Part 2 - facets specification</a>.</p>
+<h3 id="which-facets-in-response">Which Facets In Response</h3>
+<p>"Advanced Facets" allow you to turn on/off facets in response.</p>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>don't mention <code>&amp;facets=</code></td>
+<td>Normal operation - show all pre-defined facets</td>
+</tr>
+<tr>
+<td>`&amp;facets="</td>
+<td>Don't include any facets</td>
+</tr>
+<tr>
+<td><code>@facets=facetName1,facetName2</code></td>
+<td>Just include <code>facetName1</code> and <code>facetName2</code> in the response</td>
+</tr>
+</tbody>
+</table>
+<h3 id="controlling-facet-configuration">Controlling Facet Configuration</h3>
+<p>You have some partial control of the facet definition.  Instead of just mentioning <code>&amp;facets=facetName</code>, you have two options:</p>
+<p><code>&amp;facets=facetName:&lt;number of buckets&gt;:&lt;sort&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>facetName</code></td>
+<td>name of the facet</td>
+</tr>
+<tr>
+<td><code>&lt;number of buckets&gt;</code></td>
+<td>integer for controlling the number of buckets.  Defaults to pre-configured (default) number</td>
+</tr>
+<tr>
+<td><code>&lt;sort&gt;</code></td>
+<td>on of <code>value_desc</code>, <code>value_asc</code>, <code>count_desc</code>, <code>count_asc</code> to control the order of the buckets.  Defaults to the to pre-configured (default) sort</td>
+</tr>
+</tbody>
+</table>
+<p>Examples:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>facetName</code></td>
+<td>show "facetName" with the pre-configured (default) number of buckets and sort</td>
+</tr>
+<tr>
+<td><code>facetName:12</code></td>
+<td>show "facetName" with 12 buckets and pre-configured (default) sort</td>
+</tr>
+<tr>
+<td><code>facetName::value_desc</code></td>
+<td>show facetName" with the pre-configured (default) number of buckets and sort by value (descending)</td>
+</tr>
+<tr>
+<td><code>facetName:12:value_desc</code></td>
+<td>show "facetName" with 12 buckets and sort by value (descending)</td>
+</tr>
+</tbody>
+</table>
+<p>Bucket sorting:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>value_desc</code></td>
+<td>sort the buckets by value (highest value first), then by count (number of documents in the buckets) (highest value first)</td>
+</tr>
+<tr>
+<td><code>value_asc</code></td>
+<td>sort the buckets by value (lowest value first), then by count (lowest value first)</td>
+</tr>
+<tr>
+<td><code>count_desc</code></td>
+<td>sort the buckets by count (highest value first), then by value (highest value first)</td>
+</tr>
+<tr>
+<td><code>count_asc</code></td>
+<td>sort the buckets by count (lowest value first), then by value (lowest value first)</td>
+</tr>
+</tbody>
+</table>
+<p>"Value" is the minimum value for the bucket.</p>
+<h2 id="implementation-notes">Implementation Notes</h2>
+<h3 id="term-facets">Term Facets</h3>
+<p>These are well-supported.  Common use case is to sort <code>count_desc</code>, which will give you the most popular "terms" for that facet.</p>
+<h3 id="filter-facets">Filter Facets</h3>
+<p>Filter Facets are a pre-defined set of queries (one bucket for each query).  Because of this, it doesn't usually make a lot of sense to change the number of buckets or sorting for these type of facets.  </p>
+<h3 id="histogram-fixed-interval">Histogram: Fixed Interval</h3>
+<p>Fixed Interval Histograms are defined by a known interval:</p>
+<ul>
+<li>For Numbers, this would typically be something like "each bucket is 5 units wide".  For example, buckets "0-5", "5-10", "10-15", ...</li>
+<li>For Dates, this would typically be something like "each bucket is one month wide".  For example, buckets "January 2026", "February 2026", etc...   There are only some intervals defined in elastic - see <a href="https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-datehistogram-aggregation">Elastic Calendar Intervals</a></li>
+</ul>
+<p>Changing the sort &amp; number of buckets for these type of histograms will just limit the buckets returned - which might not be what you expect.</p>
+<p>Requesting less buckets will just removed buckets from the "pre-defined facet definition" (default behavior) since all the buckets have a pre-defined interval (and each record will always be in the same bucket no matter what the advanced facet's number-of-buckets or sort is defined to be).  </p>
+<p>An example of this would be a "each bucket is one month wide" - each record will be in a particular "month bucket".  Using the number-of-bucket/sort just controls which of those "month buckets" are returned in the response.  Using sort <code>count_desc</code> will give you the months with the most number records in the bucket.  Using <code>value_asc</code> will give you the first buckets (i.e "January 2026", "February 2026", ...).</p>
+<h3 id="histogram-fixed-bucket-count">Histogram: Fixed Bucket Count</h3>
+<p>In Elastic, when you use the "Fixed Bucket Count" facet (implemented as Elastic's "<code>auto_date_histogram</code>") Elastic will do some statistical analysis of the data and choose an appropriate interval - and each bucket will have the same "width."  The chosen "appropriate" interval may not be quite what you expect.</p>
+<p>If you change the requested number of buckets, Elastic will choose a different appropriate interval.  This, again, might not be what you expect.</p>
+<p>This takes some experimentation.</p>
 
 
 
