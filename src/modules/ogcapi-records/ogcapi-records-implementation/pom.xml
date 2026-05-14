@@ -19,19 +19,16 @@
   <packaging>jar</packaging>
   <name>GeoNetwork OGCAPI-records openapi implementation</name>
   <dependencies>
-
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>gn-ogcapi-records-openapi-autogen</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.geonetwork</groupId>
       <artifactId>ogcapi-records-shared</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
