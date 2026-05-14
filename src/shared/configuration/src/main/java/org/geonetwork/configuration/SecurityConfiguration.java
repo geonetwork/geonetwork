@@ -8,6 +8,7 @@ import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.security.DatabaseUserAuthProperties;
 import org.geonetwork.security.DatabaseUserDetailsService;
 import org.geonetwork.security.GeoNetworkUserService;
+import org.geonetwork.security.user.UserManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,16 +33,16 @@ public class SecurityConfiguration {
                     DatabaseUserAuthProperties checkUsernameOrEmail,
             PasswordEncoder passwordEncoder,
             UserRepository userRepository,
+            UserManager userManager,
             GeoNetworkUserService geoNetworkUserService) {
         return new DatabaseUserDetailsService(
-                checkUsernameOrEmail, passwordEncoder, geoNetworkUserService, userRepository);
+                checkUsernameOrEmail, passwordEncoder, geoNetworkUserService, userRepository, userManager);
     }
 
     @Bean
     public RoleHierarchyImpl roleHierarchy() {
-        final RoleHierarchyImpl roleHierarchy = RoleHierarchyImpl.fromHierarchy(
+        return RoleHierarchyImpl.fromHierarchy(
                 "ROLE_Administrator > ROLE_UserAdmin\n ROLE_UserAdmin > ROLE_Reviewer\n ROLE_Reviewer > ROLE_Editor\n ROLE_Editor > ROLE_RegisteredUser\n ROLE_RegisteredUser > ROLE_Guest");
-        return roleHierarchy;
     }
 
     @Bean
