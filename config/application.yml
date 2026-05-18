@@ -41,6 +41,24 @@ geonetwork:
     provider: database
     passwordSalt: secret-hash-salt=
     databaseUserAuthProperty: USERNAME_OR_EMAIL
+  proxy:
+    # Enable or disable the HTTP proxy configuration. Set to true to enable the HTTP proxy.
+    enabled: true
+    # Regex of hosts to exclude from proxying (defaults to localhost, link-local, .local, ::1, etc.)
+    excludeHosts: "^(localhost|127\\..*|0\\..*|255\\.255\\.255\\.255|.*\\.local|.*\\.localhost|0:0:0:0:0:0:1|::1)$"
+    # Allowed ports for proxied URIs. -1 means no port specified.
+    allowedPorts:
+      - -1
+      - 80
+      - 443
+    # Allowed HTTP methods for proxied requests
+    allowedMethods:
+      - GET
+      - POST
+    # Only allow proxy usage when the user is authenticated
+    onlyForAuthenticatedUsers: false
+    # If true, check the links table to ensure a stored link starts with the requested host
+    checkInLinkTable: true
 
 server:
   port: 7979
