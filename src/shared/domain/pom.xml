@@ -18,6 +18,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-database</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>

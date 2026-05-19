@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import co.elastic.clients.elasticsearch.core.ExistsRequest;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.Future;
@@ -54,7 +55,8 @@ class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
         String fileBaseName = String.format("samples/%s", file);
         // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
         // ".xml").getURI()));
-        String xml = IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream());
+        String xml =
+                IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream(), String.valueOf(StandardCharsets.UTF_8));
 
         Metadata dbRecord = Metadata.builder()
                 .uuid(fileBaseName)

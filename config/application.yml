@@ -64,6 +64,9 @@ spring:
     driverClassName: org.postgresql.Driver
     username: geonetwork
     password: geonetwork
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog.xml
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect

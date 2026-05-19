@@ -8,6 +8,7 @@ package org.geonetwork.indexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.TimeZone;
 import org.apache.commons.io.IOUtils;
@@ -52,12 +53,14 @@ class IndexingStandardsTest {
         // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
         // ".xml").getURI()));
 
-        String xml = IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream());
+        String xml =
+                IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream(), StandardCharsets.UTF_8);
 
         //    String expectedIndexDocument =
         //        Files.readString(Path.of(new ClassPathResource(fileBaseName + ".json").getURI()));
 
-        String expectedIndexDocument = IOUtils.toString(new ClassPathResource(fileBaseName + ".json").getInputStream());
+        String expectedIndexDocument = IOUtils.toString(
+                new ClassPathResource(fileBaseName + ".json").getInputStream(), StandardCharsets.UTF_8);
 
         Metadata dbRecord = Metadata.builder()
                 .uuid(fileBaseName)
