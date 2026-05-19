@@ -42,10 +42,20 @@ geonetwork:
     passwordSalt: secret-hash-salt=
     databaseUserAuthProperty: USERNAME_OR_EMAIL
   proxy:
-    # Enable or disable the HTTP proxy configuration. Set to true to enable the HTTP proxy.
+    # Enable or disable the HTTP proxy configuration. Keep disabled unless a
+    # server-side proxy is actually required by the front-end. Do not configure a
+    # redirect-following HTTP client for the gateway.
     enabled: true
-    # Regex of hosts to exclude from proxying (defaults to localhost, link-local, .local, ::1, etc.)
-    excludeHosts: "^(localhost|127\\..*|0\\..*|255\\.255\\.255\\.255|.*\\.local|.*\\.localhost|0:0:0:0:0:0:1|::1)$"
+    # Host denylist used as a fast pre-filter; host validation also resolves the
+    # name and checks the resolved address(es). Covers loopback, private, link-local,
+    # broadcast, *.local and IPv6 loopback / mapped literals.
+    excludeHosts: "^(localhost|127\\..*|10\\..*|172\\.(1[6-9]|2[0-9]|3[01])\\..*|192\\.168\\..*|169\\.254\\..*|100\\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\\..*|0\\..*|255\\.255\\.255\\.255|.*\\.local|.*\\.localhost|::1|0:0:0:0:0:0:0:1|::ffff:.*)$"
+    # Optional allowlist (primary control when set): case-insensitive host regexes.
+    # When non-empty, the host must match one of these AND
+    # still satisfy checkInLinkTable. Empty = allowlist not enforced.
+    allowedHosts: []
+    #  - ".*\\.europa\\.eu"
+    #  - ".*\\.eionet\\.europa\\.eu"
     # Allowed ports for proxied URIs. -1 means no port specified.
     allowedPorts:
       - -1
