@@ -16,35 +16,31 @@
       
       
       
-        <link rel="canonical" href="https://geonetwork.github.io/geonetwork/5.0/fr/Developer/">
+        <link rel="canonical" href="https://geonetwork.github.io/geonetwork/5.0/fr/Developer/spring-cloud-config-server/">
       
       
-        <link rel="prev" href="../OGCAPI-Records/features/">
-      
-      
-        <link rel="next" href="formatters/">
       
       
         
-          <link rel="alternate" href="../../Developer/" hreflang="en">
+          <link rel="alternate" href="../../../Developer/spring-cloud-config-server/" hreflang="en">
         
           <link rel="alternate" href="./" hreflang="fr">
         
       
       
-      <link rel="icon" href="../../assets/images/geonetwork-logo.png">
+      <link rel="icon" href="../../../assets/images/geonetwork-logo.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>GeoNetwork 5 Developer Documentation - GeoNetwork 5</title>
+        <title>Spring Cloud Config Server - GeoNetwork 5</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -63,9 +59,9 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -90,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#geonetwork-5-developer-documentation" class="md-skip">
+        <a href="#spring-cloud-config-server" class="md-skip">
           Aller au contenu
         </a>
       
@@ -110,7 +106,7 @@
   <nav class="md-header__inner md-grid" aria-label="En-tête">
     <a href="https://geonetwork-opensource.org/" title="GeoNetwork 5" class="md-header__button md-logo" aria-label="GeoNetwork 5" data-md-component="logo">
       
-  <img src="../../assets/images/geonetwork-logo.svg" alt="logo">
+  <img src="../../../assets/images/geonetwork-logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -127,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GeoNetwork 5 Developer Documentation
+              Spring Cloud Config Server
             
           </span>
         </div>
@@ -174,7 +170,7 @@
       <ul class="md-select__list">
         
           <li class="md-select__item">
-            <a href="../../Developer/" hreflang="en" class="md-select__link">
+            <a href="../../../Developer/spring-cloud-config-server/" hreflang="en" class="md-select__link">
               English
             </a>
           </li>
@@ -264,7 +260,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../" class="md-tabs__link">
+      <a href="../../" class="md-tabs__link">
         
   
   
@@ -285,7 +281,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../GN4-Integration/" class="md-tabs__link">
+        <a href="../../GN4-Integration/" class="md-tabs__link">
           
   
   
@@ -307,7 +303,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../OGCAPI-Records/" class="md-tabs__link">
+        <a href="../../OGCAPI-Records/" class="md-tabs__link">
           
   
   
@@ -325,13 +321,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -369,7 +363,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="https://geonetwork-opensource.org/" title="GeoNetwork 5" class="md-nav__button md-logo" aria-label="GeoNetwork 5" data-md-component="logo">
       
-  <img src="../../assets/images/geonetwork-logo.svg" alt="logo">
+  <img src="../../../assets/images/geonetwork-logo.svg" alt="logo">
 
     </a>
     GeoNetwork 5
@@ -396,7 +390,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   
@@ -451,7 +445,7 @@
   
   
   
-    <a href="../GN4-Integration/" class="md-nav__link">
+    <a href="../../GN4-Integration/" class="md-nav__link">
       
   
   
@@ -522,7 +516,7 @@
   
   
   
-    <a href="../OGCAPI-Records/" class="md-nav__link">
+    <a href="../../OGCAPI-Records/" class="md-nav__link">
       
   
   
@@ -552,8 +546,6 @@
       
   
   
-    
-  
   
   
     
@@ -581,24 +573,22 @@
     
     
       
-        
-        
-      
       
     
     
       
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
-              
+  
+  
+  
+    <a href="../" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -612,226 +602,12 @@
   
   
 
-            </a>
-            
-              
-              <label class="md-nav__link md-nav__link--active" for="__nav_4" id="__nav_4_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Developer documentation
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
   
 
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="formatters/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    GeoNetwork Formatters
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="tech-security/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Tech security
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="new-app/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    New app
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="ogcapi-record-link-management/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    OGCAPI-Records Link Management
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="ogcapi-records-dynamic-properties/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    OGCAPI-Records Dynamic Properties
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="facets/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Facets in OGCAPI-Records
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="workshop/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    GN5 Workshops
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -857,6 +633,147 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Objectives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Precedence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developer-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Developer Guide
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Developer Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#to-run-spring-cloud-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        To run Spring Cloud Config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-variables-in-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Variables in Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enabling-dynamic-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling Dynamic Updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-other-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring Other Applications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-configuration-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Configuration API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#possible-usages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Possible usages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -872,7 +789,7 @@
 
 
   
-    <a href="https://github.com/geonetwork/geonetwork/edit/main/docs/manual/docs/Developer/index.md" title="Editer cette page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/geonetwork/geonetwork/edit/main/docs/manual/docs/Developer/spring-cloud-config-server.md" title="Editer cette page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -881,36 +798,129 @@
     
       
     
-    <a href="https://github.com/geonetwork/geonetwork/raw/main/docs/manual/docs/Developer/index.md" title="Consulter la source de cette page" class="md-content__button md-icon">
+    <a href="https://github.com/geonetwork/geonetwork/raw/main/docs/manual/docs/Developer/spring-cloud-config-server.md" title="Consulter la source de cette page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="geonetwork-5-developer-documentation">GeoNetwork 5 Developer Documentation</h1>
-<p>Welcome to the GeoNetwork developer documentation! The purpose of this document is to outline the system architecture of GeoNetwork 5 backend. Its primary objectives are to:</p>
+<h1 id="spring-cloud-config-server">Spring Cloud Config Server</h1>
+<h2 id="objectives">Objectives</h2>
+<p>GeoNetwork application is based on multiple apps, that need configuration to operate. The same configuration must be shared between different components/apps.</p>
+<p><strong>Spring Cloud Config Server</strong> provides a unified server to manage properties for all applications, ensuring consistency and providing an update mechanism to notify other modules/apps.</p>
+<p>While Spring Cloud Config supports Git as a back-end, GeoNetwork 5 uses <strong>JDBC</strong> by default to store configurations. This avoids the extra dependency on a Git repository while maintaining the flexibility of a database-backed solution.</p>
+<h3 id="infrastructure">Infrastructure</h3>
+<p>The Config Server is implemented as an additional microservice (<code>spring-cloud-config-server</code>). While this adds a component to the infrastructure, it is consistent with our multi-app architecture. To ensure a smooth developer experience, applications are configured to use <code>optional:configserver</code>, meaning they can still function using local configuration if the server is unavailable.</p>
+<p>Currently, GeoNetwork 5 configuration is transitioning from static YAML files to the Config Server. </p>
+<h3 id="configuration-precedence">Configuration Precedence</h3>
+<ol>
+<li><strong>Config Server (JDBC):</strong> Highest precedence. Values stored in the <code>APP_CONFIGS</code> table override local settings.</li>
+<li><strong>Local YAML Files:</strong> Used for environment-specific bootstrap settings (database credentials, Config Server location) or as defaults when the Config Server is not used or available.</li>
+</ol>
+<p>It is recommended to keep default values for relevant configurations in the local <code>application.yml</code> and move dynamic or operational settings to the database via the Config Server.</p>
+<h2 id="database-structure">Database Structure</h2>
+<p>The configuration is stored in the <code>APP_CONFIGS</code> table with the following structure:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">APP_CONFIGS</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="n">APP</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">           </span><span class="c1">-- Application name (e.g., &#39;GeoNetwork&#39;)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="n">PROFILE</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">       </span><span class="c1">-- Spring profile (e.g., &#39;default&#39;, &#39;prod&#39;)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="n">LABEL</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">         </span><span class="c1">-- Optional label (e.g., &#39;master&#39;)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="n">CONFIG_PARAM</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Configuration key (e.g., &#39;geonetwork.index.indexPrefix&#39;)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="n">CONFIG_VALUE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">          </span><span class="c1">-- Configuration value</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="n">INTERNAL</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">TRUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="c1">-- Whether the config is internal</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">APP</span><span class="p">,</span><span class="w"> </span><span class="n">PROFILE</span><span class="p">,</span><span class="w"> </span><span class="n">LABEL</span><span class="p">,</span><span class="w"> </span><span class="n">CONFIG_PARAM</span><span class="p">)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">);</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1">-- Optimization for Config Server lookups</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">IDX_APP_CONFIGS_LOWER_APP</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">APP_CONFIGS</span><span class="w"> </span><span class="p">(</span><span class="k">LOWER</span><span class="p">(</span><span class="n">APP</span><span class="p">),</span><span class="w"> </span><span class="n">PROFILE</span><span class="p">,</span><span class="w"> </span><span class="n">LABEL</span><span class="p">);</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1">-- Optimization for parameter-based lookups</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">IDX_APP_CONFIGS_PARAM</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">APP_CONFIGS</span><span class="w"> </span><span class="p">(</span><span class="n">CONFIG_PARAM</span><span class="p">);</span>
+</span></code></pre></div>
+<h2 id="developer-guide">Developer Guide</h2>
+<h3 id="to-run-spring-cloud-config">To run Spring Cloud Config</h3>
+<p>To start Spring Cloud Config Server:</p>
+<p>Configure DB connection in <code>config/application-config-server.yml</code> in the following section:</p>
+<p><code>yaml
+    datasource:
+        url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/geonetwork}
+        username: ${JDBC_DATABASE_USERNAME:geonetwork}
+        password: ${JDBC_DATABASE_PASSWORD:geonetwork}
+        driver-class-name: ${JDBC_DATABASE_DRIVER:org.postgresql.Driver}</code></p>
+<p>Or with env variables:</p>
 <ul>
-<li><strong>Define the System:</strong> Provide a comprehensive overview of the platform’s core features, underlying technology stack, and design patterns.</li>
-<li><strong>Onboard Technical Staff:</strong> Serve as the foundational entry point for developers and administrators to understand how the system’s components interact.</li>
-<li><strong>Record Technical Decisions:</strong> Act as a centralized Architecture Decision Record (ADR). Every architectural, functional, and systemic design choice made during development is tracked here to preserve context and rationale.</li>
+<li>JDBC_DATABASE_URL</li>
+<li>JDBC_DATABASE_USERNAME</li>
+<li>JDBC_DATABASE_PASSWORD</li>
+<li>JDBC_DATABASE_DRIVER</li>
 </ul>
-<p>This document will NOT include the description of any client or UI.</p>
-<p>Content of this documentation</p>
+<p>Then run the server with:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>src/apps
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>mvn<span class="w"> </span>spring-boot:run<span class="w"> </span>-pl<span class="w"> </span>spring-cloud-config-server
+</span></code></pre></div>
+<h3 id="using-variables-in-code">Using Variables in Code</h3>
+<p>From a developer's perspective, accessing configurations remains transparent and standard Spring style. You use standard Spring annotations regardless of whether the value comes from a YAML file or the Config Server:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@Value</span><span class="p">(</span><span class="s">&quot;${my.config.param}&quot;</span><span class="p">)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">param</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Or using <code>@ConfigurationProperties</code>:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@ConfigurationProperties</span><span class="p">(</span><span class="n">prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;geonetwork.index&quot;</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IndexProperties</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">indexPrefix</span><span class="p">;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="enabling-dynamic-updates">Enabling Dynamic Updates</h3>
+<p>To allow a component to pick up changes at runtime without a restart, you must annotate the class with <code>@RefreshScope</code>:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@Component</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nd">@RefreshScope</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyDynamicService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nd">@Value</span><span class="p">(</span><span class="s">&quot;${dynamic.setting}&quot;</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">setting</span><span class="p">;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>When a configuration is updated via the API, a <code>ContextRefresher.refresh()</code> call is triggered, and all beans in <code>@RefreshScope</code> are re-instantiated with the new values.</p>
+<h3 id="configuring-other-applications">Configuring Other Applications</h3>
+<p>Any Spring Boot application can be configured to read from the GeoNetwork Config Server by following these steps:</p>
+<ol>
+<li>
+<p><strong>Add the Config Client dependency</strong>:
+   <div class="language-xml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">&lt;dependency&gt;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-config<span class="nt">&lt;/artifactId&gt;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Configure the application identity</strong>:
+   In your <code>application.yml</code>, define how the app identifies itself and where the server is located:
+   <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">spring</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">application</span><span class="p">:</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MyNewApp</span><span class="w">  </span><span class="c1"># Matches &#39;APP&#39; column in database</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">import</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;optional:configserver:http://localhost:8888&quot;</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Database Setup</strong>:
+   The Config Server uses the application's identity to filter the <code>APP_CONFIGS</code> table. You must add corresponding rows for your new app:
+   <div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">APP_CONFIGS</span><span class="w"> </span><span class="p">(</span><span class="n">APP</span><span class="p">,</span><span class="w"> </span><span class="n">PROFILE</span><span class="p">,</span><span class="w"> </span><span class="n">LABEL</span><span class="p">,</span><span class="w"> </span><span class="n">CONFIG_PARAM</span><span class="p">,</span><span class="w"> </span><span class="n">CONFIG_VALUE</span><span class="p">)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;MyNewApp&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;default&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;master&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;my.custom.setting&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;some-value&#39;</span><span class="p">);</span>
+</span></code></pre></div></p>
+</li>
+</ol>
+<p>Applications can share the same settings by using the same <code>spring.application.name</code> (e.g., <code>GeoNetwork</code>), or have isolated configurations by using unique names.</p>
+<h3 id="runtime-configuration-api">Runtime Configuration API</h3>
+<p>Since the Config Server is read-only by design, GeoNetwork 5 provides a dedicated module (<code>gn-configuration-management-api</code>) that exposes a REST API to manage these settings:</p>
 <ul>
-<li><a href="intro/">GeoNetwork</a>: What is GeoNetwork (and what do we keep in mind developing it!)</li>
-<li><a href="system/">Architecture overview</a>: What are the components in a GeoNetwork deployment and how the codebase is organized.</li>
-<li><a href="terms/">Terms</a>: Basic GeoNetwork terminology (and what's changed compared to previous versions).</li>
-<li><a href="api-guidelines/">API Design Guidelines</a>: REST API Design Guidelines. </li>
-<li><a href="formatters/">Formatters</a>: Guide to understand formatters and how to implement them.</li>
-<li><a href="tech-security/">Security inside GN5</a>: Internal GN5 security</li>
-<li><a href="spring-cloud-config-server/">Spring Cloud Config Server</a>: Centralized and dynamic configuration management.</li>
-<li><a href="new-app/">Creating a New App</a>: Creating a new app (introduction to the App Architecture)</li>
-<li><a href="ogcapi-records-dynamic-properties/">Dynamic Properties in OGCAPI-Records</a>: Creating a new app (introduction to the App Architecture)</li>
-<li><a href="ogcapi-record-link-management/">Link Management in OGCAPI-Records</a>: Creating a new app (introduction to the App Architecture)</li>
-<li><a href="facets/">Facets</a></li>
-<li><a href="workshop/">GN5 Workshop</a>: Creating a new app (introduction to the App Architecture)</li>
+<li><strong>Endpoint:</strong> <code>/api/configuration</code></li>
+<li><strong>GET <code>?key=...</code></strong>: Retrieve a value from the current environment.</li>
+<li><strong>GET <code>/list</code></strong>: Lists all configurations from the DB.</li>
+<li><strong>PUT <code>/</code></strong>: Persist a value via JSON body.</li>
 </ul>
+<h2 id="possible-usages">Possible usages</h2>
+<p>The Spring Cloud Config Server architecture is also being evaluated as a potential solution for managing:
+* <strong>Internationalization (i18n):</strong> Storing and updating translations for both backend and UI dynamically.
+* <strong>Feature Toggles:</strong> Managing the activation of specific features across the infrastructure at runtime.</p>
 
 
 
@@ -943,44 +953,6 @@
       
         <footer class="md-footer">
   
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Pied de page" >
-        
-          
-          <a href="../OGCAPI-Records/features/" class="md-footer__link md-footer__link--prev" aria-label="Précédent: Features">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Précédent
-              </span>
-              <div class="md-ellipsis">
-                Features
-              </div>
-            </div>
-          </a>
-        
-        
-          
-          <a href="formatters/" class="md-footer__link md-footer__link--next" aria-label="Suivant: GeoNetwork Formatters">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Suivant
-              </span>
-              <div class="md-ellipsis">
-                GeoNetwork Formatters
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
     
   
   <div class="md-footer-meta md-typeset">
@@ -1076,10 +1048,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["toc.follow", "navigation.tracking", "navigation.top", "navigation.tabs", "navigation.prune", "navigation.indexes", "navigation.footer", "header.autohide", "content.tabs.link", "content.code.copy", "content.action.view", "content.action.edit", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["toc.follow", "navigation.tracking", "navigation.top", "navigation.tabs", "navigation.prune", "navigation.indexes", "navigation.footer", "header.autohide", "content.tabs.link", "content.code.copy", "content.action.view", "content.action.edit", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
