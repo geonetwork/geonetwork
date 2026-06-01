@@ -55,8 +55,8 @@ class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
         String fileBaseName = String.format("samples/%s", file);
         // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
         // ".xml").getURI()));
-        String xml =
-                IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream(), String.valueOf(StandardCharsets.UTF_8));
+        String xml = IOUtils.toString(
+                new ClassPathResource(fileBaseName + ".xml").getInputStream(), String.valueOf(StandardCharsets.UTF_8));
 
         Metadata dbRecord = Metadata.builder()
                 .uuid(fileBaseName)
