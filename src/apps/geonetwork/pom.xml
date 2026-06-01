@@ -74,6 +74,11 @@
     </dependency>
     <dependency>
       <groupId>org.geonetwork</groupId>
+      <artifactId>gn-user-selections</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geonetwork</groupId>
       <artifactId>thesaurus</artifactId>
       <version>${project.version}</version>
     </dependency>

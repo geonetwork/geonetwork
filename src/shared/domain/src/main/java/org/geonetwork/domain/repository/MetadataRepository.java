@@ -22,6 +22,8 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
 
     Optional<Metadata> findByUuid(String uuid);
 
+    boolean existsByUuid(String uuid);
+
     @QueryHints(@QueryHint(name = AvailableHints.HINT_FETCH_SIZE, value = "50"))
     Stream<Metadata> streamAllBy();
 

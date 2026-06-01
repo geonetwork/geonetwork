@@ -4,7 +4,10 @@
  */
 package org.geonetwork.domain.repository;
 
+import java.util.Optional;
 import org.geonetwork.domain.Selection;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SelectionRepository extends JpaRepository<Selection, Integer> {}
+public interface SelectionRepository extends JpaRepository<Selection, Integer> {
+    Optional<Selection> findOneByName(String name);
+}
