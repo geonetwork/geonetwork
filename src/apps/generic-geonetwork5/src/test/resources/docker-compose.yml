@@ -60,7 +60,7 @@ volumes:
 
 services:
   database:
-    image: postgis/postgis:11-2.5
+    image: postgis/postgis:17-3.5
     environment:
       POSTGRES_USER: geonetwork
       POSTGRES_PASSWORD: geonetwork
@@ -89,7 +89,7 @@ services:
       HARVESTER_REFRESH_INTERVAL_MINUTES: 2
 
   elasticsearch:
-    image: elasticsearch:8.14.1
+    image: elasticsearch:8.19.13
     ulimits:
       memlock:
         soft: -1

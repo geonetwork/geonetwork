@@ -1,6 +1,6 @@
 services:
   elasticsearch:
-    image: elasticsearch:8.14.1
+    image: elasticsearch:8.19.13
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -41,7 +41,7 @@ services:
         -  command: ["/tmp/wait-for-it.sh", "localhost:9200", "-t","40", "--", "sh", "/tmp/create-import-repo.sh"]
 
   postgres:
-    image: postgres:16-alpine
+    image: postgis/postgis:17-3.5
     ports:
       - "5432:5432"
     environment:
