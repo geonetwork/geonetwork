@@ -145,7 +145,8 @@ public class IndexClient {
                     .index(indexRecordName)
                     .settings(settingsBuilder -> settingsBuilder
                             .maxResultWindow(maxResultWindow)
-                            .mapping(mappingBuilder -> mappingBuilder.totalFields(b -> b.limit(totalFieldsLimit)))
+                            .mapping(mappingBuilder ->
+                                    mappingBuilder.totalFields(b -> b.limit(String.valueOf(totalFieldsLimit))))
                             .analysis(a -> a.withJson(jsonAnalysis)))
                     .mappings(m -> m.withJson(jsonMapping)));
         } catch (IOException e) {

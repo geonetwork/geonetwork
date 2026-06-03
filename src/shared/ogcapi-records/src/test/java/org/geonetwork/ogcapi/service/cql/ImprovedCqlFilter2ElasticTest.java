@@ -83,19 +83,19 @@ public class ImprovedCqlFilter2ElasticTest {
 
         result = doIt("dave < 3", new TrivialFieldMapper());
         assertEquals(Query.Kind.Range, result._kind());
-        assertEquals("__dave", ((RangeQuery) result._get()).field());
-        assertEquals("3", ((RangeQuery) result._get()).lt().toString());
-        assertNull(((RangeQuery) result._get()).gt());
-        assertNull(((RangeQuery) result._get()).gte());
-        assertNull(((RangeQuery) result._get()).lte());
+        assertEquals("__dave", result.range().untyped().field());
+        assertEquals("3", result.range().untyped().lt().toString());
+        assertNull(result.range().untyped().gt());
+        assertNull(result.range().untyped().gte());
+        assertNull(result.range().untyped().lte());
 
         result = doIt("dave between 3 and 5", new TrivialFieldMapper());
         assertEquals(Query.Kind.Range, result._kind());
-        assertEquals("__dave", ((RangeQuery) result._get()).field());
-        assertEquals("3", ((RangeQuery) result._get()).gte().toString());
-        assertEquals("5", ((RangeQuery) result._get()).lte().toString());
-        assertNull(((RangeQuery) result._get()).gt());
-        assertNull(((RangeQuery) result._get()).lt());
+        assertEquals("__dave", result.range().untyped().field());
+        assertEquals("3", result.range().untyped().gte().toString());
+        assertEquals("5", result.range().untyped().lte().toString());
+        assertNull(result.range().untyped().gt());
+        assertNull(result.range().untyped().lt());
     }
 
     public Query doIt(String cqlText, IFieldMapper fieldMapper) throws CQLException {

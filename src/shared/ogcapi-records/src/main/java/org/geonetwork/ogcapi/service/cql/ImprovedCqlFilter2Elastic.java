@@ -146,14 +146,14 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
 
         Query query =
                 switch (operator) {
-                    case GT -> Query.of(
-                            q -> q.range(r -> r.field(dataPropertyName).gt(JsonData.of(dataPropertyValue))));
-                    case GTE -> Query.of(
-                            q -> q.range(r -> r.field(dataPropertyName).gte(JsonData.of(dataPropertyValue))));
-                    case LT -> Query.of(
-                            q -> q.range(r -> r.field(dataPropertyName).lt(JsonData.of(dataPropertyValue))));
-                    case LTE -> Query.of(
-                            q -> q.range(r -> r.field(dataPropertyName).lte(JsonData.of(dataPropertyValue))));
+                    case GT -> Query.of(q -> q.range(
+                            r -> r.untyped(u -> u.field(dataPropertyName).gt(JsonData.of(dataPropertyValue)))));
+                    case GTE -> Query.of(q -> q.range(
+                            r -> r.untyped(u -> u.field(dataPropertyName).gte(JsonData.of(dataPropertyValue)))));
+                    case LT -> Query.of(q -> q.range(
+                            r -> r.untyped(u -> u.field(dataPropertyName).lt(JsonData.of(dataPropertyValue)))));
+                    case LTE -> Query.of(q -> q.range(
+                            r -> r.untyped(u -> u.field(dataPropertyName).lte(JsonData.of(dataPropertyValue)))));
                 };
 
         stack.push(query);
@@ -195,9 +195,9 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
         var _dataPropertyUpperValue = dataPropertyUpperValue;
         var _dataPropertyLowerValue = dataPropertyLowerValue;
 
-        Query query = Query.of(q -> q.range(r -> r.field(dataPropertyName)
+        Query query = Query.of(q -> q.range(r -> r.untyped(u -> u.field(dataPropertyName)
                 .gte(JsonData.of(_dataPropertyLowerValue))
-                .lte(JsonData.of(_dataPropertyUpperValue))));
+                .lte(JsonData.of(_dataPropertyUpperValue)))));
 
         stack.push(query);
 
