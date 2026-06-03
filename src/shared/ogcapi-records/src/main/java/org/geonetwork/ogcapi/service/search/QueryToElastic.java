@@ -9,7 +9,6 @@ import static org.geonetwork.ogcapi.service.cql.ImprovedCqlFilter2Elastic.saferQ
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
-import co.elastic.clients.json.JsonData;
 import com.google.common.base.Splitter;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class QueryToElastic {
             if (jsonProperty.getType().equals("string") && "date".equals(jsonProperty.getFormat())) {
                 // handle differently because the DATA is handled differently by OGC (i.e. = or range)
                 var elasticPath = this.dynamicPropertiesFacade.getByOgcProperty(propertyName);
-                return RangeQuery.of(rq -> rq.untyped(u -> {
+                return RangeQuery.of(rq -> rq.date(u -> {
                             u.field(elasticPath.getConfig().getElasticProperty());
                             processDateRequest(u, userSearchTerm);
                             return u;
@@ -183,7 +182,7 @@ public class QueryToElastic {
      */
     public Query createVsDate(@Valid OgcApiRecordsGnElasticDto gnElasticInfo, String userSearchTerm, String lang3iso) {
 
-        return RangeQuery.of(rq -> rq.untyped(u -> {
+        return RangeQuery.of(rq -> rq.date(u -> {
                     u.field(gnElasticInfo.getElasticPath());
                     processDateRequest(u, userSearchTerm);
                     return u;
@@ -200,15 +199,15 @@ public class QueryToElastic {
      *
      * <p>The syntax of date-time is specified by RFC 3339, 5.6. https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6
      *
-     * @param result UntypedRangeQuery.Builder to update with start/end (might only have start or end if "..")
+     * @param result DateRangeQuery.Builder to update with start/end (might only have start or end if "..")
      * @param userSearchTerm date or interval to parse.
      */
-    private void processDateRequest(UntypedRangeQuery.Builder result, String userSearchTerm) {
+    private void processDateRequest(DateRangeQuery.Builder result, String userSearchTerm) {
         if (!userSearchTerm.contains("/")) {
             // its a single date (request) vs a date (elastic index)
             result.relation(RangeRelation.Intersects);
-            result.gte(JsonData.of(userSearchTerm));
-            result.lte(JsonData.of(userSearchTerm));
+            result.gte(userSearchTerm);
+            result.lte(userSearchTerm);
             return;
         }
         // interval
@@ -219,10 +218,10 @@ public class QueryToElastic {
 
         result.relation(RangeRelation.Intersects);
         if (!dateParts.get(0).equals("..")) {
-            result.gte(JsonData.of(dateParts.get(0)));
+            result.gte(dateParts.get(0));
         }
         if (!dateParts.get(1).equals("..")) {
-            result.lte(JsonData.of(dateParts.get(1)));
+            result.lte(dateParts.get(1));
         }
     }
 
