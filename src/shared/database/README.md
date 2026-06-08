@@ -60,6 +60,19 @@ mvn liquibase:status \
   -Dliquibase.username=USER_NAME\
   -Dliquibase.password=PASSWORD
 ```
+### Adopting Liquibase on an existing database
+
+If a database already exists but was created without Liquibase (no `DATABASECHANGELOG` table), Liquibase will try to re-apply all changesets and fail because the tables already exist.
+
+To fix this, run `changelogSync`. It creates the `DATABASECHANGELOG` tracking table and marks all changesets as already applied — without touching the schema or data. After this, the application starts normally and Liquibase skips all previously recorded changesets.
+
+```bash
+mvn liquibase:changelogSync \
+  -Dliquibase.url=jdbc:postgresql://localhost:5432/geonetwork \
+  -Dliquibase.username=USER_NAME \
+  -Dliquibase.password=PASSWORD
+```
+
 ### Populating a database
 
 To populate a database using liquibase, configure the database connection in `liquibase.properties` (or set command parameters) and run:
