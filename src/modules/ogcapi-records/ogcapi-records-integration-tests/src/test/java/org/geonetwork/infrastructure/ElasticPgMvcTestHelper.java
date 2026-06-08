@@ -100,9 +100,11 @@ public class ElasticPgMvcTestHelper {
         elasticsearchContainer.start();
 
         try (Connection conn = DriverManager.getConnection(
-                postgreSQLContainer.getJdbcUrl(), postgreSQLContainer.getUsername(), postgreSQLContainer.getPassword())) {
-            Database database = DatabaseFactory.getInstance()
-                    .findCorrectDatabaseImplementation(new JdbcConnection(conn));
+                postgreSQLContainer.getJdbcUrl(),
+                postgreSQLContainer.getUsername(),
+                postgreSQLContainer.getPassword())) {
+            Database database =
+                    DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(conn));
             try (Liquibase liquibase = new Liquibase("db/changelog.xml", new ClassLoaderResourceAccessor(), database)) {
                 liquibase.changeLogSync(new Contexts("prod"), new LabelExpression());
             }
