@@ -10,7 +10,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
+import liquibase.Contexts;
+import liquibase.LabelExpression;
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.resource.ClassLoaderResourceAccessor;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
@@ -89,6 +98,15 @@ public class ElasticPgMvcTestHelper {
 
         postgreSQLContainer.start();
         elasticsearchContainer.start();
+
+        try (Connection conn = DriverManager.getConnection(
+                postgreSQLContainer.getJdbcUrl(), postgreSQLContainer.getUsername(), postgreSQLContainer.getPassword())) {
+            Database database = DatabaseFactory.getInstance()
+                    .findCorrectDatabaseImplementation(new JdbcConnection(conn));
+            try (Liquibase liquibase = new Liquibase("db/changelog.xml", new ClassLoaderResourceAccessor(), database)) {
+                liquibase.changeLogSync(new Contexts("prod"), new LabelExpression());
+            }
+        }
 
         var client = RestClient.builder(HttpHost.create("http://" + elasticsearchContainer.getHttpHostAddress()))
                 .setHttpClientConfigCallback(httpClientBuilder -> {
