@@ -72,7 +72,7 @@ class IndexingStandardsTest {
                 .source("null")
                 .popularity(0)
                 .rating(0)
-                .owner(1)
+                .owner(9999)
                 .groupowner(null)
                 .data(xml)
                 .build();
