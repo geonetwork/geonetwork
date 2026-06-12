@@ -25,6 +25,8 @@ spring:
 
   sql:
     init:
-      mode: always
-      schema-locations: classpath:schema.sql
+      mode: never
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog.xml
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="00027-config-server-table" author="geonetwork">
+        <createTable tableName="APP_CONFIGS">
+            <column name="APP" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROFILE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LABEL" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIG_PARAM" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIG_VALUE" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INTERNAL" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="APP_CONFIGS" columnNames="APP, PROFILE, LABEL, CONFIG_PARAM" constraintName="PK_APP_CONFIGS"/>
+    </changeSet>
+
+    <changeSet id="00027-config-server-table-index-postgresql" author="geonetwork" dbms="postgresql">
+        <sql>
+            CREATE INDEX IDX_APP_CONFIGS_LOWER_APP ON APP_CONFIGS (LOWER(APP), PROFILE, LABEL);
+        </sql>
+    </changeSet>
+
+    <changeSet id="00027-config-server-table-index-h2" author="geonetwork" dbms="h2">
+        <createIndex indexName="IDX_APP_CONFIGS_LOWER_APP" tableName="APP_CONFIGS">
+            <column name="APP"/>
+            <column name="PROFILE"/>
+            <column name="LABEL"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="00027-config-server-table-index-common" author="geonetwork">
+        <createIndex indexName="IDX_APP_CONFIGS_PARAM" tableName="APP_CONFIGS">
+            <column name="CONFIG_PARAM"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
