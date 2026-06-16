@@ -67,7 +67,7 @@ geonetwork:
   url: ${GN4_DOCKER_URL:http://localhost:8080/geonetwork}
   home: /home
   index:
-    url: ${ELASTIC_URL:http://localhost:9200}
+    url: ${ELASTIC_URL:http://host.docker.internal:9200}
     indexPrefix: gn5-
     indexRecordName: gn-records
     username: elastic
@@ -135,8 +135,9 @@ spring:
   #            issuer-uri: https://custom/auth/realms/test
   cloud:
     gateway:
-      mvc:
-        routes:
+      server:
+        webmvc:
+          routes:
           # - id: geonetwork_route
           #   uri: ${geonetwork.url}
           #   predicates:
@@ -151,14 +152,15 @@ spring:
   config:
     import:
       optional:classpath:application-data-ingester.yml
-management:
+  management:
   endpoint:
     info:
-      enabled: true
+      access: read_only
   endpoints:
     web:
       exposure:
         include: "*"
+
 
 springdoc:
   swagger-ui:
