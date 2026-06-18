@@ -7,6 +7,7 @@ package org.geonetwork.configuration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBooleanProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("!test") // Avoid running during unit tests unless specifically needed
+@ConditionalOnBooleanProperty(name = "spring.cloud.config.enabled", havingValue = true, matchIfMissing = true)
 public class ConfigurationInitializer implements CommandLineRunner {
 
     private final AppConfigRepository repository;
