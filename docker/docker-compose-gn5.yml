@@ -11,8 +11,10 @@ services:
       - GN4_DOCKER_URL=http://host.docker.internal:8080/geonetwork
       - GN4_PROXY_BASE_URL=http://localhost:7979/geonetwork
       - ELASTIC_URL=http://host.docker.internal:9200
+      - POSTGRES_URL=jdbc:postgresql://host.docker.internal:5432/geonetwork
+      - GEONETWORK_HOME=/srv
     volumes:
-      - ./docker-application.yml:/config/application.yml
+      - ../config/application.yml:/config/application.yml
     ports:
       - ${GEONETWORK5_PORT:-7979}:7979
     extra_hosts:

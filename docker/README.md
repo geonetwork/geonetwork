@@ -26,5 +26,8 @@ docker compose -f docker-compose-dbs.yml down -v
 - **PostgreSQL:** `localhost:5432` (User/Pass: `postgres`/`postgres`)
 - **Elasticsearch:** `localhost:9200` (Index: `gn-records`)
 
+> [!NOTE]
+> **Linux Docker Users:** `host.docker.internal` is used to allow containers to connect back to the host machine. While this works out-of-the-box on Docker Desktop (Windows/Mac), on native Linux hosts it is resolved using the `extra_hosts` mapping (`host.docker.internal:host-gateway`) specified in the compose files. Ensure you use Docker Compose (v20.10+) to deploy these.
+
 ---
 Back to [Main README](../README.md)
