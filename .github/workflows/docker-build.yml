@@ -18,21 +18,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
-
-      - name: Build project
-        run: mvn clean install -DskipTests
-
-      - name: Build Docker image with Spring Boot
-        run: |
-          mvn spring-boot:build-image \
-            -pl src/apps/geonetwork \
-            -Dspring-boot.build-image.imageName=gn5-dev:${{ github.sha }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Log in to GitHub Container Registry
         if: github.event_name == 'push'
@@ -42,17 +29,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Tag and Push Docker image
-        if: github.event_name == 'push'
-        run: |
-          IMAGE_NAME=$(echo "ghcr.io/${{ github.repository_owner }}/gn5-dev" | tr '[:upper:]' '[:lower:]')
-          
-          # Tag with commit SHA
-          docker tag gn5-dev:${{ github.sha }} ${IMAGE_NAME}:${{ github.sha }}
-          
-          # Tag with 'latest'
-          docker tag gn5-dev:${{ github.sha }} ${IMAGE_NAME}:latest
-          
-          # Push both tags
-          docker push ${IMAGE_NAME}:${{ github.sha }}
-          docker push ${IMAGE_NAME}:latest
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/gn5-dev
+          tags: |
+            type=raw,value=latest,enable=${{ github.event_name == 'push' }}
+            type=sha,prefix=,enable=true
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
