@@ -9,9 +9,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 @ConfigurationProperties(prefix = "geonetwork.openapi-records.ogcapi-property-mapping")
 @Getter
 @Setter

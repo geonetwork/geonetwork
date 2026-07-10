@@ -1122,6 +1122,126 @@ CREATE TABLE public.settings_ui (
 ALTER TABLE public.settings_ui OWNER TO postgres;
 
 --
+-- Name: ogcapi_property_mapping; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ogcapi_property_mapping (
+    id character varying(255) NOT NULL,
+    default_bucket_count integer DEFAULT 10 NOT NULL,
+    update_sequence bigint DEFAULT 1 NOT NULL
+);
+
+
+ALTER TABLE public.ogcapi_property_mapping OWNER TO postgres;
+
+--
+-- Name: ogcapi_field_mapping; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ogcapi_field_mapping (
+    id bigint NOT NULL,
+    config_id character varying(255) NOT NULL,
+    sort_order integer DEFAULT 0 NOT NULL,
+    ogc_property character varying(255),
+    elastic_property character varying(255),
+    index_record_property character varying(255),
+    type_override character varying(50),
+    sort_field_suffix character varying(255),
+    is_sortable boolean DEFAULT false,
+    is_queryable boolean DEFAULT false,
+    title character varying(255),
+    description text,
+    add_property_to_output boolean DEFAULT true
+);
+
+
+ALTER TABLE public.ogcapi_field_mapping OWNER TO postgres;
+
+--
+-- Name: ogcapi_field_mapping_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ogcapi_field_mapping_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.ogcapi_field_mapping_id_seq OWNER TO postgres;
+
+ALTER TABLE ONLY public.ogcapi_field_mapping ALTER COLUMN id SET DEFAULT nextval('public.ogcapi_field_mapping_id_seq'::regclass);
+
+--
+-- Name: ogcapi_facet_config; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ogcapi_facet_config (
+    id bigint NOT NULL,
+    field_mapping_id bigint NOT NULL,
+    sort_order integer DEFAULT 0 NOT NULL,
+    facet_name character varying(255),
+    facet_type character varying(50),
+    bucket_sorting character varying(50),
+    bucket_sorting_direction character varying(50),
+    bucket_count integer,
+    minimum_document_count integer DEFAULT 1 NOT NULL,
+    number_bucket_interval double precision,
+    calendar_interval_unit character varying(50)
+);
+
+
+ALTER TABLE public.ogcapi_facet_config OWNER TO postgres;
+
+--
+-- Name: ogcapi_facet_config_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ogcapi_facet_config_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.ogcapi_facet_config_id_seq OWNER TO postgres;
+
+ALTER TABLE ONLY public.ogcapi_facet_config ALTER COLUMN id SET DEFAULT nextval('public.ogcapi_facet_config_id_seq'::regclass);
+
+--
+-- Name: ogcapi_filter_facet; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ogcapi_filter_facet (
+    id bigint NOT NULL,
+    facet_config_id bigint NOT NULL,
+    sort_order integer DEFAULT 0 NOT NULL,
+    filter_name character varying(255),
+    filter_equation_cql text
+);
+
+
+ALTER TABLE public.ogcapi_filter_facet OWNER TO postgres;
+
+--
+-- Name: ogcapi_filter_facet_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ogcapi_filter_facet_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.ogcapi_filter_facet_id_seq OWNER TO postgres;
+
+ALTER TABLE ONLY public.ogcapi_filter_facet ALTER COLUMN id SET DEFAULT nextval('public.ogcapi_filter_facet_id_seq'::regclass);
+
+--
 -- Name: sources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -29760,6 +29880,55 @@ ALTER TABLE ONLY public.settings
 
 ALTER TABLE ONLY public.settings_ui
     ADD CONSTRAINT settings_ui_pkey PRIMARY KEY (id);
+
+--
+-- Name: ogcapi_property_mapping ogcapi_property_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ogcapi_property_mapping
+    ADD CONSTRAINT ogcapi_property_mapping_pkey PRIMARY KEY (id);
+
+--
+-- Name: ogcapi_field_mapping ogcapi_field_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ogcapi_field_mapping
+    ADD CONSTRAINT ogcapi_field_mapping_pkey PRIMARY KEY (id);
+
+--
+-- Name: ogcapi_facet_config ogcapi_facet_config_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ogcapi_facet_config
+    ADD CONSTRAINT ogcapi_facet_config_pkey PRIMARY KEY (id);
+
+--
+-- Name: ogcapi_filter_facet ogcapi_filter_facet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ogcapi_filter_facet
+    ADD CONSTRAINT ogcapi_filter_facet_pkey PRIMARY KEY (id);
+
+--
+-- Name: ogcapi_field_mapping fk_ogcapi_field_mapping_config; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ogcapi_field_mapping
+    ADD CONSTRAINT fk_ogcapi_field_mapping_config FOREIGN KEY (config_id) REFERENCES public.ogcapi_property_mapping(id);
+
+--
+-- Name: ogcapi_facet_config fk_ogcapi_facet_config_field_mapping; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ogcapi_facet_config
+    ADD CONSTRAINT fk_ogcapi_facet_config_field_mapping FOREIGN KEY (field_mapping_id) REFERENCES public.ogcapi_field_mapping(id);
+
+--
+-- Name: ogcapi_filter_facet fk_ogcapi_filter_facet_facet_config; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ogcapi_filter_facet
+    ADD CONSTRAINT fk_ogcapi_filter_facet_facet_config FOREIGN KEY (facet_config_id) REFERENCES public.ogcapi_facet_config(id);
 
 
 --

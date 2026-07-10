@@ -47,10 +47,10 @@ public class ElasticTypingSystem {
     //    private Map<String, PropertyVariant> rawElasticTypes = new HashMap<String, PropertyVariant>();
 
     /** final elastic types key is from config.fields.elasticProperty */
-    private Map<String, ElasticTypeInfo> finalElasticTypes = new HashMap<>();
+    private volatile Map<String, ElasticTypeInfo> finalElasticTypes = new HashMap<>();
 
     /** final elastic types key is from config.fields.ogcproperty */
-    private Map<String, ElasticTypeInfo> finalElasticTypesByOgc;
+    private volatile Map<String, ElasticTypeInfo> finalElasticTypesByOgc;
 
     public ElasticTypingSystem(
             OgcElasticFieldsMapperConfig config,
@@ -75,6 +75,23 @@ public class ElasticTypingSystem {
             IndexClient client) {
 
         this(config, indexRecordName, getIndexInfo(client, indexRecordName));
+    }
+
+    /**
+     * Rebuilds the type maps from a new config (called when the DB config is updated).
+     *
+     * @param newConfig updated field-mapping configuration
+     */
+    public void refresh(OgcElasticFieldsMapperConfig newConfig) {
+        Map<String, ElasticTypeInfo> byElastic = new HashMap<>();
+        Map<String, ElasticTypeInfo> byOgc = new HashMap<>();
+        for (var field : newConfig.getFields()) {
+            var finalType = computeElasticTypeInfo(field);
+            byElastic.put(field.getElasticProperty(), finalType);
+            byOgc.put(field.getOgcProperty(), finalType);
+        }
+        this.finalElasticTypes = byElastic;
+        this.finalElasticTypesByOgc = byOgc;
     }
 
     /**
