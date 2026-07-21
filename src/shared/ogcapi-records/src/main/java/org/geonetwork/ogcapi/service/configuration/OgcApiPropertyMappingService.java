@@ -7,7 +7,6 @@ package org.geonetwork.ogcapi.service.configuration;
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.OgcApiFacetConfig;
@@ -77,9 +76,9 @@ public class OgcApiPropertyMappingService {
                 .build());
 
         entity.getFields().clear();
-        AtomicInteger fieldOrder = new AtomicInteger(0);
+        int fieldOrder = 0;
         for (OgcElasticFieldMapperConfig fieldConfig : newConfig.getFields()) {
-            OgcApiFieldMapping fieldEntity = toFieldEntity(fieldConfig, entity, fieldOrder.getAndIncrement());
+            OgcApiFieldMapping fieldEntity = toFieldEntity(fieldConfig, entity, fieldOrder++);
             entity.getFields().add(fieldEntity);
         }
         entity.setDefaultBucketCount(newConfig.getDefaultBucketCount());
@@ -165,9 +164,9 @@ public class OgcApiPropertyMappingService {
                 .defaultBucketCount(yaml.getDefaultBucketCount())
                 .updateSequence(1L)
                 .build();
-        AtomicInteger fieldOrder = new AtomicInteger(0);
+        int fieldOrder = 0;
         for (OgcElasticFieldMapperConfig fieldConfig : yaml.getFields()) {
-            OgcApiFieldMapping fieldEntity = toFieldEntity(fieldConfig, entity, fieldOrder.getAndIncrement());
+            OgcApiFieldMapping fieldEntity = toFieldEntity(fieldConfig, entity, fieldOrder++);
             entity.getFields().add(fieldEntity);
         }
         return entity;
@@ -192,10 +191,10 @@ public class OgcApiPropertyMappingService {
                 .description(fieldConfig.getDescription())
                 .addPropertyToOutput(fieldConfig.getAddPropertyToOutput())
                 .build();
-        AtomicInteger facetOrder = new AtomicInteger(0);
+        int facetOrder = 0;
         if (fieldConfig.getFacetsConfig() != null) {
             for (OgcFacetConfig facetConfig : fieldConfig.getFacetsConfig()) {
-                OgcApiFacetConfig facetEntity = toFacetEntity(facetConfig, fieldEntity, facetOrder.getAndIncrement());
+                OgcApiFacetConfig facetEntity = toFacetEntity(facetConfig, fieldEntity, facetOrder++);
                 fieldEntity.getFacets().add(facetEntity);
             }
         }
@@ -227,10 +226,10 @@ public class OgcApiPropertyMappingService {
                                 ? facetConfig.getCalendarIntervalUnit().name()
                                 : null)
                 .build();
-        AtomicInteger filterOrder = new AtomicInteger(0);
+        int filterOrder = 0;
         if (facetConfig.getFilters() != null) {
             for (FilterFacetInfo filterInfo : facetConfig.getFilters()) {
-                OgcApiFilterFacet filterEntity = toFilterEntity(filterInfo, facetEntity, filterOrder.getAndIncrement());
+                OgcApiFilterFacet filterEntity = toFilterEntity(filterInfo, facetEntity, filterOrder++);
                 facetEntity.getFilters().add(filterEntity);
             }
         }
