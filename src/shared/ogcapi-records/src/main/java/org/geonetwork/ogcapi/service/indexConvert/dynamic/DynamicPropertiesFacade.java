@@ -47,7 +47,7 @@ public class DynamicPropertiesFacade {
         config = configService.getConfig();
     }
 
-   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     void onConfigChanged(OgcApiConfigChangedEvent event) {
         config = configService.getConfig();
         elasticTypingSystem.refresh(config);
