@@ -19,8 +19,9 @@ import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcFacetConfig;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
  * This gives a higher level api to the Dynamic properties.
@@ -39,14 +40,14 @@ public class DynamicPropertiesFacade {
     @Autowired
     ExtraElasticPropertiesService extraElasticPropertiesService;
 
-    private OgcElasticFieldsMapperConfig config;
+    private volatile OgcElasticFieldsMapperConfig config;
 
     @PostConstruct
     void loadConfig() {
         config = configService.getConfig();
     }
 
-    @EventListener
+   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     void onConfigChanged(OgcApiConfigChangedEvent event) {
         config = configService.getConfig();
         elasticTypingSystem.refresh(config);
