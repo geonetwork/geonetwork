@@ -11,31 +11,34 @@ import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /** add links to the /collections/{collectionId} endpoint */
 @Component
 public class CollectionPageLinks extends BasicLinks {
 
+    @Autowired
+    CollectionsPageLinks collectionsPageLinks;
+
     public void addAllLinks(RequestMediaTypeAndProfile requestMediaTypeAndProfile, OgcApiRecordsCatalogDto page)
             throws Exception {
-        addRootLinks(requestMediaTypeAndProfile, page);
-        addIconLink(page);
-        addQueryables(page);
-        // collections adds too much complexity in the (single) collection sub-page.
-        // its not required and pygeoapi doesn't include it either...
-        //        addCollections(requestMediaTypeAndProfile, page);
         addLinks(requestMediaTypeAndProfile, page, page.getId());
+        addQueryables(page);
+        addIconLink(page);
+        collectionsPageLinks.addLinks(requestMediaTypeAndProfile, page);
+        addRootLinks(requestMediaTypeAndProfile, page);
     }
-
-    //    private void addCollections(RequestMediaTypeAndProfile requestMediaTypeAndProfile, OgcApiRecordsCatalogDto
-    // page)
-    //            throws Exception {
-    //        super.addLinks(requestMediaTypeAndProfile, page, "collections", OgcApiRecordsCollectionsResponse.class);
-    //    }
 
     public void addLinks(RequestMediaTypeAndProfile requestMediaTypeAndProfile, Object page, String collectionId)
             throws Exception {
+        // add items links
+        super.addLinks(
+                requestMediaTypeAndProfile,
+                page,
+                "collections/" + collectionId + "/items",
+                OgcApiRecordsMultiRecordResponse.class);
+
         super.addLinks(requestMediaTypeAndProfile, page, "collections/" + collectionId, OgcApiCollectionResponse.class);
 
         // handle "http://www.opengis.net/def/rel/ogc/1.0/ogc-catalog" as well as "self"/"relative"
@@ -46,13 +49,6 @@ public class CollectionPageLinks extends BasicLinks {
         }
         requestMediaType2.setResponseClass(clazz);
         super.addLinks(requestMediaType2, page, "collections/" + collectionId, OgcApiCollectionResponse.class);
-
-        // add items links
-        super.addLinks(
-                requestMediaTypeAndProfile,
-                page,
-                "collections/" + collectionId + "/items",
-                OgcApiRecordsMultiRecordResponse.class);
     }
 
     /**
@@ -71,7 +67,7 @@ public class CollectionPageLinks extends BasicLinks {
                 .href(uri)
                 .rel("icon")
                 .type("image/png")
-                .title("collection icon");
+                .title("Icon for the collection");
 
         page.addLinksItem(link);
 
@@ -79,7 +75,7 @@ public class CollectionPageLinks extends BasicLinks {
                 .href(uri)
                 .rel("preview")
                 .type("image/png")
-                .title("collection icon");
+                .title("Preview for the collection");
         page.addLinksItem(link2);
     }
 }

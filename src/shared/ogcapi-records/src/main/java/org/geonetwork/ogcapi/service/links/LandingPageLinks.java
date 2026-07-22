@@ -27,14 +27,11 @@ public class LandingPageLinks extends BasicLinks {
             String catalogUuid,
             OgcApiRecordsLandingPageDto landingPage)
             throws Exception {
-
-        super.addLinks(requestMediaTypeAndProfile, landingPage, "", OgcApiLandingPageResponse.class);
-
-        addOpenApiLink(landingPage);
-        addIconLink(landingPage, catalogUuid);
-        addConformanceLinks(landingPage);
-        addRootLinks(requestMediaTypeAndProfile, landingPage);
         collectionsPageLinks.addLinks(requestMediaTypeAndProfile, landingPage);
+        addOpenApiLink(landingPage);
+        addConformanceLinks(landingPage);
+        addIconLink(landingPage, catalogUuid);
+        super.addLinks(requestMediaTypeAndProfile, landingPage, "", OgcApiLandingPageResponse.class);
     }
 
     /**
@@ -53,7 +50,7 @@ public class LandingPageLinks extends BasicLinks {
                 .href(uri)
                 .rel("icon")
                 .type("image/png")
-                .title("server icon");
+                .title("Icon for the catalogue");
 
         landingPage.addLinksItem(link);
 
@@ -61,7 +58,7 @@ public class LandingPageLinks extends BasicLinks {
                 .href(uri)
                 .rel("preview")
                 .type("image/png")
-                .title("server icon");
+                .title("Preview for the catalogue");
         landingPage.addLinksItem(link2);
     }
 }

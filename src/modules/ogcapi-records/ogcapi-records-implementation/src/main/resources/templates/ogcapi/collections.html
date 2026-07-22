@@ -1,0 +1,48 @@
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head(${'Collections (' + page.collections.size() + ')'})}"></head>
+<body>
+
+<div th:replace="~{layout :: header(
+    ${'Collections'},
+    ${page.collections.size() + ' collection' + (page.collections.size() == 1 ? '' : 's')},
+    ${page.links})}"></div>
+
+<!-- Collections grid -->
+<section class="section-block" th:if="${!#lists.isEmpty(page.collections)}">
+  <div class="grid">
+    <th:block th:each="coll : ${page.collections}">
+      <div th:replace="~{layout :: collection-card(${coll})}"></div>
+    </th:block>
+  </div>
+</section>
+<p th:if="${#lists.isEmpty(page.collections)}" class="meta">No collections found.</p>
+
+<!-- Page-level links (navigation etc.) -->
+<section class="section-block" th:if="${!#lists.isEmpty(page.links)}">
+  <h2>Links</h2>
+  <ul class="link-list">
+    <th:block th:each="link : ${page.links}">
+      <li th:if="${link.rel == null or !#strings.equalsIgnoreCase(link.rel, 'alternative')}">
+        <span th:if="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'self')}"
+              class="link-self"
+              th:text="${link.title != null and !#strings.isEmpty(link.title) ? link.title : link.href}">current</span>
+        <a th:unless="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'self')}"
+           th:href="${link.href}"
+           th:text="${link.title != null and !#strings.isEmpty(link.title) ? link.title : link.href}">link</a>
+        <span class="link-type"
+              th:if="${link.type != null and !#strings.isEmpty(link.type)}"
+              th:text="${'(' + link.type + ')'}"></span>
+      </li>
+    </th:block>
+  </ul>
+</section>
+
+</body>
+</html>

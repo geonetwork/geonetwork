@@ -7,7 +7,6 @@ package org.geonetwork.ogcapi.service.links;
 import java.net.URI;
 import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
-import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiLandingPageResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsCollectionsResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
@@ -25,8 +24,7 @@ public class ItemsPageLinks extends BasicLinks {
             OgcApiRecordsGetRecords200ResponseDto page,
             OgcApiQuery query)
             throws Exception {
-
-        addLinks(requestMediaTypeAndProfile, page, "", OgcApiLandingPageResponse.class);
+        addNextPrevious(requestMediaTypeAndProfile, collectionId, page, query);
         addLinks(
                 requestMediaTypeAndProfile,
                 page,
@@ -34,8 +32,7 @@ public class ItemsPageLinks extends BasicLinks {
                 OgcApiRecordsMultiRecordResponse.class);
         addLinks(requestMediaTypeAndProfile, page, "collections/" + collectionId, OgcApiCollectionResponse.class);
         addLinks(requestMediaTypeAndProfile, page, "collections", OgcApiRecordsCollectionsResponse.class);
-
-        addNextPrevious(requestMediaTypeAndProfile, collectionId, page, query);
+        addRootLinks(requestMediaTypeAndProfile, page);
     }
 
     /**

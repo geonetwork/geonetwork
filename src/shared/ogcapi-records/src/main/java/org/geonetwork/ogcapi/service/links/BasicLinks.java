@@ -77,29 +77,34 @@ public class BasicLinks {
             MimeAndProfilesForResponseType.ResponseTypeInfo responseInfo,
             Class<?> linkType,
             OgcApiRecordsLinkDto link) {
-        if (!requestMediaTypeAndProfile.getResponseClass().equals(linkType)) {
-            // request is for another type - this should be a LABELLED name, not "alternative"/"self"
-            if (linkType.equals(OgcApiRecordsCollectionsResponse.class)) {
-                link.setRel("collections");
-                link.setTitle("Information about the collections");
-                return;
-            }
-            if (linkType.equals(OgcApiCollectionResponse.class)) {
-                link.setRel("http://www.opengis.net/def/rel/ogc/1.0/ogc-catalog");
-                link.setTitle("Information about the collection");
-                return;
-            }
-            if (linkType.equals(OgcApiRecordsMultiRecordResponse.class)) {
-                link.setRel("items");
-                link.setTitle("Records in the collection");
-                return;
-            }
-            if (linkType.equals(OgcApiLandingPageResponse.class)) {
-                link.setRel("root");
-                link.setTitle("Landing Page");
-                return;
-            }
+        var isRequestForAnOtherType =
+                requestMediaTypeAndProfile.getResponseClass().equals(linkType);
+
+        if (linkType.equals(OgcApiRecordsCollectionsResponse.class)) {
+            link.setRel("collections");
+            link.setTitle("All collections");
         }
+        if (linkType.equals(OgcApiCollectionResponse.class)) {
+            link.setRel("http://www.opengis.net/def/rel/ogc/1.0/ogc-catalog");
+            var title = isRequestForAnOtherType
+                    ? "Information about the collection"
+                    : "Information about the collection (OGC Catalogue)";
+            link.setTitle(title);
+        }
+        if (linkType.equals(OgcApiRecordsMultiRecordResponse.class)) {
+            link.setRel("items");
+            link.setTitle("Records in the collection");
+        }
+        if (linkType.equals(OgcApiLandingPageResponse.class)) {
+            link.setRel("root");
+            link.setTitle("Landing Page");
+        }
+
+        if (!isRequestForAnOtherType) {
+            // request is for another type - this should be a LABELLED name, not "alternative"/"self"
+            return;
+        }
+
         // should be "alternative"/"self"
         link.setRel("alternative");
 
@@ -132,7 +137,7 @@ public class BasicLinks {
                 .href(uri)
                 .rel("service-doc")
                 .type("application/json")
-                .title("The OpenAPI Documentation as JSON");
+                .title("OpenAPI Documentation");
 
         addLinksReflect(List.of(link), page);
     }
@@ -149,7 +154,7 @@ public class BasicLinks {
                 .href(uri)
                 .rel("http://www.opengis.net/def/rel/ogc/1.0/queryables")
                 .type("application/schema+json")
-                .title("Queryables for this collection");
+                .title("Queryables for the collection");
         page.addLinksItem(link);
     }
 
@@ -178,10 +183,10 @@ public class BasicLinks {
     protected void addConformanceLinks(Object page) {
         try {
             var link = new OgcApiRecordsLinkDto()
-                    .href(new URI(linkConfiguration.getOgcApiRecordsBaseUrl() + "conformance"))
+                    .href(new URI(linkConfiguration.getOgcApiRecordsBaseUrl() + "conformance?f=json"))
                     .rel("conformance")
                     .type("application/json")
-                    .title("ogcapi-records conformance document");
+                    .title("OGC API Records conformance document");
             addLinksReflect(List.of(link), page);
         } catch (URISyntaxException e) {
             log.error("Invalid conformance link URI", e);

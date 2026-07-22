@@ -44,12 +44,17 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private BeanFactory beanFactory;
 
+    private OgcApiRecordsHtmlMessageWriter htmlMessageWriter;
+
     // todo - remove this.
     // There is a circular dependency because Formatter depends on WebConfig
     void setupFormatterApiMessageWriter() {
 
         if (cswCollectionMessageWriter == null) {
             cswCollectionMessageWriter = beanFactory.getBean(CswCollectionMessageWriter.class);
+        }
+        if (htmlMessageWriter == null) {
+            htmlMessageWriter = beanFactory.getBean(OgcApiRecordsHtmlMessageWriter.class);
         }
     }
 
@@ -94,7 +99,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
-        messageConverters.add(new TrivialHtmlMessageWriter(MediaType.TEXT_HTML));
+        messageConverters.add(htmlMessageWriter);
         //        messageConverters.add(formatterApiMessageWriter);
         messageConverters.add(cswCollectionMessageWriter);
     }

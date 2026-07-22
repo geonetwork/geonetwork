@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 public class CollectionsPageLinks extends BasicLinks {
 
     public void addAllLinks(RequestMediaTypeAndProfile requestMediaTypeAndProfile, Object page) throws Exception {
-        addRootLinks(requestMediaTypeAndProfile, page);
         addLinks(requestMediaTypeAndProfile, page);
+        addRootLinks(requestMediaTypeAndProfile, page);
     }
 
     public void addLinks(RequestMediaTypeAndProfile requestMediaTypeAndProfile, Object page) throws Exception {

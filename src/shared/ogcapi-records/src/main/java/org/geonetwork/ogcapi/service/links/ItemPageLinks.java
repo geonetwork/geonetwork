@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
+import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLinkDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
@@ -24,13 +25,15 @@ public class ItemPageLinks extends BasicLinks {
             String collectionId,
             OgcApiRecordsRecordGeoJSONDto page)
             throws Exception {
-        addRootLinks(requestMediaTypeAndProfile, page);
         addLinks(
                 requestMediaTypeAndProfile,
                 page,
                 "collections/" + collectionId + "/items/" + page.getId(),
                 OgcApiRecordsSingleRecordResponse.class);
         addThumbnails(page);
+        addLinks(requestMediaTypeAndProfile, page, "collections/" + collectionId, OgcApiCollectionResponse.class);
+        //        addLinks(requestMediaTypeAndProfile, page, "collections", OgcApiRecordsCollectionsResponse.class);
+        //        addRootLinks(requestMediaTypeAndProfile, page);
     }
 
     private void addThumbnails(OgcApiRecordsRecordGeoJSONDto page) {

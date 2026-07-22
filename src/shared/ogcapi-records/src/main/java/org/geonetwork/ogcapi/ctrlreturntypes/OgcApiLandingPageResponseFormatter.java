@@ -43,7 +43,12 @@ public class OgcApiLandingPageResponseFormatter implements HttpMessageConverter<
 
     @Override
     public List<MediaType> getSupportedMediaTypes() {
-        return Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML);
+        return Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML);
+    }
+
+    @Override
+    public List<MediaType> getSupportedMediaTypes(Class<?> clazz) {
+        return getSupportedMediaTypes();
     }
 
     @Override
@@ -75,10 +80,5 @@ public class OgcApiLandingPageResponseFormatter implements HttpMessageConverter<
     private Object computeObject(OgcApiLandingPageResponse ogcApiLandingPageResponse) throws Exception {
         var result = collectionsApi.getLandingPage(ogcApiLandingPageResponse.getRequestMediaTypeAndProfile());
         return result;
-    }
-
-    @Override
-    public List<MediaType> getSupportedMediaTypes(Class<?> clazz) {
-        return List.of(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML);
     }
 }

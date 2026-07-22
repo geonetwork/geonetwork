@@ -29,7 +29,7 @@ public class MimeAndProfilesForResponseType {
     ProfileDefaultsConfiguration profileDefaultsConfiguration;
 
     /**
-     * This only give SEPECIFIC output for the response type, and not generic (i.e. xml)
+     * This only give SPECIFIC output for the response type, and not generic (i.e. xml)
      *
      * @param responseType IControllerResponse type to search for specific formatters.
      * @return metadata about the response type

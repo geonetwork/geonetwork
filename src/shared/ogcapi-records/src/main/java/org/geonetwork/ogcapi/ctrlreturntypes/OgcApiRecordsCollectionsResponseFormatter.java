@@ -45,7 +45,12 @@ public class OgcApiRecordsCollectionsResponseFormatter
 
     @Override
     public List<MediaType> getSupportedMediaTypes() {
-        return Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML);
+        return Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML);
+    }
+
+    @Override
+    public List<MediaType> getSupportedMediaTypes(Class<?> clazz) {
+        return getSupportedMediaTypes();
     }
 
     @Override
@@ -75,10 +80,5 @@ public class OgcApiRecordsCollectionsResponseFormatter
         } catch (Exception e) {
             throw new IOException(e);
         }
-    }
-
-    @Override
-    public List<MediaType> getSupportedMediaTypes(Class<?> clazz) {
-        return Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML);
     }
 }

@@ -1,0 +1,75 @@
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head(${'Items'})}"></head>
+<body>
+
+<div th:replace="~{layout :: header(
+    ${'Items'},
+    ${(page.numberMatched != null ? page.numberMatched : page.features.size()) + ' item' + ((page.numberMatched != null ? page.numberMatched : page.features.size()) == 1 ? '' : 's') + (page.numberMatched != null and page.numberReturned != null ? ' (showing ' + page.numberReturned + ')' : '')},
+    ${page.links})}"></div>
+
+<section class="section-block" th:if="${!#lists.isEmpty(page.features)}">
+  <div class="grid">
+    <div class="card" th:each="feature : ${page.features}">
+      <div class="card-title">
+        <th:block th:with="selfLinks=${feature.links.?[rel != null and rel.equalsIgnoreCase('self')]},
+                           selfLink=${not #lists.isEmpty(selfLinks) ? selfLinks[0] : null}">
+          <a th:if="${selfLink != null}" th:href="${selfLink.href}"
+             th:text="${feature.properties?.title ?: feature.id}">title</a>
+          <span th:unless="${selfLink != null}"
+                th:text="${feature.properties?.title ?: feature.id}">title</span>
+        </th:block>
+      </div>
+      <p class="card-desc" th:if="${feature.properties?.description != null}"
+         th:text="${#strings.abbreviate(feature.properties.description, 120)}"></p>
+      <div class="card-links" th:if="${!#lists.isEmpty(feature.links)}">
+        <th:block th:each="link : ${feature.links}">
+          <a th:if="${link.rel == null}"
+             th:href="${link.href}"
+             th:text="${link.title ?: link.type ?: link.rel}">link</a>
+        </th:block>
+      </div>
+    </div>
+  </div>
+</section>
+<p th:if="${#lists.isEmpty(page.features)}" class="meta">No items found.</p>
+
+<div class="pagination" th:if="${!#lists.isEmpty(page.links)}">
+  <th:block th:each="link : ${page.links}">
+    <a class="button"
+       th:if="${#strings.equalsIgnoreCase(link.rel, 'next') or #strings.equalsIgnoreCase(link.rel, 'prev')}"
+       th:href="${link.href}"
+       th:text="${link.rel}">nav</a>
+  </th:block>
+</div>
+
+<section class="section-block" th:if="${!#lists.isEmpty(page.links)}">
+  <h2>Links</h2>
+  <ul class="link-list">
+    <th:block th:each="link : ${page.links}">
+      <li th:if="${link.rel == null
+                    or (!#strings.equalsIgnoreCase(link.rel, 'alternative')
+                        and !#strings.equalsIgnoreCase(link.rel, 'next')
+                        and !#strings.equalsIgnoreCase(link.rel, 'prev'))}">
+        <span th:if="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'self')}"
+              class="link-self"
+              th:text="${link.title != null and !#strings.isEmpty(link.title) ? link.title : link.href}">current</span>
+        <a th:unless="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'self')}"
+           th:href="${link.href}"
+           th:text="${link.title != null and !#strings.isEmpty(link.title) ? link.title : link.href}">link</a>
+        <span class="link-type"
+              th:if="${link.type != null and !#strings.isEmpty(link.type)}"
+              th:text="${'(' + link.type + ')'}"></span>
+      </li>
+    </th:block>
+  </ul>
+</section>
+
+</body>
+</html>
