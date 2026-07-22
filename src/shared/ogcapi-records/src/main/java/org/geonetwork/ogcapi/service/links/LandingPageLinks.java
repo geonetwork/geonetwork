@@ -33,7 +33,6 @@ public class LandingPageLinks extends BasicLinks {
         addOpenApiLink(landingPage);
         addIconLink(landingPage, catalogUuid);
         addConformanceLinks(landingPage);
-        addRootLinks(requestMediaTypeAndProfile, landingPage);
         collectionsPageLinks.addLinks(requestMediaTypeAndProfile, landingPage);
     }
 
