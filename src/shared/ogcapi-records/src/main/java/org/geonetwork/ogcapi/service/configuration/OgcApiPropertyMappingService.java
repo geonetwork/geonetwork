@@ -56,14 +56,6 @@ public class OgcApiPropertyMappingService {
         return toConfig(entity);
     }
 
-    /** Returns the current update sequence counter from the DB. */
-    public long getUpdateSequence() {
-        return repository
-                .findById(CONFIG_ID)
-                .map(OgcApiPropertyMapping::getUpdateSequence)
-                .orElse(0L);
-    }
-
     /**
      * Persists a new configuration, increments the update sequence, and fires {@link OgcApiConfigChangedEvent} so
      * in-JVM listeners can reload their caches.

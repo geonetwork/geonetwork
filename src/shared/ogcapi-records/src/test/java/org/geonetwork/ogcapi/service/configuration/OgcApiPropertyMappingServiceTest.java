@@ -118,24 +118,6 @@ class OgcApiPropertyMappingServiceTest {
     }
 
     @Test
-    void getUpdateSequence_returnsValueFromDb() {
-        OgcApiPropertyMapping entity = OgcApiPropertyMapping.builder()
-                .id(OgcApiPropertyMappingService.CONFIG_ID)
-                .updateSequence(7L)
-                .build();
-        when(repository.findById(OgcApiPropertyMappingService.CONFIG_ID)).thenReturn(Optional.of(entity));
-
-        assertEquals(7L, service.getUpdateSequence());
-    }
-
-    @Test
-    void getUpdateSequence_returnsZeroWhenMissing() {
-        when(repository.findById(OgcApiPropertyMappingService.CONFIG_ID)).thenReturn(Optional.empty());
-
-        assertEquals(0L, service.getUpdateSequence());
-    }
-
-    @Test
     void updateConfig_incrementsSequenceAndFiresEvent() {
         List<OgcApiFieldMapping> mutableFields = new ArrayList<>();
         OgcApiPropertyMapping existing = OgcApiPropertyMapping.builder()

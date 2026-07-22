@@ -39,13 +39,4 @@ public class OgcApiConfigController {
     public OgcElasticFieldsMapperConfig updateConfiguration(@RequestBody OgcElasticFieldsMapperConfig newConfig) {
         return configService.updateConfig(newConfig);
     }
-
-    @Operation(
-            summary = "Get the current update sequence",
-            description = "Returns a counter incremented on every config update. "
-                    + "External containers can poll this to detect changes without a message queue.")
-    @GetMapping(path = "/update-sequence", produces = MediaType.APPLICATION_JSON_VALUE)
-    public long getUpdateSequence() {
-        return configService.getUpdateSequence();
-    }
 }
