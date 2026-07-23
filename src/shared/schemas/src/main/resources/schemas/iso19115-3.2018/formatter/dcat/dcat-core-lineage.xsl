@@ -30,7 +30,7 @@
           <xsl:variable name="codelistKey"
                         select="*/@codeListValue"/>
           <xsl:variable name="parentName"
-                        select="local-name(*)"/>
+                        select="name(*)"/>
 
           <xsl:for-each select="$languages">
             <xsl:variable name="codelistTranslation"

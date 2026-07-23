@@ -122,7 +122,8 @@
 
       <xsl:for-each select="$individualName">
         <xsl:call-template name="rdf-localised">
-        <xsl:with-param name="nodeName" select="'vcard:fn'"/>      </xsl:call-template>
+          <xsl:with-param name="nodeName" select="'vcard:fn'"/>
+        </xsl:call-template>
       </xsl:for-each>
 
       <xsl:for-each select="$organisation/cit:name">
@@ -213,7 +214,8 @@
         <xsl:when test="$isindividual">
           <xsl:for-each select="$individualName">
             <xsl:call-template name="rdf-localised">
-              <xsl:with-param name="nodeName" select="'foaf:name'"/>            </xsl:call-template>
+              <xsl:with-param name="nodeName" select="'foaf:name'"/>
+            </xsl:call-template>
           </xsl:for-each>
           <org:memberOf>
             <xsl:for-each select="$organisation/cit:name">

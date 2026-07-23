@@ -21,7 +21,8 @@
                 xmlns:dct="http://purl.org/dc/terms/"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:skos="http://www.w3.org/2004/02/skos/core#"
-                xmlns:mobilitydcatap="https://w3id.org/mobilitydcat-ap"
+                xmlns:mobilitydcatap="https://w3id.org/mobilitydcat-ap#"
+                xmlns:geodcatap="http://data.europa.eu/930/"
                 exclude-result-prefixes="#all">
 
   <!-- Import related templates -->
@@ -29,7 +30,8 @@
 
   <xsl:template name="create-namespaces-eu-dcat-mobilitydcatap">
     <xsl:call-template name="create-namespaces-eu-dcat-ap"/>
-    <xsl:namespace name="mobilitydcatap" select="'https://w3id.org/mobilitydcat-ap'"/>
+    <xsl:namespace name="mobilitydcatap" select="'https://w3id.org/mobilitydcat-ap#'"/>
+    <xsl:namespace name="geodcatap" select="'http://data.europa.eu/930'"/>
   </xsl:template>
 
   <xsl:template mode="iso19115-3-to-dcat-resource"
@@ -50,7 +52,6 @@
   <xsl:template mode="iso19115-3-to-dcat"
                 match="mri:descriptiveKeywords[*/mri:thesaurusName/*/cit:title/*/@xlink:href = $mobilityThemeThesaurusKey]">
     <xsl:for-each select="*/mri:keyword[*/text() != '']">
-
       <mobilitydcatap:mobilityTheme>
         <skos:Concept rdf:about="{*/@xlink:href}">
           <skos:prefLabel><xsl:value-of select="*/text()"/></skos:prefLabel>
@@ -65,7 +66,6 @@
   <xsl:template mode="iso19115-3-to-dcat"
                 match="mri:descriptiveKeywords[*/mri:thesaurusName/*/cit:title/*/@xlink:href = $georeferencingMethodThesaurusKey]">
     <xsl:for-each select="*/mri:keyword[*/text() != '']">
-
       <mobilitydcatap:georeferencingMethod>
         <skos:Concept rdf:about="{*/@xlink:href}">
           <skos:prefLabel><xsl:value-of select="*/text()"/></skos:prefLabel>
@@ -80,7 +80,6 @@
   <xsl:template mode="iso19115-3-to-dcat"
                 match="mri:descriptiveKeywords[*/mri:thesaurusName/*/cit:title/*/@xlink:href = $networkCoverageThesaurusKey]">
     <xsl:for-each select="*/mri:keyword[*/text() != '']">
-
       <mobilitydcatap:networkCoverage>
         <skos:Concept rdf:about="{*/@xlink:href}">
           <skos:prefLabel><xsl:value-of select="*/text()"/></skos:prefLabel>
@@ -95,7 +94,6 @@
   <xsl:template mode="iso19115-3-to-dcat"
                 match="mri:descriptiveKeywords[*/mri:thesaurusName/*/cit:title/*/@xlink:href = $transportationModeThesaurusKey]">
     <xsl:for-each select="*/mri:keyword[*/text() != '']">
-
       <mobilitydcatap:transportMode>
         <skos:Concept rdf:about="{*/@xlink:href}">
           <skos:prefLabel><xsl:value-of select="*/text()"/></skos:prefLabel>
@@ -117,9 +115,14 @@
     <xsl:variable name="uri"
                   select="($link, $code[matches(., '^https?://')])[1]"/>
     <xsl:if test="$uri != ''">
-      <dct:conformsTo>
-        <dct:Standard rdf:about="{$uri}" />
-      </dct:conformsTo>
+      <geodcatap:referenceSystem>
+        <dct:Standard>
+          <dct:identifier><xsl:value-of select="$uri"/></dct:identifier>
+          <xsl:if test="$code">
+            <dct:title xml:lang="en"><xsl:value-of select="$code"/></dct:title>
+          </xsl:if>
+        </dct:Standard>
+      </geodcatap:referenceSystem>
     </xsl:if>
   </xsl:template>
 </xsl:stylesheet>
