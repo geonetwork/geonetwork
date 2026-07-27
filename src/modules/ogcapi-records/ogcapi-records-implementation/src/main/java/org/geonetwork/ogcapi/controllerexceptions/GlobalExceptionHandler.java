@@ -50,6 +50,22 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(e.getCode()));
     }
 
+    /**
+     * Handle InvalidParameterException - a request with an unsupported parameter value (e.g. an unknown sortby
+     * property).
+     *
+     * @param e InvalidParameterException (client error)
+     * @return ResponseEntity<OgcApiRecordsExceptionDto> with message and status code 400
+     */
+    @ExceptionHandler(value = InvalidParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<OgcApiRecordsExceptionDto> handleException(InvalidParameterException e) {
+        log.debug(e.getMessage(), e);
+        OgcApiRecordsExceptionDto exception =
+                new OgcApiRecordsExceptionDto().code("400").description(e.getMessage());
+        return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(400));
+    }
+
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<OgcApiRecordsExceptionDto> handleException(Exception e) {

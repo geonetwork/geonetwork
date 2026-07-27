@@ -14,6 +14,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.QueryStringQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.search.SourceConfig;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.geometry.Rectangle;
+import org.geonetwork.ogcapi.controllerexceptions.InvalidParameterException;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGnElasticDto;
 import org.geonetwork.ogcapi.service.configuration.OgcApiSearchConfiguration;
 import org.geonetwork.ogcapi.service.cql.CqlToElasticSearch;
@@ -120,11 +122,15 @@ public class RecordsEsQueryBuilder {
                 var isDescending = order.startsWith("-");
                 var sortOrder = isDescending ? SortOrder.Desc : SortOrder.Asc;
                 var fieldName = order.replaceAll("^[\\+-]", "");
-                var userconfig = this.dynamicPropertiesFacade.getUserConfigByOgcProperty(fieldName);
 
                 String elasticFieldName = "uuid";
                 if (!fieldName.equals("id")) {
                     // TODO: don't hardcode this - see  OgcApiCollectionsApi
+                    var userconfig = this.dynamicPropertiesFacade.getUserConfigByOgcProperty(fieldName);
+                    if (userconfig == null) {
+                        throw new InvalidParameterException(MessageFormat.format(
+                                "Cannot sort by ''{0}'' - it is not a configured sortable property.", fieldName));
+                    }
                     var elasticPropertyName = userconfig.getElasticProperty();
                     if (StringUtils.isNotEmpty(userconfig.getSortFieldSuffix())) {
                         elasticPropertyName += "." + userconfig.getSortFieldSuffix();
