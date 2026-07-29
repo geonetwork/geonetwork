@@ -52,7 +52,7 @@ public class JwtSigning {
             privateKeyBase64 = privateKeyBase64.replace("-----END PRIVATE KEY-----", "");
             privateKeyBase64 = privateKeyBase64.trim();
         }
-        privateKeyBase64 = privateKeyBase64.replace("\n", "").trim();
+        privateKeyBase64 = privateKeyBase64.replaceAll("\\s", "");
         byte[] privateKeyDecoded = Base64.getDecoder().decode(privateKeyBase64);
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(privateKeyDecoded);
         PrivateKey privateKey = KeyFactory.getInstance("RSA").generatePrivate(pkcs8EncodedKeySpec);
