@@ -83,6 +83,7 @@ of data.]]>
     <formatter name="xml" title="" officialProfileName="http://geonetwork.net/def/profile/raw-xml" contentType="application/xml"/>
 <!--    <formatter name="json"      title=""  officialProfileName="[geonetwork:raw-json]"  contentType="application/json"/>-->
     <formatter name="datacite" title="" officialProfileName="http://geonetwork.net/def/profile/datacite" contentType="application/xml"/>
+    <formatter name="schema.org" title="" officialProfileName="http://geonetwork.net/def/profile/schema.org" contentType="application/json"/>
     <formatter name="iso19115-3" title="" officialProfileName="http://geonetwork.net/def/profile/iso19115-3" contentType="application/xml"/>
     <formatter name="dcat" title="" officialProfileName="http://geonetwork.net/def/profile/dcat" contentType="application/rdf+xml"/>
     <formatter name="eu-dcat-ap" title=""  officialProfileName="http://geonetwork.net/def/profile/eu-dcat-ap" contentType="application/rdf+xml"/>

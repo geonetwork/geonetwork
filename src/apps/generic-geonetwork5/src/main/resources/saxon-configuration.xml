@@ -13,5 +13,8 @@
     <extensionFunction>org.geonetwork.utility.xml.xslt.GmlToGeoJsonFn</extensionFunction>
     <extensionFunction>org.geonetwork.utility.xml.xslt.Md5HexFn</extensionFunction>
     <extensionFunction>org.geonetwork.utility.xml.xslt.GetCodeListTranslationFn</extensionFunction>
+    <extensionFunction>org.geonetwork.utility.xml.xslt.GetSettingValueFn</extensionFunction>
+    <extensionFunction>org.geonetwork.utility.xml.xslt.EscapeForJsonFn</extensionFunction>
+    <extensionFunction>org.geonetwork.utility.xml.xslt.PrettyPrintJsonFn</extensionFunction>
   </resources>
 </configuration>

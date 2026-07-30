@@ -4,8 +4,11 @@
  */
 package org.geonetwork.schemas;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -24,6 +27,8 @@ import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
 
 class FormatterTransformationTest {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     @BeforeAll
     static void setUpApplicationContextForXsltExtensions() {
         GenericApplicationContext applicationContext = new GenericApplicationContext();
@@ -32,6 +37,17 @@ class FormatterTransformationTest {
             @Override
             public String getServerURL() {
                 return "http://localhost:8080/srv";
+            }
+
+            @Override
+            public String getValue(String name) {
+                if ("nodeUrl".equals(name)) {
+                    return "http://localhost:8080/srv";
+                }
+                if ("system/site/name".equals(name)) {
+                    return "My GeoNetwork catalogue";
+                }
+                return null;
             }
         });
         applicationContext.refresh();
@@ -51,6 +67,13 @@ class FormatterTransformationTest {
                         .getURL(),
                 Map.of());
 
+        if ("schema.org".equals(formatterId)) {
+            JsonNode expectedJson = OBJECT_MAPPER.readTree(expected);
+            JsonNode outputJson = OBJECT_MAPPER.readTree(output);
+            assertEquals(expectedJson, outputJson);
+            return;
+        }
+
         Diff diff = DiffBuilder.compare(expected)
                 .withTest(output)
                 .ignoreComments()
@@ -69,6 +92,11 @@ class FormatterTransformationTest {
                         "datacite",
                         "iso19115-3.2018-datacite.xml",
                         "iso19115-3.2018-datacite-out.xml"),
+                Arguments.of(
+                        "iso19115-3.2018",
+                        "schema.org",
+                        "iso19115-3.2018-schemaorg.xml",
+                        "iso19115-3.2018-schemaorg.json"),
                 Arguments.of(
                         "iso19115-3.2018",
                         "dcat",
