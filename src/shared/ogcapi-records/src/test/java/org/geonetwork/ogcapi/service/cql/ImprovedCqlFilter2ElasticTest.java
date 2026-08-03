@@ -96,6 +96,33 @@ public class ImprovedCqlFilter2ElasticTest {
         assertEquals("5", result.range().untyped().lte().toString());
         assertNull(result.range().untyped().gt());
         assertNull(result.range().untyped().lt());
+
+        result = doIt("dave <> 'hi'", new TrivialFieldMapper());
+        assertEquals(Query.Kind.Bool, result._kind());
+        assertEquals(1, ((BoolQuery) result._get()).mustNot().size());
+        var notEqualsInner = ((BoolQuery) result._get()).mustNot().get(0);
+        assertEquals(Query.Kind.Term, notEqualsInner._kind());
+        assertEquals("__dave", ((TermQuery) notEqualsInner._get()).field());
+        assertEquals("hi", ((TermQuery) notEqualsInner._get()).value().stringValue());
+
+        result = doIt("not (dave = 'hi')", new TrivialFieldMapper());
+        assertEquals(Query.Kind.Bool, result._kind());
+        assertEquals(1, ((BoolQuery) result._get()).mustNot().size());
+        var notInner = ((BoolQuery) result._get()).mustNot().get(0);
+        assertEquals(Query.Kind.Term, notInner._kind());
+        assertEquals("__dave", ((TermQuery) notInner._get()).field());
+        assertEquals("hi", ((TermQuery) notInner._get()).value().stringValue());
+
+        result = doIt("(dave = 'hi') and (not (dave2 = 'bob'))", new TrivialFieldMapper());
+        assertEquals(Query.Kind.Bool, result._kind());
+        var mustClauses = ((BoolQuery) result._get()).must();
+        assertEquals(2, mustClauses.size());
+        assertEquals(
+                1,
+                mustClauses.stream().filter(q -> q._kind() == Query.Kind.Term).count());
+        assertEquals(
+                1,
+                mustClauses.stream().filter(q -> q._kind() == Query.Kind.Bool).count());
     }
 
     public Query doIt(String cqlText, IFieldMapper fieldMapper) throws CQLException {

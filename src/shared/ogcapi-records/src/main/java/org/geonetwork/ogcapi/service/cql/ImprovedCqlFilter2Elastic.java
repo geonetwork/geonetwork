@@ -73,6 +73,28 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
 
     @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
+        stack.push(buildEqualsQuery(filter, extraData));
+        return this;
+    }
+
+    @Override
+    public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
+        var equalsQuery = buildEqualsQuery(filter, extraData);
+        stack.push(Query.of(q -> q.bool(b -> b.mustNot(equalsQuery))));
+        return this;
+    }
+
+    @Override
+    public Object visit(Not filter, Object extraData) {
+        filter.getFilter().accept(this, extraData);
+
+        var negatedQuery = (Query) stack.pop();
+
+        stack.push(Query.of(q -> q.bool(b -> b.mustNot(negatedQuery))));
+        return this;
+    }
+
+    private Query buildEqualsQuery(BinaryComparisonOperator filter, Object extraData) {
         checkFilterExpressionsInBinaryComparisonOperator(filter);
 
         filter.getExpression1().accept(expressionVisitor, extraData);
@@ -85,10 +107,7 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
         final var _dataPropertyValue = dataPropertyValue;
 
         //        var query = Query.of(q -> q.term(tq -> tq.field(dataPropertyName).value(_dataPropertyValue)));
-        var query = Query.of(q -> q.term(tq -> tq.field(dataPropertyName).value(_dataPropertyValue)));
-
-        stack.push(query);
-        return this;
+        return Query.of(q -> q.term(tq -> tq.field(dataPropertyName).value(_dataPropertyValue)));
     }
 
     @Override
