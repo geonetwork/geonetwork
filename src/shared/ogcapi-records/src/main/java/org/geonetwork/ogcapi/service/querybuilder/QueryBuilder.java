@@ -5,8 +5,6 @@
 package org.geonetwork.ogcapi.service.querybuilder;
 
 import java.math.BigDecimal;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,8 +81,7 @@ public class QueryBuilder {
 
         result.setLimit(limit);
         result.setStartIndex(startindex);
-        var _datetime = (datetime == null) ? null : URLDecoder.decode(datetime, StandardCharsets.UTF_8);
-        result.setDatetime(_datetime);
+        result.setDatetime(datetime);
         result.setType(type);
         result.setQ(q);
         result.setIds(ids);
@@ -98,8 +95,7 @@ public class QueryBuilder {
 
         result.setFilterLang(filterLang);
         result.setFilterCrs(filterCrs);
-        var _filter = (filter == null) ? null : URLDecoder.decode(filter, StandardCharsets.UTF_8);
-        result.setFilter(_filter);
+        result.setFilter(filter);
 
         result.setAdvancedFacets(advancedFacetsBuilder.buildAdvancedFacets(collectionId, advancedFacets));
 
@@ -129,7 +125,7 @@ public class QueryBuilder {
                 if (values == null || values.length == 0) {
                     continue;
                 }
-                result.addProp(param.getKey(), URLDecoder.decode(values[0], StandardCharsets.UTF_8));
+                result.addProp(param.getKey(), values[0]);
             }
         }
     }

@@ -35,6 +35,7 @@ public class QueryBuilderTest {
     List<String> ids;
     List<String> externalids;
     List<String> sortby;
+    String filter;
     Map<String, String[]> parameterMap;
     List<String> advancedFacets;
 
@@ -72,6 +73,7 @@ public class QueryBuilderTest {
         ids = Arrays.asList("id1", "id2");
         externalids = Arrays.asList("ex-id1", "ex-id2");
         sortby = Arrays.asList("sort-p1", "sort-p2");
+        filter = null;
         parameterMap = new LinkedHashMap<>();
     }
 
@@ -134,6 +136,20 @@ public class QueryBuilderTest {
                 query.getAdvancedFacets().get(0).getSorting());
     }
 
+    /**
+     * A `filter` (or `datetime`, or queryable value) arriving at {@link QueryBuilder} is already URL-decoded by Spring
+     * MVC / the servlet container. Values that contain a literal `%` (e.g. an OGC CQL `LIKE` wildcard) must be passed
+     * through as-is, not decoded again - otherwise `%foo%` is misread as a percent-encoded byte and either throws or is
+     * corrupted.
+     */
+    @Test
+    public void testFilterWithLikeWildcardIsNotDoubleDecoded() throws Exception {
+        filter = "name LIKE '%foo%'";
+        var query = buildSampleQuery();
+
+        assertEquals("name LIKE '%foo%'", query.getFilter());
+    }
+
     public OgcApiQuery buildSampleQuery() throws Exception {
         return queryBuilder.buildFromRequest(
                 collectionId,
@@ -146,7 +162,7 @@ public class QueryBuilderTest {
                 ids,
                 externalids,
                 sortby,
-                null,
+                filter,
                 "cql2-text",
                 null,
                 parameterMap,
