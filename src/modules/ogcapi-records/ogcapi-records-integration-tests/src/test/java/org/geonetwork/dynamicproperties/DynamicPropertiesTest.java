@@ -13,8 +13,6 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.google.common.base.Ascii;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -302,11 +300,16 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
         //                objectMapper);
 
         // exact title match
+        //
+        // NOTE: this is passed as *plain*, un-percent-encoded text. ElasticPgMvcTestHelper builds the
+        // request via MockMvcRequestBuilders.get(rawUrlString), which does not decode (or even
+        // re-encode) query parameter values - it splits the raw string on '&'/'=' and uses the
+        // substrings verbatim as parameter values. Percent- or form-encoding the value here (as a real
+        // HTTP client would) would arrive at the controller still percent-/plus-encoded, since nothing
+        // in this test path ever decodes it.
         var queryItems = ElasticPgMvcTestHelper.retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?resourceTitleObject="
-                        + URLEncoder.encode(
-                                "Parcellaire agricole anonyme (situation 2020) - Service de visualisation WMS",
-                                StandardCharsets.UTF_8),
+                        + "Parcellaire agricole anonyme (situation 2020) - Service de visualisation WMS",
                 OgcApiRecordsGetRecords200ResponseDto.class,
                 BASE_URL,
                 mockMvc,
@@ -320,7 +323,7 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
         // partial title match
         queryItems = ElasticPgMvcTestHelper.retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?resourceTitleObject="
-                        + URLEncoder.encode("Parcellaire agricole anonyme", StandardCharsets.UTF_8),
+                        + "Parcellaire agricole anonyme",
                 OgcApiRecordsGetRecords200ResponseDto.class,
                 BASE_URL,
                 mockMvc,
