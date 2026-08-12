@@ -51,7 +51,9 @@ public class OgcApiLinkConfiguration {
         if (!gnBaseUrl.endsWith("/")) {
             gnBaseUrl += "/";
         }
-        gnBaseUrl = gnBaseUrl.replace("//", "/");
+
+        //Regex to replace '//' or '///' with '/'. Using Negative LookBehind (?<!...) to prevent replacing https:// with https:/
+        gnBaseUrl = gnBaseUrl.replaceAll("(?<!:)//+", "/");
 
         this.gnBaseUrl = gnBaseUrl;
     }
