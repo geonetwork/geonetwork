@@ -138,13 +138,16 @@ public class IndexClient implements InitializingBean {
         try {
             if (dropIfExists) {
                 try {
-                    DeleteIndexResponse delete =
-                            esClient.indices().delete(deleteBuilder -> deleteBuilder.index(indexRecordName));
-                    if (delete.acknowledged()) {
-                        log.atDebug().log("Index {} deleted", indexRecordName);
+                    BooleanResponse exists = esClient.indices().exists(e -> e.index(indexRecordName));
+                    if (exists != null && exists.value()) {
+                        DeleteIndexResponse delete =
+                                esClient.indices().delete(deleteBuilder -> deleteBuilder.index(indexRecordName));
+                        if (delete.acknowledged()) {
+                            log.atDebug().log("Index {} deleted", indexRecordName);
+                        }
                     }
                 } catch (Exception e) {
-                    log.atError().log("Errors while deleting index {}. Error is: {}", indexRecordName, e.getMessage());
+                    log.atWarn().log("Could not delete existing index {}: {}", indexRecordName, e.getMessage());
                 }
             }
             esClient.indices().create(indexBuilder -> indexBuilder
