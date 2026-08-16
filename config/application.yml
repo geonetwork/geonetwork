@@ -1,14 +1,15 @@
 #
 # ENVIRONMENT VARIABLES
 #
-#    Var                default                           meaning
+#    Var                        default                           meaning
 # --------------------------------------------------------------------------------------------------
-#  GN5_BASE_URL       http://localhost:7979/geonetwork   Where is GN5 deployed.
-#  GN4_BASE_URL       http://localhost:8080/geonetwork  Where is GN4?
-#  GN4_PROXY_BASE_URL http://localhost:7979/geonetwork  Where is proxied GN4?
-#  ELASTIC_URL        http://localhost:9200             Where is elastic?
-#  POSTGRES_URL       jdbc:postgresql://localhost:5432/geonetwork  Where is the PostgreSQL database?  
-#  GATEWAY_GEONETWORK_PATH /geonetwork/**               Where is the proxy to GN4?
+#  GN5_BASE_URL               http://localhost:7979/geonetwork   Where is GN5 deployed.
+#  GN4_BASE_URL               http://localhost:8080/geonetwork  Where is GN4?
+#  GN4_PROXY_BASE_URL         http://localhost:7979/geonetwork  Where is proxied GN4?
+#  ELASTIC_URL                http://localhost:9200             Where is elastic?
+#  GN5_INDEX_CREATE_IF_EMPTY  true                              Create and reindex on startup if empty?
+#  POSTGRES_URL               jdbc:postgresql://localhost:5432/geonetwork  Where is the PostgreSQL database?  
+#  GATEWAY_GEONETWORK_PATH    /geonetwork/**                    Where is the proxy to GN4?
 
 
 geonetwork:
@@ -18,6 +19,7 @@ geonetwork:
     url: ${ELASTIC_URL:http://localhost:9200}
     indexPrefix: gn5-
     indexRecordName: gn-records
+    createIfEmpty: ${GN5_INDEX_CREATE_IF_EMPTY:true}
     username: elastic
     password: changeme
     elasticsearch:

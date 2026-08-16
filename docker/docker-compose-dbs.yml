@@ -25,20 +25,9 @@ services:
       - xpack.security.enrollment.enabled=false
       - path.repo=/tmp
       - cluster.routing.allocation.disk.threshold_enabled=false
-    volumes:
-      - ./es_backups.tar.gz:/tmp/es_backups.tar.gz
-      - ./create-elastic-repo.json:/tmp/create-elastic-repo.json
-      - ./import-elastic-repo.json:/tmp/import-elastic-repo.json
-      - ./wait-for-it.sh:/tmp/wait-for-it.sh
-      - ./create-import-repo.sh:/tmp/create-import-repo.sh
     command: bash -c "
-        chmod +x /tmp/wait-for-it.sh &&
-        cd /tmp &&
-        tar -xvzf es_backups.tar.gz &&
         /usr/local/bin/docker-entrypoint.sh
       "
-    post_start:
-        -  command: ["/tmp/wait-for-it.sh", "localhost:9200", "-t","40", "--", "sh", "/tmp/create-import-repo.sh"]
 
   postgres:
     image: kartoza/postgis:17-3.5

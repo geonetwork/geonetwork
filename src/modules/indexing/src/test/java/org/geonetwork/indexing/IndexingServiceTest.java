@@ -75,6 +75,10 @@ class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
 
         metadataRepository.save(dbRecord);
 
+        // Before indexing documents, index setup is empty
+        indexClient.setupIndex(true);
+        assertTrue(indexClient.isIndexMissingOrEmpty());
+
         List<Future<?>> indexTaskSubmissions = indexingService.index(List.of(dbRecord.getUuid()));
         for (Future<?> task : indexTaskSubmissions) {
             task.get();
@@ -90,6 +94,7 @@ class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
                             indexClient.getIndexRecordName())
                     .id(dbRecord.getUuid())));
             assertTrue(exists.value());
+            org.junit.jupiter.api.Assertions.assertFalse(indexClient.isIndexMissingOrEmpty());
         }
     }
 }

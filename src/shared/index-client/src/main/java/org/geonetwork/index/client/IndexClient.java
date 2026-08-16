@@ -9,9 +9,11 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.UNWRAP_SINGL
 
 import co.elastic.clients.elasticsearch.ElasticsearchAsyncClient;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.CountResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
+import co.elastic.clients.transport.endpoints.BooleanResponse;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
@@ -33,6 +35,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -41,13 +44,14 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @Slf4j
-public class IndexClient {
+public class IndexClient implements InitializingBean {
     private final ElasticsearchClient esClient;
     private final ElasticsearchAsyncClient esAsynchClient;
 
     private String serverUrl;
     private String defaultIndexPrefix;
     private String indexRecordName;
+    private boolean createIfEmpty;
     private Integer maxResultWindow;
     private Long totalFieldsLimit;
     private CredentialsProvider credentialsProvider;
@@ -64,6 +68,7 @@ public class IndexClient {
             @Value("${geonetwork.index.password}") String password,
             @Value("${geonetwork.index.indexPrefix:'gn-'}") String defaultIndexPrefix,
             @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
+            @Value("${geonetwork.index.createIfEmpty:true}") boolean createIfEmpty,
             @Value("${geonetwork.index.elasticsearch.settings.maxResultWindow:50000}") Integer maxResultWindow,
             @Value("${geonetwork.index.elasticsearch.settings.mapping.totalFields:10000}") Long totalFieldsLimit,
             @Value("${geonetwork.indexing.requestimeout:45000}") int requestTimeout
@@ -73,6 +78,7 @@ public class IndexClient {
         this.serverUrl = serverUrl;
         this.defaultIndexPrefix = defaultIndexPrefix;
         this.indexRecordName = indexRecordName;
+        this.createIfEmpty = createIfEmpty;
         this.maxResultWindow = maxResultWindow;
         this.totalFieldsLimit = totalFieldsLimit;
 
@@ -152,6 +158,48 @@ public class IndexClient {
         } catch (IOException e) {
             log.atError().log("Errors while creating index {}. Error is: {}", indexRecordName, e.getMessage());
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Checks if the configured index either does not exist or contains zero documents.
+     *
+     * @return true if index is missing or empty, false if index exists and contains records
+     */
+    public boolean isIndexMissingOrEmpty() {
+        try {
+            BooleanResponse exists = esClient.indices().exists(e -> e.index(indexRecordName));
+            if (!exists.value()) {
+                return true;
+            }
+            esClient.indices().refresh(r -> r.index(indexRecordName));
+            CountResponse count = esClient.count(c -> c.index(indexRecordName));
+            return count.count() == 0;
+        } catch (Exception e) {
+            log.atWarn().log("Could not determine status of index '{}': {}", indexRecordName, e.getMessage());
+            return true;
+        }
+    }
+
+    /** Initializes the index on startup if createIfEmpty is true and the index is missing or empty. */
+    @Override
+    public void afterPropertiesSet() {
+        if (createIfEmpty) {
+            try {
+                if (isIndexMissingOrEmpty()) {
+                    log.atInfo().log(
+                            "Index '{}' is missing or empty and createIfEmpty is true. Initializing index mappings...",
+                            indexRecordName);
+                    setupIndex(true);
+                    log.atInfo().log("Index '{}' successfully initialized.", indexRecordName);
+                }
+            } catch (Exception e) {
+                log.atWarn()
+                        .log(
+                                "Could not automatically initialize index '{}' on startup: {}",
+                                indexRecordName,
+                                e.getMessage());
+            }
         }
     }
 }

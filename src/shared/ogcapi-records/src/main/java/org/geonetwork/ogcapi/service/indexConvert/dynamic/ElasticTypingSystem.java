@@ -9,8 +9,8 @@ import static org.geonetwork.ogcapi.service.configuration.OverrideType.getJavaTy
 import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.indices.IndexState;
 import com.google.common.base.Splitter;
-import java.io.IOException;
 import java.util.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
 import org.geonetwork.index.client.IndexClient;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
  * <p>Basic usage is to get type info about an elastic field (or ogc property) name. And to do some conversion.
  */
 @Component
+@Slf4j
 // @Getter
 public class ElasticTypingSystem {
 
@@ -194,14 +195,17 @@ public class ElasticTypingSystem {
      */
     private static IndexState getIndexInfo(IndexClient client, String indexRecordName) {
         try {
-            if (client != null) {
-                return client.getEsClient()
-                        .indices()
-                        .get(x -> x.index(indexRecordName))
-                        .get(indexRecordName);
+            if (client != null && client.getEsClient() != null) {
+                var exists = client.getEsClient().indices().exists(x -> x.index(indexRecordName));
+                if (exists != null && exists.value()) {
+                    return client.getEsClient()
+                            .indices()
+                            .get(x -> x.index(indexRecordName))
+                            .get(indexRecordName);
+                }
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.warn("Could not retrieve index definition for '{}': {}", indexRecordName, e.getMessage());
         }
         return null;
     }
@@ -222,7 +226,7 @@ public class ElasticTypingSystem {
         if (this.elasticIndexInfo == null
                 || this.elasticIndexInfo.mappings() == null
                 || this.elasticIndexInfo.mappings().properties() == null) {
-            throw new RuntimeException("Elastic Index Definition Unavailable");
+            return null;
         }
         var path = Lists.newArrayList(Splitter.on('.').split(elasticPath).iterator());
 

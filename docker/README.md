@@ -5,7 +5,7 @@ This directory provides Docker Compose configurations for the GeoNetwork 5 envir
 ## Core Dependencies
 These files provide the database (PostGIS) and search engine (Elasticsearch).
 
-- **`docker-compose-dbs.yml`**: PostgreSQL and Elasticsearch with **sample data**.
+- **`docker-compose-dbs.yml`**: PostgreSQL with sample data (`dump.gn.sql`) and clean Elasticsearch (index is automatically initialized and populated on startup by GN5 when `GN5_INDEX_CREATE_IF_EMPTY=true`).
 - **`docker-compose-dbs-empty.yml`**: PostgreSQL and Elasticsearch **empty** (clean start).
 
 ### Usage
