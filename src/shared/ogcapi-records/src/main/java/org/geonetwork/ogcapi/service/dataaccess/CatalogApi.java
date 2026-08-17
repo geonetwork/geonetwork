@@ -52,7 +52,7 @@ public class CatalogApi {
      * @return all the defined portals
      */
     public List<CatalogInfo> getAllPortalInfos() {
-        var portals = sourceRepository.findAll().stream()
+        var portals = sourceRepository.findAllOgcApiCollections().stream()
                 .map(x -> {
                     try {
                         return getPortalInfo(x.getUuid());
