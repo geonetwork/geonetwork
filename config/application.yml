@@ -130,14 +130,12 @@ spring:
       - optional:configserver:http://localhost:8888
       - classpath:application-gn4.yml
       - optional:classpath:application-ogcapi-records.yml
+
 management:
-  endpoint:
-    info:
-      access: read_only
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health
 
 springdoc:
   api-docs:
