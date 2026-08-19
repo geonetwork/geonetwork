@@ -142,6 +142,35 @@ geonetwork:
               facetType: TERM
               bucketCount: 50
 
+        # The entries below map the OGC API Records "built-in" queryables (see queryables.json) to their
+        # elastic path, so they can be resolved by CQL filters (cf OgcElasticFieldMapper). They are not
+        # marked isQueryable/isSortable since they're already advertised via queryables.json - this only
+        # wires up CQL resolution. "themes" (wildcard th_*.* field) and "contacts" (nested-only) are left
+        # out: there's no single flat elastic field that represents them, so mapping them here would
+        # silently produce wrong/empty results instead of the honest "unsupported field" error.
+        - ogcProperty: id
+          elasticProperty: uuid
+        - ogcProperty: created
+          elasticProperty: createDate
+        - ogcProperty: updated
+          elasticProperty: resourceDate.date
+        - ogcProperty: language
+          elasticProperty: mainLanguage
+        - ogcProperty: languages
+          elasticProperty: otherLanguage
+        - ogcProperty: organization
+          elasticProperty: OrgForResourceObject.default
+        - ogcProperty: title
+          elasticProperty: resourceTitleObject.default
+        - ogcProperty: description
+          elasticProperty: resourceAbstractObject.default
+        - ogcProperty: keywords
+          elasticProperty: tag.default
+        - ogcProperty: geometry
+          elasticProperty: geom
+        - ogcProperty: time
+          elasticProperty: resourceTemporalDateRange
+
 
 
 

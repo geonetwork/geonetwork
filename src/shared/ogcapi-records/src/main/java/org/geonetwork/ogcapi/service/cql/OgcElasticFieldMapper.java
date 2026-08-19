@@ -4,6 +4,7 @@
  */
 package org.geonetwork.ogcapi.service.cql;
 
+import org.geonetwork.ogcapi.controllerexceptions.InvalidParameterException;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ public class OgcElasticFieldMapper implements IFieldMapper {
         if (fieldInfo != null) {
             return fieldInfo.getElasticProperty();
         }
-        throw new RuntimeException("Don't know what field '" + field + "' maps to in elastic!");
+        throw new InvalidParameterException("Don't know what field '" + field + "' maps to in elastic!");
     }
 
     @Override
