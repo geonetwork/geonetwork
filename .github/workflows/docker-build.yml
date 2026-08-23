@@ -2,9 +2,9 @@ name: Build GeoNetwork 5 docker image and push to ghcr.io
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/gn5-dev
+          images: ghcr.io/${{ github.repository_owner }}/gn5-main
           tags: |
             type=raw,value=latest,enable=${{ github.event_name == 'push' }}
             type=sha,prefix=,enable=true
