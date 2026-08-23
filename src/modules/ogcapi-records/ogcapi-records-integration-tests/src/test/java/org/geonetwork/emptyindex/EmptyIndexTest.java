@@ -105,12 +105,8 @@ public class EmptyIndexTest implements ApplicationContextInitializer<Configurabl
 
         assertNotNull(collections);
         assertTrue(collections.getLinks().size() > 2);
-        assertEquals(2, collections.getCollections().size());
-
-        assertTrue(collections.getCollections().get(0).getId().equals(MAIN_COLLECTION_ID)
-                || collections.getCollections().get(0).getId().equals(METAWAL_COLLECTION_ID));
-        assertTrue(collections.getCollections().get(1).getId().equals(MAIN_COLLECTION_ID)
-                || collections.getCollections().get(1).getId().equals(METAWAL_COLLECTION_ID));
+        assertEquals(1, collections.getCollections().size());
+        assertEquals(MAIN_COLLECTION_ID, collections.getCollections().get(0).getId());
     }
 
     @Test

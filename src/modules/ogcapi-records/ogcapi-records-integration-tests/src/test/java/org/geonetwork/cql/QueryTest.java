@@ -849,7 +849,8 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
     // ----------------------------------------------------------------------------------------------------------
 
     /**
-     * checks that there are 2 named (title) collections. This will fail if Postgresql didn't come up properly!
+     * checks that only the main portal collection is listed (harvester sources like Metawal are excluded). This will
+     * fail if Postgresql didn't come up properly!
      *
      * @throws Exception bad response (usually unparseable or bad MVC or bad PGSQL)
      */
@@ -857,21 +858,14 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
     void test_simple_collections_test() throws Exception {
         var result = retrieveUrlJson("ogcapi-records/collections", OgcApiRecordsGetCollections200ResponseDto.class);
 
-        assertEquals(2, result.getCollections().size());
+        assertEquals(1, result.getCollections().size());
         var collectionAll = result.getCollections().stream()
                 .filter(x -> x.getTitle().equals("Test GeoNetwork-UI instance"))
                 .findFirst()
                 .get();
-        var collectionMetawal = result.getCollections().stream()
-                .filter(x -> x.getTitle().equals("Metawal"))
-                .findFirst()
-                .get();
 
         assertNotNull(collectionAll);
-        assertNotNull(collectionMetawal);
-
         assertEquals(MAIN_COLLECTION_ID, collectionAll.getId());
-        assertEquals(METAWAL_COLLECTION_ID, collectionMetawal.getId());
     }
 
     /**
