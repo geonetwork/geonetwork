@@ -1,0 +1,49 @@
+/*
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+package org.geonetwork.utility.xml.xslt;
+
+import net.sf.saxon.expr.XPathContext;
+import net.sf.saxon.lib.ExtensionFunctionCall;
+import net.sf.saxon.lib.ExtensionFunctionDefinition;
+import net.sf.saxon.om.Sequence;
+import net.sf.saxon.om.StructuredQName;
+import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.value.SequenceType;
+import net.sf.saxon.value.StringValue;
+import org.geonetwork.setting.SettingManager;
+import org.geonetwork.utility.ApplicationContextProvider;
+
+/** Extension function to read a setting value. */
+public class GetSettingValueFn extends ExtensionFunctionDefinition {
+    @Override
+    public StructuredQName getFunctionQName() {
+        return new StructuredQName(XslFn.PREFIX, XslFn.URI, "getSettingValue");
+    }
+
+    @Override
+    public SequenceType[] getArgumentTypes() {
+        return new SequenceType[] {SequenceType.SINGLE_STRING};
+    }
+
+    @Override
+    public SequenceType getResultType(SequenceType[] suppliedArgumentTypes) {
+        return SequenceType.SINGLE_STRING;
+    }
+
+    @Override
+    public ExtensionFunctionCall makeCallExpression() {
+        return new ExtensionFunctionCall() {
+            @Override
+            public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
+                String path = arguments[0].head().getStringValue();
+                String value = ApplicationContextProvider.getApplicationContext()
+                        .getBean(SettingManager.class)
+                        .getValue(path);
+                return StringValue.makeStringValue(value == null ? "" : value);
+            }
+        };
+    }
+}

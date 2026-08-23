@@ -1,7 +1,6 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 package org.geonetwork.ogcapi.service.facets;
 
@@ -34,6 +33,9 @@ public class FacetsResponseInjector {
     @Autowired
     DynamicPropertiesFacade dynamicPropertiesFacade;
 
+    @Autowired
+    AdvancedFacetsService advancedFacetsService;
+
     public enum SortType {
         STRING,
         NUMBER,
@@ -42,31 +44,34 @@ public class FacetsResponseInjector {
 
     public static final int DEFAULT_MAX_BUCKETS = 20;
 
-    /**
-     * Setup the facets portion of the response.
-     *
-     * @param webResponse put the facets in here (goes to user)
-     * @param searchResponse from elastic
-     */
-    public void injectFacets(
-            OgcApiRecordsGetRecords200ResponseDto webResponse, SearchResponse<IndexRecord> searchResponse) {
+    public Map<String, OgcApiRecordsFacetSummaryDto> getFacets(
+            SearchResponse<IndexRecord> searchResponse, List<OgcApiRecordsAdvancedFacetDto> advancedFacets) {
 
-        var facets = this.dynamicPropertiesFacade.getFacetConfigs();
+        var facetsOriginal = this.dynamicPropertiesFacade.getFacetConfigs();
 
-        if (facets == null || facets.isEmpty()) {
-            return; // nothing to doOgcApiItemsApi.java
+        if (facetsOriginal == null || facetsOriginal.isEmpty()) {
+            return new HashMap<>();
         }
+
+        if (searchResponse.aggregations() == null
+                || searchResponse.aggregations().isEmpty()) {
+            return new HashMap<>();
+        }
+
+        List<OgcFacetConfig> facets = advancedFacetsService.determineFacets(facetsOriginal, advancedFacets);
+
         var result = new HashMap<String, OgcApiRecordsFacetSummaryDto>();
 
         for (var f : facets) {
             var name = f.getFacetName();
 
             var summary = setupSummary(dynamicPropertiesFacade.getDefaultFacetsBucketCount(), name, f, searchResponse);
-
-            result.put(name, summary);
+            if (summary != null) {
+                result.put(name, summary);
+            }
         }
 
-        webResponse.setFacets(result);
+        return result;
     }
 
     private OgcApiRecordsFacetSummaryDto setupSummary(
@@ -96,11 +101,15 @@ public class FacetsResponseInjector {
         var result = new OgcApiRecordsFacetSummaryDto();
         result.setType(FacetType.ogcString(termsDto.getFacetType()));
 
-        result.setProperty(termsDto.getField().getOgcProperty());
+        var correspondingField = dynamicPropertiesFacade.findFieldForFacet(termsDto);
+        result.setProperty(correspondingField.getOgcProperty());
 
         var buckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>();
 
         var agg = searchResponse.aggregations().get("facet." + name);
+        if (agg == null) {
+            return null;
+        }
         var stringTermsAgg = ((StringTermsAggregate) agg._get());
         var moreDocs = stringTermsAgg.sumOtherDocCount() > 0;
         @SuppressWarnings("unchecked")
@@ -119,7 +128,8 @@ public class FacetsResponseInjector {
                 termsDto.getBucketSorting(),
                 SortType.STRING,
                 moreDocs,
-                termsDto.getBucketCount());
+                termsDto.getBucketCount(),
+                termsDto.getBucketSortingDirection());
         return result;
     }
 
@@ -131,11 +141,16 @@ public class FacetsResponseInjector {
         var result = new OgcApiRecordsFacetSummaryDto();
         result.setType(FacetType.ogcString(histogramDto.getFacetType()));
 
-        result.setProperty(histogramDto.getField().getOgcProperty());
+        var correspondingField = dynamicPropertiesFacade.findFieldForFacet(histogramDto);
+        result.setProperty(correspondingField.getOgcProperty());
 
         List<OgcApiRecordsFacetResultBucketDto> buckets;
 
-        var agg = searchResponse.aggregations().get("facet." + name)._get();
+        var _agg = searchResponse.aggregations().get("facet." + name);
+        if (_agg == null) {
+            return null;
+        }
+        var agg = _agg._get();
 
         if (agg instanceof HistogramAggregate _histogramAgg) {
             buckets = handleHistogramBuckets_HistogramAggregate(histogramDto, _histogramAgg);
@@ -152,7 +167,8 @@ public class FacetsResponseInjector {
         }
 
         SortType sortType = SortType.NUMBER;
-        var ogcProperty = histogramDto.getField().getOgcProperty();
+
+        var ogcProperty = correspondingField.getOgcProperty();
         var type = this.dynamicPropertiesFacade.getByOgcProperty(ogcProperty).getType();
         if (type == SimpleType.DATE) {
             sortType = SortType.DATE;
@@ -166,7 +182,8 @@ public class FacetsResponseInjector {
                 histogramDto.getBucketSorting(),
                 sortType,
                 false,
-                histogramDto.getBucketCount());
+                histogramDto.getBucketCount(),
+                histogramDto.getBucketSortingDirection());
         return result;
     }
 
@@ -174,15 +191,15 @@ public class FacetsResponseInjector {
             OgcFacetConfig histogramDto, HistogramAggregate agg) {
         List<OgcApiRecordsFacetResultBucketDto> buckets = new ArrayList<>();
         @SuppressWarnings("unchecked")
-        var elasticBuckets = ((Map<String, HistogramBucket>) agg.buckets()._get());
-        for (var elasticBucket : elasticBuckets.entrySet()) {
+        var elasticBuckets = ((List<HistogramBucket>) agg.buckets()._get());
+        for (var elasticBucket : elasticBuckets) {
             var b = new OgcApiRecordsFacetResultBucketDto();
-            b.setCount((int) elasticBucket.getValue().docCount());
+            b.setCount((int) elasticBucket.docCount());
 
-            b.setMin(Double.toString(elasticBucket.getValue().key()));
-            b.setMax(Double.toString(elasticBucket.getValue().key() + histogramDto.getNumberBucketInterval()));
+            b.setMin(Double.toString(elasticBucket.key()));
+            b.setMax(Double.toString(elasticBucket.key() + histogramDto.getNumberBucketInterval()));
 
-            b.setValue(Double.toString(elasticBucket.getValue().key()));
+            b.setValue(Double.toString(elasticBucket.key()));
             buckets.add(b);
         }
         return buckets;
@@ -328,6 +345,17 @@ public class FacetsResponseInjector {
             buckets.add(bucketOgc);
         }
         result.setBuckets(buckets);
+
+        handleBuckets(
+                result,
+                defaultBucketCount,
+                0,
+                filterDto.getBucketSorting(),
+                SortType.STRING,
+                false,
+                filterDto.getBucketCount(),
+                filterDto.getBucketSortingDirection());
+
         return result;
     }
 
@@ -344,6 +372,7 @@ public class FacetsResponseInjector {
      * @param sortedBy sorting option (alphabetical for term or count of documents)
      * @param moreDocs there were more documents that were not returned by elastic
      * @param bucketCount how many buckets are configured?
+     * @param bucketSortingDirection desc/asc
      */
     private void handleBuckets(
             OgcApiRecordsFacetSummaryDto result,
@@ -352,7 +381,8 @@ public class FacetsResponseInjector {
             BucketSorting sortedBy,
             SortType sortType,
             boolean moreDocs,
-            Integer bucketCount) {
+            Integer bucketCount,
+            BucketSortingDirection bucketSortingDirection) {
 
         var originalNumberOfBuckets = result.getBuckets().size();
         if (defaultBucketCount == null || defaultBucketCount <= 0) {
@@ -368,22 +398,6 @@ public class FacetsResponseInjector {
             sortedBy = BucketSorting.COUNT;
         }
 
-        // sort
-        if (sortedBy == BucketSorting.COUNT) {
-            // elastic does this by default, but we double check here
-            result.getBuckets().sort(Comparator.comparingInt(x -> x.getCount()));
-            Collections.reverse(result.getBuckets()); // descending
-        } else {
-            if (sortType == SortType.NUMBER) {
-                result.getBuckets().sort(Comparator.comparingDouble(x -> Double.parseDouble(x.getValue())));
-            } else if (sortType == SortType.STRING) {
-                result.getBuckets().sort(Comparator.comparing(x -> x.getValue()));
-            } else if (sortType == SortType.DATE) {
-                result.getBuckets().sort(Comparator.comparing(x -> x.getValue()));
-            }
-            Collections.reverse(result.getBuckets()); // descending
-        }
-
         var _minOccurs = minOccurs; // effectively final
         // min occurs
         var newBuckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>(result.getBuckets().stream()
@@ -395,13 +409,38 @@ public class FacetsResponseInjector {
                 .mapToInt(x -> x.getCount())
                 .sum();
 
-        // max # of buckets
-        if (newBuckets.size() > nBuckets) {
-            newBuckets.subList(nBuckets, newBuckets.size()).clear();
-        }
         result.setBuckets(newBuckets);
 
         // more documents not represented in these facet
         result.setMore(moreDocs || (newBuckets.size() < originalNumberOfBuckets && nDocsRemoved > 0));
+
+        // sort
+        if (sortedBy == BucketSorting.COUNT) {
+            // elastic does this by default, but we double check here
+            var comparator = Comparator.<OgcApiRecordsFacetResultBucketDto>comparingInt(x -> x.getCount());
+            if (bucketSortingDirection == BucketSortingDirection.DESCENDING) {
+                comparator = comparator.reversed();
+            }
+            comparator =
+                    comparator.thenComparing(BucketComparator.createValueComparator(sortType, bucketSortingDirection));
+            result.getBuckets().sort(comparator);
+        } else {
+            var comparator = BucketComparator.createValueComparator(sortType, bucketSortingDirection);
+            var countComparator = Comparator.<OgcApiRecordsFacetResultBucketDto>comparingInt(x -> x.getCount());
+            if (bucketSortingDirection == BucketSortingDirection.DESCENDING) {
+                countComparator = countComparator.reversed();
+            }
+            comparator = comparator.thenComparing(countComparator);
+            result.getBuckets().sort(comparator);
+        }
+
+        newBuckets = new ArrayList<>(result.getBuckets());
+
+        // max # of buckets
+        if (newBuckets.size() > nBuckets) {
+            newBuckets.subList(nBuckets, newBuckets.size()).clear();
+        }
+
+        result.setBuckets(newBuckets);
     }
 }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <schema xmlns="http://geonetwork-opensource.org/schemas/schema-ident"
@@ -172,9 +171,12 @@ Ce schéma est également composé des normes :
     <formatter name="xml" title="" officialProfileName="http://geonetwork.net/def/profile/raw-xml" contentType="application/xml"/>
 <!--    <formatter name="json"title="" officialProfileName="[geonetwork:raw-json]" contentType="application/json"/>-->
     <formatter name="datacite" title="" officialProfileName="http://geonetwork.net/def/profile/datacite" contentType="application/xml"/>
+    <formatter name="schema.org" title="" officialProfileName="http://geonetwork.net/def/profile/schema.org" contentType="application/json"/>
+    <formatter name="iso19139" title="" officialProfileName="http://geonetwork.net/def/profile/iso19139" contentType="application/xml"/>
     <formatter name="dcat" title="" officialProfileName="http://geonetwork.net/def/profile/dcat" contentType="application/rdf+xml"/>
     <formatter name="eu-dcat-ap" title="" officialProfileName="http://geonetwork.net/def/profile/eu-dcat-ap" contentType="application/rdf+xml"/>
     <formatter name="eu-dcat-ap-hvd" title="" officialProfileName="http://geonetwork.net/def/profile/eu-dcat-ap-hvd" contentType="application/rdf+xml"/>
     <formatter name="eu-geodcat-ap" title="" officialProfileName="http://geonetwork.net/def/profile/eu-geodcat-ap" contentType="application/rdf+xml"/>
+    <formatter name="eu-geodcat-ap-semiceu" title="" officialProfileName="http://geonetwork.net/def/profile/eu-geodcat-ap-semiceu" contentType="application/rdf+xml"/>
   </formatters>
 </schema>

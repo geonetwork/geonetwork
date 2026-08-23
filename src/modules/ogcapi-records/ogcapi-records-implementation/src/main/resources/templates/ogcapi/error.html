@@ -1,0 +1,24 @@
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head(${'Error ' + page.code})}"></head>
+<body>
+
+<h1 class="page-title"><strong>Error <span th:text="${page.code}"></span></strong></h1>
+
+<section class="section-block" style="border-color:#f5c6cb;background:#fff5f5;">
+  <h2 style="color:#b00020;">Something went wrong</h2>
+  <p th:if="${page.description != null}" class="description" th:text="${page.description}"></p>
+  <p th:unless="${page.description != null}" class="description" style="color:#888;">No details available.</p>
+  <p class="meta" style="margin-top:12px;">
+    <a href="javascript:history.back()">&#8592; Go back</a>
+  </p>
+</section>
+
+</body>
+</html>

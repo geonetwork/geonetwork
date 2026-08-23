@@ -1,8 +1,7 @@
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -29,6 +28,7 @@
 
 
   <xsl:function name="gn-fn-index:build-codelist" as="node()*">
+    <xsl:param name="schema" as="xs:string"/>
     <xsl:param name="fieldName" as="xs:string"/>
     <xsl:param name="codelistName" as="xs:string"/>
     <xsl:param name="value" as="xs:string"/>
@@ -42,7 +42,7 @@
       </key>
       <xsl:for-each select="$languages">
         <xsl:variable name="translation"
-                      select="util:getCodelistTranslation($codelistName, $value, @code)"/>
+                      select="util:getCodelistTranslation($schema, $codelistName, $value, @code)"/>
 
         <xsl:if test="@default">
           <default>

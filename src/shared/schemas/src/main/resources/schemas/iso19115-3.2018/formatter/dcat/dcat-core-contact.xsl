@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <xsl:stylesheet version="3.0"
@@ -123,7 +122,8 @@
 
       <xsl:for-each select="$individualName">
         <xsl:call-template name="rdf-localised">
-        <xsl:with-param name="nodeName" select="'vcard:fn'"/>      </xsl:call-template>
+          <xsl:with-param name="nodeName" select="'vcard:fn'"/>
+        </xsl:call-template>
       </xsl:for-each>
 
       <xsl:for-each select="$organisation/cit:name">
@@ -214,7 +214,8 @@
         <xsl:when test="$isindividual">
           <xsl:for-each select="$individualName">
             <xsl:call-template name="rdf-localised">
-              <xsl:with-param name="nodeName" select="'foaf:name'"/>            </xsl:call-template>
+              <xsl:with-param name="nodeName" select="'foaf:name'"/>
+            </xsl:call-template>
           </xsl:for-each>
           <org:memberOf>
             <xsl:for-each select="$organisation/cit:name">

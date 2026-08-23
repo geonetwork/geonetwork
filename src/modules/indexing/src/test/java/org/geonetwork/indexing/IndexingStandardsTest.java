@@ -1,7 +1,6 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 package org.geonetwork.indexing;
@@ -9,6 +8,7 @@ package org.geonetwork.indexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.TimeZone;
 import org.apache.commons.io.IOUtils;
@@ -53,12 +53,14 @@ class IndexingStandardsTest {
         // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
         // ".xml").getURI()));
 
-        String xml = IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream());
+        String xml =
+                IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream(), StandardCharsets.UTF_8);
 
         //    String expectedIndexDocument =
         //        Files.readString(Path.of(new ClassPathResource(fileBaseName + ".json").getURI()));
 
-        String expectedIndexDocument = IOUtils.toString(new ClassPathResource(fileBaseName + ".json").getInputStream());
+        String expectedIndexDocument = IOUtils.toString(
+                new ClassPathResource(fileBaseName + ".json").getInputStream(), StandardCharsets.UTF_8);
 
         Metadata dbRecord = Metadata.builder()
                 .uuid(fileBaseName)
@@ -70,7 +72,7 @@ class IndexingStandardsTest {
                 .source("null")
                 .popularity(0)
                 .rating(0)
-                .owner(1)
+                .owner(9999)
                 .groupowner(null)
                 .data(xml)
                 .build();

@@ -1,0 +1,49 @@
+/*
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+package org.geonetwork.ogcapi.ctrlreturntypes;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.geonetwork.application.ctrlreturntypes.IControllerResultFormatter;
+import org.geonetwork.application.formatters.IContentNegotiationInitializable;
+import org.geonetwork.application.profile.ProfileDefaultsConfiguration;
+import org.geonetwork.formatting.FormatterApi;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+
+/**
+ * creates a OgcApiRecordsSingleRecordResponseFormatter (a formatterApi profile-aware formatter) for each of the mime
+ * type that the formatterApi supports.
+ */
+@Component
+public class SingleRecordFormatterApiContentNegotiationInitializable implements IContentNegotiationInitializable {
+
+    @Autowired
+    private FormatterApi formatterApi;
+
+    @Autowired
+    ProfileDefaultsConfiguration profileDefaultsConfiguration; // for default profile
+
+    @Override
+    public List<IControllerResultFormatter> initialize() throws Exception {
+        var result = new ArrayList<IControllerResultFormatter>();
+        var formatters = formatterApi.getAllFormatters();
+        for (var mimeTypeFormatters : formatters.entrySet()) {
+            var mimeType = MediaType.valueOf(mimeTypeFormatters.getKey());
+
+            var formatter = new OgcApiRecordsSingleRecordResponseFormatter(
+                    mimeType,
+                    null,
+                    this.profileDefaultsConfiguration.getDefaultProfile(
+                            mimeType, OgcApiRecordsSingleRecordResponse.class),
+                    mimeTypeFormatters.getValue(),
+                    formatterApi);
+
+            result.add(0, formatter);
+        }
+        return result;
+    }
+}

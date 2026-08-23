@@ -16,6 +16,12 @@
       "name": "geonetwork.directory.data",
       "type": "java.lang.String",
       "description": "Catalog data directory containing metadata_data folder."
+    },
+    {
+      "name": "geonetwork.index.createIfEmpty",
+      "type": "java.lang.Boolean",
+      "description": "Whether to automatically create the index and trigger full reindexing on application startup when the configured index is missing or empty.",
+      "defaultValue": true
     }
   ]
 }

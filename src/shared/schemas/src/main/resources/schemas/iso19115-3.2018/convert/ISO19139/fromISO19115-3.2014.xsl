@@ -1,8 +1,7 @@
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <xsl:stylesheet version="2.0"
@@ -59,7 +58,7 @@
       <xsl:if test="count(ancestor::*) = 0">
         <xsl:call-template name="add-iso19115-3.2018-namespaces"/>
       </xsl:if>
-      
+
       <xsl:apply-templates select="@*|*"/>
     </xsl:element>
   </xsl:template>
@@ -98,7 +97,7 @@
       <xsl:apply-templates select="@*|*"/>
     </xsl:element>
   </xsl:template>
-  
+
 
 
   <!-- Do a copy of every nodes and attributes -->

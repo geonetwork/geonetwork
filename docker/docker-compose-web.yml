@@ -1,0 +1,7 @@
+services:
+  web:
+    image: dblasby2/ogcapi-records-web:latest
+    environment:
+      GEONETWORK_URL: http://localhost:7979/geonetwork
+    ports:
+      - "80:80"

@@ -22181,10 +22181,10 @@ INSERT INTO public.metadata (id, data, changedate, createdate, displayorder, doc
       <gmd:descriptiveKeywords>
         <gmd:MD_Keywords>
           <gmd:keyword>
-            <gco:CharacterString>GEONETWORK</gco:CharacterString>
+            <gco:CharacterString>GeoNetwork</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
-            <gco:CharacterString>OSGeo</gco:CharacterString>
+            <gco:CharacterString>Catalog</gco:CharacterString>
           </gmd:keyword>
           <gmd:type>
             <gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode" />

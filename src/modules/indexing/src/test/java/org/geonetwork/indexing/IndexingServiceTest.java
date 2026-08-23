@@ -1,7 +1,6 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 package org.geonetwork.indexing;
@@ -10,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import co.elastic.clients.elasticsearch.core.ExistsRequest;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.Future;
@@ -55,7 +55,8 @@ class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
         String fileBaseName = String.format("samples/%s", file);
         // String xml = Files.readString(Path.of(new ClassPathResource(fileBaseName +
         // ".xml").getURI()));
-        String xml = IOUtils.toString(new ClassPathResource(fileBaseName + ".xml").getInputStream());
+        String xml = IOUtils.toString(
+                new ClassPathResource(fileBaseName + ".xml").getInputStream(), String.valueOf(StandardCharsets.UTF_8));
 
         Metadata dbRecord = Metadata.builder()
                 .uuid(fileBaseName)
@@ -74,6 +75,10 @@ class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
 
         metadataRepository.save(dbRecord);
 
+        // Before indexing documents, index setup is empty
+        indexClient.setupIndex(true);
+        assertTrue(indexClient.isIndexMissingOrEmpty());
+
         List<Future<?>> indexTaskSubmissions = indexingService.index(List.of(dbRecord.getUuid()));
         for (Future<?> task : indexTaskSubmissions) {
             task.get();
@@ -89,6 +94,7 @@ class IndexingServiceTest extends ElasticsearchBasedIntegrationTest {
                             indexClient.getIndexRecordName())
                     .id(dbRecord.getUuid())));
             assertTrue(exists.value());
+            org.junit.jupiter.api.Assertions.assertFalse(indexClient.isIndexMissingOrEmpty());
         }
     }
 }

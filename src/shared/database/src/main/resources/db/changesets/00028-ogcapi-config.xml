@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="00028-ogcapi-property-mapping" author="geonetwork">
+        <createTable tableName="ogcapi_property_mapping">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ogcapi_property_mapping_pkey"/>
+            </column>
+            <column name="default_bucket_count" type="INTEGER" defaultValueNumeric="10">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_sequence" type="BIGINT" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="00028-ogcapi-field-mapping" author="geonetwork">
+        <createTable tableName="ogcapi_field_mapping">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ogcapi_field_mapping_pkey"/>
+            </column>
+            <column name="config_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sort_order" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ogc_property" type="VARCHAR(255)"/>
+            <column name="elastic_property" type="VARCHAR(255)"/>
+            <column name="index_record_property" type="VARCHAR(255)"/>
+            <column name="type_override" type="VARCHAR(50)"/>
+            <column name="sort_field_suffix" type="VARCHAR(255)"/>
+            <column name="is_sortable" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="is_queryable" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="description" type="TEXT"/>
+            <column name="add_property_to_output" type="BOOLEAN" defaultValueBoolean="true"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="ogcapi_field_mapping"
+                                 baseColumnNames="config_id"
+                                 constraintName="fk_ogcapi_field_mapping_config"
+                                 referencedTableName="ogcapi_property_mapping"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="00028-ogcapi-facet-config" author="geonetwork">
+        <createTable tableName="ogcapi_facet_config">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ogcapi_facet_config_pkey"/>
+            </column>
+            <column name="field_mapping_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sort_order" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="facet_name" type="VARCHAR(255)"/>
+            <column name="facet_type" type="VARCHAR(50)"/>
+            <column name="bucket_sorting" type="VARCHAR(50)"/>
+            <column name="bucket_sorting_direction" type="VARCHAR(50)"/>
+            <column name="bucket_count" type="INTEGER"/>
+            <column name="minimum_document_count" type="INTEGER" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number_bucket_interval" type="DOUBLE PRECISION"/>
+            <column name="calendar_interval_unit" type="VARCHAR(50)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="ogcapi_facet_config"
+                                 baseColumnNames="field_mapping_id"
+                                 constraintName="fk_ogcapi_facet_config_field_mapping"
+                                 referencedTableName="ogcapi_field_mapping"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="00028-ogcapi-filter-facet" author="geonetwork">
+        <createTable tableName="ogcapi_filter_facet">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ogcapi_filter_facet_pkey"/>
+            </column>
+            <column name="facet_config_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sort_order" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="filter_name" type="VARCHAR(255)"/>
+            <column name="filter_equation_cql" type="TEXT"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="ogcapi_filter_facet"
+                                 baseColumnNames="facet_config_id"
+                                 constraintName="fk_ogcapi_filter_facet_facet_config"
+                                 referencedTableName="ogcapi_facet_config"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gmi="http://www.isotc211.org/2005/gmi" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.isotc211.org/2005/gmd http://schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd">
@@ -98,7 +97,7 @@
       <gmd:citation>
         <gmd:CI_Citation>
           <gmd:title>
-            <gco:CharacterString>GeoCat Demo OGCIAPI Server</gco:CharacterString>
+            <gco:CharacterString>GeoCat Demo OGC API Server</gco:CharacterString>
           </gmd:title>
           <gmd:alternateTitle gco:nilReason="missing" />
           <gmd:date>
@@ -145,29 +144,29 @@
               <gmd:address>
                 <gmd:CI_Address>
                   <gmd:deliveryPoint>
-                    <gco:CharacterString>Veenderweg 13</gco:CharacterString>
+                    <gco:CharacterString>Generaal Foulkesweg 72</gco:CharacterString>
                   </gmd:deliveryPoint>
                   <gmd:city>
-                    <gco:CharacterString>Bennekom</gco:CharacterString>
+                    <gco:CharacterString>Wageningen</gco:CharacterString>
                   </gmd:city>
                   <gmd:administrativeArea>
                     <gco:CharacterString>Gelderland</gco:CharacterString>
                   </gmd:administrativeArea>
                   <gmd:postalCode>
-                    <gco:CharacterString>6721 WD</gco:CharacterString>
+                    <gco:CharacterString>6703 BW</gco:CharacterString>
                   </gmd:postalCode>
                   <gmd:country>
-                    <gco:CharacterString>The Nederlands</gco:CharacterString>
+                    <gco:CharacterString>The Netherlands</gco:CharacterString>
                   </gmd:country>
                   <gmd:electronicMailAddress>
-                    <gco:CharacterString>jeroen.ticheler@geocat.net</gco:CharacterString>
+                    <gco:CharacterString>jeroen.ticheler@geocat.com</gco:CharacterString>
                   </gmd:electronicMailAddress>
                 </gmd:CI_Address>
               </gmd:address>
               <gmd:onlineResource>
                 <gmd:CI_OnlineResource>
                   <gmd:linkage>
-                    <gmd:URL>http://geocat.net</gmd:URL>
+                    <gmd:URL>http://geocat.com</gmd:URL>
                   </gmd:linkage>
                 </gmd:CI_OnlineResource>
               </gmd:onlineResource>
@@ -205,16 +204,22 @@
       <gmd:descriptiveKeywords>
         <gmd:MD_Keywords>
           <gmd:keyword>
-            <gco:CharacterString>GEONETWORK</gco:CharacterString>
+            <gco:CharacterString>GeoNetwork</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
-            <gco:CharacterString>OSGeo</gco:CharacterString>
+            <gco:CharacterString>Catalog</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
             <gco:CharacterString>GeoCat</gco:CharacterString>
           </gmd:keyword>
           <gmd:keyword>
             <gco:CharacterString>OGCAPI</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gco:CharacterString>OGC</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gco:CharacterString>OGCAPI Records</gco:CharacterString>
           </gmd:keyword>
           <gmd:type>
             <gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_KeywordTypeCode" />
