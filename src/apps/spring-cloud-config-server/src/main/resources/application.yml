@@ -1,8 +1,0 @@
-spring:
-  profiles:
-    active: jdbc
-  application:
-    name: config-server
-  config:
-    import:
-      - optional:classpath:application-config-server.yml

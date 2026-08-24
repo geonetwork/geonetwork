@@ -1,6 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.indexConvert.dynamic;
 
@@ -42,11 +43,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ExtraElasticPropertiesService {
 
-    // helper class
     ElasticTypingSystem elasticTypingSystem;
 
-    // user-configured fields
-    OgcElasticFieldsMapperConfig config;
+    OgcElasticFieldsMapperConfig config; // user-configured fields
 
     // for test cases
     public ExtraElasticPropertiesService(OgcElasticFieldsMapperConfig config, ElasticTypingSystem elasticTypingSystem) {
@@ -64,7 +63,7 @@ public class ExtraElasticPropertiesService {
     public void inject(IndexRecord indexRecord, String iso3lang, OgcApiRecordsRecordGeoJSONDto result) {
         for (var field : config.getFields()) {
             if (!field.getAddPropertyToOutput()) {
-                continue; // don't have to do this
+                continue;
             }
             try {
                 var elasticValue = getFromElasticIndexRecord(field, indexRecord);
@@ -88,7 +87,8 @@ public class ExtraElasticPropertiesService {
      * @return value at the end of the traversal
      * @throws Exception bad path for the object
      */
-    Object getFromElasticIndexRecord(OgcElasticFieldMapperConfig field, IndexRecord indexRecord) throws Exception {
+    public Object getFromElasticIndexRecord(OgcElasticFieldMapperConfig field, IndexRecord indexRecord)
+            throws Exception {
         var path = field.getIndexRecordProperty();
         if (path.length() - path.replace("*", "").length() > 1) {
             throw new Exception("IndexRecordProperty - contains more than one * - " + path);
@@ -98,6 +98,7 @@ public class ExtraElasticPropertiesService {
         if (valStr == null) {
             return null; // no conversion necessary!
         }
+        //        var elasticType = this.propertyMap.get(field.getElasticProperty());
         return valStr;
     }
 
@@ -108,7 +109,7 @@ public class ExtraElasticPropertiesService {
      * @param path components to traverse
      * @return end value after traversal
      */
-    protected Object getByPath(Object object, List<String> path) {
+    public Object getByPath(Object object, List<String> path) {
         if (path.isEmpty()) {
             return object;
         }
@@ -137,7 +138,7 @@ public class ExtraElasticPropertiesService {
      * @return for each of the values in the list, the results of traversal
      */
     @SuppressWarnings("unchecked")
-    protected List getByPathMulti(List list, List<String> path) {
+    private List getByPathMulti(List list, List<String> path) {
         return list.stream().map(x -> getByPath(x, new ArrayList<>(path))).toList();
     }
 
@@ -148,7 +149,7 @@ public class ExtraElasticPropertiesService {
      * @param propertyName name of the property
      * @return value of the property in the object
      */
-    protected Object getByProperty(Object object, String propertyName) {
+    public Object getByProperty(Object object, String propertyName) {
         var clazz = object.getClass();
 
         // this is the usual case - i.e. `#getScale()`
@@ -184,7 +185,7 @@ public class ExtraElasticPropertiesService {
      * @param index [#] (list) or ["name"] (map)
      * @return sub-value of the object
      */
-    protected Object getByIndex(Object object, String index) {
+    public Object getByIndex(Object object, String index) {
         index = index.substring(1, index.length() - 1); // trim "[]"
         if (index.startsWith("\"") && index.endsWith("\"")) {
             index = index.substring(1, index.length() - 1); // trim ""

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
-    SPDX-License-Identifier: GPL-2.0-or-later
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
 
 -->
 <xsl:stylesheet version="3.0"
@@ -183,6 +184,9 @@
                 priority="2">
     <xsl:call-template name="iso19115-3-to-dcat-resource"/>
 
+    <xsl:apply-templates mode="iso19115-3-to-eu-dcat-ap"
+                         select="mdb:resourceLineage/*/mrl:source"/>
+
     <xsl:call-template name="rdf-eu-dcat-ap-theme"/>
   </xsl:template>
 
@@ -279,6 +283,15 @@
     </xsl:for-each>
   </xsl:template>
 
+
+  <xsl:template mode="iso19115-3-to-eu-dcat-ap"
+                match="mrl:source">
+    <dct:source>
+      <xsl:call-template name="rdf-object-ref-attribute">
+        <xsl:with-param name="isAbout" select="false()"/>
+      </xsl:call-template>
+    </dct:source>
+  </xsl:template>
 
   <!--
    sh:resultMessage              "maxCount[1]: Invalid cardinality: expected max 1: Got count = 2" ;

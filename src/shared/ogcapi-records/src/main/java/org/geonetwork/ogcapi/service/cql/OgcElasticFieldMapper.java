@@ -1,10 +1,10 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.cql;
 
-import org.geonetwork.ogcapi.controllerexceptions.InvalidParameterException;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ public class OgcElasticFieldMapper implements IFieldMapper {
         if (fieldInfo != null) {
             return fieldInfo.getElasticProperty();
         }
-        throw new InvalidParameterException("Don't know what field '" + field + "' maps to in elastic!");
+        throw new RuntimeException("Don't know what field '" + field + "' maps to in elastic!");
     }
 
     @Override

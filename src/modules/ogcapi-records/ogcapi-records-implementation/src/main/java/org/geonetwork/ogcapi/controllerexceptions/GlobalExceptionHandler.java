@@ -1,12 +1,12 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.controllerexceptions;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import lombok.extern.slf4j.Slf4j;
-import org.geonetwork.application.LowLoggingRuntimeException;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsExceptionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -50,35 +50,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(e.getCode()));
     }
 
-    /**
-     * Handle InvalidParameterException - a request with an unsupported parameter value (e.g. an unknown sortby
-     * property).
-     *
-     * @param e InvalidParameterException (client error)
-     * @return ResponseEntity<OgcApiRecordsExceptionDto> with message and status code 400
-     */
-    @ExceptionHandler(value = InvalidParameterException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<OgcApiRecordsExceptionDto> handleException(InvalidParameterException e) {
-        log.debug(e.getMessage(), e);
-        OgcApiRecordsExceptionDto exception =
-                new OgcApiRecordsExceptionDto().code("400").description(e.getMessage());
-        return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(400));
-    }
-
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<OgcApiRecordsExceptionDto> handleException(Exception e) {
         log.error(e.getMessage(), e);
-        OgcApiRecordsExceptionDto exception =
-                new OgcApiRecordsExceptionDto().code("500").description(e.getMessage());
-        return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(500));
-    }
-
-    @ExceptionHandler(value = LowLoggingRuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<OgcApiRecordsExceptionDto> handleException(LowLoggingRuntimeException e) {
-        log.debug(e.getClass().getSimpleName() + ":" + e.getMessage()); // just log message
         OgcApiRecordsExceptionDto exception =
                 new OgcApiRecordsExceptionDto().code("500").description(e.getMessage());
         return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(500));

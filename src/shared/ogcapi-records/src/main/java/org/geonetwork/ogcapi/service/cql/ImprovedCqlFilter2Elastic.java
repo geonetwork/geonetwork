@@ -1,6 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.cql;
 
@@ -73,28 +74,6 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
 
     @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        stack.push(buildEqualsQuery(filter, extraData));
-        return this;
-    }
-
-    @Override
-    public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
-        var equalsQuery = buildEqualsQuery(filter, extraData);
-        stack.push(Query.of(q -> q.bool(b -> b.mustNot(equalsQuery))));
-        return this;
-    }
-
-    @Override
-    public Object visit(Not filter, Object extraData) {
-        filter.getFilter().accept(this, extraData);
-
-        var negatedQuery = (Query) stack.pop();
-
-        stack.push(Query.of(q -> q.bool(b -> b.mustNot(negatedQuery))));
-        return this;
-    }
-
-    private Query buildEqualsQuery(BinaryComparisonOperator filter, Object extraData) {
         checkFilterExpressionsInBinaryComparisonOperator(filter);
 
         filter.getExpression1().accept(expressionVisitor, extraData);
@@ -107,7 +86,10 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
         final var _dataPropertyValue = dataPropertyValue;
 
         //        var query = Query.of(q -> q.term(tq -> tq.field(dataPropertyName).value(_dataPropertyValue)));
-        return Query.of(q -> q.term(tq -> tq.field(dataPropertyName).value(_dataPropertyValue)));
+        var query = Query.of(q -> q.term(tq -> tq.field(dataPropertyName).value(_dataPropertyValue)));
+
+        stack.push(query);
+        return this;
     }
 
     @Override
@@ -165,14 +147,14 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
 
         Query query =
                 switch (operator) {
-                    case GT -> Query.of(q -> q.range(
-                            r -> r.untyped(u -> u.field(dataPropertyName).gt(JsonData.of(dataPropertyValue)))));
-                    case GTE -> Query.of(q -> q.range(
-                            r -> r.untyped(u -> u.field(dataPropertyName).gte(JsonData.of(dataPropertyValue)))));
-                    case LT -> Query.of(q -> q.range(
-                            r -> r.untyped(u -> u.field(dataPropertyName).lt(JsonData.of(dataPropertyValue)))));
-                    case LTE -> Query.of(q -> q.range(
-                            r -> r.untyped(u -> u.field(dataPropertyName).lte(JsonData.of(dataPropertyValue)))));
+                    case GT -> Query.of(
+                            q -> q.range(r -> r.field(dataPropertyName).gt(JsonData.of(dataPropertyValue))));
+                    case GTE -> Query.of(
+                            q -> q.range(r -> r.field(dataPropertyName).gte(JsonData.of(dataPropertyValue))));
+                    case LT -> Query.of(
+                            q -> q.range(r -> r.field(dataPropertyName).lt(JsonData.of(dataPropertyValue))));
+                    case LTE -> Query.of(
+                            q -> q.range(r -> r.field(dataPropertyName).lte(JsonData.of(dataPropertyValue))));
                 };
 
         stack.push(query);
@@ -214,9 +196,9 @@ public class ImprovedCqlFilter2Elastic extends AbstractFilterVisitor {
         var _dataPropertyUpperValue = dataPropertyUpperValue;
         var _dataPropertyLowerValue = dataPropertyLowerValue;
 
-        Query query = Query.of(q -> q.range(r -> r.untyped(u -> u.field(dataPropertyName)
+        Query query = Query.of(q -> q.range(r -> r.field(dataPropertyName)
                 .gte(JsonData.of(_dataPropertyLowerValue))
-                .lte(JsonData.of(_dataPropertyUpperValue)))));
+                .lte(JsonData.of(_dataPropertyUpperValue))));
 
         stack.push(query);
 

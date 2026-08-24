@@ -1,6 +1,11 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
+/**
+ * (c) 2024 Open Source Geospatial Foundation - all rights reserved This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.querybuilder;
 
@@ -17,11 +22,9 @@ import java.util.List;
 import java.util.Map;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsFacetsDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGnElasticDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonPropertyDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
-import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.search.QueryToElastic;
 import org.junit.jupiter.api.Test;
@@ -67,7 +70,7 @@ public class QueryToElasticTest {
 
     /** tests the "id" - should result in a simple multi-match */
     @Test
-    public void test_id() throws Exception {
+    public void test_id() {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -118,7 +121,7 @@ public class QueryToElasticTest {
 
     /** tests the "title" - should result in a multi-match with two columns. also, check for multi-lingual expansion. */
     @Test
-    public void test_multi() throws Exception {
+    public void test_multi() {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -172,7 +175,7 @@ public class QueryToElasticTest {
 
     /** tests date types - should result in a range query */
     @Test
-    public void test_date() throws Exception {
+    public void test_date() {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -201,7 +204,7 @@ public class QueryToElasticTest {
         var q = queryToElastic.getQueryablesQuery(query);
 
         // extract just the created query
-        var mmq = ((BoolQuery) q._get()).must().get(0).range();
+        var mmq = (RangeQuery) ((BoolQuery) q._get()).must().get(0)._get();
 
         var createdQuery = mmq;
 
@@ -211,16 +214,16 @@ public class QueryToElasticTest {
         // from: "2023-10-22T21:10:03Z"
         //  to :2024-10-22T21:10:03Z
         assertEquals(RangeQuery.class, createdQuery.getClass());
-        var rangeQueryBuilder = createdQuery.date();
+        var rangeQueryBuilder = (RangeQuery) createdQuery;
         assertEquals("created", rangeQueryBuilder.field());
 
-        assertEquals("2023-10-22T21:10:03Z", rangeQueryBuilder.gte());
-        assertEquals("2024-10-22T21:10:03Z", rangeQueryBuilder.lte());
+        assertEquals("2023-10-22T21:10:03Z", rangeQueryBuilder.gte().toString());
+        assertEquals("2024-10-22T21:10:03Z", rangeQueryBuilder.lte().toString());
     }
 
     /** tests date types - should result in a range query, with from=null */
     @Test
-    public void test_date_nolower() throws Exception {
+    public void test_date_nolower() {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -248,7 +251,7 @@ public class QueryToElasticTest {
         // add the queryables search to the boolQuery
         var q = queryToElastic.getQueryablesQuery(query);
 
-        var rangeQuery = ((BoolQuery) q._get()).must().get(0).range();
+        var rangeQuery = (RangeQuery) ((BoolQuery) q._get()).must().get(0)._get();
 
         // test the created elastic query
         // should be a RangeQueryBuilder
@@ -256,17 +259,16 @@ public class QueryToElasticTest {
         // from: "2023-10-22T21:10:03Z"
         //  to :2024-10-22T21:10:03Z
         assertEquals(RangeQuery.class, rangeQuery.getClass());
-        var rangeQueryBuilder = rangeQuery.date();
+        var rangeQueryBuilder = (RangeQuery) rangeQuery;
         assertEquals("created", rangeQueryBuilder.field());
 
-        assertNull(rangeQueryBuilder.gte());
-        assertNull(rangeQueryBuilder.gt());
-        assertEquals("2024-10-22T21:10:03Z", rangeQueryBuilder.lte());
+        assertNull(rangeQueryBuilder.from());
+        assertEquals("2024-10-22T21:10:03Z", rangeQueryBuilder.lte().toString());
     }
 
     /** tests date types - should result in a range query, with to=null */
     @Test
-    public void test_date_noupper() throws Exception {
+    public void test_date_noupper() {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -294,7 +296,7 @@ public class QueryToElasticTest {
         // add the queryables search to the boolQuery
         var q = queryToElastic.getQueryablesQuery(query);
 
-        var rangeQuery = ((BoolQuery) q._get()).must().get(0).range();
+        var rangeQuery = (RangeQuery) ((BoolQuery) q._get()).must().get(0)._get();
 
         // test the created elastic query
         // should be a RangeQueryBuilder
@@ -302,17 +304,16 @@ public class QueryToElasticTest {
         // from: "2023-10-22T21:10:03Z"
         //  to :2024-10-22T21:10:03Z
         assertEquals(RangeQuery.class, rangeQuery.getClass());
-        var rangeQueryBuilder = rangeQuery.date();
+        var rangeQueryBuilder = (RangeQuery) rangeQuery;
         assertEquals("created", rangeQueryBuilder.field());
 
-        assertNull(rangeQueryBuilder.lte());
-        assertNull(rangeQueryBuilder.lt());
-        assertEquals("2023-10-22T21:10:03Z", rangeQueryBuilder.gte());
+        assertNull(rangeQueryBuilder.to());
+        assertEquals("2023-10-22T21:10:03Z", rangeQueryBuilder.gte().toString());
     }
 
     /** tests date types - should result in a range query */
     @Test
-    public void test_geo() throws Exception {
+    public void test_geo() {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -365,7 +366,7 @@ public class QueryToElasticTest {
 
     /** tests nested query types - should result in a nested query, inside and OR boolean */
     @Test
-    public void test_nested() throws Exception {
+    public void test_nested() {
 
         // setup queryable
         var jsonProperty = new OgcApiRecordsJsonPropertyDto();
@@ -443,18 +444,11 @@ public class QueryToElasticTest {
      * @param pvalue param value
      * @return OgcApiQuery
      */
-    public OgcApiQuery buildQuery(QueryablesService queryablesService, String pname, String pvalue) throws Exception {
+    public OgcApiQuery buildQuery(QueryablesService queryablesService, String pname, String pvalue) {
         // setup QueryBuilder
-        var queryBuilder = new QueryBuilder(
-                queryablesService, new QueryablesExtractor(), new AdvancedFacetsBuilder(new FacetsJsonService() {
-                    @Override
-                    public OgcApiRecordsFacetsDto buildFacets(String catalogId) {
-                        var result = new OgcApiRecordsFacetsDto();
-                        result.setFacets(Map.of("keywords", null, "organizations", null));
-                        return null;
-                    }
-                }));
-
+        var queryBuilder = new QueryBuilder();
+        queryBuilder.queryablesService = queryablesService;
+        queryBuilder.queryablesExtractor = new QueryablesExtractor();
         queryBuilder.queryablesExtractor.queryablesService = queryablesService;
 
         Map<String, String[]> paramMap = new LinkedHashMap<>();
@@ -462,7 +456,7 @@ public class QueryToElasticTest {
 
         // setup Query
         var query = queryBuilder.buildFromRequest(
-                "abc", null, null, null, null, null, null, null, null, null, null, "cql2-text", null, paramMap, null);
+                "abc", null, null, null, null, null, null, null, null, null, null, "cql2-text", null, paramMap);
 
         return query;
     }

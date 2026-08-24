@@ -15,18 +15,18 @@ geonetwork:
               facetType: TERM
         - ogcProperty: format
           elasticProperty: format
-          indexRecordProperty: format
+          indexRecordProperty: formats
           addPropertyToOutput: false
           facetsConfig:
             - facetName: format
               facetType: TERM
               bucketCount: 50
-        - ogcProperty: tags
+        - ogcProperty: keywords
           elasticProperty: tag.langeng
           indexRecordProperty: tag.[*].["default"]
           addPropertyToOutput: false
           facetsConfig:
-            - facetName: tags
+            - facetName: keywords
               facetType: TERM
               bucketCount: 50
         - ogcProperty: linkProtocol
@@ -103,7 +103,6 @@ geonetwork:
               bucketSorting: VALUE
         - ogcProperty: resourceTitleObject
           elasticProperty: resourceTitleObject.default
-          sortFieldSuffix: sort
           indexRecordProperty: resourceTitle.["default"]
           isSortable: true
           isQueryable: true

@@ -1,12 +1,11 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.ogcapi;
 
 import java.util.List;
-import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
-import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsCollectionsResponse;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsCatalogDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetCollections200ResponseDto;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsLandingPageDto;
@@ -19,6 +18,7 @@ import org.geonetwork.ogcapi.service.links.CollectionsPageLinks;
 import org.geonetwork.ogcapi.service.links.LandingPageLinks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.NativeWebRequest;
 
 /**
  * High level implementation for the OgcApiCollectionsApi endpoints. The controller is responsible for the web-details,
@@ -39,6 +39,9 @@ public class OgcApiCollectionsApi {
     @Autowired
     CollectionPageLinks collectionPageLinks;
 
+    @Autowired
+    private NativeWebRequest nativeWebRequest;
+
     public OgcApiCollectionsApi() {}
 
     /**
@@ -47,19 +50,18 @@ public class OgcApiCollectionsApi {
      * @return OgcApiRecordsLandingPageDto
      * @throws Exception bad config
      */
-    public OgcApiRecordsLandingPageDto getLandingPage(RequestMediaTypeAndProfile requestMediaTypeAndProfile)
-            throws Exception {
+    public OgcApiRecordsLandingPageDto getLandingPage(NativeWebRequest nativeWebRequest) throws Exception {
         var uuid = catalogApi.getMainPortalUUID();
         if (uuid == null) {
             throw new Exception("no main portal found in DB table source");
         }
-        var collectionInfo = describeCollection(uuid, requestMediaTypeAndProfile);
+        var collectionInfo = describeCollection(uuid);
         var result = new OgcApiRecordsLandingPageDto();
         result.description(collectionInfo.getDescription()).title(collectionInfo.getTitle());
 
         result.setCatalogInfo(collectionInfo);
 
-        landingPageLinks.addLinks(requestMediaTypeAndProfile, uuid, result);
+        landingPageLinks.addLinks(nativeWebRequest, uuid, result);
 
         return result;
     }
@@ -68,16 +70,15 @@ public class OgcApiCollectionsApi {
      * given a collectionId, get the DB/elastic catalogInfo and convert it to the final ogcapi-records output.
      *
      * @param catalogId collectionId (From user)
-     * @param requestMediaTypeAndProfile info about the request
+     * @return OgcApiRecordsCatalogDto
      * @throws Exception catalogId invalid, cannot find catalog.
      */
-    public OgcApiRecordsCatalogDto describeCollection(
-            String catalogId, RequestMediaTypeAndProfile requestMediaTypeAndProfile) throws Exception {
+    public OgcApiRecordsCatalogDto describeCollection(String catalogId) throws Exception {
         var info = catalogApi.getPortalInfo(catalogId);
 
         var result = catalogInfoToOgcApiRecordsCatalogDto(info);
 
-        collectionPageLinks.addAllLinks(requestMediaTypeAndProfile, result);
+        collectionPageLinks.addLinks(nativeWebRequest, result);
         return result;
     }
 
@@ -112,8 +113,7 @@ public class OgcApiCollectionsApi {
      *
      * @return OgcApiRecordsGetCollections200ResponseDto
      */
-    public OgcApiRecordsGetCollections200ResponseDto getCollections(
-            OgcApiRecordsCollectionsResponse ogcApiRecordsCollectionsResponse) throws Exception {
+    public OgcApiRecordsGetCollections200ResponseDto getCollections() {
         var collectionInfos = catalogApi.getAllPortalInfos();
         var collections = collectionInfos.stream()
                 .map(x -> catalogInfoToOgcApiRecordsCatalogDto(x))
@@ -122,17 +122,7 @@ public class OgcApiCollectionsApi {
         var result = new OgcApiRecordsGetCollections200ResponseDto();
         result.setCollections(collections);
 
-        RequestMediaTypeAndProfile requestMediaTypeAndProfile =
-                ogcApiRecordsCollectionsResponse.getRequestMediaTypeAndProfile();
-        collectionsPageLinks.addAllLinks(requestMediaTypeAndProfile, result);
-
-        collections.stream().forEach(collection -> {
-            try {
-                collectionPageLinks.addAllLinks(requestMediaTypeAndProfile, collection);
-            } catch (Exception e) {
-                // do nothing
-            }
-        });
+        collectionsPageLinks.addLinks(nativeWebRequest, result);
         return result;
     }
 }

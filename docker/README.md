@@ -1,33 +1,58 @@
-# Infrastructure (Docker)
+# 🐳 Docker Compose for GeoNetwork 5 Development & Testing
+This project provides Docker Compose configurations to simplify local development and testing of GeoNetwork 5. It helps set up all necessary services without dealing with infrastructure dependencies manually.
 
-This directory provides Docker Compose configurations for the GeoNetwork 5 environment.
+> [!IMPORTANT]
+> These configurations are created for the sole purpose of testing GeoNetwork 5 locally. In the development setup Geonetwork 4 is accessible on port 8080, and this should be avoided in a production environment. For more details, please check [JWT Headers](https://github.com/geonetwork/geonetwork/blob/main/docs/manual/docs/GN4-Integration/index.md#setting-up-gn5-and-gn4).
 
-## Core Dependencies
-These files provide the database (PostGIS) and search engine (Elasticsearch).
 
-- **`docker-compose-dbs.yml`**: PostgreSQL with sample data (`dump.gn.sql`) and clean Elasticsearch (index is automatically initialized and populated on startup by GN5 when `GN5_INDEX_CREATE_IF_EMPTY=true`).
-- **`docker-compose-dbs-empty.yml`**: PostgreSQL and Elasticsearch **empty** (clean start).
 
-### Usage
+## ⚙️ Development Setup (docker-compose-dev.yml)
+This composition includes:
+
+
+|Service|Functionality|Port|
+|:-----------|:-------------------------|:-----|
+|geonetwork4|GeoNetwork 4 "sidecar" for GN5 (used for harvesting etc.)|8080|
+|database|PostgreSQL — Database backend for GeoNetwork|5432|
+|elasticsearch|Elasticsearch — Search engine backend|9200|
+
+This setup is ideal for developers working on GN5 who need a quick and clean environment.
+
+▶️ Start the stack
+From the /docker directory:
+
 ```bash
-# Start
-docker compose -f docker-compose-dbs.yml up -d
-
-# Stop and remove volumes (reset data)
-docker compose -f docker-compose-dbs.yml down -v
+docker compose -f docker-compose-base.yml -f docker-compose-dev.yml up -d
 ```
 
-## Legacy & Integration
-- **`docker-compose-gn4.yml`**: Runs GeoNetwork 4.4, connected to the databases.
-- **`docker-compose-gn5.yml`**: Runs a pre-built GeoNetwork 5 image.
-- **`docker-compose-web.yml`**: A simple Angular frontend for OGC API Records.
+⏹️ Stop the stack
 
-## Connection Details
-- **PostgreSQL:** `localhost:5432` (User/Pass: `postgres`/`postgres`)
-- **Elasticsearch:** `localhost:9200` (Index: `gn-records`)
+```bash
+docker compose -f docker-compose-base.yml -f docker-compose-dev.yml down
+```
 
-> [!NOTE]
-> **Linux Docker Users:** `host.docker.internal` is used to allow containers to connect back to the host machine. While this works out-of-the-box on Docker Desktop (Windows/Mac), on native Linux hosts it is resolved using the `extra_hosts` mapping (`host.docker.internal:host-gateway`) specified in the compose files. Ensure you use Docker Compose (v20.10+) to deploy these.
+## 🚀 Full Stack Setup
+This composition includes also GeoNetwork 5:
 
----
-Back to [Main README](../README.md)
+
+|Service|Functionality|Port|
+|:-----------|:-------------------------|:-----|
+|geonetwork5|GeoNetwork 5|7979|
+|geonetwork4|GeoNetwork 4 "sidecar" for GN5|8080|
+|database|PostgreSQL — Database backend|5432|
+|elasticsearch|Elasticsearch — Search engine backend|9200|
+
+This setup is intended for full-feature testing of GN5 in an environment that mimics real-world dependencies.
+
+▶️ Start the stack
+
+```bash
+docker compose -f docker-compose-base.yml -f docker-compose-full.yml up -d
+```
+
+⏹️ Stop the stack
+
+```bash
+docker compose -f docker-compose-base.yml -f docker-compose-full.yml down
+```
+

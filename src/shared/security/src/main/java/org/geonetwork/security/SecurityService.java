@@ -1,6 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.security;
 
@@ -26,15 +27,6 @@ public class SecurityService {
     private final SettingRepository settingRepository;
     private final IAuthenticationFacade authenticationFacade;
     private final RoleHierarchy roleHierarchy;
-
-    public boolean isAdmin() {
-        if (!authenticationFacade.isAuthenticated()) {
-            return false;
-        }
-        var authentication = this.authenticationFacade.geonetworkPermissions();
-        Profile profile = authentication.getHighestProfile();
-        return profile == Profile.Administrator;
-    }
 
     public boolean hasMetadataBatchEditingAccessLevel() {
         if (!authenticationFacade.getAuthentication().isAuthenticated()) {

@@ -1,7 +1,8 @@
 <!--
 
-    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
-    SPDX-License-Identifier: GPL-2.0-or-later
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
 
 -->
 <configuration xmlns="http://saxon.sf.net/ns/configuration"
@@ -13,8 +14,5 @@
     <extensionFunction>org.geonetwork.utility.xml.xslt.GmlToGeoJsonFn</extensionFunction>
     <extensionFunction>org.geonetwork.utility.xml.xslt.Md5HexFn</extensionFunction>
     <extensionFunction>org.geonetwork.utility.xml.xslt.GetCodeListTranslationFn</extensionFunction>
-    <extensionFunction>org.geonetwork.utility.xml.xslt.GetSettingValueFn</extensionFunction>
-    <extensionFunction>org.geonetwork.utility.xml.xslt.EscapeForJsonFn</extensionFunction>
-    <extensionFunction>org.geonetwork.utility.xml.xslt.PrettyPrintJsonFn</extensionFunction>
   </resources>
 </configuration>

@@ -7,9 +7,6 @@ required:
 properties:
   links:
     type: array
-    xml:
-      wrapped: true
-      name: links
     items:
       $ref: ../link.yaml
   collections:

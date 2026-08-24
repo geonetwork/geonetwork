@@ -1,7 +1,8 @@
 <!--
 
-    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
-    SPDX-License-Identifier: GPL-2.0-or-later
+    (c) 2003 Open Source Geospatial Foundation - all rights reserved
+    This code is licensed under the GPL 2.0 license,
+    available at the root application directory.
 
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema"

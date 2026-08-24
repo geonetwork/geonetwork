@@ -1,21 +1,18 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /** This is user-contributed configuration for "extra" properties. */
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
 public class OgcElasticFieldMapperConfig {
 
     /** what ogc property (in the record's Properties/Additional-Properties) is this */
@@ -32,8 +29,6 @@ public class OgcElasticFieldMapperConfig {
      * (`String`). Differentiating between them from the elastic index definition isn't really possible.
      */
     public OverrideType typeOverride;
-
-    public String sortFieldSuffix;
 
     /** Should this field be in the sortables? */
     public Boolean isSortable = false;

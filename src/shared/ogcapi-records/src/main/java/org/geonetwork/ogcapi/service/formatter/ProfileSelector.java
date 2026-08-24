@@ -1,12 +1,13 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.formatter;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.geonetwork.application.profile.ProfileDefaultsConfiguration;
+import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
 import org.geonetwork.schemas.model.schemaident.Formatter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -18,7 +19,7 @@ import org.springframework.http.MediaType;
 @Configuration
 @AllArgsConstructor
 public class ProfileSelector {
-    final ProfileDefaultsConfiguration profileDefaultsConfiguration;
+    final ItemPageLinksConfiguration itemPageLinksConfiguration;
 
     /**
      * This chooses the correct formatter (official profile name) given the available formatters, user-requested media
@@ -40,7 +41,7 @@ public class ProfileSelector {
     public String chooseProfile(
             MediaType mediaType, List<String> requestedProfiles, List<Formatter> possibleFormatters) {
 
-        var defaultProfile = profileDefaultsConfiguration.getProfileDefaults().stream()
+        var defaultProfile = itemPageLinksConfiguration.getProfileDefaults().stream()
                 .filter(x -> x.getMimetype().equals(mediaType.toString()))
                 .findFirst();
 

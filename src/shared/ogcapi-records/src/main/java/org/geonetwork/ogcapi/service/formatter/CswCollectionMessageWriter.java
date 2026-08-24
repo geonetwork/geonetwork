@@ -1,6 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.formatter;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.geonetwork.domain.repository.MetadataRepository;
-import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
+import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Component;
  * <p>see #write(...) for details.
  */
 @Component
-public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRecordsMultiRecordResponse> {
+public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRecordsGetRecords200ResponseDto> {
 
     final MetadataRepository metadataRepository;
 
@@ -62,15 +63,15 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
      */
     @Override
     public boolean canWrite(Class<?> clazz, MediaType mediaType) {
-        if (!clazz.equals(OgcApiRecordsMultiRecordResponse.class)) {
+        if (!clazz.equals(OgcApiRecordsGetRecords200ResponseDto.class)) {
             return false;
         }
         return supportedMediaTypes.contains(mediaType);
     }
 
     @Override
-    public OgcApiRecordsMultiRecordResponse read(
-            Class<? extends OgcApiRecordsMultiRecordResponse> clazz, HttpInputMessage inputMessage)
+    public OgcApiRecordsGetRecords200ResponseDto read(
+            Class<? extends OgcApiRecordsGetRecords200ResponseDto> clazz, HttpInputMessage inputMessage)
             throws IOException, HttpMessageNotReadableException {
         throw new IOException("Not supported");
     }
@@ -91,8 +92,8 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
      *
      * <p>NOTE: nextRecord is a 1-based index (not a 0-based index).
      *
-     * @param ogcApiRecordsMultiRecordResponse the object to write to the output message. The type of this object must
-     *     have previously been passed to the {@link #canWrite canWrite} method of this interface, which must have
+     * @param ogcApiRecordsGetRecords200ResponseDto the object to write to the output message. The type of this object
+     *     must have previously been passed to the {@link #canWrite canWrite} method of this interface, which must have
      *     returned {@code true}.
      * @param contentType the content type to use when writing. May be {@code null} to indicate that the default content
      *     type of the converter must be used. If not {@code null}, this media type must have previously been passed to
@@ -103,12 +104,12 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
      */
     @Override
     public void write(
-            OgcApiRecordsMultiRecordResponse ogcApiRecordsMultiRecordResponse,
+            OgcApiRecordsGetRecords200ResponseDto ogcApiRecordsGetRecords200ResponseDto,
             MediaType contentType,
             HttpOutputMessage outputMessage)
             throws IOException, HttpMessageNotWritableException {
 
-        if (ogcApiRecordsMultiRecordResponse == null) {
+        if (ogcApiRecordsGetRecords200ResponseDto == null) {
             throw new IOException("No output");
         }
 
@@ -133,9 +134,9 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
         var header_offset = outputMessage.getHeaders().get("GN5.OGCAPI-RECORDS.REQUEST-OFFSET");
         if (header_offset != null && !header_offset.isEmpty()) {
             try {
-                nextRecord = (int) (Integer.parseInt(header_offset.getFirst())
-                        + ogcApiRecordsMultiRecordResponse.getRecordsCount());
-                if (nextRecord < ogcApiRecordsMultiRecordResponse.getTotalHits()) {
+                nextRecord = Integer.parseInt(header_offset.getFirst())
+                        + ogcApiRecordsGetRecords200ResponseDto.getNumberReturned();
+                if (nextRecord < ogcApiRecordsGetRecords200ResponseDto.getNumberMatched()) {
                     nextRecord = nextRecord + 1;
                 } else {
                     nextRecord = 0;
@@ -146,14 +147,14 @@ public class CswCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
         }
 
         var searchResults = "  <csw:SearchResults numberOfRecordsMatched=\""
-                + ogcApiRecordsMultiRecordResponse.getTotalHits()
-                + "\" numberOfRecordsReturned=\"" + ogcApiRecordsMultiRecordResponse.getRecordsCount()
+                + ogcApiRecordsGetRecords200ResponseDto.getNumberMatched()
+                + "\" numberOfRecordsReturned=\"" + ogcApiRecordsGetRecords200ResponseDto.getNumberReturned()
                 + "\" nextRecord=\"" + nextRecord
                 + "\" recordSchema=\"http://www.isotc211.org/2005/gmd\" elementSet=\"full\">\n";
         outputMessage.getBody().write(searchResults.getBytes(StandardCharsets.UTF_8));
 
-        for (var feature : ogcApiRecordsMultiRecordResponse.getRecords()) {
-            var featureId = feature.getRecordId();
+        for (var feature : ogcApiRecordsGetRecords200ResponseDto.getFeatures()) {
+            var featureId = feature.getId();
             var metadata = metadataRepository.findByUuid(featureId);
             if (metadata.isEmpty()) {
                 continue;

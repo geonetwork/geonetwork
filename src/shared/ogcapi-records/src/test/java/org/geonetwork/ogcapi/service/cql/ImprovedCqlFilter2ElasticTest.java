@@ -1,6 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.cql;
 
@@ -83,46 +84,19 @@ public class ImprovedCqlFilter2ElasticTest {
 
         result = doIt("dave < 3", new TrivialFieldMapper());
         assertEquals(Query.Kind.Range, result._kind());
-        assertEquals("__dave", result.range().untyped().field());
-        assertEquals("3", result.range().untyped().lt().toString());
-        assertNull(result.range().untyped().gt());
-        assertNull(result.range().untyped().gte());
-        assertNull(result.range().untyped().lte());
+        assertEquals("__dave", ((RangeQuery) result._get()).field());
+        assertEquals("3", ((RangeQuery) result._get()).lt().toString());
+        assertNull(((RangeQuery) result._get()).gt());
+        assertNull(((RangeQuery) result._get()).gte());
+        assertNull(((RangeQuery) result._get()).lte());
 
         result = doIt("dave between 3 and 5", new TrivialFieldMapper());
         assertEquals(Query.Kind.Range, result._kind());
-        assertEquals("__dave", result.range().untyped().field());
-        assertEquals("3", result.range().untyped().gte().toString());
-        assertEquals("5", result.range().untyped().lte().toString());
-        assertNull(result.range().untyped().gt());
-        assertNull(result.range().untyped().lt());
-
-        result = doIt("dave <> 'hi'", new TrivialFieldMapper());
-        assertEquals(Query.Kind.Bool, result._kind());
-        assertEquals(1, ((BoolQuery) result._get()).mustNot().size());
-        var notEqualsInner = ((BoolQuery) result._get()).mustNot().get(0);
-        assertEquals(Query.Kind.Term, notEqualsInner._kind());
-        assertEquals("__dave", ((TermQuery) notEqualsInner._get()).field());
-        assertEquals("hi", ((TermQuery) notEqualsInner._get()).value().stringValue());
-
-        result = doIt("not (dave = 'hi')", new TrivialFieldMapper());
-        assertEquals(Query.Kind.Bool, result._kind());
-        assertEquals(1, ((BoolQuery) result._get()).mustNot().size());
-        var notInner = ((BoolQuery) result._get()).mustNot().get(0);
-        assertEquals(Query.Kind.Term, notInner._kind());
-        assertEquals("__dave", ((TermQuery) notInner._get()).field());
-        assertEquals("hi", ((TermQuery) notInner._get()).value().stringValue());
-
-        result = doIt("(dave = 'hi') and (not (dave2 = 'bob'))", new TrivialFieldMapper());
-        assertEquals(Query.Kind.Bool, result._kind());
-        var mustClauses = ((BoolQuery) result._get()).must();
-        assertEquals(2, mustClauses.size());
-        assertEquals(
-                1,
-                mustClauses.stream().filter(q -> q._kind() == Query.Kind.Term).count());
-        assertEquals(
-                1,
-                mustClauses.stream().filter(q -> q._kind() == Query.Kind.Bool).count());
+        assertEquals("__dave", ((RangeQuery) result._get()).field());
+        assertEquals("3", ((RangeQuery) result._get()).gte().toString());
+        assertEquals("5", ((RangeQuery) result._get()).lte().toString());
+        assertNull(((RangeQuery) result._get()).gt());
+        assertNull(((RangeQuery) result._get()).lt());
     }
 
     public Query doIt(String cqlText, IFieldMapper fieldMapper) throws CQLException {

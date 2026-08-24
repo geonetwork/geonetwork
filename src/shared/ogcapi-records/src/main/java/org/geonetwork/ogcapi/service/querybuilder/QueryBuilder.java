@@ -1,17 +1,20 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.querybuilder;
 
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,14 +28,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j(topic = "org.fao.geonet.ogcapi.records")
-@AllArgsConstructor
 public class QueryBuilder {
 
-    final QueryablesService queryablesService;
+    @Autowired
+    QueryablesService queryablesService;
 
-    final QueryablesExtractor queryablesExtractor;
-
-    final AdvancedFacetsBuilder advancedFacetsBuilder;
+    @Autowired
+    QueryablesExtractor queryablesExtractor;
 
     /**
      * builds a query from the request - cf. ItemApiController#collectionsCollectionIdItemsGet.
@@ -67,9 +69,7 @@ public class QueryBuilder {
             String filter,
             String filterLang,
             String filterCrs,
-            Map<String, String[]> parameterMap,
-            List<String> advancedFacets)
-            throws Exception {
+            Map<String, String[]> parameterMap) {
 
         var result = new OgcApiQuery();
 
@@ -81,7 +81,8 @@ public class QueryBuilder {
 
         result.setLimit(limit);
         result.setStartIndex(startindex);
-        result.setDatetime(datetime);
+        var _datetime = (datetime == null) ? null : URLDecoder.decode(datetime, StandardCharsets.UTF_8);
+        result.setDatetime(_datetime);
         result.setType(type);
         result.setQ(q);
         result.setIds(ids);
@@ -95,9 +96,8 @@ public class QueryBuilder {
 
         result.setFilterLang(filterLang);
         result.setFilterCrs(filterCrs);
-        result.setFilter(filter);
-
-        result.setAdvancedFacets(advancedFacetsBuilder.buildAdvancedFacets(collectionId, advancedFacets));
+        var _filter = (filter == null) ? null : URLDecoder.decode(filter, StandardCharsets.UTF_8);
+        result.setFilter(_filter);
 
         return result;
     }
@@ -115,9 +115,6 @@ public class QueryBuilder {
 
         // foreach key-value pair in the parameter map
         for (var param : parameterMap.entrySet()) {
-            if (param.getKey().equalsIgnoreCase("facets")) {
-                continue; // don't "mistake" facets as a queryable (cf advanced facets in spec)
-            }
             var queryable = queryables.get(param.getKey());
             if (queryable != null) {
                 // we found a param (key-value) in the request that matches one of our queryables

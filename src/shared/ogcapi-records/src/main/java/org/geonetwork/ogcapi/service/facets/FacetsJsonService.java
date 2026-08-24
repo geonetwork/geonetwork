@@ -1,6 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.facets;
 
@@ -50,9 +51,8 @@ public class FacetsJsonService {
     }
 
     private OgcApiRecordsFacetFilterDto createFilter(OgcFacetConfig facet) {
-        var correspondingField = dynamicPropertiesFacade.findFieldForFacet(facet);
         var result = new OgcApiRecordsFacetFilterDto();
-        result.setProperty(correspondingField.getOgcProperty());
+        result.setProperty(facet.getField().getOgcProperty());
         result.setType("term");
         result.setBucketCount(facet.getBucketCount());
         var sortedBy = OgcApiRecordsFacetSortedByDto.COUNT;
@@ -60,7 +60,7 @@ public class FacetsJsonService {
             sortedBy = OgcApiRecordsFacetSortedByDto.VALUE;
         }
         result.setSortedBy(sortedBy);
-        result.setxElasticProperty(correspondingField.getElasticProperty());
+        result.setxElasticProperty(facet.getField().getElasticProperty());
         result.setFilters(new HashMap<>());
         for (var filter : facet.getFilters()) {
             result.getFilters().put(filter.getFilterName(), filter.getFilterEquationCql());
@@ -69,20 +69,18 @@ public class FacetsJsonService {
     }
 
     private OgcApiRecordsFacetHistogramDto createHistogram(OgcFacetConfig facet) {
-        var correspondingField = dynamicPropertiesFacade.findFieldForFacet(facet);
-
         var result = new OgcApiRecordsFacetHistogramDto();
-        result.setProperty(correspondingField.getOgcProperty());
+        result.setProperty(facet.getField().getOgcProperty());
         result.setType("histogram");
         result.setBucketCount(facet.getBucketCount());
-        result.setxElasticProperty(correspondingField.getElasticProperty());
+        result.setxElasticProperty(facet.getField().getElasticProperty());
 
         var sortedBy = OgcApiRecordsFacetSortedByDto.COUNT;
         if (facet.getBucketSorting() == BucketSorting.VALUE) {
             sortedBy = OgcApiRecordsFacetSortedByDto.VALUE;
         }
         result.setSortedBy(sortedBy);
-        result.setxElasticProperty(correspondingField.getElasticProperty());
+        result.setxElasticProperty(facet.getField().getElasticProperty());
 
         var bucketType = OgcApiRecordsFacetHistogramDto.BucketTypeEnum.FIXED_BUCKET_COUNT;
         if (facet.getFacetType() == FacetType.HISTOGRAM_FIXED_INTERVAL) {
@@ -99,7 +97,7 @@ public class FacetsJsonService {
 
         var dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.NUMBER;
         if (dynamicPropertiesFacade
-                        .getByElasticProperty(correspondingField.getElasticProperty())
+                        .getByElasticProperty(facet.getField().getElasticProperty())
                         .getType()
                 == DATE) {
             dataType = OgcApiRecordsFacetHistogramDto.XElasticDatatypeEnum.DATE;
@@ -112,10 +110,8 @@ public class FacetsJsonService {
     }
 
     private OgcApiRecordsFacetTermsDto createTerm(OgcFacetConfig facet) {
-        var correspondingField = dynamicPropertiesFacade.findFieldForFacet(facet);
-
         var result = new OgcApiRecordsFacetTermsDto();
-        result.setProperty(correspondingField.getOgcProperty());
+        result.setProperty(facet.getField().getOgcProperty());
         result.setType("term");
         result.setBucketCount(facet.getBucketCount());
         var sortedBy = OgcApiRecordsFacetSortedByDto.COUNT;
@@ -123,7 +119,7 @@ public class FacetsJsonService {
             sortedBy = OgcApiRecordsFacetSortedByDto.VALUE;
         }
         result.setSortedBy(sortedBy);
-        result.setxElasticProperty(correspondingField.getElasticProperty());
+        result.setxElasticProperty(facet.getField().getElasticProperty());
 
         result.setMinOccurs(facet.getMinimumDocumentCount());
         return result;

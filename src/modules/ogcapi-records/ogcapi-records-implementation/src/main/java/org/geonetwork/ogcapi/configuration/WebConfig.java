@@ -1,6 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.configuration;
 
@@ -14,11 +15,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 import lombok.SneakyThrows;
+import org.geonetwork.formatting.FormatterInfo;
 import org.geonetwork.ogcapi.service.formatter.CswCollectionMessageWriter;
+import org.geonetwork.ogcapi.service.formatter.FormatterApiMessageWriter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -36,25 +41,22 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * IndexClient -> WebConfig. I've just explicitly gotten the FormatterApi at runtime instead of at instantiation. This
  * is a bit ugly, but ...
  */
-// @Configuration
+@Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    private FormatterApiMessageWriter formatterApiMessageWriter;
     private CswCollectionMessageWriter cswCollectionMessageWriter;
 
     @Autowired
     private BeanFactory beanFactory;
-
-    private OgcApiRecordsHtmlMessageWriter htmlMessageWriter;
-
     // todo - remove this.
     // There is a circular dependency because Formatter depends on WebConfig
     void setupFormatterApiMessageWriter() {
-
+        if (formatterApiMessageWriter == null) {
+            formatterApiMessageWriter = beanFactory.getBean(FormatterApiMessageWriter.class);
+        }
         if (cswCollectionMessageWriter == null) {
             cswCollectionMessageWriter = beanFactory.getBean(CswCollectionMessageWriter.class);
-        }
-        if (htmlMessageWriter == null) {
-            htmlMessageWriter = beanFactory.getBean(OgcApiRecordsHtmlMessageWriter.class);
         }
     }
 
@@ -81,26 +83,24 @@ public class WebConfig implements WebMvcConfigurer {
                 .mediaType(MediaType.TEXT_HTML.toString(), MediaType.TEXT_HTML)
                 .mediaType(MediaType.APPLICATION_JSON.toString(), MediaType.APPLICATION_JSON)
                 .mediaType("application/geo+json", MediaType.valueOf("application/geo+json"))
-                .mediaType("image/png", MediaType.valueOf("image/png"))
                 .defaultContentType(MediaType.APPLICATION_JSON);
 
         // add the FormatterApi media types.  We allows   f=<formatterId> or f=<formatter mime type>
         setupFormatterApiMessageWriter();
-        //        Map<String, Map<String, FormatterInfo>> formats =
-        // this.formatterApiMessageWriter.getFormatNamesAndMimeTypes();
-        //        for (var format : formats.keySet()) {
-        //            configurer.mediaType(format, MediaType.valueOf(format));
-        //            if (format.contains("+")) {
-        //                var f = format.replace("+", " ");
-        //                configurer.mediaType(f, MediaType.valueOf(format));
-        //            }
-        //        }
+        Map<String, Map<String, FormatterInfo>> formats = this.formatterApiMessageWriter.getFormatNamesAndMimeTypes();
+        for (var format : formats.keySet()) {
+            configurer.mediaType(format, MediaType.valueOf(format));
+            if (format.contains("+")) {
+                var f = format.replace("+", " ");
+                configurer.mediaType(f, MediaType.valueOf(format));
+            }
+        }
     }
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
-        messageConverters.add(htmlMessageWriter);
-        //        messageConverters.add(formatterApiMessageWriter);
+        messageConverters.add(new TrivialHtmlMessageWriter(MediaType.TEXT_HTML));
+        messageConverters.add(formatterApiMessageWriter);
         messageConverters.add(cswCollectionMessageWriter);
     }
 

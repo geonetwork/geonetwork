@@ -1,6 +1,11 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
+ */
+/**
+ * (c) 2024 Open Source Geospatial Foundation - all rights reserved This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.search;
 
@@ -9,6 +14,7 @@ import static org.geonetwork.ogcapi.service.cql.ImprovedCqlFilter2Elastic.saferQ
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
+import co.elastic.clients.json.JsonData;
 import com.google.common.base.Splitter;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
@@ -27,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * This helps to build the "extra" (`"&property=value"`) queryables in the OGCAPI search to an Elastic Index query.
+ * This helps to build the "extra" (`"&amp;property=value"`) queryables in the OGCAPI search to an Elastic Index query.
  *
  * <p>see the documentation on "queryables.json" with goes into more depth.
  *
@@ -48,7 +54,7 @@ public class QueryToElastic {
     DynamicPropertiesFacade dynamicPropertiesFacade;
 
     /**
-     * Given an already setup SearchSourceBuilder, add more queries to it for any of the request &param=search-Text.
+     * Given an already setup SearchSourceBuilder, add more queries to it for any of the request &amp;param=search-Text.
      * <br>
      * WHERE: param is a queryable (cf queryables.json).
      *
@@ -81,11 +87,11 @@ public class QueryToElastic {
             if (jsonProperty.getType().equals("string") && "date".equals(jsonProperty.getFormat())) {
                 // handle differently because the DATA is handled differently by OGC (i.e. = or range)
                 var elasticPath = this.dynamicPropertiesFacade.getByOgcProperty(propertyName);
-                return RangeQuery.of(rq -> rq.date(u -> {
-                            u.field(elasticPath.getConfig().getElasticProperty());
-                            processDateRequest(u, userSearchTerm);
-                            return u;
-                        }))
+                return RangeQuery.of(rq -> {
+                            rq.field(elasticPath.getConfig().getElasticProperty());
+                            processDateRequest(rq, userSearchTerm);
+                            return rq;
+                        })
                         ._toQuery();
             } else if (jsonProperty.getType().equals("string")) {
                 // convert to "like" CQL
@@ -182,11 +188,11 @@ public class QueryToElastic {
      */
     public Query createVsDate(@Valid OgcApiRecordsGnElasticDto gnElasticInfo, String userSearchTerm, String lang3iso) {
 
-        return RangeQuery.of(rq -> rq.date(u -> {
-                    u.field(gnElasticInfo.getElasticPath());
-                    processDateRequest(u, userSearchTerm);
-                    return u;
-                }))
+        return RangeQuery.of(rq -> {
+                    rq.field(gnElasticInfo.getElasticPath());
+                    processDateRequest(rq, userSearchTerm);
+                    return rq;
+                })
                 ._toQuery();
     }
 
@@ -199,15 +205,15 @@ public class QueryToElastic {
      *
      * <p>The syntax of date-time is specified by RFC 3339, 5.6. https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6
      *
-     * @param result DateRangeQuery.Builder to update with start/end (might only have start or end if "..")
+     * @param result RangeQueryBuilder to update with start/end (might only have start or end if "..")
      * @param userSearchTerm date or interval to parse.
      */
-    private void processDateRequest(DateRangeQuery.Builder result, String userSearchTerm) {
+    private void processDateRequest(RangeQuery.Builder result, String userSearchTerm) {
         if (!userSearchTerm.contains("/")) {
             // its a single date (request) vs a date (elastic index)
             result.relation(RangeRelation.Intersects);
-            result.gte(userSearchTerm);
-            result.lte(userSearchTerm);
+            result.gte(JsonData.of(userSearchTerm));
+            result.lte(JsonData.of(userSearchTerm));
             return;
         }
         // interval
@@ -218,10 +224,10 @@ public class QueryToElastic {
 
         result.relation(RangeRelation.Intersects);
         if (!dateParts.get(0).equals("..")) {
-            result.gte(dateParts.get(0));
+            result.gte(JsonData.of(dateParts.get(0)));
         }
         if (!dateParts.get(1).equals("..")) {
-            result.lte(dateParts.get(1));
+            result.lte(JsonData.of(dateParts.get(1)));
         }
     }
 

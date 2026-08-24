@@ -1,34 +1,26 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.records;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import java.math.BigDecimal;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import lombok.*;
-import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfileBuilder;
-import org.geonetwork.application.ctrlreturntypes.UriHelper;
-import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
-import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsCollectionsResponse;
-import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
-import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
+import lombok.SneakyThrows;
 import org.geonetwork.ogcapi.records.generated.CollectionsApi;
 import org.geonetwork.ogcapi.records.generated.model.*;
-import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
-import org.geonetwork.ogcapi.service.dataaccess.SimpleElastic;
 import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
-import org.geonetwork.ogcapi.service.facets.FacetsResponseInjector;
+import org.geonetwork.ogcapi.service.ogcapi.OgcApiCollectionsApi;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiItemsApi;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.querybuilder.QueryBuilder;
 import org.geonetwork.ogcapi.service.sortables.SortablesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.util.UriUtils;
 
 /**
  * implements the /collections and /collections/{collectionID} endpoints implements the
@@ -47,68 +38,42 @@ import org.springframework.web.util.UriUtils;
 public class OgcapiCollectionsApiController implements CollectionsApi {
 
     private final NativeWebRequest request;
+    private final OgcApiCollectionsApi collectionsApi;
     private final OgcApiItemsApi itemsApi;
     private final QueryablesService queryablesService;
     private final QueryBuilder queryBuilder;
     private final FacetsJsonService facetsService;
     private final SortablesService sortablesService;
 
-    private final SimpleElastic simpleElastic;
-
-    private final FacetsResponseInjector facetsInjector;
-
-    private final RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder;
-
-    private final OgcApiLinkConfiguration linkConfiguration;
-
     @Autowired
     public OgcapiCollectionsApiController(
             NativeWebRequest request,
+            OgcApiCollectionsApi collectionsApi,
             OgcApiItemsApi itemsApi,
             QueryablesService queryablesService,
             QueryBuilder queryBuilder,
             FacetsJsonService facetsService,
-            SortablesService sortablesService,
-            SimpleElastic simpleElastic,
-            FacetsResponseInjector facetsInjector,
-            RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder,
-            OgcApiLinkConfiguration linkConfiguration) {
+            SortablesService sortablesService) {
         this.request = request;
+        this.collectionsApi = collectionsApi;
         this.itemsApi = itemsApi;
         this.queryablesService = queryablesService;
         this.queryBuilder = queryBuilder;
         this.facetsService = facetsService;
         this.sortablesService = sortablesService;
-        this.simpleElastic = simpleElastic;
-        this.facetsInjector = facetsInjector;
-        this.requestMediaTypeAndProfileBuilder = requestMediaTypeAndProfileBuilder;
-        this.linkConfiguration = linkConfiguration;
     }
 
     @Override
     @SneakyThrows
-    public ResponseEntity<?> describeCollection(String catalogId) {
-        //        var result = collectionsApi.describeCollection(catalogId);
-        var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiCollectionResponse.class);
-        var jsonUri = UriHelper.createUri(
-                linkConfiguration.getOgcApiRecordsBaseUrl(), "collections/" + catalogId, Map.of("f", "json"));
-
-        var result = new OgcApiCollectionResponse(catalogId, requestInfo, jsonUri);
-        return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
+    public ResponseEntity<OgcApiRecordsCatalogDto> describeCollection(String catalogId) {
+        var result = collectionsApi.describeCollection(catalogId);
+        return new ResponseEntity<OgcApiRecordsCatalogDto>(result, HttpStatusCode.valueOf(200));
     }
 
     @Override
     @SneakyThrows
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = CollectionsApi.PATH_GET_COLLECTIONS,
-            produces = {"application/json", "text/html", "*/*"})
-    public ResponseEntity<?> getCollections() {
-        var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiRecordsCollectionsResponse.class);
-        var jsonUri =
-                UriHelper.createUri(linkConfiguration.getOgcApiRecordsBaseUrl(), "collections", Map.of("f", "json"));
-
-        var result = new OgcApiRecordsCollectionsResponse(requestInfo, jsonUri);
+    public ResponseEntity<OgcApiRecordsGetCollections200ResponseDto> getCollections() {
+        var result = collectionsApi.getCollections();
         return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
     }
 
@@ -118,17 +83,18 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             method = RequestMethod.GET,
             value = "/collections/{catalogId}/items/{recordId}",
             produces = {"application/geo+json", "text/html", "application/json", "*/*"})
-    public ResponseEntity<?> getRecord(String catalogId, String recordId, List<String> profile) {
+    public ResponseEntity<OgcApiRecordsRecordGeoJSONDto> getRecord(
+            String catalogId, String recordId, List<String> profile) {
+        var result = itemsApi.getRecord(catalogId, recordId);
 
-        var indexRecord = simpleElastic.getOne(recordId);
-        var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiRecordsSingleRecordResponse.class);
-        var jsonUri = UriHelper.createUri(
-                linkConfiguration.getOgcApiRecordsBaseUrl(),
-                "collections/" + catalogId + "/items/" + recordId,
-                Map.of("f", "geojson"));
+        HttpHeaders responseHeaders = new HttpHeaders();
+        if (profile != null && !profile.isEmpty()) {
+            responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-PROFILES", profile);
+        }
+        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-COLLECTIONID", Collections.singletonList(catalogId));
+        responseHeaders.addAll("GN5.OGCAPI-RECORDS.REQUEST-RECORDID", Collections.singletonList(recordId));
 
-        var response = new OgcApiRecordsSingleRecordResponse(catalogId, recordId, indexRecord, requestInfo, jsonUri);
-        return new ResponseEntity<OgcApiRecordsSingleRecordResponse>(response, HttpStatusCode.valueOf(200));
+        return new ResponseEntity<OgcApiRecordsRecordGeoJSONDto>(result, responseHeaders, HttpStatusCode.valueOf(200));
     }
 
     @Override
@@ -137,7 +103,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             method = RequestMethod.GET,
             value = "/collections/{catalogId}/items",
             produces = {"application/geo+json", "text/html", "application/json", "*/*"})
-    public ResponseEntity<?> getRecords(
+    public ResponseEntity<OgcApiRecordsGetRecords200ResponseDto> getRecords(
             String catalogId,
             List<BigDecimal> bbox,
             String datetime,
@@ -150,9 +116,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             List<String> sortby,
             String filter,
             String filterLang,
-            String filterCrs,
-            List<String> profile,
-            List<String> advancedFacets) {
+            String filterCrs) {
         var query = queryBuilder.buildFromRequest(
                 catalogId,
                 bbox,
@@ -167,45 +131,14 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
                 filter,
                 filterLang,
                 filterCrs,
-                request.getParameterMap(),
-                advancedFacets);
+                request.getParameterMap());
+        var result = itemsApi.getRecords(query);
 
-        var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiRecordsMultiRecordResponse.class);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("GN5.OGCAPI-RECORDS.REQUEST-OFFSET", offset.toString());
 
-        var records = itemsApi.getRecordsFromElastic(query);
-
-        var facetInfo = facetsInjector.getFacets(records, query.getAdvancedFacets());
-        var totalNumHits = records.hits().total().value();
-        var indexRecords = records.hits().hits().stream().map(x -> x.source()).toList();
-
-        var result = new OgcApiRecordsMultiRecordResponse();
-        result.setFacetInfo(facetInfo);
-        result.setCatalogId(catalogId);
-        result.setTotalHits(totalNumHits);
-        result.setRecordsCount(indexRecords.size());
-        result.setUserQuery(query);
-        result.setRequestMediaTypeAndProfile(requestInfo);
-
-        var jsonUri = UriHelper.createUri(
-                linkConfiguration.getOgcApiRecordsBaseUrl(),
-                "collections/" + catalogId + "/items",
-                Map.of("f", "json"));
-        result.setJsonLink(jsonUri);
-
-        var items = indexRecords.stream()
-                .map(ir -> new OgcApiRecordsSingleRecordResponse(
-                        catalogId,
-                        ir.getUuid(),
-                        ir,
-                        requestInfo,
-                        URI.create(linkConfiguration.getOgcApiRecordsBaseUrl())
-                                .resolve(UriUtils.encodePath(
-                                        "/collections/" + catalogId + "/items/" + ir.getUuid() + "?f=geojson",
-                                        StandardCharsets.UTF_8))))
-                .toList();
-        result.setRecords(items);
-
-        return new ResponseEntity<OgcApiRecordsMultiRecordResponse>(result, HttpStatusCode.valueOf(200));
+        return new ResponseEntity<OgcApiRecordsGetRecords200ResponseDto>(
+                result, responseHeaders, HttpStatusCode.valueOf(200));
     }
 
     @Override

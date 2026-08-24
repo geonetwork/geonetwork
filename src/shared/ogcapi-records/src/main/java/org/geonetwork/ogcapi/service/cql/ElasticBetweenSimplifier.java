@@ -1,11 +1,12 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.ogcapi.service.cql;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.UntypedRangeQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,13 +40,13 @@ public class ElasticBetweenSimplifier {
         if (qs == null || qs.isEmpty()) {
             return qs;
         }
-        if (qs.stream().filter(x -> x.isRange() && x.range().isUntyped()).count() < 2) {
+        if (qs.stream().filter(x -> x._kind().name().equals("Range")).count() < 2) {
             return qs; // not enough to simplify
         }
 
         var range_property = qs.stream()
-                .filter(x -> x.isRange() && x.range().isUntyped())
-                .map(x -> x.range().untyped())
+                .filter(x -> x._kind().name().equals("Range"))
+                .map(x -> (RangeQuery) x._get())
                 .collect(Collectors.groupingBy(x -> x.field()))
                 .entrySet()
                 .stream()
@@ -74,15 +75,15 @@ public class ElasticBetweenSimplifier {
      * @param rangeQuery1 2nd to merge
      * @return merged query
      */
-    public Query combineRange(UntypedRangeQuery rangeQuery0, UntypedRangeQuery rangeQuery1) {
-        var query = Query.of(q -> q.range(r -> r.untyped(u -> {
-            u.field(rangeQuery0.field());
-            u.gt(rangeQuery0.gt() == null ? rangeQuery1.gt() : rangeQuery0.gt());
-            u.lt(rangeQuery0.lt() == null ? rangeQuery1.lt() : rangeQuery0.lt());
-            u.gte(rangeQuery0.gte() == null ? rangeQuery1.gte() : rangeQuery0.gte());
-            u.lte(rangeQuery0.lte() == null ? rangeQuery1.lte() : rangeQuery0.lte());
-            return u;
-        })));
+    public Query combineRange(RangeQuery rangeQuery0, RangeQuery rangeQuery1) {
+        var query = Query.of(q -> q.range(x -> {
+            x.field(rangeQuery0.field());
+            x.gt(rangeQuery0.gt() == null ? rangeQuery1.gt() : rangeQuery0.gt());
+            x.lt(rangeQuery0.lt() == null ? rangeQuery1.lt() : rangeQuery0.lt());
+            x.gte(rangeQuery0.gte() == null ? rangeQuery1.gte() : rangeQuery0.gte());
+            x.lte(rangeQuery0.lte() == null ? rangeQuery1.lte() : rangeQuery0.lte());
+            return x;
+        }));
         return query;
     }
 
@@ -95,9 +96,7 @@ public class ElasticBetweenSimplifier {
      * @param removeMe which one to remove
      * @return qs, but with removeMe removed
      */
-    public List<Query> remove(List<Query> qs, UntypedRangeQuery removeMe) {
-        return qs.stream()
-                .filter(x -> !(x.isRange() && x.range().isUntyped() && x.range().untyped() == removeMe))
-                .collect(Collectors.toCollection(ArrayList::new));
+    public List<Query> remove(List<Query> qs, RangeQuery removeMe) {
+        return qs.stream().filter(x -> x._get() != removeMe).collect(Collectors.toCollection(ArrayList::new));
     }
 }

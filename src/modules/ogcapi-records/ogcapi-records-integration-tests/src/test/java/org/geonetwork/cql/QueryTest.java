@@ -1,6 +1,7 @@
 /*
- * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
- * SPDX-License-Identifier: GPL-2.0-or-later
+ * (c) 2003 Open Source Geospatial Foundation - all rights reserved
+ * This code is licensed under the GPL 2.0 license,
+ * available at the root application directory.
  */
 package org.geonetwork.cql;
 
@@ -19,26 +20,11 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
-import org.geonetwork.GeonetworkGenericApplication;
-import org.geonetwork.facets.AdvancedFacetTests;
-import org.geonetwork.infrastructure.ElasticPgMvcTestHelper;
+import org.geonetwork.infrastructure.ElasticPgMvcBaseTest;
 import org.geonetwork.ogcapi.records.generated.model.*;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.elasticsearch.ElasticsearchContainer;
-import org.testcontainers.utility.MountableFile;
 
 /**
  * In order to efficiently do the integration tests, I've combined several together. This save about 1 minute/class in
@@ -60,59 +46,10 @@ import org.testcontainers.utility.MountableFile;
  *
  * <p>PROPERTY >= MIN AND PROPERTY <= MAX
  */
-@SpringBootTest(classes = GeonetworkGenericApplication.class)
-@AutoConfigureMockMvc
-@ActiveProfiles(value = {"test", "integration-test"})
 @ContextConfiguration(initializers = QueryTest.class)
-public class QueryTest implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-    public final String MAIN_COLLECTION_ID = "3bef299d-cf82-4033-871b-875f6936b2e2";
-    public final String METAWAL_COLLECTION_ID = "cec997ba-1fa4-48d9-8be0-890da8cc65cf";
-
-    AdvancedFacetTests advancedFacetTests = new AdvancedFacetTests(this);
+public class QueryTest extends ElasticPgMvcBaseTest {
 
     OgcApiRecordsFacetsDto facetsConfig;
-
-    public final int MVC_PORT = 8888;
-    public final String BASE_URL = "http://localhost:" + MVC_PORT + "/";
-
-    @Autowired
-    protected MockMvc mockMvc;
-
-    @Autowired
-    protected ObjectMapper objectMapper;
-
-    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>("postgres:16-alpine")
-            .withDatabaseName("geonetwork")
-            .withUsername("postgres")
-            .withPassword("postgres")
-            .withCopyToContainer(
-                    MountableFile.forClasspathResource("dump.gn.sql"), "/docker-entrypoint-initdb.d/dump.gn.sql");
-
-    static ElasticsearchContainer elasticsearchContainer = new ElasticsearchContainer(
-                    "docker.elastic.co/elasticsearch/elasticsearch:8.14.0")
-            .withEnv("path.repo", "/tmp")
-            .withEnv("ES_JAVA_OPTS", "-Xms750m -Xmx2g")
-            .withEnv("discovery.type", "single-node")
-            .withEnv("xpack.security.enabled", "false")
-            .withEnv("xpack.security.enrollment.enabled", "false")
-            .withCopyToContainer(MountableFile.forClasspathResource("es_backups.tar.gz"), "/tmp/es_backups.tar.gz");
-
-    @SneakyThrows
-    @Override
-    public void initialize(ConfigurableApplicationContext ctx) {
-        ElasticPgMvcTestHelper.initialize(ctx, postgreSQLContainer, elasticsearchContainer, MVC_PORT);
-    }
-
-    @BeforeAll
-    static void beforeAll() throws Exception {
-        ElasticPgMvcTestHelper.beforeAll(postgreSQLContainer, elasticsearchContainer);
-    }
-
-    @AfterAll
-    static void afterAll() throws Exception {
-        ElasticPgMvcTestHelper.afterAll(postgreSQLContainer, elasticsearchContainer);
-    }
 
     /**
      * Gets the facet configuration.
@@ -123,18 +60,6 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
     public void beforeEach() throws Exception {
         facetsConfig = retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/facets", OgcApiRecordsFacetsDto.class);
-    }
-
-    public <T> T retrieveUrlJson(String s, Class<T> clazz) throws Exception {
-        return ElasticPgMvcTestHelper.retrieveUrlJson(s, clazz, BASE_URL, mockMvc, objectMapper);
-    }
-
-    public String retrieveUrlJson(String s) throws Exception {
-        return ElasticPgMvcTestHelper.retrieveUrlJson(s, BASE_URL, mockMvc);
-    }
-
-    public <T> T retrieveUrlJson(String s, Class<T> clazz, String user) throws Exception {
-        return ElasticPgMvcTestHelper.retrieveUrlJson(s, clazz, user, BASE_URL, mockMvc, objectMapper);
     }
 
     /**
@@ -849,8 +774,7 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
     // ----------------------------------------------------------------------------------------------------------
 
     /**
-     * checks that only the main portal collection is listed (harvester sources like Metawal are excluded). This will
-     * fail if Postgresql didn't come up properly!
+     * checks that there are 2 named (title) collections. This will fail if Postgresql didn't come up properly!
      *
      * @throws Exception bad response (usually unparseable or bad MVC or bad PGSQL)
      */
@@ -858,14 +782,21 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
     void test_simple_collections_test() throws Exception {
         var result = retrieveUrlJson("ogcapi-records/collections", OgcApiRecordsGetCollections200ResponseDto.class);
 
-        assertEquals(1, result.getCollections().size());
+        assertEquals(2, result.getCollections().size());
         var collectionAll = result.getCollections().stream()
                 .filter(x -> x.getTitle().equals("Test GeoNetwork-UI instance"))
                 .findFirst()
                 .get();
+        var collectionMetawal = result.getCollections().stream()
+                .filter(x -> x.getTitle().equals("Metawal"))
+                .findFirst()
+                .get();
 
         assertNotNull(collectionAll);
+        assertNotNull(collectionMetawal);
+
         assertEquals(MAIN_COLLECTION_ID, collectionAll.getId());
+        assertEquals(METAWAL_COLLECTION_ID, collectionMetawal.getId());
     }
 
     /**
@@ -932,14 +863,6 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         }
     }
 
-    /** cheater method so we don't have to spin-up the containers again (30-60 seconds). */
-    @Test
-    public void test_advancedFacets() throws Exception {
-        this.advancedFacetTests.runTests();
-    }
-
-    // ----------------------
-
     public static Map<String, FacetInfo> expectedFacets = Map.ofEntries(
             //      entry("creationYearForResource2",
             //        new FacetInfo("histogram","creationYearForResource",
@@ -966,6 +889,7 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                                             10,
                                             null),
                                     new BucketInfo(null, null, "Métropole Européenne de Lille", 2, null),
+                                    new BucketInfo(null, null, "atmo Hauts-de-France", 1, null),
                                     new BucketInfo(null, null, "Société Publique de Gestion de l'Eau (SPGE)", 1, null),
                                     new BucketInfo(null, null, "Réseau Ongulés sauvages OFB-FNC-FDC", 1, null),
                                     new BucketInfo(null, null, "Région Hauts-de-France", 1, null),
@@ -977,16 +901,16 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                                     new BucketInfo(
                                             null,
                                             null,
+                                            "Direction de l'Action sociale (SPW - Intérieur et Action sociale - Département de l'Action sociale - Direction de l'Action sociale)",
+                                            1,
+                                            null),
+                                    new BucketInfo(
+                                            null,
+                                            null,
                                             "DREAL HdF (Direction Régionale de l'Environnement de l'Aménagement et du Logement des Hauts de France)",
                                             1,
                                             null),
                                     new BucketInfo(null, null, "DREAL", 1, null),
-                                    new BucketInfo(
-                                            null,
-                                            null,
-                                            "Direction de l'Action sociale (SPW - Intérieur et Action sociale - Département de l'Action sociale - Direction de l'Action sociale)",
-                                            1,
-                                            null),
                                     new BucketInfo(
                                             null,
                                             null,
@@ -1007,7 +931,6 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                                             null),
                                     new BucketInfo(null, null, "Bundesamt für Raumentwicklung", 1, null),
                                     new BucketInfo(null, null, "Barbie Inc.", 1, null),
-                                    new BucketInfo(null, null, "atmo Hauts-de-France", 1, null),
                                     new BucketInfo(
                                             null,
                                             null,
@@ -1036,8 +959,8 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                             "filter",
                             null,
                             List.of(
-                                    new BucketInfo(null, null, "availableInViewService", 13, null),
-                                    new BucketInfo(null, null, "availableInDownloadService", 5, null)))),
+                                    new BucketInfo(null, null, "availableInDownloadService", 5, null),
+                                    new BucketInfo(null, null, "availableInViewService", 13, null)))),
             // --------------------------------
             // this is a fixed-number-of-buckets facet (numbers)
             entry(
