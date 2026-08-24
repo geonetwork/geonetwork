@@ -1,0 +1,41 @@
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head(${page.properties?.title ?: page.id})}"></head>
+<body>
+
+<div th:replace="~{layout :: header(
+    ${page.properties?.title ?: page.id},
+    ${page.properties?.description},
+    ${page.links})}"></div>
+
+<div class="tags" th:if="${page.properties != null and !#lists.isEmpty(page.properties.keywords)}">
+  <span class="tag" th:each="kw : ${page.properties.keywords}" th:text="${kw}"></span>
+</div>
+
+<section class="section-block" th:if="${!#lists.isEmpty(page.links)}">
+  <h2>Links</h2>
+  <ul class="link-list">
+    <th:block th:each="link : ${page.links}">
+      <li th:if="${link.rel == null or !#strings.equalsIgnoreCase(link.rel, 'alternative')}">
+        <span th:if="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'self')}"
+              class="link-self"
+              th:text="${link.title != null and !#strings.isEmpty(link.title) ? link.title : link.href}">current</span>
+        <a th:unless="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'self')}"
+           th:href="${link.href}"
+           th:text="${link.title != null and !#strings.isEmpty(link.title) ? link.title : link.href}">link</a>
+        <span class="link-type"
+              th:if="${link.type != null and !#strings.isEmpty(link.type)}"
+              th:text="${'(' + link.type + ')'}"></span>
+      </li>
+    </th:block>
+  </ul>
+</section>
+
+</body>
+</html>

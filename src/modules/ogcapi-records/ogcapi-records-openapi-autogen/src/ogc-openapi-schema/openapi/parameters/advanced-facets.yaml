@@ -1,0 +1,13 @@
+---
+
+name: facets
+in: query
+required: false
+schema:
+  type: array
+  items:
+    type: string
+    pattern: '[A-Za-z_0-9]+(:[0-9]*(:(value_asc|value_desc|count_asc|count_desc)?)?)?'
+explode: false
+style: form
+example: keywords:20:value_asc,organization:10

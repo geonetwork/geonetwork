@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <xsl:stylesheet version="3.0"
@@ -149,7 +148,7 @@
                             select="replace($httpUriInAnchorOrText,'https?://','')"/>
               <xsl:variable name="euDcatLicense"
                             select="$euLicenses/rdf:RDF/skos:Concept[
-                                                  matches(skos:exactMatch/@rdf:resource,
+                                                  some $match in skos:exactMatch satisfies matches($match/@rdf:resource,
                                                           concat('https?://', $licenseUriWithoutHttp, '/?'))
                                                   or matches(@rdf:about,
                                                           concat('https?://', $licenseUriWithoutHttp, '/?'))]"/>

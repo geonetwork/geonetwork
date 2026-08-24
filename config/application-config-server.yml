@@ -1,0 +1,32 @@
+#
+# SPDX-FileCopyrightText: 2026 FAO-UN and others <geonetwork@osgeo.org>
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: jdbc
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/geonetwork}
+    username: ${JDBC_DATABASE_USERNAME:geonetwork}
+    password: ${JDBC_DATABASE_PASSWORD:geonetwork}
+    driver-class-name: ${JDBC_DATABASE_DRIVER:org.postgresql.Driver}
+  cloud:
+    config:
+      server:
+        jdbc:
+          sql: SELECT CONFIG_PARAM, CONFIG_VALUE from APP_CONFIGS where LOWER(APP)=LOWER(?) and PROFILE=? and LABEL=?
+          order: 1
+
+  sql:
+    init:
+      mode: never
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog.xml
+

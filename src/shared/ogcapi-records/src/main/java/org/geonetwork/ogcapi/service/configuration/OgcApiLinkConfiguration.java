@@ -1,7 +1,6 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 package org.geonetwork.ogcapi.service.configuration;
 
@@ -35,7 +34,6 @@ public class OgcApiLinkConfiguration {
         if (!ogcApiRecordsBaseUrl.endsWith("/")) {
             ogcApiRecordsBaseUrl += "/";
         }
-        ogcApiRecordsBaseUrl = ogcApiRecordsBaseUrl.replace("//", "/");
         this.ogcApiRecordsBaseUrl = ogcApiRecordsBaseUrl;
     }
 
@@ -51,7 +49,6 @@ public class OgcApiLinkConfiguration {
         if (!gnBaseUrl.endsWith("/")) {
             gnBaseUrl += "/";
         }
-        gnBaseUrl = gnBaseUrl.replace("//", "/");
 
         this.gnBaseUrl = gnBaseUrl;
     }

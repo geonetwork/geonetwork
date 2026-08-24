@@ -1,8 +1,7 @@
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <!-- This file specifies a spotbugs filter for excluding reports that
@@ -196,7 +195,7 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
   <Match>
-    <Class name="org.geonetwork.gn4proxypredicates.GeoNetwork4Predicate"/>
+    <Class name="org.geonetwork.gn4.proxypredicates.GeoNetwork4Predicate"/>
     <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
   </Match>
   <!--

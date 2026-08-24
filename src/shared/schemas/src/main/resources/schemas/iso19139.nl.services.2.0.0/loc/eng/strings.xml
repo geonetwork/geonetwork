@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+
+<strings>
+  <understandResource>Informatie over de Service</understandResource>
+  <relatedResources>Related data</relatedResources>
+  <techInfo>Technische informatie</techInfo>
+  <contactInfo>Contact informatie</contactInfo>
+  <mdContactInfo>Metadata contact</mdContactInfo>
+  <refDate>Referentie datum</refDate>
+  <temporalRef>Temporele informatie</temporalRef>
+  <constraintInfo>Access constraint information</constraintInfo>
+
+  <!-- New strings added for the AngularJS editor -->
+  <!-- View and tabs -->
+<viewTitle>
+    <h3>Dutch profil on ISO 19119 voor Services version 2.1.0 - Standard</h3>
+  </viewTitle>
+  <viewDescription>
+    <div> </div>
+  </viewDescription>
+
+  <dutchProfileTitle>
+    <h3>Dutch profil on ISO 19119 voor Services version 2.1.0 - Optional &amp; conditional elements</h3>
+  </dutchProfileTitle>
+  <dutchProfileDescription>
+    <div></div>
+  </dutchProfileDescription>
+  <fullViewTitle>
+    <h3>Dutch profil on ISO 19119 voor Services version 2.1.0 - Volledig iso19139 + services weergave</h3>
+  </fullViewTitle>
+  <fullViewDescription>
+    <div/>
+  </fullViewDescription>
+
+  <xmlViewTitle>
+    <h3>XML display</h3>
+  </xmlViewTitle>
+  <xmlViewDescription>
+    <div></div>
+  </xmlViewDescription>
+  <advanced>Full</advanced>
+  <default>Dutch profile</default>
+  <simple>Simple</simple>
+  <inspire>INSPIRE</inspire>
+
+  <metadata>About the metadata</metadata>
+  <identificationInfo>Identification info</identificationInfo>
+  <distributorContact>Contact information</distributorContact>
+  <distributionInfo>Distribution</distributionInfo>
+  <dataQualityInfo>Quality</dataQualityInfo>
+  <spatialRepresentationInfo>Spatial rep.</spatialRepresentationInfo>
+  <referenceSystemInfo>Referenence system</referenceSystemInfo>
+  <contentInfo>Content</contentInfo>
+  <portrayalCatalogueInfo>Portrayal</portrayalCatalogueInfo>
+  <metadataConstraints>Md. constraints</metadataConstraints>
+  <metadataMaintenance>Md. maintenance</metadataMaintenance>
+  <applicationSchemaInfo>Schema info</applicationSchemaInfo>
+  <noThesaurusName>Keywords</noThesaurusName>
+  <bboxesSection>Geographic coverage</bboxesSection>
+
+  <resource>resource</resource>
+  <xml>XML</xml>
+
+  <Optional>Optional elements</Optional>
+  <Required>Required elements</Required>
+  <INSPIRE>INSPIRE elements</INSPIRE>
+
+  <metadataPointOfContact>Contact</metadataPointOfContact>
+  <pointOfContact>Contact service</pointOfContact>
+  <lineage>Lineage</lineage>
+  <CI_RoleCode>Role</CI_RoleCode>
+  <role>Role</role>
+
+  <individualName>Name</individualName>
+  <organisationName>Organisation</organisationName>
+  <positionName>Position</positionName>
+  <voice>Phone</voice>
+  <facsimile>Fax</facsimile>
+  <electronicMailAddress>Email</electronicMailAddress>
+  <deliveryPoint>Address</deliveryPoint>
+  <postalCode>Postal code</postalCode>
+  <city>City</city>
+  <administrativeArea>Province</administrativeArea>
+  <country>Country</country>
+  <telephone>Phone</telephone>
+  <onlineResource>Url</onlineResource>
+
+  <temporalRangeSection>Temporal coverage</temporalRangeSection>
+  <beginPosition>From</beginPosition>
+  <endPosition>To</endPosition>
+  <inspireTheme>INSPIRE Theme</inspireTheme>
+  <topicCategory>Theme</topicCategory>
+  <conformity>Conformance</conformity>
+
+  <report>Conformance</report>
+  <isINSPIREConform></isINSPIREConform>
+  <isNotINSPIREConform></isNotINSPIREConform>
+  <descriptiveKeywords>Keyword</descriptiveKeywords>
+
+  <datasetcode>Unieke Identifier van de bron</datasetcode>
+  <ds_language>Taal dataset</ds_language>
+  <md_language>Taal metadata</md_language>
+  <metadataStandardName>Standaard</metadataStandardName>
+  <metadataStandardVersion>Standaard versie</metadataStandardVersion>
+
+  <CompletenessOmission>Compleetheid</CompletenessOmission>
+  <spatialRepresentationType>Ruimtelijk schema</spatialRepresentationType>
+  <extentDescription>Beschrijving temporeledekking</extentDescription>
+  <qualityScope>Niveau kwaliteits beschrijving</qualityScope>
+
+  <useLimitation>Gebruiks beperkingen</useLimitation>
+  <dutchprofile2>Nederlands profiel 2</dutchprofile2>
+  <Basis>Identificatie</Basis>
+  <Metadata>Over de metadata</Metadata>
+
+  <Add_DQ_TopologicalConsistency>Topologische samenhang toevoegen</Add_DQ_TopologicalConsistency>
+  <Add_DQ_AbsoluteExternalPositionalAccuracy>Geometrische nauwkeurigheid toevoegen</Add_DQ_AbsoluteExternalPositionalAccuracy>
+  <Add_DQ_CompletenessOmission>Compleetheid toevoegen</Add_DQ_CompletenessOmission>
+  <addIdentifier>Identificatie toevoegen</addIdentifier>
+  <addStatus>Status toevoegen</addStatus>
+  <addLanguage>Taal toevoegen</addLanguage>
+  <addTopic>Onderwerp toevoegen</addTopic>
+  <addCharacterset>Karakterset toevoegen</addCharacterset>
+  <addDate>Datum toevoegen</addDate>
+  <addLineage>Herkomst toevoegen</addLineage>
+  <addUseLimitation>Gebruiks beperkingen toevoegen</addUseLimitation>
+  <addLegalConstraints>Juridische beperkingen toevoegen</addLegalConstraints>
+  <addResourceConstraints>Bron beperkingen toevoegen</addResourceConstraints>
+  <addUrl>URL toevoegen</addUrl>
+  <addStandardName>Standaard toevoegen</addStandardName>
+  <addStandardVersion>Standaard versie toevoegen</addStandardVersion>
+  <addPointOfContact>Contact gegevens toevoegen</addPointOfContact>
+  <addINSPIRETheme>INSPIRE thema toevoegen</addINSPIRETheme>
+  <addConformance>Conformiteits indicatie toevoegen</addConformance>
+  <addSpatialRepresentationType>Ruimtelijk schema toevoegen</addSpatialRepresentationType>
+  <addAlternateTitle>Alternatieve titel toevoegen</addAlternateTitle>
+  <addPurpose>Doel toevoegen</addPurpose>
+  <addSupplementalInformation>Extra informatie toevoegen</addSupplementalInformation>
+  <addEdition>Versie toevoegen</addEdition>
+  <addExtentDescription>Omschrijving toevoegen</addExtentDescription>
+  <Add_Quality>Kwaliteitsindicatie toevoegen</Add_Quality>
+  <addCouplingType>Voeg koppel type toe</addCouplingType>
+  <addServiceType>Voeg service type toe</addServiceType>
+  <addServiceTypeVersion>Voeg versie toe</addServiceTypeVersion>
+  <addOperation>Voeg operaties toe</addOperation>
+  <addReferenceSystem>Referentie systeem toevoegen</addReferenceSystem>
+
+
+  <conformanceStatement>Conformiteits indicatie</conformanceStatement>
+  <ExtentDescription>Omschrijving temporele dekking</ExtentDescription>
+  <DsCharacterSet>Karakterset dataset</DsCharacterSet>
+  <Distribution>Distributie</Distribution>
+  <encoding>Distributie formaat</encoding>
+  <format>Naam distributie formaat</format>
+  <format_version>Versie distributie formaat</format_version>
+  <format_specification>Specificatie distributie formaat</format_specification>
+  <rsIdentifier>Referentie systeem</rsIdentifier>
+  <codeSpace>Namespace</codeSpace>
+  <code>Code</code>
+  <orderProcess>Bestel proces</orderProcess>
+  <orderingInstructions>Bestel instructies</orderingInstructions>
+  <fees>Prijsinformatie</fees>
+  <turnaround>Doorlooptijd</turnaround>
+  <resourceMaintenance>Onderhouds informatie</resourceMaintenance>
+  <maintenanceAndUpdateFrequency>Herzieningsfrequentie</maintenanceAndUpdateFrequency>
+  <dateOfNextUpdate>Datum volgende herziening</dateOfNextUpdate>
+
+  <equivalentScale>Resolutie</equivalentScale>
+  <distance>Afstand</distance>
+  <scope>Scope</scope>
+  <InspireConformance>INSPIRE conformiteit</InspireConformance>
+  <DQ_AbsoluteExternalPositionalAccuracyUnit>Eenheid</DQ_AbsoluteExternalPositionalAccuracyUnit>
+
+  <LI_Source>Bron en inwinning</LI_Source>
+
+  <addHierarchy>Hiërarchisch niveau toevoegen</addHierarchy>
+  <addHierarchyLevelName>Beschrijving hiërarchisch niveau toevoegen</addHierarchyLevelName>
+  <AddSource>Voeg bron toe</AddSource>
+  <AddProcessStep>Voeg bewerkingsstap toe</AddProcessStep>
+  <addTemporalExtent>Voeg juridische geldigheid toe</addTemporalExtent>
+  <addResourceMaintenance>Voeg onderhouds informatie toe</addResourceMaintenance>
+  <addSeries>Voeg serie informatie toe</addSeries>
+
+  <alternateTitle>Alternatieve titel</alternateTitle>
+  <accessConstraints>Toegangs beperkingen</accessConstraints>
+  <Conformance>Conformiteit</Conformance>
+  <serviceInfo>Service operaties en gekoppelde bronnen</serviceInfo>
+  <restrictions>Restricties en beperkingen</restrictions>
+  <dataQuality>Service kwaliteit</dataQuality>
+  <addCoupledResource>Relatie toevoegen</addCoupledResource>
+  <addOperatesOn>Gekoppelde bron toevoegen</addOperatesOn>
+
+  <operationName>Operatienaam</operationName>
+  <identifier>Identifier</identifier>
+  <layername>Laagnaam</layername>
+
+  <dsIdentifier>Identificatie dataset</dsIdentifier>
+  <metadataLink>Metadata identificatie</metadataLink>
+  <linkTitle>Link titel</linkTitle>
+
+</strings>

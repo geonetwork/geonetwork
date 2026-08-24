@@ -5,7 +5,7 @@ geonetwork:
     indexRecordName: gn5test-records
 spring:
   datasource:
-    url: jdbc:h2:mem:gn5
+    url: jdbc:h2:mem:gn5;MODE=PostgreSQL;NON_KEYWORDS=VALUE
     driverClassName: org.h2.Driver
     username: sa
     password: password

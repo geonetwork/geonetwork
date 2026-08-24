@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    (c) 2003 Open Source Geospatial Foundation - all rights reserved
-    This code is licensed under the GPL 2.0 license,
-    available at the root application directory.
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
 
 -->
 <xsl:stylesheet version="3.0"
@@ -19,7 +18,7 @@
                 xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
                 xmlns:gcx="http://standards.iso.org/iso/19115/-3/gcx/1.0"
                 xmlns:skos="http://www.w3.org/2004/02/skos/core#"
-                xmlns:mobilitydcatap="https://w3id.org/mobilitydcat-ap"
+                xmlns:mobilitydcatap="https://w3id.org/mobilitydcat-ap#"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"

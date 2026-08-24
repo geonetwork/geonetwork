@@ -1,7 +1,6 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 package org.geonetwork.ogcapi.service.configuration;
 
@@ -25,6 +24,20 @@ public enum SimpleType {
     public static String getOgcTypeName(SimpleType type) {
         if (type == SimpleType.INTEGER || type == SimpleType.DOUBLE) {
             return "number";
+        } else if (type == SimpleType.STRING) {
+            return "string";
+        } else if (type == SimpleType.DATE) {
+            return "string";
+        } else if (type == SimpleType.BOOLEAN) {
+            return "boolean";
+        } else {
+            throw new RuntimeException("don't know type - " + type);
+        }
+    }
+
+    public static String getOpenApiType(SimpleType type) {
+        if (type == SimpleType.INTEGER || type == SimpleType.DOUBLE) {
+            return "integer";
         } else if (type == SimpleType.STRING) {
             return "string";
         } else if (type == SimpleType.DATE) {

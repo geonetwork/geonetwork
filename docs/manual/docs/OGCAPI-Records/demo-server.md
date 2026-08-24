@@ -95,7 +95,7 @@ At this point you should have 7 records in your [GN4 installation](http://localh
     * `Identifier` - subportal
     * `Name` - SubPortal
     * `Search Filter` - leave this blank, you can modify this later if you want
-    * `Records to use for GetCapabilities` - type "sub" and then choose the "GeoCat Demo OGCIAPI sub-portal" record
+    * `Records to use for GetCapabilities` - type "sub" and then choose the "GeoCat Demo OGC API sub-portal" record
     * Choose a logo from the `Logo Selection`
     * Press "Save"
 4. On the Left hand column, choose `Settings`
@@ -126,11 +126,11 @@ mvn spring-boot:run
 0. Go to [http://localhost:7979/v3/api-docs?f=json](http://localhost:7979/v3/api-docs?f=json) to see the [OpenAPI](https://www.openapis.org/) (swagger) documentation.
 1. Go to [http://localhost:7979/ogcapi-records/?f=json](http://localhost:7979/ogcapi-records/?f=json)
     * This is the OGCAPI-Records Landing Page
-    * The title should be "GeoCat Demo OGCIAPI Server"
+    * The title should be "GeoCat Demo OGC API Server"
     * Notice that it has an extra `catalogInfo` which contains information taken from `main.xml`
 2. Go to [http://localhost:7979/ogcapi-records/collections?f=json](http://localhost:7979/ogcapi-records/collections?f=json)
     * This is the OGCAPI-Records Collections ("Catalogs") page
-    * There should be two collections - "GeoCat Demo OGCIAPI Server" and "GeoCat Demo OGCIAPI sub-portal"
+    * There should be two collections - "GeoCat Demo OGC API Server" and "GeoCat Demo OGC API sub-portal"
     * Notice that the title (and contact) information is coming from the linked metadata records (`main.xml` and `subportal.xml`)
 3. Go to [http://localhost:7979/ogcapi-records/collections/subportal?f=json](http://localhost:7979/ogcapi-records/collections/subportal?f=json)
     * This is the OGCAPI-Records Collection ("Catalog") page for the sub-portal collection

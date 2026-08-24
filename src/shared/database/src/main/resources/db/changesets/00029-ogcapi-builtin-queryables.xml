@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Adds CQL-filter field mappings for the OGC API Records "built-in" queryables (id, created,
+    updated, language, languages, organization, title, description, keywords, geometry, time -
+    see queryables.json). These were previously only resolvable by name in the /queryables and
+    /items facets responses, but had no entry in ogcapi_field_mapping, so CQL2 filters referencing
+    them (e.g. filter=title='foo') failed.
+
+    Each changeSet only inserts its row when the ogcapi_property_mapping config row already exists
+    (i.e. this is an upgrade of a running instance whose config was already seeded before this
+    fix - see OgcApiPropertyMappingService#seedFromYamlIfAbsent) AND that ogc_property isn't
+    already present (so a previously admin-customized mapping is never overwritten). On a brand
+    new install there is no config row yet, so every changeSet here is a no-op (MARK_RAN); the
+    row gets created already-complete from config/application-ogcapi-records.yml on first boot.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-id" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'id')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="100"/>
+            <column name="ogc_property" value="id"/>
+            <column name="elastic_property" value="uuid"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-created" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'created')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="101"/>
+            <column name="ogc_property" value="created"/>
+            <column name="elastic_property" value="createDate"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-updated" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'updated')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="102"/>
+            <column name="ogc_property" value="updated"/>
+            <column name="elastic_property" value="resourceDate.date"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-language" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'language')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="103"/>
+            <column name="ogc_property" value="language"/>
+            <column name="elastic_property" value="mainLanguage"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-languages" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'languages')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="104"/>
+            <column name="ogc_property" value="languages"/>
+            <column name="elastic_property" value="otherLanguage"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-organization" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'organization')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="105"/>
+            <column name="ogc_property" value="organization"/>
+            <column name="elastic_property" value="OrgForResourceObject.default"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-title" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'title')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="106"/>
+            <column name="ogc_property" value="title"/>
+            <column name="elastic_property" value="resourceTitleObject.default"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-description" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'description')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="107"/>
+            <column name="ogc_property" value="description"/>
+            <column name="elastic_property" value="resourceAbstractObject.default"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-keywords" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'keywords')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="108"/>
+            <column name="ogc_property" value="keywords"/>
+            <column name="elastic_property" value="tag.default"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-geometry" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'geometry')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="109"/>
+            <column name="ogc_property" value="geometry"/>
+            <column name="elastic_property" value="geom"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00029-ogcapi-field-mapping-builtin-time" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'time')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="110"/>
+            <column name="ogc_property" value="time"/>
+            <column name="elastic_property" value="resourceTemporalDateRange"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

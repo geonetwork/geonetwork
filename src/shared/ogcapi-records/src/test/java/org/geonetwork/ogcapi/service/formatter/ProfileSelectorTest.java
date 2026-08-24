@@ -1,7 +1,6 @@
 /*
- * (c) 2003 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license,
- * available at the root application directory.
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 package org.geonetwork.ogcapi.service.formatter;
 
@@ -9,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geonetwork.ogcapi.service.configuration.ItemPageLinksConfiguration;
-import org.geonetwork.ogcapi.service.configuration.ProfileDefault;
+import org.geonetwork.application.profile.ProfileDefault;
+import org.geonetwork.application.profile.ProfileDefaultsConfiguration;
 import org.geonetwork.schemas.model.schemaident.Formatter;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -20,12 +19,12 @@ public class ProfileSelectorTest {
     /** this tests the easiest case - just using the default. */
     @Test
     public void test_default() {
-        ItemPageLinksConfiguration itemPageLinksConfiguration = new ItemPageLinksConfiguration();
-        itemPageLinksConfiguration.setProfileDefaults(new ArrayList<>());
-        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile");
-        itemPageLinksConfiguration.getProfileDefaults().add(profileDefault);
+        ProfileDefaultsConfiguration profileDefaultsConfiguration = new ProfileDefaultsConfiguration();
+        profileDefaultsConfiguration.setProfileDefaults(new ArrayList<>());
+        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile", null);
+        profileDefaultsConfiguration.getProfileDefaults().add(profileDefault);
 
-        ProfileSelector profileSelector = new ProfileSelector(itemPageLinksConfiguration);
+        ProfileSelector profileSelector = new ProfileSelector(profileDefaultsConfiguration);
 
         var selectedFormatter = profileSelector.chooseProfile(
                 MediaType.valueOf("application/testcase"), new ArrayList<>(), List.of(getFormatter1()));
@@ -36,12 +35,12 @@ public class ProfileSelectorTest {
     /** choose default when there are multiple formatters. */
     @Test
     public void test_default2() {
-        ItemPageLinksConfiguration itemPageLinksConfiguration = new ItemPageLinksConfiguration();
-        itemPageLinksConfiguration.setProfileDefaults(new ArrayList<>());
-        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile");
-        itemPageLinksConfiguration.getProfileDefaults().add(profileDefault);
+        ProfileDefaultsConfiguration profileDefaultsConfiguration = new ProfileDefaultsConfiguration();
+        profileDefaultsConfiguration.setProfileDefaults(new ArrayList<>());
+        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile", null);
+        profileDefaultsConfiguration.getProfileDefaults().add(profileDefault);
 
-        ProfileSelector profileSelector = new ProfileSelector(itemPageLinksConfiguration);
+        ProfileSelector profileSelector = new ProfileSelector(profileDefaultsConfiguration);
 
         var selectedFormatter = profileSelector.chooseProfile(
                 MediaType.valueOf("application/testcase"),
@@ -54,12 +53,12 @@ public class ProfileSelectorTest {
     /** choose requested profile (1st one) */
     @Test
     public void test_requested1() {
-        ItemPageLinksConfiguration itemPageLinksConfiguration = new ItemPageLinksConfiguration();
-        itemPageLinksConfiguration.setProfileDefaults(new ArrayList<>());
-        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile");
-        itemPageLinksConfiguration.getProfileDefaults().add(profileDefault);
+        ProfileDefaultsConfiguration profileDefaultsConfiguration = new ProfileDefaultsConfiguration();
+        profileDefaultsConfiguration.setProfileDefaults(new ArrayList<>());
+        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile", null);
+        profileDefaultsConfiguration.getProfileDefaults().add(profileDefault);
 
-        ProfileSelector profileSelector = new ProfileSelector(itemPageLinksConfiguration);
+        ProfileSelector profileSelector = new ProfileSelector(profileDefaultsConfiguration);
 
         var selectedFormatter = profileSelector.chooseProfile(
                 MediaType.valueOf("application/testcase"),
@@ -72,12 +71,12 @@ public class ProfileSelectorTest {
     /** choose requested profile (second) */
     @Test
     public void test_requested2() {
-        ItemPageLinksConfiguration itemPageLinksConfiguration = new ItemPageLinksConfiguration();
-        itemPageLinksConfiguration.setProfileDefaults(new ArrayList<>());
-        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile");
-        itemPageLinksConfiguration.getProfileDefaults().add(profileDefault);
+        ProfileDefaultsConfiguration profileDefaultsConfiguration = new ProfileDefaultsConfiguration();
+        profileDefaultsConfiguration.setProfileDefaults(new ArrayList<>());
+        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile", null);
+        profileDefaultsConfiguration.getProfileDefaults().add(profileDefault);
 
-        ProfileSelector profileSelector = new ProfileSelector(itemPageLinksConfiguration);
+        ProfileSelector profileSelector = new ProfileSelector(profileDefaultsConfiguration);
 
         var selectedFormatter = profileSelector.chooseProfile(
                 MediaType.valueOf("application/testcase"),
@@ -90,12 +89,12 @@ public class ProfileSelectorTest {
     /** choose requested profile - 2 requests, first is "good" */
     @Test
     public void test_requested_multi() {
-        ItemPageLinksConfiguration itemPageLinksConfiguration = new ItemPageLinksConfiguration();
-        itemPageLinksConfiguration.setProfileDefaults(new ArrayList<>());
-        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile");
-        itemPageLinksConfiguration.getProfileDefaults().add(profileDefault);
+        ProfileDefaultsConfiguration profileDefaultsConfiguration = new ProfileDefaultsConfiguration();
+        profileDefaultsConfiguration.setProfileDefaults(new ArrayList<>());
+        var profileDefault = new ProfileDefault("application/testcase", "testcase.profile", null);
+        profileDefaultsConfiguration.getProfileDefaults().add(profileDefault);
 
-        ProfileSelector profileSelector = new ProfileSelector(itemPageLinksConfiguration);
+        ProfileSelector profileSelector = new ProfileSelector(profileDefaultsConfiguration);
 
         var selectedFormatter = profileSelector.chooseProfile(
                 MediaType.valueOf("application/testcase"),

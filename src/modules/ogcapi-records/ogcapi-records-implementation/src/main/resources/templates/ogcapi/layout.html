@@ -1,0 +1,102 @@
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head(pageTitle)">
+  <meta charset="UTF-8"/>
+  <title th:text="${pageTitle}">OGC API</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 16px; color: #111; }
+    h1, h2 { margin: 0 0 12px 0; }
+    .page-title { font-size: 2rem; font-weight: 800; letter-spacing: 0.02em; margin-bottom: 4px; }
+    .page-subtitle { font-size: 1rem; color: #555; margin-bottom: 14px; }
+    .button { background: #0070ff; color: #fff; padding: 8px 14px; text-decoration: none; border-radius: 4px; font-size: 0.85rem; }
+    .button-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 18px 0; align-items: center; }
+    .section-block { border: 1px solid #d6d6d6; border-radius: 8px; padding: 14px; margin: 16px 0; }
+    .section-block > h2 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #444; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .card { border: 1px solid #e0e0e0; border-radius: 6px; padding: 10px 12px; background: #fafafa; min-height: 100px; }
+    .card-title { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+    .card-title a { color: #0070ff; text-decoration: none; display: block; }
+    .card-title a:hover { text-decoration: underline; }
+    .card-desc { font-size: 0.85rem; color: #555; margin-bottom: 6px; }
+    .card-links { font-size: 0.8rem; }
+    .card-links a { color: #0070ff; margin-right: 8px; text-decoration: none; display: block; }
+    .card-links a:hover { text-decoration: underline; }
+    .field { margin: 6px 0; font-size: 0.9rem; }
+    .field-label { font-weight: 600; color: #555; font-size: 0.8rem; text-transform: uppercase; }
+    .description { color: #333; line-height: 1.5; margin: 8px 0 14px 0; }
+    .link-list { list-style: none; margin: 0; padding: 0; }
+    .link-list li { padding: 4px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; }
+    .link-self { color: #888; font-style: italic; }
+    .link-type { color: #888; font-size: 0.75rem; margin-left: 6px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .tag { background: #e8f0fe; color: #1a56db; padding: 2px 8px; border-radius: 12px; font-size: 0.78rem; }
+    .meta { font-size: 0.8rem; color: #777; }
+    .pagination { margin: 14px 0 0 0; font-size: 0.85rem; color: #555; }
+  </style>
+</head>
+
+<!--
+  Shared page header: bold title + optional subtitle + format-switch buttons.
+  Parameters:
+    pageTitle   – bold heading text
+    pageSubtitle – (optional) grey subtitle line
+    links       – list of OgcApiRecordsLinkDto to derive alternate-format buttons from
+-->
+<div th:fragment="header(pageTitle, pageSubtitle, links)">
+  <h1 class="page-title"><strong th:text="${pageTitle}">Title</strong></h1>
+  <p class="page-subtitle" th:if="${pageSubtitle != null and !#strings.isEmpty(pageSubtitle)}"
+     th:text="${pageSubtitle}"></p>
+  <div class="button-row" th:if="${links != null and !#lists.isEmpty(links)}">
+    <span class="meta">Other formats:</span>
+    <th:block th:each="link : ${links}">
+      <a class="button"
+         th:if="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'alternative')}"
+         th:href="${link.href}"
+         th:text="${link.type != null ? link.type : (link.title != null ? link.title : 'format')}">format</a>
+    </th:block>
+  </div>
+</div>
+
+<!--
+  Renders a single OgcApiRecordsLinkDto as a list item.
+-->
+<li th:fragment="link-item(link)" class="link-list">
+  <a th:href="${link.href}" th:text="${link.title != null and !#strings.isEmpty(link.title) ? link.title : link.href}">link</a>
+  <span class="link-type"
+        th:if="${link.type != null and !#strings.isEmpty(link.type)}"
+        th:text="${'(' + link.type + ')'}"></span>
+</li>
+
+<!--
+  Renders a collection card (OgcApiRecordsCatalogDto).
+-->
+<div th:fragment="collection-card(collection)" class="card">
+  <div class="card-title">
+    <th:block th:with="selfLinks=${collection.links != null ? collection.links.?[rel != null and rel.equalsIgnoreCase('self')] : {}},
+                       selfLink=${not #lists.isEmpty(selfLinks) ? selfLinks[0] : null}">
+      <a th:if="${selfLink != null}" th:href="${selfLink.href}" th:text="${collection.title ?: collection.id}">title</a>
+      <span th:unless="${selfLink != null}" th:text="${collection.title ?: collection.id}">title</span>
+    </th:block>
+  </div>
+  <p class="card-desc" th:if="${collection.description != null}"
+     th:text="${#strings.abbreviate(collection.description, 120)}"></p>
+  <!--<div class="tags" th:if="${!#lists.isEmpty(collection.keywords)}">
+    <span class="tag" th:each="kw : ${collection.keywords}" th:text="${kw}"></span>
+  </div>
+  <div class="card-links" th:if="${!#lists.isEmpty(collection.links)}">
+    <th:block th:each="link : ${collection.links}">
+      <a th:unless="${#strings.equalsIgnoreCase(link.rel, 'icon') or #strings.equalsIgnoreCase(link.rel, 'preview')}"
+         th:href="${link.href}"
+         th:text="${link.title ?: link.type ?: link.rel}">link</a>
+    </th:block>
+  </div>-->
+</div>
+
+</html>
