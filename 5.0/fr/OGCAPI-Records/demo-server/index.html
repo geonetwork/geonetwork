@@ -33,7 +33,7 @@
       
       
       <link rel="icon" href="../../../assets/images/geonetwork-logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -41,7 +41,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1196,11 +1196,11 @@
 <h3 id="setting-up-postgresql">Setting up PostgreSQL</h3>
 <p>This container (<code>kartoza/postgis:16-3.4</code>) is for an M1 mac - use a different docker container for an X64 machine.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker run -p 5432:5432 -e POSTGRES_PASS=postgres -e POSTGRES_USER=postgres   kartoza/postgis:16-3.4
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c &quot;create database gn;&quot;
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d gn -c &quot;create extension postgis;&quot;
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c "create database gn;"
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d gn -c "create extension postgis;"
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d gn -c &quot;CREATE USER \&quot;www-data\&quot; WITH SUPERUSER PASSWORD &#39;www-data&#39;;&quot;
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>PGPASSWORD=postgres psql -h localhost -U postgres -d gn -c "CREATE USER \"www-data\" WITH SUPERUSER PASSWORD 'www-data';"
 </span></code></pre></div>
 <p>This will:</p>
 <ol>
@@ -1215,7 +1215,7 @@
 </span></code></pre></div>
 <h3 id="setup-elastic-search-recommend-v814">Setup Elastic Search (recommend v8.14)</h3>
 <p>This will run an elastic search docker container (v8.14.0) on port 9200.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker run -p 9200:9200 -p 9300:9300 -e &quot;discovery.type=single-node&quot; -e &quot;xpack.security.enabled=false&quot; -e &quot;xpack.security.enrollment.enabled=false&quot; docker.elastic.co/elasticsearch/elasticsearch:8.14.0
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "xpack.security.enrollment.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:8.14.0
 </span></code></pre></div>
 <p>This does not have any indexes in it - when you run GN4 (see below) it will add the indexes.</p>
 <p>Here are some interesting URLs:</p>
@@ -1510,7 +1510,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["toc.follow", "navigation.tracking", "navigation.top", "navigation.tabs", "navigation.prune", "navigation.indexes", "navigation.footer", "header.autohide", "content.tabs.link", "content.code.copy", "content.action.view", "content.action.edit", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
