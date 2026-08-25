@@ -85,6 +85,37 @@ public class ElasticTypingSystemTest {
     }
 
     @Test
+    public void testMultiFieldPropertyTyping() throws Exception {
+        var indexDef = loadIndexDefinition();
+        var indexState = indexDef.get("gn-records");
+
+        var config = new OgcElasticFieldsMapperConfig();
+        var fields = new ArrayList<OgcElasticFieldMapperConfig>();
+
+        // Text field with keyword multi-field: resourceEdition.keyword
+        var editionKeywordField = new OgcElasticFieldMapperConfig();
+        editionKeywordField.setOgcProperty("editionKeyword");
+        editionKeywordField.setElasticProperty("resourceEdition.keyword");
+        fields.add(editionKeywordField);
+
+        // Non-existent subfield on a text field: resourceEdition.nonExistent
+        var invalidSubField = new OgcElasticFieldMapperConfig();
+        invalidSubField.setOgcProperty("invalidSubField");
+        invalidSubField.setElasticProperty("resourceEdition.nonExistent");
+        fields.add(invalidSubField);
+
+        config.setFields(fields);
+
+        var typingSystem = new ElasticTypingSystem(config, "gn-records", indexState);
+
+        var editionKeywordTypeInfo = typingSystem.getTypeInfoByOgcProperty("editionKeyword");
+        assertNotNull(editionKeywordTypeInfo);
+        assertEquals(SimpleType.STRING, editionKeywordTypeInfo.getType());
+
+        assertNull(typingSystem.getTypeInfoByOgcProperty("invalidSubField"));
+    }
+
+    @Test
     public void testNonExistentPropertyDoesNotThrow() throws Exception {
         var indexDef = loadIndexDefinition();
         var indexState = indexDef.get("gn-records");

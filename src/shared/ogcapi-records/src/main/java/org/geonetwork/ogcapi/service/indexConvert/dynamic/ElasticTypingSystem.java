@@ -234,39 +234,25 @@ public class ElasticTypingSystem {
         var pathPart = path.removeFirst();
         var first = this.elasticIndexInfo.mappings().properties().get(pathPart);
 
-        if (first == null) {
+        if (first == null || !(first._get() instanceof PropertyVariant firstPv)) {
             return null; // don't know about this type
         }
-        PropertyVariant elasticProperty = (PropertyVariant) first._get();
+        PropertyVariant elasticProperty = firstPv;
 
         while (!path.isEmpty()) {
             pathPart = path.removeFirst();
-            if (elasticProperty instanceof ObjectProperty objectProperty) {
-                if (objectProperty.properties() == null
-                        || !objectProperty.properties().containsKey(pathPart)) {
-                    return null;
+            if (elasticProperty instanceof PropertyBase propBase) {
+                Property child = null;
+                if (propBase.properties() != null && propBase.properties().containsKey(pathPart)) {
+                    child = propBase.properties().get(pathPart);
+                } else if (propBase.fields() != null && propBase.fields().containsKey(pathPart)) {
+                    child = propBase.fields().get(pathPart);
                 }
-                elasticProperty = (PropertyVariant)
-                        objectProperty.properties().get(pathPart)._get();
-            } else if (elasticProperty instanceof NestedProperty nestedProperty) {
-                if (nestedProperty.properties() == null
-                        || !nestedProperty.properties().containsKey(pathPart)) {
-                    return null;
-                }
-                elasticProperty = (PropertyVariant)
-                        nestedProperty.properties().get(pathPart)._get();
-            } else if (elasticProperty instanceof TextProperty textProperty) {
-                if (textProperty.fields() != null && textProperty.fields().containsKey(pathPart)) {
-                    elasticProperty = (PropertyVariant)
-                            textProperty.fields().get(pathPart)._get();
+
+                if (child != null && child._get() instanceof PropertyVariant pv) {
+                    elasticProperty = pv;
                 } else {
-                    elasticProperty = TextProperty.of(tp -> tp);
-                }
-            } else if (elasticProperty instanceof KeywordProperty keywordProperty) {
-                if (keywordProperty.fields() != null && keywordProperty.fields().containsKey(pathPart)) {
-                    elasticProperty = (PropertyVariant)
-                            keywordProperty.fields().get(pathPart)._get();
-                } else {
+                    log.warn("Elastic Index Definition - couldn't find '{}' in {}", pathPart, elasticProperty);
                     return null;
                 }
             } else {
