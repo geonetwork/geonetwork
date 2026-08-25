@@ -242,14 +242,36 @@ public class ElasticTypingSystem {
         while (!path.isEmpty()) {
             pathPart = path.removeFirst();
             if (elasticProperty instanceof ObjectProperty objectProperty) {
+                if (objectProperty.properties() == null
+                        || !objectProperty.properties().containsKey(pathPart)) {
+                    return null;
+                }
                 elasticProperty = (PropertyVariant)
                         objectProperty.properties().get(pathPart)._get();
+            } else if (elasticProperty instanceof NestedProperty nestedProperty) {
+                if (nestedProperty.properties() == null
+                        || !nestedProperty.properties().containsKey(pathPart)) {
+                    return null;
+                }
+                elasticProperty = (PropertyVariant)
+                        nestedProperty.properties().get(pathPart)._get();
             } else if (elasticProperty instanceof TextProperty textProperty) {
-                elasticProperty = TextProperty.of(tp -> tp);
-                //              elasticProperty = (PropertyVariant)  textProperty.fields().get(pathPart);
+                if (textProperty.fields() != null && textProperty.fields().containsKey(pathPart)) {
+                    elasticProperty = (PropertyVariant)
+                            textProperty.fields().get(pathPart)._get();
+                } else {
+                    elasticProperty = TextProperty.of(tp -> tp);
+                }
+            } else if (elasticProperty instanceof KeywordProperty keywordProperty) {
+                if (keywordProperty.fields() != null && keywordProperty.fields().containsKey(pathPart)) {
+                    elasticProperty = (PropertyVariant)
+                            keywordProperty.fields().get(pathPart)._get();
+                } else {
+                    return null;
+                }
             } else {
-                throw new RuntimeException(
-                        "Elastic Index Definition - couldn't find " + pathPart + " in " + elasticProperty);
+                log.warn("Elastic Index Definition - couldn't find '{}' in {}", pathPart, elasticProperty);
+                return null;
             }
         }
         return elasticProperty;
