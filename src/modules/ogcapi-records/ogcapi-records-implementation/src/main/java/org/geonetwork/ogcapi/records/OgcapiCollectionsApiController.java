@@ -136,7 +136,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
     @RequestMapping(
             method = RequestMethod.GET,
             value = "/collections/{catalogId}/items",
-            produces = {"application/geo+json", "text/html", "application/json", "*/*"})
+            produces = {"application/geo+json", "application/rss+xml", "text/html", "application/json", "*/*"})
     public ResponseEntity<?> getRecords(
             String catalogId,
             List<BigDecimal> bbox,
