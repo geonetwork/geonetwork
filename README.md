@@ -29,7 +29,8 @@ Build the project and start the main application:
 
 ### 3. Access the Application
 - **Main App:** [http://localhost:7979/geonetwork](http://localhost:7979/geonetwork) (Login: `admin`/`admin`)
-- **API Docs:** [http://localhost:7979/v3/api-docs](http://localhost:7979/v3/api-docs)
+- **API Docs:** [http://localhost:7979/geonetwork/v3/api-docs](http://localhost:7979/geonetwork/v3/api-docs)
+- **API Docs (Scalar):** [http://localhost:7979/geonetwork/doc/api/discover](http://localhost:7979/geonetwork/doc/api/discover)
 
 ## Project Structure
 - `src/apps`: Main application entry points.
