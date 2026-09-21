@@ -115,7 +115,7 @@
                   select="
                       count(*:metadataScope[*/*:resourceScope/*/@codeListValue = 'dataset']) > 0 or
                       count(*:hierarchyLevel[*/@codeListValue='dataset']) > 0 or
-                      count(*:metadataScope) = 0"/>
+                      (count(*:metadataScope) = 0 and count(*:hierarchyLevel) = 0)"/>
     <xsl:variable name="isService" as="xs:boolean"
                   select="
                       count(*:metadataScope[*/*:resourceScope/*/@codeListValue='service']) > 0 or

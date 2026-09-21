@@ -1,0 +1,41 @@
+{
+  "docType" : "metadata",
+  "metadataIdentifier" : "f0f3e1a4-0000-4000-8000-000000000195",
+  "dateStamp" : "2019-12-31T23:00:00.000Z",
+  "mainLanguage" : "eng",
+  "resourceType" : [ "service" ],
+  "resourceTitleObject" : {
+    "default" : "A view service",
+    "langeng" : "A view service"
+  },
+  "resourceAbstractObject" : {
+    "default" : "Service record used to check resourceType indexing.",
+    "langeng" : "Service record used to check resourceType indexing."
+  },
+  "isOpenData" : false,
+  "uuid" : "samples/iso19139_service",
+  "popularity" : 0,
+  "isPublishedToAll" : false,
+  "draft" : "n",
+  "changeDate" : "2020-01-01T00:00:00Z",
+  "createDate" : "2020-01-01T00:00:00Z",
+  "isPublishedToIntranet" : false,
+  "valid" : -1,
+  "isTemplate" : "n",
+  "feedbackCount" : 0,
+  "rating" : 0,
+  "isHarvested" : false,
+  "userSavedCount" : 0,
+  "sourceCatalogue" : "null",
+  "documentStandard" : "iso19139",
+  "tagNumber" : 0,
+  "isPublishedToGuest" : false,
+  "hasxlinks" : false,
+  "valid_inspire" : 0,
+  "cl_hierarchyLevel" : [ {
+    "key" : "service",
+    "default" : "",
+    "langeng" : "",
+    "link" : "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
+  } ]
+}

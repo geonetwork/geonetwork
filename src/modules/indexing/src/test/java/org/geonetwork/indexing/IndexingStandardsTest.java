@@ -44,6 +44,7 @@ class IndexingStandardsTest {
                 "iso19115-3.2018_datamodel",
                 "iso19115-3.2018_service",
                 "iso19139_dataset",
+                "iso19139_service",
                 "dublin-core_dataset",
                 "iso19110_datamodel"
             })
