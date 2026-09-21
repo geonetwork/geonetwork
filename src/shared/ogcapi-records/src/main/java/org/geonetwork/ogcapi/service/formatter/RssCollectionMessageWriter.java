@@ -98,7 +98,7 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
             writeSimpleElement(writer, "link", channelLink);
             writeSimpleElement(writer, "description", "OGC API Records results for collection " + channelName);
             writeSimpleElement(writer, "lastBuildDate", RFC_1123_UTC.format(Instant.now()));
-            writeSimpleElement(writer, "generator", channelName);
+            writeSimpleElement(writer, "generator", "GeoNetwork OpenSource");
 
             if (StringUtils.isNotBlank(channelLink)) {
                 writeSimpleElement(
