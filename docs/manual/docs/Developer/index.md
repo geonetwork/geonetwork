@@ -18,6 +18,7 @@ Content of this documentation
 - [Security inside GN5](tech-security.md): Internal GN5 security
 - [Spring Cloud Config Server](spring-cloud-config-server.md): Centralized and dynamic configuration management.
 - [Creating a New App](new-app.md): Creating a new app (introduction to the App Architecture)
+- [Content Negotiation](content-negotiation.md): Format negotiation (JSON, HTML, profiles).
 - [Dynamic Properties in OGCAPI-Records](ogcapi-records-dynamic-properties.md): Creating a new app (introduction to the App Architecture)
 - [Link Management in OGCAPI-Records](ogcapi-record-link-management.md): Creating a new app (introduction to the App Architecture)
 - [Facets](facets.md)
