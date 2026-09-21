@@ -137,10 +137,22 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
                 }
 
                 List<Overview> overviewList = indexRecord.getOverview();
-                if (overviewList != null && !overviewList.isEmpty()) {
+                if (overviewList != null
+                        && !overviewList.isEmpty()
+                        && overviewList.getFirst().getUrl() != null) {
+                    var overviewUrl = resolveAbsoluteUrl(overviewList.getFirst().getUrl());
+                    var mimeType = inferImageMimeType(overviewUrl);
+
                     writer.writeStartElement("enclosure");
-                    writer.writeAttribute("url", overviewList.getFirst().getUrl());
-                    writer.writeAttribute("type", "image/png");
+                    writer.writeAttribute("url", overviewUrl);
+                    writer.writeAttribute("length", "0");
+                    writer.writeAttribute("type", mimeType);
+                    writer.writeEndElement();
+
+                    writer.writeStartElement("media:content");
+                    writer.writeAttribute("url", overviewUrl);
+                    writer.writeAttribute("type", mimeType);
+                    writer.writeAttribute("medium", "image");
                     writer.writeEndElement();
                 }
                 writer.writeEndElement();
@@ -154,6 +166,24 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
         } catch (Exception e) {
             throw new IOException("Error writing RSS response", e);
         }
+    }
+
+    private String resolveAbsoluteUrl(String url) {
+        if (url == null || url.isBlank() || url.startsWith("http://") || url.startsWith("https://")) {
+            return url;
+        }
+        var base = settingManager.getBaseUrlWithContextPath();
+        return url.startsWith("/") ? base + url : base + "/" + url;
+    }
+
+    private static String inferImageMimeType(String url) {
+        if (url == null) return "image/png";
+        var lower = url.toLowerCase();
+        if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+        if (lower.endsWith(".gif")) return "image/gif";
+        if (lower.endsWith(".svg")) return "image/svg+xml";
+        if (lower.endsWith(".webp")) return "image/webp";
+        return "image/png";
     }
 
     private static String getLocalizedValue(Map<String, String> multilingual, String fallback) {
