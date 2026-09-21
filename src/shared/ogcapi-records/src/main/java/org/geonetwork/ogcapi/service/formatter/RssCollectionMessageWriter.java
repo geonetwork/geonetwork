@@ -18,15 +18,15 @@ import java.util.Optional;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.domain.Source;
 import org.geonetwork.domain.repository.SourceRepository;
 import org.geonetwork.index.model.record.Overview;
-import org.geonetwork.metadata.MetadataManager;
+import org.geonetwork.metadata.IMetadataManager;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
 import org.geonetwork.setting.SettingManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -37,19 +37,15 @@ import org.springframework.stereotype.Component;
 
 /** Writes `/collections/{catalogId}/items` as an RSS 2.0 feed. */
 @Component
+@RequiredArgsConstructor
 public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRecordsMultiRecordResponse> {
 
     private static final MediaType RSS_MEDIA_TYPE = MediaType.valueOf("application/rss+xml");
     private static final DateTimeFormatter RFC_1123_UTC = DateTimeFormatter.RFC_1123_DATE_TIME.withZone(ZoneOffset.UTC);
 
-    @Autowired
-    private SourceRepository sourceRepository;
-
-    @Autowired
-    private MetadataManager metadataManager;
-
-    @Autowired
-    private SettingManager settingManager;
+    private final SourceRepository sourceRepository;
+    private final IMetadataManager metadataManager;
+    private final SettingManager settingManager;
 
     @Getter
     private final List<MediaType> supportedMediaTypes = List.of(RSS_MEDIA_TYPE);
@@ -88,14 +84,16 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
             writer.writeAttribute("version", "2.0");
             writer.writeStartElement("channel");
 
-            var channelLink =
+            String channelLink =
                     source.getJsonLink() == null ? "" : source.getJsonLink().toString();
+            String channelHTMLLink = channelLink.replace("f=json", "f=html");
+            String channelRSSLink = channelLink.replace("f=json", "f=rss");
 
             Optional<Source> collection = sourceRepository.findById(source.getCatalogId());
             var channelName = collection.map(Source::getName).orElse("GeoNetwork RSS");
 
             writeSimpleElement(writer, "title", channelName);
-            writeSimpleElement(writer, "link", channelLink);
+            writeSimpleElement(writer, "link", channelHTMLLink);
             writeSimpleElement(writer, "description", "OGC API Records results for collection " + channelName);
             writeSimpleElement(writer, "lastBuildDate", RFC_1123_UTC.format(Instant.now()));
             writeSimpleElement(writer, "generator", "GeoNetwork OpenSource");
@@ -106,7 +104,7 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
                         "atom:link",
                         null,
                         Map.of(
-                                "href", channelLink,
+                                "href", channelRSSLink,
                                 "rel", "self",
                                 "type", "application/rss+xml"));
             }
