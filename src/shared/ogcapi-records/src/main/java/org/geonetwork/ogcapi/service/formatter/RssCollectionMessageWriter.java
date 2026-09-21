@@ -99,6 +99,18 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
             writeSimpleElement(writer, "description", "OGC API Records results for collection " + channelName);
             writeSimpleElement(writer, "lastBuildDate", RFC_1123_UTC.format(Instant.now()));
             writeSimpleElement(writer, "generator", channelName);
+
+            if (StringUtils.isNotBlank(channelLink)) {
+                writeSimpleElement(
+                        writer,
+                        "atom:link",
+                        null,
+                        Map.of(
+                                "href", channelLink,
+                                "rel", "self",
+                                "type", "application/rss+xml"));
+            }
+
             // TODO: Use Logo API https://github.com/geonetwork/core-geonetwork/pull/9322
             if (collection.isPresent() && collection.get().getLogo() != null) {
                 var logoUrl = settingManager.getBaseUrlWithContextPath() + "/images/harvesting/"
