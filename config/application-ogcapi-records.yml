@@ -73,6 +73,15 @@ geonetwork:
             - facetName: updateFrequency
               facetType: TERM
               bucketCount: 50
+        - ogcProperty: topic
+          elasticProperty: cl_topic.key
+          indexRecordProperty: codelists.["cl_topic"].[*].properties.["key"]
+          typeOverride: LIST_STRING
+          isQueryable: true
+          facetsConfig:
+            - facetName: topic
+              facetType: TERM
+              bucketCount: 50
         - ogcProperty: creationYearForResource
           elasticProperty: creationYearForResource
           indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
