@@ -81,7 +81,7 @@ geonetwork:
           facetsConfig:
             - facetName: topic
               facetType: TERM
-              bucketCount: 50
+              bucketCount: 25
         - ogcProperty: creationYearForResource
           elasticProperty: creationYearForResource
           indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
