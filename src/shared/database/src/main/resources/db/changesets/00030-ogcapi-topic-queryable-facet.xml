@@ -55,7 +55,7 @@
         </preConditions>
         <sql>
             INSERT INTO ogcapi_facet_config (field_mapping_id, sort_order, facet_name, facet_type, bucket_count)
-            SELECT id, 0, 'topic', 'TERM', 50
+            SELECT id, 0, 'topic', 'TERM', 25
             FROM ogcapi_field_mapping
             WHERE config_id = 'property-mapping' AND ogc_property = 'topic'
         </sql>
