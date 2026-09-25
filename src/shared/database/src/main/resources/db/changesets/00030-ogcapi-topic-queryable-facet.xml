@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Adds an OGC API Records "topic" queryable/facet backed by the ISO 19115 topic category
+    codelist (indexed as cl_topic - see iso-utility-keywords.xsl), so a "Topic" dropdown can be
+    restored on the frontend (cf frontend#98).
+
+    Each changeSet only inserts its row when the ogcapi_property_mapping config row already
+    exists (i.e. this is an upgrade of a running instance whose config was already seeded before
+    this change - see OgcApiPropertyMappingService#seedFromYamlIfAbsent) AND that row isn't
+    already present (so a previously admin-customized mapping is never overwritten). On a brand
+    new install there is no config row yet, so both changeSets here are a no-op (MARK_RAN); the
+    rows get created already-complete from config/application-ogcapi-records.yml on first boot.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00030-ogcapi-field-mapping-topic" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'topic')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="111"/>
+            <column name="ogc_property" value="topic"/>
+            <column name="elastic_property" value="cl_topic.key"/>
+            <column name="index_record_property" value='codelists.["cl_topic"].[*].properties.["key"]'/>
+            <column name="type_override" value="LIST_STRING"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="true"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00030-ogcapi-facet-config-topic" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'topic')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_facet_config fc
+                                            JOIN ogcapi_field_mapping fm ON fm.id = fc.field_mapping_id
+                                            WHERE fm.config_id = 'property-mapping' AND fm.ogc_property = 'topic' AND fc.facet_name = 'topic')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO ogcapi_facet_config (field_mapping_id, sort_order, facet_name, facet_type, bucket_count)
+            SELECT id, 0, 'topic', 'TERM', 25
+            FROM ogcapi_field_mapping
+            WHERE config_id = 'property-mapping' AND ogc_property = 'topic'
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
