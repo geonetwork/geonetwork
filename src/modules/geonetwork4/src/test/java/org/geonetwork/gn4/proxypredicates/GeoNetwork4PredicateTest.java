@@ -83,6 +83,21 @@ public class GeoNetwork4PredicateTest {
         assertFalse(predicate.test(createRequest("/zzz/")));
     }
 
+    /**
+     * GN5's own "/api/user/**" endpoints (signin/signout) must never be proxied to GN4, even when nested under a path
+     * that would otherwise match a GN4 static prefix or portal uuid.
+     */
+    @Test
+    public void testApiUserNeverProxied() {
+        setupGnPortalPredicate(List.of());
+
+        var predicate = GeoNetwork4Predicate.isGeoNetwork4Request();
+
+        assertFalse(predicate.test(createRequest("/api/user/signout")));
+        assertFalse(predicate.test(createRequest("/srv/api/user/signout")));
+        assertFalse(predicate.test(createRequest("/srv/api/user/signin")));
+    }
+
     /** tests caching is working */
     @Test
     public void testCaching() {
@@ -129,6 +144,7 @@ public class GeoNetwork4PredicateTest {
     public SourceRepository setupGnPortalPredicate(List<String> allSourceUUID) {
         GeoNetwork4Predicate geoNetwork4Predicate = new GeoNetwork4Predicate();
         geoNetwork4Predicate.setListOfPath(List.of("/srv"));
+        geoNetwork4Predicate.setExcludedPath(List.of("/api/user/"));
 
         // create the `Source` objects to return (with the correct UUID)
         var sourceRepoResults = allSourceUUID.stream()
