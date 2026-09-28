@@ -175,7 +175,7 @@ public class ElasticIndex2Catalog {
         }
 
         catalog.setItemType(OgcApiRecordsCatalogDto.ItemTypeEnum.RECORD);
-        catalog.setType(OgcApiRecordsCatalogDto.TypeEnum.CATALOG);
+        catalog.setType(OgcApiRecordsCatalogDto.TypeEnum.COLLECTION);
 
         catalog.addConformsToItem("http://www.opengis.net/spec/ogcapi-records-1/1.0/req/record-core");
     }
