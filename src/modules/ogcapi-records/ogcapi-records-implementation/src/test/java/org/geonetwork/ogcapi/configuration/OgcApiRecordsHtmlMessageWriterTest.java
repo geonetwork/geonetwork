@@ -77,7 +77,7 @@ class OgcApiRecordsHtmlMessageWriterTest {
                 "A catalog of spatial data",
                 List.of(
                         link("http://localhost/api/", "self", "Landing Page", "application/json"),
-                        link("http://localhost/api/", "alternative", "Landing Page HTML", "text/html"),
+                        link("http://localhost/api/", "alternate", "Landing Page HTML", "text/html"),
                         link("http://localhost/api/collections", "data", "Collections", "application/json")));
 
         var html = renderLandingPage(collectionsApi);

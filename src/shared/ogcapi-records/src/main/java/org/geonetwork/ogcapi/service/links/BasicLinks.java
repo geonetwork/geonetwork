@@ -101,12 +101,12 @@ public class BasicLinks {
         }
 
         if (!isRequestForAnOtherType) {
-            // request is for another type - this should be a LABELLED name, not "alternative"/"self"
+            // request is for another type - this should be a LABELLED name, not "alternate"/"self"
             return;
         }
 
-        // should be "alternative"/"self"
-        link.setRel("alternative");
+        // should be "alternate"/"self"
+        link.setRel("alternate");
 
         // see if it should be "self"
         // if:
