@@ -20,3 +20,9 @@ geonetwork:
     # paths above (e.g. a client-side relative-URL bug resolving "/srv/api/user/signout").
     excluded-path: >
       /api/user/
+    http-client:
+      # Sized for a catalogue page's concurrent asset requests through the GN4 proxy route.
+      max-total-connections: 100
+      max-connections-per-route: 50
+      # Fail fast on pool exhaustion instead of the library default (3 minutes).
+      connection-request-timeout: 5s
