@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /** Global exception handling - will wrap exceptions in the OgcApiRecordsExceptionDto */
 @ControllerAdvice
@@ -64,6 +65,15 @@ public class GlobalExceptionHandler {
         OgcApiRecordsExceptionDto exception =
                 new OgcApiRecordsExceptionDto().code("400").description(e.getMessage());
         return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(400));
+    }
+
+    @ExceptionHandler(value = NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<OgcApiRecordsExceptionDto> handleException(NoResourceFoundException e) {
+        log.debug(e.getMessage());
+        OgcApiRecordsExceptionDto exception =
+                new OgcApiRecordsExceptionDto().code("404").description(e.getMessage());
+        return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(404));
     }
 
     @ExceptionHandler(value = Exception.class)
