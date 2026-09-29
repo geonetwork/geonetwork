@@ -81,7 +81,7 @@ public class BasicLinks {
                 requestMediaTypeAndProfile.getResponseClass().equals(linkType);
 
         if (linkType.equals(OgcApiRecordsCollectionsResponse.class)) {
-            link.setRel("collections");
+            link.setRel("data");
             link.setTitle("All collections");
         }
         if (linkType.equals(OgcApiCollectionResponse.class)) {

@@ -143,13 +143,12 @@ public class OgcApiRecordsExtraExamplesTest {
     // catalog with itemtype as "record" (single).
     // note: cannot test to json diffs since "record" (single) is converted to ["record"] (list).
     //       See catalog_1b for the full check
-    // note: this also checks that "catalog" (for type) is allowed (lower case "c").
     @Test
     public void catalog_1() throws IOException {
         var result = (OgcApiRecordsCatalogDto) doTest1("catalog_1.json", OgcApiRecordsCatalogDto.class);
 
         assertEquals(OgcApiRecordsCatalogDto.class, result.getClass());
-        assertEquals("catalog", result.getType().toString());
+        assertEquals("Collection", result.getType().toString());
         //        assertEquals(1, result.getItemType().size());
         assertEquals("record", result.getItemType().toString());
 
@@ -165,7 +164,7 @@ public class OgcApiRecordsExtraExamplesTest {
         var result = (OgcApiRecordsCatalogDto) doTest1("catalog_1b.json", OgcApiRecordsCatalogDto.class);
 
         assertEquals(OgcApiRecordsCatalogDto.class, result.getClass());
-        assertEquals("Catalog", result.getType().toString());
+        assertEquals("Collection", result.getType().toString());
         //        assertEquals(1, result.getItemType().size());
         assertEquals("record", result.getItemType().toString());
 

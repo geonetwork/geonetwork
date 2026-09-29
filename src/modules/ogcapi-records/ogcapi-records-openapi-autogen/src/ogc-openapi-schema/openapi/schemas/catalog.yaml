@@ -33,12 +33,11 @@ allOf:
 #            - catalog
       type:
         description:
-          Fixed to catalog for collections of records
-          and/or subordinate catalogs.
+          Fixed to "Collection" for collections of records and/or subordinate
+          catalogs.
         type: string
         enum:
-          - Catalog
-          - catalog
+          - Collection
       conformsTo:
         type: array
         description:
