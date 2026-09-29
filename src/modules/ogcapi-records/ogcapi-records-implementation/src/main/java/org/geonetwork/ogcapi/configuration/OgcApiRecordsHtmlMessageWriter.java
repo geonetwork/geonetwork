@@ -12,6 +12,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import org.geonetwork.application.ctrlreturntypes.IControllerResponseObject;
+import org.geonetwork.application.ctrlreturntypes.IMultiResponseTypeWriter;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiLandingPageResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsCollectionsResponse;
@@ -40,7 +42,8 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @Component
-public class OgcApiRecordsHtmlMessageWriter extends AbstractGenericHttpMessageConverter<Object> {
+public class OgcApiRecordsHtmlMessageWriter extends AbstractGenericHttpMessageConverter<Object>
+        implements IMultiResponseTypeWriter {
 
     @Value("${geonetwork.openapi-records.links.base-path:/ogcapi-records}")
     private String ogcApiRecordsBasePath;
@@ -74,6 +77,16 @@ public class OgcApiRecordsHtmlMessageWriter extends AbstractGenericHttpMessageCo
         var engine = new SpringTemplateEngine();
         engine.setTemplateResolver(resolver);
         return engine;
+    }
+
+    @Override
+    public List<Class<? extends IControllerResponseObject>> getResponseTypes() {
+        return List.of(
+                OgcApiLandingPageResponse.class,
+                OgcApiRecordsCollectionsResponse.class,
+                OgcApiCollectionResponse.class,
+                OgcApiRecordsMultiRecordResponse.class,
+                OgcApiRecordsSingleRecordResponse.class);
     }
 
     @Override
