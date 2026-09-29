@@ -84,12 +84,12 @@ class OgcApiRecordsHtmlMessageWriterTest {
 
         assertTrue(html.contains("My GeoNetwork"));
         assertTrue(html.contains("A catalog of spatial data"));
-        // alternative link becomes a format-switch button
+        // alternate link becomes a format-switch button
         assertTrue(html.contains("<a class=\"button\""));
         assertTrue(html.contains("text/html"));
-        // non-alternative links appear in Links section
+        // non-alternate links appear in Links section
         assertTrue(html.contains("Collections"));
-        // alternative links do NOT appear as plain list items (they're buttons)
+        // alternate links do NOT appear as plain list items (they're buttons)
         assertFalse(html.contains("<li") && html.contains("Landing Page HTML"));
     }
 
