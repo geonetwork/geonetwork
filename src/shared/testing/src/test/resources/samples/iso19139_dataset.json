@@ -6,11 +6,19 @@
   "resourceType" : [ "dataset" ],
   "resourceTitleObject" : {
     "default" : "Alpenkonvention",
-    "langger" : "Alpenkonvention"
+    "langger" : "Alpenkonvention",
+    "langfre" : "Convention des Alpes",
+    "langita" : "Convenzione delle alpi",
+    "langeng" : "Alpine Convention",
+    "langroh" : "Convenziun da las Alps"
   },
   "resourceAltTitleObject" : [ {
     "default" : "Alpenkonvention",
-    "langger" : "Alpenkonvention"
+    "langger" : "Alpenkonvention",
+    "langfre" : "Convention des Alpes",
+    "langita" : "Convenzione delle alpi",
+    "langeng" : "Alpine Convention",
+    "langroh" : "Convenziun da las Alps"
   } ],
   "resourceDate" : [ {
     "type" : "revision",
@@ -33,62 +41,122 @@
   } ],
   "resourceAbstractObject" : {
     "default" : "Perimeter der Alpenkonvention in der Schweiz. Die Alpenkonvention ist ein völkerrechtlicher Vertrag zwischen den acht Alpenländern Deutschland, Frankreich, Italien, Liechtenstein, Monaco, Österreich, Schweiz, Slowenien sowie der Europäischen Union. Das Ziel des Übereinkommens ist der Schutz der Alpen durch eine sektorübergreifende, ganzheitliche und nachhaltige Politik.",
-    "langger" : "Perimeter der Alpenkonvention in der Schweiz. Die Alpenkonvention ist ein völkerrechtlicher Vertrag zwischen den acht Alpenländern Deutschland, Frankreich, Italien, Liechtenstein, Monaco, Österreich, Schweiz, Slowenien sowie der Europäischen Union. Das Ziel des Übereinkommens ist der Schutz der Alpen durch eine sektorübergreifende, ganzheitliche und nachhaltige Politik."
+    "langger" : "Perimeter der Alpenkonvention in der Schweiz. Die Alpenkonvention ist ein völkerrechtlicher Vertrag zwischen den acht Alpenländern Deutschland, Frankreich, Italien, Liechtenstein, Monaco, Österreich, Schweiz, Slowenien sowie der Europäischen Union. Das Ziel des Übereinkommens ist der Schutz der Alpen durch eine sektorübergreifende, ganzheitliche und nachhaltige Politik.",
+    "langfre" : "Périmètre de la Convention alpine en Suisse. La Convention alpine est un traité de droit international conclu par huit Etats alpins (Allemagne, Autriche, France, Italie, Liechtenstein, Monaco, Suisse, Slovénie) et l`Union européenne. L`accord vise à assurer la préservation et la protection des Alpes à travers une politique plurisectorielle, globale et durable.",
+    "langita" : "Il perimetro della Convenzione delle Alpi. La Convenzione delle Alpi è un trattato internazionale tra gli otto Paesi alpini Germania, Francia, Italia, Liechtenstein, Monaco, Austria, Svizzera, Slovenia e l'Unione europea. Lo scopo della Convenzione è la conservazione e la protezione delle Alpi mediante una politica intersettoriale, globale e durevole.",
+    "langeng" : "The perimeters of the Alpine Convention in Switzerland. The Alpine Convention is an international treaty between the eight Alpine countries: Germany, France, Italy, Liechtenstein, Monaco, Austria, Switzerland and Slovenia, plus the European Union. The aim of the treaty is to protect the Alps by means of cross-sectoral, integrated and sustainable policies.",
+    "langroh" : "Perimeter da la Convenziun da las Alps en Svizra. La Convenziun da las Alps è in contract internaziunal tranter ils otg pajais alpins (Austria, Frantscha, Germania, Italia, Liechtenstein, Monaco, Slovenia, Svizra) e l'Uniun europeica. La convenziun ha la finamira da proteger las Alps cun agid d'ina politica intersecturiala, cumplessiva e duraivla."
   },
   "tag" : [ {
     "default" : "Umweltüberwachung",
-    "langger" : "Umweltüberwachung"
+    "langger" : "Umweltüberwachung",
+    "langfre" : "Installations de suivi environnemental",
+    "langita" : "Impianti di monitoraggio ambientale",
+    "langeng" : "Environmental monitoring facilities"
   }, {
     "default" : "Verwaltungseinheiten",
-    "langger" : "Verwaltungseinheiten"
+    "langger" : "Verwaltungseinheiten",
+    "langfre" : "Unités administratives",
+    "langita" : "Unità amministrative",
+    "langeng" : "Administrative units"
   }, {
     "default" : "Nachhaltige Entwicklung",
-    "langger" : "Nachhaltige Entwicklung"
+    "langger" : "Nachhaltige Entwicklung",
+    "langfre" : "développement durable",
+    "langita" : "sviluppo sostenibile",
+    "langeng" : "sustainable development"
   }, {
     "default" : "Raumplanung",
-    "langger" : "Raumplanung"
+    "langger" : "Raumplanung",
+    "langfre" : "planification de l'espace physique",
+    "langita" : "pianificazione dello spazio fisico",
+    "langeng" : "physical planning"
   }, {
     "default" : "Bergschutz",
-    "langger" : "Bergschutz"
+    "langger" : "Bergschutz",
+    "langfre" : "protection de la montagne",
+    "langita" : "protezione della montagna",
+    "langeng" : "mountain protection"
   }, {
     "default" : "Bodenschutz",
-    "langger" : "Bodenschutz"
+    "langger" : "Bodenschutz",
+    "langfre" : "conservation du sol",
+    "langita" : "conservazione del suolo",
+    "langeng" : "soil conservation"
   }, {
     "default" : "Umweltpolitik",
-    "langger" : "Umweltpolitik"
+    "langger" : "Umweltpolitik",
+    "langfre" : "politique environnementale",
+    "langita" : "politica ambientale",
+    "langeng" : "environmental policy"
   }, {
     "default" : "Umweltpolitik",
-    "langger" : "Umweltpolitik"
+    "langger" : "Umweltpolitik",
+    "langfre" : "politique environnementale",
+    "langita" : "politica ambientale",
+    "langeng" : "environmental policy"
   }, {
     "default" : "Verkehr",
-    "langger" : "Verkehr"
+    "langger" : "Verkehr",
+    "langfre" : "transport",
+    "langita" : "trasporti",
+    "langeng" : "transport"
   }, {
     "default" : "Verkehr",
-    "langger" : "Verkehr"
+    "langger" : "Verkehr",
+    "langfre" : "transport",
+    "langita" : "trasporti",
+    "langeng" : "transport"
   }, {
     "default" : "Verkehr",
-    "langger" : "Verkehr"
+    "langger" : "Verkehr",
+    "langfre" : "transport",
+    "langita" : "trasporti",
+    "langeng" : "transport"
   }, {
     "default" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund",
-    "langger" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund"
+    "langger" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund",
+    "langfre" : "Planification de la conservation et de l'archivage AAP - Conféderation",
+    "langita" : "Pianificazione della conservazione e dell’archiviazione AAP - Confederazione",
+    "langeng" : "Conservation and archiving planning AAP - Confederation"
   }, {
     "default" : "opendata.swiss",
-    "langger" : "opendata.swiss"
+    "langger" : "opendata.swiss",
+    "langfre" : "opendata.swiss",
+    "langita" : "opendata.swiss",
+    "langeng" : "opendata.swiss",
+    "langroh" : "opendata.swiss"
   }, {
     "default" : "Geobasisdaten",
-    "langger" : "Geobasisdaten"
+    "langger" : "Geobasisdaten",
+    "langfre" : "géodonnées de base",
+    "langita" : "geodati di base",
+    "langeng" : "official geodata"
   }, {
     "default" : "e-geo.ch",
-    "langger" : "e-geo.ch"
+    "langger" : "e-geo.ch",
+    "langfre" : "e-geo.ch",
+    "langita" : "e-geo.ch",
+    "langeng" : "e-geo.ch"
   }, {
     "default" : "BGDI Bundesgeodaten-Infrastruktur",
-    "langger" : "BGDI Bundesgeodaten-Infrastruktur"
+    "langger" : "BGDI Bundesgeodaten-Infrastruktur",
+    "langfre" : "IFDG l’Infrastructure Fédérale de données géographiques",
+    "langita" : "IFDG Infrastruttura federale dei dati geografici",
+    "langeng" : "FSDI Federal Spatial Data Infrastructure"
   }, {
     "default" : "Alpenkonvention",
-    "langger" : "Alpenkonvention"
+    "langger" : "Alpenkonvention",
+    "langfre" : "Convention des Alpes",
+    "langita" : "Convenzione delle alpi",
+    "langeng" : "Alpine Convention"
   }, {
     "default" : "AK",
-    "langger" : "AK"
+    "langger" : "AK",
+    "langfre" : "CA",
+    "langita" : "CA",
+    "langeng" : "AC",
+    "langroh" : "null"
   } ],
   "isOpenData" : false,
   "allKeywords" : {
@@ -102,10 +170,16 @@
       "link" : "https://www.geocat.ch/geonetwork/srv/api/registries/vocabularies/external.theme.httpinspireeceuropaeutheme-theme",
       "keywords" : [ {
         "default" : "Umweltüberwachung",
-        "langger" : "Umweltüberwachung"
+        "langger" : "Umweltüberwachung",
+        "langfre" : "Installations de suivi environnemental",
+        "langita" : "Impianti di monitoraggio ambientale",
+        "langeng" : "Environmental monitoring facilities"
       }, {
         "default" : "Verwaltungseinheiten",
-        "langger" : "Verwaltungseinheiten"
+        "langger" : "Verwaltungseinheiten",
+        "langfre" : "Unités administratives",
+        "langita" : "Unità amministrative",
+        "langeng" : "Administrative units"
       } ]
     },
     "th_gemet" : {
@@ -118,31 +192,58 @@
       "link" : "https://www.geocat.ch/geonetwork/srv/api/registries/vocabularies/external.theme.gemet",
       "keywords" : [ {
         "default" : "Nachhaltige Entwicklung",
-        "langger" : "Nachhaltige Entwicklung"
+        "langger" : "Nachhaltige Entwicklung",
+        "langfre" : "développement durable",
+        "langita" : "sviluppo sostenibile",
+        "langeng" : "sustainable development"
       }, {
         "default" : "Raumplanung",
-        "langger" : "Raumplanung"
+        "langger" : "Raumplanung",
+        "langfre" : "planification de l'espace physique",
+        "langita" : "pianificazione dello spazio fisico",
+        "langeng" : "physical planning"
       }, {
         "default" : "Bergschutz",
-        "langger" : "Bergschutz"
+        "langger" : "Bergschutz",
+        "langfre" : "protection de la montagne",
+        "langita" : "protezione della montagna",
+        "langeng" : "mountain protection"
       }, {
         "default" : "Bodenschutz",
-        "langger" : "Bodenschutz"
+        "langger" : "Bodenschutz",
+        "langfre" : "conservation du sol",
+        "langita" : "conservazione del suolo",
+        "langeng" : "soil conservation"
       }, {
         "default" : "Umweltpolitik",
-        "langger" : "Umweltpolitik"
+        "langger" : "Umweltpolitik",
+        "langfre" : "politique environnementale",
+        "langita" : "politica ambientale",
+        "langeng" : "environmental policy"
       }, {
         "default" : "Umweltpolitik",
-        "langger" : "Umweltpolitik"
+        "langger" : "Umweltpolitik",
+        "langfre" : "politique environnementale",
+        "langita" : "politica ambientale",
+        "langeng" : "environmental policy"
       }, {
         "default" : "Verkehr",
-        "langger" : "Verkehr"
+        "langger" : "Verkehr",
+        "langfre" : "transport",
+        "langita" : "trasporti",
+        "langeng" : "transport"
       }, {
         "default" : "Verkehr",
-        "langger" : "Verkehr"
+        "langger" : "Verkehr",
+        "langfre" : "transport",
+        "langita" : "trasporti",
+        "langeng" : "transport"
       }, {
         "default" : "Verkehr",
-        "langger" : "Verkehr"
+        "langger" : "Verkehr",
+        "langfre" : "transport",
+        "langita" : "trasporti",
+        "langeng" : "transport"
       } ]
     },
     "th_geocat-ch" : {
@@ -155,30 +256,53 @@
       "link" : "https://www.geocat.ch/geonetwork/srv/api/registries/vocabularies/local.theme.geocat.ch",
       "keywords" : [ {
         "default" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund",
-        "langger" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund"
+        "langger" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund",
+        "langfre" : "Planification de la conservation et de l'archivage AAP - Conféderation",
+        "langita" : "Pianificazione della conservazione e dell’archiviazione AAP - Confederazione",
+        "langeng" : "Conservation and archiving planning AAP - Confederation"
       }, {
         "default" : "opendata.swiss",
-        "langger" : "opendata.swiss"
+        "langger" : "opendata.swiss",
+        "langfre" : "opendata.swiss",
+        "langita" : "opendata.swiss",
+        "langeng" : "opendata.swiss",
+        "langroh" : "opendata.swiss"
       }, {
         "default" : "Geobasisdaten",
-        "langger" : "Geobasisdaten"
+        "langger" : "Geobasisdaten",
+        "langfre" : "géodonnées de base",
+        "langita" : "geodati di base",
+        "langeng" : "official geodata"
       }, {
         "default" : "e-geo.ch",
-        "langger" : "e-geo.ch"
+        "langger" : "e-geo.ch",
+        "langfre" : "e-geo.ch",
+        "langita" : "e-geo.ch",
+        "langeng" : "e-geo.ch"
       }, {
         "default" : "BGDI Bundesgeodaten-Infrastruktur",
-        "langger" : "BGDI Bundesgeodaten-Infrastruktur"
+        "langger" : "BGDI Bundesgeodaten-Infrastruktur",
+        "langfre" : "IFDG l’Infrastructure Fédérale de données géographiques",
+        "langita" : "IFDG Infrastruttura federale dei dati geografici",
+        "langeng" : "FSDI Federal Spatial Data Infrastructure"
       } ]
     }
   },
   "resolutionScaleDenominator" : [ 25000.0 ],
   "extentIdentifierObject" : [ {
     "default" : "AK",
-    "langger" : "AK"
+    "langger" : "AK",
+    "langfre" : "CA",
+    "langita" : "CA",
+    "langeng" : "AC",
+    "langroh" : "null"
   } ],
   "extentDescriptionObject" : [ {
     "default" : "Alpenkonvention",
-    "langger" : "Alpenkonvention"
+    "langger" : "Alpenkonvention",
+    "langfre" : "Convention des Alpes",
+    "langita" : "Convenzione delle alpi",
+    "langeng" : "Alpine Convention"
   } ],
   "shape" : [ {
     "type" : "object"
@@ -197,48 +321,87 @@
     "group" : "0",
     "hash" : "f0d071dc031571f1f58300f8aa49415a",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "https://map.geo.admin.ch/?layers=ch.are.alpenkonvention",
+      "langger" : "https://map.geo.admin.ch/?layers=ch.are.alpenkonvention"
+    },
     "nameObject" : {
       "default" : "Vorschau map.geo.admin.ch",
-      "langger" : "Vorschau map.geo.admin.ch"
+      "langger" : "Vorschau map.geo.admin.ch",
+      "langfre" : "Aperçu map.geo.admin.ch",
+      "langita" : "Previsione map.geo.admin.ch",
+      "langeng" : "Preview map.geo.admin.ch"
     },
     "descriptionObject" : {
       "default" : "Vorschau map.geo.admin.ch",
-      "langger" : "Vorschau map.geo.admin.ch"
+      "langger" : "Vorschau map.geo.admin.ch",
+      "langfre" : "Aperçu map.geo.admin.ch",
+      "langita" : "Previsione map.geo.admin.ch",
+      "langeng" : "Preview map.geo.admin.ch"
     }
   }, {
     "protocol" : "OGC:WMS",
     "group" : "0",
     "hash" : "0dceb5005bbdba9481e238017fe3fb57",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "https://wms.geo.admin.ch/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities&lang=de",
+      "langger" : "https://wms.geo.admin.ch/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities&lang=de"
+    },
     "nameObject" : {
       "default" : "ch.are.alpenkonvention",
-      "langger" : "ch.are.alpenkonvention"
+      "langger" : "ch.are.alpenkonvention",
+      "langfre" : "ch.are.alpenkonvention",
+      "langita" : "ch.are.alpenkonvention",
+      "langeng" : "ch.are.alpenkonvention",
+      "langroh" : "ch.are.alpenkonvention"
     },
     "descriptionObject" : {
       "default" : "WMS-BGDI Dienst, Layer \"Alpenkonvention\"",
-      "langger" : "WMS-BGDI Dienst, Layer \"Alpenkonvention\""
+      "langger" : "WMS-BGDI Dienst, Layer \"Alpenkonvention\"",
+      "langfre" : "Service WMS-IFDG, couche \"Convention des Alpes\"",
+      "langita" : "Servizio WMS-IFDG, strato \"Convenzione delle alpi\"",
+      "langeng" : "WMS-FSDI service, layer \"Alpine Convention\"",
+      "langroh" : "WMS-BGDI Dienst, Layer \"Alpenkonvention\""
     }
   }, {
     "protocol" : "OGC:WMTS",
     "group" : "0",
     "hash" : "38a9fa67031dbe5747870087ce9599ac",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "https://wmts.geo.admin.ch/EPSG/3857/1.0.0/WMTSCapabilities.xml?lang=de",
+      "langger" : "https://wmts.geo.admin.ch/EPSG/3857/1.0.0/WMTSCapabilities.xml?lang=de"
+    },
     "nameObject" : {
       "default" : "ch.are.alpenkonvention",
-      "langger" : "ch.are.alpenkonvention"
+      "langger" : "ch.are.alpenkonvention",
+      "langfre" : "ch.are.alpenkonvention",
+      "langita" : "ch.are.alpenkonvention",
+      "langeng" : "ch.are.alpenkonvention",
+      "langroh" : "ch.are.alpenkonvention"
     },
     "descriptionObject" : {
       "default" : "WMTS-BGDI Dienst, Layer \"Alpenkonvention\"",
-      "langger" : "WMTS-BGDI Dienst, Layer \"Alpenkonvention\""
+      "langger" : "WMTS-BGDI Dienst, Layer \"Alpenkonvention\"",
+      "langfre" : "Service WMTS-IFDG, couche , Layer \"Convention des Alpes\"",
+      "langita" : "Servizio WMTS-IFDG, strato \"Convenzione delle alpi\"",
+      "langeng" : "WMTS-FSDI service, layer \"Alpine Convention\"",
+      "langroh" : "WMTS-BGDI Dienst, Layer \"Alpenkonvention\""
     }
   }, {
     "protocol" : "WWW:LINK",
     "group" : "1",
     "hash" : "867e71281889d812ca2d20c03928b9ca",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "https://www.are.admin.ch/are/de/home/laendliche-raeume-und-berggebiete/internationale-zusammenarbeit/alpenkonvention.html",
+      "langger" : "https://www.are.admin.ch/are/de/home/laendliche-raeume-und-berggebiete/internationale-zusammenarbeit/alpenkonvention.html"
+    },
     "descriptionObject" : {
       "default" : "Webseite des ARE über die Alpenkonvention",
-      "langger" : "Webseite des ARE über die Alpenkonvention"
+      "langger" : "Webseite des ARE über die Alpenkonvention",
+      "langfre" : "Page web de l'ARE sur la Convention alpine"
     }
   }, {
     "protocol" : "WWW:DOWNLOAD-URL",
@@ -246,27 +409,44 @@
     "group" : "1",
     "hash" : "ee6219d4b816e355a486b2396820781e",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "https://data.geo.admin.ch/browser/index.html#/collections/ch.are.alpenkonvention",
+      "langger" : "https://data.geo.admin.ch/browser/index.html#/collections/ch.are.alpenkonvention"
+    },
     "descriptionObject" : {
       "default" : "Download von data.geo.admin.ch",
-      "langger" : "Download von data.geo.admin.ch"
+      "langger" : "Download von data.geo.admin.ch",
+      "langfre" : "Serveur de téléchargement de geo.admin.ch",
+      "langita" : "Server di download di geo.admin.ch",
+      "langeng" : "Download server from geo.admin.ch"
     }
   }, {
     "protocol" : "WWW:DOWNLOAD-URL",
     "group" : "2",
     "hash" : "ea5a54f42edd0d0112f66c34c00ea0fd",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "https://www.are.admin.ch/are/de/home/raumentwicklung-und-raumplanung/grundlagen-und-daten/minimale-geodatenmodelle/alpenkonvention.html",
+      "langger" : "https://www.are.admin.ch/are/de/home/raumentwicklung-und-raumplanung/grundlagen-und-daten/minimale-geodatenmodelle/alpenkonvention.html"
+    },
     "descriptionObject" : {
       "default" : "Minimales Geodatenmodell in INTERLIS 2.3",
-      "langger" : "Minimales Geodatenmodell in INTERLIS 2.3"
+      "langger" : "Minimales Geodatenmodell in INTERLIS 2.3",
+      "langfre" : "Modèle de données minimal en INTERLIS 2.3"
     }
   }, {
     "protocol" : "CHTOPO:specialised-geoportal",
     "group" : "3",
     "hash" : "0470f54082ea4a5a8a4327caadb0bebb",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "http://map.are.admin.ch/?Y=660000&X=190000&zoom=1&bgLayer=ch.swisstopo.pixelkarte-grau&layers=ch.are.alpenkonvention&layers_opacity=0.2&layers_visibility=true&lang=de",
+      "langger" : "http://map.are.admin.ch/?Y=660000&X=190000&zoom=1&bgLayer=ch.swisstopo.pixelkarte-grau&layers=ch.are.alpenkonvention&layers_opacity=0.2&layers_visibility=true&lang=de"
+    },
     "descriptionObject" : {
       "default" : "Web-GIS ARE",
-      "langger" : "Web-GIS ARE"
+      "langger" : "Web-GIS ARE",
+      "langfre" : "Web-SIG ARE"
     }
   }, {
     "protocol" : "WWW:LINK",
@@ -274,9 +454,16 @@
     "group" : "4",
     "hash" : "c697d87d2fd92de29647301062886bd4",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "http://www.alpconv.org",
+      "langger" : "http://www.alpconv.org"
+    },
     "descriptionObject" : {
       "default" : "Offizielle Homepage der Alpenkonvention",
-      "langger" : "Offizielle Homepage der Alpenkonvention"
+      "langger" : "Offizielle Homepage der Alpenkonvention",
+      "langfre" : "Site web officiel de la Convention alpine",
+      "langita" : "Pagina web ufficiale della Convenzione delle alpi",
+      "langeng" : "Official Website of the Alpine Convention"
     }
   }, {
     "protocol" : "WWW:LINK",
@@ -284,9 +471,14 @@
     "group" : "5",
     "hash" : "ffb1eef92783cf90f91b3ffb6ff9ef01",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "http://map.geo.admin.ch/?selectedNode=LT1_1&Y=660000&X=190000&zoom=1&bgLayer=ch.swisstopo.pixelkarte-farbe&layers=ch.are.alpenkonvention&layers_opacity=0.6&layers_visibility=true&lang=de",
+      "langger" : "http://map.geo.admin.ch/?selectedNode=LT1_1&Y=660000&X=190000&zoom=1&bgLayer=ch.swisstopo.pixelkarte-farbe&layers=ch.are.alpenkonvention&layers_opacity=0.6&layers_visibility=true&lang=de"
+    },
     "descriptionObject" : {
       "default" : "Die Alpenkonvention im Bundesgeoportal",
-      "langger" : "Die Alpenkonvention im Bundesgeoportal"
+      "langger" : "Die Alpenkonvention im Bundesgeoportal",
+      "langfre" : "La convention alpine dans le géoportail fédéral"
     }
   }, {
     "protocol" : "WWW:LINK",
@@ -294,35 +486,63 @@
     "group" : "6",
     "hash" : "d47fef7a19662def08b6018de27fa406",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "http://www.admin.ch/ch/d/sr/0_700_1/app1.html",
+      "langger" : "http://www.admin.ch/ch/d/sr/0_700_1/app1.html"
+    },
     "descriptionObject" : {
       "default" : "Liste der administrativen Einheiten des Alpenraumes in der schweizerischen Eidgenossenschaft",
-      "langger" : "Liste der administrativen Einheiten des Alpenraumes in der schweizerischen Eidgenossenschaft"
+      "langger" : "Liste der administrativen Einheiten des Alpenraumes in der schweizerischen Eidgenossenschaft",
+      "langfre" : "Liste des unités administratives de l'espace alpin dans la Confédération suisse",
+      "langita" : "Elenco delle unità amministrative dello spazio alpino nella Confederazione Svizzera"
     }
   }, {
     "protocol" : "ESRI:REST",
     "group" : "6",
     "hash" : "aa27f71afa46cf0f59bdcfa47ed5f30f",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "https://api3.geo.admin.ch/rest/services/api/MapServer/ch.are.alpenkonvention",
+      "langger" : "https://api3.geo.admin.ch/rest/services/api/MapServer/ch.are.alpenkonvention"
+    },
     "nameObject" : {
       "default" : "RESTful API von geo.admin.ch",
-      "langger" : "RESTful API von geo.admin.ch"
+      "langger" : "RESTful API von geo.admin.ch",
+      "langfre" : "RESTful API de geo.admin.ch",
+      "langita" : "RESTful API da geo.admin.ch",
+      "langeng" : "RESTful API from geo.admin.ch",
+      "langroh" : "RESTful API dad geo.admin.ch"
     },
     "descriptionObject" : {
       "default" : "RESTful API von geo.admin.ch",
-      "langger" : "RESTful API von geo.admin.ch"
+      "langger" : "RESTful API von geo.admin.ch",
+      "langfre" : "RESTful API de geo.admin.ch",
+      "langita" : "RESTful API da geo.admin.ch",
+      "langeng" : "RESTful API from geo.admin.ch",
+      "langroh" : "RESTful API dad geo.admin.ch"
     }
   }, {
     "protocol" : "OPENDATA:SWISS",
     "group" : "6",
     "hash" : "3560daa82a59159b1fd2f8021ad88e60",
     "idx" : "2",
+    "urlObject" : {
+      "default" : "https://opendata.swiss/de/perma/8698bf0b-fceb-4f0f-989b-111e7c4af0a4@bundesamt-fur-raumentwicklung-are",
+      "langger" : "https://opendata.swiss/de/perma/8698bf0b-fceb-4f0f-989b-111e7c4af0a4@bundesamt-fur-raumentwicklung-are"
+    },
     "nameObject" : {
       "default" : "Permalink opendata.swiss",
-      "langger" : "Permalink opendata.swiss"
+      "langger" : "Permalink opendata.swiss",
+      "langfre" : "Permalink opendata.swiss",
+      "langita" : "Permalink opendata.swiss",
+      "langeng" : "Permalink opendata.swiss"
     },
     "descriptionObject" : {
       "default" : "Permalink opendata.swiss",
-      "langger" : "Permalink opendata.swiss"
+      "langger" : "Permalink opendata.swiss",
+      "langfre" : "Permalink opendata.swiss",
+      "langita" : "Permalink opendata.swiss",
+      "langeng" : "Permalink opendata.swiss"
     }
   } ],
   "lineageObject" : [ {
@@ -458,9 +678,14 @@
       "thesaurus" : "geonetwork.thesaurus.local.theme.geocat.ch"
     }
   } ],
+  "otherLanguage" : [ "fre", "ita", "eng", "roh" ],
+  "otherLanguageId" : [ "FR", "IT", "EN", "RM" ],
   "licenseObject" : [ {
     "default" : "Opendata BY: Freie Nutzung. Quellenangabe ist Pflicht.",
     "langger" : "Opendata BY: Freie Nutzung. Quellenangabe ist Pflicht.",
+    "langfre" : "Opendata BY: Utilisation libre. Obligation d’indiquer la source.",
+    "langita" : "Opendata BY: Libero utilizzo. Indicazione della fonte obbligatoria.",
+    "langeng" : "Opendata BY: Open use. Must provide the source.",
     "link" : "https://opendata.swiss/en/terms-of-use/#terms_by"
   } ],
   "maintenance" : [ {
@@ -495,11 +720,19 @@
     "key" : "annually",
     "default" : "",
     "langger" : "",
+    "langfre" : "",
+    "langita" : "",
+    "langeng" : "",
+    "langroh" : "",
     "link" : "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_MaintenanceFrequencyCode"
   }, {
     "key" : "asNeeded",
     "default" : "",
     "langger" : "",
+    "langfre" : "",
+    "langita" : "",
+    "langeng" : "",
+    "langroh" : "",
     "link" : "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_MaintenanceFrequencyCode"
   } ],
   "contactForResource" : [ {
@@ -515,6 +748,10 @@
     "key" : "dataset",
     "default" : "",
     "langger" : "",
+    "langfre" : "",
+    "langita" : "",
+    "langeng" : "",
+    "langroh" : "",
     "link" : "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
   } ],
   "linkUrlProtocolWWWDOWNLOADURL" : [ "https://data.geo.admin.ch/browser/index.html#/collections/ch.are.alpenkonvention", "https://www.are.admin.ch/are/de/home/raumentwicklung-und-raumplanung/grundlagen-und-daten/minimale-geodatenmodelle/alpenkonvention.html" ],
@@ -528,34 +765,62 @@
     "key" : "download",
     "default" : "",
     "langger" : "",
+    "langfre" : "",
+    "langita" : "",
+    "langeng" : "",
+    "langroh" : "",
     "link" : "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
   }, {
     "key" : "information",
     "default" : "",
     "langger" : "",
+    "langfre" : "",
+    "langita" : "",
+    "langeng" : "",
+    "langroh" : "",
     "link" : "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
   } ],
   "cl_type" : [ {
     "key" : "theme",
     "default" : "",
     "langger" : "",
+    "langfre" : "",
+    "langita" : "",
+    "langeng" : "",
+    "langroh" : "",
     "link" : "http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode"
   } ],
   "th_geocat-ch" : [ {
     "default" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund",
-    "langger" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund"
+    "langger" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund",
+    "langfre" : "Planification de la conservation et de l'archivage AAP - Conféderation",
+    "langita" : "Pianificazione della conservazione e dell’archiviazione AAP - Confederazione",
+    "langeng" : "Conservation and archiving planning AAP - Confederation"
   }, {
     "default" : "opendata.swiss",
-    "langger" : "opendata.swiss"
+    "langger" : "opendata.swiss",
+    "langfre" : "opendata.swiss",
+    "langita" : "opendata.swiss",
+    "langeng" : "opendata.swiss",
+    "langroh" : "opendata.swiss"
   }, {
     "default" : "Geobasisdaten",
-    "langger" : "Geobasisdaten"
+    "langger" : "Geobasisdaten",
+    "langfre" : "géodonnées de base",
+    "langita" : "geodati di base",
+    "langeng" : "official geodata"
   }, {
     "default" : "e-geo.ch",
-    "langger" : "e-geo.ch"
+    "langger" : "e-geo.ch",
+    "langfre" : "e-geo.ch",
+    "langita" : "e-geo.ch",
+    "langeng" : "e-geo.ch"
   }, {
     "default" : "BGDI Bundesgeodaten-Infrastruktur",
-    "langger" : "BGDI Bundesgeodaten-Infrastruktur"
+    "langger" : "BGDI Bundesgeodaten-Infrastruktur",
+    "langfre" : "IFDG l’Infrastructure Fédérale de données géographiques",
+    "langita" : "IFDG Infrastruttura federale dei dati geografici",
+    "langeng" : "FSDI Federal Spatial Data Infrastructure"
   } ],
   "contact" : [ {
     "role" : "pointOfContact",
@@ -569,20 +834,33 @@
     "key" : "vector",
     "default" : "",
     "langger" : "",
+    "langfre" : "",
+    "langita" : "",
+    "langeng" : "",
+    "langroh" : "",
     "link" : "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_SpatialRepresentationTypeCode"
   } ],
   "th_httpinspireeceuropaeutheme-theme" : [ {
     "default" : "Umweltüberwachung",
-    "langger" : "Umweltüberwachung"
+    "langger" : "Umweltüberwachung",
+    "langfre" : "Installations de suivi environnemental",
+    "langita" : "Impianti di monitoraggio ambientale",
+    "langeng" : "Environmental monitoring facilities"
   }, {
     "default" : "Verwaltungseinheiten",
-    "langger" : "Verwaltungseinheiten"
+    "langger" : "Verwaltungseinheiten",
+    "langfre" : "Unités administratives",
+    "langita" : "Unità amministrative",
+    "langeng" : "Administrative units"
   } ],
   "linkUrlProtocolOGCWMTS" : [ "https://wmts.geo.admin.ch/EPSG/3857/1.0.0/WMTSCapabilities.xml?lang=de" ],
   "revisionMonthForResource" : [ "2008-12" ],
   "MD_LegalConstraintsOtherConstraintsObject" : [ {
     "default" : "Opendata BY: Freie Nutzung. Quellenangabe ist Pflicht.",
     "langger" : "Opendata BY: Freie Nutzung. Quellenangabe ist Pflicht.",
+    "langfre" : "Opendata BY: Utilisation libre. Obligation d’indiquer la source.",
+    "langita" : "Opendata BY: Libero utilizzo. Indicazione della fonte obbligatoria.",
+    "langeng" : "Opendata BY: Open use. Must provide the source.",
     "link" : "https://opendata.swiss/en/terms-of-use/#terms_by"
   } ],
   "creationDateForResource" : [ "1998-12-31T23:00:00.000Z" ],
@@ -590,19 +868,34 @@
     "key" : "surface",
     "default" : "",
     "langger" : "",
+    "langfre" : "",
+    "langita" : "",
+    "langeng" : "",
+    "langroh" : "",
     "link" : "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_GeometricObjectTypeCode"
   } ],
   "keywordType-place" : [ {
     "default" : "Alpenkonvention",
-    "langger" : "Alpenkonvention"
+    "langger" : "Alpenkonvention",
+    "langfre" : "Convention des Alpes",
+    "langita" : "Convenzione delle alpi",
+    "langeng" : "Alpine Convention"
   }, {
     "default" : "AK",
-    "langger" : "AK"
+    "langger" : "AK",
+    "langfre" : "CA",
+    "langita" : "CA",
+    "langeng" : "AC",
+    "langroh" : "null"
   } ],
   "cl_topic" : [ {
     "key" : "planningCadastre",
     "default" : "",
     "langger" : "",
+    "langfre" : "Cadastre, aménagement",
+    "langita" : "",
+    "langeng" : "Planning cadastre",
+    "langroh" : "",
     "link" : ""
   } ],
   "th_gemetNumber" : 9,
@@ -610,86 +903,166 @@
   "linkUrlProtocolMAPPreview" : [ "https://map.geo.admin.ch/?layers=ch.are.alpenkonvention" ],
   "th_gemet" : [ {
     "default" : "Nachhaltige Entwicklung",
-    "langger" : "Nachhaltige Entwicklung"
+    "langger" : "Nachhaltige Entwicklung",
+    "langfre" : "développement durable",
+    "langita" : "sviluppo sostenibile",
+    "langeng" : "sustainable development"
   }, {
     "default" : "Raumplanung",
-    "langger" : "Raumplanung"
+    "langger" : "Raumplanung",
+    "langfre" : "planification de l'espace physique",
+    "langita" : "pianificazione dello spazio fisico",
+    "langeng" : "physical planning"
   }, {
     "default" : "Bergschutz",
-    "langger" : "Bergschutz"
+    "langger" : "Bergschutz",
+    "langfre" : "protection de la montagne",
+    "langita" : "protezione della montagna",
+    "langeng" : "mountain protection"
   }, {
     "default" : "Bodenschutz",
-    "langger" : "Bodenschutz"
+    "langger" : "Bodenschutz",
+    "langfre" : "conservation du sol",
+    "langita" : "conservazione del suolo",
+    "langeng" : "soil conservation"
   }, {
     "default" : "Umweltpolitik",
-    "langger" : "Umweltpolitik"
+    "langger" : "Umweltpolitik",
+    "langfre" : "politique environnementale",
+    "langita" : "politica ambientale",
+    "langeng" : "environmental policy"
   }, {
     "default" : "Umweltpolitik",
-    "langger" : "Umweltpolitik"
+    "langger" : "Umweltpolitik",
+    "langfre" : "politique environnementale",
+    "langita" : "politica ambientale",
+    "langeng" : "environmental policy"
   }, {
     "default" : "Verkehr",
-    "langger" : "Verkehr"
+    "langger" : "Verkehr",
+    "langfre" : "transport",
+    "langita" : "trasporti",
+    "langeng" : "transport"
   }, {
     "default" : "Verkehr",
-    "langger" : "Verkehr"
+    "langger" : "Verkehr",
+    "langfre" : "transport",
+    "langita" : "trasporti",
+    "langeng" : "transport"
   }, {
     "default" : "Verkehr",
-    "langger" : "Verkehr"
+    "langger" : "Verkehr",
+    "langfre" : "transport",
+    "langita" : "trasporti",
+    "langeng" : "transport"
   } ],
   "creationYearForResource" : [ "1998" ],
   "cl_status" : [ {
     "key" : "completed",
     "default" : "",
     "langger" : "",
+    "langfre" : "",
+    "langita" : "",
+    "langeng" : "",
+    "langroh" : "",
     "link" : "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ProgressCode"
   } ],
   "keywordType-theme" : [ {
     "default" : "Umweltüberwachung",
-    "langger" : "Umweltüberwachung"
+    "langger" : "Umweltüberwachung",
+    "langfre" : "Installations de suivi environnemental",
+    "langita" : "Impianti di monitoraggio ambientale",
+    "langeng" : "Environmental monitoring facilities"
   }, {
     "default" : "Verwaltungseinheiten",
-    "langger" : "Verwaltungseinheiten"
+    "langger" : "Verwaltungseinheiten",
+    "langfre" : "Unités administratives",
+    "langita" : "Unità amministrative",
+    "langeng" : "Administrative units"
   }, {
     "default" : "Nachhaltige Entwicklung",
-    "langger" : "Nachhaltige Entwicklung"
+    "langger" : "Nachhaltige Entwicklung",
+    "langfre" : "développement durable",
+    "langita" : "sviluppo sostenibile",
+    "langeng" : "sustainable development"
   }, {
     "default" : "Raumplanung",
-    "langger" : "Raumplanung"
+    "langger" : "Raumplanung",
+    "langfre" : "planification de l'espace physique",
+    "langita" : "pianificazione dello spazio fisico",
+    "langeng" : "physical planning"
   }, {
     "default" : "Bergschutz",
-    "langger" : "Bergschutz"
+    "langger" : "Bergschutz",
+    "langfre" : "protection de la montagne",
+    "langita" : "protezione della montagna",
+    "langeng" : "mountain protection"
   }, {
     "default" : "Bodenschutz",
-    "langger" : "Bodenschutz"
+    "langger" : "Bodenschutz",
+    "langfre" : "conservation du sol",
+    "langita" : "conservazione del suolo",
+    "langeng" : "soil conservation"
   }, {
     "default" : "Umweltpolitik",
-    "langger" : "Umweltpolitik"
+    "langger" : "Umweltpolitik",
+    "langfre" : "politique environnementale",
+    "langita" : "politica ambientale",
+    "langeng" : "environmental policy"
   }, {
     "default" : "Umweltpolitik",
-    "langger" : "Umweltpolitik"
+    "langger" : "Umweltpolitik",
+    "langfre" : "politique environnementale",
+    "langita" : "politica ambientale",
+    "langeng" : "environmental policy"
   }, {
     "default" : "Verkehr",
-    "langger" : "Verkehr"
+    "langger" : "Verkehr",
+    "langfre" : "transport",
+    "langita" : "trasporti",
+    "langeng" : "transport"
   }, {
     "default" : "Verkehr",
-    "langger" : "Verkehr"
+    "langger" : "Verkehr",
+    "langfre" : "transport",
+    "langita" : "trasporti",
+    "langeng" : "transport"
   }, {
     "default" : "Verkehr",
-    "langger" : "Verkehr"
+    "langger" : "Verkehr",
+    "langfre" : "transport",
+    "langita" : "trasporti",
+    "langeng" : "transport"
   }, {
     "default" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund",
-    "langger" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund"
+    "langger" : "Aufbewahrungs- und Archivierungsplanung AAP - Bund",
+    "langfre" : "Planification de la conservation et de l'archivage AAP - Conféderation",
+    "langita" : "Pianificazione della conservazione e dell’archiviazione AAP - Confederazione",
+    "langeng" : "Conservation and archiving planning AAP - Confederation"
   }, {
     "default" : "opendata.swiss",
-    "langger" : "opendata.swiss"
+    "langger" : "opendata.swiss",
+    "langfre" : "opendata.swiss",
+    "langita" : "opendata.swiss",
+    "langeng" : "opendata.swiss",
+    "langroh" : "opendata.swiss"
   }, {
     "default" : "Geobasisdaten",
-    "langger" : "Geobasisdaten"
+    "langger" : "Geobasisdaten",
+    "langfre" : "géodonnées de base",
+    "langita" : "geodati di base",
+    "langeng" : "official geodata"
   }, {
     "default" : "e-geo.ch",
-    "langger" : "e-geo.ch"
+    "langger" : "e-geo.ch",
+    "langfre" : "e-geo.ch",
+    "langita" : "e-geo.ch",
+    "langeng" : "e-geo.ch"
   }, {
     "default" : "BGDI Bundesgeodaten-Infrastruktur",
-    "langger" : "BGDI Bundesgeodaten-Infrastruktur"
+    "langger" : "BGDI Bundesgeodaten-Infrastruktur",
+    "langfre" : "IFDG l’Infrastructure Fédérale de données géographiques",
+    "langita" : "IFDG Infrastruttura federale dei dati geografici",
+    "langeng" : "FSDI Federal Spatial Data Infrastructure"
   } ]
 }

@@ -55,7 +55,7 @@
     <xsl:param name="languages" as="node()*"/>
 
     <xsl:variable name="defaultLangValue"
-                  select="normalize-space(($field/(*:CharacterString|*:Anchor)/text())[1])"/>
+                  select="normalize-space(($field/(*:CharacterString|*:Anchor|*:URL)/text())[1])"/>
 
     <xsl:element name="{$fieldName}Object">
       <xsl:for-each select="$languages">
@@ -71,9 +71,9 @@
         </xsl:if>
 
         <xsl:variable name="translation"
-                      select="normalize-space($field/*/*:LocalisedCharacterString[@locale = current()/@id]/text()[. != ''])"/>
+                      select="normalize-space(($field/*/*/(*:LocalisedCharacterString)[@locale = concat('#', current()/@id)]/text()[. != ''])[1])"/>
 
-        <xsl:if test="$translation">
+        <xsl:if test="$translation and not(@default and $defaultLangValue != '')">
           <xsl:element name="{concat('lang', @code)}">
             <xsl:value-of select="$translation"/>
           </xsl:element>
