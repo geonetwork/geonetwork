@@ -57,7 +57,7 @@
     <span class="meta">Other formats:</span>
     <th:block th:each="link : ${links}">
       <a class="button"
-         th:if="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'alternative')}"
+         th:if="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'alternate')}"
          th:href="${link.href}"
          th:text="${link.type != null ? link.type : (link.title != null ? link.title : 'format')}">format</a>
     </th:block>

@@ -54,7 +54,7 @@
   <ul class="link-list">
     <th:block th:each="link : ${page.links}">
       <li th:if="${link.rel == null
-                    or (!#strings.equalsIgnoreCase(link.rel, 'alternative')
+                    or (!#strings.equalsIgnoreCase(link.rel, 'alternate')
                         and !#strings.equalsIgnoreCase(link.rel, 'next')
                         and !#strings.equalsIgnoreCase(link.rel, 'prev'))}">
         <span th:if="${link.rel != null and #strings.equalsIgnoreCase(link.rel, 'self')}"
