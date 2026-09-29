@@ -125,6 +125,7 @@ geonetwork:
               bucketSorting: VALUE
         - ogcProperty: resourceTitleObject
           elasticProperty: resourceTitleObject.default
+          sortFieldSuffix: sort
           indexRecordProperty: resourceTitle.["default"]
           isSortable: true
           isQueryable: true
