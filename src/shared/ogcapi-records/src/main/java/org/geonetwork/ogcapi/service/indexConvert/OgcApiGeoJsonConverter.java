@@ -4,9 +4,12 @@
  */
 package org.geonetwork.ogcapi.service.indexConvert;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.geonetwork.ogcapi.service.indexConvert.ElasticIndex2Catalog.getLangString;
 
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.Objects;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.index.model.record.IndexRecord;
+import org.geonetwork.index.model.record.Link;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.geonetwork.ogcapi.service.configuration.OgcApiRecordsOutputConfig;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
@@ -189,6 +193,39 @@ public class OgcApiGeoJsonConverter {
         }
 
         result.setProperties(properties);
+
+        convertLinks(elasticIndexJsonRecord.getLinks(), iso3lang).forEach(result::addLinksItem);
+
+        return result;
+    }
+
+    /**
+     * Converts the index record distribution links to OGC API links. Links without a valid URL are skipped.
+     *
+     * @param links index record links (can be null)
+     * @param iso3lang language (From request) - 3 letter iso lang value (i.e. 'eng')
+     * @return OGC API links.
+     */
+    static List<OgcApiRecordsLinkDto> convertLinks(List<Link> links, String iso3lang) {
+        if (links == null) {
+            return List.of();
+        }
+        var result = new ArrayList<OgcApiRecordsLinkDto>();
+        for (var link : links) {
+            var url = getLangString(link.getUrl(), iso3lang);
+            if (isBlank(url)) {
+                continue;
+            }
+            try {
+                result.add(new OgcApiRecordsLinkDto()
+                        .href(new URI(url.trim()))
+                        .rel("download".equalsIgnoreCase(link.getFunction()) ? "enclosure" : "related")
+                        .type(link.getMimeType() != null ? link.getMimeType() : link.getProtocol())
+                        .title(getLangString(link.getName(), iso3lang)));
+            } catch (URISyntaxException e) {
+                // invalid url in metadata, skip it
+            }
+        }
         return result;
     }
 }
