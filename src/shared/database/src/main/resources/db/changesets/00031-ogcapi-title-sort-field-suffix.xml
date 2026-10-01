@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Fixes OGC API Records sortby=resourceTitleObject (and -resourceTitleObject) returning HTTP 500
+    (see geonetwork/geonetwork#196). resourceTitleObject.default is an Elasticsearch text field with
+    no fielddata, so sorting on it directly fails with search_phase_execution_exception. The
+    resourceTitleObject.default.sort keyword sub-field (lowercase + asciifolding normalizer) already
+    exists in the index mapping for exactly this purpose - RecordsEsQueryBuilder just needs to be told
+    to use it via the sortFieldSuffix column.
+
+    Only sets sort_field_suffix when it is currently unset, so a previously admin-customized mapping
+    is never overwritten. On a brand new install there is no config row yet, so this changeSet is a
+    no-op (MARK_RAN); the row gets created already-complete from config/application-ogcapi-records.yml
+    on first boot.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00031-ogcapi-title-sort-field-suffix" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_field_mapping
+                                         WHERE config_id = 'property-mapping' AND ogc_property = 'resourceTitleObject'
+                                               AND sort_field_suffix IS NULL)
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <update tableName="ogcapi_field_mapping">
+            <column name="sort_field_suffix" value="sort"/>
+            <where>config_id = 'property-mapping' AND ogc_property = 'resourceTitleObject'</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>
