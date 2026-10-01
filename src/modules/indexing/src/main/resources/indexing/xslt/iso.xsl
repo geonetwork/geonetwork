@@ -84,9 +84,9 @@
                               |*:locale/*/*:languageCode/*/@codeListValue[normalize-space(.) != '']"/>
 
       <lang default=""
-            id="{$otherLanguages/*:PT_Locale[*:language/*/@codeListValue = $mainLanguage]/@id}"
+            id="{((*:defaultLocale|*:otherLocale|*:locale)/*:PT_Locale[*/*/@codeListValue = $mainLanguage]/@id)[1]}"
             code="{$mainLanguage}"/>
-      <xsl:for-each select="$otherLanguages[*/*:language/*/@codeListValue != $mainLanguage]">
+      <xsl:for-each select="$otherLanguages[. != $mainLanguage]">
         <lang id="{ancestor::*:PT_Locale/@id}" code="{.}"/>
       </xsl:for-each>
     </xsl:variable>
