@@ -46,9 +46,16 @@ public class GeoNetwork4Predicate {
 
     private static List<String> listOfPath;
 
+    private static List<String> excludedPath;
+
     @Value("${geonetwork.4.path}")
     public void setListOfPath(List<String> listOfPath) {
         GeoNetwork4Predicate.listOfPath = listOfPath;
+    }
+
+    @Value("${geonetwork.4.excluded-path:/api/user/}")
+    public void setExcludedPath(List<String> excludedPath) {
+        GeoNetwork4Predicate.excludedPath = excludedPath;
     }
 
     // double check pattern to ensure we only construct CachingPortalIds once
@@ -77,6 +84,9 @@ public class GeoNetwork4Predicate {
         return request -> {
             var path = request.path();
             if (StringUtils.isBlank(path)) {
+                return false;
+            }
+            if (excludedPath.stream().anyMatch(path::contains)) {
                 return false;
             }
             if (listOfPath.stream().anyMatch(path::startsWith)) {
