@@ -49,7 +49,9 @@ public class MimeAndProfilesForResponseType {
                 .toList();
 
         var writersNormal = messageWriterUtil.getAllMessageConverters().stream()
-                .filter(x -> getInputObject(x) == responseType)
+                .filter(x -> getInputObject(x) == responseType
+                        || (x instanceof IMultiResponseTypeWriter multi
+                                && multi.getResponseTypes().contains(responseType)))
                 .filter(x -> !(x instanceof IControllerResultFormatter))
                 .toList();
 
@@ -66,8 +68,13 @@ public class MimeAndProfilesForResponseType {
 
         for (var writer : writersNormal) {
             for (var mediaType : writer.getSupportedMediaTypes()) {
+                // a specific formatter for this mime type takes precedence over a generic writer
+                if (result.stream().anyMatch(x -> x.getMimeType().equalsTypeAndSubtype(mediaType))) {
+                    continue;
+                }
                 var item = new ResponseTypeInfo();
                 item.setMimeType(mediaType);
+                item.setProfiles(List.of());
                 item.setFormatProviders(List.of(writer.getClass().getSimpleName()));
                 result.add(item);
             }

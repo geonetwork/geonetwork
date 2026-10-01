@@ -45,7 +45,7 @@ public class OgcApiRecordsCollectionsResponseFormatter
 
     @Override
     public List<MediaType> getSupportedMediaTypes() {
-        return Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML);
+        return Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML);
     }
 
     @Override

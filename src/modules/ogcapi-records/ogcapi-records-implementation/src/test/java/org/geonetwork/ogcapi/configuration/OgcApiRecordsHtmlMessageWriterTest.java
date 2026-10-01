@@ -164,6 +164,19 @@ class OgcApiRecordsHtmlMessageWriterTest {
         assertTrue(html.contains("Full description of the record"));
     }
 
+    @Test
+    void everyResponseTypeHasItsOwnTemplate() throws Exception {
+        var writer = writer();
+        var templates = new java.util.HashSet<String>();
+        for (var type : writer.getResponseTypes()) {
+            // selectTemplate falls back to "landing-page", so a missing mapping shows up as a duplicate
+            var constructor = type.getConstructors()[0];
+            var instance = constructor.newInstance(new Object[constructor.getParameterCount()]);
+            var template = writer.selectTemplate(instance);
+            assertTrue(templates.add(template), type.getSimpleName() + " has no template of its own: " + template);
+        }
+    }
+
     private OgcApiRecordsHtmlMessageWriter writer() {
         return new OgcApiRecordsHtmlMessageWriter(null, null, null, null);
     }
