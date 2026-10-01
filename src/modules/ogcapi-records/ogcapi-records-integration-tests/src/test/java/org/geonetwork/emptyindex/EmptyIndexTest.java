@@ -5,8 +5,11 @@
 package org.geonetwork.emptyindex;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.charset.StandardCharsets;
 import lombok.SneakyThrows;
 import org.geonetwork.GeonetworkGenericApplication;
 import org.geonetwork.infrastructure.ElasticPgMvcTestHelper;
@@ -16,10 +19,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -47,6 +52,9 @@ public class EmptyIndexTest implements ApplicationContextInitializer<Configurabl
 
     @Autowired
     protected ObjectMapper objectMapper;
+
+    @Value("${server.servlet.context-path}")
+    protected String contextPath;
 
     static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>("postgres:16-alpine")
             .withDatabaseName("geonetwork")
@@ -107,6 +115,35 @@ public class EmptyIndexTest implements ApplicationContextInitializer<Configurabl
         assertTrue(collections.getLinks().size() > 2);
         assertEquals(1, collections.getCollections().size());
         assertEquals(MAIN_COLLECTION_ID, collections.getCollections().get(0).getId());
+    }
+
+    @Test
+    public void testCollections_trailingSlash() throws Exception {
+        // send the context path, like the real server does
+        var json = mockMvc.perform(get(BASE_URL + contextPath.substring(1) + "/ogcapi-records/collections/")
+                        .contextPath(contextPath)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        var collections = objectMapper.readValue(json, OgcApiRecordsGetCollections200ResponseDto.class);
+        assertEquals(1, collections.getCollections().size());
+        assertEquals(MAIN_COLLECTION_ID, collections.getCollections().get(0).getId());
+    }
+
+    @Test
+    public void testUnknownPath_notFound() throws Exception {
+        var json = mockMvc.perform(
+                        get(BASE_URL + "ogcapi-records/does-not-exist").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        var error = objectMapper.readValue(json, OgcApiRecordsExceptionDto.class);
+        assertEquals("404", error.getCode());
     }
 
     @Test
