@@ -1,4 +1,9 @@
 geonetwork:
+  rss:
+    # Redirect target for /rss. Can include custom query params, eg:
+    # /ogcapi-records/collections/{{UUID}}/items?f=rss&limit=20
+    # where {{UUID}} is replaced by the source UUID with type=portal.
+    redirect: ${geonetwork.openapi-records.links.base-path:/ogcapi-records}/collections/{{UUID}}/items?f=rss
   openapi-records:
     ogcapi-records-json:
       includeRawXML: false
