@@ -50,4 +50,18 @@ class RecordsEsQueryBuilderTest {
                 "{\"from\": 0, \"size\": 1, \"query\": {\"query_string\": {\"query\": \"+_id:\\\"abc\\\" +source:uio +isTemplate:n\"}}, \"_source\": {\"includes\": [\"resourceType\", \"cl_status\"]}}",
                 query);
     }
+
+    @Test
+    void escapeQueryString() {
+        assertEquals(
+                "Périmètres de remembrement urbain \\(PRU\\) \\- Service de visualisation REST",
+                RecordsEsQueryBuilder.escapeQueryString(
+                        "Périmètres de remembrement urbain (PRU) - Service de visualisation REST"));
+        // field:value and balanced quotes are kept as query syntax
+        assertEquals(
+                "resourceTitleObject.default:\"a b\" d* e? f",
+                RecordsEsQueryBuilder.escapeQueryString("resourceTitleObject.default:\"a b\" d* e? <f>"));
+        // unbalanced quote is escaped
+        assertEquals("a\\\"b", RecordsEsQueryBuilder.escapeQueryString("a\"b"));
+    }
 }
