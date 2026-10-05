@@ -107,6 +107,10 @@ geonetwork:
           indexRecordProperty: resourceTitle.["default"]
           isSortable: true
           isQueryable: true
+        - ogcProperty: popularity
+          elasticProperty: popularity
+          indexRecordProperty: popularity
+          isSortable: true
         - ogcProperty: orgForResource
           elasticProperty: OrgForResourceObject.default
           indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]

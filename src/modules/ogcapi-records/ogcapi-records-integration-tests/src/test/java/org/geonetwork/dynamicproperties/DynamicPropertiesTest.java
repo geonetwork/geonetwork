@@ -540,6 +540,39 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
         assertTrue(Ordering.natural().isOrdered(resourceTypes2));
     }
 
+    @Test
+    public void testSortPopularity() throws Exception {
+        var ascending = ElasticPgMvcTestHelper.retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?limit=100&sortby=popularity",
+                OgcApiRecordsGetRecords200ResponseDto.class,
+                BASE_URL,
+                mockMvc,
+                objectMapper);
+        var ascendingValues = ascending.getFeatures().stream()
+                .map(x -> x.getProperties().getAdditionalProperties().get("popularity"))
+                .filter(x -> x != null)
+                .map(x -> (List) x)
+                .flatMap(t -> t.stream())
+                .map(x -> ((Number) x).longValue())
+                .toList();
+        assertTrue(Ordering.natural().isOrdered(ascendingValues));
+
+        var descending = ElasticPgMvcTestHelper.retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?limit=100&sortby=-popularity",
+                OgcApiRecordsGetRecords200ResponseDto.class,
+                BASE_URL,
+                mockMvc,
+                objectMapper);
+        var descendingValues = descending.getFeatures().stream()
+                .map(x -> x.getProperties().getAdditionalProperties().get("popularity"))
+                .filter(x -> x != null)
+                .map(x -> (List) x)
+                .flatMap(t -> t.stream())
+                .map(x -> ((Number) x).longValue())
+                .toList();
+        assertTrue(Ordering.natural().reverse().isOrdered(descendingValues));
+    }
+
     // ----------------------------
 
     private void assertValue(OgcApiRecordsRecordGeoJSONDto feature, String ogcpname, Object expectedvalue) {
