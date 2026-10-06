@@ -11,10 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Profile;
 import org.geonetwork.domain.Setting;
 import org.geonetwork.domain.SettingKey;
+import org.geonetwork.domain.User;
 import org.geonetwork.domain.repository.SettingRepository;
+import org.geonetwork.domain.repository.UserRepository;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +25,7 @@ import org.springframework.util.StringUtils;
 public class SecurityService {
 
     private final SettingRepository settingRepository;
+    private final UserRepository userRepository;
     private final IAuthenticationFacade authenticationFacade;
     private final RoleHierarchy roleHierarchy;
 
@@ -46,11 +48,15 @@ public class SecurityService {
             return false;
         }
 
-        var authentication = this.authenticationFacade.geonetworkPermissions();
+        // the profile comes from the database, so it also works for OAuth2/OIDC users
+        Optional<Profile> profile =
+                userRepository.findOptionalByUsername(currentUsername).map(User::getProfile);
+        if (profile.isEmpty()) {
+            return false;
+        }
 
         // --- check if the user is an administrator
-        Profile profile = authentication.getHighestProfile();
-        if (profile == Profile.Administrator) {
+        if (profile.get() == Profile.Administrator) {
             return true;
         }
 
@@ -70,16 +76,13 @@ public class SecurityService {
     /**
      * Checks if the current user has a role using the role hierarchy.
      *
-     * <p>TODO: a) test case required. b) Shouldn't need "ROLE_"...
-     *
      * @param role Role to check.
      * @return true if the current user has a role using the role hierarchy, otherwise false.
      */
     public boolean hasHierarchyRole(String role) {
 
-        var authorities = authenticationFacade.geonetworkPermissions().getProfileGroups().keySet().stream()
-                .map(x -> new SimpleGrantedAuthority("ROLE_" + x.toString()))
-                .toList();
+        Collection<? extends GrantedAuthority> authorities =
+                authenticationFacade.getAuthentication().getAuthorities();
 
         Collection<? extends GrantedAuthority> hierarchyAuthorities =
                 roleHierarchy.getReachableGrantedAuthorities(authorities);
