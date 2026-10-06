@@ -5,7 +5,7 @@
 package org.geonetwork.security;
 
 import io.micrometer.common.util.StringUtils;
-import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.geonetwork.domain.User;
@@ -85,7 +85,7 @@ public class GeoNetworkOAuth2UserService {
 
             // rebuild the user with the new authorities
             var modifiedOidcUser = new DefaultOidcUser(
-                    Collections.singletonList(userAuthority),
+                    List.of(userAuthority, GeoNetworkUserService.buildRoleAuthority(dbUser)),
                     oidcUser.getIdToken(),
                     oidcUser.getUserInfo(),
                     userNameAttributeName);
@@ -128,7 +128,9 @@ public class GeoNetworkOAuth2UserService {
 
             // rebuild the user with the new authorities
             var modifiedOAuth2User = new DefaultOAuth2User(
-                    Collections.singletonList(userAuthority), oAuth2User.getAttributes(), userNameAttributeName);
+                    List.of(userAuthority, GeoNetworkUserService.buildRoleAuthority(dbUser)),
+                    oAuth2User.getAttributes(),
+                    userNameAttributeName);
 
             return modifiedOAuth2User;
         };

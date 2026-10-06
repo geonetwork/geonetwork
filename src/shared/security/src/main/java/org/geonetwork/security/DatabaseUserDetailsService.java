@@ -7,7 +7,6 @@ package org.geonetwork.security;
 
 import static org.geonetwork.security.GeoNetworkUserService.isUserFoundAndEnabled;
 
-import java.util.Collections;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
@@ -92,8 +91,8 @@ public class DatabaseUserDetailsService extends AbstractUserDetailsAuthenticatio
 
         return org.springframework.security.core.userdetails.User.withUsername(currentUser.getUsername())
                 .password(currentUser.getPassword())
-                .authorities(Collections.singletonList(authority))
-                //  .roles(currentUser.getProfile().name())
+                // not roles(): it would replace the authorities set here
+                .authorities(authority, GeoNetworkUserService.buildRoleAuthority(currentUser))
                 .build();
     }
 
