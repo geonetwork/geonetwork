@@ -15,17 +15,14 @@ import org.springframework.stereotype.Component;
 public class AuthProviderService {
     InMemoryClientRegistrationRepository clientRegistrationRepository;
     private final String baseUrl;
-    private final String contextPath;
     private final String localSecurityProvider;
 
     public AuthProviderService(
             @Autowired(required = false) InMemoryClientRegistrationRepository clientRegistrationRepository,
             @Value("${geonetwork.url}") String baseUrl,
-            @Value("${server.servlet.context-path:}") String contextPath,
             @Value("${geonetwork.security.provider:}") String localSecurityProvider) {
         this.localSecurityProvider = localSecurityProvider;
         this.clientRegistrationRepository = clientRegistrationRepository;
-        this.contextPath = contextPath;
         this.baseUrl = baseUrl;
     }
 
@@ -42,8 +39,8 @@ public class AuthProviderService {
 
         clientRegistrationRepository.forEach(clientRegistration -> providerList.add(AuthProvider.builder()
                 .clientId(clientRegistration.getRegistrationId())
-                .endpoint(String.format(
-                        "%s%s/oauth2/authorization/%s", baseUrl, contextPath, clientRegistration.getRegistrationId()))
+                // geonetwork.url already includes the servlet context path
+                .endpoint(String.format("%s/oauth2/authorization/%s", baseUrl, clientRegistration.getRegistrationId()))
                 .build()));
         return providerList;
     }
