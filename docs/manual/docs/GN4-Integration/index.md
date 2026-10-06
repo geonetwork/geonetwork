@@ -105,6 +105,7 @@ geonetwork:
 * Without `rolePattern` and `roleMappings` nothing changes. If the claim is missing from the token, the user is not modified (unless `updateGroup` is true, see below).
 * The user's global profile is raised to the highest mapped profile (GN4 reads it from the database). A mapped `Administrator` on a group is stored as `UserAdmin`, and a `Reviewer` on a group also gets the `Editor` row, as GN4 does.
 * `Monitor` is not part of the profile hierarchy and only applies globally: it is ignored on a group, and as a global profile it only replaces `RegisteredUser` or `Guest`. Any other mapped profile replaces `Monitor`, and `Administrator` already includes it.
+* A user disabled in GeoNetwork cannot sign in with OAuth2 either, and their groups and profile are not modified.
 * Groups that do not exist are skipped with a warning, unless `createMissingGroups` is true.
 * With `updateGroup: true` the identity provider is the only source: at each login the user's groups and profile are replaced by the mapped ones, **administrators included**. A token without the claim counts as "no groups", so the user loses all groups and drops to `RegisteredUser`.
   Map an administrator role first, and keep a local (form login) administrator account as the way back in.

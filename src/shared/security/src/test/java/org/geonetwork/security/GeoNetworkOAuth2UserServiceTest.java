@@ -264,6 +264,22 @@ class GeoNetworkOAuth2UserServiceTest {
     }
 
     @Test
+    void disabledUserCanNotSignInAndIsNotModified() {
+        var disabled = User.builder().id(9).username("alice").isenabled(false).build();
+        when(userRepository.findOptionalByUsername("alice")).thenReturn(Optional.of(disabled));
+        var props = new java.util.HashMap<String, Object>();
+        mapping(props, 0, EDITORS, "DRAFTS", "Editor");
+
+        assertThrows(
+                org.springframework.security.oauth2.core.OAuth2AuthenticationException.class,
+                () -> service.getOrCreate(tokenWith(List.of(EDITORS)), config(props)));
+
+        verify(userRepository, never()).save(any());
+        verify(usergroupRepository, never()).save(any());
+        assertEquals(Profile.RegisteredUser, disabled.getProfile());
+    }
+
+    @Test
     void patternWithoutProfileGroupIsRejected() {
         var registration = new GeoNetworkSsoConfiguration.Registration();
         assertThrows(IllegalArgumentException.class, () -> registration.setRolePattern("^(?<group>.+)$"));

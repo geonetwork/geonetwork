@@ -31,6 +31,8 @@ import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -204,6 +206,12 @@ public class GeoNetworkOAuth2UserService {
 
         // attempt to load user
         var dbUser = userRepository.findOptionalByUsername(username);
+
+        // ---- a disabled account can not sign in, same as with the database login ----------
+        if (dbUser.isPresent() && Boolean.FALSE.equals(dbUser.get().getIsenabled())) {
+            throw new OAuth2AuthenticationException(
+                    new OAuth2Error("user_disabled", username + " account is disabled", null));
+        }
 
         // ---- user is missing, create them ----------
         if (dbUser.isEmpty()) {
