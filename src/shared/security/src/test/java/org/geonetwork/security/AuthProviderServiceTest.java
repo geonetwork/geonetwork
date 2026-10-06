@@ -62,10 +62,12 @@ class AuthProviderServiceTest {
     void customIterableRepositoryIsListed() {
         InMemoryClientRegistrationRepository delegate = repository();
         class CustomRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
+            @Override
             public ClientRegistration findByRegistrationId(String id) {
                 return delegate.findByRegistrationId(id);
             }
 
+            @Override
             public Iterator<ClientRegistration> iterator() {
                 return delegate.iterator();
             }
