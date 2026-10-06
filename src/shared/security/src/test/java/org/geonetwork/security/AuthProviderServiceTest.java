@@ -7,9 +7,11 @@ package org.geonetwork.security;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Iterator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
@@ -50,6 +52,34 @@ class AuthProviderServiceTest {
 
         assertEquals(1, providers.size());
         assertEquals("database", providers.get(0).getClientId());
+    }
+
+    @Test
+    void customIterableRepositoryIsListed() {
+        InMemoryClientRegistrationRepository delegate = repository();
+        class CustomRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
+            public ClientRegistration findByRegistrationId(String id) {
+                return delegate.findByRegistrationId(id);
+            }
+
+            public Iterator<ClientRegistration> iterator() {
+                return delegate.iterator();
+            }
+        }
+
+        List<AuthProvider> providers = new AuthProviderService(new CustomRepository(), BASE_URL, "").getAuthProviders();
+
+        assertEquals(1, providers.size());
+        assertEquals(BASE_URL + "/oauth2/authorization/github", providers.get(0).getEndpoint());
+    }
+
+    @Test
+    void repositoryThatCannotBeListedGivesNoOauth2Providers() {
+        ClientRegistrationRepository lookupOnly = id -> null;
+
+        assertTrue(new AuthProviderService(lookupOnly, BASE_URL, "")
+                .getAuthProviders()
+                .isEmpty());
     }
 
     @Test

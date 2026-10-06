@@ -8,17 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AuthProviderService {
-    InMemoryClientRegistrationRepository clientRegistrationRepository;
+    ClientRegistrationRepository clientRegistrationRepository;
     private final String baseUrl;
     private final String localSecurityProvider;
 
     public AuthProviderService(
-            @Autowired(required = false) InMemoryClientRegistrationRepository clientRegistrationRepository,
+            @Autowired(required = false) ClientRegistrationRepository clientRegistrationRepository,
             @Value("${geonetwork.url}") String baseUrl,
             @Value("${geonetwork.security.provider:}") String localSecurityProvider) {
         this.localSecurityProvider = localSecurityProvider;
@@ -32,15 +33,21 @@ public class AuthProviderService {
             providerList.add(AuthProvider.builder().clientId("database").build());
         }
 
-        if (clientRegistrationRepository == null) {
+        // ClientRegistrationRepository can only look up by id: registrations can be listed only if it is Iterable
+        if (!(clientRegistrationRepository instanceof Iterable<?> registrations)) {
             return providerList;
         }
 
-        clientRegistrationRepository.forEach(clientRegistration -> providerList.add(AuthProvider.builder()
-                .clientId(clientRegistration.getRegistrationId())
-                // geonetwork.url already includes the servlet context path
-                .endpoint(String.format("%s/oauth2/authorization/%s", baseUrl, clientRegistration.getRegistrationId()))
-                .build()));
+        for (Object registration : registrations) {
+            if (registration instanceof ClientRegistration clientRegistration) {
+                providerList.add(AuthProvider.builder()
+                        .clientId(clientRegistration.getRegistrationId())
+                        // geonetwork.url already includes the servlet context path
+                        .endpoint(String.format(
+                                "%s/oauth2/authorization/%s", baseUrl, clientRegistration.getRegistrationId()))
+                        .build());
+            }
+        }
         return providerList;
     }
 }
