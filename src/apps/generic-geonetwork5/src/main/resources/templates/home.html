@@ -22,12 +22,17 @@
     // The script is in the head: wait for the DOM before touching it
     $(function () {
     fetch('api/me')
-      .then((response) => response.json())
+      // 204 with an empty body when nobody is signed in
+      .then((response) => response.status === 200 ? response.json() : null)
       .then((data) => {
-        $('#user').html(data.username);
+        if (!data) {
+          return;
+        }
+        $('#user').text(data.username);
         $('.unauthenticated').hide();
         $('.authenticated').show();
-      });
+      })
+      .catch((error) => console.error('Failed to get the current user', error));
 
     var authProviders = [];
     fetch('api/user/auth-providers')
@@ -52,7 +57,8 @@
         if (!$('#local-auth-providers').hasClass('hidden') && authProvidersDiv.children().length) {
           $('#auth-divider').removeClass('hidden');
         }
-      });
+      })
+      .catch((error) => console.error('Failed to get the auth providers', error));
     });
   </script>
 
