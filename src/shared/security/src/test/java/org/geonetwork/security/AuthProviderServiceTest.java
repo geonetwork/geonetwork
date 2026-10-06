@@ -21,6 +21,7 @@ class AuthProviderServiceTest {
     private static InMemoryClientRegistrationRepository repository() {
         return new InMemoryClientRegistrationRepository(ClientRegistration.withRegistrationId("github")
                 .clientId("client")
+                .clientName("GitHub")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
                 .authorizationUri("https://github.com/login/oauth/authorize")
@@ -33,7 +34,9 @@ class AuthProviderServiceTest {
         List<AuthProvider> providers = new AuthProviderService(repository(), BASE_URL, "").getAuthProviders();
 
         assertEquals(1, providers.size());
-        assertEquals("github", providers.get(0).getClientId());
+        assertEquals("github", providers.get(0).getId());
+        assertEquals("oauth2", providers.get(0).getType());
+        assertEquals("GitHub", providers.get(0).getName());
         assertEquals(BASE_URL + "/oauth2/authorization/github", providers.get(0).getEndpoint());
     }
 
@@ -42,8 +45,9 @@ class AuthProviderServiceTest {
         List<AuthProvider> providers = new AuthProviderService(repository(), BASE_URL, "database").getAuthProviders();
 
         assertEquals(2, providers.size());
-        assertEquals("database", providers.get(0).getClientId());
-        assertEquals("github", providers.get(1).getClientId());
+        assertEquals("database", providers.get(0).getId());
+        assertEquals("database", providers.get(0).getType());
+        assertEquals("github", providers.get(1).getId());
     }
 
     @Test
@@ -51,7 +55,7 @@ class AuthProviderServiceTest {
         List<AuthProvider> providers = new AuthProviderService(null, BASE_URL, "DATABASE").getAuthProviders();
 
         assertEquals(1, providers.size());
-        assertEquals("database", providers.get(0).getClientId());
+        assertEquals("database", providers.get(0).getId());
     }
 
     @Test

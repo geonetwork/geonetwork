@@ -42,14 +42,14 @@
         // Populate auth-providers div with links
         var authProvidersDiv = $('#auth-providers');
         authProviders.forEach(function(provider) {
-          if (provider.clientId === 'database') {
+          if (provider.type === 'database') {
             $('#local-auth-providers').removeClass('hidden');
 
           } else {
             var link = $('<a></a>')
               .attr('href', provider.endpoint)
               .addClass(btnClass)
-              .text(provider.clientId);
+              .text(provider.name || provider.id);
             authProvidersDiv.append(link);
           }
         });

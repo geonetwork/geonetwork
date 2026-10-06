@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,7 +31,11 @@ public class AuthProviderService {
     public List<AuthProvider> getAuthProviders() {
         List<AuthProvider> providerList = new ArrayList<>();
         if ("database".equalsIgnoreCase(localSecurityProvider)) {
-            providerList.add(AuthProvider.builder().clientId("database").build());
+            providerList.add(AuthProvider.builder()
+                    .id(AuthProvider.TYPE_DATABASE)
+                    .type(AuthProvider.TYPE_DATABASE)
+                    .name("Database")
+                    .build());
         }
 
         // ClientRegistrationRepository can only look up by id: registrations can be listed only if it is Iterable
@@ -41,10 +46,15 @@ public class AuthProviderService {
         for (Object registration : registrations) {
             if (registration instanceof ClientRegistration clientRegistration) {
                 providerList.add(AuthProvider.builder()
-                        .clientId(clientRegistration.getRegistrationId())
+                        .id(clientRegistration.getRegistrationId())
+                        .type(AuthProvider.TYPE_OAUTH2)
+                        .name(clientRegistration.getClientName())
                         // geonetwork.url already includes the servlet context path
                         .endpoint(String.format(
-                                "%s/oauth2/authorization/%s", baseUrl, clientRegistration.getRegistrationId()))
+                                "%s%s/%s",
+                                baseUrl,
+                                OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI,
+                                clientRegistration.getRegistrationId()))
                         .build());
             }
         }
