@@ -63,7 +63,7 @@ public class Group {
 
     @Size(max = 32)
     @NotNull
-    @Column(name = "name", nullable = false, length = 32)
+    @Column(name = "name", nullable = false, length = 32, unique = true)
     private String name;
 
     @Column(name = "referrer")
