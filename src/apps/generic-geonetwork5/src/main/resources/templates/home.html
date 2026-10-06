@@ -11,14 +11,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home Page</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style type="text/tailwindcss">
+    .btn {
+      @apply block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200;
+    }
+  </style>
   <script
     src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
     integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
     crossorigin="anonymous"></script>
 
   <script type="text/javascript">
-    const btnClass = "block w-full box-border my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200";
-
     // The script is in the head: wait for the DOM before touching it
     $(function () {
     fetch('api/me')
@@ -34,21 +37,19 @@
       })
       .catch((error) => console.error('Failed to get the current user', error));
 
-    var authProviders = [];
     fetch('api/user/auth-providers')
       .then((response) => response.json())
       .then((data) => {
-        authProviders = data;
         // Populate auth-providers div with links
         var authProvidersDiv = $('#auth-providers');
-        authProviders.forEach(function(provider) {
+        data.forEach(function(provider) {
           if (provider.type === 'database') {
             $('#local-auth-providers').removeClass('hidden');
 
           } else {
             var link = $('<a></a>')
               .attr('href', provider.endpoint)
-              .addClass(btnClass)
+              .addClass('btn')
               .text(provider.name || provider.id);
             authProvidersDiv.append(link);
           }
@@ -70,10 +71,10 @@
 
   <div class="mb-8">
     <h2 class="text-xl font-semibold text-gray-700 mb-4">Apps</h2>
-    <a class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200" th:href="@{/ogcapi-records}">OGC API Records</a>
-    <a class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200" th:href="@{/swagger-ui/index.html}">GeoNetwork 5 OpenAPI documentation</a>
-    <a class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200" th:href="@{/srv}">GeoNetwork 4</a>
-    <a class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200" th:href="@{/doc/api/index.html}">GeoNetwork 4 OpenAPI documentation</a>
+    <a class="btn" th:href="@{/ogcapi-records}">OGC API Records</a>
+    <a class="btn" th:href="@{/swagger-ui/index.html}">GeoNetwork 5 OpenAPI documentation</a>
+    <a class="btn" th:href="@{/srv}">GeoNetwork 4</a>
+    <a class="btn" th:href="@{/doc/api/index.html}">GeoNetwork 4 OpenAPI documentation</a>
   </div>
 
   <div class="border-t border-gray-200 pt-6">
@@ -102,7 +103,7 @@
             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" id="password" type="password" name="password" placeholder="******************" />
           </div>
           <div>
-            <input type="submit" value="Sign In" class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200 cursor-pointer" />
+            <input type="submit" value="Sign In" class="btn cursor-pointer" />
           </div>
         </form>
       </div>
