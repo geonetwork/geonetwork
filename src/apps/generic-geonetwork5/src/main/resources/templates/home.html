@@ -36,7 +36,7 @@
         var authProvidersDiv = $('#auth-providers');
         authProviders.forEach(function(provider) {
           if (provider.clientId === 'database') {
-            $('#local-auth-providers').show();
+            $('#local-auth-providers').removeClass('hidden');
 
           } else {
             var link = $('<a></a>')
@@ -46,6 +46,10 @@
             authProvidersDiv.append(link);
           }
         });
+        // The "or" divider only makes sense between the local form and the provider links
+        if (!$('#local-auth-providers').hasClass('hidden') && authProvidersDiv.children().length) {
+          $('#auth-divider').removeClass('hidden');
+        }
       });
   </script>
 
@@ -67,7 +71,7 @@
     <div class="unauthenticated">
       <h2 class="text-xl font-semibold text-gray-700 mb-4">Sign in</h2>
 
-      <div id="local-auth-providers">
+      <div id="local-auth-providers" class="hidden">
         <div th:if="${param.error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
           <span class="block sm:inline">Invalid username and password.</span>
         </div>
@@ -92,6 +96,8 @@
             <input type="submit" value="Sign In" class="block w-full my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200 cursor-pointer" />
           </div>
         </form>
+      </div>
+      <div id="auth-divider" class="hidden">
         <div class="flex items-center my-4">
           <div class="flex-grow border-t border-gray-300"></div>
           <span class="flex-shrink-0 mx-4 text-gray-600">or</span>
