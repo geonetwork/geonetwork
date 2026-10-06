@@ -1,0 +1,97 @@
+/*
+ * SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+package org.geonetwork.security;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Iterator;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+
+class AuthProviderServiceTest {
+    private static final String BASE_URL = "http://localhost:7979/geonetwork";
+
+    private static InMemoryClientRegistrationRepository repository() {
+        return new InMemoryClientRegistrationRepository(ClientRegistration.withRegistrationId("github")
+                .clientId("client")
+                .clientName("GitHub")
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
+                .authorizationUri("https://github.com/login/oauth/authorize")
+                .tokenUri("https://github.com/login/oauth/access_token")
+                .build());
+    }
+
+    @Test
+    void oauth2EndpointDoesNotRepeatContextPath() {
+        List<AuthProvider> providers = new AuthProviderService(repository(), BASE_URL, "").getAuthProviders();
+
+        assertEquals(1, providers.size());
+        assertEquals("github", providers.get(0).getId());
+        assertEquals("oauth2", providers.get(0).getType());
+        assertEquals("GitHub", providers.get(0).getName());
+        assertEquals(BASE_URL + "/oauth2/authorization/github", providers.get(0).getEndpoint());
+    }
+
+    @Test
+    void databaseProviderListedFirstWhenEnabled() {
+        List<AuthProvider> providers = new AuthProviderService(repository(), BASE_URL, "database").getAuthProviders();
+
+        assertEquals(2, providers.size());
+        assertEquals("database", providers.get(0).getId());
+        assertEquals("database", providers.get(0).getType());
+        assertEquals("github", providers.get(1).getId());
+    }
+
+    @Test
+    void databaseProviderIdIsLowercaseWhateverTheConfiguredCase() {
+        List<AuthProvider> providers = new AuthProviderService(null, BASE_URL, "DATABASE").getAuthProviders();
+
+        assertEquals(1, providers.size());
+        assertEquals("database", providers.get(0).getId());
+    }
+
+    @Test
+    void customIterableRepositoryIsListed() {
+        InMemoryClientRegistrationRepository delegate = repository();
+        class CustomRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
+            @Override
+            public ClientRegistration findByRegistrationId(String id) {
+                return delegate.findByRegistrationId(id);
+            }
+
+            @Override
+            public Iterator<ClientRegistration> iterator() {
+                return delegate.iterator();
+            }
+        }
+
+        List<AuthProvider> providers = new AuthProviderService(new CustomRepository(), BASE_URL, "").getAuthProviders();
+
+        assertEquals(1, providers.size());
+        assertEquals(BASE_URL + "/oauth2/authorization/github", providers.get(0).getEndpoint());
+    }
+
+    @Test
+    void repositoryThatCannotBeListedGivesNoOauth2Providers() {
+        ClientRegistrationRepository lookupOnly = id -> null;
+
+        assertTrue(new AuthProviderService(lookupOnly, BASE_URL, "")
+                .getAuthProviders()
+                .isEmpty());
+    }
+
+    @Test
+    void noRepositoryAndNoDatabaseGivesEmptyList() {
+        assertTrue(new AuthProviderService(null, BASE_URL, "ldap")
+                .getAuthProviders()
+                .isEmpty());
+    }
+}

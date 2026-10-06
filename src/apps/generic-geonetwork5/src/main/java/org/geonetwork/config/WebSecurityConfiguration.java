@@ -36,7 +36,6 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests(requests -> requests.requestMatchers(
                                 "/",
                                 "/home",
-                                "/signin",
                                 "/test",
                                 "**",
                                 "/ogcapi-records/**",
@@ -57,7 +56,7 @@ public class WebSecurityConfiguration {
                 // userInfo.oidcUserService(
                 //                                geoNetworkOAuth2UserService.oidcUserService())
                 //                        .userService(geoNetworkOAuth2UserService.userService())))
-                .formLogin(form -> form.loginPage("/signin")
+                .formLogin(form -> form.loginPage("/home")
                         .loginProcessingUrl("/api/user/signin")
                         .successHandler((request, response, authentication) -> {
                             handleRedirectParam(request, response, homeUrl);
