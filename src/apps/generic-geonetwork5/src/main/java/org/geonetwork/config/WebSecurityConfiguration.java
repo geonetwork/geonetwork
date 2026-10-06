@@ -66,9 +66,13 @@ public class WebSecurityConfiguration {
 
         // Only available when at least one spring.security.oauth2.client.registration is configured
         if (clientRegistrations.getIfAvailable() != null) {
-            http.oauth2Login(oauth -> oauth.permitAll().userInfoEndpoint(userInfo -> userInfo.oidcUserService(
-                            geoNetworkOAuth2UserService.oidcUserService())
-                    .userService(geoNetworkOAuth2UserService.userService())));
+            http.oauth2Login(oauth -> oauth.permitAll()
+                    .loginPage("/home")
+                    .failureHandler((request, response, exception) ->
+                            response.sendRedirect(request.getContextPath() + "/home?error"))
+                    .userInfoEndpoint(
+                            userInfo -> userInfo.oidcUserService(geoNetworkOAuth2UserService.oidcUserService())
+                                    .userService(geoNetworkOAuth2UserService.userService())));
         }
         return http.build();
     }

@@ -215,6 +215,8 @@ class GeoNetworkOAuth2UserServiceTest {
 
         service.applyRoleMappings(user, tokenWith(List.of(EDITORS)), config(props));
         verify(usergroupRepository, never()).save(any());
+        // a skipped group must not raise the global profile either
+        assertEquals(Profile.RegisteredUser, user.getProfile());
 
         props.put("r.create-missing-groups", "true");
         service.applyRoleMappings(user, tokenWith(List.of(EDITORS)), config(props));
@@ -277,6 +279,42 @@ class GeoNetworkOAuth2UserServiceTest {
         verify(userRepository, never()).save(any());
         verify(usergroupRepository, never()).save(any());
         assertEquals(Profile.RegisteredUser, disabled.getProfile());
+    }
+
+    @Test
+    void reservedGroupsAreIgnoredByIdAndByName() {
+        existingGroup("all", 1);
+        var props = new java.util.HashMap<String, Object>();
+        mapping(props, 0, EDITORS, "all", "Editor");
+        mapping(props, 1, EDITORS, "GUEST", "Editor");
+        mapping(props, 2, EDITORS, "intranet", "Editor");
+
+        service.applyRoleMappings(user, tokenWith(List.of(EDITORS)), config(props));
+
+        verify(usergroupRepository, never()).save(any());
+        verify(groupRepository, never()).save(any());
+        assertEquals(Profile.RegisteredUser, user.getProfile());
+    }
+
+    @Test
+    void rolePatternMustReallyDefineTheProfileGroup() {
+        var registration = new GeoNetworkSsoConfiguration.Registration();
+        // the text is only inside a regex comment, it is not a group
+        assertThrows(IllegalArgumentException.class, () -> registration.setRolePattern("(?#(?<profile>)^.*$"));
+    }
+
+    @Test
+    void compiledRolePatternCanNotBeBoundDirectly() {
+        var registration = config(Map.of("r.compiled-role-pattern", "^(?<group>.+)$"));
+
+        assertEquals(null, registration.compiledRolePattern());
+    }
+
+    @Test
+    void oidcUserNameAttributeFallsBackToSub() {
+        assertEquals("sub", GeoNetworkOAuth2UserService.userNameAttribute(null));
+        assertEquals("sub", GeoNetworkOAuth2UserService.userNameAttribute(" "));
+        assertEquals("login", GeoNetworkOAuth2UserService.userNameAttribute("login"));
     }
 
     @Test

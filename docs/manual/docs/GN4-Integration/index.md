@@ -28,7 +28,7 @@ You will manage users in the GN database.
 Typically, you would use the standard username/password authentication thats built into GN5.  However, GitHub authentication is also available.
 
 1. Create a GitHub application (this will give you a `clientId`).  Got to https://github.com/settings/profile then "Developer settings" (left column) then "OAuth Apps" (left column).  See online tutorials on how to create one.
-    * "Authorization callback URL" -  http://localhost:7979/login/oauth2/code/github (use your GN5's host address)
+    * "Authorization callback URL" -  http://localhost:7979/geonetwork/login/oauth2/code/github (use your GN5's host address and context path)
 2. Create a GitHub clientSecret (this will give you a `clientSecret`)
 3. Add the `clientId` and `clientSecret` to GN5's `application.yml` section `security: oauth2: client: registration: github:`
 
@@ -70,7 +70,7 @@ geonetwork:
 
 One the main GN5 (http://localhost:7979) click "GitHub" and you will be redirected for GitHub's authentication.
 
-Once the user logs into GN5, it will create a user in the database.  The username will either be their email (if they have configured GitHub to have their email address public) or their GitHub username.
+Once the user logs into GN5, it will create a user in the database.  The username is the value of the attribute set in `user-name-attribute` (`login`, the GitHub username, in the example above). GitHub's default is `id`, a number.
 
 Use the tools in the GN Administration -> "Users and Groups" to set the user's permissions.
    

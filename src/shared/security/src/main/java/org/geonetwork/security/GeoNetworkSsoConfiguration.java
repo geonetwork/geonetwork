@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.geonetwork.domain.Profile;
@@ -54,6 +55,10 @@ public class GeoNetworkSsoConfiguration {
         private boolean updateGroup = false;
 
         private String rolePattern;
+
+        // derived from rolePattern: not a property, so it can not be bound without validation
+        @Getter(AccessLevel.NONE)
+        @Setter(AccessLevel.NONE)
         private Pattern compiledRolePattern;
 
         /**
@@ -67,7 +72,7 @@ public class GeoNetworkSsoConfiguration {
                 return;
             }
             var compiled = Pattern.compile(regex);
-            if (!regex.contains("(?<profile>")) {
+            if (!compiled.namedGroups().containsKey("profile")) {
                 throw new IllegalArgumentException("rolePattern must define a named group 'profile': " + regex);
             }
             this.rolePattern = regex;

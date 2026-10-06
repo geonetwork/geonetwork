@@ -5,6 +5,7 @@
 package org.geonetwork.security;
 
 import io.micrometer.common.util.StringUtils;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -17,6 +18,7 @@ import org.geonetwork.domain.Group;
 import org.geonetwork.domain.Groupsde;
 import org.geonetwork.domain.GroupsdeId;
 import org.geonetwork.domain.Profile;
+import org.geonetwork.domain.ReservedGroup;
 import org.geonetwork.domain.User;
 import org.geonetwork.domain.Usergroup;
 import org.geonetwork.domain.UsergroupId;
@@ -33,6 +35,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -130,11 +133,11 @@ public class GeoNetworkOAuth2UserService {
 
             var userAuthority = geoNetworkUserService.buildUserAuthority(dbUser);
 
-            String userNameAttributeName = userRequest
+            String userNameAttributeName = userNameAttribute(userRequest
                     .getClientRegistration()
                     .getProviderDetails()
                     .getUserInfoEndpoint()
-                    .getUserNameAttributeName();
+                    .getUserNameAttributeName());
 
             // rebuild the user with the new authorities
             var modifiedOidcUser = new DefaultOidcUser(
@@ -145,6 +148,11 @@ public class GeoNetworkOAuth2UserService {
 
             return modifiedOidcUser;
         };
+    }
+
+    /** A hand-configured OIDC provider may not have a user-name-attribute: OidcUserService then uses "sub". */
+    static String userNameAttribute(String configured) {
+        return StringUtils.isBlank(configured) ? IdTokenClaimNames.SUB : configured;
     }
 
     /**
@@ -330,12 +338,18 @@ public class GeoNetworkOAuth2UserService {
             // Administrator makes no sense on a group: the group-level equivalent is UserAdmin
             mapped = mapped == Profile.Administrator ? Profile.UserAdmin : mapped;
             var group = findOrCreateGroup(groupName, config.isCreateMissingGroups());
-            if (group != null) {
-                wanted.add(new UsergroupId(group.getId(), mapped.getId(), user.getId()));
-                if (mapped == Profile.Reviewer) {
-                    // GN4 looks for an explicit Editor row to allow editing in the group
-                    wanted.add(new UsergroupId(group.getId(), Profile.Editor.getId(), user.getId()));
-                }
+            if (group == null) {
+                // the group is not usable: the mapping grants nothing, not even the global profile
+                return current;
+            }
+            if (ReservedGroup.isReserved(group.getId())) {
+                log.warn("Group '{}' is a reserved group, ignored", groupName);
+                return current;
+            }
+            wanted.add(new UsergroupId(group.getId(), mapped.getId(), user.getId()));
+            if (mapped == Profile.Reviewer) {
+                // GN4 looks for an explicit Editor row to allow editing in the group
+                wanted.add(new UsergroupId(group.getId(), Profile.Editor.getId(), user.getId()));
             }
         }
         return raise(current, mapped);
@@ -363,6 +377,12 @@ public class GeoNetworkOAuth2UserService {
     }
 
     private Group findOrCreateGroup(String name, boolean create) {
+        // all, intranet and guest are implicit for GeoNetwork (also with another case, like GUEST in the database)
+        if (Arrays.stream(ReservedGroup.values())
+                .anyMatch(reserved -> reserved.name().equalsIgnoreCase(name))) {
+            log.warn("Group '{}' is a reserved group, ignored", name);
+            return null;
+        }
         if (name.length() > 32) {
             log.warn("Group name '{}' is longer than 32 characters, ignored", name);
             return null;
