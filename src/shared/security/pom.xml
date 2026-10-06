@@ -27,6 +27,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.geonetwork</groupId>
+      <artifactId>gn-utility</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
