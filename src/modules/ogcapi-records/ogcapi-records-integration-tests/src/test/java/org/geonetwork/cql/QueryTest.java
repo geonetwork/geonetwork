@@ -371,6 +371,42 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
     }
 
     @Test
+    public void testQAllWordsMustMatch() throws Exception {
+        // q is not URL-encoded here: MockMvc get() encodes the URL itself, so a pre-encoded value is encoded twice
+        // "Parcellaire agricole anonyme" has 3 records, only the 2016 one is a REST service
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?q=Parcellaire agricole REST",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "02366c9c-3b4d-4c92-803b-f4d2d8b434a5",
+                items.getFeatures().get(0).getId());
+    }
+
+    @Test
+    public void testQReservedCharacters() throws Exception {
+        // "( )" and " - " are searched as plain text, not as a group and an exclusion of "Service"
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID
+                        + "/items?q=Périmètres de remembrement urbain (PRU) - Service de visualisation REST",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "00487222-9fc0-490c-8f28-07dda6df08fc",
+                items.getFeatures().get(0).getId());
+    }
+
+    @Test
+    public void testQFieldSyntax() throws Exception {
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID
+                        + "/items?q=resourceTitleObject.default:\"Accroches vélos\"",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertEquals(1, items.getNumberMatched());
+        assertEquals("accroche_velos", items.getFeatures().get(0).getId());
+    }
+
+    @Test
     public void testQueryableString() throws Exception {
         // everything search for "mel"
         var twoItem = retrieveUrlJson(

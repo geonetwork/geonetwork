@@ -9,6 +9,7 @@ import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.GeoBoundingBoxQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Operator;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryStringQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
@@ -198,7 +199,8 @@ public class RecordsEsQueryBuilder {
         Query typeQuery = null;
         Query idsQuery = null;
 
-        Query textSearchQuery = QueryStringQuery.of(q -> q.query(buildFullTextSearchQuery(ogcApiQuery.getQ())))
+        Query textSearchQuery = QueryStringQuery.of(q ->
+                        q.query(buildFullTextSearchQuery(ogcApiQuery.getQ())).defaultOperator(Operator.And))
                 ._toQuery();
 
         // todo - verify that this is the right place to query...
@@ -291,13 +293,38 @@ public class RecordsEsQueryBuilder {
     private String buildFullTextSearchQuery(List<String> q) {
         String queryString = "*:*";
         if (q != null && !q.isEmpty()) {
-            String values = q.stream().collect(Collectors.joining(" AND "));
+            String values =
+                    q.stream().map(RecordsEsQueryBuilder::escapeQueryString).collect(Collectors.joining(" AND "));
             if (StringUtils.isNotEmpty(configuration.getQueryBase())) {
-                queryString = configuration.getQueryBase().replaceAll("\\$\\{any\\}", values);
+                // literal replace: replaceAll would strip the escaping backslashes
+                queryString = configuration.getQueryBase().replace("${any}", values);
             } else {
                 queryString = values;
             }
         }
         return queryString;
+    }
+
+    /**
+     * Escapes the query_string reserved characters in the user text, so it is searched as plain words. Kept as query
+     * syntax: {@code field:value}, wildcards {@code *} and {@code ?}, and quotes when balanced (phrases). {@code <} and
+     * {@code >} are removed as they cannot be escaped.
+     *
+     * @param text user search text
+     * @return text safe to embed in a query_string query
+     */
+    public static String escapeQueryString(String text) {
+        boolean balancedQuotes = text.chars().filter(c -> c == '"').count() % 2 == 0;
+        StringBuilder sb = new StringBuilder(text.length());
+        for (char c : text.toCharArray()) {
+            if (c == '<' || c == '>') {
+                continue;
+            }
+            if ("\\+-=&|!(){}[]^~/".indexOf(c) >= 0 || (c == '"' && !balancedQuotes)) {
+                sb.append('\\');
+            }
+            sb.append(c);
+        }
+        return sb.toString();
     }
 }
