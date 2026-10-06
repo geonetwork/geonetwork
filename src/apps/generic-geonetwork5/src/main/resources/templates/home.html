@@ -19,6 +19,8 @@
   <script type="text/javascript">
     const btnClass = "block w-full box-border my-2 py-2.5 px-3 border border-blue-600 rounded-md bg-blue-600 text-white font-semibold text-center no-underline hover:bg-blue-700 hover:border-blue-700 transition duration-200";
 
+    // The script is in the head: wait for the DOM before touching it
+    $(function () {
     fetch('api/me')
       .then((response) => response.json())
       .then((data) => {
@@ -51,6 +53,7 @@
           $('#auth-divider').removeClass('hidden');
         }
       });
+    });
   </script>
 
 </head>
