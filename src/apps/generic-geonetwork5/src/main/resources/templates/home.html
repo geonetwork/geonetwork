@@ -42,7 +42,7 @@
 
           } else {
             var link = $('<a></a>')
-              .attr('href', provider.endpoint ? provider.endpoint : 'signin')
+              .attr('href', provider.endpoint)
               .addClass(btnClass)
               .text(provider.clientId);
             authProvidersDiv.append(link);

@@ -36,7 +36,6 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests(requests -> requests.requestMatchers(
                                 "/",
                                 "/home",
-                                "/signin",
                                 "/test",
                                 "**",
                                 "/ogcapi-records/**",

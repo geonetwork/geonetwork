@@ -29,8 +29,7 @@ public class AuthProviderService {
     public List<AuthProvider> getAuthProviders() {
         List<AuthProvider> providerList = new ArrayList<>();
         if ("database".equalsIgnoreCase(localSecurityProvider)) {
-            providerList.add(
-                    AuthProvider.builder().clientId(localSecurityProvider).build());
+            providerList.add(AuthProvider.builder().clientId("database").build());
         }
 
         if (clientRegistrationRepository == null) {

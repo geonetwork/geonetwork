@@ -45,6 +45,14 @@ class AuthProviderServiceTest {
     }
 
     @Test
+    void databaseProviderIdIsLowercaseWhateverTheConfiguredCase() {
+        List<AuthProvider> providers = new AuthProviderService(null, BASE_URL, "DATABASE").getAuthProviders();
+
+        assertEquals(1, providers.size());
+        assertEquals("database", providers.get(0).getClientId());
+    }
+
+    @Test
     void noRepositoryAndNoDatabaseGivesEmptyList() {
         assertTrue(new AuthProviderService(null, BASE_URL, "ldap")
                 .getAuthProviders()
