@@ -4,8 +4,6 @@
  */
 package org.geonetwork.security;
 
-import static org.geonetwork.security.DatabaseUserDetailsService.USER_NAME;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,10 +51,8 @@ This operation is used to know if current user is authenticated or not.
     public ResponseEntity<Me> user(Authentication authentication, @AuthenticationPrincipal UserDetails userDetails) {
         String userName = "";
         if (authentication instanceof OAuth2AuthenticationToken) {
-            userName = ((OAuth2UserAuthority) authentication.getAuthorities().toArray()[0])
-                    .getAttributes()
-                    .get(USER_NAME)
-                    .toString();
+            // same value GeoNetworkOAuth2UserService uses as the database username
+            userName = authentication.getName();
         } else if (userDetails != null) {
             userName = userDetails.getUsername();
         }

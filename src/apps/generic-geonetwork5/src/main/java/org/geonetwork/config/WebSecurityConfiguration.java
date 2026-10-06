@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.security.GeoNetworkOAuth2UserService;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
@@ -30,6 +32,7 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             GeoNetworkOAuth2UserService geoNetworkOAuth2UserService,
+            ObjectProvider<ClientRegistrationRepository> clientRegistrations,
             @Value("${geonetwork.home: '/'}") String homeUrl)
             throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -45,17 +48,6 @@ public class WebSecurityConfiguration {
                         .permitAll()
                         .anyRequest()
                         .authenticated())
-
-                //                .requestMatchers("/geonetwork/**")
-                //                .permitAll()
-                //                        .requestMatchers("/api/proxy")
-                //                        .access(proxyPolicyAgentAuthorizationManager)
-                //                        .anyRequest()
-                //                        .permitAll())
-                //                .oauth2Login(oauth -> oauth.permitAll().userInfoEndpoint(userInfo ->
-                // userInfo.oidcUserService(
-                //                                geoNetworkOAuth2UserService.oidcUserService())
-                //                        .userService(geoNetworkOAuth2UserService.userService())))
                 .formLogin(form -> form.loginPage("/home")
                         .loginProcessingUrl("/api/user/signin")
                         .successHandler((request, response, authentication) -> {
@@ -71,6 +63,17 @@ public class WebSecurityConfiguration {
                         .logoutSuccessHandler((request, response, authentication) -> {
                             handleRedirectParam(request, response, homeUrl);
                         }));
+
+        // Only available when at least one spring.security.oauth2.client.registration is configured
+        if (clientRegistrations.getIfAvailable() != null) {
+            http.oauth2Login(oauth -> oauth.permitAll()
+                    .loginPage("/home")
+                    .failureHandler((request, response, exception) ->
+                            response.sendRedirect(request.getContextPath() + "/home?error"))
+                    .userInfoEndpoint(
+                            userInfo -> userInfo.oidcUserService(geoNetworkOAuth2UserService.oidcUserService())
+                                    .userService(geoNetworkOAuth2UserService.userService())));
+        }
         return http.build();
     }
 
