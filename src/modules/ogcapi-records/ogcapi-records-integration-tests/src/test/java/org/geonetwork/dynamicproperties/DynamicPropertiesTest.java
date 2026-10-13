@@ -572,6 +572,7 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
                 .flatMap(t -> t.stream())
                 .map(x -> ((Number) x).longValue())
                 .toList();
+        assertFalse(descendingValues.isEmpty());
         assertTrue(Ordering.natural().reverse().isOrdered(descendingValues));
     }
 
