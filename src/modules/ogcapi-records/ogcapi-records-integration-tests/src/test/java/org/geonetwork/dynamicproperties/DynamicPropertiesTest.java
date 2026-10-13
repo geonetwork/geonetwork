@@ -555,6 +555,8 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
                 .flatMap(t -> t.stream())
                 .map(x -> ((Number) x).longValue())
                 .toList();
+        assertFalse(ascendingValues.isEmpty());
+        assertTrue(ascendingValues.stream().distinct().count() > 1);
         assertTrue(Ordering.natural().isOrdered(ascendingValues));
 
         var descending = ElasticPgMvcTestHelper.retrieveUrlJson(
