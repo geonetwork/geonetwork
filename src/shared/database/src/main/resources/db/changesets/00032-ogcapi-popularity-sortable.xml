@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Adds the OGC API Records "popularity" sortable property, backed by the metadata table's
+    popularity column (already indexed - see IndexingRecordService#collectDbProperties), so
+    sortby=popularity can be used to restore the corresponding frontend sort option (cf
+    frontend#100, #224).
+
+    "rating" is intentionally left out: in sample data it's flat (0) for every record, so
+    sorting on it wouldn't do anything useful yet - see #224 discussion.
+
+    This changeSet only inserts its row when the ogcapi_property_mapping config row already
+    exists (i.e. this is an upgrade of a running instance whose config was already seeded
+    before this change - see OgcApiPropertyMappingService#seedFromYamlIfAbsent) AND that row
+    isn't already present (so a previously admin-customized mapping is never overwritten). On
+    a brand new install there is no config row yet, so this changeSet is a no-op (MARK_RAN);
+    the row gets created already-complete from config/application-ogcapi-records.yml on first
+    boot.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00032-ogcapi-field-mapping-popularity" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'popularity')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="112"/>
+            <column name="ogc_property" value="popularity"/>
+            <column name="elastic_property" value="popularity"/>
+            <column name="index_record_property" value="popularity"/>
+            <column name="is_sortable" valueBoolean="true"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
