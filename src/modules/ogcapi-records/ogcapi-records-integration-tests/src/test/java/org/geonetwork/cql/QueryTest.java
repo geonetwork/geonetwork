@@ -770,7 +770,7 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         var sortables = retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/sortables", OgcApiRecordsJsonSchemaDto.class);
 
-        assertEquals(7, sortables.getProperties().size());
+        assertEquals(8, sortables.getProperties().size());
         assertEquals("string", sortables.getProperties().get("id").getType());
         assertEquals("string", sortables.getProperties().get("updateFrequency").getType());
 
@@ -787,6 +787,7 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         assertEquals(
                 "string", sortables.getProperties().get("resourceTitleObject").getType());
         assertEquals("string", sortables.getProperties().get("resourceType").getType());
+        assertEquals("number", sortables.getProperties().get("popularity").getType());
     }
 
     /** Strange means that its sorting on a value that has multiple values in a record (i.e. most of them). */

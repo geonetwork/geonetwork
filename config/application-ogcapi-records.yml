@@ -144,6 +144,10 @@ geonetwork:
               facetType: HISTOGRAM_FIXED_BUCKET_COUNT
               bucketCount: 5
               bucketSorting: VALUE
+        - ogcProperty: popularity
+          elasticProperty: popularity
+          indexRecordProperty: popularity
+          isSortable: true
         - ogcProperty: orgForResource
           elasticProperty: OrgForResourceObject.default
           indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]
