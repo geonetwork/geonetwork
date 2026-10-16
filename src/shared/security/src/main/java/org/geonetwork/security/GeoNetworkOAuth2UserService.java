@@ -7,7 +7,6 @@ package org.geonetwork.security;
 import io.micrometer.common.util.StringUtils;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
