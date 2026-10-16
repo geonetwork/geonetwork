@@ -31,9 +31,6 @@ public class Language {
     @Column(name = "id", nullable = false, length = 5)
     private String id;
 
-    @Column(name = "isdefault", length = Integer.MAX_VALUE)
-    private String isdefault;
-
     @Column(name = "isinspire", length = Integer.MAX_VALUE)
     private String isinspire;
 

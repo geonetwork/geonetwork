@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Group names are used as a lookup key (GN4 and GN5 both find a group by name), but nothing prevented
+    two groups from sharing a name. With groups created automatically at login this could happen when two
+    users log in for the first time at the same moment.
+
+    If duplicated names already exist the constraint cannot be added: the changeSet is skipped with a
+    warning (CONTINUE, so it is tried again at the next start) instead of preventing the application from
+    starting. Rename or merge the duplicated groups to get the constraint applied.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00032-groups-unique-name" author="geonetwork">
+        <preConditions onFail="CONTINUE"
+                       onFailMessage="Groups with duplicated names exist: the unique constraint on groups.name was not added. Rename or merge them.">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM (SELECT name FROM groups GROUP BY name HAVING COUNT(*) &gt; 1) duplicated
+            </sqlCheck>
+        </preConditions>
+        <addUniqueConstraint tableName="groups" columnNames="name" constraintName="uk_groups_name"/>
+    </changeSet>
+</databaseChangeLog>
