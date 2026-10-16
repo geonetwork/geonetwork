@@ -745,6 +745,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#setting-groups-and-profiles-from-the-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting groups and profiles from the token
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -803,7 +814,7 @@ b) <a href="auth-json/">Simple Authentication</a> - easier to configure, but GN4
 <p>Typically, you would use the standard username/password authentication thats built into GN5.  However, GitHub authentication is also available.</p>
 <ol>
 <li>Create a GitHub application (this will give you a <code>clientId</code>).  Got to https://github.com/settings/profile then "Developer settings" (left column) then "OAuth Apps" (left column).  See online tutorials on how to create one.<ul>
-<li>"Authorization callback URL" -  http://localhost:7979/login/oauth2/code/github (use your GN5's host address)</li>
+<li>"Authorization callback URL" -  http://localhost:7979/geonetwork/login/oauth2/code/github (use your GN5's host address and context path)</li>
 </ul>
 </li>
 <li>Create a GitHub clientSecret (this will give you a <code>clientSecret</code>)</li>
@@ -831,7 +842,7 @@ b) <a href="auth-json/">Simple Authentication</a> - easier to configure, but GN4
 <div class="language-yml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">geonetwork</span><span class="p">:</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">security</span><span class="p">:</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">oauth2</span><span class="p">:</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">registration</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">userCreationRegistration</span><span class="p">:</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="nt">github</span><span class="p">:</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">          </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">login</span>
@@ -844,8 +855,46 @@ b) <a href="auth-json/">Simple Authentication</a> - easier to configure, but GN4
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">          </span><span class="nt">surname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">last_name</span>
 </span></code></pre></div>
 <p>One the main GN5 (http://localhost:7979) click "GitHub" and you will be redirected for GitHub's authentication.</p>
-<p>Once the user logs into GN5, it will create a user in the database.  The username will either be their email (if they have configured GitHub to have their email address public) or their GitHub username.</p>
+<p>Once the user logs into GN5, it will create a user in the database.  The username is the value of the attribute set in <code>user-name-attribute</code> (<code>login</code>, the GitHub username, in the example above). GitHub's default is <code>id</code>, a number.</p>
 <p>Use the tools in the GN Administration -&gt; "Users and Groups" to set the user's permissions.</p>
+<h2 id="setting-groups-and-profiles-from-the-token">Setting groups and profiles from the token</h2>
+<p>Instead of assigning groups and profiles by hand, GN5 can set them at each login from a claim of the token (for example <code>groups</code>).
+This is configured per registration, under the same <code>userCreationRegistration</code> key (the id is the one used in <code>spring.security.oauth2.client.registration</code>):</p>
+<div class="language-yml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">geonetwork</span><span class="p">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">security</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">oauth2</span><span class="p">:</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">userCreationRegistration</span><span class="p">:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="nt">keycloak</span><span class="p">:</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">          </span><span class="nt">rolesClaim</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">groups</span><span class="w">            </span><span class="c1"># top-level claim, default "groups"</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">          </span><span class="nt">rolePattern</span><span class="p">:</span><span class="w"> </span><span class="s">'^(?&lt;group&gt;[^:]+):(?&lt;profile&gt;[^:]+)$'</span><span class="w">   </span><span class="c1"># optional</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">          </span><span class="nt">roleMappings</span><span class="p">:</span><span class="w">                 </span><span class="c1"># optional</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">claimValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">catalogue-editors</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">              </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DRAFTS</span><span class="w">             </span><span class="c1"># no group = global profile</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">              </span><span class="nt">profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Editor</span><span class="w">           </span><span class="c1"># default Editor</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">claimValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">catalogue-editors</span><span class="w">   </span><span class="c1"># same value, another target</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">              </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SAMPLE</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">              </span><span class="nt">profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reviewer</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">          </span><span class="nt">createMissingGroups</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">          </span><span class="nt">updateGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span></code></pre></div>
+<ul>
+<li><code>roleMappings</code> maps an exact claim value to a group and profile. Repeat a <code>claimValue</code> to give several group/profile pairs.</li>
+<li><code>rolePattern</code> is a regular expression matched against the whole claim value. The named group <code>profile</code> is required, the named group <code>group</code> is optional.
+  Both sources can be used together, and the results add up.</li>
+<li>Without <code>rolePattern</code> and <code>roleMappings</code> nothing changes. If the claim is missing from the token, the user is not modified (unless <code>updateGroup</code> is true, see below).</li>
+<li>The user's global profile is raised to the highest mapped profile (GN4 reads it from the database). A mapped <code>Administrator</code> on a group is stored as <code>UserAdmin</code>, and a <code>Reviewer</code> on a group also gets the <code>Editor</code> row, as GN4 does.</li>
+<li><code>Monitor</code> is not part of the profile hierarchy and only applies globally: it is ignored on a group, and as a global profile it only replaces <code>RegisteredUser</code> or <code>Guest</code>. Any other mapped profile replaces <code>Monitor</code>, and <code>Administrator</code> already includes it.</li>
+<li>A user disabled in GeoNetwork cannot sign in with OAuth2 either, and their groups and profile are not modified.</li>
+<li>Groups that do not exist are skipped with a warning, unless <code>createMissingGroups</code> is true.</li>
+<li>With <code>updateGroup: true</code> the identity provider is the only source: at each login the user's groups and profile are replaced by the mapped ones, <strong>administrators included</strong>. A token without the claim counts as "no groups", so the user loses all groups and drops to <code>RegisteredUser</code>.
+  Map an administrator role first, and keep a local (form login) administrator account as the way back in.</li>
+<li>Permissions are applied when the user logs in, and the resulting authority is kept in the session. GN5 also caches it per username for 5 minutes, so a user who logs in again within that time can still get the previous permissions.
+  Role changes in the identity provider, <strong>demotions with <code>updateGroup</code> included</strong>, only apply to the next login after the cache has expired.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>With <code>rolePattern</code> and <code>createMissingGroups</code> together, whoever names roles in the identity provider can create catalogue groups.</p>
+</div>
 
 
 
