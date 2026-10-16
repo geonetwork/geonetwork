@@ -316,7 +316,8 @@ public class RecordsEsQueryBuilder {
     public static String escapeQueryString(String text) {
         boolean balancedQuotes = text.chars().filter(c -> c == '"').count() % 2 == 0;
         StringBuilder sb = new StringBuilder(text.length());
-        for (char c : text.toCharArray()) {
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
             if (c == '<' || c == '>') {
                 continue;
             }
