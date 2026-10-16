@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Group;
 import org.geonetwork.domain.Groupsde;
@@ -269,6 +270,7 @@ public class GeoNetworkOAuth2UserService {
 
         Set<UsergroupId> wanted = new LinkedHashSet<>();
         Profile profile = config.isUpdateGroup() ? Profile.RegisteredUser : user.getProfile();
+        var pattern = config.compiledRolePattern();
         for (Object value : claimValues) {
             var claimValue = String.valueOf(value);
             for (var mapping : config.getRoleMappings()) {
@@ -276,7 +278,6 @@ public class GeoNetworkOAuth2UserService {
                     profile = apply(user, mapping.getGroup(), mapping.getProfile(), config, wanted, profile);
                 }
             }
-            var pattern = config.compiledRolePattern();
             if (pattern != null) {
                 Matcher matcher = pattern.matcher(claimValue);
                 if (matcher.matches()) {
@@ -291,18 +292,19 @@ public class GeoNetworkOAuth2UserService {
             }
         }
 
+        var existing = usergroupRepository.findAllByUserid_Id(user.getId());
         if (config.isUpdateGroup()) {
-            var stale = usergroupRepository.findAllByUserid_Id(user.getId()).stream()
-                    .filter(ug -> !wanted.contains(ug.getId()))
-                    .toList();
-            usergroupRepository.deleteAll(stale);
+            usergroupRepository.deleteAll(
+                    existing.stream().filter(ug -> !wanted.contains(ug.getId())).toList());
         }
+        var existingIds = existing.stream().map(Usergroup::getId).collect(Collectors.toSet());
+        var managedUser = userRepository.getReferenceById(user.getId());
         for (var id : wanted) {
-            if (!usergroupRepository.existsById(id)) {
+            if (!existingIds.contains(id)) {
                 usergroupRepository.save(Usergroup.builder()
                         .id(id)
                         .groupid(groupRepository.getReferenceById(id.getGroupid()))
-                        .userid(user)
+                        .userid(managedUser)
                         .build());
             }
         }
