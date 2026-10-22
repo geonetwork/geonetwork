@@ -82,6 +82,15 @@ geonetwork:
             - facetName: topic
               facetType: TERM
               bucketCount: 25
+        - ogcProperty: eeaBusinessDomain
+          elasticProperty: th_eea-business-domains_tree.default
+          indexRecordProperty: keywordHierarchyByThesaurus.["th_eea-business-domains_tree"].defaultTexts
+          typeOverride: LIST_STRING
+          isQueryable: true
+          facetsConfig:
+            - facetName: eeaBusinessDomain
+              facetType: TERM
+              bucketCount: 50
         - ogcProperty: creationYearForResource
           elasticProperty: creationYearForResource
           indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]

@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import co.elastic.clients.elasticsearch.indices.GetIndexResponse;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.json.stream.JsonParser;
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,6 +80,33 @@ public class ExtraElasticPropertiesServiceTest {
         result = service.getFromElasticIndexRecord(config, object);
         assertEquals(1, ((List) result).size());
         assertEquals("imageryBaseMapsEarthCover", ((List) result).get(0));
+    }
+
+    /** EEA business domains hierarchy (th_eea-business-domains_tree), backing the "eeaBusinessDomain" queryable. */
+    @Test
+    public void testKeywordHierarchyPath() throws Exception {
+        var service = new ExtraElasticPropertiesService(null, null);
+
+        var objectMapper = new ObjectMapper();
+        var json = (ObjectNode) objectMapper.readTree(readIndexRecordJson());
+        var tree = json.putObject("th_eea-business-domains_tree");
+        tree.putArray("default").add("Water").add("Water^Water quality");
+        tree.putArray("key")
+                .add("https://eea.europa.eu/domains/water")
+                .add("https://eea.europa.eu/domains/water^https://eea.europa.eu/domains/water-quality");
+        var object = objectMapper.treeToValue(json, IndexRecord.class);
+
+        var config = new OgcElasticFieldMapperConfig();
+        config.setIndexRecordProperty("keywordHierarchyByThesaurus.[\"th_eea-business-domains_tree\"].defaultTexts");
+        var result = service.getFromElasticIndexRecord(config, object);
+        assertEquals(List.of("Water", "Water^Water quality"), result);
+    }
+
+    private String readIndexRecordJson() throws IOException {
+        InputStream is = QueryablesService.class
+                .getClassLoader()
+                .getResourceAsStream("indexrecord/iso19115-3.2018_dataset.json");
+        return new String(is.readAllBytes(), StandardCharsets.UTF_8);
     }
 
     /** creates an IndexRecord from a JSON. This json is taken from the indexing module. */

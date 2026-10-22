@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Adds an OGC API Records "eeaBusinessDomain" queryable/facet backed by the EEA business domains
+    hierarchy (indexed as th_eea-business-domains_tree), so the EEA datahub can filter on a whole
+    domain and not only on a subdomain (cf #236, frontend#71). Every level of the hierarchy is
+    indexed ("Domain" and "Domain^Subdomain"), so filtering on a top-level value matches all of
+    its subdomains.
+
+    Each changeSet only inserts its row when the ogcapi_property_mapping config row already
+    exists (i.e. this is an upgrade of a running instance whose config was already seeded before
+    this change - see OgcApiPropertyMappingService#seedFromYamlIfAbsent) AND that row isn't
+    already present (so a previously admin-customized mapping is never overwritten). On a brand
+    new install there is no config row yet, so both changeSets here are a no-op (MARK_RAN); the
+    rows get created already-complete from config/application-ogcapi-records.yml on first boot.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00033-ogcapi-field-mapping-eea-business-domain" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'eeaBusinessDomain')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="113"/>
+            <column name="ogc_property" value="eeaBusinessDomain"/>
+            <column name="elastic_property" value="th_eea-business-domains_tree.default"/>
+            <column name="index_record_property" value='keywordHierarchyByThesaurus.["th_eea-business-domains_tree"].defaultTexts'/>
+            <column name="type_override" value="LIST_STRING"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="true"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00033-ogcapi-facet-config-eea-business-domain" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'eeaBusinessDomain')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_facet_config fc
+                                            JOIN ogcapi_field_mapping fm ON fm.id = fc.field_mapping_id
+                                            WHERE fm.config_id = 'property-mapping' AND fm.ogc_property = 'eeaBusinessDomain' AND fc.facet_name = 'eeaBusinessDomain')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO ogcapi_facet_config (field_mapping_id, sort_order, facet_name, facet_type, bucket_count)
+            SELECT id, 0, 'eeaBusinessDomain', 'TERM', 50
+            FROM ogcapi_field_mapping
+            WHERE config_id = 'property-mapping' AND ogc_property = 'eeaBusinessDomain'
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
