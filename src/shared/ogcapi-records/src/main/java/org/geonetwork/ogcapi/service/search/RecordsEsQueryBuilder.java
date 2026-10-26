@@ -41,6 +41,9 @@ import org.springframework.stereotype.Component;
 @Slf4j(topic = "org.geonetwork.ogcapi.service.search")
 public class RecordsEsQueryBuilder {
 
+    /** Reserved sortby name to order by search relevance (Elastic score). */
+    public static final String RELEVANCE_SORTABLE = "relevance";
+
     // TODO: Sources depends on output type
     private static final List<String> defaultSources = Arrays.asList(
             "resourceTitleObject",
@@ -119,12 +122,23 @@ public class RecordsEsQueryBuilder {
 
         if (ogcApiQuery.getSortBy() != null && !ogcApiQuery.getSortBy().isEmpty()) {
             var sorts = new ArrayList<SortOptions>();
-            ogcApiQuery.getSortBy().forEach(order -> {
-                var isDescending = order.startsWith("-");
-                var sortOrder = isDescending ? SortOrder.Desc : SortOrder.Asc;
+            var sortsByRelevance = false;
+            var sortsById = false;
+            for (var order : ogcApiQuery.getSortBy()) {
                 var fieldName = order.replaceAll("^[\\+-]", "");
 
+                if (fieldName.equals(RELEVANCE_SORTABLE)) {
+                    // most relevant first, unless explicitly asked for ascending
+                    sorts.add(scoreSort(order.startsWith("+") ? SortOrder.Asc : SortOrder.Desc));
+                    sortsByRelevance = true;
+                    continue;
+                }
+
+                var isDescending = order.startsWith("-");
+                var sortOrder = isDescending ? SortOrder.Desc : SortOrder.Asc;
+
                 String elasticFieldName = "uuid";
+                sortsById |= fieldName.equals("id");
                 if (!fieldName.equals("id")) {
                     // TODO: don't hardcode this - see  OgcApiCollectionsApi
                     var userconfig = this.dynamicPropertiesFacade.getUserConfigByOgcProperty(fieldName);
@@ -139,20 +153,21 @@ public class RecordsEsQueryBuilder {
                     elasticFieldName = elasticPropertyName;
                 }
 
-                var _elasticFieldName = elasticFieldName;
-                var sort = new SortOptions.Builder()
-                        .field(f -> f.field(_elasticFieldName).order(sortOrder))
-                        .build();
-                sorts.add(sort);
-            });
+                sorts.add(fieldSort(elasticFieldName, sortOrder));
+            }
+            if (sortsByRelevance && !sortsById) {
+                // scores often tie - keep paging stable
+                sorts.add(fieldSort("uuid", SortOrder.Asc));
+            }
             elasticSearchRequestBuilder.sort(sorts);
+        } else if (ogcApiQuery.getQ() != null && !ogcApiQuery.getQ().isEmpty()) {
+            // default sorting for a text search: most relevant first, uuid as tie-break
+            // TODO: hardcoded id - should be configurable (see OgcApiCollectionsApi)
+            elasticSearchRequestBuilder.sort(scoreSort(SortOrder.Desc), fieldSort("uuid", SortOrder.Asc));
         } else {
             // default sorting
             // TODO: hardcoded id - should be configurable (see OgcApiCollectionsApi)
-            var sort = new SortOptions.Builder()
-                    .field(f -> f.field("uuid").order(SortOrder.Asc))
-                    .build();
-            elasticSearchRequestBuilder.sort(sort);
+            elasticSearchRequestBuilder.sort(fieldSort("uuid", SortOrder.Asc));
         }
 
         List<String> sources = new ArrayList<>(defaultSources);
@@ -179,6 +194,14 @@ public class RecordsEsQueryBuilder {
         if (x < -90) return -90;
         if (x > 90) return 90;
         return x;
+    }
+
+    private static SortOptions fieldSort(String elasticFieldName, SortOrder sortOrder) {
+        return SortOptions.of(s -> s.field(f -> f.field(elasticFieldName).order(sortOrder)));
+    }
+
+    private static SortOptions scoreSort(SortOrder sortOrder) {
+        return SortOptions.of(s -> s.score(sc -> sc.order(sortOrder)));
     }
 
     /**
@@ -267,8 +290,8 @@ public class RecordsEsQueryBuilder {
 
         var cqlQuery = cqlToElasticSearch.create(ogcApiQuery);
 
+        // only the text search is scored, so the relevance sort reflects q alone
         var filters = Stream.of(
-                        textSearchQuery,
                         externalIdsQuery,
                         geoQuery,
                         configQuery,
@@ -281,7 +304,7 @@ public class RecordsEsQueryBuilder {
                 .filter(Objects::nonNull)
                 .toList();
 
-        return BoolQuery.of(bq -> bq.must(filters))._toQuery();
+        return BoolQuery.of(bq -> bq.must(textSearchQuery).filter(filters))._toQuery();
     }
 
     /**

@@ -11,6 +11,7 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonPropertyDt
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsJsonSchemaDto;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
+import org.geonetwork.ogcapi.service.search.RecordsEsQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +43,13 @@ public class SortablesService {
         p.setTitle("The unique identifier for this record.");
         p.setDescription("The unique identifier for this record.");
         props.put("id", p);
+
+        // relevance of the record to the full-text search (q) - most relevant first by default
+        p = new OgcApiRecordsJsonPropertyDto();
+        p.setType("number");
+        p.setTitle("Relevance to the search terms (q).");
+        p.setDescription("Relevance of the record to the search terms (q). Sorts the most relevant records first.");
+        props.put(RecordsEsQueryBuilder.RELEVANCE_SORTABLE, p);
 
         for (var field : this.dynamicPropertiesFacade.getSortables()) {
             p = new OgcApiRecordsJsonPropertyDto();
