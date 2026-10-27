@@ -148,6 +148,11 @@ geonetwork:
           elasticProperty: popularity
           indexRecordProperty: popularity
           isSortable: true
+        - ogcProperty: childUuid
+          elasticProperty: childUuid
+          indexRecordProperty: childUuid
+          typeOverride: LIST_STRING
+          isQueryable: true
         - ogcProperty: orgForResource
           elasticProperty: OrgForResourceObject.default
           indexRecordProperty: orgForResourceByRole.["OrgForResourceObject"].[*].["default"]

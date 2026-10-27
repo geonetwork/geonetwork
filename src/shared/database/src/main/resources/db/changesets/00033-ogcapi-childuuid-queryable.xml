@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Adds the OGC API Records "childUuid" queryable property (#227). A series lists its members
+    through associatedResource isComposedOf, indexed as childUuid on the series; mapping it exposes
+    the members in the item JSON and makes filter=childUuid=... work instead of returning 500.
+
+    Same pattern as 00032-ogcapi-popularity-sortable: only inserts on an upgrade where the config
+    row was already seeded and the property isn't there yet. On a new install this is a no-op
+    (MARK_RAN) and the row is seeded from config/application-ogcapi-records.yml on first boot.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00033-ogcapi-field-mapping-childuuid" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'childUuid')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="113"/>
+            <column name="ogc_property" value="childUuid"/>
+            <column name="elastic_property" value="childUuid"/>
+            <column name="index_record_property" value="childUuid"/>
+            <column name="type_override" value="LIST_STRING"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="true"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
