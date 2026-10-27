@@ -426,6 +426,28 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
     }
 
     @Test
+    public void testQueryableStatus() throws Exception {
+        // the test index has no records with a status, so nothing matches - but the query must run
+        var noItems = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?filter="
+                        + URLEncoder.encode("status='obsolete'", StandardCharsets.UTF_8),
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertEquals(0, noItems.getNumberMatched());
+
+        // combined with another queryable, the status clause must not change the result
+        var annually = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?filter="
+                        + URLEncoder.encode("updateFrequency='annually'", StandardCharsets.UTF_8),
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        var annuallyOrObsolete = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?filter="
+                        + URLEncoder.encode("updateFrequency='annually' OR status='obsolete'", StandardCharsets.UTF_8),
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertTrue(annually.getNumberMatched() > 0);
+        assertEquals(annually.getNumberMatched(), annuallyOrObsolete.getNumberMatched());
+    }
+
+    @Test
     public void testQueryableDate() throws Exception {
 
         var items = retrieveUrlJson(
@@ -665,11 +687,12 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         var queryables = retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/queryables", OgcApiRecordsJsonSchemaDto.class);
 
-        assertEquals(18, queryables.getProperties().size());
+        assertEquals(19, queryables.getProperties().size());
         assertEquals("string", queryables.getProperties().get("createDate").getType());
         assertEquals("date", queryables.getProperties().get("createDate").getFormat());
 
         assertEquals("string", queryables.getProperties().get("updateFrequency").getType());
+        assertNotNull(queryables.getProperties().get("status"));
         assertEquals(
                 "number",
                 queryables.getProperties().get("resolutionScaleDenominator").getType());

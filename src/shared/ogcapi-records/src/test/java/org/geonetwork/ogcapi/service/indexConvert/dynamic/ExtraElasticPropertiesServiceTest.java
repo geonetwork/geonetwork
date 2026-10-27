@@ -79,6 +79,14 @@ public class ExtraElasticPropertiesServiceTest {
         result = service.getFromElasticIndexRecord(config, object);
         assertEquals(1, ((List) result).size());
         assertEquals("imageryBaseMapsEarthCover", ((List) result).get(0));
+
+        // ISO progress codelist (cl_status), backing the "status" queryable/facet
+        path = "codelists.[\"cl_status\"].[*].properties.[\"key\"]";
+        config = new OgcElasticFieldMapperConfig();
+        config.setIndexRecordProperty(path);
+        result = service.getFromElasticIndexRecord(config, object);
+        assertEquals(1, ((List) result).size());
+        assertEquals("completed", ((List) result).get(0));
     }
 
     /** creates an IndexRecord from a JSON. This json is taken from the indexing module. */
