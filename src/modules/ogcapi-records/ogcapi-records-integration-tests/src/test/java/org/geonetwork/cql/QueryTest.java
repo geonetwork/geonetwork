@@ -20,6 +20,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.apache.http.HttpHost;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.RestClient;
 import org.geonetwork.GeonetworkGenericApplication;
 import org.geonetwork.facets.AdvancedFacetTests;
 import org.geonetwork.infrastructure.ElasticPgMvcTestHelper;
@@ -33,6 +36,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -665,7 +669,7 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         var queryables = retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/queryables", OgcApiRecordsJsonSchemaDto.class);
 
-        assertEquals(18, queryables.getProperties().size());
+        assertEquals(19, queryables.getProperties().size());
         assertEquals("string", queryables.getProperties().get("createDate").getType());
         assertEquals("date", queryables.getProperties().get("createDate").getFormat());
 
@@ -673,6 +677,57 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         assertEquals(
                 "number",
                 queryables.getProperties().get("resolutionScaleDenominator").getType());
+    }
+
+    @Test
+    public void testChildUuidQueryable() throws Exception {
+        // series list their members via childUuid (#227). The snapshot has no series, so turn an existing
+        // record into one, using the childUuid mapping from records-mapping.json (the snapshot predates it).
+        var seriesUuid = "8698bf0b-fceb-4f0f-989b-111e7c4af0a4";
+        var memberUuid = "a8b5e6c0-c21d-4c32-b8f9-10830215890a";
+        try (var es = RestClient.builder(HttpHost.create("http://" + elasticsearchContainer.getHttpHostAddress()))
+                .build()) {
+            var childUuidMapping = objectMapper
+                    .readTree(new ClassPathResource("index/records-mapping.json").getInputStream())
+                    .at("/properties/childUuid");
+            assertFalse(childUuidMapping.isMissingNode());
+            var putMapping = new Request("PUT", "/gn-records/_mapping");
+            putMapping.setJsonEntity(
+                    objectMapper.writeValueAsString(Map.of("properties", Map.of("childUuid", childUuidMapping))));
+            es.performRequest(putMapping);
+
+            var update = new Request("POST", "/gn-records/_update_by_query?refresh=true");
+            update.setJsonEntity(objectMapper.writeValueAsString(Map.of(
+                    "query", Map.of("term", Map.of("uuid", seriesUuid)),
+                    "script",
+                            Map.of(
+                                    "source",
+                                    "ctx._source.childUuid = params.c",
+                                    "params",
+                                    Map.of("c", List.of(memberUuid))))));
+            es.performRequest(update);
+        }
+
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?filter="
+                        + URLEncoder.encode("childUuid='" + memberUuid + "'", StandardCharsets.UTF_8),
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(seriesUuid, items.getFeatures().get(0).getId());
+        assertEquals(
+                List.of(memberUuid),
+                items.getFeatures()
+                        .get(0)
+                        .getProperties()
+                        .getAdditionalProperties()
+                        .get("childUuid"));
+
+        // unknown uuid -> no match (not a 500)
+        var none = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?filter="
+                        + URLEncoder.encode("childUuid='does-not-exist'", StandardCharsets.UTF_8),
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertEquals(0, none.getNumberMatched());
     }
 
     @Test

@@ -233,7 +233,9 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
 
         // all the feature values are there
         for (var configuredProperty : this.elasticTypingSystem.getAllFieldInfos()) {
-            if (!configuredProperty.getConfig().getAddPropertyToOutput()) {
+            // childUuid only exists on series, this record isn't one
+            if (!configuredProperty.getConfig().getAddPropertyToOutput()
+                    || "childUuid".equals(configuredProperty.getConfig().getOgcProperty())) {
                 continue;
             }
             var featureValue = feature.getProperties()

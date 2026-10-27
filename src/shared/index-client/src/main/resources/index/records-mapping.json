@@ -1024,6 +1024,9 @@
     "parentUuid": {
       "type": "keyword"
     },
+    "childUuid": {
+      "type": "keyword"
+    },
     "recordGroup": {
       "type": "keyword"
     },
