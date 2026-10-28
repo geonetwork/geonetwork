@@ -13,6 +13,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import javax.xml.stream.XMLOutputFactory;
@@ -188,7 +189,7 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
 
     private static String inferImageMimeType(String url) {
         if (url == null) return "image/png";
-        var lower = url.toLowerCase();
+        var lower = url.toLowerCase(Locale.ROOT);
         if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
         if (lower.endsWith(".gif")) return "image/gif";
         if (lower.endsWith(".svg")) return "image/svg+xml";
