@@ -691,7 +691,7 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         var queryables = retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/queryables", OgcApiRecordsJsonSchemaDto.class);
 
-        assertEquals(19, queryables.getProperties().size());
+        assertEquals(20, queryables.getProperties().size());
         assertEquals("string", queryables.getProperties().get("createDate").getType());
         assertEquals("date", queryables.getProperties().get("createDate").getFormat());
 
