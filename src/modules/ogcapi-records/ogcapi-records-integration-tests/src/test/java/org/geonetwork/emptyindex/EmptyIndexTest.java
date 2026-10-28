@@ -174,6 +174,6 @@ public class EmptyIndexTest implements ApplicationContextInitializer<Configurabl
         assertEquals(0, items.getFeatures().size());
 
         // there ought to be more, but some removed because of the missing values
-        assertEquals(8, items.getFacets().size());
+        assertEquals(9, items.getFacets().size());
     }
 }

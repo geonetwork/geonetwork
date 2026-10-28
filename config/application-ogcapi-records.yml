@@ -82,6 +82,14 @@ geonetwork:
             - facetName: topic
               facetType: TERM
               bucketCount: 25
+        - ogcProperty: status
+          elasticProperty: cl_status.key
+          indexRecordProperty: codelists.["cl_status"].[*].properties.["key"]
+          typeOverride: LIST_STRING
+          isQueryable: true
+          facetsConfig:
+            - facetName: status
+              facetType: TERM
         - ogcProperty: creationYearForResource
           elasticProperty: creationYearForResource
           indexRecordProperty: resourceDateDetails.["creationYearForResource"].[0]
