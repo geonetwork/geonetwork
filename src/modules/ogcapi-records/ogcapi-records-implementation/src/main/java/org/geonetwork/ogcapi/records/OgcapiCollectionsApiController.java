@@ -14,6 +14,7 @@ import java.util.Map;
 import lombok.*;
 import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfileBuilder;
 import org.geonetwork.application.ctrlreturntypes.UriHelper;
+import org.geonetwork.ogcapi.controllerexceptions.InvalidParameterException;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsCollectionsResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
@@ -24,6 +25,7 @@ import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
 import org.geonetwork.ogcapi.service.dataaccess.SimpleElastic;
 import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
 import org.geonetwork.ogcapi.service.facets.FacetsResponseInjector;
+import org.geonetwork.ogcapi.service.formatter.SitemapCollectionMessageWriter;
 import org.geonetwork.ogcapi.service.ogcapi.OgcApiItemsApi;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.geonetwork.ogcapi.service.querybuilder.QueryBuilder;
@@ -34,6 +36,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.util.UriUtils;
@@ -206,6 +209,74 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         result.setRecords(items);
 
         return new ResponseEntity<OgcApiRecordsMultiRecordResponse>(result, HttpStatusCode.valueOf(200));
+    }
+
+    /**
+     * /collections/{catalogId}/items?f=sitemap
+     *
+     * <p>Not part of getRecords() because the generated API only accepts limit >= 1, and here limit=-1 is used to get
+     * all the records.
+     */
+    @SneakyThrows
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/collections/{catalogId}/items",
+            produces = SitemapCollectionMessageWriter.SITEMAP_MEDIA_TYPE_VALUE)
+    public ResponseEntity<OgcApiRecordsMultiRecordResponse> getRecordsSitemap(
+            @PathVariable("catalogId") String catalogId,
+            @RequestParam(value = "bbox", required = false) List<BigDecimal> bbox,
+            @RequestParam(value = "datetime", required = false) String datetime,
+            @Parameter(description = "Number of records, or -1 for all records (up to 50000).")
+                    @RequestParam(value = "limit", required = false, defaultValue = "10")
+                    Integer limit,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
+            @RequestParam(value = "q", required = false) List<String> q,
+            @RequestParam(value = "type", required = false) List<String> type,
+            @RequestParam(value = "externalIds", required = false) List<String> externalIds,
+            @RequestParam(value = "ids", required = false) List<String> ids,
+            @RequestParam(value = "sortby", required = false) List<String> sortby,
+            @RequestParam(value = "filter", required = false) String filter,
+            @RequestParam(value = "filter-lang", required = false, defaultValue = "cql2-text") String filterLang,
+            @RequestParam(value = "filter-crs", required = false) String filterCrs) {
+        if (limit != -1 && limit < 1) {
+            throw new InvalidParameterException("limit must be -1 (all records) or a positive number.");
+        }
+        if (offset < 0) {
+            throw new InvalidParameterException("offset must be 0 or a positive number.");
+        }
+        var maxRecords = limit == -1
+                ? SitemapCollectionMessageWriter.MAX_URLS
+                : Math.min(limit, SitemapCollectionMessageWriter.MAX_URLS);
+
+        var query = queryBuilder.buildFromRequest(
+                catalogId,
+                bbox,
+                datetime,
+                maxRecords,
+                offset,
+                type,
+                q,
+                ids,
+                externalIds,
+                sortby,
+                filter,
+                filterLang,
+                filterCrs,
+                request.getParameterMap(),
+                null);
+
+        var indexRecords =
+                itemsApi.getAllRecordsFromElastic(query, maxRecords, SitemapCollectionMessageWriter.INDEX_FIELDS);
+
+        var result = new OgcApiRecordsMultiRecordResponse();
+        result.setCatalogId(catalogId);
+        result.setRecordsCount(indexRecords.size());
+        result.setUserQuery(query);
+        result.setRecords(indexRecords.stream()
+                .map(ir -> new OgcApiRecordsSingleRecordResponse(catalogId, ir.getUuid(), ir, null, null))
+                .toList());
+
+        return new ResponseEntity<>(result, HttpStatusCode.valueOf(200));
     }
 
     @Override

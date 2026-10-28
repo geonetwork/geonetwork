@@ -122,12 +122,14 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
                 .get("responses")
                 .get("200")
                 .get("content");
-        assertEquals(5, itemsNode.size());
+        assertEquals(7, itemsNode.size());
         assertNotNull(itemsNode.get("application/geo+json"));
         assertNotNull(itemsNode.get("text/html"));
         assertNotNull(itemsNode.get("application/json"));
         assertNotNull(itemsNode.get("application/xml"));
         assertNotNull(itemsNode.get("application/rss+xml"));
+        assertNotNull(itemsNode.get("application/sitemap+xml"));
+        assertNotNull(itemsNode.get("*/*"));
 
         assertProvider(
                 itemsNode.get("application/geo+json"), List.of("OgcApiRecordsMultiRecordResponseGeoJsonFormatter"));

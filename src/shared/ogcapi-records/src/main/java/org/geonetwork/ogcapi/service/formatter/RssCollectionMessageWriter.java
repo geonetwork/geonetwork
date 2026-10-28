@@ -6,11 +6,7 @@ package org.geonetwork.ogcapi.service.formatter;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -212,47 +208,8 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
     }
 
     private static String toRfc1123Date(String... candidates) {
-        if (candidates == null) {
-            return null;
-        }
-        for (var candidate : candidates) {
-            var parsed = parseInstant(candidate);
-            if (parsed != null) {
-                return RFC_1123_UTC.format(parsed);
-            }
-        }
-        return null;
-    }
-
-    private static Instant parseInstant(String value) {
-        if (value == null || value.isBlank()) {
-            return null;
-        }
-        try {
-            return Instant.parse(value);
-        } catch (Exception e) {
-            // Continue with other supported date shapes.
-        }
-        try {
-            return OffsetDateTime.parse(value).toInstant();
-        } catch (Exception e) {
-            // Continue with other supported date shapes.
-        }
-        try {
-            return ZonedDateTime.parse(value).toInstant();
-        } catch (Exception e) {
-            // Continue with other supported date shapes.
-        }
-        try {
-            return LocalDateTime.parse(value).toInstant(ZoneOffset.UTC);
-        } catch (Exception e) {
-            // Continue with other supported date shapes.
-        }
-        try {
-            return LocalDate.parse(value).atStartOfDay().toInstant(ZoneOffset.UTC);
-        } catch (Exception e) {
-            return null;
-        }
+        var parsed = IndexRecordDates.firstParseable(candidates);
+        return parsed == null ? null : RFC_1123_UTC.format(parsed);
     }
 
     private static void writeSimpleElement(XMLStreamWriter writer, String elementName, String value) throws Exception {
