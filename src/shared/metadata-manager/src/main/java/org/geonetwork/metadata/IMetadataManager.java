@@ -44,4 +44,8 @@ public interface IMetadataManager {
     Path getMetadataDir(Path metadataDataDirectory, int metadataId);
 
     Path getMetadataDir(Path metadataDataDirectory, String access, int metadataId);
+
+    String getPermalinkUrl(String uuid, String language);
+
+    String getWebClientUrl(String uuid, String language);
 }

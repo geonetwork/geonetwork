@@ -4,11 +4,14 @@
  */
 package org.geonetwork.metadata;
 
+import static org.geonetwork.setting.Settings.METADATA_URL_DYNAMICAPPLINKURL;
+import static org.geonetwork.setting.Settings.METADATA_URL_SITEMAPLINKURL;
+
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.Operation;
@@ -17,19 +20,25 @@ import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.domain.repository.OperationRepository;
 import org.geonetwork.domain.repository.OperationallowedRepository;
+import org.geonetwork.setting.SettingManager;
 import org.geonetwork.utility.date.ISODate;
 import org.geonetwork.utility.legacy.xml.Xml;
 import org.jdom.Element;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MetadataManager implements IMetadataManager {
     private final MetadataRepository metadataRepository;
     private final OperationRepository operationRepository;
     private final OperationallowedRepository operationallowedRepository;
+    private final SettingManager settingManager;
+
+    @Value("${geonetwork.settings.metadata.url.permalink:}")
+    String defaultPermalinkUrl;
 
     @Override
     public Metadata findMetadataById(int metadataId) throws MetadataNotFoundException {
@@ -156,6 +165,37 @@ public class MetadataManager implements IMetadataManager {
         // TODO: Create Enum
         String subDir = "public".equals(access) ? "public" : "private";
         return metadataDir.resolve(subDir);
+    }
+
+    @Override
+    public String getPermalinkUrl(String uuid, String language) {
+        // The DB setting (editable from the admin UI) wins over the default from application.yml
+        String sitemapLinkUrl = settingManager.getValue(METADATA_URL_SITEMAPLINKURL);
+        return applyUrlTemplate(
+                uuid, language, StringUtils.hasLength(sitemapLinkUrl) ? sitemapLinkUrl : defaultPermalinkUrl);
+    }
+
+    @Override
+    public String getWebClientUrl(String uuid, String language) {
+        // Same as above, DB setting first, then the default from application.yml
+        String dynamicAppLinkUrl = settingManager.getValue(METADATA_URL_DYNAMICAPPLINKURL);
+        return applyUrlTemplate(
+                uuid, language, StringUtils.hasLength(dynamicAppLinkUrl) ? dynamicAppLinkUrl : defaultPermalinkUrl);
+    }
+
+    private String applyUrlTemplate(String uuid, String language, String url) {
+        if (StringUtils.hasLength(url)) {
+            String upperCaseUrl = url.toUpperCase(Locale.getDefault());
+            Map<String, String> substitutions = new HashMap<>();
+            substitutions.put("{{UUID}}", uuid);
+            substitutions.put("{{LANG}}", StringUtils.hasLength(language) ? language : "");
+            for (Map.Entry<String, String> s : substitutions.entrySet()) {
+                if (upperCaseUrl.contains(s.getKey())) {
+                    url = url.replaceAll("(?i)" + Pattern.quote(s.getKey()), s.getValue());
+                }
+            }
+        }
+        return url;
     }
 
     @Override

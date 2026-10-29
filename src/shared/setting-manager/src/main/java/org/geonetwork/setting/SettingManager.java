@@ -84,6 +84,22 @@ public class SettingManager {
         return Integer.valueOf(value);
     }
 
+    /**
+     * Get value of a setting as boolean
+     *
+     * @param key The setting key
+     * @param defaultValue The default value
+     * @return The setting value as boolean
+     */
+    public boolean getValueAsBool(String key, boolean defaultValue) {
+        String value = getValue(key);
+        if (value != null) {
+            return "y".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || Boolean.parseBoolean(value);
+        } else {
+            return defaultValue;
+        }
+    }
+
     public String getServerURL() {
         String protocol = getValue(Settings.SYSTEM_SERVER_PROTOCOL);
         String host = getValue(Settings.SYSTEM_SERVER_HOST);

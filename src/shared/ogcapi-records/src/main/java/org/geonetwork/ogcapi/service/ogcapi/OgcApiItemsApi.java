@@ -4,8 +4,11 @@
  */
 package org.geonetwork.ogcapi.service.ogcapi;
 
+import co.elastic.clients.elasticsearch._types.FieldValue;
+import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.SourceConfig;
 import java.util.*;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.*;
@@ -21,6 +24,9 @@ import org.springframework.stereotype.Component;
 /** High level implementation for the ogcapi-records "Items" endpoints. */
 @Component
 public class OgcApiItemsApi {
+
+    /** page size used by getAllRecordsFromElastic(). */
+    private int allRecordsPageSize = 1000;
 
     //    @Autowired
     //    FacetsResponseInjector facetsInjector;
@@ -147,5 +153,54 @@ public class OgcApiItemsApi {
                 IndexRecord.class);
 
         return searchResponse;
+    }
+
+    /**
+     * get all the records for a query (up to maxRecords), starting at the query's startIndex. Uses search_after, so we
+     * are not limited by the elastic max_result_window. No facets.
+     *
+     * @param ogcApiQuery query from user (limit not used)
+     * @param maxRecords max number of records
+     * @param sourceFields fields to get from elastic
+     * @return records
+     * @throws Exception issue with elastic query
+     */
+    public List<IndexRecord> getAllRecordsFromElastic(OgcApiQuery ogcApiQuery, int maxRecords, Set<String> sourceFields)
+            throws Exception {
+        var source = catalogApi.getSource(ogcApiQuery.getCollectionId());
+        String collectionFilter = catalogApi.retrieveCollectionFilter(source);
+        var query = elasticWithUserPermissions.createPermissionQuery(
+                recordsEsQueryBuilder.buildUnderlyingQuery(ogcApiQuery, collectionFilter));
+
+        var result = new ArrayList<IndexRecord>();
+        List<FieldValue> searchAfter = null;
+        while (result.size() < maxRecords) {
+            var pageSize = Math.min(allRecordsPageSize, maxRecords - result.size());
+            var after = searchAfter;
+            SearchResponse<IndexRecord> searchResponse = simpleElastic.search(
+                    s -> {
+                        recordsEsQueryBuilder.buildSearchRequest(s, ogcApiQuery, sourceFields);
+                        // uuid is unique, so this makes the sort order total, as search_after requires
+                        s.sort(o -> o.field(f -> f.field("uuid").order(SortOrder.Asc)));
+                        s.source(SourceConfig.of(sc -> sc.filter(f -> f.includes(List.copyOf(sourceFields)))));
+                        s.trackTotalHits(t -> t.enabled(false));
+                        s.size(pageSize);
+                        if (after != null) {
+                            s.from(0).searchAfter(after);
+                        }
+                        s.query(query);
+                        s.index(simpleElastic.getRecordIndexName());
+                        return s;
+                    },
+                    IndexRecord.class);
+
+            var hits = searchResponse.hits().hits();
+            hits.forEach(hit -> result.add(hit.source()));
+            if (hits.size() < pageSize) {
+                break;
+            }
+            searchAfter = hits.getLast().sort();
+        }
+        return result;
     }
 }
