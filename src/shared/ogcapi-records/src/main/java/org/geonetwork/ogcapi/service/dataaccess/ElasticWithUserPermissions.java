@@ -41,17 +41,24 @@ public class ElasticWithUserPermissions {
     UserRepository userRepository;
 
     /**
-     * Creates a (original-query AND permission-Query) query.
+     * Creates a (original-query AND permission-Query) query. The original query is scored, the permission query is only
+     * a filter - otherwise records visible to more of the user's groups would rank higher.
      *
      * @param originalQuery original-query
      * @return (original - query AND permission - Query) query
      */
     public Query createPermissionQuery(Query originalQuery) {
-        List<Query> queries = new ArrayList<Query>();
-        queries.add(originalQuery); // original query
-        queries.add(createPermissionQuery()); // permission query
-        var queries2 = queries.stream().filter(x -> x != null).toList();
-        return BoolQuery.of(bool -> bool.must(queries2))._toQuery();
+        var permissionQuery = createPermissionQuery();
+        return BoolQuery.of(bool -> {
+                    if (originalQuery != null) {
+                        bool.must(originalQuery);
+                    }
+                    if (permissionQuery != null) {
+                        bool.filter(permissionQuery);
+                    }
+                    return bool;
+                })
+                ._toQuery();
     }
 
     /**
