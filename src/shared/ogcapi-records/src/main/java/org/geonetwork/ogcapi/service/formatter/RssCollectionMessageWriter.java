@@ -23,7 +23,7 @@ import org.geonetwork.index.model.record.Overview;
 import org.geonetwork.metadata.IMetadataManager;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
-import org.geonetwork.setting.SettingManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -42,7 +42,9 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
 
     private final SourceRepository sourceRepository;
     private final IMetadataManager metadataManager;
-    private final SettingManager settingManager;
+
+    @Value("${geonetwork.url}")
+    String baseUrl;
 
     @Getter
     private final List<MediaType> supportedMediaTypes = List.of(RSS_MEDIA_TYPE);
@@ -108,8 +110,7 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
 
             // TODO: Use Logo API https://github.com/geonetwork/core-geonetwork/pull/9322
             if (collection.isPresent() && collection.get().getLogo() != null) {
-                var logoUrl = settingManager.getBaseUrlWithContextPath() + "/images/harvesting/"
-                        + collection.get().getLogo();
+                var logoUrl = baseUrl + "/images/harvesting/" + collection.get().getLogo();
                 writer.writeStartElement("image");
                 writeSimpleElement(writer, "url", logoUrl);
                 writeSimpleElement(writer, "title", channelName);
@@ -179,8 +180,7 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
         if (url == null || url.isBlank() || url.startsWith("http://") || url.startsWith("https://")) {
             return url;
         }
-        var base = settingManager.getBaseUrlWithContextPath();
-        return url.startsWith("/") ? base + url : base + "/" + url;
+        return url.startsWith("/") ? baseUrl + url : baseUrl + "/" + url;
     }
 
     private static String inferImageMimeType(String url) {

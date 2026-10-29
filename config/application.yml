@@ -40,6 +40,11 @@ geonetwork:
     system:
       metadata:
         prefergrouplogo: true
+    metadata:
+      url:
+        # Default record URL (RSS, sitemap). Overridden by the DB setting metadata/url/sitemapLinkUrl if set.
+        # Supports {{UUID}} and {{LANG}} placeholders.
+        permalink: ${geonetwork.url}/api/records/{{UUID}}
   security:
     provider: database
     passwordSalt: secret-hash-salt=

@@ -42,7 +42,6 @@ class MetadataManagerTest {
     @Test
     void getWebClientUrl_usesDefaultWhenTemplateSettingMissing() {
         var settingManager = mock(SettingManager.class);
-        when(settingManager.getBaseUrlWithContextPath()).thenReturn(urlWithContext);
         when(settingManager.getValue(METADATA_URL_DYNAMICAPPLINKURL)).thenReturn(null);
 
         var metadataManager = new MetadataManager(
@@ -50,10 +49,11 @@ class MetadataManagerTest {
                 mock(OperationRepository.class),
                 mock(OperationallowedRepository.class),
                 settingManager);
+        metadataManager.defaultPermalinkUrl = urlWithContext + "/api/records/{{UUID}}";
 
         var url = metadataManager.getWebClientUrl("abc-123", "eng");
 
-        assertEquals("https://catalog.example/geonetwork/srv/api/records/abc-123?language=all", url);
+        assertEquals("https://catalog.example/geonetwork/api/records/abc-123", url);
     }
 
     @Test

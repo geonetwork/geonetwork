@@ -19,7 +19,6 @@ import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
-import org.geonetwork.setting.SettingManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,9 +37,6 @@ class RssCollectionMessageWriterTest {
 
     @Mock
     MetadataManager metadataManager;
-
-    @Mock
-    SettingManager settingManager;
 
     @InjectMocks
     RssCollectionMessageWriter writer;

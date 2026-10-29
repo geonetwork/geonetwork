@@ -5,25 +5,18 @@
 package org.geonetwork.setting;
 
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.constants.Geonet;
 import org.geonetwork.domain.Setting;
 import org.geonetwork.domain.repository.SettingRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SettingManager {
     private final SettingRepository settingRepository;
-
-    @Value("${geonetwork.url}")
-    private String baseUrl;
-
-    @Value("${server.servlet.context-path:}")
-    private String contextPath;
 
     /**
      * Return a setting by its key
@@ -152,10 +145,5 @@ public class SettingManager {
         } else {
             return true;
         }
-    }
-
-    /** TODO: To be discussed if it still make sense to use host:port info from database? */
-    public String getBaseUrlWithContextPath() {
-        return baseUrl + contextPath;
     }
 }
