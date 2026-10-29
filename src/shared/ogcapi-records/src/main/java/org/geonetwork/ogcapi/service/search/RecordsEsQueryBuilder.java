@@ -128,8 +128,8 @@ public class RecordsEsQueryBuilder {
                 var fieldName = order.replaceAll("^[\\+-]", "");
 
                 if (fieldName.equals(RELEVANCE_SORTABLE)) {
-                    // most relevant first, unless explicitly asked for ascending
-                    sorts.add(scoreSort(order.startsWith("+") ? SortOrder.Asc : SortOrder.Desc));
+                    // as for other sortables, no sign means ascending - "-relevance" is most relevant first
+                    sorts.add(scoreSort(order.startsWith("-") ? SortOrder.Desc : SortOrder.Asc));
                     sortsByRelevance = true;
                     continue;
                 }

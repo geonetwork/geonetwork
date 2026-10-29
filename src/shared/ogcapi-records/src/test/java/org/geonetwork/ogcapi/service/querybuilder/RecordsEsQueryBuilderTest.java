@@ -102,11 +102,15 @@ class RecordsEsQueryBuilderTest {
         var query = new OgcApiQuery();
         query.setQ(List.of("urban atlas"));
 
+        // no sign means ascending, as for other sortables
         query.setSortBy(List.of("relevance"));
-        assertEquals(List.of("_score desc", "uuid asc"), buildSorts(query));
+        assertEquals(List.of("_score asc", "uuid asc"), buildSorts(query));
 
         query.setSortBy(List.of("+relevance"));
         assertEquals(List.of("_score asc", "uuid asc"), buildSorts(query));
+
+        query.setSortBy(List.of("-relevance"));
+        assertEquals(List.of("_score desc", "uuid asc"), buildSorts(query));
 
         // no extra tie-break when id is already part of the sort
         query.setSortBy(List.of("-relevance", "-id"));

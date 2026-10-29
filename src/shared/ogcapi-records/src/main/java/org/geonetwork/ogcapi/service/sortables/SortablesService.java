@@ -44,11 +44,12 @@ public class SortablesService {
         p.setDescription("The unique identifier for this record.");
         props.put("id", p);
 
-        // relevance of the record to the full-text search (q) - most relevant first by default
+        // relevance of the record to the full-text search (q)
         p = new OgcApiRecordsJsonPropertyDto();
         p.setType("number");
         p.setTitle("Relevance to the search terms (q).");
-        p.setDescription("Relevance of the record to the search terms (q). Sorts the most relevant records first.");
+        p.setDescription(
+                "Relevance of the record to the search terms (q). Use -relevance to sort the most relevant records first.");
         props.put(RecordsEsQueryBuilder.RELEVANCE_SORTABLE, p);
 
         for (var field : this.dynamicPropertiesFacade.getSortables()) {
