@@ -9,6 +9,8 @@ import static org.geonetwork.setting.Settings.METADATA_URL_SITEMAPLINKURL;
 
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.UnaryOperator;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,11 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @RequiredArgsConstructor
 public class MetadataManager implements IMetadataManager {
+    private static final Pattern UUID_PLACEHOLDER =
+            Pattern.compile(Pattern.quote("{{UUID}}"), Pattern.CASE_INSENSITIVE);
+    private static final Pattern LANG_PLACEHOLDER =
+            Pattern.compile(Pattern.quote("{{LANG}}"), Pattern.CASE_INSENSITIVE);
+
     private final MetadataRepository metadataRepository;
     private final OperationRepository operationRepository;
     private final OperationallowedRepository operationallowedRepository;
@@ -169,10 +176,16 @@ public class MetadataManager implements IMetadataManager {
 
     @Override
     public String getPermalinkUrl(String uuid, String language) {
-        // The DB setting (editable from the admin UI) wins over the default from application.yml
+        return getPermalinkUrlBuilder(language).apply(uuid);
+    }
+
+    @Override
+    public UnaryOperator<String> getPermalinkUrlBuilder(String language) {
+        // The DB setting (editable from the admin UI) wins over the default from application.yml.
+        // Read once here, so callers building many URLs don't query the settings table per record.
         String sitemapLinkUrl = settingManager.getValue(METADATA_URL_SITEMAPLINKURL);
-        return applyUrlTemplate(
-                uuid, language, StringUtils.hasLength(sitemapLinkUrl) ? sitemapLinkUrl : defaultPermalinkUrl);
+        String template = StringUtils.hasLength(sitemapLinkUrl) ? sitemapLinkUrl : defaultPermalinkUrl;
+        return uuid -> applyUrlTemplate(uuid, language, template);
     }
 
     @Override
@@ -183,19 +196,16 @@ public class MetadataManager implements IMetadataManager {
                 uuid, language, StringUtils.hasLength(dynamicAppLinkUrl) ? dynamicAppLinkUrl : defaultPermalinkUrl);
     }
 
-    private String applyUrlTemplate(String uuid, String language, String url) {
-        if (StringUtils.hasLength(url)) {
-            String upperCaseUrl = url.toUpperCase(Locale.getDefault());
-            Map<String, String> substitutions = new HashMap<>();
-            substitutions.put("{{UUID}}", uuid);
-            substitutions.put("{{LANG}}", StringUtils.hasLength(language) ? language : "");
-            for (Map.Entry<String, String> s : substitutions.entrySet()) {
-                if (upperCaseUrl.contains(s.getKey())) {
-                    url = url.replaceAll("(?i)" + Pattern.quote(s.getKey()), s.getValue());
-                }
-            }
+    private static String applyUrlTemplate(String uuid, String language, String url) {
+        if (!StringUtils.hasLength(url)) {
+            return url;
         }
-        return url;
+        // LANG first: the uuid is free text and must not be scanned for placeholders.
+        // quoteReplacement: '$' and '\' in values are literal, not group references.
+        url = LANG_PLACEHOLDER
+                .matcher(url)
+                .replaceAll(Matcher.quoteReplacement(StringUtils.hasLength(language) ? language : ""));
+        return UUID_PLACEHOLDER.matcher(url).replaceAll(Matcher.quoteReplacement(uuid));
     }
 
     @Override

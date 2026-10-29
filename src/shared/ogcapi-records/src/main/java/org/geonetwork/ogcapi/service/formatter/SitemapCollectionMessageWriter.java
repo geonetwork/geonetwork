@@ -89,13 +89,14 @@ public class SitemapCollectionMessageWriter implements HttpMessageConverter<OgcA
             writer.writeStartElement("urlset");
             writer.writeDefaultNamespace(SITEMAP_NAMESPACE);
 
+            var permalinkUrl = metadataManager.getPermalinkUrlBuilder("all");
             List<OgcApiRecordsSingleRecordResponse> records =
                     source.getRecords() == null ? List.of() : source.getRecords();
             for (var record : records) {
                 if (record == null || record.getIndexRecord() == null) {
                     continue;
                 }
-                var loc = metadataManager.getPermalinkUrl(record.getRecordId(), "all");
+                var loc = permalinkUrl.apply(record.getRecordId());
                 // <loc> is mandatory in a sitemap entry
                 if (StringUtils.isBlank(loc)) {
                     continue;
