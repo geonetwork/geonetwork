@@ -7,10 +7,13 @@ package org.geonetwork.ogcapi.service.formatter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
@@ -38,10 +41,10 @@ class SitemapCollectionMessageWriterTest {
         var contentType = MediaType.valueOf("application/sitemap+xml");
         assertTrue(writer.canWrite(OgcApiRecordsMultiRecordResponse.class, contentType));
         assertFalse(writer.canWrite(OgcApiRecordsMultiRecordResponse.class, MediaType.APPLICATION_XML));
-        when(metadataManager.getPermalinkUrl("record-1", "all"))
-                .thenReturn("https://example.org/srv/api/records/record-1?language=all&a=b");
-        when(metadataManager.getPermalinkUrl("record-2", "all"))
-                .thenReturn("https://example.org/srv/api/records/record-2?language=all");
+        when(metadataManager.getPermalinkUrlBuilder("all"))
+                .thenReturn(Map.of(
+                        "record-1", "https://example.org/srv/api/records/record-1?language=all&a=b",
+                        "record-2", "https://example.org/srv/api/records/record-2?language=all")::get);
 
         var record1 = new IndexRecord();
         record1.setUuid("record-1");
@@ -79,5 +82,7 @@ class SitemapCollectionMessageWriterTest {
                 .build();
 
         assertFalse(diff.hasDifferences(), diff.toString());
+        // the URL template is resolved once per response, not once per record
+        verify(metadataManager, times(1)).getPermalinkUrlBuilder("all");
     }
 }

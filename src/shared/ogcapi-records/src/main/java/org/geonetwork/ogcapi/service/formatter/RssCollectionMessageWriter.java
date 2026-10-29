@@ -122,6 +122,7 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
                 writeSimpleElement(writer, "atom:icon", logoUrl);
             }
 
+            var permalinkUrl = metadataManager.getPermalinkUrlBuilder("all");
             List<OgcApiRecordsSingleRecordResponse> records =
                     source.getRecords() == null ? List.of() : source.getRecords();
             for (var record : records) {
@@ -132,7 +133,7 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
                 writer.writeStartElement("item");
                 writeSimpleElement(
                         writer, "title", getLocalizedValue(indexRecord.getResourceTitle(), record.getRecordId()));
-                var itemUrl = metadataManager.getPermalinkUrl(record.getRecordId(), "all");
+                var itemUrl = permalinkUrl.apply(record.getRecordId());
                 if (StringUtils.isNotBlank(itemUrl)) {
                     writeSimpleElement(writer, "link", itemUrl);
                 }

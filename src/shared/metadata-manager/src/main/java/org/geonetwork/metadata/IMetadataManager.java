@@ -6,6 +6,7 @@ package org.geonetwork.metadata;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.UnaryOperator;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.Operation;
 import org.geonetwork.domain.Operationallowed;
@@ -46,6 +47,9 @@ public interface IMetadataManager {
     Path getMetadataDir(Path metadataDataDirectory, String access, int metadataId);
 
     String getPermalinkUrl(String uuid, String language);
+
+    /** URL builder (uuid -> permalink) with the template read once, for building many permalinks. */
+    UnaryOperator<String> getPermalinkUrlBuilder(String language);
 
     String getWebClientUrl(String uuid, String language);
 }

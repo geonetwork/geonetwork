@@ -49,8 +49,8 @@ class RssCollectionMessageWriterTest {
                 .thenReturn(Optional.of(Source.builder()
                         .name("GeoNetwork OGC API Records - main")
                         .build()));
-        when(metadataManager.getPermalinkUrl("record-1", "all"))
-                .thenReturn("https://example.org/ogcapi-records/collections/main/items/record-1?f=geojson");
+        when(metadataManager.getPermalinkUrlBuilder("all"))
+                .thenReturn(uuid -> "https://example.org/ogcapi-records/collections/main/items/" + uuid + "?f=geojson");
 
         var indexRecord = new IndexRecord();
         indexRecord.setUuid("record-1");

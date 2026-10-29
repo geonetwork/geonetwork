@@ -9,6 +9,7 @@ import static org.geonetwork.setting.Settings.METADATA_URL_SITEMAPLINKURL;
 
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -169,10 +170,16 @@ public class MetadataManager implements IMetadataManager {
 
     @Override
     public String getPermalinkUrl(String uuid, String language) {
-        // The DB setting (editable from the admin UI) wins over the default from application.yml
+        return getPermalinkUrlBuilder(language).apply(uuid);
+    }
+
+    @Override
+    public UnaryOperator<String> getPermalinkUrlBuilder(String language) {
+        // The DB setting (editable from the admin UI) wins over the default from application.yml.
+        // Read once here, so callers building many URLs don't query the settings table per record.
         String sitemapLinkUrl = settingManager.getValue(METADATA_URL_SITEMAPLINKURL);
-        return applyUrlTemplate(
-                uuid, language, StringUtils.hasLength(sitemapLinkUrl) ? sitemapLinkUrl : defaultPermalinkUrl);
+        String template = StringUtils.hasLength(sitemapLinkUrl) ? sitemapLinkUrl : defaultPermalinkUrl;
+        return uuid -> applyUrlTemplate(uuid, language, template);
     }
 
     @Override
