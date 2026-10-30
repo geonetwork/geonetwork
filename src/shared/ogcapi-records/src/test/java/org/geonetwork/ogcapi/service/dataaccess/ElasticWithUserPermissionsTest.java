@@ -41,10 +41,13 @@ public class ElasticWithUserPermissionsTest {
 
         // user query - see createTrivialQuery()
         var userQuery = boolquery.must().get(0);
-        assertEquals(2, boolquery.must().size());
+        assertEquals(1, boolquery.must().size());
         assertEquals("Query: {\"query_string\":{\"query\":\"*:*\"}}", userQuery.toString());
 
-        var permissionQuery = (MatchQuery) boolquery.must().get(1)._get();
+        // permission query is a filter, so it doesn't affect the score
+        assertEquals(1, boolquery.filter().size());
+
+        var permissionQuery = (MatchQuery) boolquery.filter().get(0)._get();
         // "1" is the "all" group, "op0"=read
         assertEquals("MatchQuery: {\"op0\":{\"query\":\"1\"}}", permissionQuery.toString());
     }
@@ -79,10 +82,13 @@ public class ElasticWithUserPermissionsTest {
 
         // user query - see createTrivialQuery()
         var userQuery = boolquery.must().get(0);
-        assertEquals(2, boolquery.must().size());
+        assertEquals(1, boolquery.must().size());
         assertEquals("Query: {\"query_string\":{\"query\":\"*:*\"}}", userQuery.toString());
 
-        var permissionQuery = (BoolQuery) boolquery.must().get(1)._get();
+        // permission query is a filter, so it doesn't affect the score
+        assertEquals(1, boolquery.filter().size());
+
+        var permissionQuery = (BoolQuery) boolquery.filter().get(0)._get();
         // "1" is the "all" group, "op0"=read
         assertEquals(
                 "BoolQuery: {\"minimum_should_match\":\"1\",\"should\":[{\"match\":{\"op0\":{\"query\":\"1\"}}},{\"match\":{\"op0\":{\"query\":\"500\"}}},{\"match\":{\"op0\":{\"query\":\"501\"}}}]}",
@@ -110,6 +116,7 @@ public class ElasticWithUserPermissionsTest {
         assertEquals("Query: {\"query_string\":{\"query\":\"*:*\"}}", userQuery.toString());
 
         // no permission query
+        assertEquals(0, boolquery.filter().size());
     }
 
     public Query createTrivialQuery() {
