@@ -115,12 +115,12 @@ public class ExtentConvert {
 
         for (var dr : dates) {
             if (!isBlank(dr.getLte())) {
-                if (compareDate(dateRange.getLte(), dr.getLte()) < 0) {
+                if (isBlank(dateRange.getLte()) || compareDate(dateRange.getLte(), dr.getLte()) < 0) {
                     dateRange.setLte(dr.getLte());
                 }
             }
             if (!isBlank(dr.getGte())) {
-                if (compareDate(dateRange.getGte(), dr.getGte()) > 0) {
+                if (isBlank(dateRange.getGte()) || compareDate(dateRange.getGte(), dr.getGte()) > 0) {
                     dateRange.setGte(dr.getGte());
                 }
             }

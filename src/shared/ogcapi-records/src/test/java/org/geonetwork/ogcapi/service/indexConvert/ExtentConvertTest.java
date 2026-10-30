@@ -159,4 +159,35 @@ public class ExtentConvertTest {
                 Instant.parse(dateRange.getLte()),
                 temporalextent.getInterval().get(0).get(1).toInstant());
     }
+
+    @Test
+    public void testDateRange_computeDateRange_firstRangeWithoutBounds() {
+        // Ranges as indexed for a record with periods 2019/2019, 2019-01-01/now and 2025-01-01/2025-12-31
+        var dr1 = new DateRange();
+        dr1.setGte("2018-12-31T23:00:00.000Z");
+
+        var dr2 = new DateRange();
+        dr2.setGte("2018-12-31T23:00:00.000Z");
+
+        var dr3 = new DateRange();
+        dr3.setGte("2024-12-31T23:00:00.000Z");
+        dr3.setLte("2025-12-30T23:00:00.000Z");
+
+        var dateRange = ExtentConvert.computeDateRange(Arrays.asList(dr1, dr2, dr3));
+        assertNotNull(dateRange);
+        assertEquals(dr1.getGte(), dateRange.getGte());
+        assertEquals(dr3.getLte(), dateRange.getLte());
+
+        var lteOnly = new DateRange();
+        lteOnly.setLte("2008-01-08T12:29:00.000Z");
+        dateRange = ExtentConvert.computeDateRange(Arrays.asList(lteOnly, dr3));
+        assertEquals(dr3.getGte(), dateRange.getGte());
+        assertEquals(dr3.getLte(), dateRange.getLte());
+
+        var indexRecord = new IndexRecord();
+        indexRecord.setResourceTemporalDateRange(Arrays.asList(dr1, dr2, dr3));
+        var temporalextent = ExtentConvert.convertTemporalExtent(indexRecord);
+        assertNotNull(temporalextent);
+        assertEquals(1, temporalextent.getInterval().size());
+    }
 }
