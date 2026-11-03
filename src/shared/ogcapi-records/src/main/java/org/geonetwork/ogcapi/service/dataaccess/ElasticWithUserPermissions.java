@@ -7,6 +7,7 @@ package org.geonetwork.ogcapi.service.dataaccess;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import java.util.ArrayList;
 import java.util.List;
 import org.geonetwork.domain.Profile;
@@ -14,6 +15,7 @@ import org.geonetwork.domain.ReservedGroup;
 import org.geonetwork.domain.ReservedOperation;
 import org.geonetwork.domain.repository.UserRepository;
 import org.geonetwork.domain.repository.UsergroupRepository;
+import org.geonetwork.index.model.record.IndexRecordFieldNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -42,7 +44,8 @@ public class ElasticWithUserPermissions {
 
     /**
      * Creates a (original-query AND permission-Query) query. The original query is scored, the permission query is only
-     * a filter - otherwise records visible to more of the user's groups would rank higher.
+     * a filter - otherwise records visible to more of the user's groups would rank higher. Drafts are always excluded,
+     * also for administrators (like GN4).
      *
      * @param originalQuery original-query
      * @return (original - query AND permission - Query) query
@@ -56,8 +59,15 @@ public class ElasticWithUserPermissions {
                     if (permissionQuery != null) {
                         bool.filter(permissionQuery);
                     }
+                    bool.mustNot(createWorkingCopyQuery());
                     return bool;
                 })
+                ._toQuery();
+    }
+
+    /** drafts indexed by GN4 (draft=y) */
+    protected Query createWorkingCopyQuery() {
+        return TermQuery.of(t -> t.field(IndexRecordFieldNames.DRAFT).value("y"))
                 ._toQuery();
     }
 

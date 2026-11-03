@@ -124,6 +124,20 @@ public class OgcApiItemsApi {
     //    }
 
     /**
+     * gets a record in a collection. collections/{collectionid}/items/{itemid} endpoint
+     *
+     * @param collectionId which collection
+     * @param recordId which record
+     * @return index record
+     * @throws Exception record not found or not visible to the user
+     */
+    public IndexRecord getRecord(String collectionId, String recordId) throws Exception {
+        var source = catalogApi.getSource(collectionId);
+        String collectionFilter = catalogApi.retrieveCollectionFilter(source);
+        return simpleElastic.getOne(recordId, recordsEsQueryBuilder.buildScopeFilters(collectionFilter));
+    }
+
+    /**
      * lower level access to get records from Elastic.
      *
      * @param ogcApiQuery query from user

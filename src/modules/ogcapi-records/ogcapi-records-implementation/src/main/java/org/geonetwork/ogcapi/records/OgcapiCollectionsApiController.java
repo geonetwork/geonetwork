@@ -22,7 +22,6 @@ import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
 import org.geonetwork.ogcapi.records.generated.CollectionsApi;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.geonetwork.ogcapi.service.configuration.OgcApiLinkConfiguration;
-import org.geonetwork.ogcapi.service.dataaccess.SimpleElastic;
 import org.geonetwork.ogcapi.service.facets.FacetsJsonService;
 import org.geonetwork.ogcapi.service.facets.FacetsResponseInjector;
 import org.geonetwork.ogcapi.service.formatter.SitemapCollectionMessageWriter;
@@ -56,8 +55,6 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
     private final FacetsJsonService facetsService;
     private final SortablesService sortablesService;
 
-    private final SimpleElastic simpleElastic;
-
     private final FacetsResponseInjector facetsInjector;
 
     private final RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder;
@@ -72,7 +69,6 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             QueryBuilder queryBuilder,
             FacetsJsonService facetsService,
             SortablesService sortablesService,
-            SimpleElastic simpleElastic,
             FacetsResponseInjector facetsInjector,
             RequestMediaTypeAndProfileBuilder requestMediaTypeAndProfileBuilder,
             OgcApiLinkConfiguration linkConfiguration) {
@@ -82,7 +78,6 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
         this.queryBuilder = queryBuilder;
         this.facetsService = facetsService;
         this.sortablesService = sortablesService;
-        this.simpleElastic = simpleElastic;
         this.facetsInjector = facetsInjector;
         this.requestMediaTypeAndProfileBuilder = requestMediaTypeAndProfileBuilder;
         this.linkConfiguration = linkConfiguration;
@@ -123,7 +118,7 @@ public class OgcapiCollectionsApiController implements CollectionsApi {
             produces = {"application/geo+json", "text/html", "application/json", "*/*"})
     public ResponseEntity<?> getRecord(String catalogId, String recordId, List<String> profile) {
 
-        var indexRecord = simpleElastic.getOne(recordId);
+        var indexRecord = itemsApi.getRecord(catalogId, recordId);
         var requestInfo = requestMediaTypeAndProfileBuilder.build(request, OgcApiRecordsSingleRecordResponse.class);
         var jsonUri = UriHelper.createUri(
                 linkConfiguration.getOgcApiRecordsBaseUrl(),

@@ -123,10 +123,13 @@ public class CatalogApi {
             return new CatalogInfo(source, null);
         }
 
-        var indexRecord = simpleElastic.getOne(serviceRecordUUID);
-        var result = new CatalogInfo(source, indexRecord);
-
-        return result;
+        try {
+            var indexRecord = simpleElastic.getOne(serviceRecordUUID, List.of());
+            return new CatalogInfo(source, indexRecord);
+        } catch (NotFoundException e) {
+            // service record not visible to the user
+            return new CatalogInfo(source, null);
+        }
     }
 
     /**

@@ -50,6 +50,7 @@ public class ElasticWithUserPermissionsTest {
         var permissionQuery = (MatchQuery) boolquery.filter().get(0)._get();
         // "1" is the "all" group, "op0"=read
         assertEquals("MatchQuery: {\"op0\":{\"query\":\"1\"}}", permissionQuery.toString());
+        assertWorkingCopiesExcluded(boolquery);
     }
 
     @Test
@@ -93,6 +94,7 @@ public class ElasticWithUserPermissionsTest {
         assertEquals(
                 "BoolQuery: {\"minimum_should_match\":\"1\",\"should\":[{\"match\":{\"op0\":{\"query\":\"1\"}}},{\"match\":{\"op0\":{\"query\":\"500\"}}},{\"match\":{\"op0\":{\"query\":\"501\"}}}]}",
                 permissionQuery.toString());
+        assertWorkingCopiesExcluded(boolquery);
     }
 
     @Test
@@ -117,6 +119,16 @@ public class ElasticWithUserPermissionsTest {
 
         // no permission query
         assertEquals(0, boolquery.filter().size());
+
+        // drafts are excluded, also for admin
+        assertWorkingCopiesExcluded(boolquery);
+    }
+
+    private static void assertWorkingCopiesExcluded(BoolQuery boolquery) {
+        assertEquals(1, boolquery.mustNot().size());
+        assertEquals(
+                "Query: {\"term\":{\"draft\":{\"value\":\"y\"}}}",
+                boolquery.mustNot().get(0).toString());
     }
 
     public Query createTrivialQuery() {
