@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.stream.JsonParser;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
@@ -132,5 +133,32 @@ public class ElasticTypingSystemTest {
 
         var typingSystem = new ElasticTypingSystem(config, "gn-records", indexState);
         assertNull(typingSystem.getTypeInfoByOgcProperty("unknown"));
+    }
+
+    @Test
+    public void testIndexInfoMissingAtStartupIsLoadedLater() throws Exception {
+        var indexState = loadIndexDefinition().get("gn-records");
+
+        var field = new OgcElasticFieldMapperConfig();
+        field.setOgcProperty("linkProtocol");
+        field.setElasticProperty("linkProtocol");
+        var fields = new ArrayList<OgcElasticFieldMapperConfig>();
+        fields.add(field);
+        var config = new OgcElasticFieldsMapperConfig();
+        config.setFields(fields);
+
+        // elastic isn't ready on the first call
+        var calls = new AtomicInteger();
+        var typingSystem = new ElasticTypingSystem(config, () -> calls.getAndIncrement() == 0 ? null : indexState);
+
+        var typeInfo = typingSystem.getTypeInfoByOgcProperty("linkProtocol");
+        assertNotNull(typeInfo);
+        assertEquals(SimpleType.STRING, typeInfo.getType());
+        assertEquals(2, calls.get());
+
+        // once loaded, elastic isn't asked again
+        typingSystem.getTypeInfoByElasticProperty("linkProtocol");
+        typingSystem.getAllFieldInfos();
+        assertEquals(2, calls.get());
     }
 }
