@@ -8,6 +8,9 @@ These files provide the database (PostGIS) and search engine (Elasticsearch).
 - **`docker-compose-dbs.yml`**: PostgreSQL with sample data (`dump.gn.sql`) and clean Elasticsearch (index is automatically initialized and populated on startup by GN5 when `GN5_INDEX_CREATE_IF_EMPTY=true`).
 - **`docker-compose-dbs-empty.yml`**: PostgreSQL and Elasticsearch **empty** (clean start).
 
+> [!NOTE]
+> `dump.gn.alt.sql` is an alternate set of sample records for testing. To use it instead of `dump.gn.sql`, swap the commented volume line in `docker-compose-dbs.yml` and recreate the containers (`docker compose -f docker-compose-dbs.yml down -v` then `up -d`).
+
 ### Usage
 ```bash
 # Start
