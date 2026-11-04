@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.text.MessageFormat;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.Source;
 import org.geonetwork.domain.repository.SettingRepository;
 import org.geonetwork.domain.repository.SourceRepository;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 /** help with catalog objects - portal/subportals in GN. */
 @Component
+@Slf4j
 public class CatalogApi {
 
     private final SourceRepository sourceRepository;
@@ -123,10 +125,14 @@ public class CatalogApi {
             return new CatalogInfo(source, null);
         }
 
-        var indexRecord = simpleElastic.getOne(serviceRecordUUID);
-        var result = new CatalogInfo(source, indexRecord);
-
-        return result;
+        try {
+            var indexRecord = simpleElastic.getOne(serviceRecordUUID, List.of());
+            return new CatalogInfo(source, indexRecord);
+        } catch (NotFoundException e) {
+            // service record not visible to the user
+            log.debug("Service record {} of collection {} not found or not visible", serviceRecordUUID, catalogId);
+            return new CatalogInfo(source, null);
+        }
     }
 
     /**

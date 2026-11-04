@@ -5,11 +5,15 @@
 package org.geonetwork.ogcapi.service.dataaccess;
 
 import co.elastic.clients.elasticsearch._types.ElasticsearchException;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.IdsQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.util.ObjectBuilder;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.function.Function;
 import org.geonetwork.index.client.IndexClient;
 import org.geonetwork.index.model.record.IndexRecord;
@@ -24,36 +28,36 @@ public class SimpleElastic {
     @Autowired
     private IndexClient client;
 
+    @Autowired
+    private ElasticWithUserPermissions elasticWithUserPermissions;
+
     public String getRecordIndexName() {
         return client.getIndexRecordName();
     }
 
     /**
-     * given a records UUID, get it from the index.
+     * given a records UUID, get it from the index. Only returns records the user is allowed to view.
      *
      * @param uuid record `_id`
+     * @param filters extra filters (e.g. collection), can be empty
      * @return parsed elastic JSON index record
-     * @throws NotFoundException record doesn't exist
+     * @throws NotFoundException record doesn't exist or user can't view it
      * @throws IOException bad connection to elastic
      */
-    public IndexRecord getOne(String uuid) throws NotFoundException, IOException {
-        SearchResponse<IndexRecord> searchResponse = client.getEsClient()
-                .search(
-                        s -> {
-                            s.index(getRecordIndexName());
-                            s.size(1);
-                            s.q("_id:" + uuid);
+    public IndexRecord getOne(String uuid, List<Query> filters) throws NotFoundException, IOException {
+        var recordQuery = BoolQuery.of(b ->
+                        b.filter(IdsQuery.of(i -> i.values(uuid))._toQuery()).filter(filters))
+                ._toQuery();
+        var query = elasticWithUserPermissions.createPermissionQuery(recordQuery);
 
-                            return s;
-                        },
-                        IndexRecord.class);
+        SearchResponse<IndexRecord> searchResponse = client.getEsClient()
+                .search(s -> s.index(getRecordIndexName()).size(1).query(query), IndexRecord.class);
 
         if (searchResponse.hits().hits().isEmpty()) {
             throw new NotFoundException(MessageFormat.format("Metadata record ''{0}'', which was not found.", uuid));
         }
 
-        var indexRecord = searchResponse.hits().hits().getFirst().source();
-        return indexRecord;
+        return searchResponse.hits().hits().getFirst().source();
     }
 
     /**

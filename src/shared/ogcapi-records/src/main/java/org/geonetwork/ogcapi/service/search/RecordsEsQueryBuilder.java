@@ -205,6 +205,25 @@ public class RecordsEsQueryBuilder {
     }
 
     /**
+     * filters for the configured query filter and the collection filter.
+     *
+     * @param collectionFilter from DB source field
+     * @return list of filters (can be empty)
+     */
+    public List<Query> buildScopeFilters(String collectionFilter) {
+        var filters = new ArrayList<Query>();
+        if (!StringUtils.isBlank(configuration.getQueryFilter())) {
+            filters.add(QueryStringQuery.of(q -> q.query("(" + configuration.getQueryFilter() + ")"))
+                    ._toQuery());
+        }
+        if (!StringUtils.isBlank(collectionFilter)) {
+            filters.add(QueryStringQuery.of(q -> q.query("(" + collectionFilter + ")"))
+                    ._toQuery());
+        }
+        return filters;
+    }
+
+    /**
      * this builds the actual filter/query.
      *
      * @param ogcApiQuery from user
@@ -215,8 +234,6 @@ public class RecordsEsQueryBuilder {
 
         Query externalIdsQuery = null;
         Query geoQuery = null;
-        Query configQuery = null;
-        Query collectionQuery = null;
         Query queryablesQuery = null;
         Query dataTimeQuery = null;
         Query typeQuery = null;
@@ -259,16 +276,6 @@ public class RecordsEsQueryBuilder {
                     ._toQuery();
         }
 
-        if (!StringUtils.isBlank(configuration.getQueryFilter())) {
-            configQuery = QueryStringQuery.of(q -> q.query("(" + configuration.getQueryFilter() + ")"))
-                    ._toQuery();
-        }
-
-        if (!StringUtils.isBlank(collectionFilter)) {
-            collectionQuery = QueryStringQuery.of(q -> q.query("(" + collectionFilter + ")"))
-                    ._toQuery();
-        }
-
         if (ogcApiQuery.getDatetime() != null) {
             var meta = new OgcApiRecordsGnElasticDto();
             meta.elasticPath("resourceTemporalDateRange");
@@ -291,17 +298,17 @@ public class RecordsEsQueryBuilder {
         var cqlQuery = cqlToElasticSearch.create(ogcApiQuery);
 
         // only the text search is scored, so the relevance sort reflects q alone
-        var filters = Stream.of(
-                        externalIdsQuery,
-                        geoQuery,
-                        configQuery,
-                        collectionQuery,
-                        queryablesQuery,
-                        dataTimeQuery,
-                        cqlQuery,
-                        typeQuery,
-                        idsQuery)
-                .filter(Objects::nonNull)
+        var filters = Stream.concat(
+                        buildScopeFilters(collectionFilter).stream(),
+                        Stream.of(
+                                        externalIdsQuery,
+                                        geoQuery,
+                                        queryablesQuery,
+                                        dataTimeQuery,
+                                        cqlQuery,
+                                        typeQuery,
+                                        idsQuery)
+                                .filter(Objects::nonNull))
                 .toList();
 
         return BoolQuery.of(bq -> bq.must(textSearchQuery).filter(filters))._toQuery();
