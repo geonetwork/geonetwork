@@ -336,6 +336,9 @@ public class FacetsResponseInjector {
         var buckets = new ArrayList<OgcApiRecordsFacetResultBucketDto>();
 
         var agg = searchResponse.aggregations().get("facet." + name);
+        if (agg == null) {
+            return null;
+        }
         var filtersAgg = ((FiltersAggregate) agg._get());
         var bucketsMap = filtersAgg.buckets().keyed();
         for (var bucket : bucketsMap.entrySet()) {
