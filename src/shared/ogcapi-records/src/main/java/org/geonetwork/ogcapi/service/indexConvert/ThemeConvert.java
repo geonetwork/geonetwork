@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.index.model.record.Keyword;
 import org.geonetwork.index.model.record.Thesaurus;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsThemeConceptsInnerDto;
@@ -18,6 +19,7 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsThemeDto;
 import org.springframework.util.StringUtils;
 
 /** converts elastic json index records (`allKeywords`) to ogcapi theme */
+@Slf4j(topic = "org.fao.geonet.ogcapi.records")
 public class ThemeConvert {
 
     /**
@@ -26,10 +28,8 @@ public class ThemeConvert {
      * @param map elastic index record (`allKeywords` node)
      * @param lang3iso language (From request) - 3 letter iso lang value (i.e. 'eng')
      * @return ogcapi-record theme
-     * @throws URISyntaxException bad uri in the thesaurus
      */
-    public static List<OgcApiRecordsThemeDto> convert(Map<String, Thesaurus> map, String lang3iso)
-            throws URISyntaxException {
+    public static List<OgcApiRecordsThemeDto> convert(Map<String, Thesaurus> map, String lang3iso) {
         if (map == null) {
             return null;
         }
@@ -67,7 +67,12 @@ public class ThemeConvert {
                 var ogcConcept = new OgcApiRecordsThemeConceptsInnerDto();
                 ogcConcept.setId(getLangString(anConcept.getProperties(), lang3iso));
                 if (link != null) {
-                    ogcConcept.setUrl(new URI(link));
+                    try {
+                        ogcConcept.setUrl(new URI(link));
+                    } catch (URISyntaxException e) {
+                        // keep the concept without its url rather than dropping the whole theme list
+                        log.debug("Ignoring invalid keyword link '{}': {}", link, e.getMessage());
+                    }
                 }
                 theme2.getConcepts().add(ogcConcept);
             }

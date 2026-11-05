@@ -5,8 +5,9 @@
 package org.geonetwork.ogcapi.service.indexConvert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.net.URISyntaxException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ import org.junit.jupiter.api.Test;
 public class ThemeConvertTest {
 
     @Test
-    public void testConvert() throws URISyntaxException {
+    public void testConvert() {
         var allKeywords = create();
         var result = ThemeConvert.convert(allKeywords, null);
 
@@ -30,11 +31,37 @@ public class ThemeConvertTest {
     }
 
     @Test
-    public void testConvertLang() throws URISyntaxException {
+    public void testConvertLang() {
         var allKeywords = create();
 
         var result = ThemeConvert.convert(allKeywords, "eng");
         assertEquals("k1 eng", result.get(0).getConcepts().get(0).getId());
+    }
+
+    @Test
+    public void testConvertInvalidLinkKeepsConcepts() {
+        var allKeywords = create();
+        var keywords = allKeywords.get("th_otherKeywords-theme").getKeywords();
+        keywords.set(
+                0,
+                new Keyword(Map.of(
+                        "default", "k1 default",
+                        "link", "https://applications.eea.europa.eu/ManagementPlan/default.aspx#2019 1.5.2")));
+        keywords.set(
+                1,
+                new Keyword(Map.of(
+                        "default", "k2 default",
+                        "link", "https://example.com/k2")));
+
+        var result = ThemeConvert.convert(allKeywords, null);
+
+        assertEquals(1, result.size());
+        assertEquals(2, result.get(0).getConcepts().size());
+        assertEquals("k1 default", result.get(0).getConcepts().get(0).getId());
+        assertNull(result.get(0).getConcepts().get(0).getUrl());
+        assertEquals(
+                URI.create("https://example.com/k2"),
+                result.get(0).getConcepts().get(1).getUrl());
     }
 
     public Map<String, Thesaurus> create() {
