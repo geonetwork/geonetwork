@@ -154,6 +154,8 @@ public class OgcApiItemsApi {
                     Query query = null;
                     try {
                         query = recordsEsQueryBuilder.buildUnderlyingQuery(ogcApiQuery, collectionFilter);
+                    } catch (RuntimeException e) {
+                        throw e; // keep InvalidParameterException (400) and friends as they are
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

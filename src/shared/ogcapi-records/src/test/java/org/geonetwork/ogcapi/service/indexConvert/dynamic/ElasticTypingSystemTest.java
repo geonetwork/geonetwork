@@ -12,11 +12,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.stream.JsonParser;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
+import org.geonetwork.index.client.IndexClient;
+import org.geonetwork.ogcapi.service.configuration.OgcApiPropertyMappingService;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
+import org.geonetwork.ogcapi.service.configuration.OverrideType;
 import org.geonetwork.ogcapi.service.configuration.SimpleType;
 import org.geonetwork.ogcapi.service.queryables.QueryablesService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class ElasticTypingSystemTest {
 
@@ -29,6 +34,27 @@ public class ElasticTypingSystemTest {
             JsonParser parser = jacksonJsonpMapper.jsonProvider().createParser(is);
             return GetIndexResponse._DESERIALIZER.deserialize(parser, jacksonJsonpMapper);
         }
+    }
+
+    /** Properties only present in the DB property mapping (not in the YAML) must be typed at startup. */
+    @Test
+    public void testTypesFromDbConfig() {
+        var field = new OgcElasticFieldMapperConfig();
+        field.setOgcProperty("eeaBusinessDomain");
+        field.setElasticProperty("th_eea-business-domains_tree.default");
+        field.setTypeOverride(OverrideType.LIST_STRING);
+        var dbConfig = new OgcElasticFieldsMapperConfig();
+        dbConfig.setFields(new ArrayList<>(List.of(field)));
+
+        var configService = Mockito.mock(OgcApiPropertyMappingService.class);
+        Mockito.when(configService.getConfig()).thenReturn(dbConfig);
+
+        var typingSystem = new ElasticTypingSystem(configService, "gn-records", (IndexClient) null);
+
+        var typeInfo = typingSystem.getTypeInfoByOgcProperty("eeaBusinessDomain");
+        assertNotNull(typeInfo);
+        assertEquals(SimpleType.STRING, typeInfo.getType());
+        assertNotNull(typingSystem.getTypeInfoByElasticProperty("th_eea-business-domains_tree.default"));
     }
 
     @Test

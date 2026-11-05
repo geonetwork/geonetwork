@@ -31,7 +31,7 @@ public class ExtraElasticPropertiesServiceTest {
     /** Tests some simple paths for the IndexRecord traversal code. */
     @Test
     public void testPaths() throws Exception {
-        var service = new ExtraElasticPropertiesService(null, null);
+        var service = new ExtraElasticPropertiesService(null);
 
         var object = createObject();
 

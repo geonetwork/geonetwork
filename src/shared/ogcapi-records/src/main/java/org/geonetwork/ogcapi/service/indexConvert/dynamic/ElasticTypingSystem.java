@@ -13,6 +13,7 @@ import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
 import org.geonetwork.index.client.IndexClient;
+import org.geonetwork.ogcapi.service.configuration.OgcApiPropertyMappingService;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OverrideType;
@@ -69,13 +70,17 @@ public class ElasticTypingSystem {
         }
     }
 
+    /**
+     * Builds the type info from the property mapping stored in the DB (seeded from the YAML on first startup), so
+     * properties only configured in the DB are typed too.
+     */
     @Autowired
     public ElasticTypingSystem(
-            OgcElasticFieldsMapperConfig config,
+            OgcApiPropertyMappingService configService,
             @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
             IndexClient client) {
 
-        this(config, indexRecordName, getIndexInfo(client, indexRecordName));
+        this(configService.getConfig(), indexRecordName, getIndexInfo(client, indexRecordName));
     }
 
     /**

@@ -55,7 +55,7 @@ public class DynamicPropertiesFacade {
 
     public void injectFacetsIntoResponse(
             IndexRecord indexRecord, String iso3lang, OgcApiRecordsRecordGeoJSONDto result) {
-        extraElasticPropertiesService.inject(indexRecord, iso3lang, result);
+        extraElasticPropertiesService.inject(config.getFields(), indexRecord, iso3lang, result);
     }
 
     /**
@@ -76,6 +76,19 @@ public class DynamicPropertiesFacade {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the configured field for an ogc property, whether or not type info is available for it.
+     *
+     * @param ogcProperty name of the ogc property
+     * @return field config (null if not configured)
+     */
+    public OgcElasticFieldMapperConfig findFieldByOgcProperty(String ogcProperty) {
+        return config.getFields().stream()
+                .filter(f -> Objects.equals(f.getOgcProperty(), ogcProperty))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
