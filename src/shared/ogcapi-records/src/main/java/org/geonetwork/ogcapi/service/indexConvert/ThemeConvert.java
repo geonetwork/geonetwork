@@ -62,13 +62,19 @@ public class ThemeConvert {
             theme2.setScheme(themeSchema);
 
             List<Keyword> conceptsList = theme.getKeywords();
+            if (conceptsList == null) {
+                continue;
+            }
             for (var anConcept : conceptsList) {
+                if (anConcept == null || anConcept.getProperties() == null) {
+                    continue;
+                }
                 var link = anConcept.getProperties().get("link");
                 var ogcConcept = new OgcApiRecordsThemeConceptsInnerDto();
                 ogcConcept.setId(getLangString(anConcept.getProperties(), lang3iso));
-                if (link != null) {
+                if (StringUtils.hasText(link)) {
                     try {
-                        ogcConcept.setUrl(new URI(link));
+                        ogcConcept.setUrl(new URI(link.trim()));
                     } catch (URISyntaxException e) {
                         // keep the concept without its url rather than dropping the whole theme list
                         log.debug("Ignoring invalid keyword link '{}': {}", link, e.getMessage());

@@ -64,6 +64,31 @@ public class ThemeConvertTest {
                 result.get(0).getConcepts().get(1).getUrl());
     }
 
+    @Test
+    public void testConvertLinkWithSurroundingSpacesAndBlankLink() {
+        var allKeywords = create();
+        var keywords = allKeywords.get("th_otherKeywords-theme").getKeywords();
+        keywords.set(0, new Keyword(Map.of("default", "k1 default", "link", "  https://example.com/k1 ")));
+        keywords.set(1, new Keyword(Map.of("default", "k2 default", "link", "")));
+
+        var result = ThemeConvert.convert(allKeywords, null);
+
+        assertEquals(
+                URI.create("https://example.com/k1"),
+                result.get(0).getConcepts().get(0).getUrl());
+        assertNull(result.get(0).getConcepts().get(1).getUrl());
+    }
+
+    @Test
+    public void testConvertThesaurusWithoutKeywords() {
+        var allKeywords = create();
+        allKeywords.get("th_otherKeywords-theme").setKeywords(null);
+
+        var result = ThemeConvert.convert(allKeywords, null);
+
+        assertEquals(0, result.size());
+    }
+
     public Map<String, Thesaurus> create() {
         Map<String, Thesaurus> map = new HashMap<String, Thesaurus>();
         var thesaurus = new Thesaurus();
