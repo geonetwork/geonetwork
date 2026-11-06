@@ -6,7 +6,6 @@ package org.geonetwork.ogcapi.service.indexConvert;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-import java.net.URISyntaxException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -148,12 +147,7 @@ public class ElasticIndex2Catalog {
 
         var allKeywords = indexRecord.getAllKeywords();
         if (allKeywords != null && !allKeywords.isEmpty()) {
-            try {
-                var themes = ThemeConvert.convert(allKeywords, lang3iso);
-                catalog.setThemes(themes);
-            } catch (URISyntaxException e) {
-                // do nothing
-            }
+            catalog.setThemes(ThemeConvert.convert(allKeywords, lang3iso));
         }
 
         var licenseList = indexRecord.getLicenses();
