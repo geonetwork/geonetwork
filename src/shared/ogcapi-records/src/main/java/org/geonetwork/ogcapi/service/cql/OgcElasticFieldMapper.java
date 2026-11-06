@@ -5,7 +5,7 @@
 package org.geonetwork.ogcapi.service.cql;
 
 import org.geonetwork.ogcapi.controllerexceptions.InvalidParameterException;
-import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
+import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,12 +20,12 @@ import org.springframework.stereotype.Component;
 public class OgcElasticFieldMapper implements IFieldMapper {
 
     @Autowired
-    OgcElasticFieldsMapperConfig ogcElasticFieldsMapperConfig;
+    DynamicPropertiesFacade dynamicPropertiesFacade;
 
     @Override
     public String map(String field) {
         field = field.replaceAll("/", ".");
-        var fieldInfo = ogcElasticFieldsMapperConfig.findByOgc(field);
+        var fieldInfo = dynamicPropertiesFacade.findFieldByOgcProperty(field);
         if (fieldInfo != null) {
             return fieldInfo.getElasticProperty();
         }

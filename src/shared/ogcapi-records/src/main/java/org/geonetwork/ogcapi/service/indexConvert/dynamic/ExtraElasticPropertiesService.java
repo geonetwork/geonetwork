@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsRecordGeoJSONDto;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
-import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,24 +44,24 @@ public class ExtraElasticPropertiesService {
     // helper class
     ElasticTypingSystem elasticTypingSystem;
 
-    // user-configured fields
-    OgcElasticFieldsMapperConfig config;
-
-    // for test cases
-    public ExtraElasticPropertiesService(OgcElasticFieldsMapperConfig config, ElasticTypingSystem elasticTypingSystem) {
-        this.config = config;
+    public ExtraElasticPropertiesService(ElasticTypingSystem elasticTypingSystem) {
         this.elasticTypingSystem = elasticTypingSystem;
     }
 
     /**
      * given an elastic IndexRecord, inject the configured properties into the result.Properties.
      *
+     * @param fields configured fields (current property mapping)
      * @param indexRecord from elastic (source info)
      * @param iso3lang incase there are language-specific properties
      * @param result ogcapi-records document with the extra properties injected
      */
-    public void inject(IndexRecord indexRecord, String iso3lang, OgcApiRecordsRecordGeoJSONDto result) {
-        for (var field : config.getFields()) {
+    public void inject(
+            List<OgcElasticFieldMapperConfig> fields,
+            IndexRecord indexRecord,
+            String iso3lang,
+            OgcApiRecordsRecordGeoJSONDto result) {
+        for (var field : fields) {
             if (!field.getAddPropertyToOutput()) {
                 continue; // don't have to do this
             }
