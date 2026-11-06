@@ -45,6 +45,7 @@ public class DynamicPropertiesFacade {
     @PostConstruct
     void loadConfig() {
         config = configService.getConfig();
+        elasticTypingSystem.refresh(config);
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)

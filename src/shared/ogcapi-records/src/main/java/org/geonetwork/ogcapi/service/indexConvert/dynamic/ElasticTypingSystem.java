@@ -13,7 +13,6 @@ import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
 import org.geonetwork.index.client.IndexClient;
-import org.geonetwork.ogcapi.service.configuration.OgcApiPropertyMappingService;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OgcElasticFieldsMapperConfig;
 import org.geonetwork.ogcapi.service.configuration.OverrideType;
@@ -54,7 +53,8 @@ public class ElasticTypingSystem {
     /** final elastic types key is from config.fields.ogcproperty */
     private volatile Map<String, ElasticTypeInfo> finalElasticTypesByOgc;
 
-    public ElasticTypingSystem(
+    /** For tests only: production config is pushed in by {@link DynamicPropertiesFacade} via {@link #refresh}. */
+    ElasticTypingSystem(
             OgcElasticFieldsMapperConfig config,
             @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
             IndexState elasticIndexInfo) {
@@ -71,16 +71,14 @@ public class ElasticTypingSystem {
     }
 
     /**
-     * Builds the type info from the property mapping stored in the DB (seeded from the YAML on first startup), so
-     * properties only configured in the DB are typed too.
+     * Starts empty; {@link DynamicPropertiesFacade} loads the DB property mapping once and pushes it in via
+     * {@link #refresh} (at startup and on every config change).
      */
     @Autowired
     public ElasticTypingSystem(
-            OgcApiPropertyMappingService configService,
-            @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
-            IndexClient client) {
+            @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName, IndexClient client) {
 
-        this(configService.getConfig(), indexRecordName, getIndexInfo(client, indexRecordName));
+        this(new OgcElasticFieldsMapperConfig(), indexRecordName, getIndexInfo(client, indexRecordName));
     }
 
     /**

@@ -100,6 +100,8 @@ public class QueryToElastic {
                 var cql = propertyName + " = '" + userSearchTerm + "'";
                 return this.cqlToElasticSearch.create(cql);
             } else throw new RuntimeException("don't know how to handle json property: " + jsonProperty.getType());
+        } catch (RuntimeException e) {
+            throw e; // keep InvalidParameterException (400) and friends as they are
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

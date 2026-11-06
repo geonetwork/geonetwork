@@ -21,13 +21,4 @@ public class OgcElasticFieldsMapperConfig {
 
     /** default number of buckets in results */
     public int defaultBucketCount = 10;
-
-    public OgcElasticFieldMapperConfig findByOgc(String ogcFieldName) {
-        for (OgcElasticFieldMapperConfig field : fields) {
-            if (field.ogcProperty.equals(ogcFieldName)) {
-                return field;
-            }
-        }
-        return null;
-    }
 }

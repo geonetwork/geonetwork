@@ -229,6 +229,8 @@ public class RecordsFacetsElasticQueryBuilder {
             Query query = null;
             try {
                 query = cqlToElasticSearch.create(filterValueOgc);
+            } catch (RuntimeException e) {
+                throw e; // keep InvalidParameterException (400) and friends as they are
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
