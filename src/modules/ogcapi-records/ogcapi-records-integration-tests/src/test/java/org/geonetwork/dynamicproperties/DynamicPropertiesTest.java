@@ -237,11 +237,8 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
         // all the feature values are there
         for (var configuredProperty : this.elasticTypingSystem.getAllFieldInfos()) {
             // childUuid only exists on series, this record isn't one
-            // this record has no resource publication date (see QueryTest#testPublicationDateForResource)
             if (!configuredProperty.getConfig().getAddPropertyToOutput()
-                    || "childUuid".equals(configuredProperty.getConfig().getOgcProperty())
-                    || "publicationDateForResource"
-                            .equals(configuredProperty.getConfig().getOgcProperty())) {
+                    || "childUuid".equals(configuredProperty.getConfig().getOgcProperty())) {
                 continue;
             }
             var featureValue = feature.getProperties()
