@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Adds the OGC API Records "issued" property (#246), so the item output has the date the resource
+    was published. "created" maps to createDate, the date the metadata record was created, which
+    isn't the same thing. Also sortable and queryable, like createDate.
+
+    Named "issued" (as in DCAT, where our own output maps the ISO publication date to dct:issued)
+    rather than after the publicationDateForResource index field it reads.
+
+    No type_override: the index field is a date and a record can have several publication dates,
+    so it's returned as a list, like createDate.
+
+    Same upgrade-only pattern as 00032-ogcapi-popularity-sortable: only inserts when the config
+    row already exists and the property isn't there yet. Unlike the earlier properties, it is not
+    in config/application-ogcapi-records.yml, so a new install seeded from the YAML won't have it.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00035-ogcapi-field-mapping-publication-date" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'issued')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="115"/>
+            <column name="ogc_property" value="issued"/>
+            <column name="elastic_property" value="publicationDateForResource"/>
+            <column name="index_record_property" value='resourceDateDetails.["publicationDateForResource"]'/>
+            <column name="is_sortable" valueBoolean="true"/>
+            <column name="is_queryable" valueBoolean="true"/>
+            <column name="add_property_to_output" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
