@@ -121,6 +121,11 @@ geonetwork:
                   filterEquationCql: linkProtocol = 'OGC:WFS'
                 - filterName: availableInViewService
                   filterEquationCql: linkProtocol = 'OGC:WMS'
+        - ogcProperty: publicationDateForResource
+          elasticProperty: publicationDateForResource
+          indexRecordProperty: resourceDateDetails.["publicationDateForResource"]
+          isSortable: true
+          isQueryable: true
         - ogcProperty: createDate
           elasticProperty: createDate
           indexRecordProperty: createDate

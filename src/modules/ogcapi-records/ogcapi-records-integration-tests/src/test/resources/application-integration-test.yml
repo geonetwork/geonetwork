@@ -94,6 +94,11 @@ geonetwork:
               facetType: HISTOGRAM_FIXED_BUCKET_COUNT
               bucketCount: 5
               bucketSorting: VALUE
+        - ogcProperty: publicationDateForResource
+          elasticProperty: publicationDateForResource
+          indexRecordProperty: resourceDateDetails.["publicationDateForResource"]
+          isSortable: true
+          isQueryable: true
         - ogcProperty: createDate
           elasticProperty: createDate
           indexRecordProperty: createDate

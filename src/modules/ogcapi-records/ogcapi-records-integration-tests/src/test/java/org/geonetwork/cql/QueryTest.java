@@ -650,6 +650,29 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         assertEquals("2023-05-24T14:40:04.056Z", ((List) additionalProps.get("createDate")).get(0));
     }
 
+    @Test
+    public void testPublicationDateForResource() throws Exception {
+        // resource publication date - not the metadata record's createDate
+        var props = getItemAdditionalProperties("00487222-9fc0-490c-8f28-07dda6df08fc");
+        assertEquals(List.of("2018-06-01"), props.get("publicationDateForResource"));
+
+        // all publication dates are returned
+        props = getItemAdditionalProperties("02a63353-b1ad-487b-a343-b4971eaf4a98");
+        assertEquals(List.of("2020-07-06", "2020-10-08"), props.get("publicationDateForResource"));
+
+        // no publication date -> property is left out
+        props = getItemAdditionalProperties("8698bf0b-fceb-4f0f-989b-111e7c4af0a4");
+        assertFalse(props.containsKey("publicationDateForResource"));
+    }
+
+    private Map<String, Object> getItemAdditionalProperties(String uuid) throws Exception {
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?id=" + uuid,
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertEquals(1, items.getNumberMatched());
+        return items.getFeatures().get(0).getProperties().getAdditionalProperties();
+    }
+
     // ----------------------------------------------------------------------------------------------------------
 
     /** tests that the dynamic properties are in the swagger document */
@@ -691,9 +714,12 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         var queryables = retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/queryables", OgcApiRecordsJsonSchemaDto.class);
 
-        assertEquals(20, queryables.getProperties().size());
+        assertEquals(21, queryables.getProperties().size());
         assertEquals("string", queryables.getProperties().get("createDate").getType());
         assertEquals("date", queryables.getProperties().get("createDate").getFormat());
+        assertEquals(
+                "date",
+                queryables.getProperties().get("publicationDateForResource").getFormat());
 
         assertEquals("string", queryables.getProperties().get("updateFrequency").getType());
         assertNotNull(queryables.getProperties().get("status"));
@@ -884,13 +910,16 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
         var sortables = retrieveUrlJson(
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/sortables", OgcApiRecordsJsonSchemaDto.class);
 
-        assertEquals(9, sortables.getProperties().size());
+        assertEquals(10, sortables.getProperties().size());
         assertEquals("string", sortables.getProperties().get("id").getType());
         assertEquals("number", sortables.getProperties().get("relevance").getType());
         assertEquals("string", sortables.getProperties().get("updateFrequency").getType());
 
         assertEquals("string", sortables.getProperties().get("createDate").getType());
         assertEquals("date", sortables.getProperties().get("createDate").getFormat());
+        assertEquals(
+                "date",
+                sortables.getProperties().get("publicationDateForResource").getFormat());
 
         assertEquals(
                 "number",
