@@ -40,7 +40,8 @@ import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.utility.MountableFile;
 
 /**
- * Tests the 00035 changeset that adds "publicationDateForResource" to the property mapping in the DB (#246).
+ * Tests the 00035 changeset that adds "issued" (the resource publication date) to the property mapping in the DB
+ * (#246).
  *
  * <p>The test DB is seeded from application-integration-test.yml, which doesn't have the property, and all changesets
  * are marked as already run. This re-runs 00035 against that DB, like an upgrade of an existing instance.
@@ -53,7 +54,7 @@ public class PublicationDateChangesetTest implements ApplicationContextInitializ
 
     public final String MAIN_COLLECTION_ID = "3bef299d-cf82-4033-871b-875f6936b2e2";
     private static final String CHANGESET_ID = "00035-ogcapi-field-mapping-publication-date";
-    private static final String PROPERTY = "publicationDateForResource";
+    private static final String PROPERTY = "issued";
 
     @Autowired
     protected MockMvc mockMvc;
