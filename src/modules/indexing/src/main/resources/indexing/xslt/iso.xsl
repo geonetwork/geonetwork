@@ -190,20 +190,19 @@
                 match="*:identificationInfo/*/*:graphicOverview/*">
     <xsl:param name="languages" as="node()*"/>
 
-    <xsl:variable name="fileName"
-                  select="*:fileName/(*:CharacterString[. != '']|*:FileName[@src != ''])"/>
+    <xsl:variable name="url"
+                  select="normalize-space((*:fileName/*:FileName/@src, *:fileName/*:CharacterString)[normalize-space() != ''][1])"/>
 
-    <overview>
-      <url>
-        <xsl:value-of
-          select="if (local-name($fileName) = 'FileName') then @src else normalize-space($fileName/text())"/>
-      </url>
-      <xsl:if test="normalize-space(*:fileDescription) != ''">,
-        <nameObject>
-          <xsl:copy-of select="gn-fn-index:add-multilingual-field('name', *:fileDescription, $languages)/*"/>
-        </nameObject>
-      </xsl:if>
-    </overview>
+    <xsl:if test="$url != ''">
+      <overview>
+        <url><xsl:value-of select="$url"/></url>
+        <xsl:if test="normalize-space(*:fileDescription) != ''">
+          <nameObject>
+            <xsl:copy-of select="gn-fn-index:add-multilingual-field('name', *:fileDescription, $languages)/*"/>
+          </nameObject>
+        </xsl:if>
+      </overview>
+    </xsl:if>
   </xsl:template>
 
 
