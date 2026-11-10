@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geonetwork.index.model.record.Link;
+import org.geonetwork.index.model.record.Overview;
 import org.junit.jupiter.api.Test;
 
 public class OgcApiGeoJsonConverterLinksTest {
@@ -65,6 +66,21 @@ public class OgcApiGeoJsonConverterLinksTest {
 
         assertEquals(1, result.size());
         assertEquals("https://example.com/ok", result.getFirst().getHref().toString());
+    }
+
+    @Test
+    public void testOverviewsWithoutUrlAreSkipped() {
+        var empty = new Overview();
+        var blank = new Overview();
+        blank.setUrl(" ");
+        var valid = new Overview();
+        valid.setUrl("https://example.com/thumb.png");
+
+        var result = OgcApiGeoJsonConverter.convertThumbnails(List.of(empty, blank, valid), "eng");
+
+        assertEquals(1, result.size());
+        assertEquals("https://example.com/thumb.png", result.getFirst().getUrl());
+        assertTrue(OgcApiGeoJsonConverter.convertThumbnails(null, "eng").isEmpty());
     }
 
     private static Link link(Map<String, String> url, String mimeType, String protocol) {

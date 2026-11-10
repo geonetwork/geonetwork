@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.geonetwork.application.ctrlreturntypes.RequestMediaTypeAndProfile;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiCollectionResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
@@ -40,6 +41,9 @@ public class ItemPageLinks extends BasicLinks {
         if (page.getProperties().getThumbnails() != null
                 && !page.getProperties().getThumbnails().isEmpty()) {
             for (var thumbnail : page.getProperties().getThumbnails()) {
+                if (StringUtils.isBlank(thumbnail.getUrl())) {
+                    continue;
+                }
                 try {
                     page.addLinksItem(new OgcApiRecordsLinkDto()
                             .rel("preview")
