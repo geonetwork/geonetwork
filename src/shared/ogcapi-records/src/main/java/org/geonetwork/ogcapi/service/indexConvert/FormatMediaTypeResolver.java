@@ -6,6 +6,7 @@ package org.geonetwork.ogcapi.service.indexConvert;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Splitter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class FormatMediaTypeResolver {
 
     static final String VOCABULARY_RESOURCE = "ogcapi/format-media-types.json";
 
+    private static final Splitter TOKEN_SPLITTER = Splitter.onPattern("[,;/\\s]+");
     private static final Pattern PARENTHESES = Pattern.compile("\\([^)]*\\)");
     private static final Pattern TRAILING_VERSION = Pattern.compile("\\s+(v|version\\s*)?\\d+(\\.\\d+)*$");
     private static final Pattern MEDIA_TYPE =
@@ -48,7 +50,11 @@ public class FormatMediaTypeResolver {
         this(config.getFormatMediaTypes());
     }
 
-    /** @param configuredEntries extra entries, they override the built-in ones (can be null) */
+    /**
+     * Creates a resolver from the built-in vocabulary plus the given entries.
+     *
+     * @param configuredEntries extra entries, they override the built-in ones (can be null)
+     */
     public FormatMediaTypeResolver(List<FormatMediaTypeEntry> configuredEntries) {
         register(loadBuiltInVocabulary());
         if (configuredEntries != null) {
@@ -57,8 +63,9 @@ public class FormatMediaTypeResolver {
     }
 
     /**
+     * Returns the media type for the given format name, or null if unknown.
+     *
      * @param formatName format name from the metadata
-     * @return media type, or null if unknown
      */
     public String resolve(String formatName) {
         if (formatName == null || formatName.isBlank()) {
@@ -87,7 +94,7 @@ public class FormatMediaTypeResolver {
         var matcher = PARENTHESES.matcher(full);
         while (matcher.find()) {
             var content = matcher.group();
-            for (var token : content.substring(1, content.length() - 1).split("[,;/\\s]+")) {
+            for (var token : TOKEN_SPLITTER.split(content.substring(1, content.length() - 1))) {
                 result.add(stripLeadingDot(token));
             }
         }
