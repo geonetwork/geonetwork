@@ -8,6 +8,10 @@ geonetwork:
     ogcapi-records-json:
       includeRawXML: false
       includeElasticJson: false
+      # Extra format name -> media type mappings for the item "formats" (override ogcapi/format-media-types.json)
+      formatMediaTypes: []
+      #  - mediaType: image/x-ecw
+      #    aliases: [ECW, Enhanced Compression Wavelet]
 
     defaultprofiles:
         profileDefaults:

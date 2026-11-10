@@ -4,8 +4,11 @@
  */
 package org.geonetwork.ogcapi.service.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import org.geonetwork.ogcapi.service.indexConvert.FormatMediaTypeEntry;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,4 +24,7 @@ public class OgcApiRecordsOutputConfig {
 
     /** include the elastic index json records (`IndexRecord` class) in the output. */
     public boolean includeElasticJson;
+
+    /** extra format name -> media type mappings, they override ogcapi/format-media-types.json. */
+    public List<FormatMediaTypeEntry> formatMediaTypes = new ArrayList<>();
 }

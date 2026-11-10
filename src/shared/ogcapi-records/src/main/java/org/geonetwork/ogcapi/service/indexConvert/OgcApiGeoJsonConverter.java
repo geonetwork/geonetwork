@@ -12,7 +12,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
@@ -38,6 +40,9 @@ public class OgcApiGeoJsonConverter {
 
     @Autowired
     DynamicPropertiesFacade dynamicPropertiesFacade;
+
+    @Autowired
+    FormatMediaTypeResolver formatMediaTypeResolver;
 
     /**
      * builder to construct a polygon from a bounding box.
@@ -192,10 +197,46 @@ public class OgcApiGeoJsonConverter {
             properties.setThumbnails(thumbnails);
         }
 
+        var formats = convertFormats(elasticIndexJsonRecord.getFormats(), formatMediaTypeResolver);
+        if (!formats.isEmpty()) {
+            properties.setFormats(formats);
+        }
+
         result.setProperties(properties);
 
         convertLinks(elasticIndexJsonRecord.getLinks(), iso3lang).forEach(result::addLinksItem);
 
+        return result;
+    }
+
+    /**
+     * Converts the index formats to OGC API formats, skipping blank and duplicate names.
+     *
+     * @param formats index format names (can be null)
+     * @param resolver to find the media type
+     * @return formats, empty if none
+     */
+    static List<OgcApiRecordsFormatDto> convertFormats(List<String> formats, FormatMediaTypeResolver resolver) {
+        if (formats == null) {
+            return List.of();
+        }
+        var seen = new HashSet<String>();
+        var result = new ArrayList<OgcApiRecordsFormatDto>();
+        for (var format : formats) {
+            if (isBlank(format)) {
+                continue;
+            }
+            var name = format.trim();
+            if (!seen.add(name.toLowerCase(Locale.ROOT))) {
+                continue;
+            }
+            var dto = new OgcApiRecordsFormatDto().name(name);
+            var mediaType = resolver.resolve(name);
+            if (mediaType != null) {
+                dto.setMediaType(mediaType);
+            }
+            result.add(dto);
+        }
         return result;
     }
 
