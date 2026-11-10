@@ -40,7 +40,7 @@ public class FormatMediaTypeResolver {
     private static final Pattern PARENTHESES = Pattern.compile("\\([^)]*\\)");
     private static final Pattern TRAILING_VERSION = Pattern.compile("\\s+(v|version\\s*)?\\d+(\\.\\d+)*$");
     private static final Pattern MEDIA_TYPE = Pattern.compile(
-        "^(application|audio|font|image|message|model|multipart|text|video)/[a-z0-9][a-z0-9!#$&^_.+-]*(;.*)?$");
+            "^(application|audio|font|image|message|model|multipart|text|video)/[a-z0-9][a-z0-9!#$&^_.+-]*(;.*)?$");
 
     /** normalized alias -> media type */
     private final Map<String, String> aliasToMediaType = new HashMap<>();
