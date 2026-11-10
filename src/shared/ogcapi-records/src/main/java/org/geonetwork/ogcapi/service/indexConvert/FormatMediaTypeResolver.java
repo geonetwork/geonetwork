@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
+import org.geonetwork.ogcapi.service.configuration.FormatMediaTypeEntry;
 import org.geonetwork.ogcapi.service.configuration.OgcApiRecordsOutputConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
