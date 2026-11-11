@@ -16,6 +16,7 @@ import java.util.Optional;
 import org.geonetwork.domain.Source;
 import org.geonetwork.domain.repository.SourceRepository;
 import org.geonetwork.index.model.record.IndexRecord;
+import org.geonetwork.index.model.record.Overview;
 import org.geonetwork.metadata.MetadataManager;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsMultiRecordResponse;
 import org.geonetwork.ogcapi.ctrlreturntypes.OgcApiRecordsSingleRecordResponse;
@@ -116,5 +117,30 @@ class RssCollectionMessageWriterTest {
                 .build();
 
         assertFalse(diff.hasDifferences(), diff.toString());
+    }
+
+    @Test
+    void skipsOverviewWithoutUrl() throws Exception {
+        var contentType = MediaType.valueOf("application/rss+xml");
+        when(sourceRepository.findById("main")).thenReturn(Optional.empty());
+        when(metadataManager.getPermalinkUrlBuilder("all")).thenReturn(uuid -> "https://example.org/" + uuid);
+
+        var valid = new Overview();
+        valid.setUrl("https://example.org/thumb.jpg");
+        var indexRecord = new IndexRecord();
+        indexRecord.setUuid("record-1");
+        indexRecord.setOverview(List.of(new Overview(), valid));
+
+        var response = new OgcApiRecordsMultiRecordResponse();
+        response.setCatalogId("main");
+        response.setRecords(
+                List.of(new OgcApiRecordsSingleRecordResponse("main", "record-1", indexRecord, null, null)));
+        response.setJsonLink(URI.create("https://example.org/items?f=json"));
+
+        var output = new MockHttpOutputMessage();
+        writer.write(response, contentType, output);
+
+        assertTrue(output.getBodyAsString()
+                .contains("<enclosure url=\"https://example.org/thumb.jpg\" length=\"0\" type=\"image/jpeg\""));
     }
 }

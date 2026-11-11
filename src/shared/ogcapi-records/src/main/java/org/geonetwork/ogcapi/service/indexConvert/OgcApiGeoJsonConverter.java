@@ -20,6 +20,7 @@ import org.geonetwork.domain.Metadata;
 import org.geonetwork.domain.repository.MetadataRepository;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.index.model.record.Link;
+import org.geonetwork.index.model.record.Overview;
 import org.geonetwork.ogcapi.records.generated.model.*;
 import org.geonetwork.ogcapi.service.configuration.OgcApiRecordsOutputConfig;
 import org.geonetwork.ogcapi.service.indexConvert.dynamic.DynamicPropertiesFacade;
@@ -187,13 +188,8 @@ public class OgcApiGeoJsonConverter {
             }
         }
 
-        if (elasticIndexJsonRecord.getOverview() != null
-                && !elasticIndexJsonRecord.getOverview().isEmpty()) {
-            var thumbnails = elasticIndexJsonRecord.getOverview().stream()
-                    .map(overview -> new OgcApiRecordsThumbnailsDto()
-                            .name(getLangString(overview.getName(), iso3lang))
-                            .url(overview.getUrl()))
-                    .toList();
+        var thumbnails = convertThumbnails(elasticIndexJsonRecord.getOverview(), iso3lang);
+        if (!thumbnails.isEmpty()) {
             properties.setThumbnails(thumbnails);
         }
 
@@ -207,6 +203,19 @@ public class OgcApiGeoJsonConverter {
         convertLinks(elasticIndexJsonRecord.getLinks(), iso3lang).forEach(result::addLinksItem);
 
         return result;
+    }
+
+    /** Converts the index overviews to thumbnails. Overviews without a URL are skipped. */
+    static List<OgcApiRecordsThumbnailsDto> convertThumbnails(List<Overview> overviews, String iso3lang) {
+        if (overviews == null) {
+            return List.of();
+        }
+        return overviews.stream()
+                .filter(overview -> !isBlank(overview.getUrl()))
+                .map(overview -> new OgcApiRecordsThumbnailsDto()
+                        .name(getLangString(overview.getName(), iso3lang))
+                        .url(overview.getUrl().trim()))
+                .toList();
     }
 
     /**

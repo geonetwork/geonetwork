@@ -145,11 +145,14 @@ public class RssCollectionMessageWriter implements HttpMessageConverter<OgcApiRe
                     writeSimpleElement(writer, "pubDate", pubDate);
                 }
 
-                List<Overview> overviewList = indexRecord.getOverview();
-                if (overviewList != null
-                        && !overviewList.isEmpty()
-                        && overviewList.getFirst().getUrl() != null) {
-                    var overviewUrl = resolveAbsoluteUrl(overviewList.getFirst().getUrl());
+                var overviewList =
+                        Optional.ofNullable(indexRecord.getOverview()).orElse(List.of());
+                var firstUrl = overviewList.stream()
+                        .map(Overview::getUrl)
+                        .filter(StringUtils::isNotBlank)
+                        .findFirst();
+                if (firstUrl.isPresent()) {
+                    var overviewUrl = resolveAbsoluteUrl(firstUrl.get().trim());
                     var mimeType = inferImageMimeType(overviewUrl);
 
                     writer.writeStartElement("enclosure");
