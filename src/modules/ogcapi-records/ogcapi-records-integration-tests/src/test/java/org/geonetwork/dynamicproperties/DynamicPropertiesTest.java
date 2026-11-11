@@ -15,6 +15,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.StreamSupport;
 import lombok.SneakyThrows;
@@ -582,6 +583,37 @@ public class DynamicPropertiesTest implements ApplicationContextInitializer<Conf
     }
 
     // ----------------------------
+
+    /** index "format" is returned as "formats" */
+    @Test
+    public void testFormats() throws Exception {
+        var items = ElasticPgMvcTestHelper.retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?limit=100",
+                OgcApiRecordsGetRecords200ResponseDto.class,
+                BASE_URL,
+                mockMvc,
+                objectMapper);
+
+        var formats = items.getFeatures().stream()
+                .flatMap(x -> x.getProperties().getFormats().stream())
+                .toList();
+
+        assertFalse(formats.isEmpty());
+        formats.forEach(f -> assertFalse(f.getName() == null || f.getName().isBlank()));
+
+        var mediaTypeByName = new HashMap<String, String>();
+        formats.forEach(f -> mediaTypeByName.put(f.getName(), f.getMediaType()));
+        assertEquals("application/zip", mediaTypeByName.get("ESRI Shapefile"));
+        assertEquals("application/geo+json", mediaTypeByName.get("geojson"));
+        assertEquals("text/csv", mediaTypeByName.get("csv"));
+        assertEquals("application/pdf", mediaTypeByName.get("PDF"));
+        // "format" itself is not in the output
+        items.getFeatures()
+                .forEach(x -> assertNull(
+                        x.getProperties().getAdditionalProperties() == null
+                                ? null
+                                : x.getProperties().getAdditionalProperties().get("format")));
+    }
 
     private void assertValue(OgcApiRecordsRecordGeoJSONDto feature, String ogcpname, Object expectedvalue) {
         var actualValue = feature.getProperties().getAdditionalProperties().get(ogcpname);
