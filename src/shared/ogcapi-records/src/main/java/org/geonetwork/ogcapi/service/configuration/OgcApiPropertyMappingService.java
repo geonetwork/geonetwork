@@ -6,7 +6,10 @@ package org.geonetwork.ogcapi.service.configuration;
 
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.geonetwork.domain.OgcApiFacetConfig;
@@ -14,16 +17,19 @@ import org.geonetwork.domain.OgcApiFieldMapping;
 import org.geonetwork.domain.OgcApiFilterFacet;
 import org.geonetwork.domain.OgcApiPropertyMapping;
 import org.geonetwork.domain.repository.OgcApiPropertyMappingRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionOperations;
 
 /**
  * Manages the OGC API property-mapping configuration in the database.
  *
- * <p>On first startup, seeds the DB from the YAML-bound {@link OgcElasticFieldsMapperConfig}. Subsequent reads come
- * from the DB. Updates increment the {@code update_sequence} counter and publish an {@link OgcApiConfigChangedEvent} so
- * in-memory caches (e.g. {@code DynamicPropertiesFacade}) can reload.
+ * <p>On first startup, seeds the DB from the YAML-bound {@link OgcElasticFieldsMapperConfig}; on later startups, adds
+ * the YAML fields missing in the DB (see {@link #seedFromYaml()}). Subsequent reads come from the DB. Updates increment
+ * the {@code update_sequence} counter and publish an {@link OgcApiConfigChangedEvent} so in-memory caches (e.g.
+ * {@code DynamicPropertiesFacade}) can reload.
  */
 @Service
 @Slf4j
@@ -35,15 +41,66 @@ public class OgcApiPropertyMappingService {
     private final OgcApiPropertyMappingRepository repository;
     private final OgcElasticFieldsMapperConfig yamlConfig;
     private final ApplicationEventPublisher eventPublisher;
+    private final TransactionOperations transactionOperations;
 
+    /**
+     * Whether to add the YAML fields missing in the DB on startup. Set to false when fields deleted through the API
+     * must stay deleted.
+     */
+    @Value("${geonetwork.openapi-records.ogcapi-property-mapping-add-missing-on-startup:true}")
+    boolean addMissingOnStartup = true;
+
+    /**
+     * Seeds the DB from the YAML on first startup. On later startups, adds the YAML fields whose {@code ogcProperty} is
+     * not in the DB yet, so fields added to the YAML after the first seed also reach existing installations (for
+     * example when the database changesets that add them are not run).
+     *
+     * <p>Fields already in the DB are never changed or removed: edits made through {@link #updateConfig} are kept. A
+     * field deleted through the API comes back on the next startup while it is still in the YAML, unless
+     * {@code geonetwork.openapi-records.ogcapi-property-mapping-add-missing-on-startup} is false.
+     *
+     * <p>Runs in its own transaction because {@code @PostConstruct} is not called through the transactional proxy and
+     * the fields are loaded lazily. No {@link OgcApiConfigChangedEvent} is needed: the caches load the configuration
+     * after this bean is initialized.
+     */
     @PostConstruct
-    void seedFromYamlIfAbsent() {
-        if (repository.existsById(CONFIG_ID)) {
+    void seedFromYaml() {
+        transactionOperations.executeWithoutResult(status -> {
+            Optional<OgcApiPropertyMapping> existing = repository.findById(CONFIG_ID);
+            if (existing.isEmpty()) {
+                repository.save(buildEntityFromYaml(yamlConfig));
+                log.info("Seeded OGC API property-mapping config from YAML into DB.");
+            } else if (addMissingOnStartup) {
+                addMissingFieldsFromYaml(existing.get());
+            }
+        });
+    }
+
+    private void addMissingFieldsFromYaml(OgcApiPropertyMapping entity) {
+        Set<String> known = new HashSet<>();
+        int nextOrder = 0;
+        for (OgcApiFieldMapping field : entity.getFields()) {
+            known.add(field.getOgcProperty());
+            nextOrder = Math.max(nextOrder, field.getSortOrder() + 1);
+        }
+        List<String> added = new ArrayList<>();
+        for (OgcElasticFieldMapperConfig fieldConfig : yamlConfig.getFields()) {
+            String ogcProperty = fieldConfig.getOgcProperty();
+            if (ogcProperty == null || !known.add(ogcProperty)) {
+                continue;
+            }
+            entity.getFields().add(toFieldEntity(fieldConfig, entity, nextOrder++));
+            added.add(ogcProperty);
+        }
+        if (added.isEmpty()) {
             return;
         }
-        OgcApiPropertyMapping entity = buildEntityFromYaml(yamlConfig);
+        entity.setUpdateSequence(entity.getUpdateSequence() + 1);
         repository.save(entity);
-        log.info("Seeded OGC API property-mapping config from YAML into DB.");
+        log.info(
+                "Added OGC API property mappings from YAML missing in DB: {} (updateSequence={}).",
+                added,
+                entity.getUpdateSequence());
     }
 
     /** Returns the current configuration, loaded from the DB. */
