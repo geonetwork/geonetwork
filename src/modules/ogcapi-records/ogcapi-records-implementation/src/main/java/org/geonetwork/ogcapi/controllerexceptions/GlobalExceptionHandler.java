@@ -11,6 +11,8 @@ import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsExceptionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -74,6 +76,16 @@ public class GlobalExceptionHandler {
         OgcApiRecordsExceptionDto exception =
                 new OgcApiRecordsExceptionDto().code("404").description(e.getMessage());
         return new ResponseEntity<OgcApiRecordsExceptionDto>(exception, HttpStatusCode.valueOf(404));
+    }
+
+    /**
+     * Let Spring Security handle access/authentication failures (401 for anonymous, 403 for authenticated users)
+     * instead of the catch-all below turning them into a 500. Rethrowing leaves the exception unresolved so it reaches
+     * the ExceptionTranslationFilter.
+     */
+    @ExceptionHandler(value = {AccessDeniedException.class, AuthenticationException.class})
+    public void rethrowSecurityException(RuntimeException e) {
+        throw e;
     }
 
     @ExceptionHandler(value = Exception.class)
