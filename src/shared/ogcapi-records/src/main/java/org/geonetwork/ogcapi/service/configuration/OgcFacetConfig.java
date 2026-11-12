@@ -61,6 +61,7 @@ public class OgcFacetConfig {
         this.facetName = other.facetName;
         this.facetType = other.facetType;
         this.bucketSorting = other.bucketSorting;
+        this.bucketSortingDirection = other.bucketSortingDirection;
         this.bucketCount = other.bucketCount;
         this.minimumDocumentCount = other.minimumDocumentCount;
         this.numberBucketInterval = other.numberBucketInterval;
