@@ -50,6 +50,36 @@ class OgcApiPropertyMappingServiceTest {
     }
 
     @Test
+    void seedFromYamlIfAbsent_keepsHardBounds() {
+        var facet = new OgcFacetConfig();
+        facet.setFacetName("temporalExtent");
+        facet.setFacetType(FacetType.HISTOGRAM_FIXED_INTERVAL);
+        facet.setCalendarIntervalUnit(CalendarIntervalUnit.year);
+        facet.setHardBoundsMin("1900");
+        facet.setHardBoundsMax("now/y");
+        var field = new OgcElasticFieldMapperConfig();
+        field.setOgcProperty("temporalExtent");
+        field.setFacetsConfig(List.of(facet));
+        yamlConfig.setFields(List.of(field));
+        when(repository.existsById(OgcApiPropertyMappingService.CONFIG_ID)).thenReturn(false);
+
+        service.seedFromYamlIfAbsent();
+
+        var captor = ArgumentCaptor.forClass(OgcApiPropertyMapping.class);
+        verify(repository).save(captor.capture());
+        var savedFacet = captor.getValue().getFields().get(0).getFacets().get(0);
+        assertEquals("1900", savedFacet.getHardBoundsMin());
+        assertEquals("now/y", savedFacet.getHardBoundsMax());
+
+        // and back from the DB
+        when(repository.findById(OgcApiPropertyMappingService.CONFIG_ID)).thenReturn(Optional.of(captor.getValue()));
+        var loadedFacet =
+                service.getConfig().getFields().get(0).getFacetsConfig().get(0);
+        assertEquals("1900", loadedFacet.getHardBoundsMin());
+        assertEquals("now/y", loadedFacet.getHardBoundsMax());
+    }
+
+    @Test
     void seedFromYamlIfAbsent_doesNotInsertWhenRowExists() {
         when(repository.existsById(OgcApiPropertyMappingService.CONFIG_ID)).thenReturn(true);
 

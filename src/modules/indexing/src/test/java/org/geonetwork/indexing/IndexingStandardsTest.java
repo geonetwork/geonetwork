@@ -18,6 +18,7 @@ import org.geonetwork.domain.Metadata;
 import org.geonetwork.index.model.record.IndexRecord;
 import org.geonetwork.index.model.record.IndexRecords;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +64,40 @@ class IndexingStandardsTest {
         String expectedIndexDocument = IOUtils.toString(
                 new ClassPathResource(fileBaseName + ".json").getInputStream(), StandardCharsets.UTF_8);
 
+        IndexRecord indexRecord = index(schema, fileBaseName, xml);
+
+        indexRecord.setIndexingDate("");
+        indexRecord.setId(null);
+        expectedIndexDocument = expectedIndexDocument
+                .replaceAll(" +\"indexingDate\" : \".*\",\n", "")
+                .trim();
+        expectedIndexDocument =
+                expectedIndexDocument.replaceAll(" +\"id\" : \"[0-9]+\",\n", "").trim();
+
+        assertEquals(
+                expectedIndexDocument,
+                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(indexRecord),
+                indexRecord.getUuid());
+    }
+
+    /** A temporal extent of a single date is a range that starts and ends on that date, not an open-ended one. */
+    @Test
+    void test_indexing_single_date_temporal_extent() throws Exception {
+        String xml = IOUtils.toString(
+                        new ClassPathResource("samples/iso19115-3.2018_dataset.xml").getInputStream(),
+                        StandardCharsets.UTF_8)
+                .replace("2020-04-24</gml:endPosition>", "2020-04-01</gml:endPosition>");
+
+        IndexRecord indexRecord = index("iso19115-3.2018", "single-date-extent", xml);
+
+        var range = indexRecord.getResourceTemporalExtentDateRange().getFirst();
+        assertEquals("2020-03-31T22:00:00.000Z", range.getGte());
+        assertEquals(range.getGte(), range.getLte());
+    }
+
+    private IndexRecord index(String schema, String uuid, String xml) {
         Metadata dbRecord = Metadata.builder()
-                .uuid(fileBaseName)
+                .uuid(uuid)
                 .istemplate("n")
                 .schemaid(schema)
                 .changedate("2020-01-01T00:00:00Z")
@@ -80,18 +113,6 @@ class IndexingStandardsTest {
 
         IndexRecords indexRecords = indexingRecordService.collectProperties(schema, List.of(dbRecord));
         IndexRecord indexRecord = indexRecords.getIndexRecord().getFirst();
-
-        indexRecord.setIndexingDate("");
-        indexRecord.setId(null);
-        expectedIndexDocument = expectedIndexDocument
-                .replaceAll(" +\"indexingDate\" : \".*\",\n", "")
-                .trim();
-        expectedIndexDocument =
-                expectedIndexDocument.replaceAll(" +\"id\" : \"[0-9]+\",\n", "").trim();
-
-        assertEquals(
-                expectedIndexDocument,
-                new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(indexRecord),
-                indexRecord.getUuid());
+        return indexRecord;
     }
 }

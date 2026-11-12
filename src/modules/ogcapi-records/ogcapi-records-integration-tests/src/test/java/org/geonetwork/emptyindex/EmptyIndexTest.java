@@ -173,7 +173,8 @@ public class EmptyIndexTest implements ApplicationContextInitializer<Configurabl
         assertNotNull(items);
         assertEquals(0, items.getFeatures().size());
 
-        // there ought to be more, but some removed because of the missing values
-        assertEquals(9, items.getFacets().size());
+        // there ought to be more, but some removed because of the missing values (temporalExtent has a typeOverride, so
+        // it stays)
+        assertEquals(10, items.getFacets().size());
     }
 }

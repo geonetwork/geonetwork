@@ -133,6 +133,8 @@ public class OgcApiPropertyMappingService {
                 facetEntity.getCalendarIntervalUnit() != null
                         ? CalendarIntervalUnit.valueOf(facetEntity.getCalendarIntervalUnit())
                         : null);
+        facet.setHardBoundsMin(facetEntity.getHardBoundsMin());
+        facet.setHardBoundsMax(facetEntity.getHardBoundsMax());
         List<FilterFacetInfo> filters = new ArrayList<>();
         for (OgcApiFilterFacet filterEntity : facetEntity.getFilters()) {
             filters.add(toFilterInfo(filterEntity));
@@ -217,6 +219,8 @@ public class OgcApiPropertyMappingService {
                         facetConfig.getCalendarIntervalUnit() != null
                                 ? facetConfig.getCalendarIntervalUnit().name()
                                 : null)
+                .hardBoundsMin(facetConfig.getHardBoundsMin())
+                .hardBoundsMax(facetConfig.getHardBoundsMax())
                 .build();
         int filterOrder = 0;
         if (facetConfig.getFilters() != null) {

@@ -45,6 +45,15 @@ public class OgcFacetConfig {
     /** For HISTOGRAM_FIXED_INTERVAL with a Date datatype - interval size (date range) */
     public CalendarIntervalUnit calendarIntervalUnit;
 
+    /**
+     * For HISTOGRAM_FIXED_INTERVAL with a Date datatype - no buckets before/after these dates (elastic date math, i.e.
+     * "1900" or "now/y"). Required on a date range field holding ranges without an end: elastic otherwise tries to
+     * create a bucket for every year up to the maximum date, and the whole search fails.
+     */
+    public String hardBoundsMin;
+
+    public String hardBoundsMax;
+
     /** only valid for FILTER facets - these are the individual filters. */
     public List<FilterFacetInfo> filters;
 
@@ -65,6 +74,8 @@ public class OgcFacetConfig {
         this.minimumDocumentCount = other.minimumDocumentCount;
         this.numberBucketInterval = other.numberBucketInterval;
         this.calendarIntervalUnit = other.calendarIntervalUnit;
+        this.hardBoundsMin = other.hardBoundsMin;
+        this.hardBoundsMax = other.hardBoundsMax;
 
         // Deep copy the List (assuming FilterFacetInfo also has a copy constructor)
         if (other.filters != null) {

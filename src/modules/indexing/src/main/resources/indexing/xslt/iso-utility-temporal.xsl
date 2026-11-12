@@ -104,7 +104,7 @@
           <gte>
             <xsl:value-of select="$zuluStartDate"/>
           </gte>
-          <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
+          <xsl:if test="$zuluStartDate &lt;= $zuluEndDate and not($end/@indeterminatePosition = 'now')">
             <lte>
               <xsl:value-of select="$zuluEndDate"/>
             </lte>
@@ -114,7 +114,7 @@
           <gte>
             <xsl:value-of select="$zuluStartDate"/>
           </gte>
-          <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
+          <xsl:if test="$zuluStartDate &lt;= $zuluEndDate and not($end/@indeterminatePosition = 'now')">
             <lte>
               <xsl:value-of select="$zuluEndDate"/>
             </lte>
