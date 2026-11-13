@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Adds the resolutionScaleDenominatorRanges FILTER facet (#259): a count for each of 4 fixed
+    scale ranges (up to 100,000 / 100,000 to 1,000,000 / 1,000,000 to 10,000,000 / above 10,000,000).
+
+    bucketSorting: VALUE sorts filter buckets by name, hence the 1_ to 4_ prefixes.
+
+    Same upgrade-only pattern as 00034: only inserts when the resolutionScaleDenominator mapping exists
+    and the facet isn't there yet. On a brand new install the facet comes from
+    config/application-ogcapi-records.yml.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00037-ogcapi-facet-config-scale-ranges" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'resolutionScaleDenominator')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_facet_config fc
+                                            JOIN ogcapi_field_mapping fm ON fm.id = fc.field_mapping_id
+                                            WHERE fm.config_id = 'property-mapping' AND fc.facet_name = 'resolutionScaleDenominatorRanges')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO ogcapi_facet_config (field_mapping_id, sort_order, facet_name, facet_type, bucket_sorting, bucket_sorting_direction)
+            SELECT fm.id,
+                   (SELECT COALESCE(MAX(fc.sort_order) + 1, 0) FROM ogcapi_facet_config fc WHERE fc.field_mapping_id = fm.id),
+                   'resolutionScaleDenominatorRanges', 'FILTER', 'VALUE', 'ASCENDING'
+            FROM ogcapi_field_mapping fm
+            WHERE fm.config_id = 'property-mapping' AND fm.ogc_property = 'resolutionScaleDenominator';
+
+            INSERT INTO ogcapi_filter_facet (facet_config_id, sort_order, filter_name, filter_equation_cql)
+            SELECT fc.id, f.sort_order, f.filter_name, f.filter_equation_cql
+            FROM ogcapi_facet_config fc
+            JOIN ogcapi_field_mapping fm ON fm.id = fc.field_mapping_id
+            CROSS JOIN (VALUES
+                (0, '1_upTo100000', 'resolutionScaleDenominator &lt; 100000'),
+                (1, '2_100000to1000000', 'resolutionScaleDenominator &gt;= 100000 AND resolutionScaleDenominator &lt; 1000000'),
+                (2, '3_1000000to10000000', 'resolutionScaleDenominator &gt;= 1000000 AND resolutionScaleDenominator &lt; 10000000'),
+                (3, '4_above10000000', 'resolutionScaleDenominator &gt;= 10000000')
+            ) AS f(sort_order, filter_name, filter_equation_cql)
+            WHERE fm.config_id = 'property-mapping' AND fc.facet_name = 'resolutionScaleDenominatorRanges';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

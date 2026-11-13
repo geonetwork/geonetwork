@@ -161,6 +161,20 @@ geonetwork:
               facetType: HISTOGRAM_FIXED_BUCKET_COUNT
               bucketCount: 5
               bucketSorting: VALUE
+            # Counts per fixed scale range. bucketSorting: VALUE sorts filter buckets by name, hence the 1_ to 4_ prefixes.
+            - facetName: resolutionScaleDenominatorRanges
+              facetType: FILTER
+              bucketSorting: VALUE
+              bucketSortingDirection: ASCENDING
+              filters:
+                - filterName: 1_upTo100000
+                  filterEquationCql: resolutionScaleDenominator < 100000
+                - filterName: 2_100000to1000000
+                  filterEquationCql: resolutionScaleDenominator >= 100000 AND resolutionScaleDenominator < 1000000
+                - filterName: 3_1000000to10000000
+                  filterEquationCql: resolutionScaleDenominator >= 1000000 AND resolutionScaleDenominator < 10000000
+                - filterName: 4_above10000000
+                  filterEquationCql: resolutionScaleDenominator >= 10000000
         - ogcProperty: popularity
           elasticProperty: popularity
           indexRecordProperty: popularity
