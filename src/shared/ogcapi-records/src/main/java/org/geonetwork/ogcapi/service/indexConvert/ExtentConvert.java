@@ -60,10 +60,8 @@ public class ExtentConvert {
      * @return ogcapi-records temporal extent
      */
     public static OgcApiRecordsExtentTemporalDto convertTemporalExtent(IndexRecord indexRecord) {
-        var dateRanges = indexRecord.getResourceTemporalDateRange();
-        if (dateRanges == null || dateRanges.isEmpty()) {
-            dateRanges = indexRecord.getResourceTemporalExtentDateRange();
-        }
+        // Extent only: resourceTemporalDateRange also holds the creation, publication and revision dates
+        var dateRanges = indexRecord.getResourceTemporalExtentDateRange();
         if (dateRanges == null || dateRanges.isEmpty()) {
             return null;
         }
