@@ -124,8 +124,9 @@ public class TemporalExtentChangesetTest implements ApplicationContextInitialize
     public void testChangesetInsertsFacetOnce() throws Exception {
         assertEquals(1, countFieldRows());
         assertEquals(
-                "now/y",
-                queryString("SELECT fc.hard_bounds_max FROM ogcapi_facet_config fc"
+                "0|1900|now/y",
+                queryString("SELECT fc.minimum_document_count || '|' || fc.hard_bounds_min || '|' || fc.hard_bounds_max"
+                        + " FROM ogcapi_facet_config fc"
                         + " JOIN ogcapi_field_mapping fm ON fm.id = fc.field_mapping_id"
                         + " WHERE fm.config_id = 'property-mapping' AND fm.ogc_property = 'temporalExtent'"));
 

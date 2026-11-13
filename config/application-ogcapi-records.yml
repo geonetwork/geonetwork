@@ -150,7 +150,10 @@ geonetwork:
             - facetName: temporalExtent
               facetType: HISTOGRAM_FIXED_INTERVAL
               calendarIntervalUnit: YEAR
-              # ongoing extents have no end: stop at the current year
+              # every year from the first to the last year with records, empty ones with a count of 0
+              minimumDocumentCount: 0
+              # from 1900 (ignores wrong dates such as 0201) to the current year (ongoing extents have no end)
+              hardBoundsMin: "1900"
               hardBoundsMax: now/y
               bucketCount: 500
               bucketSorting: VALUE

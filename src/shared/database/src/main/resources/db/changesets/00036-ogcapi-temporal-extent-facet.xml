@@ -10,8 +10,10 @@
     covers each year (see geonetwork/geonetwork#260).
 
     The facet needs hard bounds: ongoing temporal extents have no end date, and without an upper
-    bound Elasticsearch tries to create a bucket for every year to come and the search fails. So
-    ogcapi_facet_config gets hard_bounds_min / hard_bounds_max columns first.
+    bound Elasticsearch tries to create a bucket for every year to come and the search fails. A
+    wrong start date far in the past (e.g. 0201) has the same effect at the other end. So
+    ogcapi_facet_config gets hard_bounds_min / hard_bounds_max columns first. Empty years are
+    returned with a count of 0 (minimum_document_count 0).
 
     The field and facet rows follow the upgrade-only pattern of 00030/00034: they are only inserted
     when the ogcapi_property_mapping config row already exists and the mapping isn't present yet.
@@ -62,9 +64,11 @@
         </preConditions>
         <sql>
             INSERT INTO ogcapi_facet_config (field_mapping_id, sort_order, facet_name, facet_type, calendar_interval_unit,
-                                             hard_bounds_max, bucket_count, bucket_sorting, bucket_sorting_direction)
+                                             minimum_document_count, hard_bounds_min, hard_bounds_max,
+                                             bucket_count, bucket_sorting, bucket_sorting_direction)
             SELECT id, 0, 'temporalExtent', 'HISTOGRAM_FIXED_INTERVAL', 'year',
-                   'now/y', 500, 'VALUE', 'ASCENDING'
+                   0, '1900', 'now/y',
+                   500, 'VALUE', 'ASCENDING'
             FROM ogcapi_field_mapping
             WHERE config_id = 'property-mapping' AND ogc_property = 'temporalExtent'
         </sql>

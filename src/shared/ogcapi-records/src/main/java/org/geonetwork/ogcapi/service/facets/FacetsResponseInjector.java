@@ -178,7 +178,7 @@ public class FacetsResponseInjector {
         handleBuckets(
                 result,
                 defaultBucketCount,
-                0,
+                histogramDto.getMinimumDocumentCount(),
                 histogramDto.getBucketSorting(),
                 sortType,
                 false,
@@ -349,7 +349,7 @@ public class FacetsResponseInjector {
         handleBuckets(
                 result,
                 defaultBucketCount,
-                0,
+                filterDto.getMinimumDocumentCount(),
                 filterDto.getBucketSorting(),
                 SortType.STRING,
                 false,
@@ -368,13 +368,13 @@ public class FacetsResponseInjector {
      *
      * @param result all buckets
      * @param defaultBucketCount default # of buckets
-     * @param minOccurs bucket must contain at lease this number of items
+     * @param minOccurs bucket must contain at least this number of items (0 keeps empty buckets, i.e. empty years)
      * @param sortedBy sorting option (alphabetical for term or count of documents)
      * @param moreDocs there were more documents that were not returned by elastic
      * @param bucketCount how many buckets are configured?
      * @param bucketSortingDirection desc/asc
      */
-    private void handleBuckets(
+    void handleBuckets(
             OgcApiRecordsFacetSummaryDto result,
             Integer defaultBucketCount,
             Integer minOccurs,
@@ -391,7 +391,7 @@ public class FacetsResponseInjector {
 
         var nBuckets = (bucketCount == null || bucketCount <= 0) ? defaultBucketCount : bucketCount;
 
-        if (minOccurs == null || minOccurs == 0 || minOccurs <= 0) {
+        if (minOccurs == null || minOccurs < 0) {
             minOccurs = 1;
         }
         if (sortedBy == null) {
