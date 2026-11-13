@@ -98,6 +98,11 @@
                   select="if (gn-fn-index:is-isoDate($end)) then util:convertToISOZuluDateTime($end) else ''"/>
 
     <xsl:choose>
+      <!-- Start after end: not a usable period. Index no range rather than an open-ended one;
+           the temporalRangeLowerGreaterThanUpper warning below flags the record. -->
+      <xsl:when test="$zuluStartDate != '' and $zuluEndDate != ''
+                      and $zuluStartDate &gt; $zuluEndDate
+                      and not($end/@indeterminatePosition = 'now')"/>
       <xsl:when test="$zuluStartDate != ''
                                 and ($zuluEndDate != '' or $end/@indeterminatePosition = 'now')">
         <resourceTemporalDateRange>
@@ -132,7 +137,7 @@
 
     <xsl:if test="$zuluStartDate != ''
                           and $zuluEndDate != ''
-                          and $start &gt; $end">
+                          and $zuluStartDate &gt; $zuluEndDate">
       <indexingErrorMsg>
         <string>indexingErrorMsg-temporalRangeLowerGreaterThanUpper</string>
         <type>warning</type>
@@ -140,7 +145,8 @@
           <lowerBound>
             <xsl:value-of select="$start"/>
           </lowerBound>
-          <upperBound><xsl:value-of select="$end"/>"
+          <upperBound>
+            <xsl:value-of select="$end"/>
           </upperBound>
         </values>
       </indexingErrorMsg>

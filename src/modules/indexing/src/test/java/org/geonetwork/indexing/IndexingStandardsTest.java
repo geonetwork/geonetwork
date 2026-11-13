@@ -6,6 +6,7 @@
 package org.geonetwork.indexing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
@@ -93,6 +94,24 @@ class IndexingStandardsTest {
         var range = indexRecord.getResourceTemporalExtentDateRange().getFirst();
         assertEquals("2020-03-31T22:00:00.000Z", range.getGte());
         assertEquals(range.getGte(), range.getLte());
+    }
+
+    /** A temporal extent that ends before it starts is not indexed as a range, only flagged with a warning. */
+    @Test
+    void test_indexing_end_before_start_temporal_extent() throws Exception {
+        String xml = IOUtils.toString(
+                        new ClassPathResource("samples/iso19115-3.2018_dataset.xml").getInputStream(),
+                        StandardCharsets.UTF_8)
+                .replace("2020-04-24</gml:endPosition>", "2019-04-24</gml:endPosition>");
+
+        IndexRecord indexRecord = index("iso19115-3.2018", "end-before-start-extent", xml);
+
+        var ranges = indexRecord.getResourceTemporalExtentDateRange();
+        assertTrue(ranges == null || ranges.isEmpty(), "no temporal extent range: " + ranges);
+        assertTrue(
+                indexRecord.getIndexingErrorMsg().stream()
+                        .anyMatch(m -> "indexingErrorMsg-temporalRangeLowerGreaterThanUpper".equals(m.getString())),
+                "warning: " + indexRecord.getIndexingErrorMsg());
     }
 
     private IndexRecord index(String schema, String uuid, String xml) {
