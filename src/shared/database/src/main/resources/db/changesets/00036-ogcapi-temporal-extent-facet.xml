@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<!--
+    Adds an OGC API Records "temporalExtent" facet: the number of records whose temporal extent
+    covers each year (see geonetwork/geonetwork#260).
+
+    The facet needs hard bounds: ongoing temporal extents have no end date, and without an upper
+    bound Elasticsearch tries to create a bucket for every year to come and the search fails. A
+    wrong start date far in the past (e.g. 0201) has the same effect at the other end. So
+    ogcapi_facet_config gets hard_bounds_min / hard_bounds_max columns first. Empty years are
+    returned with a count of 0 (minimum_document_count 0).
+
+    The field and facet rows follow the upgrade-only pattern of 00030/00034: they are only inserted
+    when the ogcapi_property_mapping config row already exists and the mapping isn't present yet.
+    On a brand new install they are a no-op (MARK_RAN); the rows get created from
+    config/application-ogcapi-records.yml on first boot.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00036-ogcapi-facet-config-hard-bounds" author="geonetwork">
+        <addColumn tableName="ogcapi_facet_config">
+            <column name="hard_bounds_min" type="VARCHAR(50)"/>
+            <column name="hard_bounds_max" type="VARCHAR(50)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="00036-ogcapi-field-mapping-temporal-extent" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_property_mapping WHERE id = 'property-mapping')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'temporalExtent')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="ogcapi_field_mapping">
+            <column name="config_id" value="property-mapping"/>
+            <column name="sort_order" valueNumeric="116"/>
+            <column name="ogc_property" value="temporalExtent"/>
+            <column name="elastic_property" value="resourceTemporalExtentDateRange"/>
+            <column name="type_override" value="SINGLE_DATE"/>
+            <column name="is_sortable" valueBoolean="false"/>
+            <column name="is_queryable" valueBoolean="false"/>
+            <column name="add_property_to_output" valueBoolean="false"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="00036-ogcapi-facet-config-temporal-extent" author="geonetwork">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN EXISTS (SELECT 1 FROM ogcapi_field_mapping WHERE config_id = 'property-mapping' AND ogc_property = 'temporalExtent')
+                            AND NOT EXISTS (SELECT 1 FROM ogcapi_facet_config fc
+                                            JOIN ogcapi_field_mapping fm ON fm.id = fc.field_mapping_id
+                                            WHERE fm.config_id = 'property-mapping' AND fm.ogc_property = 'temporalExtent' AND fc.facet_name = 'temporalExtent')
+                       THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO ogcapi_facet_config (field_mapping_id, sort_order, facet_name, facet_type, calendar_interval_unit,
+                                             minimum_document_count, hard_bounds_min, hard_bounds_max,
+                                             bucket_count, bucket_sorting, bucket_sorting_direction)
+            SELECT id, 0, 'temporalExtent', 'HISTOGRAM_FIXED_INTERVAL', 'year',
+                   0, '1900', 'now/y',
+                   500, 'VALUE', 'ASCENDING'
+            FROM ogcapi_field_mapping
+            WHERE config_id = 'property-mapping' AND ogc_property = 'temporalExtent'
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

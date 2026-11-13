@@ -109,6 +109,24 @@ geonetwork:
               facetType: HISTOGRAM_FIXED_BUCKET_COUNT
               bucketCount: 5
               bucketSorting: VALUE
+        - ogcProperty: temporalExtent
+          elasticProperty: resourceTemporalExtentDateRange
+          # date_range in the index: no automatic type, so give it one for the facet
+          typeOverride: SINGLE_DATE
+          addPropertyToOutput: false
+          facetsConfig:
+            # number of records whose temporal extent covers each year (a record counts in every year it covers)
+            - facetName: temporalExtent
+              facetType: HISTOGRAM_FIXED_INTERVAL
+              calendarIntervalUnit: YEAR
+              # every year from the first to the last year with records, empty ones with a count of 0
+              minimumDocumentCount: 0
+              # from 1900 (ignores wrong dates such as 0201) to the current year (ongoing extents have no end)
+              hardBoundsMin: "1900"
+              hardBoundsMax: now/y
+              bucketCount: 500
+              bucketSorting: VALUE
+              bucketSortingDirection: ASCENDING
         - ogcProperty: resourceTitleObject
           elasticProperty: resourceTitleObject.default
           sortFieldSuffix: sort

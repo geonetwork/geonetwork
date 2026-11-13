@@ -12,6 +12,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
+import java.util.List;
 import org.geonetwork.cql.QueryTest;
 import org.geonetwork.ogcapi.records.generated.model.OgcApiRecordsGetRecords200ResponseDto;
 
@@ -1047,6 +1048,41 @@ public class AdvancedFacetTests {
 
         assertEquals("1556668800000", buckets.get(12).getValue());
         assertEquals(2, buckets.get(12).getCount());
+    }
+
+    // =========================================================
+    // temporalExtent - records per year of their temporal extent (date range field)
+    //
+    //  facetsConfig:
+    //    - facetName: temporalExtent
+    //      facetType: HISTOGRAM_FIXED_INTERVAL
+    //      calendarIntervalUnit: YEAR
+    //      hardBoundsMax: now/y
+    //      bucketSorting: VALUE
+    //      bucketSortingDirection: ASCENDING
+
+    @AdvancedFacetTest
+    public void testAdvancedFacets_temporalExtent() throws Exception {
+        var items = retrieveUrlJson(
+                // no facets parameter: all configured facets, with their configured sort order
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+
+        var buckets = items.getFacets().get("temporalExtent").getBuckets();
+        assertEquals(
+                List.of("2021=1", "2022=1", "2023=1", "2024=2"),
+                buckets.stream()
+                        .map(b -> b.getMin().substring(0, 4) + "=" + b.getCount())
+                        .toList());
+
+        var currentYear = java.time.Year.now(java.time.ZoneOffset.UTC).getValue();
+        int previousYear = Integer.MIN_VALUE;
+        for (var bucket : buckets) {
+            int year = Integer.parseInt(bucket.getMin().substring(0, 4));
+            assertTrue(year > previousYear, "buckets sorted by year, oldest first");
+            assertTrue(year <= currentYear, "no bucket after the current year");
+            previousYear = year;
+        }
     }
 
     @Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})

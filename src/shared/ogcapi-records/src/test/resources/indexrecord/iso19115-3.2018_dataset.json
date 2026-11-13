@@ -41,7 +41,7 @@
     "lte" : "2022-01-30T23:00:00.000Z"
   }, {
     "gte" : "2020-03-31T22:00:00.000Z",
-    "lte" : "2020-04-23T22:00:00.000Z"
+    "lte" : "2020-04-24T21:59:59.999Z"
   } ],
   "resourceIdentifier" : [ {
     "code" : "47b348f1-6e7a-4baa-963c-0232a43c0cff",
@@ -216,7 +216,7 @@
   "location" : [ "50.150000000000006,4.625" ],
   "resourceTemporalExtentDateRange" : [ {
     "gte" : "2020-03-31T22:00:00.000Z",
-    "lte" : "2020-04-23T22:00:00.000Z"
+    "lte" : "2020-04-24T21:59:59.999Z"
   } ],
   "resourceTemporalExtentDetails" : [ {
     "start" : {

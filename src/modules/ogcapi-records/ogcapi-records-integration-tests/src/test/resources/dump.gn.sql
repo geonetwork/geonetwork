@@ -1188,7 +1188,9 @@ CREATE TABLE public.ogcapi_facet_config (
     bucket_count integer,
     minimum_document_count integer DEFAULT 1 NOT NULL,
     number_bucket_interval double precision,
-    calendar_interval_unit character varying(50)
+    calendar_interval_unit character varying(50),
+    hard_bounds_min character varying(50),
+    hard_bounds_max character varying(50)
 );
 
 

@@ -9,6 +9,7 @@ import static org.geonetwork.ogcapi.service.configuration.BucketSorting.COUNT;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.CalendarInterval;
+import co.elastic.clients.elasticsearch._types.aggregations.FieldDateMath;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.util.NamedValue;
 import java.util.HashMap;
@@ -197,6 +198,17 @@ public class RecordsFacetsElasticQueryBuilder {
                     histogramDto.getCalendarIntervalUnit().toString(), null);
             h.calendarInterval(interval);
             h.minDocCount(histogramDto.getMinimumDocumentCount());
+            if (histogramDto.getHardBoundsMin() != null || histogramDto.getHardBoundsMax() != null) {
+                h.hardBounds(b -> {
+                    if (histogramDto.getHardBoundsMin() != null) {
+                        b.min(FieldDateMath.of(m -> m.expr(histogramDto.getHardBoundsMin())));
+                    }
+                    if (histogramDto.getHardBoundsMax() != null) {
+                        b.max(FieldDateMath.of(m -> m.expr(histogramDto.getHardBoundsMax())));
+                    }
+                    return b;
+                });
+            }
 
             var bucketSorting = getBucketSorting(histogramDto.getBucketSorting());
             var elasticSecondaryDirection = getElasticSortingDirection(histogramDto.getBucketSortingDirection());

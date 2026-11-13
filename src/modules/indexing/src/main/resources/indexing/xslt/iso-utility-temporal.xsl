@@ -94,17 +94,37 @@
 
     <xsl:variable name="zuluStartDate"
                   select="if (gn-fn-index:is-isoDate($start)) then util:convertToISOZuluDateTime($start) else ''"/>
+    <!-- An end without time covers the whole day, month or year: index up to its last millisecond. -->
+    <xsl:variable name="endValue" select="normalize-space($end)"/>
+    <xsl:variable name="endLastDay"
+                  select="if (matches($endValue, '^\d{4}-\d{2}-\d{2}Z?$'))
+                          then substring($endValue, 1, 10)
+                          else if (matches($endValue, '^\d{4}-\d{2}$')
+                                   and concat($endValue, '-01') castable as xs:date)
+                          then string(xs:date(concat($endValue, '-01'))
+                                      + xs:yearMonthDuration('P1M') - xs:dayTimeDuration('P1D'))
+                          else if (matches($endValue, '^\d{4}$'))
+                          then concat($endValue, '-12-31')
+                          else ''"/>
     <xsl:variable name="zuluEndDate"
-                  select="if (gn-fn-index:is-isoDate($end)) then util:convertToISOZuluDateTime($end) else ''"/>
+                  select="if (not(gn-fn-index:is-isoDate($end))) then ''
+                          else if ($endLastDay != '')
+                          then util:convertToISOZuluDateTime(concat($endLastDay, 'T23:59:59.999'))
+                          else util:convertToISOZuluDateTime($end)"/>
 
     <xsl:choose>
+      <!-- Start after end: not a usable period. Index no range rather than an open-ended one;
+           the temporalDateRangeLowerGreaterThanUpper warning below flags the record. -->
+      <xsl:when test="$zuluStartDate != '' and $zuluEndDate != ''
+                      and $zuluStartDate &gt; $zuluEndDate
+                      and not($end/@indeterminatePosition = 'now')"/>
       <xsl:when test="$zuluStartDate != ''
                                 and ($zuluEndDate != '' or $end/@indeterminatePosition = 'now')">
         <resourceTemporalDateRange>
           <gte>
             <xsl:value-of select="$zuluStartDate"/>
           </gte>
-          <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
+          <xsl:if test="$zuluStartDate &lt;= $zuluEndDate and not($end/@indeterminatePosition = 'now')">
             <lte>
               <xsl:value-of select="$zuluEndDate"/>
             </lte>
@@ -114,7 +134,7 @@
           <gte>
             <xsl:value-of select="$zuluStartDate"/>
           </gte>
-          <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
+          <xsl:if test="$zuluStartDate &lt;= $zuluEndDate and not($end/@indeterminatePosition = 'now')">
             <lte>
               <xsl:value-of select="$zuluEndDate"/>
             </lte>
@@ -132,15 +152,16 @@
 
     <xsl:if test="$zuluStartDate != ''
                           and $zuluEndDate != ''
-                          and $start &gt; $end">
+                          and $zuluStartDate &gt; $zuluEndDate">
       <indexingErrorMsg>
-        <string>indexingErrorMsg-temporalRangeLowerGreaterThanUpper</string>
+        <string>indexingErrorMsg-temporalDateRangeLowerGreaterThanUpper</string>
         <type>warning</type>
         <values>
           <lowerBound>
             <xsl:value-of select="$start"/>
           </lowerBound>
-          <upperBound><xsl:value-of select="$end"/>"
+          <upperBound>
+            <xsl:value-of select="$end"/>
           </upperBound>
         </values>
       </indexingErrorMsg>

@@ -70,6 +70,12 @@ public class OgcApiFacetConfig {
     @Column(name = "calendar_interval_unit", length = 50)
     private String calendarIntervalUnit;
 
+    @Column(name = "hard_bounds_min", length = 50)
+    private String hardBoundsMin;
+
+    @Column(name = "hard_bounds_max", length = 50)
+    private String hardBoundsMax;
+
     @Builder.Default
     @OneToMany(mappedBy = "facetConfig", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("sortOrder ASC")
