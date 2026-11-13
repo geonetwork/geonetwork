@@ -35,7 +35,7 @@ class ConfigurationControllerTest {
     @MockitoBean
     private ConfigurationService configurationService;
 
-    @MockitoBean
+    @MockitoBean(name = "securityService") // referenced by name in @PreAuthorize("@securityService...")
     private SecurityService securityService;
 
     @Test
@@ -123,5 +123,18 @@ class ConfigurationControllerTest {
                 .andExpect(content().string("Parameter updated"));
 
         verify(configurationService).updateConfiguration(app, profile, label, key, value);
+    }
+
+    @Test
+    void update_whenNotAdmin_shouldReturnForbidden() throws Exception {
+        when(securityService.isAdmin()).thenReturn(false);
+
+        mockMvc.perform(put("/api/configuration")
+                        .with(csrf())
+                        .param("key", "key")
+                        .param("value", "value"))
+                .andExpect(status().isForbidden());
+
+        verify(configurationService, never()).updateConfiguration(any(), any(), any(), any(), any());
     }
 }
