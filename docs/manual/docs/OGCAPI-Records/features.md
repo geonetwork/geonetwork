@@ -13,3 +13,11 @@ The GeoNetwork 5 OGCAPI-Records module has several features that aren't standard
     * For example, `http://localhost:7979/ogcapi-records/collections/subportal/items?q=portal%20contacts:geocat` is equivalent to  `http://localhost:7979/ogcapi-records/collections/subportal/items?q=portal&contacts=geocat`
     * This was done because most OGCAPI-Records clients do **not** support queryables. 
 5. Security.  The logged in user can only see certain records (see `ElasticWithUserPermissions.java`).
+
+### Temporal extent
+
+The `time` property, the `datetime` parameter and the `time` queryable only use the temporal extent of the resource (`resourceTemporalExtentDateRange` in the index).
+
+* The creation, publication and revision dates of the resource are not part of it. The publication date is returned separately, as `issued`.
+* A record without a temporal extent has no `time` and doesn't match a `datetime` filter.
+* A temporal extent made of a single date (`gml:TimeInstant`) isn't indexed yet, so these records have no `time` either.
