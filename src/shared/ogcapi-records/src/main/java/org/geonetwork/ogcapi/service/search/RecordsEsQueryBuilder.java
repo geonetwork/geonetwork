@@ -278,7 +278,7 @@ public class RecordsEsQueryBuilder {
 
         if (ogcApiQuery.getDatetime() != null) {
             var meta = new OgcApiRecordsGnElasticDto();
-            meta.elasticPath("resourceTemporalDateRange");
+            meta.elasticPath("resourceTemporalExtentDateRange");
             dataTimeQuery = queryToElastic.createVsDate(meta, ogcApiQuery.getDatetime(), null);
         }
 

@@ -249,18 +249,11 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?" + query,
                 OgcApiRecordsGetRecords200ResponseDto.class);
 
-        assertEquals(9, items.getNumberMatched());
-
-        var returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
-        assertTrue(returnedIds.contains("ee965118-2416-4d48-b07e-bbc696f002c2"));
-        assertTrue(returnedIds.contains("04bcec79-5b25-4b16-b635-73115f7456e4"));
-        assertTrue(returnedIds.contains("9e1ea778-d0ce-4b49-90b7-37bc0e448300"));
-        assertTrue(returnedIds.contains("01491630-78ce-49f3-b479-4b30dabc4c69"));
-        assertTrue(returnedIds.contains("fr-120066022-jdd-f20f8125-877e-46dc-8cf8-2a8a372045eb"));
-        assertTrue(returnedIds.contains("00916a35-786b-4569-9da6-71ca64ca54b1"));
-        assertTrue(returnedIds.contains("020c04f8-cc3d-4cd7-8af7-336b0a1a58f5"));
-        assertTrue(returnedIds.contains("01ec6ec7-6454-4504-ac95-befb16bacb0e"));
-        assertTrue(returnedIds.contains("004571b9-4649-42b3-9c28-a8cdc2bf53c7"));
+        // Matches the temporal extent only, not the creation, publication or revision dates
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "04bcec79-5b25-4b16-b635-73115f7456e4",
+                items.getFeatures().getFirst().getId());
     }
 
     @Test
@@ -458,18 +451,11 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID
                         + "/items?time=2022-01-01T00:00:00Z/2023-08-01T00:00:00Z",
                 OgcApiRecordsGetRecords200ResponseDto.class);
-        assertEquals(9, items.getNumberMatched());
-
-        var returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
-        assertTrue(returnedIds.contains("ee965118-2416-4d48-b07e-bbc696f002c2"));
-        assertTrue(returnedIds.contains("04bcec79-5b25-4b16-b635-73115f7456e4"));
-        assertTrue(returnedIds.contains("9e1ea778-d0ce-4b49-90b7-37bc0e448300"));
-        assertTrue(returnedIds.contains("01491630-78ce-49f3-b479-4b30dabc4c69"));
-        assertTrue(returnedIds.contains("fr-120066022-jdd-f20f8125-877e-46dc-8cf8-2a8a372045eb"));
-        assertTrue(returnedIds.contains("00916a35-786b-4569-9da6-71ca64ca54b1"));
-        assertTrue(returnedIds.contains("020c04f8-cc3d-4cd7-8af7-336b0a1a58f5"));
-        assertTrue(returnedIds.contains("01ec6ec7-6454-4504-ac95-befb16bacb0e"));
-        assertTrue(returnedIds.contains("004571b9-4649-42b3-9c28-a8cdc2bf53c7"));
+        // Matches the temporal extent only, not the creation, publication or revision dates
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "04bcec79-5b25-4b16-b635-73115f7456e4",
+                items.getFeatures().getFirst().getId());
     }
 
     @Test

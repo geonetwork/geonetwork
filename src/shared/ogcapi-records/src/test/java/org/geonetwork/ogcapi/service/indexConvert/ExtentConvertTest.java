@@ -185,9 +185,33 @@ public class ExtentConvertTest {
         assertEquals(dr3.getLte(), dateRange.getLte());
 
         var indexRecord = new IndexRecord();
-        indexRecord.setResourceTemporalDateRange(Arrays.asList(dr1, dr2, dr3));
+        indexRecord.setResourceTemporalExtentDateRange(Arrays.asList(dr1, dr2, dr3));
         var temporalextent = ExtentConvert.convertTemporalExtent(indexRecord);
         assertNotNull(temporalextent);
         assertEquals(1, temporalextent.getInterval().size());
+    }
+
+    @Test
+    public void testConvertTemporalExtent_ignoresResourceDates() {
+        var extent = new DateRange();
+        extent.setGte("2005-01-01T00:00:00Z");
+        extent.setLte("2013-12-31T00:00:00Z");
+
+        var publication = new DateRange();
+        publication.setGte("2016-09-19T00:00:00Z");
+        publication.setLte("2016-09-19T00:00:00Z");
+
+        var indexRecord = new IndexRecord();
+        indexRecord.setResourceTemporalExtentDateRange(List.of(extent));
+        indexRecord.setResourceTemporalDateRange(List.of(extent, publication));
+
+        var interval =
+                ExtentConvert.convertTemporalExtent(indexRecord).getInterval().get(0);
+        assertEquals(Instant.parse(extent.getGte()), interval.get(0).toInstant());
+        assertEquals(Instant.parse(extent.getLte()), interval.get(1).toInstant());
+
+        // Resource dates alone are not a temporal extent
+        indexRecord.setResourceTemporalExtentDateRange(null);
+        assertNull(ExtentConvert.convertTemporalExtent(indexRecord));
     }
 }

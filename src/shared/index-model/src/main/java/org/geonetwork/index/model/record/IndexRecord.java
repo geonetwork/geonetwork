@@ -640,18 +640,41 @@ public class IndexRecord {
     private List<String> resolutionDistance;
 
     /**
-     * Temporal date range for the resource.
+     * Temporal reference of the resource.
+     *
+     * <p>Same values as {@link #resourceTemporalExtentDateRange}, unless {@code useDateAsTemporalExtent} is on in the
+     * indexing XSL, as in INSPIRE catalogues. INSPIRE metadata implementing rules describe the creation, publication
+     * and revision dates as part of the temporal reference, so this field then also holds each of these dates, as a
+     * one-day range. For the period the data covers, use {@link #resourceTemporalExtentDateRange}.
+     *
+     * <p>For example, with {@code useDateAsTemporalExtent} on, an extent 2005-01-01/2013-12-31 published on 2016-09-19
+     * gives:
      *
      * <pre>
-     *   resourceTemporalDateRange: [{
-     *         gte: "2017-02-03T14:00:00",
-     *         lte: "2017-02-03T14:00:00"
+     *   resourceTemporalDateRange: [
+     *     { gte: "2005-01-01T00:00:00Z", lte: "2013-12-31T00:00:00Z" },
+     *     { gte: "2016-09-19T00:00:00Z", lte: "2016-09-19T00:00:00Z" }
+     *   ]
      * </pre>
      */
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     @JacksonXmlElementWrapper(useWrapping = false)
     private List<DateRange> resourceTemporalDateRange;
 
+    /**
+     * Temporal extent of the resource: the period the data covers ({@code gml:TimePeriod} in the metadata). Never holds
+     * the creation, publication or revision dates, whatever {@code useDateAsTemporalExtent} is set to. An ongoing
+     * extent has no {@code lte}.
+     *
+     * <p>Used for the OGC API Records {@code time} property and {@code datetime} filter. With the example of
+     * {@link #resourceTemporalDateRange}:
+     *
+     * <pre>
+     *   resourceTemporalExtentDateRange: [
+     *     { gte: "2005-01-01T00:00:00Z", lte: "2013-12-31T00:00:00Z" }
+     *   ]
+     * </pre>
+     */
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     @JacksonXmlElementWrapper(useWrapping = false)
     private List<DateRange> resourceTemporalExtentDateRange;

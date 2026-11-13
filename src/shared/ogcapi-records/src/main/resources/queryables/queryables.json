@@ -202,7 +202,7 @@
       "description": "A temporal extent associated with the resource described by this record. interval-bounded            = date-time \"/\" date-time\ninterval-half-bounded-start = [\"..\"] \"/\" date-time\ninterval-half-bounded-end   = date-time \"/\" [\"..\"]\ninterval                    = interval-closed / interval-half-bounded-start / interval-half-bounded-end\ndatetime                    = date-time / interval",
       "x-gn-elastic": [
         {
-          "elasticPath": "resourceTemporalDateRange",
+          "elasticPath": "resourceTemporalExtentDateRange",
           "elasticColumnType": "DATERANGE"
         }
       ]

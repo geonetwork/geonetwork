@@ -126,9 +126,17 @@ public class IndexRecordFieldNames {
     public static final String SERVICE_TYPE_VERSION = "serviceTypeVersion";
     public static final String FORMAT = "format";
     public static final String RESOURCE_VERTICAL_RANGE = "resourceVerticalRange";
+    /** Temporal extent only, see {@link IndexRecord#getResourceTemporalExtentDateRange()}. */
     public static final String RESOURCE_TEMPORAL_EXTENT_DATE_RANGE = "resourceTemporalExtentDateRange";
+
     public static final String RESOURCE_TEMPORAL_EXTENT_DATE_RANGE_DETAILS = "resourceTemporalExtentDetails";
+
+    /**
+     * Temporal extent, plus creation, publication and revision dates in INSPIRE catalogues, see
+     * {@link IndexRecord#getResourceTemporalDateRange()}.
+     */
     public static final String RESOURCE_TEMPORAL_DATE_RANGE = "resourceTemporalDateRange";
+
     public static final String REVISION_YEAR_FOR_RESOURCE = "revisionYearForResource";
     public static final String REVISION_MONTH_FOR_RESOURCE = "revisionMonthForResource";
     public static final String DATE_STAMP = "dateStamp";

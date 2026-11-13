@@ -219,7 +219,7 @@ geonetwork:
         - ogcProperty: geometry
           elasticProperty: geom
         - ogcProperty: time
-          elasticProperty: resourceTemporalDateRange
+          elasticProperty: resourceTemporalExtentDateRange
 
 
 
