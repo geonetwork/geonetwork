@@ -40,5 +40,6 @@ services:
         ALLOW_IP_RANGE: 0.0.0.0/0
     volumes:
       - ./dump.gn.sql:/docker-entrypoint-initdb.d/dump.gn.sql
+      # - ./dump.gn.alt.sql:/docker-entrypoint-initdb.d/dump.gn.sql
 
 
