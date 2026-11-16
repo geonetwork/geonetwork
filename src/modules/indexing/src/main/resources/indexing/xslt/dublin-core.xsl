@@ -101,7 +101,7 @@
 
     <xsl:for-each select="dct:created[. != '']">
       <xsl:variable name="creationDate"
-                    select="util:convertToISOZuluDateTime(string(current()))"/>
+                    select="gn-fn-index:to-zulu-date-time(string(current()), false())"/>
       <xsl:element name="{$creationDateType}DateForResource">
         <xsl:value-of select="$creationDate"/>
       </xsl:element>
@@ -115,7 +115,7 @@
 
     <xsl:for-each select="dct:modified[. != '']">
       <xsl:variable name="revisionDate"
-                    select="util:convertToISOZuluDateTime(string(current()))"/>
+                    select="gn-fn-index:to-zulu-date-time(string(current()), false())"/>
       <xsl:element name="{$revisionDateType}DateForResource">
         <xsl:value-of select="$revisionDate"/>
       </xsl:element>

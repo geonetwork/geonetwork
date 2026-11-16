@@ -30,7 +30,7 @@
                   select="string(*:date/*:Date|*:date/*:DateTime)"/>
 
     <xsl:variable name="zuluDateTime" as="xs:string?">
-      <xsl:value-of select="util:convertToISOZuluDateTime(normalize-space($date))"/>
+      <xsl:value-of select="gn-fn-index:to-zulu-date-time($date, false())"/>
     </xsl:variable>
 
     <xsl:choose>
@@ -92,25 +92,12 @@
                   select="*:endPosition|*:end/*:TimeInstant/*:timePosition"/>
 
 
+    <!-- A start or end without time is a calendar date, indexed in UTC.
+         An end without time covers the whole day, month or year: index up to its last millisecond. -->
     <xsl:variable name="zuluStartDate"
-                  select="if (gn-fn-index:is-isoDate($start)) then util:convertToISOZuluDateTime($start) else ''"/>
-    <!-- An end without time covers the whole day, month or year: index up to its last millisecond. -->
-    <xsl:variable name="endValue" select="normalize-space($end)"/>
-    <xsl:variable name="endLastDay"
-                  select="if (matches($endValue, '^\d{4}-\d{2}-\d{2}Z?$'))
-                          then substring($endValue, 1, 10)
-                          else if (matches($endValue, '^\d{4}-\d{2}$')
-                                   and concat($endValue, '-01') castable as xs:date)
-                          then string(xs:date(concat($endValue, '-01'))
-                                      + xs:yearMonthDuration('P1M') - xs:dayTimeDuration('P1D'))
-                          else if (matches($endValue, '^\d{4}$'))
-                          then concat($endValue, '-12-31')
-                          else ''"/>
+                  select="if (gn-fn-index:is-isoDate($start)) then gn-fn-index:to-zulu-date-time($start, false()) else ''"/>
     <xsl:variable name="zuluEndDate"
-                  select="if (not(gn-fn-index:is-isoDate($end))) then ''
-                          else if ($endLastDay != '')
-                          then util:convertToISOZuluDateTime(concat($endLastDay, 'T23:59:59.999'))
-                          else util:convertToISOZuluDateTime($end)"/>
+                  select="if (gn-fn-index:is-isoDate($end)) then gn-fn-index:to-zulu-date-time($end, true()) else ''"/>
 
     <xsl:choose>
       <!-- Start after end: not a usable period. Index no range rather than an open-ended one;
