@@ -249,18 +249,39 @@ public class QueryTest implements ApplicationContextInitializer<ConfigurableAppl
                 "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?" + query,
                 OgcApiRecordsGetRecords200ResponseDto.class);
 
-        assertEquals(9, items.getNumberMatched());
+        // only the temporal extent counts, not the creation/publication/revision dates of the resource
+        // (ee965118 has resource dates in this period, but its temporal extent is 2024-03-04/2024-03-19)
+        assertEquals(1, items.getNumberMatched());
+        assertEquals(
+                "04bcec79-5b25-4b16-b635-73115f7456e4",
+                items.getFeatures().get(0).getId());
 
+        // inside the temporal extent of both records
+        query = "datetime=2024-03-10T00:00:00Z";
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?" + query,
+                OgcApiRecordsGetRecords200ResponseDto.class);
         var returnedIds = items.getFeatures().stream().map(x -> x.getId()).toList();
+        assertEquals(2, items.getNumberMatched());
         assertTrue(returnedIds.contains("ee965118-2416-4d48-b07e-bbc696f002c2"));
         assertTrue(returnedIds.contains("04bcec79-5b25-4b16-b635-73115f7456e4"));
-        assertTrue(returnedIds.contains("9e1ea778-d0ce-4b49-90b7-37bc0e448300"));
-        assertTrue(returnedIds.contains("01491630-78ce-49f3-b479-4b30dabc4c69"));
-        assertTrue(returnedIds.contains("fr-120066022-jdd-f20f8125-877e-46dc-8cf8-2a8a372045eb"));
-        assertTrue(returnedIds.contains("00916a35-786b-4569-9da6-71ca64ca54b1"));
-        assertTrue(returnedIds.contains("020c04f8-cc3d-4cd7-8af7-336b0a1a58f5"));
-        assertTrue(returnedIds.contains("01ec6ec7-6454-4504-ac95-befb16bacb0e"));
-        assertTrue(returnedIds.contains("004571b9-4649-42b3-9c28-a8cdc2bf53c7"));
+    }
+
+    @Test
+    public void testTimeFromTemporalExtent() throws Exception {
+        var items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?id=ee965118-2416-4d48-b07e-bbc696f002c2",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        var time = items.getFeatures().get(0).getTime();
+        assertTrue(time.isPresent());
+        assertEquals(
+                List.of("2024-03-04T08:00Z", "2024-03-19T07:00Z"), time.get().getInterval());
+
+        // resource dates but no temporal extent -> no time
+        items = retrieveUrlJson(
+                "ogcapi-records/collections/" + MAIN_COLLECTION_ID + "/items?id=8698bf0b-fceb-4f0f-989b-111e7c4af0a4",
+                OgcApiRecordsGetRecords200ResponseDto.class);
+        assertFalse(items.getFeatures().get(0).getTime().isPresent());
     }
 
     @Test

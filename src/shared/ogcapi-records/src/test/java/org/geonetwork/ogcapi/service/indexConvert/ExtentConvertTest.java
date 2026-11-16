@@ -185,9 +185,48 @@ public class ExtentConvertTest {
         assertEquals(dr3.getLte(), dateRange.getLte());
 
         var indexRecord = new IndexRecord();
-        indexRecord.setResourceTemporalDateRange(Arrays.asList(dr1, dr2, dr3));
+        indexRecord.setResourceTemporalExtentDateRange(Arrays.asList(dr1, dr2, dr3));
         var temporalextent = ExtentConvert.convertTemporalExtent(indexRecord);
         assertNotNull(temporalextent);
         assertEquals(1, temporalextent.getInterval().size());
+    }
+
+    @Test
+    public void testConvertTemporalExtent_ignoresResourceDates() {
+        // temporal extent 2005/2013, as indexed in both fields
+        var extent = new DateRange();
+        extent.setGte("2005-01-01T00:00:00.000Z");
+        extent.setLte("2013-12-31T00:00:00.000Z");
+
+        // publication date, only in resourceTemporalDateRange
+        var publication = new DateRange();
+        publication.setGte("2016-09-19T00:00:00.000Z");
+        publication.setLte("2016-09-19T00:00:00.000Z");
+
+        var indexRecord = new IndexRecord();
+        indexRecord.setResourceTemporalDateRange(Arrays.asList(extent, publication));
+        indexRecord.setResourceTemporalExtentDateRange(List.of(extent));
+
+        var temporalextent = ExtentConvert.convertTemporalExtent(indexRecord);
+        assertNotNull(temporalextent);
+        assertEquals(
+                Instant.parse(extent.getGte()),
+                temporalextent.getInterval().get(0).get(0).toInstant());
+        assertEquals(
+                Instant.parse(extent.getLte()),
+                temporalextent.getInterval().get(0).get(1).toInstant());
+    }
+
+    @Test
+    public void testConvertTemporalExtent_noTemporalExtent() {
+        // only resource dates - no temporal extent
+        var publication = new DateRange();
+        publication.setGte("2016-09-19T00:00:00.000Z");
+        publication.setLte("2016-09-19T00:00:00.000Z");
+
+        var indexRecord = new IndexRecord();
+        indexRecord.setResourceTemporalDateRange(List.of(publication));
+
+        assertNull(ExtentConvert.convertTemporalExtent(indexRecord));
     }
 }

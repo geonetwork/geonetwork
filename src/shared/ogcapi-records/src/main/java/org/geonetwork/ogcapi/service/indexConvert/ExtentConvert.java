@@ -56,14 +56,14 @@ public class ExtentConvert {
     /**
      * given an elastic index record, create an ogcapi-records temporal extent.
      *
+     * <p>Only uses the temporal extent of the resource (resourceTemporalExtentDateRange). resourceTemporalDateRange
+     * also has the creation, publication and revision dates of the resource, which aren't part of its temporal extent.
+     *
      * @param indexRecord elastic index record
-     * @return ogcapi-records temporal extent
+     * @return ogcapi-records temporal extent (or null if the resource has no temporal extent)
      */
     public static OgcApiRecordsExtentTemporalDto convertTemporalExtent(IndexRecord indexRecord) {
-        var dateRanges = indexRecord.getResourceTemporalDateRange();
-        if (dateRanges == null || dateRanges.isEmpty()) {
-            dateRanges = indexRecord.getResourceTemporalExtentDateRange();
-        }
+        var dateRanges = indexRecord.getResourceTemporalExtentDateRange();
         if (dateRanges == null || dateRanges.isEmpty()) {
             return null;
         }
