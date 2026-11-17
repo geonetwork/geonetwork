@@ -4,14 +4,21 @@
  */
 package org.geonetwork.gn4;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.core5.util.Timeout;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
+import org.springframework.cloud.gateway.server.mvc.common.MvcUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Sizes the HTTP client connection pool used to proxy requests to GN4.
@@ -35,5 +42,32 @@ public class GatewayHttpClientConfiguration {
                         .setMaxConnPerRoute(maxConnectionsPerRoute))
                 .withDefaultRequestConfigCustomizer((RequestConfig.Builder requestConfig) ->
                         requestConfig.setConnectionRequestTimeout(Timeout.of(connectionRequestTimeout)));
+    }
+
+    /**
+     * Closes the proxied GN4 response once the request completes. The gateway only closes it while writing the body,
+     * which it skips when it answers 304 itself, leaking the pooled connection (spring-cloud-gateway#4259).
+     *
+     * <p>Temporary workaround: remove this bean once spring-cloud-gateway#4259 is fixed upstream and the Spring Cloud
+     * Gateway version used here is upgraded to a release that includes the fix.
+     * {@code GatewayConditionalRequestLeakTest} must still pass without it.
+     */
+    @Bean
+    public WebMvcConfigurer cleanupWebMvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(new HandlerInterceptor() {
+                    @Override
+                    public void afterCompletion(
+                            HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+                        Object clientResponse = request.getAttribute(MvcUtils.CLIENT_RESPONSE_ATTR);
+                        if (clientResponse instanceof ClientHttpResponse clientHttpResponse) {
+                            clientHttpResponse.close();
+                        }
+                    }
+                });
+            }
+        };
     }
 }
