@@ -47,6 +47,10 @@ public class GatewayHttpClientConfiguration {
     /**
      * Closes the proxied GN4 response once the request completes. The gateway only closes it while writing the body,
      * which it skips when it answers 304 itself, leaking the pooled connection (spring-cloud-gateway#4259).
+     *
+     * <p>Temporary workaround: remove this bean once spring-cloud-gateway#4259 is fixed upstream and the Spring Cloud
+     * Gateway version used here is upgraded to a release that includes the fix.
+     * {@code GatewayConditionalRequestLeakTest} must still pass without it.
      */
     @Bean
     public WebMvcConfigurer cleanupWebMvcConfigurer() {
