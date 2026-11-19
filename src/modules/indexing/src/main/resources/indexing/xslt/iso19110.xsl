@@ -54,7 +54,7 @@
 
 
     <xsl:for-each select="(.//*:versionDate/*[gn-fn-index:is-isoDate(.)])[1]">
-      <xsl:variable name="date" select="util:convertToISOZuluDateTime(normalize-space(.))"/>
+      <xsl:variable name="date" select="gn-fn-index:to-zulu-date-time(., false())"/>
       <dateStamp>
         <xsl:value-of select="$date"/>
       </dateStamp>

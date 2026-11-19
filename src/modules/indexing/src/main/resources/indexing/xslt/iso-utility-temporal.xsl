@@ -47,11 +47,13 @@
         <xsl:element name="{$dateType}DateForResource">
           <xsl:value-of select="$zuluDateTime"/>
         </xsl:element>
+        <!-- Year and month as written in the metadata, as in GeoNetwork 4:
+             a date time without offset is not moved to another year or month. -->
         <xsl:element name="{$dateType}YearForResource">
-          <xsl:value-of select="substring($zuluDateTime, 0, 5)"/>
+          <xsl:value-of select="substring(normalize-space($date), 0, 5)"/>
         </xsl:element>
         <xsl:element name="{$dateType}MonthForResource">
-          <xsl:value-of select="substring($zuluDateTime, 0, 8)"/>
+          <xsl:value-of select="substring(normalize-space($date), 0, 8)"/>
         </xsl:element>
 
 
