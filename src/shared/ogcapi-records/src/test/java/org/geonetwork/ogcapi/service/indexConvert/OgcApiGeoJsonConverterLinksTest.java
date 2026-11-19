@@ -5,6 +5,7 @@
 package org.geonetwork.ogcapi.service.indexConvert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
@@ -44,6 +45,29 @@ public class OgcApiGeoJsonConverterLinksTest {
 
         assertEquals("OGC:WMS", result.getFirst().getType());
         assertEquals("related", result.getFirst().getRel());
+    }
+
+    /** The index has an empty mime type for links without one, so the protocol is used then too (#276). */
+    @Test
+    public void testTypeFallsBackToProtocolWhenMimeTypeIsEmpty() {
+        var wms = link(Map.of("default", "https://example.com/wms"), "", "OGC:WMS");
+        var doi = link(Map.of("default", "https://doi.org/10.2909/abc"), " ", "DOI");
+
+        var result = OgcApiGeoJsonConverter.convertLinks(List.of(wms, doi), "eng");
+
+        assertEquals("OGC:WMS", result.get(0).getType());
+        assertEquals("DOI", result.get(1).getType());
+    }
+
+    @Test
+    public void testNoTypeWithoutMimeTypeOrProtocol() {
+        var empty = link(Map.of("default", "https://example.com/a"), "", "");
+        var missing = link(Map.of("default", "https://example.com/b"), null, null);
+
+        var result = OgcApiGeoJsonConverter.convertLinks(List.of(empty, missing), "eng");
+
+        assertNull(result.get(0).getType());
+        assertNull(result.get(1).getType());
     }
 
     @Test

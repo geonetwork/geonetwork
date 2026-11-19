@@ -270,12 +270,26 @@ public class OgcApiGeoJsonConverter {
                 result.add(new OgcApiRecordsLinkDto()
                         .href(new URI(url.trim()))
                         .rel("download".equalsIgnoreCase(link.getFunction()) ? "enclosure" : "related")
-                        .type(link.getMimeType() != null ? link.getMimeType() : link.getProtocol())
+                        .type(linkType(link))
                         .title(getLangString(link.getName(), iso3lang)));
             } catch (URISyntaxException e) {
                 // invalid url in metadata, skip it
             }
         }
         return result;
+    }
+
+    /**
+     * The type of a link: its mime type, or else its protocol (e.g. OGC:WMS). The index has an empty mime type, not
+     * null, for links without one.
+     *
+     * @param link index record link
+     * @return the mime type or protocol, or null if the link has neither.
+     */
+    static String linkType(Link link) {
+        if (!isBlank(link.getMimeType())) {
+            return link.getMimeType();
+        }
+        return isBlank(link.getProtocol()) ? null : link.getProtocol();
     }
 }
