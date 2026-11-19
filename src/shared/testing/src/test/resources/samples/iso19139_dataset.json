@@ -22,14 +22,14 @@
   } ],
   "resourceDate" : [ {
     "type" : "revision",
-    "date" : "2008-12-31T23:00:00.000Z"
+    "date" : "2009-01-01T00:00:00.000Z"
   }, {
     "type" : "creation",
     "date" : "1998-12-31T23:00:00.000Z"
   } ],
   "resourceTemporalDateRange" : [ {
-    "gte" : "2008-12-31T23:00:00.000Z",
-    "lte" : "2008-12-31T23:00:00.000Z"
+    "gte" : "2009-01-01T00:00:00.000Z",
+    "lte" : "2009-01-01T00:00:00.000Z"
   }, {
     "gte" : "1998-12-31T23:00:00.000Z",
     "lte" : "1998-12-31T23:00:00.000Z"
@@ -711,11 +711,11 @@
   "linkUrl" : [ "https://map.geo.admin.ch/?layers=ch.are.alpenkonvention", "https://wms.geo.admin.ch/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities&lang=de", "https://wmts.geo.admin.ch/EPSG/3857/1.0.0/WMTSCapabilities.xml?lang=de", "https://www.are.admin.ch/are/de/home/laendliche-raeume-und-berggebiete/internationale-zusammenarbeit/alpenkonvention.html", "https://data.geo.admin.ch/browser/index.html#/collections/ch.are.alpenkonvention", "https://www.are.admin.ch/are/de/home/raumentwicklung-und-raumplanung/grundlagen-und-daten/minimale-geodatenmodelle/alpenkonvention.html", "http://map.are.admin.ch/?Y=660000&X=190000&zoom=1&bgLayer=ch.swisstopo.pixelkarte-grau&layers=ch.are.alpenkonvention&layers_opacity=0.2&layers_visibility=true&lang=de", "http://www.alpconv.org", "http://map.geo.admin.ch/?selectedNode=LT1_1&Y=660000&X=190000&zoom=1&bgLayer=ch.swisstopo.pixelkarte-farbe&layers=ch.are.alpenkonvention&layers_opacity=0.6&layers_visibility=true&lang=de", "http://www.admin.ch/ch/d/sr/0_700_1/app1.html", "https://api3.geo.admin.ch/rest/services/api/MapServer/ch.are.alpenkonvention", "https://opendata.swiss/de/perma/8698bf0b-fceb-4f0f-989b-111e7c4af0a4@bundesamt-fur-raumentwicklung-are" ],
   "linkProtocol" : [ "OGC:WMTS", "CHTOPO:specialised-geoportal", "ESRI:REST", "WWW:LINK", "WWW:DOWNLOAD-URL", "MAP:Preview", "OGC:WMS", "OPENDATA:SWISS" ],
   "th_httpinspireeceuropaeutheme-themeNumber" : 2,
-  "creationMonthForResource" : [ "1998-12" ],
+  "creationMonthForResource" : [ "1999-01" ],
   "linkUrlProtocolOPENDATASWISS" : [ "https://opendata.swiss/de/perma/8698bf0b-fceb-4f0f-989b-111e7c4af0a4@bundesamt-fur-raumentwicklung-are" ],
   "linkUrlProtocolOGCWMS" : [ "https://wms.geo.admin.ch/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities&lang=de" ],
   "linkUrlProtocolWWWLINK" : [ "https://www.are.admin.ch/are/de/home/laendliche-raeume-und-berggebiete/internationale-zusammenarbeit/alpenkonvention.html", "http://www.alpconv.org", "http://map.geo.admin.ch/?selectedNode=LT1_1&Y=660000&X=190000&zoom=1&bgLayer=ch.swisstopo.pixelkarte-farbe&layers=ch.are.alpenkonvention&layers_opacity=0.6&layers_visibility=true&lang=de", "http://www.admin.ch/ch/d/sr/0_700_1/app1.html" ],
-  "revisionYearForResource" : [ "2008" ],
+  "revisionYearForResource" : [ "2009" ],
   "cl_maintenanceAndUpdateFrequency" : [ {
     "key" : "annually",
     "default" : "",
@@ -828,7 +828,7 @@
     "address" : "Ittigen, 3063, CH",
     "website" : "http://www.are.admin.ch"
   } ],
-  "revisionDateForResource" : [ "2008-12-31T23:00:00.000Z" ],
+  "revisionDateForResource" : [ "2009-01-01T00:00:00.000Z" ],
   "linkUrlProtocolCHTOPOspecialisedgeoportal" : [ "http://map.are.admin.ch/?Y=660000&X=190000&zoom=1&bgLayer=ch.swisstopo.pixelkarte-grau&layers=ch.are.alpenkonvention&layers_opacity=0.2&layers_visibility=true&lang=de" ],
   "cl_spatialRepresentationType" : [ {
     "key" : "vector",
@@ -854,7 +854,7 @@
     "langeng" : "Administrative units"
   } ],
   "linkUrlProtocolOGCWMTS" : [ "https://wmts.geo.admin.ch/EPSG/3857/1.0.0/WMTSCapabilities.xml?lang=de" ],
-  "revisionMonthForResource" : [ "2008-12" ],
+  "revisionMonthForResource" : [ "2009-01" ],
   "MD_LegalConstraintsOtherConstraintsObject" : [ {
     "default" : "Opendata BY: Freie Nutzung. Quellenangabe ist Pflicht.",
     "langger" : "Opendata BY: Freie Nutzung. Quellenangabe ist Pflicht.",
@@ -956,7 +956,7 @@
     "langita" : "trasporti",
     "langeng" : "transport"
   } ],
-  "creationYearForResource" : [ "1998" ],
+  "creationYearForResource" : [ "1999" ],
   "cl_status" : [ {
     "key" : "completed",
     "default" : "",

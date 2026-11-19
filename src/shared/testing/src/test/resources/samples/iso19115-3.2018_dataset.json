@@ -25,20 +25,20 @@
   } ],
   "resourceDate" : [ {
     "type" : "creation",
-    "date" : "2020-09-09T22:00:00.000Z"
+    "date" : "2020-09-10T00:00:00.000Z"
   }, {
     "type" : "publication",
-    "date" : "2022-01-30T23:00:00.000Z"
+    "date" : "2022-01-31T00:00:00.000Z"
   } ],
   "resourceTemporalDateRange" : [ {
-    "gte" : "2020-09-09T22:00:00.000Z",
-    "lte" : "2020-09-09T22:00:00.000Z"
+    "gte" : "2020-09-10T00:00:00.000Z",
+    "lte" : "2020-09-10T00:00:00.000Z"
   }, {
-    "gte" : "2022-01-30T23:00:00.000Z",
-    "lte" : "2022-01-30T23:00:00.000Z"
+    "gte" : "2022-01-31T00:00:00.000Z",
+    "lte" : "2022-01-31T00:00:00.000Z"
   }, {
-    "gte" : "2020-03-31T22:00:00.000Z",
-    "lte" : "2020-04-24T21:59:59.999Z"
+    "gte" : "2020-04-01T00:00:00.000Z",
+    "lte" : "2020-04-24T23:59:59.999Z"
   } ],
   "resourceIdentifier" : [ {
     "code" : "47b348f1-6e7a-4baa-963c-0232a43c0cff",
@@ -212,8 +212,8 @@
   "geom" : [ "{\"type\":\"Polygon\",\"coordinates\":[[[2.75,49.45],[6.5,49.45],[6.5,50.85],[2.75,50.85],[2.75,49.45]]]}" ],
   "location" : [ "50.150000000000006,4.625" ],
   "resourceTemporalExtentDateRange" : [ {
-    "gte" : "2020-03-31T22:00:00.000Z",
-    "lte" : "2020-04-24T21:59:59.999Z"
+    "gte" : "2020-04-01T00:00:00.000Z",
+    "lte" : "2020-04-24T23:59:59.999Z"
   } ],
   "resourceTemporalExtentDetails" : [ {
     "start" : {
@@ -638,7 +638,7 @@
       "link" : ""
     } ]
   } ],
-  "publicationDateForResource" : [ "2022-01-30T23:00:00.000Z" ],
+  "publicationDateForResource" : [ "2022-01-31T00:00:00.000Z" ],
   "cl_numberType" : [ {
     "key" : "voice",
     "default" : "Vocal",
@@ -814,7 +814,7 @@
     "langfre" : "Production géomatique et traitement de données (SPW - Secrétariat général - SPW Digital - Département Données transversales - Production géomatique et traitement de données)"
   } ],
   "publicationYearForResource" : [ "2022" ],
-  "creationDateForResource" : [ "2020-09-09T22:00:00.000Z" ],
+  "creationDateForResource" : [ "2020-09-10T00:00:00.000Z" ],
   "th_infraSIGNumber" : 3,
   "cl_resourceScope" : [ {
     "key" : "dataset",

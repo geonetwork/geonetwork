@@ -160,6 +160,34 @@
                           then true() else false()"/>
   </xsl:function>
 
+  <!-- A date as an ISO Zulu date time for the index.
+  A date without time (yyyy, yyyy-MM, yyyy-MM-dd) is a calendar date, not an instant in the
+  server time zone: index it in UTC, from the first millisecond of its first day,
+  or up to the last millisecond of its last day if $endOfPeriod.
+  Anything else (a date time, a date with an offset) is converted as given. -->
+  <xsl:function name="gn-fn-index:to-zulu-date-time" as="xs:string?">
+    <xsl:param name="value" as="xs:string?"/>
+    <xsl:param name="endOfPeriod" as="xs:boolean"/>
+
+    <xsl:variable name="date" select="normalize-space($value)"/>
+    <xsl:variable name="day"
+                  select="if (matches($date, '^\d{4}-\d{2}-\d{2}Z?$'))
+                          then substring($date, 1, 10)
+                          else if (matches($date, '^\d{4}-\d{2}$')
+                                   and concat($date, '-01') castable as xs:date)
+                          then (if ($endOfPeriod)
+                                then string(xs:date(concat($date, '-01'))
+                                            + xs:yearMonthDuration('P1M') - xs:dayTimeDuration('P1D'))
+                                else concat($date, '-01'))
+                          else if (matches($date, '^\d{4}$'))
+                          then concat($date, if ($endOfPeriod) then '-12-31' else '-01-01')
+                          else ''"/>
+    <xsl:sequence select="if ($day != '')
+                          then util:convertToISOZuluDateTime(
+                                 concat($day, if ($endOfPeriod) then 'T23:59:59.999Z' else 'T00:00:00Z'))
+                          else util:convertToISOZuluDateTime($date)"/>
+  </xsl:function>
+
   <!-- 2020-12-12 -->
   <xsl:function name="gn-fn-index:is-date" as="xs:boolean">
     <xsl:param name="value" as="xs:string?"/>
