@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
+
+  <!-- OASIS CATALOG FOR GEONETWORK TO REMAP VARIOUS XML IDs -->
+
+  <!-- This used to be done in Java code, but with the use of these
+             maps you can customise this to suit yourself. -->
+
+  <!-- =============== ISO19139 maps -->
+
+  <!-- Before opengis.net started being used as the srv namespace URL
+         we used http://www.isotc211.org/2005/srv so remap opengis.net to
+             that so all our stuff continues to work -->
+
+  <!-- These are to map schemaLocation hints to local schemas to make sure that
+       GeoNetwork edits and validates against a schema it knows about. -->
+
+  <system
+    systemId="http://www.openarchives.org/OAI/2.0/rdf.xsd"
+    uri="schema/rdf.xsd"/>
+
+</catalog>

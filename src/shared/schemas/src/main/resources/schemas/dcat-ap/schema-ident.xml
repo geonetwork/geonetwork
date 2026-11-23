@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://geonetwork-opensource.org/schemas/schema-ident"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:dct="http://purl.org/dc/terms/"
+        xsi:schemaLocation="http://geonetwork-opensource.org/schemas/schema-ident http://geonetwork-opensource.org/schemas/schema-ident/schema-ident.xsd">
+  <name>dcat-ap</name>
+  <id>2785ae4c-dde3-11df-a813-001c2346de4c</id>
+  <version>2.0</version>
+  <appMinorVersionSupported>4.4.6</appMinorVersionSupported>
+  <title xml:lang="en">DCAT-AP</title>
+  <description xml:lang="en">DCAT Application Profile for Data Portals in Europe v2.0 (DCAT-AP v2.0).</description>
+  <standardUrl>https://www.w3.org/TR/vocab-dcat-2/</standardUrl>
+  <!-- Empty schema location will set the location to the XSD published by the catalogue -->
+  <schemaLocation/>
+  <autodetect xmlns:dcat="http://www.w3.org/ns/dcat#">
+    <elements type="root">
+      <rdf:RDF/>
+      <dcat:contactPoint/>
+      <dct:LicenseDocument/>
+      <dct:Standard/>
+    </elements>
+  </autodetect>
+  <filters/>
+  <formatters>
+    <formatter name="xml" title="" officialProfileName="http://geonetwork.net/def/profile/raw-xml" contentType="application/xml"/>
+    <formatter name="dcat" title="" officialProfileName="http://geonetwork.net/def/profile/dcat" contentType="application/rdf+xml"/>
+    <formatter name="eu-dcat-ap" title="" officialProfileName="http://geonetwork.net/def/profile/eu-dcat-ap" contentType="application/rdf+xml"/>
+    <formatter name="eu-dcat-ap-hvd" title="" officialProfileName="http://geonetwork.net/def/profile/eu-dcat-ap-hvd" contentType="application/rdf+xml"/>
+    <formatter name="eu-geodcat-ap" title="" officialProfileName="http://geonetwork.net/def/profile/eu-geodcat-ap" contentType="application/rdf+xml"/>
+  </formatters>
+</schema>

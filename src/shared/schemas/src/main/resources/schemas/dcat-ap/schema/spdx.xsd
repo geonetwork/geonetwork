@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:spdx="http://spdx.org/rdf/terms#" targetNamespace="http://spdx.org/rdf/terms#" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      SPDX XML Schema
+      http://spdx.org/rdf/terms#
+    </xs:documentation>
+  </xs:annotation>
+  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
+  <!-- spdx:Checksum-->
+  <xs:complexType name="Checksum">
+    <xs:sequence>
+      <xs:element name="Checksum">
+        <xs:complexType>
+          <xs:sequence>
+            <!-- mandatory properties for spdx:Checksum-->
+            <xs:element name="algorithm" type="rdf:ResourceRef" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="checksumValue" type="rdf:TypedLiteral" minOccurs="1" maxOccurs="1"/>
+          </xs:sequence>
+          <xs:attribute ref="rdf:about"/>
+          <xs:attribute ref="rdf:nodeID"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- spdx:checksum-->
+  <xs:element name="checksum" type="spdx:Checksum"/>
+</xs:schema>

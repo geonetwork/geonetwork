@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:csvw="http://www.w3.org/ns/csvw#"
+           xmlns:dct="http://purl.org/dc/terms/"
+           targetNamespace="http://www.w3.org/ns/csvw#"
+           elementFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      An XML Schema for the CSVW (CSV on the Web) vocabulary as used in HealthDCAT-AP
+      for describing tabular data and variable metadata.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
+  <xs:import namespace="http://purl.org/dc/terms/" schemaLocation="dcterms.xsd"/>
+
+  <xs:complexType name="TableGroup_type">
+    <xs:sequence>
+      <xs:element name="TableGroup">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="dct:title" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="table" type="csvw:Table_type" minOccurs="1" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Table_type">
+    <xs:sequence>
+      <xs:element name="Table">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="url" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+            <xs:element ref="dct:title" minOccurs="1" maxOccurs="unbounded"/>
+            <!--  TODO-HEALTH: Optional element <xs:element ref="dcat:keyword" minOccurs="0" maxOccurs="unbounded"/>-->
+            <xs:element name="column" type="csvw:Column_type" minOccurs="1" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Column_type">
+    <xs:sequence>
+      <xs:element name="Column">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="name" type="rdf:PlainLiteral" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="title" type="rdf:PlainLiteral" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element ref="dct:description" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="datatype" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="propertyUrl" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

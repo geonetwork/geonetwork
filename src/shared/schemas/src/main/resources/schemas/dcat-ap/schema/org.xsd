@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:foaf="http://xmlns.com/foaf/0.1/"
+           xmlns:org="http://www.w3.org/ns/org#"
+           targetNamespace="http://www.w3.org/ns/org#"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      An XML Schema for the Organization Ontology (ORG).
+      See http://www.w3.org/ns/org#
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:import namespace="http://xmlns.com/foaf/0.1/" schemaLocation="foaf.xsd"/>
+
+  <xs:element name="memberOf" type="foaf:Agent"/>
+</xs:schema>

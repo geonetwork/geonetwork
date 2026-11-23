@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    SPDX-FileCopyrightText: 2001 FAO-UN and others <geonetwork@osgeo.org>
+    SPDX-License-Identifier: GPL-2.0-or-later
+
+-->
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:dcat="http://www.w3.org/ns/dcat#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:geonet="http://www.fao.org/geonetwork">
+  <dcat:Catalog>
+    <dcat:record>
+      <dcat:CatalogRecord>
+        <dct:conformsTo>
+          <dct:Standard rdf:about="https://joinup.ec.europa.eu/collection/semic-support-centre/solution/dcat-application-profile-data-portals-europe/release/200">
+            <dct:title xml:lang="en">DCAT-AP</dct:title>
+            <dct:description xml:lang="en">DCAT Application Profile for data portals in Europe</dct:description>
+            <owl:versionInfo>2.0.0</owl:versionInfo>
+          </dct:Standard>
+        </dct:conformsTo>
+        <dct:language>
+          <skos:Concept rdf:about="http://publications.europa.eu/resource/authority/language/ENG">
+            <rdf:type rdf:resource="http://purl.org/dc/terms/LinguisticSystem"/>
+            <skos:prefLabel xml:lang="en">English</skos:prefLabel>
+            <skos:inScheme rdf:resource="http://publications.europa.eu/resource/authority/language"/>
+          </skos:Concept>
+        </dct:language>
+      </dcat:CatalogRecord>
+    </dcat:record>
+    <dcat:dataset>
+      <dcat:Dataset>
+        <dct:title xml:lang="en">Generic DCAT-AP dataset</dct:title>
+        <dct:description xml:lang="en"/>
+      </dcat:Dataset>
+    </dcat:dataset>
+  </dcat:Catalog>
+  <geonet:info>
+    <id>1</id>
+    <schema>dcat-ap</schema>
+  </geonet:info>
+</rdf:RDF>

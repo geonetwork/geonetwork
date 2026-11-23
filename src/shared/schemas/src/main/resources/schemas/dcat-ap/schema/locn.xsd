@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:locn="http://www.w3.org/ns/locn#"
+           targetNamespace="http://www.w3.org/ns/locn#"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      ADMS XML Schema
+      http://www.w3.org/ns/adms#
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
+
+  <xs:element name="geometry" type="rdf:TypedLiteral"/>
+
+  <!-- <xs:complexType name="Geometry" mixed="true"> -->
+  <!--   <xs:complexContent> -->
+  <!--     <xs:extension base="rdf:TypedLiteral"/> -->
+  <!--   </xs:complexContent> -->
+  <!-- </xs:complexType> -->
+
+  <!-- TODO: mobility
+  centroid
+  bounding bbox
+  gazetteer
+  ...
+  -->
+
+  <xs:complexType name="Address">
+    <xs:sequence>
+      <xs:element name="Address" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fullAddress" type="rdf:TypedLiteral" minOccurs="0"/>
+            <xs:element name="poBox" type="rdf:TypedLiteral" minOccurs="0"/>
+            <xs:element name="thoroughfare" type="rdf:TypedLiteral" minOccurs="0"/>
+            <xs:element name="locatorDesignator" type="rdf:TypedLiteral" minOccurs="0"/>
+            <xs:element name="locatorName" type="rdf:TypedLiteral" minOccurs="0"/>
+            <xs:element name="addressArea" type="rdf:TypedLiteral" minOccurs="0"/>
+            <xs:element name="postName" type="rdf:TypedLiteral" minOccurs="0"/>
+            <xs:element name="postCode" type="rdf:TypedLiteral" minOccurs="0"/>
+            <xs:element name="adminUnitL2" type="rdf:TypedLiteral" minOccurs="0"/>
+            <xs:element name="adminUnitL1" type="rdf:TypedLiteral" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="address" type="locn:Address"/>
+</xs:schema>

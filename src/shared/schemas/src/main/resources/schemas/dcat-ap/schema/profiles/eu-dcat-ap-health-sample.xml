@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dcat="http://www.w3.org/ns/dcat#"
+         xmlns:dcatap="http://data.europa.eu/r5r/"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:geodcatap="http://data.europa.eu/930/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:cv="http://data.europa.eu/m8g/"
+         xmlns:healthdcatap="http://healthdataportal.eu/ns/health#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:ns4="http://technical.fdp/"
+         xmlns:adms="http://www.w3.org/ns/adms#"
+         xmlns:vcard="http://www.w3.org/2006/vcard/ns#"
+         xmlns:odrl="http://www.w3.org/ns/odrl/2/"
+         xmlns:dqv="http://www.w3.org/ns/dqv#"
+         xmlns:oa="http://www.w3.org/ns/oa#"
+         xmlns:prov="http://www.w3.org/ns/prov#"
+         xmlns:dpv="https://w3id.org/dpv#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:csvw="http://www.w3.org/ns/csvw#">
+
+  <dcat:Distribution rdf:about="blankNode:analytics-0">
+    <dcatap:applicableLegislation rdf:resource="http://data.europa.eu/eli/reg/2023/138/oj"/>
+    <dc:isPartOf rdf:resource="blankNode:dataset"/>
+    <dc:title xml:lang="en">ANALYTICS</dc:title>
+    <dcat:accessURL rdf:resource="http://isrefby.com"/>
+  </dcat:Distribution>
+
+  <dcat:Dataset rdf:about="blankNode:dataset">
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Resource"/>
+    <geodcatap:custodian>
+      <foaf:Agent>
+        <cv:contactPoint>
+          <cv:ContactPoint>
+            <cv:contactPage rdf:resource="http://a.a"/>
+            <cv:email rdf:resource="mailto:fx.prunayre@gmail.com"/>
+          </cv:ContactPoint>
+        </cv:contactPoint>
+
+        <dc:type rdf:resource="http://healthdataportal.eu/resource/authority/publisher-type/healthOrganisation"/>
+        <foaf:name>CUSTODIAN</foaf:name>
+      </foaf:Agent>
+    </geodcatap:custodian>
+
+    <dcatap:applicableLegislation rdf:resource="http://data.europa.eu/eli/reg/2023/138/oj"/>
+    <healthdcatap:analytics rdf:resource="blankNode:analytics-0"/>
+    <healthdcatap:hasCodeValues rdf:resource="http://www.wikidata.org/entity/Q11081"/>
+    <healthdcatap:hasCodingSystem>
+      <dc:Standard rdf:about="http://www.wikidata.org/entity/Q42332">
+      </dc:Standard>
+    </healthdcatap:hasCodingSystem>
+
+    <healthdcatap:hdab>
+      <foaf:Agent>
+        <cv:contactPoint>
+          <cv:ContactPoint>
+            <cv:contactPage rdf:resource="http://a.sa"/>
+            <cv:email rdf:resource="mailto:fx.prunayre@gmail.com"/>
+          </cv:ContactPoint>
+        </cv:contactPoint>
+
+        <dc:type rdf:resource="http://healthdataportal.eu/resource/authority/publisher-type/nationalPublicHealthInstitute"/>
+        <foaf:name>HDAB</foaf:name>
+      </foaf:Agent>
+    </healthdcatap:hdab>
+
+    <healthdcatap:healthCategory>
+      <skos:Concept rdf:about="http://healthdataportal.eu/resource/authority/healthcategories/DIOH">
+        <skos:prefLabel xml:lang="en">
+          Data on factors impacting on health, including socio-economic, environmental and
+          behavioural determinants of health</skos:prefLabel>
+      </skos:Concept>
+    </healthdcatap:healthCategory>
+
+    <healthdcatap:healthTheme rdf:resource="http://www.wikidata.org/entity/Q11081"/>
+    <healthdcatap:maxTypicalAge rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</healthdcatap:maxTypicalAge>
+    <healthdcatap:minTypicalAge rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</healthdcatap:minTypicalAge>
+    <healthdcatap:numberOfRecords rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">22</healthdcatap:numberOfRecords>
+    <healthdcatap:numberOfUniqueIndividuals rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">22</healthdcatap:numberOfUniqueIndividuals>
+    <healthdcatap:populationCoverage xml:lang="en">POP COVERAGE</healthdcatap:populationCoverage>
+    <healthdcatap:retentionPeriod>
+      <dc:PeriodOfTime>
+        <rdfs:comment xml:lang="en">RETENTION PERIOD</rdfs:comment>
+        <dcat:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-08-20</dcat:endDate>
+        <dcat:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-08-19</dcat:startDate>
+      </dc:PeriodOfTime>
+    </healthdcatap:retentionPeriod>
+
+    <dc:accessRights>
+      <dc:RightsStatement rdf:about="http://publications.europa.eu/resource/authority/access-right/PUBLIC">
+      </dc:RightsStatement>
+    </dc:accessRights>
+
+    <dc:accrualPeriodicity>
+      <dc:Frequency rdf:about="http://publications.europa.eu/resource/authority/frequency/DAILY_2">
+      </dc:Frequency>
+    </dc:accrualPeriodicity>
+
+    <dc:alternative xml:lang="en">ACRONYM</dc:alternative>
+    <dc:conformsTo>
+      <dc:Standard rdf:about="http://www.wikidata.org/entity/Q3370">
+      </dc:Standard>
+    </dc:conformsTo>
+
+    <dc:creator>
+      <foaf:Agent rdf:about="datasetCreator:1787204545269-05b5bb73-0">
+        <foaf:homepage rdf:resource="http://a.a"/>
+        <foaf:mbox rdf:resource="mailto:fx.prunayre@gmail.com"/>
+        <foaf:name>CREATOR</foaf:name>
+      </foaf:Agent>
+    </dc:creator>
+
+    <dc:description xml:lang="en">DESC</dc:description>
+    <dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://isrefby.com</dc:identifier>
+    <dc:isPartOf rdf:resource="https://ehdsfdp.healthdataportal.eu:443/catalog/d3aa0521-d525-4f8c-9c58-f37fb498c157"/>
+    <dc:isReferencedBy rdf:resource="http://isrefby.com"/>
+    <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-08-20T00:00:00.000Z</dc:issued>
+    <dc:language>
+      <dc:LinguisticSystem rdf:about="http://publications.europa.eu/resource/authority/language/ENG">
+      </dc:LinguisticSystem>
+    </dc:language>
+
+    <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-08-20T00:00:00.000Z</dc:modified>
+    <dc:provenance>
+      <dc:ProvenanceStatement rdf:about="datasetProvenance:1787204545268-5235f9bc-0">
+        <rdfs:label xml:lang="en">PROVENANCE</rdfs:label>
+      </dc:ProvenanceStatement>
+    </dc:provenance>
+
+    <dc:publisher>
+      <foaf:Agent>
+        <cv:contactPoint>
+          <cv:ContactPoint>
+            <cv:contactPage rdf:resource="https://URL.com"/>
+            <cv:email rdf:resource="mailto:fx.prunayre@gmail.com"/>
+          </cv:ContactPoint>
+        </cv:contactPoint>
+
+        <dc:description xml:lang="en">NOTE</dc:description>
+        <dc:type rdf:resource="http://healthdataportal.eu/resource/authority/publisher-type/nationalPublicHealthInstitute"/>
+        <foaf:name>PUBLISHER</foaf:name>
+      </foaf:Agent>
+    </dc:publisher>
+
+    <dc:relation rdf:resource="http://rel.com"/>
+    <dc:source rdf:resource="http://source.com"/>
+    <dc:spatial>
+      <dc:Location rdf:about="http://data.europa.eu/nuts/code/NL125">
+      </dc:Location>
+    </dc:spatial>
+
+    <dc:temporal>
+      <dc:PeriodOfTime>
+        <dcat:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-08-21</dcat:endDate>
+        <dcat:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-08-07</dcat:startDate>
+      </dc:PeriodOfTime>
+    </dc:temporal>
+
+    <dc:title xml:lang="en">TITLE</dc:title>
+    <dc:title xml:lang="fr">TITRE</dc:title>
+    <dc:type>
+      <skos:Concept rdf:about="http://publications.europa.eu/resource/authority/dataset-type/NAL">
+        <skos:prefLabel xml:lang="en">
+          Named Authority List</skos:prefLabel>
+      </skos:Concept>
+    </dc:type>
+
+    <ns4:sciensanoTheme rdf:resource="http://www.wikidata.org/entity/Q3706138"/>
+    <adms:identifier>
+      <adms:Identifier rdf:about="datasetAdmsIdentifier:1787204545270-a03aeb0b-0">
+        <skos:notation rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://id.com</skos:notation>
+        <adms:schemaAgency>dada</adms:schemaAgency>
+      </adms:Identifier>
+    </adms:identifier>
+
+    <adms:sample>
+      <dcat:Distribution rdf:about="blankNode:sample-0">
+        <dcatap:applicableLegislation>
+          <rdf:Description rdf:about="http://data.europa.eu/eli/reg/2025/327/oj">
+            <rdf:type rdf:resource="http://data.europa.eu/eli/ontology#LegalResource"/>
+          </rdf:Description>
+        </dcatap:applicableLegislation>
+
+        <dc:isPartOf rdf:resource="blankNode:dataset"/>
+        <dc:title xml:lang="en">SAMPLE</dc:title>
+        <dcat:accessURL rdf:resource="http://isrefby.com"/>
+      </dcat:Distribution>
+    </adms:sample>
+
+    <adms:versionNotes xml:lang="en">VERSION NOTES</adms:versionNotes>
+    <dcat:contactPoint>
+      <vcard:Kind rdf:about="datasetContactPoint:1787204545269-6ccf7467-0">
+        <rdf:type rdf:resource="http://www.w3.org/2006/vcard/ns#Organization"/>
+        <vcard:fn>CONTACT POINT</vcard:fn>
+        <vcard:hasEmail rdf:resource="mailto:fx.prunayre@gmail.com"/>
+        <vcard:hasName>ALTERNATIVE NAME</vcard:hasName>
+        <vcard:hasURL rdf:resource="http://a.a"/>
+        <vcard:organisationName>ORG NAME</vcard:organisationName>
+        <vcard:organisationUnit>ORG UNIT</vcard:organisationUnit>
+      </vcard:Kind>
+    </dcat:contactPoint>
+
+    <dcat:distribution>
+      <dcat:Distribution rdf:about="blankNode:distribution-0">
+        <dcatap:applicableLegislation rdf:resource="http://data.europa.eu/eli/reg/2023/138/oj"/>
+        <dcatap:availability>
+          <skos:Concept rdf:about="http://publications.europa.eu/resource/authority/planned-availability/STABLE">
+            <skos:prefLabel xml:lang="en">Stable</skos:prefLabel>
+          </skos:Concept>
+        </dcatap:availability>
+
+        <dc:conformsTo rdf:resource="http://isrefby.com"/>
+        <dc:description xml:lang="en">DESC</dc:description>
+        <dc:format>
+          <dc:MediaTypeOrExtent rdf:about="http://publications.europa.eu/resource/authority/file-type/AKN4EU_LEG">
+          </dc:MediaTypeOrExtent>
+        </dc:format>
+
+        <dc:isPartOf rdf:resource="blankNode:dataset"/>
+        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-08-05T00:00:00.000Z</dc:issued>
+        <dc:language rdf:resource="http://publications.europa.eu/resource/authority/language/CES"/>
+        <dc:license rdf:resource="http://isrefby.com"/>
+        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-08-13T00:00:00.000Z</dc:modified>
+        <dc:rights>
+          <dc:RightsStatement>
+            <rdfs:label xml:lang="en">RRRR</rdfs:label>
+          </dc:RightsStatement>
+        </dc:rights>
+
+        <dc:title xml:lang="en">TITLE</dc:title>
+        <adms:status>
+          <skos:ConceptScheme rdf:about="http://publications.europa.eu/resource/authority/distribution-status/DEPRECATED">
+            <skos:prefLabel xml:lang="en">Deprecated</skos:prefLabel>
+          </skos:ConceptScheme>
+        </adms:status>
+
+        <dcat:accessService>
+          <dcat:DataService>
+            <dc:title xml:lang="en">TITLE</dc:title>
+            <dcat:endpointURL rdf:resource="http://isrefby.com"/>
+          </dcat:DataService>
+        </dcat:accessService>
+
+        <dcat:accessURL rdf:resource="http://isrefby.com"/>
+        <dcat:byteSize rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">111</dcat:byteSize>
+        <dcat:compressFormat rdf:resource="http://www.iana.org/assignments/media-types/application/x-bzip"/>
+        <dcat:downloadURL rdf:resource="http://isrefby.com"/>
+        <dcat:mediaType>
+          <dc:MediaType rdf:about="http://www.iana.org/assignments/media-types/text/html">
+          </dc:MediaType>
+        </dcat:mediaType>
+
+        <dcat:packageFormat>
+          <dc:MediaType rdf:about="http://www.iana.org/assignments/media-types/application/gzip">
+          </dc:MediaType>
+        </dcat:packageFormat>
+
+        <dcat:spatialResolutionInMeters rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">11.0</dcat:spatialResolutionInMeters>
+        <dcat:temporalResolution rdf:datatype="http://www.w3.org/2001/XMLSchema#duration">P1Y</dcat:temporalResolution>
+        <dcat:version>11</dcat:version>
+        <odrl:hasPolicy>
+          <odrl:Policy>
+            <odrl:obligation>
+              <odrl:Duty>
+                <odrl:action rdf:resource="http://isrefby.com"/>
+              </odrl:Duty>
+            </odrl:obligation>
+
+            <odrl:permission>
+              <odrl:Permission>
+                <odrl:action rdf:resource="http://isrefby.com"/>
+              </odrl:Permission>
+            </odrl:permission>
+
+            <odrl:prohibition>
+              <odrl:Prohibition>
+                <odrl:action rdf:resource="http://isrefby.com"/>
+              </odrl:Prohibition>
+            </odrl:prohibition>
+
+          </odrl:Policy>
+        </odrl:hasPolicy>
+
+        <foaf:page rdf:resource="http://isrefby.com"/>
+      </dcat:Distribution>
+    </dcat:distribution>
+
+    <dcat:hasVersion rdf:resource="http://hasversion.com"/>
+    <dcat:inSeries rdf:resource="http://inseries.com"/>
+    <dcat:keyword xml:lang="en">KEYWORD</dcat:keyword>
+    <dcat:landingPage>
+      <foaf:Document rdf:about="http://landingpage.com">
+      </foaf:Document>
+    </dcat:landingPage>
+
+    <dcat:qualifiedRelation>
+      <dcat:Relationship rdf:about="datasetQualifiedRelation:1787204545269-894d3c96-0">
+        <dc:relation rdf:resource="http://qr.com"/>
+        <dcat:hadRole>
+          <dcat:Role rdf:about="http://www.iana.org/assignments/relation/acl">
+            <skos:prefLabel xml:lang="en">acl - Asserts that the link target provides an access control resource for the link context.</skos:prefLabel>
+          </dcat:Role>
+        </dcat:hadRole>
+
+      </dcat:Relationship>
+    </dcat:qualifiedRelation>
+
+    <dcat:spatialResolutionInMeters rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">111.0</dcat:spatialResolutionInMeters>
+    <dcat:temporalResolution rdf:datatype="http://www.w3.org/2001/XMLSchema#duration">P2Y</dcat:temporalResolution>
+    <dcat:theme>
+      <skos:Concept rdf:about="http://publications.europa.eu/resource/authority/data-theme/AGRI">
+        <skos:prefLabel xml:lang="en">
+          Agriculture, fisheries, forestry and food</skos:prefLabel>
+      </skos:Concept>
+    </dcat:theme>
+
+    <dcat:theme>
+      <skos:Concept rdf:about="http://publications.europa.eu/resource/authority/data-theme/ENER">
+        <skos:prefLabel xml:lang="en">
+          Energy</skos:prefLabel>
+      </skos:Concept>
+    </dcat:theme>
+
+    <dcat:theme>
+      <skos:Concept rdf:about="http://publications.europa.eu/resource/authority/data-theme/HEAL">
+        <skos:prefLabel xml:lang="en">
+          Health</skos:prefLabel>
+      </skos:Concept>
+    </dcat:theme>
+
+    <dcat:version>http://version.com</dcat:version>
+    <dqv:hasQualityAnnotation>
+      <dqv:QualityCertificate rdf:about="internalURI:datasetQualityAnnotation0">
+        <oa:hasBody rdf:resource="http://cert.com"/>
+        <oa:hasTarget rdf:resource="http://qa.com"/>
+        <oa:motivatedBy rdf:resource="http://www.w3.org/ns/dqv#qualityAssessment"/>
+      </dqv:QualityCertificate>
+    </dqv:hasQualityAnnotation>
+
+    <prov:qualifiedAttribution>
+      <prov:Attribution rdf:about="datasetQualifiedAttribution:1787204545269-3d8b1486-0">
+        <dcat:hadRole>
+          <dcat:Role rdf:about="https://inspire.ec.europa.eu/metadata-codelist/ResponsiblePartyRole/owner">
+            <skos:prefLabel xml:lang="en">Owner - party that owns the resource</skos:prefLabel>
+          </dcat:Role>
+        </dcat:hadRole>
+
+        <prov:agent>
+          <foaf:Organization>
+            <foaf:homepage rdf:resource="http://qa.com"/>
+            <foaf:mbox rdf:resource="mailto:fx.prunayre@gmail.com"/>
+            <foaf:name>QA</foaf:name>
+          </foaf:Organization>
+        </prov:agent>
+
+      </prov:Attribution>
+    </prov:qualifiedAttribution>
+
+    <prov:wasGeneratedBy>
+      <prov:Activity rdf:about="datasetWasGeneratedBy:1787204545270-e6a8d1a5-0">
+        <dc:type rdf:resource="http://dbpedia.org/resource/Record_linkage"/>
+        <rdfs:label>ACTIVITY</rdfs:label>
+        <rdfs:seeAlso rdf:resource="http://isrefby.com"/>
+        <prov:startedAtTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-08-20T00:00:00.000Z</prov:startedAtTime>
+        <prov:wasAssociatedWith>
+          <prov:Agent>
+            <prov:actedOnBehalfOf>
+              <prov:Agent>
+                <rdf:type rdf:resource="http://www.w3.org/ns/prov#Organization"/>
+                <foaf:name>ON BEHALF OF</foaf:name>
+              </prov:Agent>
+            </prov:actedOnBehalfOf>
+
+            <foaf:homepage rdf:resource="http://isrefby.com"/>
+            <foaf:mbox rdf:resource="mailto:fx.prunayre@gmail.com"/>
+            <foaf:name>AGENT INFO</foaf:name>
+          </prov:Agent>
+        </prov:wasAssociatedWith>
+
+        <foaf:page rdf:resource="http://isrefby.com"/>
+      </prov:Activity>
+    </prov:wasGeneratedBy>
+
+    <foaf:page>
+      <foaf:Document rdf:about="http://documentation.o">
+        <rdfs:comment xml:lang="en">DOC NOTE</rdfs:comment>
+        <rdfs:label xml:lang="en">DOC</rdfs:label>
+      </foaf:Document>
+    </foaf:page>
+
+    <dpv:hasLegalBasis>
+      <dpv:LegalBasis rdf:about="datasetHasLegalBasis:1787204545269-ef3a20f0-0">
+        <dc:description xml:lang="en">LEGAL BASIS</dc:description>
+        <dc:source rdf:resource="http://lb.com"/>
+      </dpv:LegalBasis>
+    </dpv:hasLegalBasis>
+
+    <dpv:hasPersonalData>
+      <dpv:PersonalData rdf:about="https://w3id.org/dpv/dpv-pd#AccountIdentifier">
+      </dpv:PersonalData>
+    </dpv:hasPersonalData>
+
+    <dpv:hasPersonalData>
+      <dpv:PersonalData rdf:about="https://w3id.org/dpv/dpv-pd#AgeExact">
+      </dpv:PersonalData>
+    </dpv:hasPersonalData>
+
+    <dpv:hasPersonalData>
+      <dpv:PersonalData rdf:about="https://w3id.org/dpv/dpv-pd#ApartmentOwned">
+      </dpv:PersonalData>
+    </dpv:hasPersonalData>
+
+    <dpv:hasPersonalData>
+      <dpv:PersonalData rdf:about="https://w3id.org/dpv/dpv-pd#Character">
+      </dpv:PersonalData>
+    </dpv:hasPersonalData>
+
+    <dpv:hasPurpose>
+      <dpv:Purpose rdf:about="datasetPurpose:1787204545268-12cdb2dd-0">
+        <dc:description xml:lang="en">PURPOSE</dc:description>
+      </dpv:Purpose>
+    </dpv:hasPurpose>
+
+  </dcat:Dataset>
+
+  <skos:ConceptScheme rdf:about="http://ccc.com">
+    <dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://ccc.com</dc:identifier>
+    <dc:title xml:lang="en">CLASS LABEL</dc:title>
+    <owl:versionInfo>CLASS VERS</owl:versionInfo>
+    <skos:definition xml:lang="en">CLASS DEF</skos:definition>
+    <skos:notation xml:lang="en">CLASSI NOTATION</skos:notation>
+    <skos:prefLabel xml:lang="en">CLASS LABEL</skos:prefLabel>
+  </skos:ConceptScheme>
+
+  <rdf:Description rdf:about="http://data.europa.eu/eli/reg/2023/138/oj">
+    <rdf:type rdf:resource="http://data.europa.eu/eli/ontology#LegalResource"/>
+  </rdf:Description>
+
+  <dc:LicenseDocument rdf:about="http://isrefby.com">
+    <rdf:type rdf:resource="http://purl.org/dc/terms/Standard"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+  </dc:LicenseDocument>
+
+  <skos:Concept rdf:about="http://www.wikidata.org/entity/Q11081">
+    <dc:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://www.wikidata.org/entity/Q11081</dc:identifier>
+    <skos:inScheme rdf:resource="http://ccc.com"/>
+    <skos:notation xml:lang="en">CODEVALUENOTA</skos:notation>
+    <skos:prefLabel xml:lang="en">Alzheimer's disease</skos:prefLabel>
+    <skos:prefLabel xml:lang="en">CODEVALULABEL</skos:prefLabel>
+  </skos:Concept>
+
+  <csvw:Table rdf:about="sample1Table:1787204545280-da1eb4d4-1">
+    <dc:title xml:lang="en">TABLE</dc:title>
+    <csvw:tableSchema>
+      <csvw:Schema rdf:about="sample1Table1Schema:1787204545280-dbd20a4e">
+        <csvw:column>
+          <csvw:Column rdf:about="sample1Table1Variable:1787204545280-e88e6255-1">
+            <dc:description xml:lang="en">DDD</dc:description>
+            <csvw:datatype>string</csvw:datatype>
+            <csvw:name xml:lang="en">VAR</csvw:name>
+            <csvw:propertyUrl rdf:resource="http://isrefby.com"/>
+            <csvw:title xml:lang="en">TTT</csvw:title>
+          </csvw:Column>
+        </csvw:column>
+
+      </csvw:Schema>
+    </csvw:tableSchema>
+
+    <csvw:url rdf:resource="http://isrefby.com"/>
+    <dcat:keyword xml:lang="en">DDD</dcat:keyword>
+  </csvw:Table>
+
+  <csvw:TableGroup rdf:nodeID="genid18">
+    <csvw:table rdf:resource="sample1Table:1787204545280-da1eb4d4-1"/>
+  </csvw:TableGroup>
+
+</rdf:RDF>

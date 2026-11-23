@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:dct="http://purl.org/dc/terms/"
+           xmlns:foaf="http://xmlns.com/foaf/0.1/"
+           xmlns:cv="http://data.europa.eu/m8g/"
+           xmlns:time="http://www.w3.org/2006/time#"
+           xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+           targetNamespace="http://data.europa.eu/m8g/"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      Core Public Organization Vocabulary (CPOV)
+      http://data.europa.eu/m8g/
+
+      This schema defines the ContactPoint class and related properties
+      used in the HealthDCAT-AP specification for describing contact information.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
+  <xs:import namespace="http://purl.org/dc/terms/" schemaLocation="dcterms.xsd"/>
+  <xs:import namespace="http://xmlns.com/foaf/0.1/" schemaLocation="foaf.xsd"/>
+  <xs:import namespace="http://www.w3.org/2006/time#" schemaLocation="time.xsd"/>
+  <xs:import namespace="http://www.w3.org/2004/02/skos/core#" schemaLocation="skos.xsd"/>
+
+  <!-- ContactPoint class - Core Public Organization Vocabulary -->
+  <xs:complexType name="ContactPoint">
+    <xs:sequence>
+      <xs:element name="ContactPoint">
+        <xs:complexType>
+          <xs:sequence>
+            <!-- Email address as a URI reference (mailto:) -->
+            <xs:element name="email" type="rdf:PlainLiteral" minOccurs="0" maxOccurs="1"/>
+            <!-- Telephone number as a URI reference (tel:) -->
+            <xs:element name="telephone" type="rdf:PlainLiteral" minOccurs="0" maxOccurs="unbounded"/>
+            <!-- Contact webpage as a URI reference -->
+            <xs:element name="contactPage" type="rdf:ResourceRef" minOccurs="0" maxOccurs="1"/>
+            <!-- Time periods when the Contact Point is available -->
+            <xs:element name="openingHours" type="cv:TemporalEntity_type" minOccurs="0" maxOccurs="unbounded"/>
+            <!-- Time periods when the Contact Point is NOT available -->
+            <xs:element name="specialOpeningHoursSpecification" type="cv:TemporalEntity_type" minOccurs="0"
+                        maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attribute ref="rdf:about"/>
+          <xs:attribute ref="rdf:nodeID"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- TemporalEntity with frequency and description properties -->
+  <xs:complexType name="TemporalEntity_type">
+    <xs:sequence>
+      <!-- Human-readable description of the temporal period -->
+      <xs:element ref="dct:description" minOccurs="0" maxOccurs="unbounded"/>
+      <!-- Frequency of the temporal entity as a URI reference -->
+      <xs:element name="frequency" type="rdf:ResourceRef" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute ref="rdf:about"/>
+    <xs:attribute ref="rdf:nodeID"/>
+  </xs:complexType>
+
+  <xs:element name="contactPoint" type="cv:ContactPoint"/>
+  <xs:element name="email" type="rdf:PlainLiteral"/>
+  <xs:element name="telephone" type="rdf:PlainLiteral"/>
+  <xs:element name="contactPage" type="rdf:ResourceRef"/>
+  <xs:element name="openingHours" type="cv:TemporalEntity_type"/>
+  <xs:element name="specialOpeningHoursSpecification" type="cv:TemporalEntity_type"/>
+  <xs:element name="frequency" type="rdf:ResourceRef"/>
+  <xs:element name="ContactPoint" type="cv:ContactPoint"/>
+
+</xs:schema>
