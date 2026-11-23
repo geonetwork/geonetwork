@@ -196,7 +196,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="filter" type="gns:filter" minOccurs="1" maxOccurs="3"/>
+      <xs:element name="filter" type="gns:filter" minOccurs="0" maxOccurs="3"/>
     </xs:sequence>
   </xs:complexType>
 
