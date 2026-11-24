@@ -27,13 +27,14 @@ x-geonetwork-environment:
     -Dlogout.success.url=http://localhost:7979/geonetwork/srv/eng/catalog.search
     -DloginForm=http://localhost:7979/geonetwork/srv/eng/catalog.signin
     -DloginErrorForm=http://localhost:7979/geonetwork/srv/eng/catalog.signin?failure=true
-    -Des.host=elasticsearch
+    -Dgeonetwork.security.type=gn5
+    -Des.host=host.docker.internal
     -Des.protocol=http
     -Des.port=9200
     -Des.url=http://host.docker.internal:9200
     -Des.username=
     -Des.password=
-    -Dgeonetwork.ESFeaturesProxy.targetUri=http://elasticsearch:9200/gn-features/{_}
+    -Dgeonetwork.ESFeaturesProxy.targetUri=http://host.docker.internal:9200/gn-features/{_}
 
 
   GEONETWORK_DB_TYPE: postgres
