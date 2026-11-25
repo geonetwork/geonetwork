@@ -1,0 +1,33 @@
+# GN5 login with the Keycloak started by docker/keycloak/docker-compose.yml.
+# Load it on top of the default configuration, e.g. from the repository root:
+#   SPRING_CONFIG_ADDITIONAL_LOCATION=file:$PWD/docker/keycloak/application-keycloak.yml \
+#     ./mvnw spring-boot:run -pl src/apps/geonetwork
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-name: Keycloak
+            client-id: geonetwork
+            client-secret: geonetwork-secret
+            authorization-grant-type: authorization_code
+            scope: openid,profile,email
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_URL:http://localhost:8180}/realms/geonetwork
+            user-name-attribute: preferred_username
+
+geonetwork:
+  security:
+    oauth2:
+      userCreationRegistration:
+        keycloak:
+          name: given_name
+          surname: family_name
+          email: email
+          # client roles of the "geonetwork" client, see the protocol mapper in the realm
+          rolesClaim: roles
+          # "Profile" = global profile, "group:Profile" = profile in that group
+          rolePattern: '^((?<group>[^:]+):)?(?<profile>[^:]+)$'
