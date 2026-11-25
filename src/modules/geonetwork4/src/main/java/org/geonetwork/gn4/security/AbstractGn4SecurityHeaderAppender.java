@@ -173,11 +173,10 @@ public abstract class AbstractGn4SecurityHeaderAppender {
                         (SecurityContextImpl) gn5Session.getAttribute("SPRING_SECURITY_CONTEXT");
                 var auth = securityContext.getAuthentication();
                 if (auth != null) {
-                    User user = (User) auth.getPrincipal();
                     log.trace(
                             "addGn4SecurityHeader: GN5 security context authentication type: {}",
                             auth.getClass().getSimpleName());
-                    log.trace("addGn4SecurityHeader: GN5 principle username={}", user.getUsername());
+                    log.trace("addGn4SecurityHeader: GN5 principle username={}", auth.getName());
                     var authorities = auth.getAuthorities();
                     var authoritiesNames =
                             authorities.stream().map(x -> x.getAuthority()).collect(Collectors.toList());

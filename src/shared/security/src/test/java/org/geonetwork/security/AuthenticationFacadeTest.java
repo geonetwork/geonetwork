@@ -5,11 +5,14 @@
 package org.geonetwork.security;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import org.geonetwork.domain.repository.UserRepository;
+import org.geonetwork.domain.repository.UsergroupRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -82,5 +85,15 @@ class AuthenticationFacadeTest {
         signIn(oauth2Login(new DefaultOAuth2User(AUTHORITIES, Map.of("login", "johngh"), "login")));
 
         assertSame(expected, authenticationFacade.geonetworkPermissions());
+    }
+
+    /** A signed-in user missing from the GN database gets guest permissions, not an error. */
+    @Test
+    void oauth2UserNotInDatabase() {
+        authenticationFacade.geonetworkAuthorityBuilder = new GeonetworkAuthority.GeonetworkAuthorityBuilder(
+                mock(UserRepository.class), mock(UsergroupRepository.class));
+        signIn(oauth2Login(new DefaultOAuth2User(AUTHORITIES, Map.of("login", "stranger"), "login")));
+
+        assertSame(GeonetworkAuthority.GUESTAUTHORITY, authenticationFacade.geonetworkPermissions());
     }
 }

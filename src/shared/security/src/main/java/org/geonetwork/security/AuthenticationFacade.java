@@ -8,8 +8,6 @@ import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 /** implementation of IAuthenticationFacade */
@@ -56,14 +54,8 @@ public class AuthenticationFacade implements IAuthenticationFacade {
             return GeonetworkAuthority.GUESTAUTHORITY; // shouldn't happen!
         }
 
-        if (auth.getPrincipal() instanceof User user) {
-            return geonetworkAuthorityBuilder.build(user.getUsername());
-        } else if (auth.getPrincipal() instanceof OAuth2User oauth2User) {
-            return geonetworkAuthorityBuilder.build(oauth2User.getName());
-        } else if (auth.getPrincipal() instanceof String) {
-            return GeonetworkAuthority.GUESTAUTHORITY; // username == "anonymousUser"
-        }
-
-        throw new RuntimeException("don't know what type of user is logged in!!");
+        // getName() is the GN database username for every login type (form login, OAuth2, OIDC);
+        // an unknown name gets the guest authority from the builder
+        return geonetworkAuthorityBuilder.build(auth.getName());
     }
 }
