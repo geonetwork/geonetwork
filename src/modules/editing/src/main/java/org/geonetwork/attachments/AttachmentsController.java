@@ -213,6 +213,9 @@ public class AttachmentsController {
             throws Exception {
 
         Metadata metadata = metadataManager.findMetadataByUuid(metadataUuid, approved);
+        if (!metadataAccessManager.canEdit(metadata.getId())) {
+            throw new AccessDeniedException("User is not permitted to edit this record");
+        }
         store.delResources(metadata.getId());
     }
 
@@ -245,7 +248,7 @@ public class AttachmentsController {
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Create a new resource from a URL for a given metadata")
-    @PreAuthorize("('Editor')")
+    @PreAuthorize("hasRole('Editor')")
     @PutMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(

@@ -5,6 +5,8 @@
 package org.geonetwork.configuration;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 @SpringBootApplication
+@EnableMethodSecurity // as in WebSecurityConfiguration, so @PreAuthorize is enforced in tests
 public class TestConfig {}
