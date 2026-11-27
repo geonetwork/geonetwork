@@ -1,0 +1,17 @@
+# Keycloak for testing GeoNetwork login with OAuth2/OIDC.
+# Starts Keycloak on http://localhost:8180 and imports the "geonetwork" realm
+# from ./realm/geonetwork-realm.json on first start.
+services:
+  keycloak:
+    # Same version as the Keycloak adapter used by GeoNetwork (keycloak.version in pom.xml)
+    image: quay.io/keycloak/keycloak:18.0.2
+    container_name: gn-keycloak
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_PORT: "8080"
+    ports:
+      - "8180:8080"
+    volumes:
+      - ./realm:/opt/keycloak/data/import:ro

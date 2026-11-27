@@ -1,0 +1,94 @@
+{
+  "realm": "geonetwork",
+  "enabled": true,
+  "sslRequired": "none",
+  "clients": [
+    {
+      "clientId": "geonetwork",
+      "name": "GeoNetwork",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "geonetwork-secret",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "rootUrl": "http://localhost:8080/geonetwork",
+      "baseUrl": "/",
+      "adminUrl": "http://localhost:8080/geonetwork",
+      "redirectUris": ["http://localhost:8080/geonetwork/*", "http://localhost:7979/geonetwork/*"],
+      "webOrigins": ["+"],
+      "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"],
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:8080/geonetwork/*##http://localhost:7979/geonetwork/*",
+        "exclude.issuer.from.auth.response": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "geonetwork client roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "usermodel.clientRoleMapping.clientId": "geonetwork",
+            "claim.name": "roles",
+            "multivalued": "true",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "roles": {
+    "client": {
+      "geonetwork": [
+        { "name": "Administrator" },
+        { "name": "UserAdmin" },
+        { "name": "Reviewer" },
+        { "name": "Editor" },
+        { "name": "RegisteredUser" },
+        { "name": "Guest" },
+        { "name": "sample:UserAdmin" },
+        { "name": "sample:Reviewer" },
+        { "name": "sample:Editor" },
+        { "name": "sample:RegisteredUser" }
+      ]
+    }
+  },
+  "users": [
+    {
+      "username": "gnadmin",
+      "enabled": true,
+      "email": "gnadmin@example.com",
+      "emailVerified": true,
+      "firstName": "GeoNetwork",
+      "lastName": "Admin",
+      "credentials": [{ "type": "password", "value": "gnadmin", "temporary": false }],
+      "clientRoles": { "geonetwork": ["Administrator"] }
+    },
+    {
+      "username": "gnuseradmin",
+      "enabled": true,
+      "email": "gnuseradmin@example.com",
+      "emailVerified": true,
+      "firstName": "Sample",
+      "lastName": "UserAdmin",
+      "credentials": [{ "type": "password", "value": "gnuseradmin", "temporary": false }],
+      "clientRoles": { "geonetwork": ["sample:UserAdmin"] }
+    },
+    {
+      "username": "gneditor",
+      "enabled": true,
+      "email": "gneditor@example.com",
+      "emailVerified": true,
+      "firstName": "Sample",
+      "lastName": "Editor",
+      "credentials": [{ "type": "password", "value": "gneditor", "temporary": false }],
+      "clientRoles": { "geonetwork": ["sample:Editor"] }
+    }
+  ]
+}
