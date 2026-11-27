@@ -1,0 +1,2205 @@
+<dcat:Catalog rdf:about="http://www.my.org/frenat/acuto" rdf:nodeID="string"
+              xmlns:dcat="http://www.w3.org/ns/dcat#"
+              xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+              xmlns:cv="http://data.europa.eu/m8g/"
+              xmlns:healthdcatap="http://healthdataportal.eu/ns/health#"
+              xmlns:csvw="http://www.w3.org/ns/csvw#"
+              xmlns:ns="http://www.w3.org/2006/vcard/ns#"
+              xmlns:adms="http://www.w3.org/ns/adms#"
+              xmlns:core="http://www.w3.org/2004/02/skos/core#" xmlns:ter="http://purl.org/dc/terms/" xmlns:r5r="http://data.europa.eu/r5r/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns1="http://xmlns.com/foaf/0.1/" xmlns:ter1="http://spdx.org/rdf/terms#" xmlns:mob="https://w3id.org/mobilitydcat-ap" xmlns:con="http://www.w3.org/2011/content#" xmlns:sch="http://schema.org/" xmlns:time="http://www.w3.org/2006/time#" xmlns:locn="http://www.w3.org/ns/locn#" xmlns:org="http://www.w3.org/ns/org#" xmlns:met="https://data.vlaanderen.be/ns/metadata-dcat#" xmlns:oa="http://www.w3.org/ns/oa#" xmlns:dqv="http://www.w3.org/ns/dqv#" xmlns:ns2="http://data.europa.eu/930/"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.w3.org/ns/dcat# dcat.xsd">
+  <!--Zero or more repetitions:-->
+  <dcat:catalog rdf:resource="http://www.company.com/cum/aeoliam"/>
+  <!--Zero or more repetitions:-->
+  <dcat:contactPoint>
+    <ns:Organization rdf:about="http://www.any.edu/ast/ipsa" rdf:nodeID="string">
+      <!--Optional:-->
+      <ns:fn>string</ns:fn>
+      <!--Zero or more repetitions:-->
+      <ns:organization-name xml:lang="">string</ns:organization-name>
+      <!--Optional:-->
+      <ns:hasAddress>
+        <ns:Address rdf:about="http://www.my.gov/regina/pater" rdf:nodeID="string">
+          <!--1 or more repetitions:-->
+          <ns:street-address xml:lang="string">string</ns:street-address>
+          <!--1 or more repetitions:-->
+          <ns:locality xml:lang="">string</ns:locality>
+          <ns:postal-code>string</ns:postal-code>
+          <!--1 or more repetitions:-->
+          <ns:country-name xml:lang="">string</ns:country-name>
+        </ns:Address>
+      </ns:hasAddress>
+      <!--Optional:-->
+      <ns:hasEmail rdf:resource="http://www.company.com/rates/sed"/>
+      <!--Optional:-->
+      <ns:hasURL rdf:resource="http://www.corp.org/aequora/premere"/>
+      <!--Optional:-->
+      <ns:hasTelephone>http://www.sample.com/per/turbine</ns:hasTelephone>
+    </ns:Organization>
+  </dcat:contactPoint>
+  <!--Zero or more repetitions:-->
+  <dcat:dataset>
+    <!--You have a CHOICE of the next 2 items at this level-->
+    <dcat:Dataset rdf:about="http://www.your.com/montis/et" rdf:nodeID="string">
+      <!--Zero or more repetitions:-->
+      <healthdcatap:hdab>
+        <ns1:Agent>
+          <ns1:name></ns1:name>
+          <cv:contactPoint>
+            <cv:ContactPoint>
+              <cv:email rdf:resource=""/>
+            </cv:ContactPoint>
+          </cv:contactPoint>
+        </ns1:Agent>
+      </healthdcatap:hdab>
+      <dcat:contactPoint>
+        <ns:Organization rdf:about="http://www.company.org/et/per" rdf:nodeID="string">
+          <!--Optional:-->
+          <ns:fn>string</ns:fn>
+          <!--Zero or more repetitions:-->
+          <ns:organization-name xml:lang="string">string</ns:organization-name>
+          <!--Optional:-->
+          <ns:hasAddress>
+            <ns:Address rdf:about="http://www.my.org/tempestatesque/infixit" rdf:nodeID="string">
+              <!--1 or more repetitions:-->
+              <ns:street-address xml:lang="">string</ns:street-address>
+              <!--1 or more repetitions:-->
+              <ns:locality xml:lang="string">string</ns:locality>
+              <ns:postal-code>string</ns:postal-code>
+              <!--1 or more repetitions:-->
+              <ns:country-name xml:lang="string">string</ns:country-name>
+            </ns:Address>
+          </ns:hasAddress>
+          <!--Optional:-->
+          <ns:hasEmail rdf:resource="http://www.any.gov/e/arce"/>
+          <!--Optional:-->
+          <ns:hasURL rdf:resource="http://www.any.com/flammato/nimborum"/>
+          <!--Optional:-->
+          <ns:hasTelephone>http://www.any.org/transfixo/imponet</ns:hasTelephone>
+        </ns:Organization>
+      </dcat:contactPoint>
+      <!--Zero or more repetitions:-->
+      <dcat:distribution>
+        <dcat:Distribution rdf:about="http://www.test.edu/vasto/et" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <dcat:accessService rdf:resource="http://www.my.org/divum/vinclis"/>
+          <!--Zero or more repetitions:-->
+          <dcat:accessURL rdf:resource="http://www.company.org/carcere/quippe"/>
+          <!--Zero or more repetitions:-->
+          <dcat:byteSize rdf:datatype="http://www.test.com/caelumque/maria">string</dcat:byteSize>
+          <!--Zero or more repetitions:-->
+          <dcat:downloadURL rdf:resource="http://www.sample.edu/cum/bella"/>
+          <!--Zero or more repetitions:-->
+          <dcat:spatialResolutionInMeters>1000.00</dcat:spatialResolutionInMeters>
+          <!--Zero or more repetitions:-->
+          <dcat:temporalResolution>P11M7DT34M31S</dcat:temporalResolution>
+          <!--Zero or more repetitions:-->
+          <adms:status rdf:resource="http://www.my.edu/iussus/illi">
+            <core:Concept rdf:about="http://www.any.com/cum/coniunx">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.my.org/austris/soror"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.company.com/soror/pater">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.any.com/et/aeolus">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </adms:status>
+          <!--Zero or more repetitions:-->
+          <dcat:mediaType rdf:resource="http://www.your.com/talia/et">
+            <core:Concept rdf:about="http://www.sample.com/imposuit/qui">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.corp.org/annos/speluncis"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.any.com/aeolus/bella">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.my.org/ac/nubibus">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </dcat:mediaType>
+          <!--Zero or more repetitions:-->
+          <dcat:compressFormat rdf:resource="http://www.corp.com/exspirantem/ast">
+            <core:Concept rdf:about="http://www.sample.com/tenens/iunonis">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.corp.org/imposuit/furentibus"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.your.edu/insuper/cum">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.test.org/iovisque/soror">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </dcat:compressFormat>
+          <!--Zero or more repetitions:-->
+          <dcat:packageFormat rdf:resource="http://www.my.gov/regina/tempestatesque">
+            <core:Concept rdf:about="http://www.sample.edu/secum/feta">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.test.org/austris/dedit"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.company.edu/talia/ego">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.company.org/rapidi/aequora">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </dcat:packageFormat>
+          <!--Zero or more repetitions:-->
+          <r5r:availability rdf:resource="http://www.your.com/corripuit/montis">
+            <core:Concept rdf:about="http://www.corp.org/corde/ni">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.your.com/infixit/corde"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.my.org/quisquam/terras">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.company.edu/turbine/iras">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </r5r:availability>
+          <!--Zero or more repetitions:-->
+          <ter:accessRights rdf:resource="http://www.test.org/circum/omnipotens">
+            <core:Concept rdf:about="http://www.company.edu/feta/ferant">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.your.com/arce/acuto"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.sample.org/imperio/ac">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.test.com/furentibus/maria">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:accessRights>
+          <!--Zero or more repetitions:-->
+          <ter:conformsTo>
+            <ter:Standard rdf:about="http://www.sample.com/furentibus/vinclis" rdf:nodeID="string">
+              <ter:identifier xml:lang="string">string</ter:identifier>
+              <!--Zero or more repetitions:-->
+              <ter:title xml:lang="">string</ter:title>
+              <!--Zero or more repetitions:-->
+              <ter:description xml:lang="">string</ter:description>
+              <!--Optional:-->
+              <owl:versionInfo>string</owl:versionInfo>
+              <!--Optional:-->
+              <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2015-08-28T20:48:21</ter:issued>
+            </ter:Standard>
+          </ter:conformsTo>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="">string</ter:description>
+          <!--Zero or more repetitions:-->
+          <ter:format rdf:resource="http://www.your.gov/coniunx/maria">
+            <core:Concept rdf:about="http://www.corp.com/ipsa/ac">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.corp.com/carcere/ac"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.my.edu/iras/foedere">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.sample.com/aris/omnipotens">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:format>
+          <!--Zero or more repetitions:-->
+          <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2000-10-27</ter:issued>
+          <!--Zero or more repetitions:-->
+          <ter:language rdf:resource="http://www.your.com/adorat/dea">
+            <core:Concept rdf:about="http://www.test.org/verrantque/regina">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.your.com/rates/ac"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.your.org/terras/animos">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.corp.org/flammas/atris">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:language>
+          <!--Zero or more repetitions:-->
+          <ter:license rdf:resource="http://www.sample.com/temperat/fremunt">
+            <!--Optional:-->
+            <ter:LicenseDocument rdf:about="http://www.test.com/montis/laxas" rdf:nodeID="string">
+              <!--Zero or more repetitions:-->
+              <ter:type rdf:resource="http://www.company.org/aeoliam/animos">
+                <core:Concept rdf:about="http://www.your.com/aeolus/transfixo">
+                  <!--Zero or more repetitions:-->
+                  <rdf:type rdf:resource="http://www.my.org/corripuit/sed"/>
+                  <!--Zero or more repetitions:-->
+                  <core:prefLabel xml:lang="string">string</core:prefLabel>
+                  <!--Optional:-->
+                  <core:inScheme rdf:resource="http://www.test.org/aeolus/soror">
+                    <!--Optional:-->
+                    <core:ConceptScheme rdf:about="http://www.any.gov/magno/foedere">
+                      <ter:title xml:lang="">string</ter:title>
+                    </core:ConceptScheme>
+                  </core:inScheme>
+                </core:Concept>
+              </ter:type>
+              <!--Zero or more repetitions:-->
+              <ter:title xml:lang="string">string</ter:title>
+              <!--Zero or more repetitions:-->
+              <ter:description xml:lang="">string</ter:description>
+              <!--Zero or more repetitions:-->
+              <ter:identifier xml:lang="string">string</ter:identifier>
+            </ter:LicenseDocument>
+          </ter:license>
+          <!--Zero or more repetitions:-->
+          <ter:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2019-09-07+02:00</ter:modified>
+          <!--Zero or more repetitions:-->
+          <ter:rights>
+            <ter:RightsStatement rdf:about="http://www.corp.com/rates/pater" rdf:nodeID="string">
+              <!--Zero or more repetitions:-->
+              <ter:title xml:lang="">string</ter:title>
+              <!--Zero or more repetitions:-->
+              <ter:description xml:lang="string">string</ter:description>
+            </ter:RightsStatement>
+          </ter:rights>
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ns1:page>
+            <ns1:Document rdf:about="http://www.sample.com/nubibus/et" rdf:nodeID="string">
+              <!--Zero or more repetitions:-->
+              <ns1:name xml:lang="">string</ns1:name>
+            </ns1:Document>
+          </ns1:page>
+          <!--Zero or more repetitions:-->
+          <ter1:checksum>
+            <ter1:Checksum rdf:about="http://www.sample.com/transfixo/corripuit" rdf:nodeID="string">
+              <ter1:algorithm rdf:resource="http://www.any.org/ferant/corripuit"/>
+              <ter1:checksumValue rdf:datatype="http://www.sample.org/quae/gente">string</ter1:checksumValue>
+            </ter1:Checksum>
+          </ter1:checksum>
+          <!--Zero or more repetitions:-->
+          <r5r:applicableLegislation rdf:resource="http://www.sample.org/laxas/illi"/>
+          <!--Zero or more repetitions:-->
+          <ter:identifier xml:lang="">string</ter:identifier>
+          <!--Zero or more repetitions:-->
+          <mob:applicationLayerProtocol rdf:resource="http://www.sample.org/frenat/iussus">
+            <core:Concept rdf:about="http://www.your.org/annos/sceptra">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.my.gov/et/molemque"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.any.gov/hoc/dare">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.my.com/maria/iovisque">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </mob:applicationLayerProtocol>
+          <!--Zero or more repetitions:-->
+          <con:characterEncoding xml:lang="string">string</con:characterEncoding>
+          <!--Zero or more repetitions:-->
+          <mob:communicationMethod rdf:resource="http://www.any.org/arce/illi">
+            <core:Concept rdf:about="http://www.my.com/quae/molemque">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.corp.com/et/magno"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.company.org/gero/incedo">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.my.com/quisquam/numen">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </mob:communicationMethod>
+          <!--Zero or more repetitions:-->
+          <mob:dataFormatNotes xml:lang="string">string</mob:dataFormatNotes>
+          <!--Zero or more repetitions:-->
+          <mob:grammar rdf:resource="http://www.my.com/maria/auras">
+            <core:Concept rdf:about="http://www.company.com/aeolus/iussus">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.sample.com/montis/quippe"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.test.org/illi/ego">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.any.com/sonoras/indignantes">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </mob:grammar>
+          <!--Zero or more repetitions:-->
+          <adms:sample/>
+          <!--Zero or more repetitions:-->
+          <mob:mobilityDataStandard>
+            <!--Optional:-->
+            <ter:conformsTo>
+              <ter:Standard rdf:about="http://www.test.org/numen/sceptra" rdf:nodeID="string">
+                <ter:identifier xml:lang="string">string</ter:identifier>
+                <!--Zero or more repetitions:-->
+                <ter:title xml:lang="string">string</ter:title>
+                <!--Zero or more repetitions:-->
+                <ter:description xml:lang="">string</ter:description>
+                <!--Optional:-->
+                <owl:versionInfo>string</owl:versionInfo>
+                <!--Optional:-->
+                <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2015-05-27</ter:issued>
+              </ter:Standard>
+            </ter:conformsTo>
+            <!--Optional:-->
+            <owl:versionInfo>string</owl:versionInfo>
+            <!--Zero or more repetitions:-->
+            <mob:schema rdf:resource="http://www.test.org/maria/adorat"/>
+          </mob:mobilityDataStandard>
+          <!--Zero or more repetitions:-->
+          <ter:temporal>
+            <ter:PeriodOfTime rdf:about="http://www.any.com/dare/feta" rdf:nodeID="string"
+                              xmlns:schema="http://schema.org/">
+              <dcat:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2002-12-11</dcat:startDate>
+              <dcat:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2018-11-28</dcat:endDate>
+            </ter:PeriodOfTime>
+          </ter:temporal>
+        </dcat:Distribution>
+      </dcat:distribution>
+      <!--Zero or more repetitions:-->
+      <dcat:keyword xml:lang="string">string</dcat:keyword>
+      <!--Zero or more repetitions:-->
+      <dcat:landingPage rdf:resource="http://www.sample.gov/iussus/supplex"/>
+      <!--Zero or more repetitions:-->
+      <dcat:qualifiedRelation>
+        <dcat:Relationship rdf:about="http://www.any.gov/fremunt/patriam" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <dcat:hadRole>anyType</dcat:hadRole>
+          <!--Zero or more repetitions:-->
+          <ter:relation rdf:resource="http://www.sample.org/evertitque/premit"/>
+        </dcat:Relationship>
+      </dcat:qualifiedRelation>
+      <!--Zero or more repetitions:-->
+      <dcat:spatialResolutionInMeters>1000.00</dcat:spatialResolutionInMeters>
+      <!--Zero or more repetitions:-->
+      <dcat:temporalResolution>P3M5DT20H56M54S</dcat:temporalResolution>
+      <!--Zero or more repetitions:-->
+      <dcat:theme rdf:resource="http://www.your.gov/temperat/ignem">
+        <core:Concept rdf:about="http://www.company.com/feta/aequora">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.test.org/talia/aeolus"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.sample.org/auras/iovis">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.your.org/bella/dea">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </dcat:theme>
+      <!--Zero or more repetitions:-->
+      <adms:identifier>
+        <adms:Identifier rdf:about="http://www.test.com/tot/frenat">
+          <core:notation rdf:datatype="http://www.corp.edu/caelumque/tot">string</core:notation>
+        </adms:Identifier>
+      </adms:identifier>
+      <!--Zero or more repetitions:-->
+      <adms:sample>
+        <dcat:Distribution rdf:about="http://www.your.org/annos/imponet" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <dcat:accessService rdf:resource="http://www.corp.com/iaculata/numen"/>
+          <!--Zero or more repetitions:-->
+          <dcat:accessURL rdf:resource="http://www.any.com/disiecitque/gero"/>
+          <!--Zero or more repetitions:-->
+          <dcat:byteSize rdf:datatype="http://www.my.com/sed/tot">string</dcat:byteSize>
+          <!--Zero or more repetitions:-->
+          <dcat:downloadURL rdf:resource="http://www.my.com/tempestatesque/soror"/>
+          <!--Zero or more repetitions:-->
+          <dcat:spatialResolutionInMeters>1000.00</dcat:spatialResolutionInMeters>
+          <!--Zero or more repetitions:-->
+          <dcat:temporalResolution>P1Y6M5DT3H12M22S</dcat:temporalResolution>
+          <!--Zero or more repetitions:-->
+          <adms:status rdf:resource="http://www.your.org/evertitque/et">
+            <core:Concept rdf:about="http://www.my.com/pater/pectore">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.sample.com/illi/qui"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.test.edu/certo/ignem">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.test.org/venit/secum">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </adms:status>
+          <!--Zero or more repetitions:-->
+          <dcat:mediaType rdf:resource="http://www.your.org/divum/metuens">
+            <core:Concept rdf:about="http://www.corp.gov/aeolus/et">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.sample.gov/montis/scopuloque"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.company.com/aeolus/imponet">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.corp.edu/montis/hic">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </dcat:mediaType>
+          <!--Zero or more repetitions:-->
+          <dcat:compressFormat rdf:resource="http://www.your.org/illi/quae">
+            <core:Concept rdf:about="http://www.sample.gov/iovis/antro">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.my.com/illum/secum"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.any.gov/coniunx/tot">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.test.org/ignem/hoc">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </dcat:compressFormat>
+          <!--Zero or more repetitions:-->
+          <dcat:packageFormat rdf:resource="http://www.company.com/arce/flammas">
+            <core:Concept rdf:about="http://www.your.com/habenas/transfixo">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.test.com/certo/celsa"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.test.gov/antro/aut">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.test.org/et/vasto">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </dcat:packageFormat>
+          <!--Zero or more repetitions:-->
+          <r5r:availability rdf:resource="http://www.company.com/pater/magno">
+            <core:Concept rdf:about="http://www.your.edu/quisquam/aequora">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.your.com/molemque/aut"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.corp.org/montis/dedit">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.my.com/quippe/numen">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </r5r:availability>
+          <!--Zero or more repetitions:-->
+          <ter:accessRights rdf:resource="http://www.my.org/corripuit/iussus">
+            <core:Concept rdf:about="http://www.test.org/gente/annos">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.any.org/feta/caelumque"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.any.org/et/soror">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.company.gov/ac/ventis">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:accessRights>
+          <!--Zero or more repetitions:-->
+          <ter:conformsTo>
+            <ter:Standard rdf:about="http://www.sample.org/pectore/hoc" rdf:nodeID="string">
+              <ter:identifier xml:lang="">string</ter:identifier>
+              <!--Zero or more repetitions:-->
+              <ter:title xml:lang="">string</ter:title>
+              <!--Zero or more repetitions:-->
+              <ter:description xml:lang="string">string</ter:description>
+              <!--Optional:-->
+              <owl:versionInfo>string</owl:versionInfo>
+              <!--Optional:-->
+              <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2012-02-22</ter:issued>
+            </ter:Standard>
+          </ter:conformsTo>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="string">string</ter:description>
+          <!--Zero or more repetitions:-->
+          <ter:format rdf:resource="http://www.sample.gov/atris/corde">
+            <core:Concept rdf:about="http://www.corp.com/iras/maria">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.sample.com/aequora/habenas"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.company.org/habenas/divum">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.my.org/tot/murmure">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:format>
+          <!--Zero or more repetitions:-->
+          <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2004-05-31T21:35:14+02:00</ter:issued>
+          <!--Zero or more repetitions:-->
+          <ter:language rdf:resource="http://www.corp.edu/iussus/illum">
+            <core:Concept rdf:about="http://www.corp.org/aeolus/profundum">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.my.org/auras/certo"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.my.org/et/auras">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.your.gov/venit/quisquam">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:language>
+          <!--Zero or more repetitions:-->
+          <ter:license rdf:resource="http://www.company.com/rex/gente">
+            <!--Optional:-->
+            <ter:LicenseDocument rdf:about="http://www.company.com/speluncis/secum" rdf:nodeID="string">
+              <!--Zero or more repetitions:-->
+              <ter:type rdf:resource="http://www.sample.org/adorat/animos">
+                <core:Concept rdf:about="http://www.corp.com/foedere/ventis">
+                  <!--Zero or more repetitions:-->
+                  <rdf:type rdf:resource="http://www.your.com/dea/ac"/>
+                  <!--Zero or more repetitions:-->
+                  <core:prefLabel xml:lang="string">string</core:prefLabel>
+                  <!--Optional:-->
+                  <core:inScheme rdf:resource="http://www.test.gov/loca/incedo">
+                    <!--Optional:-->
+                    <core:ConceptScheme rdf:about="http://www.sample.com/ast/scopuloque">
+                      <ter:title xml:lang="string">string</ter:title>
+                    </core:ConceptScheme>
+                  </core:inScheme>
+                </core:Concept>
+              </ter:type>
+              <!--Zero or more repetitions:-->
+              <ter:title xml:lang="string">string</ter:title>
+              <!--Zero or more repetitions:-->
+              <ter:description xml:lang="string">string</ter:description>
+              <!--Zero or more repetitions:-->
+              <ter:identifier xml:lang="">string</ter:identifier>
+            </ter:LicenseDocument>
+          </ter:license>
+          <!--Zero or more repetitions:-->
+          <ter:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2019-03-31</ter:modified>
+          <!--Zero or more repetitions:-->
+          <ter:rights>
+            <ter:RightsStatement rdf:about="http://www.sample.com/divum/circum" rdf:nodeID="string">
+              <!--Zero or more repetitions:-->
+              <ter:title xml:lang="">string</ter:title>
+              <!--Zero or more repetitions:-->
+              <ter:description xml:lang="">string</ter:description>
+            </ter:RightsStatement>
+          </ter:rights>
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ns1:page>
+            <ns1:Document rdf:about="http://www.any.com/dedit/flammato" rdf:nodeID="string">
+              <!--Zero or more repetitions:-->
+              <ns1:name xml:lang="">string</ns1:name>
+            </ns1:Document>
+          </ns1:page>
+          <!--Zero or more repetitions:-->
+          <ter1:checksum>
+            <ter1:Checksum rdf:about="http://www.company.com/abdidit/iunonis" rdf:nodeID="string">
+              <ter1:algorithm rdf:resource="http://www.corp.org/montis/arce"/>
+              <ter1:checksumValue rdf:datatype="http://www.company.com/pectore/iaculata">string</ter1:checksumValue>
+            </ter1:Checksum>
+          </ter1:checksum>
+          <!--Zero or more repetitions:-->
+          <r5r:applicableLegislation rdf:resource="http://www.any.org/aeolus/infixit"/>
+          <!--Zero or more repetitions:-->
+          <ter:identifier xml:lang="string">string</ter:identifier>
+          <!--Zero or more repetitions:-->
+          <mob:applicationLayerProtocol rdf:resource="http://www.company.edu/in/sed">
+            <core:Concept rdf:about="http://www.my.com/celsa/aeoliam">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.any.com/dedit/et"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.company.com/iovis/dedit">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.any.org/qui/premit">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </mob:applicationLayerProtocol>
+          <!--Zero or more repetitions:-->
+          <con:characterEncoding xml:lang="">string</con:characterEncoding>
+          <!--Zero or more repetitions:-->
+          <mob:communicationMethod rdf:resource="http://www.company.com/austris/volutans">
+            <core:Concept rdf:about="http://www.company.com/verrantque/flammas">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.test.com/mollitque/frenat"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.company.org/claustra/venit">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.company.com/corde/supplex">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </mob:communicationMethod>
+          <!--Zero or more repetitions:-->
+          <mob:dataFormatNotes xml:lang="string">string</mob:dataFormatNotes>
+          <!--Zero or more repetitions:-->
+          <mob:grammar rdf:resource="http://www.test.com/temperat/profundum">
+            <core:Concept rdf:about="http://www.company.com/faciat/supplex">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.corp.com/premere/rapidi"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.your.org/secum/ventos">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.any.com/numen/verrantque">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </mob:grammar>
+          <!--Zero or more repetitions:-->
+          <adms:sample/>
+          <!--Zero or more repetitions:-->
+          <mob:mobilityDataStandard>
+            <!--Optional:-->
+            <ter:conformsTo>
+              <ter:Standard rdf:about="http://www.my.org/gente/dare" rdf:nodeID="string">
+                <ter:identifier xml:lang="">string</ter:identifier>
+                <!--Zero or more repetitions:-->
+                <ter:title xml:lang="">string</ter:title>
+                <!--Zero or more repetitions:-->
+                <ter:description xml:lang="string">string</ter:description>
+                <!--Optional:-->
+                <owl:versionInfo>string</owl:versionInfo>
+                <!--Optional:-->
+                <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-03-11T13:42:48+01:00</ter:issued>
+              </ter:Standard>
+            </ter:conformsTo>
+            <!--Optional:-->
+            <owl:versionInfo>string</owl:versionInfo>
+            <!--Zero or more repetitions:-->
+            <mob:schema rdf:resource="http://www.sample.org/circum/corripuit"/>
+          </mob:mobilityDataStandard>
+          <!--Zero or more repetitions:-->
+          <ter:temporal>
+            <ter:PeriodOfTime rdf:about="http://www.corp.org/laxas/feta" rdf:nodeID="string">
+              <!--Optional:-->
+              <sch:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2011-08-20T15:44:09</sch:startDate>
+              <!--Optional:-->
+              <sch:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-11-23T14:43:47</sch:endDate>
+              <!--Optional:-->
+              <dcat:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2013-09-04T23:09:25</dcat:startDate>
+              <!--Optional:-->
+              <dcat:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2014-08-30T00:36:56+02:00</dcat:endDate>
+              <!--Optional:-->
+              <time:hasBeginning rdf:resource="http://www.any.com/per/maria">
+                <time:Instant rdf:about="http://www.any.org/una/aeolus" rdf:nodeID="string">
+                  <!--Optional:-->
+                  <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2013-01-10T05:51:57</time:inXSDDateTimeStamp>
+                  <!--Optional:-->
+                  <time:inXSDDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2017-01-04</time:inXSDDate>
+                  <!--Optional:-->
+                  <time:inXSDgYear rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2000+01:00</time:inXSDgYear>
+                  <!--Optional:-->
+                  <time:inXSDgYearMonth rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2014-03+01:00</time:inXSDgYearMonth>
+                </time:Instant>
+              </time:hasBeginning>
+              <!--Optional:-->
+              <time:hasEnd rdf:resource="http://www.your.com/nimborum/et">
+                <time:Instant rdf:about="http://www.company.org/ignem/corde" rdf:nodeID="string">
+                  <!--Optional:-->
+                  <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2011-09-27T09:35:22</time:inXSDDateTimeStamp>
+                  <!--Optional:-->
+                  <time:inXSDDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2009-11-21</time:inXSDDate>
+                  <!--Optional:-->
+                  <time:inXSDgYear rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2002</time:inXSDgYear>
+                  <!--Optional:-->
+                  <time:inXSDgYearMonth rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2005-03</time:inXSDgYearMonth>
+                </time:Instant>
+              </time:hasEnd>
+            </ter:PeriodOfTime>
+          </ter:temporal>
+        </dcat:Distribution>
+      </adms:sample>
+      <!--Zero or more repetitions:-->
+      <adms:versionNotes xml:lang="">string</adms:versionNotes>
+      <!--Zero or more repetitions:-->
+      <ter:accessRights rdf:resource="http://www.your.com/austris/fremunt">
+        <core:Concept rdf:about="http://www.any.org/magno/tempestatesque">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.company.gov/celsa/pater"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.edu/gero/ac">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.company.org/volutans/annos">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:accessRights>
+      <!--Zero or more repetitions:-->
+      <ter:accrualPeriodicity rdf:resource="http://www.test.org/dea/scopuloque">
+        <core:Concept rdf:about="http://www.any.com/acuto/circum">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.my.org/iaculata/dedit"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.test.gov/loca/coniunx">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.company.gov/exspirantem/imponet">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:accrualPeriodicity>
+      <!--Zero or more repetitions:-->
+      <ter:conformsTo>
+        <ter:Standard rdf:about="http://www.corp.gov/magno/pater" rdf:nodeID="string">
+          <ter:identifier xml:lang="">string</ter:identifier>
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="string">string</ter:description>
+          <!--Optional:-->
+          <owl:versionInfo>string</owl:versionInfo>
+          <!--Optional:-->
+          <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-03-22</ter:issued>
+        </ter:Standard>
+      </ter:conformsTo>
+      <!--Zero or more repetitions:-->
+      <ter:creator>
+        <ns1:Agent rdf:about="http://www.my.org/honorem/illi" rdf:nodeID="string">
+          <!--1 or more repetitions:-->
+          <ns1:name xml:lang="">string</ns1:name>
+          <!--Optional:-->
+          <ter:type rdf:resource="http://www.test.org/claustra/iovis">
+            <core:Concept rdf:about="http://www.any.org/hic/scopuloque">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.company.edu/quippe/nimborum"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.sample.com/pectore/aeolus">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.test.org/feta/ast">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:type>
+          <!--Optional:-->
+          <ns1:workplaceHomepage rdf:resource="http://www.corp.com/loca/imponet"/>
+          <!--Zero or more repetitions:-->
+          <locn:address>
+            <!--Optional:-->
+            <locn:fullAddress rdf:datatype="http://www.any.com/aut/tenens">string</locn:fullAddress>
+            <!--Optional:-->
+            <locn:poBox rdf:datatype="http://www.test.com/montis/in">string</locn:poBox>
+            <!--Optional:-->
+            <locn:thoroughfare rdf:datatype="http://www.any.com/et/iovis">string</locn:thoroughfare>
+            <!--Optional:-->
+            <locn:locatorDesignator rdf:datatype="http://www.sample.org/circum/annos">string</locn:locatorDesignator>
+            <!--Optional:-->
+            <locn:locatorName rdf:datatype="http://www.company.org/honorem/et">string</locn:locatorName>
+            <!--Optional:-->
+            <locn:addressArea rdf:datatype="http://www.corp.com/et/patriam">string</locn:addressArea>
+            <!--Optional:-->
+            <locn:postName rdf:datatype="http://www.sample.org/quisquam/insuper">string</locn:postName>
+            <!--Optional:-->
+            <locn:postCode rdf:datatype="http://www.my.com/vinclis/caelumque">string</locn:postCode>
+            <!--Optional:-->
+            <locn:adminUnitL2 rdf:datatype="http://www.corp.com/insuper/montis">string</locn:adminUnitL2>
+            <!--Optional:-->
+            <locn:adminUnitL1 rdf:datatype="http://www.your.edu/in/ventos">string</locn:adminUnitL1>
+          </locn:address>
+          <!--Zero or more repetitions:-->
+          <org:memberOf/>
+          <!--Zero or more repetitions:-->
+          <ns1:mbox rdf:resource="http://www.test.org/aequora/secum"/>
+          <!--Optional:-->
+          <ns1:firstName xml:lang="">string</ns1:firstName>
+          <!--Optional:-->
+          <ns1:surname xml:lang="">string</ns1:surname>
+          <!--Zero or more repetitions:-->
+          <ns1:phone rdf:resource="http://www.any.org/ventis/rapidi"/>
+        </ns1:Agent>
+      </ter:creator>
+      <!--Zero or more repetitions:-->
+      <ter:description xml:lang="string">string</ter:description>
+      <!--Zero or more repetitions:-->
+      <ter:identifier xml:lang="string">string</ter:identifier>
+      <!--Zero or more repetitions:-->
+      <ter:isReferencedBy rdf:resource="http://www.test.com/corripuit/furentibus"/>
+      <!--Zero or more repetitions:-->
+      <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2005-05-23T17:58:01+02:00</ter:issued>
+      <!--Zero or more repetitions:-->
+      <ter:language rdf:resource="http://www.company.org/iaculata/soror">
+        <core:Concept rdf:about="http://www.your.org/exspirantem/incedo">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.your.com/dare/hoc"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.com/et/insuper">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.corp.org/ego/divum">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:language>
+      <!--Zero or more repetitions:-->
+      <ter:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2019-03-03+01:00</ter:modified>
+      <!--Zero or more repetitions:-->
+      <ter:provenance>
+        <ter:ProvenanceStatement rdf:about="http://www.corp.com/caelumque/evertitque" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="">string</ter:description>
+        </ter:ProvenanceStatement>
+      </ter:provenance>
+      <!--Zero or more repetitions:-->
+      <ter:publisher>
+        <ns1:Agent rdf:about="http://www.sample.com/tempestatesque/scopuloque" rdf:nodeID="string">
+          <!--1 or more repetitions:-->
+          <ns1:name xml:lang="string">string</ns1:name>
+          <!--Optional:-->
+          <ter:type rdf:resource="http://www.test.edu/et/caelumque">
+            <core:Concept rdf:about="http://www.company.org/cum/et">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.test.com/ego/frenat"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.your.com/verrantque/metuens">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.company.org/soror/magno">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:type>
+          <!--Optional:-->
+          <ns1:workplaceHomepage rdf:resource="http://www.any.edu/quae/antro"/>
+          <!--Zero or more repetitions:-->
+          <locn:address>
+            <!--Optional:-->
+            <locn:fullAddress rdf:datatype="http://www.company.gov/illi/quae">string</locn:fullAddress>
+            <!--Optional:-->
+            <locn:poBox rdf:datatype="http://www.sample.com/qui/secum">string</locn:poBox>
+            <!--Optional:-->
+            <locn:thoroughfare rdf:datatype="http://www.your.com/ac/montis">string</locn:thoroughfare>
+            <!--Optional:-->
+            <locn:locatorDesignator rdf:datatype="http://www.your.com/bella/turbine">string</locn:locatorDesignator>
+            <!--Optional:-->
+            <locn:locatorName rdf:datatype="http://www.corp.edu/aut/loca">string</locn:locatorName>
+            <!--Optional:-->
+            <locn:addressArea rdf:datatype="http://www.corp.com/sed/iovis">string</locn:addressArea>
+            <!--Optional:-->
+            <locn:postName rdf:datatype="http://www.company.com/sedet/molemque">string</locn:postName>
+            <!--Optional:-->
+            <locn:postCode rdf:datatype="http://www.company.org/incedo/metuens">string</locn:postCode>
+            <!--Optional:-->
+            <locn:adminUnitL2 rdf:datatype="http://www.test.org/iunonis/ventos">string</locn:adminUnitL2>
+            <!--Optional:-->
+            <locn:adminUnitL1 rdf:datatype="http://www.corp.gov/aequora/claustra">string</locn:adminUnitL1>
+          </locn:address>
+          <!--Zero or more repetitions:-->
+          <org:memberOf/>
+          <!--Zero or more repetitions:-->
+          <ns1:mbox rdf:resource="http://www.corp.org/sonoras/montis"/>
+          <!--Optional:-->
+          <ns1:firstName xml:lang="">string</ns1:firstName>
+          <!--Optional:-->
+          <ns1:surname xml:lang="">string</ns1:surname>
+          <!--Zero or more repetitions:-->
+          <ns1:phone rdf:resource="http://www.my.org/iaculata/carcere"/>
+        </ns1:Agent>
+      </ter:publisher>
+      <!--Zero or more repetitions:-->
+      <ter:relation rdf:resource="http://www.any.org/hic/verrantque"/>
+      <!--Zero or more repetitions:-->
+      <ter:rights>
+        <ter:RightsStatement rdf:about="http://www.company.com/ignem/disiecitque" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="">string</ter:description>
+        </ter:RightsStatement>
+      </ter:rights>
+      <!--Zero or more repetitions:-->
+      <ter:source rdf:resource="http://www.sample.com/premere/sciret"/>
+      <!--Zero or more repetitions:-->
+      <ter:spatial>
+        <ter:Location rdf:about="http://www.corp.org/secum/et" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <locn:geometry rdf:datatype="http://www.corp.com/iunonis/evertitque">string</locn:geometry>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+        </ter:Location>
+      </ter:spatial>
+      <!--Zero or more repetitions:-->
+      <ter:temporal>
+        <ter:PeriodOfTime rdf:about="http://www.test.com/ego/certo" rdf:nodeID="string">
+          <!--Optional:-->
+          <sch:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2002-06-21T04:53:20</sch:startDate>
+          <!--Optional:-->
+          <sch:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2011-07-25</sch:endDate>
+          <!--Optional:-->
+          <dcat:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2009-08-04</dcat:startDate>
+          <!--Optional:-->
+          <dcat:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2003-11-09T17:43:04</dcat:endDate>
+          <!--Optional:-->
+          <time:hasBeginning rdf:resource="http://www.corp.com/fremunt/tenens">
+            <time:Instant rdf:about="http://www.company.com/hoc/ferant" rdf:nodeID="string">
+              <!--Optional:-->
+              <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2013-09-10T21:29:32+02:00</time:inXSDDateTimeStamp>
+              <!--Optional:-->
+              <time:inXSDDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2012-06-12</time:inXSDDate>
+              <!--Optional:-->
+              <time:inXSDgYear rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2007</time:inXSDgYear>
+              <!--Optional:-->
+              <time:inXSDgYearMonth rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2005-08+02:00</time:inXSDgYearMonth>
+            </time:Instant>
+          </time:hasBeginning>
+          <!--Optional:-->
+          <time:hasEnd rdf:resource="http://www.corp.com/altos/omnipotens">
+            <time:Instant rdf:about="http://www.any.gov/flammato/honorem" rdf:nodeID="string">
+              <!--Optional:-->
+              <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2018-09-03T18:07:41+02:00</time:inXSDDateTimeStamp>
+              <!--Optional:-->
+              <time:inXSDDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2003-02-23+01:00</time:inXSDDate>
+              <!--Optional:-->
+              <time:inXSDgYear rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2018</time:inXSDgYear>
+              <!--Optional:-->
+              <time:inXSDgYearMonth rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2016-12+01:00</time:inXSDgYearMonth>
+            </time:Instant>
+          </time:hasEnd>
+        </ter:PeriodOfTime>
+      </ter:temporal>
+      <!--Zero or more repetitions:-->
+      <ter:title xml:lang="">string</ter:title>
+      <!--Zero or more repetitions:-->
+      <ter:type rdf:resource="http://www.any.org/illum/verrantque">
+        <core:Concept rdf:about="http://www.test.com/qui/aris">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.test.com/sceptra/infixit"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.org/aequora/regemque">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.corp.gov/e/caelumque">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:type>
+      <!--Zero or more repetitions:-->
+      <ns1:page>
+        <ns1:Document rdf:about="http://www.company.org/coniunx/nimborum" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <ns1:name xml:lang="string">string</ns1:name>
+        </ns1:Document>
+      </ns1:page>
+      <!--Zero or more repetitions:-->
+      <dcat:version xml:lang="">string</dcat:version>
+      <!--Zero or more repetitions:-->
+      <dcat:isVersionOf rdf:resource="http://www.corp.com/luctantis/e"/>
+      <!--Zero or more repetitions:-->
+      <dcat:hasVersion rdf:resource="http://www.your.org/praeterea/et"/>
+      <!--Zero or more repetitions:-->
+      <r5r:applicableLegislation rdf:resource="http://www.test.com/aris/aeoliam"/>
+      <!--Zero or more repetitions:-->
+      <dcat:inSeries rdf:resource="http://www.test.edu/numen/rex"/>
+      <!--Zero or more repetitions:-->
+      <dcat:prev rdf:resource="http://www.company.edu/quae/dedit"/>
+      <!--Zero or more repetitions:-->
+      <dcat:next rdf:resource="http://www.any.com/antro/iunonis"/>
+      <!--Zero or more repetitions:-->
+      <ter:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2000-04-11+02:00</ter:created>
+      <!--Zero or more repetitions:-->
+      <ter:rightsHolder>
+        <ns1:Agent rdf:about="http://www.corp.gov/corripuit/coniunx" rdf:nodeID="string">
+          <!--1 or more repetitions:-->
+          <ns1:name xml:lang="string">string</ns1:name>
+          <!--Optional:-->
+          <ter:type rdf:resource="http://www.my.org/nimborum/pater">
+            <core:Concept rdf:about="http://www.any.org/et/ac">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.test.com/corde/rates"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.corp.com/insuper/secum">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.company.org/qui/talia">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:type>
+          <!--Optional:-->
+          <ns1:workplaceHomepage rdf:resource="http://www.test.gov/antro/sceptra"/>
+          <!--Zero or more repetitions:-->
+          <locn:address>
+            <!--Optional:-->
+            <locn:fullAddress rdf:datatype="http://www.test.org/quisquam/coniunx">string</locn:fullAddress>
+            <!--Optional:-->
+            <locn:poBox rdf:datatype="http://www.sample.org/qui/et">string</locn:poBox>
+            <!--Optional:-->
+            <locn:thoroughfare rdf:datatype="http://www.any.com/talia/sed">string</locn:thoroughfare>
+            <!--Optional:-->
+            <locn:locatorDesignator rdf:datatype="http://www.company.com/infixit/hoc">string</locn:locatorDesignator>
+            <!--Optional:-->
+            <locn:locatorName rdf:datatype="http://www.sample.com/rapidi/nubibus">string</locn:locatorName>
+            <!--Optional:-->
+            <locn:addressArea rdf:datatype="http://www.test.org/laxas/atris">string</locn:addressArea>
+            <!--Optional:-->
+            <locn:postName rdf:datatype="http://www.corp.gov/ac/ac">string</locn:postName>
+            <!--Optional:-->
+            <locn:postCode rdf:datatype="http://www.company.org/tempestatesque/exspirantem">string</locn:postCode>
+            <!--Optional:-->
+            <locn:adminUnitL2 rdf:datatype="http://www.corp.gov/acuto/e">string</locn:adminUnitL2>
+            <!--Optional:-->
+            <locn:adminUnitL1 rdf:datatype="http://www.any.com/e/altos">string</locn:adminUnitL1>
+          </locn:address>
+          <!--Zero or more repetitions:-->
+          <org:memberOf/>
+          <!--Zero or more repetitions:-->
+          <ns1:mbox rdf:resource="http://www.my.org/talia/incedo"/>
+          <!--Optional:-->
+          <ns1:firstName xml:lang="">string</ns1:firstName>
+          <!--Optional:-->
+          <ns1:surname xml:lang="">string</ns1:surname>
+          <!--Zero or more repetitions:-->
+          <ns1:phone rdf:resource="http://www.sample.org/caelumque/omnipotens"/>
+        </ns1:Agent>
+      </ter:rightsHolder>
+      <!--Zero or more repetitions:-->
+      <ter:subject rdf:resource="http://www.any.com/ventos/quisquam">
+        <core:Concept rdf:about="http://www.company.com/dedit/quisquam">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.sample.com/rapidum/iovisque"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.sample.com/bella/ignem">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.corp.gov/coniunx/insuper">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:subject>
+      <!--Zero or more repetitions:-->
+      <met:MAGDA-categorie rdf:resource="http://www.my.com/venit/fremunt">
+        <core:Concept rdf:about="http://www.test.edu/una/nimborum">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.my.edu/murmure/animos"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.com/aeolus/coniunx">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.company.edu/illi/secum">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </met:MAGDA-categorie>
+      <!--Zero or more repetitions:-->
+      <met:statuut rdf:resource="http://www.my.org/sciret/ac">
+        <core:Concept rdf:about="http://www.sample.edu/corripuit/talia">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.my.gov/insuper/sonoras"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.edu/gente/bella">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.my.org/certo/foedere">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </met:statuut>
+      <!--Zero or more repetitions:-->
+      <dcat:extension>
+        <rdf:Statement rdf:about="http://www.corp.com/atris/ac">
+          <rdf:subject rdf:resource="http://www.sample.com/loca/speluncis"/>
+          <rdf:predicate rdf:resource="http://www.my.edu/tenens/rapidum"/>
+          <rdf:object rdf:datatype="http://www.corp.gov/regemque/rex" rdf:resource="http://www.sample.com/corripuit/illum">string</rdf:object>
+        </rdf:Statement>
+      </dcat:extension>
+      <!--Zero or more repetitions:-->
+      <mob:mobilityTheme rdf:resource="http://www.company.com/vinclis/praeterea">
+        <core:Concept rdf:about="http://www.any.com/dedit/tot">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.corp.com/exspirantem/adorat"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.org/premere/dare">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.company.org/scopuloque/hic">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </mob:mobilityTheme>
+      <!--Zero or more repetitions:-->
+      <mob:transportMode rdf:resource="http://www.corp.gov/patriam/et">
+        <core:Concept rdf:about="http://www.your.org/cum/exspirantem">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.my.org/sceptra/divum"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.any.gov/corripuit/fremunt">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.my.com/exspirantem/ac">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </mob:transportMode>
+      <!--Zero or more repetitions:-->
+      <mob:networkCoverage rdf:resource="http://www.your.gov/aeolus/auras">
+        <core:Concept rdf:about="http://www.company.gov/carcere/flammas">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.my.com/tempestatesque/in"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.gov/corripuit/fremunt">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.test.org/turbine/ventos">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </mob:networkCoverage>
+      <!--Zero or more repetitions:-->
+      <mob:georeferencingMethod rdf:resource="http://www.any.gov/frenat/luctantis">
+        <core:Concept rdf:about="http://www.any.com/iovis/venit">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.my.com/imponet/iaculata"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.com/montis/carcere">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.my.com/ni/una">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </mob:georeferencingMethod>
+      <!--Zero or more repetitions:-->
+      <mob:intendedInformationService rdf:resource="http://www.test.com/montis/una">
+        <core:Concept rdf:about="http://www.any.org/praeterea/indignantes">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.corp.edu/una/habenas"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.my.edu/celsa/secum">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.your.com/temperat/secum">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </mob:intendedInformationService>
+      <!--Optional:-->
+      <mob:assessmentResult>
+        <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2017-03-31</ter:issued>
+        <oa:hasBody rdf:resource="http://www.corp.com/et/regina"/>
+      </mob:assessmentResult>
+      <!--Zero or more repetitions:-->
+      <dqv:hasQualityAnnotation>
+        <oa:hasBody rdf:resource="http://www.corp.gov/ego/certo"/>
+      </dqv:hasQualityAnnotation>
+      <!--Zero or more repetitions:-->
+      <ns2:referenceSystem>
+        <ter:Standard rdf:about="http://www.corp.com/dedit/montis" rdf:nodeID="string">
+          <ter:identifier xml:lang="">string</ter:identifier>
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="">string</ter:description>
+          <!--Optional:-->
+          <owl:versionInfo>string</owl:versionInfo>
+          <!--Optional:-->
+          <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-03-20+01:00</ter:issued>
+        </ter:Standard>
+      </ns2:referenceSystem>
+      <!--Zero or more repetitions:-->
+      <r5r:hvdCategory rdf:resource="http://www.sample.org/temperat/iunonis">
+        <core:Concept rdf:about="http://www.any.org/rates/iovisque">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.my.org/animos/sedet"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.any.com/rates/honorem">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.test.org/speluncis/et">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </r5r:hvdCategory>
+      <!--Zero or more repetitions:-->
+      <owl:versionInfo>string</owl:versionInfo>
+      <!--Zero or more repetitions:-->
+      <ter:hasVersion rdf:resource="http://www.test.com/nubibus/transfixo"/>
+      <!--Zero or more repetitions:-->
+      <ter:isVersionOf rdf:resource="http://www.sample.gov/cum/per"/>
+    </dcat:Dataset>
+    <dcat:DatasetSeries rdf:about="http://www.corp.org/gero/numen" rdf:nodeID="string">
+      <!--Zero or more repetitions:-->
+      <ter:identifier xml:lang="string">string</ter:identifier>
+      <!--Zero or more repetitions:-->
+      <adms:identifier>
+        <adms:Identifier rdf:about="http://www.any.com/iunonis/vinclis">
+          <core:notation rdf:datatype="http://www.test.org/incedo/imposuit">string</core:notation>
+        </adms:Identifier>
+      </adms:identifier>
+      <!--Zero or more repetitions:-->
+      <ter:title xml:lang="string">string</ter:title>
+      <!--Zero or more repetitions:-->
+      <ter:description xml:lang="string">string</ter:description>
+      <!--Zero or more repetitions:-->
+      <r5r:applicableLegislation rdf:resource="http://www.sample.com/habenas/animos"/>
+      <!--Zero or more repetitions:-->
+      <dcat:contactPoint>
+        <ns:Organization rdf:about="http://www.test.com/incedo/maria" rdf:nodeID="string">
+          <!--Optional:-->
+          <ns:fn>string</ns:fn>
+          <!--Zero or more repetitions:-->
+          <ns:organization-name xml:lang="">string</ns:organization-name>
+          <!--Optional:-->
+          <ns:hasAddress>
+            <ns:Address rdf:about="http://www.any.com/habenas/altos" rdf:nodeID="string">
+              <!--1 or more repetitions:-->
+              <ns:street-address xml:lang="string">string</ns:street-address>
+              <!--1 or more repetitions:-->
+              <ns:locality xml:lang="">string</ns:locality>
+              <ns:postal-code>string</ns:postal-code>
+              <!--1 or more repetitions:-->
+              <ns:country-name xml:lang="">string</ns:country-name>
+            </ns:Address>
+          </ns:hasAddress>
+          <!--Optional:-->
+          <ns:hasEmail rdf:resource="http://www.sample.com/murmure/atris"/>
+          <!--Optional:-->
+          <ns:hasURL rdf:resource="http://www.your.org/imperio/gero"/>
+          <!--Optional:-->
+          <ns:hasTelephone>http://www.my.gov/transfixo/ipsa</ns:hasTelephone>
+        </ns:Organization>
+      </dcat:contactPoint>
+      <!--Zero or more repetitions:-->
+      <ter:spatial>
+        <ter:Location rdf:about="http://www.sample.com/celsa/dare" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <locn:geometry rdf:datatype="http://www.your.com/speluncis/et">string</locn:geometry>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+        </ter:Location>
+      </ter:spatial>
+      <!--Zero or more repetitions:-->
+      <ter:accrualPeriodicity rdf:resource="http://www.your.com/rapidum/regemque">
+        <core:Concept rdf:about="http://www.any.com/illi/insuper">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.any.gov/profundum/tenens"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.your.org/iussus/et">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.your.edu/venit/montis">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:accrualPeriodicity>
+      <!--Zero or more repetitions:-->
+      <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2001-03-04T06:59:59+01:00</ter:issued>
+      <!--Zero or more repetitions:-->
+      <ter:temporal>
+        <ter:PeriodOfTime rdf:about="http://www.company.com/in/sed" rdf:nodeID="string">
+          <!--Optional:-->
+          <sch:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2002-06-01T16:32:26+02:00</sch:startDate>
+          <!--Optional:-->
+          <sch:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2019-02-22T22:19:13</sch:endDate>
+          <!--Optional:-->
+          <dcat:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2003-01-11T14:15:55</dcat:startDate>
+          <!--Optional:-->
+          <dcat:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2011-09-10</dcat:endDate>
+          <!--Optional:-->
+          <time:hasBeginning rdf:resource="http://www.your.org/indignantes/dare">
+            <time:Instant rdf:about="http://www.your.gov/ego/montis" rdf:nodeID="string">
+              <!--Optional:-->
+              <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2006-08-02T04:49:02+02:00</time:inXSDDateTimeStamp>
+              <!--Optional:-->
+              <time:inXSDDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2016-10-10</time:inXSDDate>
+              <!--Optional:-->
+              <time:inXSDgYear rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2015</time:inXSDgYear>
+              <!--Optional:-->
+              <time:inXSDgYearMonth rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2012-04</time:inXSDgYearMonth>
+            </time:Instant>
+          </time:hasBeginning>
+          <!--Optional:-->
+          <time:hasEnd rdf:resource="http://www.your.org/animos/soror">
+            <time:Instant rdf:about="http://www.your.com/terras/laxas" rdf:nodeID="string">
+              <!--Optional:-->
+              <time:inXSDDateTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTimeStamp">2003-02-25T20:36:11</time:inXSDDateTimeStamp>
+              <!--Optional:-->
+              <time:inXSDDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2000-08-23</time:inXSDDate>
+              <!--Optional:-->
+              <time:inXSDgYear rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear">2006</time:inXSDgYear>
+              <!--Optional:-->
+              <time:inXSDgYearMonth rdf:datatype="http://www.w3.org/2001/XMLSchema#gYearMonth">2017-02</time:inXSDgYearMonth>
+            </time:Instant>
+          </time:hasEnd>
+        </ter:PeriodOfTime>
+      </ter:temporal>
+      <!--Zero or more repetitions:-->
+      <ter:publisher>
+        <ns1:Agent rdf:about="http://www.your.com/montis/mollitque" rdf:nodeID="string">
+          <!--1 or more repetitions:-->
+          <ns1:name xml:lang="string">string</ns1:name>
+          <!--Optional:-->
+          <ter:type rdf:resource="http://www.sample.com/hic/quisquam">
+            <core:Concept rdf:about="http://www.corp.org/feta/illi">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.sample.com/soror/pater"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.any.org/ac/auras">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.your.com/divum/terras">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:type>
+          <!--Optional:-->
+          <ns1:workplaceHomepage rdf:resource="http://www.sample.com/acuto/claustra"/>
+          <!--Zero or more repetitions:-->
+          <locn:address>
+            <!--Optional:-->
+            <locn:fullAddress rdf:datatype="http://www.test.org/illum/et">string</locn:fullAddress>
+            <!--Optional:-->
+            <locn:poBox rdf:datatype="http://www.any.gov/dedit/iussus">string</locn:poBox>
+            <!--Optional:-->
+            <locn:thoroughfare rdf:datatype="http://www.corp.org/transfixo/et">string</locn:thoroughfare>
+            <!--Optional:-->
+            <locn:locatorDesignator rdf:datatype="http://www.any.com/aeoliam/numen">string</locn:locatorDesignator>
+            <!--Optional:-->
+            <locn:locatorName rdf:datatype="http://www.corp.gov/flammato/regemque">string</locn:locatorName>
+            <!--Optional:-->
+            <locn:addressArea rdf:datatype="http://www.company.com/verrantque/et">string</locn:addressArea>
+            <!--Optional:-->
+            <locn:postName rdf:datatype="http://www.company.edu/austris/per">string</locn:postName>
+            <!--Optional:-->
+            <locn:postCode rdf:datatype="http://www.my.com/molemque/furentibus">string</locn:postCode>
+            <!--Optional:-->
+            <locn:adminUnitL2 rdf:datatype="http://www.corp.com/cum/murmure">string</locn:adminUnitL2>
+            <!--Optional:-->
+            <locn:adminUnitL1 rdf:datatype="http://www.your.org/infixit/annos">string</locn:adminUnitL1>
+          </locn:address>
+          <!--Zero or more repetitions:-->
+          <org:memberOf/>
+          <!--Zero or more repetitions:-->
+          <ns1:mbox rdf:resource="http://www.corp.com/sed/ignem"/>
+          <!--Optional:-->
+          <ns1:firstName xml:lang="">string</ns1:firstName>
+          <!--Optional:-->
+          <ns1:surname xml:lang="string">string</ns1:surname>
+          <!--Zero or more repetitions:-->
+          <ns1:phone rdf:resource="http://www.test.org/luctantis/nimborum"/>
+        </ns1:Agent>
+      </ter:publisher>
+      <!--Zero or more repetitions:-->
+      <ter:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2012-10-03</ter:modified>
+      <!--Zero or more repetitions:-->
+      <ns1:page>
+        <ns1:Document rdf:about="http://www.any.org/nubibus/ni" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <ns1:name xml:lang="string">string</ns1:name>
+        </ns1:Document>
+      </ns1:page>
+    </dcat:DatasetSeries>
+  </dcat:dataset>
+  <!--Zero or more repetitions:-->
+  <dcat:keyword xml:lang="">string</dcat:keyword>
+  <!--Zero or more repetitions:-->
+  <dcat:landingPage>string</dcat:landingPage>
+  <!--Zero or more repetitions:-->
+  <dcat:record rdf:resource="http://www.company.org/venit/imperio">
+    <!--Zero or more repetitions:-->
+    <dcat:CatalogRecord rdf:about="http://www.your.com/indignantes/auras" rdf:nodeID="string">
+      <!--Zero or more repetitions:-->
+      <ns1:primaryTopic rdf:resource="http://www.my.edu/et/ast"/>
+      <!--Zero or more repetitions:-->
+      <ter:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2005-06-20T20:15:27</ter:modified>
+      <!--Zero or more repetitions:-->
+      <ter:conformsTo>
+        <ter:Standard rdf:about="http://www.test.com/numen/verrantque" rdf:nodeID="string">
+          <ter:identifier xml:lang="string">string</ter:identifier>
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="string">string</ter:description>
+          <!--Optional:-->
+          <owl:versionInfo>string</owl:versionInfo>
+          <!--Optional:-->
+          <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2006-01-30+01:00</ter:issued>
+        </ter:Standard>
+      </ter:conformsTo>
+      <!--Zero or more repetitions:-->
+      <adms:status rdf:resource="http://www.my.org/certo/omnipotens">
+        <core:Concept rdf:about="http://www.my.com/coniunx/auras">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.test.org/nimborum/ac"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.my.com/pater/tot">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.any.org/regemque/nimborum">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </adms:status>
+      <!--Zero or more repetitions:-->
+      <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-08-14T14:28:12+02:00</ter:issued>
+      <!--Zero or more repetitions:-->
+      <ter:title xml:lang="string">string</ter:title>
+      <!--Zero or more repetitions:-->
+      <ter:description xml:lang="string">string</ter:description>
+      <!--Zero or more repetitions:-->
+      <ter:source rdf:resource="http://www.any.gov/aequora/animos"/>
+      <!--Zero or more repetitions:-->
+      <ter:language rdf:resource="http://www.corp.org/omnipotens/nubibus">
+        <core:Concept rdf:about="http://www.sample.org/rex/una">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.corp.com/transfixo/maria"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.org/supplex/sedet">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.my.gov/in/terras">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:language>
+      <!--Zero or more repetitions:-->
+      <ter:rights>
+        <ter:RightsStatement rdf:about="http://www.corp.edu/una/dea" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="string">string</ter:description>
+        </ter:RightsStatement>
+      </ter:rights>
+      <!--Zero or more repetitions:-->
+      <ter:identifier xml:lang="">string</ter:identifier>
+      <!--Zero or more repetitions:-->
+      <adms:identifier>
+        <adms:Identifier rdf:about="http://www.my.com/ipsa/disiecitque">
+          <core:notation rdf:datatype="http://www.your.com/quae/rapidi">string</core:notation>
+        </adms:Identifier>
+      </adms:identifier>
+      <!--Zero or more repetitions:-->
+      <met:stars>5</met:stars>
+      <!--Zero or more repetitions:-->
+      <ter:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2009-03-31T04:52:17</ter:created>
+      <!--Zero or more repetitions:-->
+      <ter:publisher>
+        <ns1:Agent rdf:about="http://www.any.com/ac/dedit" rdf:nodeID="string">
+          <!--1 or more repetitions:-->
+          <ns1:name xml:lang="">string</ns1:name>
+          <!--Optional:-->
+          <ter:type rdf:resource="http://www.your.gov/corde/animos">
+            <core:Concept rdf:about="http://www.corp.com/premit/numen">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.test.com/ac/quisquam"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.corp.com/aeoliam/austris">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.my.gov/aeoliam/foedere">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:type>
+          <!--Optional:-->
+          <ns1:workplaceHomepage rdf:resource="http://www.your.com/incedo/incedo"/>
+          <!--Zero or more repetitions:-->
+          <locn:address>
+            <!--Optional:-->
+            <locn:fullAddress rdf:datatype="http://www.test.gov/secum/pater">string</locn:fullAddress>
+            <!--Optional:-->
+            <locn:poBox rdf:datatype="http://www.company.com/rapidum/evertitque">string</locn:poBox>
+            <!--Optional:-->
+            <locn:thoroughfare rdf:datatype="http://www.any.com/gero/furentibus">string</locn:thoroughfare>
+            <!--Optional:-->
+            <locn:locatorDesignator rdf:datatype="http://www.any.com/divum/rates">string</locn:locatorDesignator>
+            <!--Optional:-->
+            <locn:locatorName rdf:datatype="http://www.test.com/supplex/ego">string</locn:locatorName>
+            <!--Optional:-->
+            <locn:addressArea rdf:datatype="http://www.any.com/auras/sonoras">string</locn:addressArea>
+            <!--Optional:-->
+            <locn:postName rdf:datatype="http://www.company.org/pater/vinclis">string</locn:postName>
+            <!--Optional:-->
+            <locn:postCode rdf:datatype="http://www.corp.com/ast/annos">string</locn:postCode>
+            <!--Optional:-->
+            <locn:adminUnitL2 rdf:datatype="http://www.sample.com/corde/turbine">string</locn:adminUnitL2>
+            <!--Optional:-->
+            <locn:adminUnitL1 rdf:datatype="http://www.sample.org/frenat/et">string</locn:adminUnitL1>
+          </locn:address>
+          <!--Zero or more repetitions:-->
+          <org:memberOf/>
+          <!--Zero or more repetitions:-->
+          <ns1:mbox rdf:resource="http://www.company.org/hic/ventis"/>
+          <!--Optional:-->
+          <ns1:firstName xml:lang="">string</ns1:firstName>
+          <!--Optional:-->
+          <ns1:surname xml:lang="">string</ns1:surname>
+          <!--Zero or more repetitions:-->
+          <ns1:phone rdf:resource="http://www.your.com/laxas/montis"/>
+        </ns1:Agent>
+      </ter:publisher>
+      <!--Zero or more repetitions:-->
+      <ter:spatial>
+        <ter:Location rdf:about="http://www.your.org/in/dea" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <locn:geometry rdf:datatype="http://www.corp.edu/antro/ipsa">string</locn:geometry>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+        </ter:Location>
+      </ter:spatial>
+    </dcat:CatalogRecord>
+  </dcat:record>
+  <!--Zero or more repetitions:-->
+  <dcat:service>
+    <dcat:DataService rdf:about="http://www.your.edu/dedit/turbine" rdf:nodeID="string">
+      <!--Zero or more repetitions:-->
+      <dcat:contactPoint>
+        <ns:Organization rdf:about="http://www.my.org/tenens/loca" rdf:nodeID="string">
+          <!--Optional:-->
+          <ns:fn>string</ns:fn>
+          <!--Zero or more repetitions:-->
+          <ns:organization-name xml:lang="">string</ns:organization-name>
+          <!--Optional:-->
+          <ns:hasAddress>
+            <ns:Address rdf:about="http://www.sample.org/magno/e" rdf:nodeID="string">
+              <!--1 or more repetitions:-->
+              <ns:street-address xml:lang="string">string</ns:street-address>
+              <!--1 or more repetitions:-->
+              <ns:locality xml:lang="string">string</ns:locality>
+              <ns:postal-code>string</ns:postal-code>
+              <!--1 or more repetitions:-->
+              <ns:country-name xml:lang="string">string</ns:country-name>
+            </ns:Address>
+          </ns:hasAddress>
+          <!--Optional:-->
+          <ns:hasEmail rdf:resource="http://www.company.com/numen/pectore"/>
+          <!--Optional:-->
+          <ns:hasURL rdf:resource="http://www.my.com/profundum/indignantes"/>
+          <!--Optional:-->
+          <ns:hasTelephone>http://www.sample.com/antro/verrantque</ns:hasTelephone>
+        </ns:Organization>
+      </dcat:contactPoint>
+      <!--Zero or more repetitions:-->
+      <dcat:endpointDescription rdf:resource="http://www.any.com/ego/pectore"/>
+      <!--Zero or more repetitions:-->
+      <dcat:endpointURL rdf:resource="http://www.my.com/sceptra/iunonis"/>
+      <!--Zero or more repetitions:-->
+      <dcat:keyword xml:lang="string">string</dcat:keyword>
+      <!--Zero or more repetitions:-->
+      <dcat:landingPage rdf:resource="http://www.corp.gov/premit/indignantes"/>
+      <!--Zero or more repetitions:-->
+      <dcat:qualifiedRelation>
+        <dcat:Relationship rdf:about="http://www.your.gov/vinclis/aeolus" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <dcat:hadRole>anyType</dcat:hadRole>
+          <!--Zero or more repetitions:-->
+          <ter:relation rdf:resource="http://www.company.com/fremunt/pater"/>
+        </dcat:Relationship>
+      </dcat:qualifiedRelation>
+      <!--Zero or more repetitions:-->
+      <dcat:servesDataset rdf:resource="http://www.test.edu/dare/temperat"/>
+      <!--Zero or more repetitions:-->
+      <ter:accessRights rdf:resource="http://www.test.com/ac/auras">
+        <core:Concept rdf:about="http://www.corp.com/sedet/iunonis">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.corp.org/temperat/nubibus"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.your.com/magno/premere">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.your.edu/austris/antro">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:accessRights>
+      <!--Zero or more repetitions:-->
+      <ter:conformsTo>
+        <ter:Standard rdf:about="http://www.corp.org/hoc/ego" rdf:nodeID="string">
+          <ter:identifier xml:lang="">string</ter:identifier>
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="">string</ter:description>
+          <!--Optional:-->
+          <owl:versionInfo>string</owl:versionInfo>
+          <!--Optional:-->
+          <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-12-24+01:00</ter:issued>
+        </ter:Standard>
+      </ter:conformsTo>
+      <!--Zero or more repetitions:-->
+      <ter:creator>
+        <ns1:Agent rdf:about="http://www.sample.com/ventos/corripuit" rdf:nodeID="string">
+          <!--1 or more repetitions:-->
+          <ns1:name xml:lang="string">string</ns1:name>
+          <!--Optional:-->
+          <ter:type rdf:resource="http://www.your.com/caelumque/iunonis">
+            <core:Concept rdf:about="http://www.your.org/corripuit/fremunt">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.corp.org/sciret/cum"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.corp.org/pectore/rapidum">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.sample.com/rates/gente">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:type>
+          <!--Optional:-->
+          <ns1:workplaceHomepage rdf:resource="http://www.any.com/sedet/caelumque"/>
+          <!--Zero or more repetitions:-->
+          <locn:address>
+            <!--Optional:-->
+            <locn:fullAddress rdf:datatype="http://www.test.com/adorat/tenens">string</locn:fullAddress>
+            <!--Optional:-->
+            <locn:poBox rdf:datatype="http://www.test.com/molemque/et">string</locn:poBox>
+            <!--Optional:-->
+            <locn:thoroughfare rdf:datatype="http://www.sample.com/tenens/mollitque">string</locn:thoroughfare>
+            <!--Optional:-->
+            <locn:locatorDesignator rdf:datatype="http://www.corp.org/iaculata/indignantes">string</locn:locatorDesignator>
+            <!--Optional:-->
+            <locn:locatorName rdf:datatype="http://www.corp.org/celsa/certo">string</locn:locatorName>
+            <!--Optional:-->
+            <locn:addressArea rdf:datatype="http://www.your.com/montis/ast">string</locn:addressArea>
+            <!--Optional:-->
+            <locn:postName rdf:datatype="http://www.any.org/caelumque/maria">string</locn:postName>
+            <!--Optional:-->
+            <locn:postCode rdf:datatype="http://www.my.org/regemque/furentibus">string</locn:postCode>
+            <!--Optional:-->
+            <locn:adminUnitL2 rdf:datatype="http://www.test.com/adorat/regemque">string</locn:adminUnitL2>
+            <!--Optional:-->
+            <locn:adminUnitL1 rdf:datatype="http://www.your.com/et/bella">string</locn:adminUnitL1>
+          </locn:address>
+          <!--Zero or more repetitions:-->
+          <org:memberOf/>
+          <!--Zero or more repetitions:-->
+          <ns1:mbox rdf:resource="http://www.test.org/talia/sciret"/>
+          <!--Optional:-->
+          <ns1:firstName xml:lang="string">string</ns1:firstName>
+          <!--Optional:-->
+          <ns1:surname xml:lang="string">string</ns1:surname>
+          <!--Zero or more repetitions:-->
+          <ns1:phone rdf:resource="http://www.my.gov/secum/una"/>
+        </ns1:Agent>
+      </ter:creator>
+      <!--Zero or more repetitions:-->
+      <ter:description xml:lang="string">string</ter:description>
+      <!--Zero or more repetitions:-->
+      <ter:identifier xml:lang="string">string</ter:identifier>
+      <!--Zero or more repetitions:-->
+      <ter:language rdf:resource="http://www.company.gov/patriam/cum">
+        <core:Concept rdf:about="http://www.company.com/murmure/sciret">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.corp.com/laxas/cum"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.test.edu/murmure/altos">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.company.com/et/indignantes">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:language>
+      <!--Zero or more repetitions:-->
+      <ter:license rdf:resource="http://www.test.com/exspirantem/ventis">
+        <!--Optional:-->
+        <ter:LicenseDocument rdf:about="http://www.any.com/ac/antro" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <ter:type rdf:resource="http://www.any.org/quae/secum">
+            <core:Concept rdf:about="http://www.any.edu/ventos/ipsa">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.my.com/corripuit/dare"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.test.com/sed/aeolus">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.any.com/dea/gente">
+                  <ter:title xml:lang="">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:type>
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="string">string</ter:description>
+          <!--Zero or more repetitions:-->
+          <ter:identifier xml:lang="">string</ter:identifier>
+        </ter:LicenseDocument>
+      </ter:license>
+      <!--Zero or more repetitions:-->
+      <ter:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2002-08-25T23:38:16+02:00</ter:modified>
+      <!--Zero or more repetitions:-->
+      <ter:publisher>
+        <ns1:Agent rdf:about="http://www.corp.org/acuto/molemque" rdf:nodeID="string">
+          <!--1 or more repetitions:-->
+          <ns1:name xml:lang="string">string</ns1:name>
+          <!--Optional:-->
+          <ter:type rdf:resource="http://www.test.com/exspirantem/gero">
+            <core:Concept rdf:about="http://www.corp.org/ni/speluncis">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.any.gov/corripuit/bella"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.corp.com/ventis/dare">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.any.org/patriam/transfixo">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:type>
+          <!--Optional:-->
+          <ns1:workplaceHomepage rdf:resource="http://www.test.com/verrantque/soror"/>
+          <!--Zero or more repetitions:-->
+          <locn:address>
+            <!--Optional:-->
+            <locn:fullAddress rdf:datatype="http://www.my.org/infixit/iunonis">string</locn:fullAddress>
+            <!--Optional:-->
+            <locn:poBox rdf:datatype="http://www.sample.gov/patriam/indignantes">string</locn:poBox>
+            <!--Optional:-->
+            <locn:thoroughfare rdf:datatype="http://www.my.com/nubibus/corde">string</locn:thoroughfare>
+            <!--Optional:-->
+            <locn:locatorDesignator rdf:datatype="http://www.test.gov/iras/venit">string</locn:locatorDesignator>
+            <!--Optional:-->
+            <locn:locatorName rdf:datatype="http://www.my.org/in/magno">string</locn:locatorName>
+            <!--Optional:-->
+            <locn:addressArea rdf:datatype="http://www.any.org/ignem/tenens">string</locn:addressArea>
+            <!--Optional:-->
+            <locn:postName rdf:datatype="http://www.sample.org/abdidit/aris">string</locn:postName>
+            <!--Optional:-->
+            <locn:postCode rdf:datatype="http://www.sample.edu/transfixo/terras">string</locn:postCode>
+            <!--Optional:-->
+            <locn:adminUnitL2 rdf:datatype="http://www.corp.com/numen/arce">string</locn:adminUnitL2>
+            <!--Optional:-->
+            <locn:adminUnitL1 rdf:datatype="http://www.corp.edu/frenat/vasto">string</locn:adminUnitL1>
+          </locn:address>
+          <!--Zero or more repetitions:-->
+          <org:memberOf/>
+          <!--Zero or more repetitions:-->
+          <ns1:mbox rdf:resource="http://www.any.gov/ventis/profundum"/>
+          <!--Optional:-->
+          <ns1:firstName xml:lang="">string</ns1:firstName>
+          <!--Optional:-->
+          <ns1:surname xml:lang="">string</ns1:surname>
+          <!--Zero or more repetitions:-->
+          <ns1:phone rdf:resource="http://www.my.edu/iovis/qui"/>
+        </ns1:Agent>
+      </ter:publisher>
+      <!--Zero or more repetitions:-->
+      <ter:relation rdf:resource="http://www.my.com/animos/sedet"/>
+      <!--Zero or more repetitions:-->
+      <ter:rights>
+        <ter:RightsStatement rdf:about="http://www.your.gov/una/furentibus" rdf:nodeID="string">
+          <!--Zero or more repetitions:-->
+          <ter:title xml:lang="string">string</ter:title>
+          <!--Zero or more repetitions:-->
+          <ter:description xml:lang="string">string</ter:description>
+        </ter:RightsStatement>
+      </ter:rights>
+      <!--Zero or more repetitions:-->
+      <ter:title xml:lang="">string</ter:title>
+      <!--Zero or more repetitions:-->
+      <ter:type rdf:resource="http://www.test.org/incedo/dedit">
+        <core:Concept rdf:about="http://www.sample.com/regina/ni">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.corp.gov/ni/foedere"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.sample.com/adorat/atris">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.any.com/celsa/habenas">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:type>
+      <!--Zero or more repetitions:-->
+      <dcat:version xml:lang="">string</dcat:version>
+      <!--Zero or more repetitions:-->
+      <ter:format rdf:resource="http://www.my.gov/fremunt/furentibus">
+        <core:Concept rdf:about="http://www.my.com/habenas/mollitque">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.sample.com/iovis/divum"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.org/habenas/praeterea">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.test.com/dea/flammato">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:format>
+      <!--Zero or more repetitions:-->
+      <r5r:applicableLegislation rdf:resource="http://www.test.com/sceptra/omnipotens"/>
+      <!--Zero or more repetitions:-->
+      <dcat:inSeries rdf:resource="http://www.any.edu/et/sed"/>
+      <!--Zero or more repetitions:-->
+      <dcat:theme rdf:resource="http://www.your.org/iovisque/ac">
+        <core:Concept rdf:about="http://www.your.org/vinclis/aequora">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.sample.org/ipsa/qui"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.any.org/iras/illi">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.test.com/et/regemque">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </dcat:theme>
+      <!--Zero or more repetitions:-->
+      <adms:identifier>
+        <adms:Identifier rdf:about="http://www.test.gov/maria/disiecitque">
+          <core:notation rdf:datatype="http://www.any.gov/bella/corde">string</core:notation>
+        </adms:Identifier>
+      </adms:identifier>
+      <!--Zero or more repetitions:-->
+      <adms:versionNotes xml:lang="string">string</adms:versionNotes>
+      <!--Zero or more repetitions:-->
+      <ter:created rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2003-02-08+01:00</ter:created>
+      <!--Zero or more repetitions:-->
+      <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2016-01-18</ter:issued>
+      <!--Zero or more repetitions:-->
+      <ter:rightsHolder>
+        <ns1:Agent rdf:about="http://www.any.com/illi/coniunx" rdf:nodeID="string">
+          <!--1 or more repetitions:-->
+          <ns1:name xml:lang="string">string</ns1:name>
+          <!--Optional:-->
+          <ter:type rdf:resource="http://www.test.org/molemque/quisquam">
+            <core:Concept rdf:about="http://www.sample.com/e/tenens">
+              <!--Zero or more repetitions:-->
+              <rdf:type rdf:resource="http://www.any.edu/illi/aris"/>
+              <!--Zero or more repetitions:-->
+              <core:prefLabel xml:lang="string">string</core:prefLabel>
+              <!--Optional:-->
+              <core:inScheme rdf:resource="http://www.test.com/vasto/abdidit">
+                <!--Optional:-->
+                <core:ConceptScheme rdf:about="http://www.sample.com/temperat/volutans">
+                  <ter:title xml:lang="string">string</ter:title>
+                </core:ConceptScheme>
+              </core:inScheme>
+            </core:Concept>
+          </ter:type>
+          <!--Optional:-->
+          <ns1:workplaceHomepage rdf:resource="http://www.test.org/turbine/quippe"/>
+          <!--Zero or more repetitions:-->
+          <locn:address>
+            <!--Optional:-->
+            <locn:fullAddress rdf:datatype="http://www.corp.org/claustra/iunonis">string</locn:fullAddress>
+            <!--Optional:-->
+            <locn:poBox rdf:datatype="http://www.company.com/aut/quippe">string</locn:poBox>
+            <!--Optional:-->
+            <locn:thoroughfare rdf:datatype="http://www.company.com/circum/omnipotens">string</locn:thoroughfare>
+            <!--Optional:-->
+            <locn:locatorDesignator rdf:datatype="http://www.any.gov/honorem/iussus">string</locn:locatorDesignator>
+            <!--Optional:-->
+            <locn:locatorName rdf:datatype="http://www.company.com/faciat/et">string</locn:locatorName>
+            <!--Optional:-->
+            <locn:addressArea rdf:datatype="http://www.your.com/et/sed">string</locn:addressArea>
+            <!--Optional:-->
+            <locn:postName rdf:datatype="http://www.company.com/iovisque/cum">string</locn:postName>
+            <!--Optional:-->
+            <locn:postCode rdf:datatype="http://www.sample.edu/rapidum/abdidit">string</locn:postCode>
+            <!--Optional:-->
+            <locn:adminUnitL2 rdf:datatype="http://www.my.com/et/foedere">string</locn:adminUnitL2>
+            <!--Optional:-->
+            <locn:adminUnitL1 rdf:datatype="http://www.my.com/evertitque/vinclis">string</locn:adminUnitL1>
+          </locn:address>
+          <!--Zero or more repetitions:-->
+          <org:memberOf/>
+          <!--Zero or more repetitions:-->
+          <ns1:mbox rdf:resource="http://www.my.com/corripuit/hoc"/>
+          <!--Optional:-->
+          <ns1:firstName xml:lang="">string</ns1:firstName>
+          <!--Optional:-->
+          <ns1:surname xml:lang="">string</ns1:surname>
+          <!--Zero or more repetitions:-->
+          <ns1:phone rdf:resource="http://www.sample.com/laxas/feta"/>
+        </ns1:Agent>
+      </ter:rightsHolder>
+      <!--Zero or more repetitions:-->
+      <ter:subject rdf:resource="http://www.my.com/vasto/claustra">
+        <core:Concept rdf:about="http://www.test.org/rex/cum">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.your.com/temperat/pater"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.org/bella/abdidit">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.any.com/quae/supplex">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </ter:subject>
+      <!--Zero or more repetitions:-->
+      <met:MAGDA-categorie rdf:resource="http://www.sample.com/transfixo/honorem">
+        <core:Concept rdf:about="http://www.corp.org/soror/aeolus">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.sample.com/fremunt/imponet"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.company.org/ferant/iovisque">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.my.org/exspirantem/speluncis">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </met:MAGDA-categorie>
+      <!--Zero or more repetitions:-->
+      <met:landingspaginaVoorAuthenticatie rdf:resource="http://www.your.gov/foedere/quippe"/>
+      <!--Zero or more repetitions:-->
+      <met:landingspaginaVoorGebruiksinformatie rdf:resource="http://www.my.org/arce/sonoras"/>
+      <!--Zero or more repetitions:-->
+      <met:landingspaginaVoorStatusinformatie rdf:resource="http://www.any.org/montis/altos"/>
+      <!--Zero or more repetitions:-->
+      <met:levensfase rdf:resource="http://www.test.org/et/regemque">
+        <core:Concept rdf:about="http://www.corp.org/secum/insuper">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.sample.com/incedo/quae"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.sample.org/tot/premere">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.sample.org/dea/sed">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </met:levensfase>
+      <!--Zero or more repetitions:-->
+      <met:ontwikkelingstoestand rdf:resource="http://www.test.com/carcere/verrantque">
+        <core:Concept rdf:about="http://www.company.com/et/infixit">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.company.com/vasto/volutans"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.corp.com/frenat/circum">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.any.edu/aequora/venit">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </met:ontwikkelingstoestand>
+      <!--Zero or more repetitions:-->
+      <met:statuut rdf:resource="http://www.test.com/rapidum/fremunt">
+        <core:Concept rdf:about="http://www.my.org/montis/montis">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.my.org/hoc/imponet"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.test.edu/ferant/carcere">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.my.org/per/ac">
+              <ter:title xml:lang="">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </met:statuut>
+      <!--Zero or more repetitions:-->
+      <owl:versionInfo>string</owl:versionInfo>
+      <!--Zero or more repetitions:-->
+      <r5r:hvdCategory rdf:resource="http://www.my.com/scopuloque/profundum">
+        <core:Concept rdf:about="http://www.corp.org/gente/aut">
+          <!--Zero or more repetitions:-->
+          <rdf:type rdf:resource="http://www.any.edu/numen/disiecitque"/>
+          <!--Zero or more repetitions:-->
+          <core:prefLabel xml:lang="string">string</core:prefLabel>
+          <!--Optional:-->
+          <core:inScheme rdf:resource="http://www.corp.com/divum/soror">
+            <!--Optional:-->
+            <core:ConceptScheme rdf:about="http://www.any.com/qui/tenens">
+              <ter:title xml:lang="string">string</ter:title>
+            </core:ConceptScheme>
+          </core:inScheme>
+        </core:Concept>
+      </r5r:hvdCategory>
+    </dcat:DataService>
+  </dcat:service>
+  <!--Zero or more repetitions:-->
+  <dcat:theme>string</dcat:theme>
+  <!--Zero or more repetitions:-->
+  <dcat:themeTaxonomy rdf:resource="http://www.test.org/talia/austris">
+    <!--Optional:-->
+    <core:ConceptScheme rdf:about="http://www.company.org/animos/corripuit">
+      <ter:title xml:lang="string">string</ter:title>
+    </core:ConceptScheme>
+  </dcat:themeTaxonomy>
+  <!--Zero or more repetitions:-->
+  <ter:accessRights rdf:resource="http://www.any.org/gero/temperat">
+    <core:Concept rdf:about="http://www.test.org/ventos/iovisque">
+      <!--Zero or more repetitions:-->
+      <rdf:type rdf:resource="http://www.any.com/infixit/sceptra"/>
+      <!--Zero or more repetitions:-->
+      <core:prefLabel xml:lang="string">string</core:prefLabel>
+      <!--Optional:-->
+      <core:inScheme rdf:resource="http://www.my.edu/disiecitque/antro">
+        <!--Optional:-->
+        <core:ConceptScheme rdf:about="http://www.my.org/bella/volutans">
+          <ter:title xml:lang="">string</ter:title>
+        </core:ConceptScheme>
+      </core:inScheme>
+    </core:Concept>
+  </ter:accessRights>
+  <!--Zero or more repetitions:-->
+  <ter:conformsTo>
+    <ter:Standard rdf:about="http://www.your.com/quippe/honorem" rdf:nodeID="string">
+      <ter:identifier xml:lang="string">string</ter:identifier>
+      <!--Zero or more repetitions:-->
+      <ter:title xml:lang="">string</ter:title>
+      <!--Zero or more repetitions:-->
+      <ter:description xml:lang="string">string</ter:description>
+      <!--Optional:-->
+      <owl:versionInfo>string</owl:versionInfo>
+      <!--Optional:-->
+      <ter:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2011-10-10</ter:issued>
+    </ter:Standard>
+  </ter:conformsTo>
+  <!--Zero or more repetitions:-->
+  <ter:creator>
+    <ns1:Agent rdf:about="http://www.your.org/temperat/hoc" rdf:nodeID="string">
+      <!--1 or more repetitions:-->
+      <ns1:name xml:lang="">string</ns1:name>
+      <!--Optional:-->
+      <ter:type rdf:resource="http://www.corp.edu/secum/iovis">
+        <core:Concept rdf:about="http://www.my.com/acuto/abdidit">
+          <!--Zero or more repetitions:-->
+          <!--Zero or more repetitions:-->
+          <!--Optional:-->
+        </core:Concept>
+      </ter:type>
+      <!--Optional:-->
+      <!--Zero or more repetitions:-->
+      <!--Zero or more repetitions:-->
+      <!--Zero or more repetitions:-->
+      <!--Optional:-->
+      <!--Optional:-->
+      <!--Zero or more repetitions:-->
+    </ns1:Agent>
+  </ter:creator>
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+  <!--Zero or more repetitions:-->
+</dcat:Catalog>

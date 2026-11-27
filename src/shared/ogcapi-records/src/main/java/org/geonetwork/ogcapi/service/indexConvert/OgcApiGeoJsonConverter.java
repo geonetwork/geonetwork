@@ -105,12 +105,13 @@ public class OgcApiGeoJsonConverter {
         result.setConformsTo(new ArrayList<>());
         result.getConformsTo().add("http://www.opengis.net/spec/ogcapi-records-1/1.0/req/record-core");
 
-        Metadata metadataRecord = metadataRepository
-                .findOneByUuid(elasticIndexJsonRecord.getMetadataIdentifier())
-                .get();
-
         if (ogcApiRecordsOutputConfig.includeRawXML) {
-            result.setMetadataRecordText(metadataRecord.getData());
+            // Use the record UUID - metadataIdentifier is the ISO fileIdentifier
+            // and can be empty for other standards (eg. dcat-ap).
+            metadataRepository
+                    .findOneByUuid(elasticIndexJsonRecord.getUuid())
+                    .map(Metadata::getData)
+                    .ifPresent(result::setMetadataRecordText);
         }
         if (ogcApiRecordsOutputConfig.includeElasticJson) {
             result.setGeoNetworkElasticIndexRecord(elasticIndexJsonRecord);

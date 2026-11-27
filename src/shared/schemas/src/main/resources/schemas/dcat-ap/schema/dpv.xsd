@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:dpv="https://w3id.org/dpv#"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:dct="http://purl.org/dc/terms/"
+           targetNamespace="https://w3id.org/dpv#"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      Data Privacy Vocabulary (DPV)
+      https://w3id.org/dpv#
+
+      This schema defines privacy-related classes and properties
+      including LegalBasis for describing the legal basis of data processing.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
+  <xs:import namespace="http://purl.org/dc/terms/" schemaLocation="dcterms.xsd"/>
+
+  <!-- LegalBasis type - Data Privacy Vocabulary -->
+  <!-- Represents the legal basis justifying data collection, holding and processing -->
+  <xs:complexType name="LegalBasisType">
+    <xs:sequence>
+      <xs:element name="LegalBasis">
+        <xs:complexType>
+          <xs:sequence>
+            <!-- Human-readable description of the legal basis (multilingual support) -->
+            <xs:element ref="dct:description" minOccurs="0" maxOccurs="unbounded"/>
+            <!-- Source documents or references for the legal basis (URIs to documents) -->
+            <xs:element ref="dct:source" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attribute ref="rdf:about"/>
+          <xs:attribute ref="rdf:nodeID"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PurposeType">
+    <xs:sequence>
+      <xs:element name="Purpose">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="dct:description" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PersonalData">
+    <xs:sequence>
+      <xs:element name="PersonalData">
+        <xs:complexType>
+          <xs:attribute ref="rdf:about"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="hasPersonalData" type="dpv:PersonalData"/>
+  <xs:element name="hasLegalBasis" type="dpv:LegalBasisType"/>
+  <xs:element name="hasPurpose" type="dpv:PurposeType"/>
+</xs:schema>
+

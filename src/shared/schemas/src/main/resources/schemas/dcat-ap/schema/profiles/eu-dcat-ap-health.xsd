@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+           xmlns:dct="http://purl.org/dc/terms/"
+           xmlns:foaf="http://xmlns.com/foaf/0.1/"
+           xmlns:dcatap="http://data.europa.eu/r5r/"
+           xmlns:dcat="http://www.w3.org/ns/dcat#"
+           xmlns:cv="http://data.europa.eu/m8g/"
+           xmlns:healthdcatap="http://healthdataportal.eu/ns/health#"
+           xmlns:csvw="http://www.w3.org/ns/csvw#"
+           targetNamespace="http://healthdataportal.eu/ns/health#"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="../rdf.xsd"/>
+  <xs:import namespace="http://www.w3.org/2004/02/skos/core#" schemaLocation="../skos.xsd"/>
+  <xs:import namespace="http://purl.org/dc/terms/" schemaLocation="../dcterms.xsd"/>
+  <xs:import namespace="http://xmlns.com/foaf/0.1/" schemaLocation="../foaf.xsd"/>
+  <xs:import namespace="http://www.w3.org/ns/dcat#" schemaLocation="../dcat.xsd"/>
+  <xs:import namespace="https://w3id.org/dpv#" schemaLocation="../dpv.xsd"/>
+  <xs:import namespace="http://www.w3.org/ns/csvw#" schemaLocation="../csvw.xsd"/>
+
+  <xs:element name="healthCategory" type="skos:Concept"/>
+  <xs:element name="healthTheme" type="skos:Concept"/>
+  <xs:element name="hasStructuredData" type="xs:boolean"/>
+  <xs:element name="hasCodeValues" type="rdf:PlainLiteral"/>
+  <xs:element name="hasCodingSystem" type="dct:Standard"/>
+  <xs:element name="analytics" type="dcat:Distribution_type"/>
+  <xs:element name="numberOfRecords" type="xs:nonNegativeInteger"/>
+  <xs:element name="numberOfUniqueIndividuals" type="xs:nonNegativeInteger"/>
+  <xs:element name="maxTypicalAge" type="xs:nonNegativeInteger"/>
+  <xs:element name="minTypicalAge" type="xs:nonNegativeInteger"/>
+  <xs:element name="retentionPeriod" type="dct:PeriodOfTime"/>
+  <xs:element name="populationCoverage" type="rdf:PlainLiteral"/>
+
+  <xs:element name="hasVariables" type="csvw:TableGroup_type"/>
+
+  <xs:element name="hdab" type="foaf:Agent"/>
+</xs:schema>

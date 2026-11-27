@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:time="http://www.w3.org/2006/time#"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           targetNamespace="http://www.w3.org/2006/time#"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      OWL-Time XML Schema (relevant parts for DCAT-AP)
+      XML Schema for http://www.w3.org/2006/time# namespace
+
+      This schema implements the Time Ontology in OWL (OWL-Time)
+      as defined by W3C: https://www.w3.org/TR/owl-time/
+
+      The time:Instant class represents a temporal entity with zero extent or duration.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
+
+  <!-- Custom type for dateTimeStamp - dateTime with mandatory timezone -->
+  <xs:simpleType name="dateTimeStampType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        A dateTime value with mandatory timezone.
+        This is equivalent to xsd:dateTimeStamp from XSD 1.1.
+        Valid values must include timezone information (e.g., 'Z' or '+HH:MM' or '-HH:MM').
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:dateTime">
+      <!-- Pattern ensures timezone is present: either Z or +/-HH:MM -->
+      <xs:pattern value=".+T.+(Z|[+\-]\d{2}:\d{2})"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- time:Instant - A temporal entity with zero extent or duration -->
+  <xs:complexType name="Instant">
+    <xs:sequence>
+      <xs:element name="Instant" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <!-- time:inXSDDateTimeStamp - Position of an instant, expressed using xsd:dateTimeStamp (with mandatory timezone) -->
+            <xs:element ref="time:inXSDDateTimeStamp" minOccurs="0" maxOccurs="1"/>
+
+            <!-- time:inXSDDate - Position of an instant, expressed using xsd:date -->
+            <xs:element ref="time:inXSDDate" minOccurs="0" maxOccurs="1"/>
+
+            <!-- time:inXSDgYear - Position of an instant, expressed using xsd:gYear -->
+            <xs:element ref="time:inXSDgYear" minOccurs="0" maxOccurs="1"/>
+
+            <!-- time:inXSDgYearMonth - Position of an instant, expressed using xsd:gYearMonth -->
+            <xs:element ref="time:inXSDgYearMonth" minOccurs="0" maxOccurs="1"/>
+          </xs:sequence>
+          <xs:attribute ref="rdf:about"/>
+          <xs:attribute ref="rdf:nodeID"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute ref="rdf:resource"/>
+  </xs:complexType>
+
+  <!-- Individual elements for time properties -->
+
+  <!-- time:inXSDDateTimeStamp - Position of an instant, expressed using xsd:dateTimeStamp with mandatory timezone -->
+  <xs:element name="inXSDDateTimeStamp">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="time:dateTimeStampType">
+          <xs:attribute ref="rdf:datatype" fixed="http://www.w3.org/2001/XMLSchema#dateTimeStamp"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- time:inXSDDate - Position of an instant, expressed using xsd:date -->
+  <xs:element name="inXSDDate" type="rdf:DateLiteral"/>
+
+  <!-- time:inXSDgYear - Position of an instant, expressed using xsd:gYear -->
+  <xs:element name="inXSDgYear">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:gYear">
+          <xs:attribute ref="rdf:datatype" fixed="http://www.w3.org/2001/XMLSchema#gYear"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- time:inXSDgYearMonth - Position of an instant, expressed using xsd:gYearMonth -->
+  <xs:element name="inXSDgYearMonth">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:gYearMonth">
+          <xs:attribute ref="rdf:datatype" fixed="http://www.w3.org/2001/XMLSchema#gYearMonth"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- time:hasBeginning - Beginning of a temporal entity -->
+  <xs:element name="hasBeginning" type="time:Instant"/>
+
+  <!-- time:hasEnd - End of a temporal entity -->
+  <xs:element name="hasEnd" type="time:Instant"/>
+
+</xs:schema>
+
+
+
+
+

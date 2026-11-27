@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+           xmlns:dct="http://purl.org/dc/terms/"
+           xmlns:oa="http://www.w3.org/ns/oa#"
+           xmlns:dqv="http://www.w3.org/ns/dqv#"
+           targetNamespace="http://www.w3.org/ns/dqv#"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      An XML Schema for the Data Quality Vocabulary (DQV).
+      See http://www.w3.org/ns/dqv#
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
+  <xs:import namespace="http://www.w3.org/2004/02/skos/core#" schemaLocation="skos.xsd"/>
+  <xs:import namespace="http://www.w3.org/ns/oa#" schemaLocation="oa.xsd"/>
+  <xs:import namespace="http://purl.org/dc/terms/" schemaLocation="dcterms.xsd"/>
+
+  <xs:complexType name="Category">
+    <xs:sequence>
+      <xs:element name="Category" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="skos:definition" minOccurs="1" maxOccurs="1"/>
+            <xs:element ref="skos:prefLabel" minOccurs="1" maxOccurs="1"/>
+          </xs:sequence>
+          <xs:attribute ref="rdf:about"/>
+          <xs:attribute ref="rdf:nodeID"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Dimension">
+    <xs:sequence>
+      <xs:element name="Dimension" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="skos:definition" minOccurs="1" maxOccurs="1"/>
+            <xs:element ref="skos:prefLabel" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="inCategory" type="dqv:Category" minOccurs="1" maxOccurs="1"/>
+          </xs:sequence>
+          <xs:attribute ref="rdf:about"/>
+          <xs:attribute ref="rdf:nodeID"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Metric">
+    <xs:sequence>
+      <xs:element name="Metric" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="skos:definition" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="expectedDataType" type="rdf:ResourceRef" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="inDimension" type="rdf:ResourceRef" minOccurs="1" maxOccurs="1"/>
+          </xs:sequence>
+          <xs:attribute ref="rdf:about"/>
+          <xs:attribute ref="rdf:nodeID"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="QualityMeasurement">
+    <xs:sequence>
+      <xs:element name="QualityMeasurement" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="computedOn" type="rdf:ResourceRef" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="isMeasurementOf" type="dqv:Metric" minOccurs="1" maxOccurs="1"/>
+<!--            <xs:element name="dq:datasSet"/>-->
+            <xs:element name="value" minOccurs="1" maxOccurs="1">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:decimal">
+                    <xs:attribute ref="rdf:datatype"/>
+                    <xs:attribute ref="rdf:resource"/>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute ref="rdf:about"/>
+          <xs:attribute ref="rdf:nodeID"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="QualityCertificate">
+    <xs:sequence>
+      <xs:element name="QualityCertificate" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="oa:hasBody"/>
+<!--            <xs:element ref="dct:isPartOf"/>-->
+            <xs:element ref="dct:title" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="oa:motivatedBy"/>
+<!--            <xs:element ref="inDimension"/>-->
+<!--            <xs:element ref="oa:hasTarget"/>-->
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="QualityAnnotation">
+    <xs:sequence>
+      <xs:element name="QualityAnnotation" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="oa:hasBody"/>
+            <!-- TODO
+            <xs:element ref="oa:hasTarget"/>
+            <dqv:hasQualityAnnotation>
+              <dqv:QualityCertificate rdf:about="internalURI:datasetQualityAnnotation0">
+                <oa:hasBody rdf:resource="http://cert.com"/>
+                <oa:hasTarget rdf:resource="http://qa.com"/>
+                <oa:motivatedBy rdf:resource="http://www.w3.org/ns/dqv#qualityAssessment"/>
+              </dqv:QualityCertificate>
+            </dqv:hasQualityAnnotation>
+            -->
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="hasQualityAnnotation" type="dqv:QualityAnnotation"/>
+  <xs:element name="hasQualityMeasurement" type="dqv:QualityMeasurement"/>
+</xs:schema>

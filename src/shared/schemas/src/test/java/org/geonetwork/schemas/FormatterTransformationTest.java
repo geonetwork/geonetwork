@@ -127,7 +127,8 @@ class FormatterTransformationTest {
                         "dcat",
                         "iso19115-3.2018-dcat-service.xml",
                         "iso19115-3.2018-dcat-service-core.rdf"),
-                Arguments.of("iso19139", "dcat", "iso19139-dcat-dataset.xml", "iso19139-dcat-dataset-core.rdf"));
+                Arguments.of("iso19139", "dcat", "iso19139-dcat-dataset.xml", "iso19139-dcat-dataset-core.rdf"),
+                Arguments.of("dcat-ap", "dcat", "dcat-ap-dcat-dataset.xml", "dcat-ap-dcat-dataset-out.rdf"));
     }
 
     private static String loadResourceAsString(String resourcePath) throws Exception {

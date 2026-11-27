@@ -1,0 +1,311 @@
+{
+  "docType": "metadata",
+  "metadataIdentifier": "",
+  "resourceType": [
+    "dataset"
+  ],
+  "resourceTitleObject": {
+    "default": "Sentiers géologiques et pédologiques de la province de Namur",
+    "lang": "Sentiers géologiques et pédologiques de la province de Namur"
+  },
+  "resourceAbstractObject": {
+    "default": "Cette donnée reprend six sentiers géologiques et pédologiques en province de Namur et présente les points d’intérêts qui les jalonnent.\n\nVous y découvrirez Han-sur-Lesse, Freyr, Profondeville, Gedinne, la vallée de l'Orneau, ainsi que les vallées de l’Eau Noire et du Viroin.\n\nIls sont décrits en détails dans 6 carnets imprimés, parus aux Presses universitaires de Namur dans la collection Sentiers géologiques et pédologiques en province de Namur (www.pun.be).\nCes itinéraires ont pour but de faire découvrir les processus de façonnement de ces paysages. Comment les paysages qui nous entourent se sont-ils constitués ? Comment les interpréter ? Saviez-vous par exemple que, depuis 500 millions d'années, notre région s'est déplacée depuis l'hémisphère sud jusqu'à notre latitude actuelle? Ou qu'il y a 375 millions d’années nous bénéficions d’un climat tropical ? \n\nChaque itinéraire invite le promeneur à comprendre son environnement en observant, sur le terrain, une sélection de sites remarquables avec l’œil du géologue et du pédologue. Chacun d’entre eux illustre une étape spécifique de l’histoire géologique de la Province de Namur et de l’évolution de notre continent. Un petit livret fait la synthèse de l’ensemble (Chronique géologique en province de Namur).\n\nDans chacun des carnets, cartes, photos, textes détaillés et schémas en couleurs vous aideront à observer, décrire et interpréter le paysage alentour. À partir de ces observations simples mais structurées et d’une foule de notions de bases clairement définies, vous apprendrez à faire le lien entre la composition d’un sous-sol (géologie), l’allure du paysage (géomorphologie) et les sols (pédologie). Les choix faits par l’homme liés à l’exploitation de ces ressources naturelles, voire de ces composantes patrimoniales, sont également évoqués.\n\nLes itinéraires sélectionnés s’adressent à un public de promeneurs et randonneurs scientifiquement curieux mais non initié à ces disciplines, à des amateurs de géologie et pédologie. Ils sont prévus pour un parcours à pied (à l’exception de la vallée de l’Orneau), sur une distance de 5 à 8 km.\n\nCette série est composée de deux couches vectorielles représentant : \n•\tL’itinéraire des sentiers : couche de lignes localisant les itinéraires à suivre, en plusieurs versions selon le mode de transport et la longueur (pied, voiture, version courte, cfr légende associée). Cette couche permet, en outre, de télécharger les livrets détaillés des itinéraires (cf. plus bas).\n•\tLes points d’intérêts : couche de points localisant les points d’intérêt des sentiers. Cette couche permet également de télécharger les fiches détaillées des points d’intérêts (cf. plus bas).\nComment consulter les carnets ?\n\nChaque livret-itinéraire est disponible soit en version pdf basse résolution (cartes IGN masquées) à partir de ce site (en français), soit en version imprimée pour un usage aisé sur le terrain (en français ou néerlandais).Version PDF basse résolution en français (cartes IGN masquées) : \n•\tLivret complet à partir de la couche « Itinéraire des sentiers » ( voir également onglet Détails/Documents associés)\n•\tFiche détaillée des points d’intérêt à partir de la couche « Points d’intérêt »\n\nVersion imprimée au format A4, en papier indéchirable et reliure à spirale, prix entre 10 et 15 euros. Disponibles sur commande en librairie, dans les offices du tourisme concernés et sur le site des Presses universitaires de Namur (www.pun.be – Collection Sentiers géologiques et pédologiques en province de Namur).",
+    "lang": "Cette donnée reprend six sentiers géologiques et pédologiques en province de Namur et présente les points d’intérêts qui les jalonnent.\n\nVous y découvrirez Han-sur-Lesse, Freyr, Profondeville, Gedinne, la vallée de l'Orneau, ainsi que les vallées de l’Eau Noire et du Viroin.\n\nIls sont décrits en détails dans 6 carnets imprimés, parus aux Presses universitaires de Namur dans la collection Sentiers géologiques et pédologiques en province de Namur (www.pun.be).\nCes itinéraires ont pour but de faire découvrir les processus de façonnement de ces paysages. Comment les paysages qui nous entourent se sont-ils constitués ? Comment les interpréter ? Saviez-vous par exemple que, depuis 500 millions d'années, notre région s'est déplacée depuis l'hémisphère sud jusqu'à notre latitude actuelle? Ou qu'il y a 375 millions d’années nous bénéficions d’un climat tropical ? \n\nChaque itinéraire invite le promeneur à comprendre son environnement en observant, sur le terrain, une sélection de sites remarquables avec l’œil du géologue et du pédologue. Chacun d’entre eux illustre une étape spécifique de l’histoire géologique de la Province de Namur et de l’évolution de notre continent. Un petit livret fait la synthèse de l’ensemble (Chronique géologique en province de Namur).\n\nDans chacun des carnets, cartes, photos, textes détaillés et schémas en couleurs vous aideront à observer, décrire et interpréter le paysage alentour. À partir de ces observations simples mais structurées et d’une foule de notions de bases clairement définies, vous apprendrez à faire le lien entre la composition d’un sous-sol (géologie), l’allure du paysage (géomorphologie) et les sols (pédologie). Les choix faits par l’homme liés à l’exploitation de ces ressources naturelles, voire de ces composantes patrimoniales, sont également évoqués.\n\nLes itinéraires sélectionnés s’adressent à un public de promeneurs et randonneurs scientifiquement curieux mais non initié à ces disciplines, à des amateurs de géologie et pédologie. Ils sont prévus pour un parcours à pied (à l’exception de la vallée de l’Orneau), sur une distance de 5 à 8 km.\n\nCette série est composée de deux couches vectorielles représentant : \n•\tL’itinéraire des sentiers : couche de lignes localisant les itinéraires à suivre, en plusieurs versions selon le mode de transport et la longueur (pied, voiture, version courte, cfr légende associée). Cette couche permet, en outre, de télécharger les livrets détaillés des itinéraires (cf. plus bas).\n•\tLes points d’intérêts : couche de points localisant les points d’intérêt des sentiers. Cette couche permet également de télécharger les fiches détaillées des points d’intérêts (cf. plus bas).\nComment consulter les carnets ?\n\nChaque livret-itinéraire est disponible soit en version pdf basse résolution (cartes IGN masquées) à partir de ce site (en français), soit en version imprimée pour un usage aisé sur le terrain (en français ou néerlandais).Version PDF basse résolution en français (cartes IGN masquées) : \n•\tLivret complet à partir de la couche « Itinéraire des sentiers » ( voir également onglet Détails/Documents associés)\n•\tFiche détaillée des points d’intérêt à partir de la couche « Points d’intérêt »\n\nVersion imprimée au format A4, en papier indéchirable et reliure à spirale, prix entre 10 et 15 euros. Disponibles sur commande en librairie, dans les offices du tourisme concernés et sur le site des Presses universitaires de Namur (www.pun.be – Collection Sentiers géologiques et pédologiques en province de Namur)."
+  },
+  "indexingDate": 1795164597678,
+  "publicationDateForResource": [
+    "2022-09-13T22:00:00.000Z"
+  ],
+  "resourceDate": [
+    {
+      "type": "publication",
+      "date": "2022-09-13T22:00:00.000Z"
+    },
+    {
+      "type": "revision",
+      "date": "2024-05-21T22:00:00.000Z"
+    }
+  ],
+  "publicationYearForResource": "2022",
+  "publicationMonthForResource": "2022-09",
+  "revisionDateForResource": [
+    "2024-05-21T22:00:00.000Z"
+  ],
+  "revisionYearForResource": "2024",
+  "revisionMonthForResource": "2024-05",
+  "contactForResource": [
+    {
+      "role": "pointOfContact",
+      "email": "mailto:helpdesk.carto@spw.wallonie.be",
+      "website": "",
+      "individual": "",
+      "phone": "",
+      "address": ""
+    }
+  ],
+  "rdfResourceIdentifier": "https://geodata.wallonie.be/id/31a73a47-5df1-4c5f-930e-87d547a6373d",
+  "resourceIdentifier": [
+    {
+      "code": "https://geodata.wallonie.be/id/31a73a47-5df1-4c5f-930e-87d547a6373d",
+      "codeSpace": "",
+      "link": "https://geodata.wallonie.be/id/31a73a47-5df1-4c5f-930e-87d547a6373d"
+    }
+  ],
+  "mainLanguage": "",
+  "tagNumber": "9",
+  "tag": [
+    {
+      "default": "zones naturelles, paysages, écosystèmes",
+      "langfre": "zones naturelles, paysages, écosystèmes"
+    },
+    {
+      "default": "sol",
+      "langfre": "sol"
+    },
+    {
+      "default": "lithosphère",
+      "langfre": "lithosphère"
+    },
+    {
+      "default": "processus géologique",
+      "langfre": "processus géologique"
+    },
+    {
+      "default": "sol",
+      "langfre": "sol"
+    },
+    {
+      "default": "sentiers géo-pédologiques",
+      "langfre": "sentiers géo-pédologiques"
+    },
+    {
+      "default": "SGP",
+      "langfre": "SGP"
+    },
+    {
+      "default": "pédologie",
+      "langfre": "pédologie"
+    },
+    {
+      "default": "Science et technologie",
+      "langfre": "Science et technologie",
+      "link": "http://publications.europa.eu/resource/authority/data-theme/TECH",
+      "key": "http://publications.europa.eu/resource/authority/data-theme/TECH"
+    }
+  ],
+  "th_otherKeywords-Number": 8,
+  "th_otherKeywords": [
+    {
+      "default": "zones naturelles, paysages, écosystèmes",
+      "langfre": "zones naturelles, paysages, écosystèmes"
+    },
+    {
+      "default": "sol",
+      "langfre": "sol"
+    },
+    {
+      "default": "lithosphère",
+      "langfre": "lithosphère"
+    },
+    {
+      "default": "processus géologique",
+      "langfre": "processus géologique"
+    },
+    {
+      "default": "sol",
+      "langfre": "sol"
+    },
+    {
+      "default": "sentiers géo-pédologiques",
+      "langfre": "sentiers géo-pédologiques"
+    },
+    {
+      "default": "SGP",
+      "langfre": "SGP"
+    },
+    {
+      "default": "pédologie",
+      "langfre": "pédologie"
+    }
+  ],
+  "allKeywords": {
+    "th_otherKeywords": {
+      "title": "otherKeywords-",
+      "theme": "",
+      "keywords": [
+        {
+          "default": "zones naturelles, paysages, écosystèmes",
+          "langfre": "zones naturelles, paysages, écosystèmes"
+        },
+        {
+          "default": "sol",
+          "langfre": "sol"
+        },
+        {
+          "default": "lithosphère",
+          "langfre": "lithosphère"
+        },
+        {
+          "default": "processus géologique",
+          "langfre": "processus géologique"
+        },
+        {
+          "default": "sol",
+          "langfre": "sol"
+        },
+        {
+          "default": "sentiers géo-pédologiques",
+          "langfre": "sentiers géo-pédologiques"
+        },
+        {
+          "default": "SGP",
+          "langfre": "SGP"
+        },
+        {
+          "default": "pédologie",
+          "langfre": "pédologie"
+        }
+      ]
+    }
+  },
+  "th_access-rightNumber": "1",
+  "th_access-right": [
+    {
+      "default": "",
+      "link": ""
+    }
+  ],
+  "th_access-right_tree": [
+    {
+      "key": [
+        ""
+      ],
+      "default": [
+        ""
+      ]
+    }
+  ],
+  "th_languageNumber": "1",
+  "th_language": [
+    {
+      "default": "",
+      "link": ""
+    }
+  ],
+  "th_language_tree": [
+    {
+      "key": [
+        ""
+      ],
+      "default": [
+        ""
+      ]
+    }
+  ],
+  "th_frequencyNumber": "1",
+  "th_frequency": [
+    {
+      "default": "",
+      "link": ""
+    }
+  ],
+  "th_frequency_tree": [
+    {
+      "key": [
+        ""
+      ],
+      "default": [
+        ""
+      ]
+    }
+  ],
+  "licenseObject": [
+    {
+      "link": "https://geoportail.wallonie.be/files/documents/ConditionsSPW/DataSPW-CPU-TypeC.pdf"
+    }
+  ],
+  "modelLicentieObject": {
+    "link": "https://geoportail.wallonie.be/files/documents/ConditionsSPW/DataSPW-CPU-TypeC.pdf"
+  },
+  "linkUrl": [
+    "https://geoservices.wallonie.be/arcgis/services/SOL_SOUS_SOL/SGP/MapServer/WMSServer?request=GetCapabilities&service=WMS",
+    "https://geoservices.wallonie.be/arcgis/rest/services/SOL_SOUS_SOL/SGP/MapServer"
+  ],
+  "link": [
+    {
+      "protocol": "",
+      "mimeType": "",
+      "url": "https://geoservices.wallonie.be/arcgis/services/SOL_SOUS_SOL/SGP/MapServer/WMSServer?request=GetCapabilities&service=WMS",
+      "name": "Sentiers géologiques et pédologiques de la province de Namur - Service de visualisation WMS",
+      "description": "Ce service de visualisation WMS permet de consulter les couches de données \"Sentiers géologiques et pédologiques de la province de Namur\".",
+      "function": "",
+      "applicationProfile": "",
+      "group": 0
+    },
+    {
+      "protocol": "",
+      "mimeType": "",
+      "url": "https://geoservices.wallonie.be/arcgis/rest/services/SOL_SOUS_SOL/SGP/MapServer",
+      "name": "Sentiers géologiques et pédologiques de la province de Namur - Service de visualisation REST",
+      "description": "Ce service de visualisation REST permet de consulter les couches de données \"Sentiers géologiques et pédologiques de la province de Namur\".",
+      "function": "",
+      "applicationProfile": "",
+      "group": 0
+    }
+  ],
+  "hasOverview": "true",
+  "referenceDate": "2024-05-21T22:00:00.000Z",
+  "uuid": "31a73a47-5df1-4c5f-930e-87d547a6373d",
+  "displayOrder": "0",
+  "groupPublishedId": [
+    "1",
+    "14681"
+  ],
+  "popularity": 7,
+  "groupPublished": [
+    "all",
+    "TEST"
+  ],
+  "isPublishedToAll": "true",
+  "record": "record",
+  "draft": "n",
+  "changeDate": "2026-11-12T13:54:45.450899Z",
+  "id": "64531",
+  "createDate": "2026-10-28T15:09:07.446051Z",
+  "isPublishedToIntranet": "false",
+  "logo": "/srv/api/sources/f4ef8661-1564-431c-b544-477488d54abb/logo",
+  "hasxlinks": "false",
+  "op0": [
+    "1",
+    "14681"
+  ],
+  "featureOfRecord": "record",
+  "op1": [
+    "1",
+    "14681"
+  ],
+  "isPublishedToGuest": "false",
+  "extra": "null",
+  "documentStandard": "dcat-ap",
+  "op5": [
+    "1",
+    "14681"
+  ],
+  "valid": "-1",
+  "isTemplate": "n",
+  "feedbackCount": "0",
+  "rating": "0",
+  "isHarvested": "true",
+  "userSavedCount": "0",
+  "sourceCatalogue": "f4ef8661-1564-431c-b544-477488d54abb",
+  "overview": [
+    {
+      "data": "",
+      "nameObject": {
+        "default": "2022-09-07%2008_35_40-WalOnMap%20_%20G%C3%A9oportail%20de%20la%20Wallonie.png",
+        "lang": "2022-09-07%2008_35_40-WalOnMap%20_%20G%C3%A9oportail%20de%20la%20Wallonie.png"
+      },
+      "url": "https://metawal.wallonie.be/geonetwork/srv/api/records/31a73a47-5df1-4c5f-930e-87d547a6373d/attachments/2022-09-07%2008_35_40-WalOnMap%20_%20G%C3%A9oportail%20de%20la%20Wallonie.png"
+    }
+  ]
+}
