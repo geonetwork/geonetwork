@@ -30,9 +30,11 @@ class ThesaurusControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("UnusedVariable")
     @MockitoBean
     private GetThesauriListService getThesauriListService;
 
+    @SuppressWarnings("UnusedVariable")
     @MockitoBean
     private GetKeywordsService getKeywordsService;
 
