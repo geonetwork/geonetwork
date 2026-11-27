@@ -267,11 +267,17 @@ public class OgcApiGeoJsonConverter {
                 continue;
             }
             try {
-                result.add(new OgcApiRecordsLinkDto()
+                var dto = new OgcApiRecordsLinkDto()
                         .href(new URI(url.trim()))
                         .rel("download".equalsIgnoreCase(link.getFunction()) ? "enclosure" : "related")
-                        .type(link.getMimeType() != null ? link.getMimeType() : link.getProtocol())
-                        .title(getLangString(link.getName(), iso3lang)));
+                        // the index has an empty mime type, not null, for links without one
+                        .type(isBlank(link.getMimeType()) ? null : link.getMimeType())
+                        .title(getLangString(link.getName(), iso3lang));
+                // the protocol (e.g. OGC:WMS) isn't a media type, so it goes in profile
+                if (!isBlank(link.getProtocol())) {
+                    dto.profile(List.of(link.getProtocol()));
+                }
+                result.add(dto);
             } catch (URISyntaxException e) {
                 // invalid url in metadata, skip it
             }

@@ -5,6 +5,7 @@
 package org.geonetwork.ogcapi.service.indexConvert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
@@ -33,17 +34,46 @@ public class OgcApiGeoJsonConverterLinksTest {
         assertEquals("https://example.com/data.zip", result.getFirst().getHref().toString());
         assertEquals("enclosure", result.getFirst().getRel());
         assertEquals("application/zip", result.getFirst().getType());
+        assertEquals(List.of("WWW:DOWNLOAD"), result.getFirst().getProfile());
         assertEquals("Données", result.getFirst().getTitle());
     }
 
     @Test
-    public void testTypeFallsBackToProtocol() {
+    public void testProtocolGoesToProfileNotType() {
         var link = link(Map.of("default", "https://example.com/wms"), null, "OGC:WMS");
 
         var result = OgcApiGeoJsonConverter.convertLinks(List.of(link), "eng");
 
-        assertEquals("OGC:WMS", result.getFirst().getType());
+        assertNull(result.getFirst().getType());
+        assertEquals(List.of("OGC:WMS"), result.getFirst().getProfile());
         assertEquals("related", result.getFirst().getRel());
+    }
+
+    /** The index has an empty mime type for links without one (#276). */
+    @Test
+    public void testEmptyMimeTypeGivesNoType() {
+        var wms = link(Map.of("default", "https://example.com/wms"), "", "OGC:WMS");
+        var doi = link(Map.of("default", "https://doi.org/10.2909/abc"), " ", "DOI");
+
+        var result = OgcApiGeoJsonConverter.convertLinks(List.of(wms, doi), "eng");
+
+        assertNull(result.get(0).getType());
+        assertEquals(List.of("OGC:WMS"), result.get(0).getProfile());
+        assertNull(result.get(1).getType());
+        assertEquals(List.of("DOI"), result.get(1).getProfile());
+    }
+
+    @Test
+    public void testNoTypeOrProfileWithoutMimeTypeOrProtocol() {
+        var empty = link(Map.of("default", "https://example.com/a"), "", "");
+        var missing = link(Map.of("default", "https://example.com/b"), null, null);
+
+        var result = OgcApiGeoJsonConverter.convertLinks(List.of(empty, missing), "eng");
+
+        assertNull(result.get(0).getType());
+        assertTrue(result.get(0).getProfile().isEmpty());
+        assertNull(result.get(1).getType());
+        assertTrue(result.get(1).getProfile().isEmpty());
     }
 
     @Test
