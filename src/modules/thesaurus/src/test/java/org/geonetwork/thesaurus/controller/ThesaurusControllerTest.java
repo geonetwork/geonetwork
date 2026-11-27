@@ -11,6 +11,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.charset.StandardCharsets;
 import org.geonetwork.thesaurus.SkosRdfImportService;
 import org.geonetwork.thesaurus.service.GetKeywordsService;
 import org.geonetwork.thesaurus.service.GetThesauriListService;
@@ -42,7 +43,8 @@ class ThesaurusControllerTest {
     private SkosRdfImportService skosRdfImportService;
 
     private static MockMultipartHttpServletRequestBuilder importRequest() {
-        var file = new MockMultipartFile("file", "thesaurus.rdf", "application/rdf+xml", "<rdf/>".getBytes());
+        var file = new MockMultipartFile(
+                "file", "thesaurus.rdf", "application/rdf+xml", "<rdf/>".getBytes(StandardCharsets.UTF_8));
         return (MockMultipartHttpServletRequestBuilder)
                 multipart("/api/thesaurus/import").file(file).with(csrf());
     }
