@@ -1,13 +1,13 @@
 {
   "docType" : "metadata",
-  "dateStamp" : "2024-05-12T22:00:00.000Z",
+  "dateStamp" : "2024-05-13T00:00:00.000Z",
   "resourceType" : [ "featureCatalog" ],
   "resourceTitleObject" : {
     "default" : "Baggerzones in de vaargeul van de Noordzee en de Schelde (objectencatalogus)"
   },
   "resourceDate" : [ {
     "type" : "revision",
-    "date" : "2024-05-12T22:00:00.000Z"
+    "date" : "2024-05-13T00:00:00.000Z"
   } ],
   "resourceAbstractObject" : {
     "default" : "environment"

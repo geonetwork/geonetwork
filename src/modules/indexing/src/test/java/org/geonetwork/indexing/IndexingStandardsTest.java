@@ -92,8 +92,8 @@ class IndexingStandardsTest {
         IndexRecord indexRecord = index("iso19115-3.2018", "single-date-extent", xml);
 
         var range = indexRecord.getResourceTemporalExtentDateRange().getFirst();
-        assertEquals("2020-03-31T22:00:00.000Z", range.getGte());
-        assertEquals("2020-04-01T21:59:59.999Z", range.getLte());
+        assertEquals("2020-04-01T00:00:00.000Z", range.getGte());
+        assertEquals("2020-04-01T23:59:59.999Z", range.getLte());
     }
 
     /** An end given as a year-month or a year covers up to the last day of that month or year. */
@@ -107,7 +107,7 @@ class IndexingStandardsTest {
                 "year-month-end-extent",
                 xml.replace("2020-04-24</gml:endPosition>", "2024-02</gml:endPosition>"));
         assertEquals(
-                "2024-02-29T22:59:59.999Z",
+                "2024-02-29T23:59:59.999Z",
                 yearMonth.getResourceTemporalExtentDateRange().getFirst().getLte());
 
         IndexRecord year = index(
@@ -115,8 +115,36 @@ class IndexingStandardsTest {
                 "year-end-extent",
                 xml.replace("2020-04-24</gml:endPosition>", "2024</gml:endPosition>"));
         assertEquals(
-                "2024-12-31T22:59:59.999Z",
+                "2024-12-31T23:59:59.999Z",
                 year.getResourceTemporalExtentDateRange().getFirst().getLte());
+    }
+
+    /**
+     * A temporal extent without time is a period of calendar dates, indexed in UTC whatever the server time zone (CET
+     * here), so it does not start the day and year before (#272).
+     */
+    @Test
+    void test_indexing_temporal_extent_dates_in_utc() throws Exception {
+        String xml = IOUtils.toString(
+                new ClassPathResource("samples/iso19115-3.2018_dataset.xml").getInputStream(), StandardCharsets.UTF_8);
+        String start = StringUtils.substringBetween(xml, "<gml:beginPosition>", "</gml:beginPosition>");
+
+        IndexRecord fullYears = index(
+                "iso19115-3.2018",
+                "full-years-extent",
+                xml.replace(start + "</gml:beginPosition>", "2020-01-01</gml:beginPosition>")
+                        .replace("2020-04-24</gml:endPosition>", "2022-12-31</gml:endPosition>"));
+        var range = fullYears.getResourceTemporalExtentDateRange().getFirst();
+        assertEquals("2020-01-01T00:00:00.000Z", range.getGte());
+        assertEquals("2022-12-31T23:59:59.999Z", range.getLte());
+
+        IndexRecord yearStart = index(
+                "iso19115-3.2018",
+                "year-start-extent",
+                xml.replace(start + "</gml:beginPosition>", "2020</gml:beginPosition>"));
+        assertEquals(
+                "2020-01-01T00:00:00.000Z",
+                yearStart.getResourceTemporalExtentDateRange().getFirst().getGte());
     }
 
     /** A temporal extent that ends before it starts is not indexed as a range, only flagged with a warning. */

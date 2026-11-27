@@ -22,11 +22,11 @@
   },
   "resourceDate" : [ {
     "type" : "publication",
-    "date" : "2018-03-14T23:00:00.000Z"
+    "date" : "2018-03-15T00:00:00.000Z"
   } ],
   "resourceTemporalDateRange" : [ {
-    "gte" : "2018-03-14T23:00:00.000Z",
-    "lte" : "2018-03-14T23:00:00.000Z"
+    "gte" : "2018-03-15T00:00:00.000Z",
+    "lte" : "2018-03-15T00:00:00.000Z"
   } ],
   "resourceIdentifier" : [ {
     "code" : "3dbe0017-a71f-4923-9b44-fdb5afef5778",
@@ -634,7 +634,7 @@
       "langfre" : "Gestion et valorisation de la donnée (SPW - Secrétariat général - SPW Digital - Département Données transversales - Gestion et valorisation de la donnée)"
     }
   } ],
-  "publicationDateForResource" : [ "2018-03-14T23:00:00.000Z" ],
+  "publicationDateForResource" : [ "2018-03-15T00:00:00.000Z" ],
   "cl_distributedComputingPlatform" : [ {
     "key" : "WebServices",
     "default" : "WebServices",

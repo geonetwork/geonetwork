@@ -101,29 +101,29 @@
 
     <xsl:for-each select="dct:created[. != '']">
       <xsl:variable name="creationDate"
-                    select="util:convertToISOZuluDateTime(string(current()))"/>
+                    select="gn-fn-index:to-zulu-date-time(string(current()), false())"/>
       <xsl:element name="{$creationDateType}DateForResource">
         <xsl:value-of select="$creationDate"/>
       </xsl:element>
       <xsl:element name="{$creationDateType}YearForResource">
-        <xsl:value-of select="substring($creationDate, 0, 5)"/>
+        <xsl:value-of select="substring(normalize-space(current()), 0, 5)"/>
       </xsl:element>
       <xsl:element name="{$creationDateType}MonthForResource">
-        <xsl:value-of select="substring($creationDate, 0, 8)"/>
+        <xsl:value-of select="substring(normalize-space(current()), 0, 8)"/>
       </xsl:element>
     </xsl:for-each>
 
     <xsl:for-each select="dct:modified[. != '']">
       <xsl:variable name="revisionDate"
-                    select="util:convertToISOZuluDateTime(string(current()))"/>
+                    select="gn-fn-index:to-zulu-date-time(string(current()), false())"/>
       <xsl:element name="{$revisionDateType}DateForResource">
         <xsl:value-of select="$revisionDate"/>
       </xsl:element>
       <xsl:element name="{$revisionDateType}YearForResource">
-        <xsl:value-of select="substring($revisionDate, 0, 5)"/>
+        <xsl:value-of select="substring(normalize-space(current()), 0, 5)"/>
       </xsl:element>
       <xsl:element name="{$revisionDateType}MonthForResource">
-        <xsl:value-of select="substring($revisionDate, 0, 8)"/>
+        <xsl:value-of select="substring(normalize-space(current()), 0, 8)"/>
       </xsl:element>
     </xsl:for-each>
 
