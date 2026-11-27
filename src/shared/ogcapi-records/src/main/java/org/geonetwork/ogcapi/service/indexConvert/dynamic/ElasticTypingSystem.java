@@ -10,6 +10,7 @@ import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.indices.IndexState;
 import com.google.common.base.Splitter;
 import java.util.*;
+import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
 import org.geonetwork.index.client.IndexClient;
@@ -42,7 +43,12 @@ public class ElasticTypingSystem {
     //    private final String indexRecordName; // typically "gn-records"
 
     /** results of getting elastic index info i.e. http://localhost:9200/gn-records */
-    private IndexState elasticIndexInfo;
+    private volatile IndexState elasticIndexInfo;
+
+    /** fetches the index info - returns null if elastic or the index isn't available */
+    private final Supplier<IndexState> indexInfoSupplier;
+
+    private volatile OgcElasticFieldsMapperConfig config;
 
     /** these are the types in from the GetIndexInfo elastic. key is from config.fields.elasticProperty */
     //    private Map<String, PropertyVariant> rawElasticTypes = new HashMap<String, PropertyVariant>();
@@ -58,16 +64,13 @@ public class ElasticTypingSystem {
             OgcElasticFieldsMapperConfig config,
             @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName,
             IndexState elasticIndexInfo) {
-        this.elasticIndexInfo = elasticIndexInfo;
+        this(config, () -> elasticIndexInfo);
+    }
 
-        this.finalElasticTypesByOgc = new HashMap<>();
-        for (var field : config.getFields()) {
-            var finalType = computeElasticTypeInfo(field);
-            this.finalElasticTypes.put(field.getElasticProperty(), finalType);
-
-            var name = field.getOgcProperty();
-            this.finalElasticTypesByOgc.put(name, finalType);
-        }
+    ElasticTypingSystem(OgcElasticFieldsMapperConfig config, Supplier<IndexState> indexInfoSupplier) {
+        this.indexInfoSupplier = indexInfoSupplier;
+        this.elasticIndexInfo = indexInfoSupplier.get();
+        refresh(config);
     }
 
     /**
@@ -78,7 +81,7 @@ public class ElasticTypingSystem {
     public ElasticTypingSystem(
             @Value("${geonetwork.index.indexRecordName:'gn-records'}") String indexRecordName, IndexClient client) {
 
-        this(new OgcElasticFieldsMapperConfig(), indexRecordName, getIndexInfo(client, indexRecordName));
+        this(new OgcElasticFieldsMapperConfig(), () -> getIndexInfo(client, indexRecordName));
     }
 
     /**
@@ -86,7 +89,8 @@ public class ElasticTypingSystem {
      *
      * @param newConfig updated field-mapping configuration
      */
-    public void refresh(OgcElasticFieldsMapperConfig newConfig) {
+    public synchronized void refresh(OgcElasticFieldsMapperConfig newConfig) {
+        this.config = newConfig;
         Map<String, ElasticTypeInfo> byElastic = new HashMap<>();
         Map<String, ElasticTypeInfo> byOgc = new HashMap<>();
         for (var field : newConfig.getFields()) {
@@ -99,13 +103,33 @@ public class ElasticTypingSystem {
     }
 
     /**
+     * If the index info couldn't be read at startup (elastic not ready, index not created yet), try again and recompute
+     * the types. Once it's been read, this does nothing.
+     */
+    private void loadIndexInfoIfMissing() {
+        if (elasticIndexInfo != null) {
+            return;
+        }
+        synchronized (this) {
+            if (elasticIndexInfo != null) {
+                return;
+            }
+            var indexInfo = indexInfoSupplier.get();
+            if (indexInfo != null) {
+                elasticIndexInfo = indexInfo;
+                refresh(config);
+            }
+        }
+    }
+
+    /**
      * returns the type info for a property (by its elastic property location).
      *
      * @param elasticProperty where in the elastic index is this property
      * @return type info for the property
      */
     public ElasticTypeInfo getTypeInfoByElasticProperty(String elasticProperty) {
-        // TODO: if this is null, we should re-get index
+        loadIndexInfoIfMissing();
         return finalElasticTypes.get(elasticProperty);
     }
 
@@ -116,7 +140,7 @@ public class ElasticTypingSystem {
      * @return type info for the property
      */
     public ElasticTypeInfo getTypeInfoByOgcProperty(String ogcProperty) {
-        // TODO: if this is null, we should re-get index
+        loadIndexInfoIfMissing();
         return finalElasticTypesByOgc.get(ogcProperty);
     }
 
@@ -126,6 +150,7 @@ public class ElasticTypingSystem {
      * @return info about ALL the fields (ones without info are removed)
      */
     public List<ElasticTypeInfo> getAllFieldInfos() {
+        loadIndexInfoIfMissing();
         return finalElasticTypesByOgc.values().stream().filter(Objects::nonNull).toList();
     }
 
@@ -226,16 +251,17 @@ public class ElasticTypingSystem {
      * @return null or the PropertyVariant (i.e. KeywordProperty)
      */
     private PropertyVariant computeRawElasticType(String elasticPath) {
-        if (this.elasticIndexInfo == null
-                || this.elasticIndexInfo.mappings() == null
-                || this.elasticIndexInfo.mappings().properties() == null) {
+        var indexInfo = this.elasticIndexInfo;
+        if (indexInfo == null
+                || indexInfo.mappings() == null
+                || indexInfo.mappings().properties() == null) {
             return null;
         }
         var path = Lists.newArrayList(Splitter.on('.').split(elasticPath).iterator());
 
         // start off getting the first level property
         var pathPart = path.removeFirst();
-        var first = this.elasticIndexInfo.mappings().properties().get(pathPart);
+        var first = indexInfo.mappings().properties().get(pathPart);
 
         if (first == null || !(first._get() instanceof PropertyVariant firstPv)) {
             return null; // don't know about this type
@@ -284,7 +310,7 @@ public class ElasticTypingSystem {
             value = new ArrayList<>(set);
         }
 
-        var typeInfo = this.finalElasticTypes.get(elasticPath);
+        var typeInfo = getTypeInfoByElasticProperty(elasticPath);
         if (typeInfo == null) {
             return null;
         }
